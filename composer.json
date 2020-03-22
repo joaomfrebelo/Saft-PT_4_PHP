@@ -1,0 +1,35 @@
+{
+    "name": "joaomfrebelo/saft-pt_4_php",
+    "description": "PHP core lib to work with SAFT-PT",
+    "homepage": "https://github.com/joaomfrebelo/saft-pt_4_php",
+    "version": "1.0.0-ALPHA",
+    "keywords": [
+        "SAFT-PT",
+        "AT",
+        "Autoridade tributaria",
+        "efartura"
+    ],
+    "authors": [
+        {
+            "name": "João M F Rebelo",
+            "email": "joaomfrebelo@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rebelo\\Saft-pt\\": "src/Rebelo/Saft-pt"
+        }
+    },
+    "license": "MIT",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.4",
+        "apache/log4php": "^2.3",
+        "joaomfrebelo/enum": "^1.0",
+        "joaomfrebelo/date": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "goetas-webservices/xsd2php": "^0.3"
+    }
+}

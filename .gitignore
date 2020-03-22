@@ -1,0 +1,8 @@
+/nbproject
+/vendor
+.settings
+.settings/
+.buildpath/
+.project/
+/.metadata
+composer.phar

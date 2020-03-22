@@ -1,0 +1,40 @@
+\Logger::getLogger(\get_class($this))->debug(__METHOD__);
+
+\Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
+\Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
+                            $this->url === null
+                        ? "null"
+                        : $this->url));
+	
+
+\Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'",
+                            $this->type->get()));	
+						
+					
+$msg = "????";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                throw new ?????Exception($msg);
+
+					
+ * @since 1.0.0
+ 
+ -----------------------------------------------------------
+ 
+ $valide        = static::valTextMandMaxCar($, 100,
+                                                       __METHOD__);
+        $this-> = $valide;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->));
+			
+-----------------------------------------------------------------
+
+ \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->companyName));
+        return $this->companyName;
+		
+-----------------------------------------------------------------------		
+    
