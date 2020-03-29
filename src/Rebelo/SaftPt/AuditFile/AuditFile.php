@@ -19,6 +19,8 @@ class AuditFile
     extends AAuditFile
 {
 
+    const N_AUDITFILE = "AuditFile";
+
     /**
      * <xs:element ref="Header" minOccurs="1"/>
      * @var \Rebelo\SaftPt\AuditFile\Header $header
@@ -159,6 +161,16 @@ class AuditFile
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $this->sourceDocuments = $sourceDocuments;
         return $this;
+    }
+
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
     }
 
 }

@@ -32,24 +32,24 @@ use Rebelo\SaftPt\AuditFile\Address;
 
 /**
  * <pre>
- *     <xs:element name="Customer">
- *       <xs:complexType>
- *           <xs:sequence>
- *               <xs:element ref="CustomerID"/>
- *               <xs:element ref="AccountID"/>
- *               <xs:element ref="CustomerTaxID"/>
- *               <xs:element ref="CompanyName"/>
- *               <xs:element ref="Contact" minOccurs="0"/>
- *               <xs:element ref="BillingAddress"/>
- *               <xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/>
- *               <xs:element ref="Telephone" minOccurs="0"/>
- *               <xs:element ref="Fax" minOccurs="0"/>
- *               <xs:element ref="Email" minOccurs="0"/>
- *               <xs:element ref="Website" minOccurs="0"/>
- *               <xs:element ref="SelfBillingIndicator"/>
- *           </xs:sequence>
- *       </xs:complexType>
- *   </xs:element>
+ *     &lt;xs:element name="Customer"&gt;
+ *       &lt;xs:complexType&gt;
+ *           &lt;xs:sequence&gt;
+ *               &lt;xs:element ref="CustomerID"/&gt;
+ *               &lt;xs:element ref="AccountID"/&gt;
+ *               &lt;xs:element ref="CustomerTaxID"/&gt;
+ *               &lt;xs:element ref="CompanyName"/&gt;
+ *               &lt;xs:element ref="Contact" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="BillingAddress"/&gt;
+ *               &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
+ *               &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="Fax" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="Email" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="Website" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="SelfBillingIndicator"/&gt;
+ *           &lt;/xs:sequence&gt;
+ *       &lt;/xs:complexType&gt;
+ *   &lt;/xs:element&gt;
  * </pre>
  *
  * Class Customer
@@ -138,84 +138,84 @@ class Customer
     const N_SELFBILLINGINDICATOR = "SelfBillingIndicator";
 
     /**
-     * <xs:element ref="CustomerID"/>
+     * &lt;xs:element ref="CustomerID"/&gt;
      * @var string $customerID
      * @since 1.0.0
      */
     private string $customerID;
 
     /**
-     * <xs:element ref="AccountID"/>
+     * &lt;xs:element ref="AccountID"/&gt;
      * @var string $accountID
      * @since 1.0.0
      */
     private string $accountID;
 
     /**
-     * <xs:element ref="CustomerTaxID"/>
+     * &lt;xs:element ref="CustomerTaxID"/&gt;
      * @var string $customerTaxID
      * @since 1.0.0
      */
     private string $customerTaxID;
 
     /**
-     * <xs:element ref="CompanyName"/>
+     * &lt;xs:element ref="CompanyName"/&gt;
      * @var string $companyName
      * @since 1.0.0
      */
     private string $companyName;
 
     /**
-     * <xs:element ref="Contact" minOccurs="0"/>
+     * &lt;xs:element ref="Contact" minOccurs="0"/&gt;
      * @var string|null $contact
      * @since 1.0.0
      */
     private ?string $contact = null;
 
     /**
-     * <xs:element ref="BillingAddress"/>
+     * &lt;xs:element ref="BillingAddress"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\Address $billingAddress
      * @since 1.0.0
      */
     private Address $billingAddress;
 
     /**
-     * <xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\Address[] $shipToAddress
      * @since 1.0.0
      */
     private array $shipToAddress = array();
 
     /**
-     * <xs:element ref="Telephone" minOccurs="0"/>
+     * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
      * @var string|null $telephone
      * @since 1.0.0
      */
     private ?string $telephone = null;
 
     /**
-     * <xs:element ref="Fax" minOccurs="0"/>
+     * &lt;xs:element ref="Fax" minOccurs="0"/&gt;
      * @var string|null $fax
      * @since 1.0.0
      */
     private ?string $fax = null;
 
     /**
-     * <xs:element ref="Email" minOccurs="0"/>
+     * &lt;xs:element ref="Email" minOccurs="0"/&gt;
      * @var string|null $email
      * @since 1.0.0
      */
     private ?string $email = null;
 
     /**
-     * <xs:element ref="Website" minOccurs="0"/>
+     * &lt;xs:element ref="Website" minOccurs="0"/&gt;
      * @var string|null $website
      * @since 1.0.0
      */
     private ?string $website = null;
 
     /**
-     * <xs:element ref="SelfBillingIndicator"/>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
      * @var bool $selfBillingIndicator
      * @since 1.0.0
      */
@@ -224,24 +224,24 @@ class Customer
     /**
      *
      * <pre>
-     *     <xs:element name="Customer">
-     *       <xs:complexType>
-     *           <xs:sequence>
-     *               <xs:element ref="CustomerID"/>
-     *               <xs:element ref="AccountID"/>
-     *               <xs:element ref="CustomerTaxID"/>
-     *               <xs:element ref="CompanyName"/>
-     *               <xs:element ref="Contact" minOccurs="0"/>
-     *               <xs:element ref="BillingAddress"/>
-     *               <xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/>
-     *               <xs:element ref="Telephone" minOccurs="0"/>
-     *               <xs:element ref="Fax" minOccurs="0"/>
-     *               <xs:element ref="Email" minOccurs="0"/>
-     *               <xs:element ref="Website" minOccurs="0"/>
-     *               <xs:element ref="SelfBillingIndicator"/>
-     *           </xs:sequence>
-     *       </xs:complexType>
-     *   </xs:element>
+     *     &lt;xs:element name="Customer"&gt;
+     *       &lt;xs:complexType&gt;
+     *           &lt;xs:sequence&gt;
+     *               &lt;xs:element ref="CustomerID"/&gt;
+     *               &lt;xs:element ref="AccountID"/&gt;
+     *               &lt;xs:element ref="CustomerTaxID"/&gt;
+     *               &lt;xs:element ref="CompanyName"/&gt;
+     *               &lt;xs:element ref="Contact" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="BillingAddress"/&gt;
+     *               &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *               &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="Fax" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="Email" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="Website" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     *           &lt;/xs:sequence&gt;
+     *       &lt;/xs:complexType&gt;
+     *   &lt;/xs:element&gt;
      * </pre>
      * @since 1.0.0
      */
@@ -251,10 +251,11 @@ class Customer
     }
 
     /**
-     * Gets as customerID<br>
-     * <xs:element ref="CustomerID"/><br>
-     * <xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/>
-     *
+     * Gets as customerID
+     * <pre>
+     * &lt;xs:element ref="CustomerID"/&gt;
+     * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     * </pre>
      * @return string
      * @since 1.0.0
      */
@@ -266,10 +267,11 @@ class Customer
     }
 
     /**
-     * Sets a new customerID<br>
-     * <xs:element ref="CustomerID"/><br>
-     * <xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/>
-     *
+     * Sets a new customerID
+     * <pre>
+     * &lt;xs:element ref="CustomerID"/&gt;
+     * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     * </pre>
      * @param string $customerID
      * @return void
      * @throws AuditFileException
@@ -284,19 +286,19 @@ class Customer
     }
 
     /**
-     * Gets as accountID<br>
-     * <br>
-     * <xs:element ref="AccountID"/><br>
+     * Gets as accountID
+     *
      * <pre>
-     * <xs:element name="AccountID">
-     *      <xs:simpleType>
-     *          <xs:restriction base="xs:string">
-     *              <xs:pattern value="(([^^]*)|Desconhecido)"/>
-     *              <xs:minLength value="1"/>
-     *              <xs:maxLength value="30"/>
-     *          </xs:restriction>
-     *      </xs:simpleType>
-     *  </xs:element>
+     * &lt;xs:element ref="AccountID"/&gt;
+     * &lt;xs:element name="AccountID"&gt;
+     *      &lt;xs:simpleType&gt;
+     *          &lt;xs:restriction base="xs:string"&gt;
+     *              &lt;xs:pattern value="(([^^]*)|Desconhecido)"/&gt;
+     *              &lt;xs:minLength value="1"/&gt;
+     *              &lt;xs:maxLength value="30"/&gt;
+     *          &lt;/xs:restriction&gt;
+     *      &lt;/xs:simpleType&gt;
+     *  &lt;/xs:element&gt;
      * </pre>
      *
      * @return string
@@ -310,18 +312,18 @@ class Customer
     }
 
     /**
-     * Sets a new accountID<br>
-     * <xs:element ref="AccountID"/><br>
+     * Sets a new accountID
      * <pre>
-     * <xs:element name="AccountID">
-     *      <xs:simpleType>
-     *          <xs:restriction base="xs:string">
-     *              <xs:pattern value="(([^^]*)|Desconhecido)"/>
-     *              <xs:minLength value="1"/>
-     *              <xs:maxLength value="30"/>
-     *          </xs:restriction>
-     *      </xs:simpleType>
-     *  </xs:element>
+     * &lt;xs:element ref="AccountID"/&gt;
+     * &lt;xs:element name="AccountID"&gt;
+     *      &lt;xs:simpleType&gt;
+     *          &lt;xs:restriction base="xs:string"&gt;
+     *              &lt;xs:pattern value="(([^^]*)|Desconhecido)"/&gt;
+     *              &lt;xs:minLength value="1"/&gt;
+     *              &lt;xs:maxLength value="30"/&gt;
+     *          &lt;/xs:restriction&gt;
+     *      &lt;/xs:simpleType&gt;
+     *  &lt;/xs:element&gt;
      * </pre>
      *
      * @param string $accountID
@@ -770,16 +772,16 @@ class Customer
     /**
      * Gets as selfBillingIndicator
      * <pre>
-     * <xs:element ref="SelfBillingIndicator"/>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
      * <!-- Indicador de Autofaturacao -->
-     *   <xs:element name="SelfBillingIndicator">
-     *       <xs:simpleType>
-     *           <xs:restriction base="xs:integer">
-     *               <xs:minInclusive value="0"/>
-     *               <xs:maxInclusive value="1"/>
-     *           </xs:restriction>
-     *       </xs:simpleType>
-     *   </xs:element>
+     *   &lt;xs:element name="SelfBillingIndicator"&gt;
+     *       &lt;xs:simpleType&gt;
+     *           &lt;xs:restriction base="xs:integer"&gt;
+     *               &lt;xs:minInclusive value="0"/&gt;
+     *               &lt;xs:maxInclusive value="1"/&gt;
+     *           &lt;/xs:restriction&gt;
+     *       &lt;/xs:simpleType&gt;
+     *   &lt;/xs:element&gt;
      * </pre>
      * @return bool
      * @since 1.0.0
@@ -797,16 +799,16 @@ class Customer
     /**
      * Sets a new selfBillingIndicator
      * <pre>
-     * <xs:element ref="SelfBillingIndicator"/>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
      * <!-- Indicador de Autofaturacao -->
-     *   <xs:element name="SelfBillingIndicator">
-     *       <xs:simpleType>
-     *           <xs:restriction base="xs:integer">
-     *               <xs:minInclusive value="0"/>
-     *               <xs:maxInclusive value="1"/>
-     *           </xs:restriction>
-     *       </xs:simpleType>
-     *   </xs:element>
+     *   &lt;xs:element name="SelfBillingIndicator"&gt;
+     *       &lt;xs:simpleType&gt;
+     *           &lt;xs:restriction base="xs:integer"&gt;
+     *               &lt;xs:minInclusive value="0"/&gt;
+     *               &lt;xs:maxInclusive value="1"/&gt;
+     *           &lt;/xs:restriction&gt;
+     *       &lt;/xs:simpleType&gt;
+     *   &lt;/xs:element&gt;
      * </pre>
      *
      * @param bool $selfBillingIndicator

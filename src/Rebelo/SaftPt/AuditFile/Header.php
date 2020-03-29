@@ -32,34 +32,34 @@ use Rebelo\Date\Date as RDate;
 /**
  * Class representing Header
  * <pre>
- * <!-- Estrutura de cabecalho (AuditFile.Header) --><br>
- * <xs:element name="Header">
- * <xs:complexType>
- * <xs:sequence>
- * <xs:element ref="AuditFileVersion"/>
- * <xs:element ref="CompanyID"/>
- * <xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/>
- * <xs:element ref="TaxAccountingBasis"/>
- * <xs:element ref="CompanyName"/>
- * <xs:element ref="BusinessName" minOccurs="0"/>
- * <xs:element ref="CompanyAddress"/>
- * <xs:element ref="FiscalYear"/>
- * <xs:element ref="StartDate"/>
- * <xs:element ref="EndDate"/>
- * <xs:element name="CurrencyCode" fixed="EUR"/>
- * <xs:element ref="DateCreated"/>
- * <xs:element ref="TaxEntity"/>
- * <xs:element ref="ProductCompanyTaxID"/>
- * <xs:element ref="SoftwareCertificateNumber"/>
- * <xs:element ref="ProductID"/>
- * <xs:element ref="ProductVersion"/>
- * <xs:element ref="HeaderComment" minOccurs="0"/>
- * <xs:element ref="Telephone" minOccurs="0"/>
- * <xs:element ref="Fax" minOccurs="0"/>
- * <xs:element ref="Email" minOccurs="0"/>
- * <xs:element ref="Website" minOccurs="0"/>
- * </xs:sequence>
- * </xs:complexType>
+ * <!-- Estrutura de cabecalho (AuditFile.Header) -->
+ * &lt;xs:element name="Header"&gt;
+ * &lt;xs:complexType&gt;
+ * &lt;xs:sequence&gt;
+ * &lt;xs:element ref="AuditFileVersion"/&gt;
+ * &lt;xs:element ref="CompanyID"/&gt;
+ * &lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&gt;
+ * &lt;xs:element ref="TaxAccountingBasis"/&gt;
+ * &lt;xs:element ref="CompanyName"/&gt;
+ * &lt;xs:element ref="BusinessName" minOccurs="0"/&gt;
+ * &lt;xs:element ref="CompanyAddress"/&gt;
+ * &lt;xs:element ref="FiscalYear"/&gt;
+ * &lt;xs:element ref="StartDate"/&gt;
+ * &lt;xs:element ref="EndDate"/&gt;
+ * &lt;xs:element name="CurrencyCode" fixed="EUR"/&gt;
+ * &lt;xs:element ref="DateCreated"/&gt;
+ * &lt;xs:element ref="TaxEntity"/&gt;
+ * &lt;xs:element ref="ProductCompanyTaxID"/&gt;
+ * &lt;xs:element ref="SoftwareCertificateNumber"/&gt;
+ * &lt;xs:element ref="ProductID"/&gt;
+ * &lt;xs:element ref="ProductVersion"/&gt;
+ * &lt;xs:element ref="HeaderComment" minOccurs="0"/&gt;
+ * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
+ * &lt;xs:element ref="Fax" minOccurs="0"/&gt;
+ * &lt;xs:element ref="Email" minOccurs="0"/&gt;
+ * &lt;xs:element ref="Website" minOccurs="0"/&gt;
+ * &lt;/xs:sequence&gt;
+ * &lt;/xs:complexType&gt;
  * </pre>
  *
  * @since 1.0.0
@@ -215,21 +215,21 @@ class Header
 
     /**
      * <pre>
-     * <xs:element ref="CompanyID"/>
-     * <xs:element name="CompanyID">
-     *     <xs:annotation>
-     *         <xs:documentation>Concatenacao da Conservatoria do Registo Comercial com o numero do
+     * &lt;xs:element ref="CompanyID"/&gt;
+     * &lt;xs:element name="CompanyID"&gt;
+     *     &lt;xs:annotation&gt;
+     *         &lt;xs:documentation&gt;Concatenacao da Conservatoria do Registo Comercial com o numero do
      *             registo comercial separados pelo caracter espaco. Nos casos em que nao existe o
-     *             registo comercial, deve ser indicado o NIF.</xs:documentation>
-     *     </xs:annotation>
-     *     <xs:simpleType>
-     *         <xs:restriction base="xs:string">
-     *             <xs:pattern value="([0-9]{9})+|([^^]+ [0-9/]+)"/>
-     *             <xs:minLength value="1"/>
-     *             <xs:maxLength value="50"/>
-     *         </xs:restriction>
-     *     </xs:simpleType>
-     * </xs:element>
+     *             registo comercial, deve ser indicado o NIF.&lt;/xs:documentation&gt;
+     *     &lt;/xs:annotation&gt;
+     *     &lt;xs:simpleType&gt;
+     *         &lt;xs:restriction base="xs:string"&gt;
+     *             &lt;xs:pattern value="([0-9]{9})+|([^^]+ [0-9/]+)"/&gt;
+     *             &lt;xs:minLength value="1"/&gt;
+     *             &lt;xs:maxLength value="50"/&gt;
+     *         &lt;/xs:restriction&gt;
+     *     &lt;/xs:simpleType&gt;
+     * &lt;/xs:element&gt;
      * </pre>
      * @var string $companyID
      * @since 1.0.0
