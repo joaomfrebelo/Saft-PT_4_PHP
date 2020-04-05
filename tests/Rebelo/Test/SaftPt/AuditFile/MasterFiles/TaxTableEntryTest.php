@@ -33,6 +33,7 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use Rebelo\Date\Date as RDate;
 
 /**
@@ -290,6 +291,143 @@ class TaxTableEntryTest
 
         $taxEntTab->setTaxAmount(null);
         $this->assertNull($taxEntTab->getTaxAmount());
+    }
+
+    /**
+     * Create and populate a TaxTableEntry to perform test
+     * @return TaxTableEntry
+     */
+    public function createTaxTableEntry(): TaxTableEntry
+    {
+        $entry = new TaxTableEntry();
+        $entry->setDescription("IVA test");
+        $entry->setTaxAmount(null);
+        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::ISO_PT));
+        $entry->setTaxExpirationDate(RDate::parse(RDate::SQL_DATE, "2019-10-05"));
+        $entry->setTaxPercentage(23.00);
+        $entry->setTaxType(new TaxType(TaxType::IVA));
+        $entry->setTaxCode(new TaxCode(TaxCode::NOR));
+        return $entry;
+    }
+
+    /**
+     * Change the Tax Table entry type of value from percentage to amount
+     * @param TaxTableEntry $taxTableEntry
+     */
+    public function changeTaxPercToAmount(TaxTableEntry $taxTableEntry)
+    {
+        $taxTableEntry->setTaxPercentage(null);
+        $taxTableEntry->setTaxAmount(999.00);
+    }
+
+    /**
+     * Set the Tax Table entry Nulables to null
+     * @param TaxTableEntry $taxTableEntry
+     */
+    public function setNullTaxTableEntry(TaxTableEntry $taxTableEntry)
+    {
+        $taxTableEntry->setTaxExpirationDate(null);
+    }
+
+    public function testCreateXmlNode()
+    {
+        $node = new \SimpleXMLElement(
+            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+        );
+
+        $entry = $this->createTaxTableEntry();
+
+        $this->assertInstanceOf(\SimpleXMLElement::class,
+                                $entry->createXmlNode($node));
+
+        $entryNode = $node->{TaxTableEntry::N_TAXTABLEENTRY};
+        $this->assertEquals($entry->getDescription(),
+                            (string) $entryNode->{TaxTableEntry::N_DESCRIPTION});
+        $this->assertEquals($entry->getTaxCode()->get(),
+                            (string) $entryNode->{TaxTableEntry::N_TAXCODE});
+        $this->assertEquals($entry->getTaxCountryRegion()->get(),
+                            (string) $entryNode->{TaxTableEntry::N_TAXCOUNTRYREGION});
+        $this->assertEquals(
+            $entry->getTaxExpirationDate()
+                ->format(RDate::SQL_DATE),
+                         (string) $entryNode->{TaxTableEntry::N_TAXEXPIRATIONDATE}
+        );
+        $this->assertEquals($entry->getTaxPercentage(),
+                            (float) $entryNode->{TaxTableEntry::N_TAXPERCENTAGE});
+        $this->assertEquals($entry->getTaxType()->get(),
+                            (string) $entryNode->{TaxTableEntry::N_TAXTYPE});
+
+        $this->assertEquals(0, $entryNode->{TaxTableEntry::N_TAXAMOUNT}->count());
+
+        unset($entryNode);
+
+        $nodeAmount = new \SimpleXMLElement(
+            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+        );
+
+        $this->changeTaxPercToAmount($entry);
+        $entry->createXmlNode($nodeAmount);
+        $this->assertEquals(0,
+                            $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXPERCENTAGE}->count());
+
+        $this->assertEquals($entry->getTaxAmount(),
+                            (float) $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXAMOUNT});
+
+
+        unset($nodeAmount);
+
+        $nodeNull = new \SimpleXMLElement(
+            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+        );
+
+        $this->setNullTaxTableEntry($entry);
+        $entry->createXmlNode($nodeNull);
+        $this->assertEquals(0,
+                            $nodeNull->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXEXPIRATIONDATE}->count());
+    }
+
+    public function testParseXmlNode()
+    {
+        $node = new \SimpleXMLElement(
+            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+        );
+
+        $entry = $this->createTaxTableEntry();
+
+        $xml = $entry->createXmlNode($node)->asXML();
+
+        $parsed = new TaxTableEntry();
+        $parsed->parseXmlNode(new \SimpleXMLElement($xml));
+        $this->assertEquals($entry->getDescription(), $parsed->getDescription());
+        $this->assertEquals($entry->getTaxCode()->get(),
+                            $parsed->getTaxCode()->get());
+        $this->assertEquals($entry->getTaxCountryRegion()->get(),
+                            $parsed->getTaxCountryRegion()->get());
+        $this->assertEquals($entry->getTaxExpirationDate()->format(RDate::SQL_DATE),
+                                                                   $parsed->getTaxExpirationDate()->format(RDate::SQL_DATE));
+        $this->assertEquals($entry->getTaxPercentage(),
+                            $parsed->getTaxPercentage());
+        $this->assertEquals($entry->getTaxType()->get(),
+                            $parsed->getTaxType()->get());
+        $this->assertNull($parsed->getTaxAmount());
+
+        unset($parsed);
+
+        $this->changeTaxPercToAmount($entry);
+        $parsedAmount = new TaxTableEntry();
+        $xmlAmount    = $entry->createXmlNode($node)->asXML();
+        $parsedAmount->parseXmlNode(new \SimpleXMLElement($xmlAmount));
+        $this->assertNull($parsedAmount->getTaxPercentage());
+        $this->assertEquals($entry->getTaxAmount(),
+                            $parsedAmount->getTaxAmount());
+
+        unset($parsedAmount);
+
+        $this->setNullTaxTableEntry($entry);
+        $parsedNull = new TaxTableEntry();
+        $xmlNull    = $entry->createXmlNode($node)->asXML();
+        $parsedNull->parseXmlNode(new \SimpleXMLElement($xmlNull));
+        $this->assertNull($parsedNull->getTaxExpirationDate());
     }
 
 }

@@ -489,9 +489,9 @@ class TaxTableEntry
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if ($node->getName() !== MasterFiles::N_MASTERFILES)
+        if ($node->getName() !== MasterFiles::N_TAXTABLE)
         {
-            $msg = sprintf("The node name where '%s' must be '%s', but '%s' was passed as argument",
+            $msg = sprintf("The node name where '%s' is created must be '%s', but '%s' node was passed as argument",
                            static::N_TAXTABLEENTRY, MasterFiles::N_TAXTABLE,
                            $node->getName()
             );
@@ -559,21 +559,21 @@ class TaxTableEntry
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         if ($node->getName() !== static::N_TAXTABLEENTRY)
         {
-            $msg = sprinf("Node name should be '%s' but is '%s",
-                          static::N_TAXTABLEENTRY, $node->getName());
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_TAXTABLEENTRY, $node->getName());
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setTaxType(new TaxType($node->{static::N_TAXTYPE}));
-        $this->setTaxCountryRegion(new TaxCountryRegion($node->{static::N_TAXCOUNTRYREGION}));
-        $this->setTaxCode(new TaxCode($node->{static::N_TAXCODE}));
-        $this->setDescription($node->{static::N_DESCRIPTION});
+        $this->setTaxType(new TaxType((string) $node->{static::N_TAXTYPE}));
+        $this->setTaxCountryRegion(new TaxCountryRegion((string) $node->{static::N_TAXCOUNTRYREGION}));
+        $this->setTaxCode(new TaxCode((string) $node->{static::N_TAXCODE}));
+        $this->setDescription((string) $node->{static::N_DESCRIPTION});
         if ($node->{static::N_TAXEXPIRATIONDATE}->count() > 0)
         {
             $date = RDate::parse(RDate::SQL_DATE,
-                                 $node->{static::N_TAXEXPIRATIONDATE});
+                                 (string) $node->{static::N_TAXEXPIRATIONDATE});
             $this->setTaxExpirationDate($date);
         }
         else
@@ -594,11 +594,11 @@ class TaxTableEntry
 
         if ($node->{static::N_TAXPERCENTAGE}->count() > 0)
         {
-            $this->setTaxPercentage(\floatval($node->{static::N_TAXPERCENTAGE}));
+            $this->setTaxPercentage((float) $node->{static::N_TAXPERCENTAGE});
         }
         elseif ($node->{static::N_TAXAMOUNT}->count() > 0)
         {
-            $this->setTaxAmount(\floatval($node->{static::N_TAXAMOUNT}));
+            $this->setTaxAmount((float) $node->{static::N_TAXAMOUNT});
         }
         else
         {
