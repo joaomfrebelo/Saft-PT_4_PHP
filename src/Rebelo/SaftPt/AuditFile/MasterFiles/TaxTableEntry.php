@@ -307,6 +307,7 @@ class TaxTableEntry
      * </pre>
      * @param string $description
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setDescription(string $description): void
