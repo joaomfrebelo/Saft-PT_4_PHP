@@ -25,11 +25,14 @@
  */
 declare(strict_types=1);
 
+namespace Rebelo\Test\SaftPt\AuditFile\MasterFile;
+
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Product;
 use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails;
+use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 
 /**
  * Class ProductTest
@@ -53,7 +56,7 @@ class ProductTest
     }
 
     /**
-     * 
+     *
      */
     public function testInstance()
     {
@@ -212,7 +215,9 @@ class ProductTest
     public function testCreateXmlNode()
     {
         $prod           = $this->createProduct();
-        $node           = new \SimpleXMLElement("<root></root>");
+        $node           = new \SimpleXMLElement(
+            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+        );
         $prodNode       = $prod->createXmlNode($node);
         $custDetailNode = $prodNode->{Product::N_CUSTOMSDETAILS};
         for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_CNCODE}->count(); $n++)
@@ -248,8 +253,10 @@ class ProductTest
      */
     public function testParseXmlNode()
     {
+        $node    = new \SimpleXMLElement(
+            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+        );
         $product = $this->createProduct();
-        $node    = new \SimpleXMLElement("<root></root>");
         $xml     = $product->createXmlNode($node)->asXML();
 
         $parsed = new Product();
@@ -278,6 +285,44 @@ class ProductTest
         $parsedNull->parseXmlNode(new \SimpleXMLElement($xmlNull));
         $this->assertNull($parsedNull->getProductGroup());
         $this->assertNull($parsedNull->getCustomsDetails());
+    }
+
+    public function testCreateXmlNodeWrongName()
+    {
+        $product = new Product();
+        $node    = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $product->createXmlNode($node);
+            $this->fail("Creat a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
+    }
+
+    public function testParseXmlNodeWrongName()
+    {
+        $product = new Product();
+        $node    = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $product->parseXmlNode($node);
+            $this->fail("Parse a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
     }
 
 }

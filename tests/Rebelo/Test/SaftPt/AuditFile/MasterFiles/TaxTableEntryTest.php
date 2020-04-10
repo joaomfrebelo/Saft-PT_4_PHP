@@ -430,4 +430,42 @@ class TaxTableEntryTest
         $this->assertNull($parsedNull->getTaxExpirationDate());
     }
 
+    public function testCreateXmlNodeWrongName()
+    {
+        $taxTableEntry = new TaxTableEntry();
+        $node          = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $taxTableEntry->createXmlNode($node);
+            $this->fail("Creat a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
+    }
+
+    public function testParseXmlNodeWrongName()
+    {
+        $taxTableEntry = new TaxTableEntry();
+        $node          = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $taxTableEntry->parseXmlNode($node);
+            $this->fail("Parse a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
+    }
+
 }

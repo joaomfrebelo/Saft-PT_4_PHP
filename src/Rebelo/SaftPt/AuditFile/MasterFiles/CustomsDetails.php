@@ -350,7 +350,7 @@ class CustomsDetails
 
         if ($node->getName() !== static::N_CUSTOMSDETAILS)
         {
-            $msg = sprinf("Node name should be '%s' and not '%s'",
+            $msg = sprintf("Node name should be '%s' and not '%s'",
                           static::N_CUSTOMSDETAILS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))

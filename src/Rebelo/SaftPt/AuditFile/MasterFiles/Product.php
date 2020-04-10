@@ -32,18 +32,18 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
 /**
  * <pre>
  * <!--    Estrutura de produto (AuditFile.MasterFiles.Product)-->
- *  <xs:element name="Product">
- *      <xs:complexType>
- *          <xs:sequence>
- *              <xs:element ref="ProductType"/>
- *              <xs:element ref="ProductCode"/>
- *              <xs:element ref="ProductGroup" minOccurs="0"/>
- *              <xs:element ref="ProductDescription"/>
- *              <xs:element ref="ProductNumberCode"/>
- *              <xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/>
- *          </xs:sequence>
- *      </xs:complexType>
- *  </xs:element>
+ *  &lt;xs:element name="Product"&gt;
+ *      &lt;xs:complexType&gt;
+ *          &lt;xs:sequence&gt;
+ *              &lt;xs:element ref="ProductType"/&gt;
+ *              &lt;xs:element ref="ProductCode"/&gt;
+ *              &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
+ *              &lt;xs:element ref="ProductDescription"/&gt;
+ *              &lt;xs:element ref="ProductNumberCode"/&gt;
+ *              &lt;xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/&gt;
+ *          &lt;/xs:sequence&gt;
+ *      &lt;/xs:complexType&gt;
+ *  &lt;/xs:element&gt;
  * </pre>
  * Class Product
  * @since 1.0.0
@@ -96,24 +96,24 @@ class Product
 
     /**
      * <pre>
-     *     <xs:element name="ProductType">
-     *      <xs:annotation>
-     *          <xs:documentation>Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
+     *     &lt;xs:element name="ProductType"&gt;
+     *      &lt;xs:annotation&gt;
+     *          &lt;xs:documentation&gt;Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
      *              debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
      *              Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
      *              parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
-     *              impostos (TaxTable)e Impostos Especiais de Consumo </xs:documentation>
-     *      </xs:annotation>
-     *      <xs:simpleType>
-     *          <xs:restriction base="xs:string">
-     *              <xs:enumeration value="P"/>
-     *              <xs:enumeration value="S"/>
-     *              <xs:enumeration value="O"/>
-     *              <xs:enumeration value="E"/>
-     *              <xs:enumeration value="I"/>
-     *          </xs:restriction>
-     *      </xs:simpleType>
-     *  </xs:element>
+     *              impostos (TaxTable)e Impostos Especiais de Consumo &lt;/xs:documentation&gt;
+     *      &lt;/xs:annotation&gt;
+     *      &lt;xs:simpleType&gt;
+     *          &lt;xs:restriction base="xs:string"&gt;
+     *              &lt;xs:enumeration value="P"/&gt;
+     *              &lt;xs:enumeration value="S"/&gt;
+     *              &lt;xs:enumeration value="O"/&gt;
+     *              &lt;xs:enumeration value="E"/&gt;
+     *              &lt;xs:enumeration value="I"/&gt;
+     *          &lt;/xs:restriction&gt;
+     *      &lt;/xs:simpleType&gt;
+     *  &lt;/xs:element&gt;
      * </pre>
      *
      * Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
@@ -148,15 +148,15 @@ class Product
 
     /**
      * <pre>
-     * <xs:element ref="ProductDescription"/>     *
-     *  <!-- Descrição do produto ou servico -->
-     *  <xs:simpleType name="SAFPTProductDescription">
-     *      <xs:annotation/>
-     *      <xs:restriction base="xs:string">
-     *          <xs:minLength value="2"/>
-     *          <xs:maxLength value="200"/>
-     *      </xs:restriction>
-     *  </xs:simpleType>
+     * &lt;xs:element ref="ProductDescription"/&gt;     *
+     *  &lt;!-- Descrição do produto ou servico --&gt;
+     *  &lt;xs:simpleType name="SAFPTProductDescription"&gt;
+     *      &lt;xs:annotation/&gt;
+     *      &lt;xs:restriction base="xs:string"&gt;
+     *          &lt;xs:minLength value="2"/&gt;
+     *          &lt;xs:maxLength value="200"/&gt;
+     *      &lt;/xs:restriction&gt;
+     *  &lt;/xs:simpleType&gt;
      * </pre>
      * @var string $productDescription
      * @since 1.0.0
@@ -184,23 +184,22 @@ class Product
     private ?CustomsDetails $customsDetails = null;
 
     /**
-     * <code>
+     *
      * <pre>
      * <!--    Estrutura de produto (AuditFile.MasterFiles.Product)-->
-     *  <xs:element name="Product">
-     *      <xs:complexType>
-     *          <xs:sequence>
-     *              <xs:element ref="ProductType"/>
-     *              <xs:element ref="ProductCode"/>
-     *              <xs:element ref="ProductGroup" minOccurs="0"/>
-     *              <xs:element ref="ProductDescription"/>
-     *              <xs:element ref="ProductNumberCode"/>
-     *              <xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/>
-     *          </xs:sequence>
-     *      </xs:complexType>
-     *  </xs:element>
+     *  &lt;xs:element name="Product"&gt;
+     *      &lt;xs:complexType&gt;
+     *          &lt;xs:sequence&gt;
+     *              &lt;xs:element ref="ProductType"/&gt;
+     *              &lt;xs:element ref="ProductCode"/&gt;
+     *              &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
+     *              &lt;xs:element ref="ProductDescription"/&gt;
+     *              &lt;xs:element ref="ProductNumberCode"/&gt;
+     *              &lt;xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/&gt;
+     *          &lt;/xs:sequence&gt;
+     *      &lt;/xs:complexType&gt;
+     *  &lt;/xs:element&gt;
      * </pre>
-     * </code>
      * @since 1.0.0
      */
     public function __construct()
@@ -449,6 +448,16 @@ class Product
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
+        if ($node->getName() !== MasterFiles::N_MASTERFILES)
+        {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                            MasterFiles::N_MASTERFILES, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
         $prodNode = $node->addChild(static::N_PRODUCT);
         $prodNode->addChild(static::N_PRODUCTTYPE,
                             $this->getProductType()->get());
@@ -478,10 +487,11 @@ class Product
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
         if ($node->getName() !== static::N_PRODUCT)
         {
-            $msg = sprinf("Node name should be '%s' but is '%s",
-                          static::N_PRODUCT, $node->getName());
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_PRODUCT, $node->getName());
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);

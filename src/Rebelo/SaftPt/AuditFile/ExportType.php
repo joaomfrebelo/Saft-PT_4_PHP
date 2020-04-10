@@ -25,66 +25,37 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\Test\SaftPt\AuditFile\MasterFile;
+namespace Rebelo\SaftPt\AuditFile;
 
 /**
- * TaxCode
- * <pre>
- * <xs:simpleType name="SAFTPTMovementTaxCode">
- *      <xs:restriction base="xs:string">
- *          <xs:pattern value="RED|INT|NOR|ISE|OUT|NS"/>
- *          <xs:minLength value="1"/>
- *          <xs:maxLength value="3"/>
- *      </xs:restriction>
- *  </xs:simpleType>
- * </pre>
+ * Saft XML Export Type
+ *
  * @author João Rebelo
+ * @since 1.0.0
  */
-class TaxCode
+class ExportType
     extends \Rebelo\Enum\AEnum
 {
 
     /**
-     * Iva taxa Reduzida
+     * Simplified<br>
+     * Generate the simplified saft file
      * @since 1.0.0
      */
-    const RED = "RED";
+    const S = "S";
 
     /**
-     * Iva taxa intermedio
+     * Complete<br>
+     * Generate the complete saft file
      * @since 1.0.0
      */
-    const INT = "INT";
-
-    /**
-     * Iva taxa normal
-     * @since 1.0.0
-     */
-    const NOR = "NOR";
-
-    /**
-     * Iva taxa isenta
-     * @since 1.0.0
-     */
-    const ISE = "ISE";
-
-    /**
-     * Outros
-     * @since 1.0.0
-     */
-    const OUT = "OUT";
-
-    /**
-     * 
-     * @since 1.0.0
-     */
-    const NS  = "NS";
+    const C = "C";
 
     /**
      *
      * @param string $value
      */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         parent::__construct($value);
     }

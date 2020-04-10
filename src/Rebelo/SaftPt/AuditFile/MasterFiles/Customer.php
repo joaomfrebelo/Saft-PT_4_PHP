@@ -834,6 +834,16 @@ class Customer
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
+        if ($node->getName() !== MasterFiles::N_MASTERFILES)
+        {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                            MasterFiles::N_MASTERFILES, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
         $customerNode = $node->addChild(static::N_CUSTOMER);
         $customerNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
         $customerNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
@@ -890,8 +900,8 @@ class Customer
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         if ($node->getName() !== static::N_CUSTOMER)
         {
-            $msg = sprinf("Node name should be '%s' but is '%s",
-                          static::N_CUSTOMER, $node->getName());
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_CUSTOMER, $node->getName());
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);

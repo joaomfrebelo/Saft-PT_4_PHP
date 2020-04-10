@@ -32,25 +32,25 @@ use Rebelo\SaftPt\AuditFile\SupplierAddress;
 
 /**
  * <pre>
- *     <xs:element name="Supplier">
- *       <xs:complexType>
- *           <xs:sequence>
- *               <xs:element ref="SupplierID"/>
- *               <xs:element ref="AccountID"/>
- *               <xs:element ref="SupplierTaxID"/>
- *               <xs:element ref="CompanyName"/>
- *               <xs:element ref="Contact" minOccurs="0"/>
- *              <xs:element name="BillingAddress" type="SupplierAddressStructure"/>
- *              <xs:element name="ShipFromAddress" type="SupplierAddressStructure" minOccurs="0"
- *                  maxOccurs="unbounded"/>
- *               <xs:element ref="Telephone" minOccurs="0"/>
- *               <xs:element ref="Fax" minOccurs="0"/>
- *               <xs:element ref="Email" minOccurs="0"/>
- *               <xs:element ref="Website" minOccurs="0"/>
- *               <xs:element ref="SelfBillingIndicator"/>
- *           </xs:sequence>
- *       </xs:complexType>
- *   </xs:element>
+ *     &lt;xs:element name="Supplier"&gt;
+ *       &lt;xs:complexType&gt;
+ *           &lt;xs:sequence&gt;
+ *               &lt;xs:element ref="SupplierID"/&gt;
+ *               &lt;xs:element ref="AccountID"/&gt;
+ *               &lt;xs:element ref="SupplierTaxID"/&gt;
+ *               &lt;xs:element ref="CompanyName"/&gt;
+ *               &lt;xs:element ref="Contact" minOccurs="0"/&gt;
+ *              &lt;xs:element name="BillingAddress" type="SupplierAddressStructure"/&gt;
+ *              &lt;xs:element name="ShipFromAddress" type="SupplierAddressStructure" minOccurs="0"
+ *                  maxOccurs="unbounded"/&gt;
+ *               &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="Fax" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="Email" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="Website" minOccurs="0"/&gt;
+ *               &lt;xs:element ref="SelfBillingIndicator"/&gt;
+ *           &lt;/xs:sequence&gt;
+ *       &lt;/xs:complexType&gt;
+ *   &lt;/xs:element&gt;
  * </pre>
  *
  * Class Supplier
@@ -225,24 +225,24 @@ class Supplier
     /**
      *
      * <pre>
-     *     <xs:element name="Supplier">
-     *       <xs:complexType>
-     *           <xs:sequence>
-     *               <xs:element ref="SupplierID"/>
-     *               <xs:element ref="AccountID"/>
-     *               <xs:element ref="SupplierTaxID"/>
-     *               <xs:element ref="CompanyName"/>
-     *               <xs:element ref="Contact" minOccurs="0"/>
-     *               <xs:element ref="BillingAddress"/>
-     *               <xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/>
-     *               <xs:element ref="Telephone" minOccurs="0"/>
-     *               <xs:element ref="Fax" minOccurs="0"/>
-     *               <xs:element ref="Email" minOccurs="0"/>
-     *               <xs:element ref="Website" minOccurs="0"/>
-     *               <xs:element ref="SelfBillingIndicator"/>
-     *           </xs:sequence>
-     *       </xs:complexType>
-     *   </xs:element>
+     *     &lt;xs:element name="Supplier"&gt;
+     *       &lt;xs:complexType&gt;
+     *           &lt;xs:sequence&gt;
+     *               &lt;xs:element ref="SupplierID"/&gt;
+     *               &lt;xs:element ref="AccountID"/&gt;
+     *               &lt;xs:element ref="SupplierTaxID"/&gt;
+     *               &lt;xs:element ref="CompanyName"/&gt;
+     *               &lt;xs:element ref="Contact" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="BillingAddress"/&gt;
+     *               &lt;xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *               &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="Fax" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="Email" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="Website" minOccurs="0"/&gt;
+     *               &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     *           &lt;/xs:sequence&gt;
+     *       &lt;/xs:complexType&gt;
+     *   &lt;/xs:element&gt;
      * </pre>
      * @since 1.0.0
      */
@@ -835,10 +835,20 @@ class Supplier
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        $supplierNode = $node->addChild(static::N_CUSTOMER);
-        $supplierNode->addChild(static::N_CUSTOMERID, $this->getSupplierID());
+
+        if ($node->getName() !== MasterFiles::N_MASTERFILES)
+        {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                            MasterFiles::N_MASTERFILES, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        $supplierNode = $node->addChild(static::N_SUPPLIER);
+        $supplierNode->addChild(static::N_SUPPLIERID, $this->getSupplierID());
         $supplierNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
-        $supplierNode->addChild(static::N_CUSTOMERTAXID,
+        $supplierNode->addChild(static::N_SUPPLIERTAXID,
                                 \strval($this->getSupplierTaxID()));
         $supplierNode->addChild(static::N_COMPANYNAME, $this->getCompanyName());
         if ($this->getContact() !== null)
@@ -891,8 +901,8 @@ class Supplier
 
         if ($node->getName() !== static::N_SUPPLIER)
         {
-            $msg = sprinf("Node name should be '%s' but is '%s",
-                          static::N_SUPPLIER, $node->getName());
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_SUPPLIER, $node->getName());
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);

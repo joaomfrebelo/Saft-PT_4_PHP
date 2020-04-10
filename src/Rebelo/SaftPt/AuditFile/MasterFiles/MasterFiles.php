@@ -28,10 +28,13 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
+use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Customer;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Supplier;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Product;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry;
+use Rebelo\SaftPt\AuditFile\ExportType;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
  * MasterFiles
@@ -49,6 +52,7 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry;
  *   &lt;/xs:complexType&gt;
  * </pre>
  * @author João Rebelo
+ * @since 1.0.0
  */
 class MasterFiles
     extends AAuditFile
@@ -65,24 +69,6 @@ class MasterFiles
      * @since 1.0.0
      */
     const N_GENERALLEDGERACCOUNTS = "GeneralLedgerAccounts";
-
-    /**
-     * <xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
-     * @since 1.0.0
-     */
-    const N_CUSTOMER = "Customer";
-
-    /**
-     * <xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
-     * @since 1.0.0
-     */
-    const N_SUPPLIER = "Supplier";
-
-    /**
-     * <xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
-     * @since 1.0.0
-     */
-    const N_PRODUCT = "Product";
 
     /**
      * <xs:element ref="TaxTable" minOccurs="0"/>
@@ -157,7 +143,7 @@ class MasterFiles
 
     /**
      * Is not implemented
-     * @return array
+     * @return GeneralLedgerAccounts[]
      * @throws \Rebelo\SaftPt\AuditFile\NotImplemented
      * @since 1.0.0
      */
@@ -183,18 +169,54 @@ class MasterFiles
     }
 
     /**
-     * Add Customer stack
+     * Add Customer to stack
      * <xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\Customer $customer
+     * @return int
+     * @since 1.0.0
+     */
+    public function addToCustomer(Customer $customer): int
+    {
+        if (\count($this->customer) == 0)
+        {
+            $index = 0;
+        }
+        else
+        {
+// The index if obtaining this way because you can unset a key
+            $keys  = \array_keys($this->customer);
+            $index = $keys[\count($keys) - 1] + 1;
+        }
+        $this->customer[$index] = $customer;
+        \Logger::getLogger(\get_class($this))
+            ->debug(__METHOD__ . " add to stack");
+        return $index;
+    }
+
+    /**
+     * isset customer index
+     *
+     * @param int $index
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetCustomer(int $index): bool
+    {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        return isset($this->customer[$index]);
+    }
+
+    /**
+     * unset customer
+     *
+     * @param int $index
      * @return void
      * @since 1.0.0
      */
-    public function addCustomer(Customer $customer): void
+    public function unsetCustomer(int $index): void
     {
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
-
-        $this->customer[] = $customer;
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        unset($this->customer[$index]);
     }
 
     /**
@@ -214,14 +236,51 @@ class MasterFiles
      * Add Supplier to stack
      * <xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\Supplier $supplier
+     * @return int
+     * @since 1.0.0
+     */
+    public function addToSupplier(Supplier $supplier): int
+    {
+        if (\count($this->supplier) == 0)
+        {
+            $index = 0;
+        }
+        else
+        {
+// The index if obtaining this way because you can unset a key
+            $keys  = \array_keys($this->supplier);
+            $index = $keys[\count($keys) - 1] + 1;
+        }
+        $this->supplier[$index] = $supplier;
+        \Logger::getLogger(\get_class($this))
+            ->debug(__METHOD__ . " add to stack");
+        return $index;
+    }
+
+    /**
+     * isset supplier index
+     *
+     * @param int $index
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetSupplier(int $index): bool
+    {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        return isset($this->supplier[$index]);
+    }
+
+    /**
+     * unset supplier
+     *
+     * @param int $index
      * @return void
      * @since 1.0.0
      */
-    public function addSupplier(Supplier $supplier): void
+    public function unsetSupplier(int $index): void
     {
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
-        $this->supplier = $supplier;
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        unset($this->supplier[$index]);
     }
 
     /**
@@ -241,14 +300,51 @@ class MasterFiles
      * Add Product to stack
      * <xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\Product $product
+     * @return int
+     * @since 1.0.0
+     */
+    public function addToProduct(Product $product): int
+    {
+        if (\count($this->product) == 0)
+        {
+            $index = 0;
+        }
+        else
+        {
+// The index if obtaining this way because you can unset a key
+            $keys  = \array_keys($this->product);
+            $index = $keys[\count($keys) - 1] + 1;
+        }
+        $this->product[$index] = $product;
+        \Logger::getLogger(\get_class($this))
+            ->debug(__METHOD__ . " add to stack");
+        return $index;
+    }
+
+    /**
+     * isset product index
+     *
+     * @param int $index
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetProduct(int $index): bool
+    {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        return isset($this->product[$index]);
+    }
+
+    /**
+     * unset shipFromAddress
+     *
+     * @param int $index
      * @return void
      * @since 1.0.0
      */
-    public function addProduct(Product $product): void
+    public function unsetProduct(int $index): void
     {
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
-        $this->product = $product;
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        unset($this->product[$index]);
     }
 
     /**
@@ -286,23 +382,200 @@ class MasterFiles
      * &lt:/xs:element&gt:
      * </pre>
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry $taxTableEntry
-     * @return void
+     * @return int
+     * @since 1.0.0
      */
-    public function addTaxTableEntry(TaxTableEntry $taxTableEntry): void
+    public function addToTaxTableEntry(TaxTableEntry $taxTableEntry): int
     {
+        if (\count($this->taxTableEntry) == 0)
+        {
+            $index = 0;
+        }
+        else
+        {
+// The index if obtaining this way because you can unset a key
+            $keys  = \array_keys($this->taxTableEntry);
+            $index = $keys[\count($keys) - 1] + 1;
+        }
+        $this->taxTableEntry[$index] = $taxTableEntry;
         \Logger::getLogger(\get_class($this))
             ->debug(__METHOD__ . " add to stack");
-        $this->taxTableEntry = $taxTableEntry;
+        return $index;
     }
 
+    /**
+     * isset taxTableEntry index
+     *
+     * @param int $index
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxTableEntry(int $index): bool
+    {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        return isset($this->taxTableEntry[$index]);
+    }
+
+    /**
+     * unset shipFromAddress
+     *
+     * @param int $index
+     * @return void
+     * @since 1.0.0
+     */
+    public function unsetTaxTableEntry(int $index): void
+    {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        unset($this->taxTableEntry[$index]);
+    }
+
+    /**
+     * Create the MasterFile xml node
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
+        if (isset(AuditFile::$exportType) === false)
+        {
+            AuditFile::$exportType = new ExportType(ExportType::C);
+        }
+
+        if ($node->getName() !== AuditFile::N_AUDITFILE)
+        {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                            AuditFile::N_AUDITFILE, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        $masterNode = $node->addChild(static::N_MASTERFILES);
+
+        // GeneralLedgerAccounts is not implemented
+        //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
+        if (\count($this->getCustomer()) > 0 &&
+            AuditFile::$exportType->get() == ExportType::C)
+        {
+            array_map(function($customer) use ($masterNode)
+            {
+                /* @var $customer Customer */
+                $customer->createXmlNode($masterNode);
+            }, $this->getCustomer());
+        }
+
+        //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
+        if (\count($this->getSupplier()) > 0 &&
+            AuditFile::$exportType->get() == ExportType::C)
+        {
+            array_map(function($supplier) use ($masterNode)
+            {
+                /* @var $supplier Supplier */
+                $supplier->createXmlNode($masterNode);
+            }, $this->getSupplier());
+        }
+        //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
+        if (\count($this->getProduct()) > 0 &&
+            AuditFile::$exportType->get() == ExportType::C)
+        {
+            array_map(function($product) use ($masterNode)
+            {
+                /* @var $product Product */
+                $product->createXmlNode($masterNode);
+            }, $this->getProduct());
+        }
+
+        //<xs:element ref="TaxTable" minOccurs="0"/>
+        if (\count($this->getTaxTableEntry()) > 0)
+        {
+            $taxTableNode = $masterNode->addChild(static::N_TAXTABLE);
+            array_map(function($taxTableEntry) use ($taxTableNode)
+            {
+                /* @var $taxTableEntry TaxTableEntry */
+                $taxTableEntry->createXmlNode($taxTableNode);
+            }, $this->getTaxTableEntry());
+        }
+
+        return $masterNode;
     }
 
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @since 1.0.0
+     */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
+        if ($node->getName() !== static::N_MASTERFILES)
+        {
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_MASTERFILES, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        // GeneralLedgerAccounts is not implemented
+        //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
+        $countCustomer = $node->{Customer::N_CUSTOMER}->count();
+        if ($countCustomer > 0)
+        {
+            for ($n = 0; $n < $countCustomer; $n++)
+            {
+                $customer = new Customer();
+                $customer->parseXmlNode($node->{Customer::N_CUSTOMER}[$n]);
+                $this->addToCustomer($customer);
+            }
+        }
+
+        //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
+        $countSupplier = $node->{Supplier::N_SUPPLIER}->count();
+        if ($countSupplier > 0)
+        {
+            for ($n = 0; $n < $countSupplier; $n++)
+            {
+                $supplier = new Supplier();
+                $supplier->parseXmlNode($node->{Supplier::N_SUPPLIER}[$n]);
+                $this->addToSupplier($supplier);
+            }
+        }
+
+        //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
+        $countProduct = $node->{Product::N_PRODUCT}->count();
+        if ($countProduct > 0)
+        {
+            for ($n = 0; $n < $countProduct; $n++)
+            {
+                $product = new Product();
+                $product->parseXmlNode($node->{Product::N_PRODUCT}[$n]);
+                $this->addToProduct($product);
+            }
+        }
+
+        //<xs:element ref="TaxTable" minOccurs="0"/>
+        if ($node->{static::N_TAXTABLE}->count() > 0)
+        {
+            $countTaxTableEntry = $node->{static::N_TAXTABLE}
+                ->{TaxTableEntry::N_TAXTABLEENTRY}->count();
+            if ($countTaxTableEntry > 0)
+            {
+                for ($n = 0; $n < $countTaxTableEntry; $n++)
+                {
+                    $taxTableEntry = new TaxTableEntry();
+                    $taxTableEntry->parseXmlNode(
+                        $node->{static::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}[$n]
+                    );
+                    $this->addToTaxTableEntry($taxTableEntry);
+                }
+            }
+        }
     }
 
 }

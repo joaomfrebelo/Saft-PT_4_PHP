@@ -6,8 +6,6 @@ namespace Rebelo\SaftPt\AuditFile;
 
 use \Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use \Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries;
-use \Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
-use \Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries;
 use \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 
 /**
@@ -51,12 +49,23 @@ class AuditFile
     private SourceDocuments $sourceDocuments;
 
     /**
+     * The type of saft xml exported<br>
+     * Simplified or Complete
+     * @since 1.0.0
+     */
+    public static ExportType $exportType;
+
+    /**
      * <xs:element name="AuditFile">
      * @since 1.0.0
      */
     public function __construct()
     {
         parent::__construct();
+        if (isset(static::$exportType) === false)
+        {
+            static::$exportType = new ExportType(ExportType::C);
+        }
     }
 
     /**

@@ -32,6 +32,7 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\Supplier;
 use Rebelo\SaftPt\AuditFile\SupplierAddress;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SupplierCountry;
+use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 
 /**
  * Class SupplierTest
@@ -529,21 +530,23 @@ class SupplierTest
 
     public function testCreateXmlNode()
     {
-        $node = new \SimpleXMLElement("<root></root>");
+        $node = new \SimpleXMLElement(
+            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+        );
 
         $supplier = $this->createSupplier();
 
         $this->assertInstanceOf(\SimpleXMLElement::class,
                                 $supplier->createXmlNode($node));
-        $supplierNode = $node->{Supplier::N_CUSTOMER};
+        $supplierNode = $node->{Supplier::N_SUPPLIER};
         $this->assertEquals($supplier->getSupplierID(),
-                            (string) $supplierNode->{Supplier::N_CUSTOMERID}
+                            (string) $supplierNode->{Supplier::N_SUPPLIERID}
         );
         $this->assertEquals($supplier->getAccountID(),
                             (string) $supplierNode->{Supplier::N_ACCOUNTID}
         );
         $this->assertEquals($supplier->getSupplierTaxID(),
-                            (int) $supplierNode->{Supplier::N_CUSTOMERTAXID}
+                            (int) $supplierNode->{Supplier::N_SUPPLIERTAXID}
         );
         $this->assertEquals($supplier->getCompanyName(),
                             (string) $supplierNode->{Supplier::N_COMPANYNAME}
@@ -580,9 +583,11 @@ class SupplierTest
         $this->setNullsSupplier($supplier);
 
         unset($node);
-        $nodeNull         = new \SimpleXMLElement("<root></root>");
+        $nodeNull         = new \SimpleXMLElement(
+            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+        );
         $supplier->createXmlNode($nodeNull);
-        $supplierNodeNull = $nodeNull->{Supplier::N_CUSTOMER};
+        $supplierNodeNull = $nodeNull->{Supplier::N_SUPPLIER};
         $this->assertEquals(0, $supplierNodeNull->{Supplier::N_CONTACT}->count());
         $this->assertEquals(0,
                             $supplierNodeNull->{Supplier::N_SHIPTOADDRESS}->count());
@@ -595,7 +600,9 @@ class SupplierTest
 
     public function testParseXmlNode()
     {
-        $node = new \SimpleXMLElement("<root></root>");
+        $node = new \SimpleXMLElement(
+            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+        );
 
         $supplier = $this->createSupplier();
 
@@ -635,6 +642,44 @@ class SupplierTest
                 $supplier->createXmlNode($node)->asXML()
         ));
         $this->assertEquals(2, \count($parseDobleShToAddr->getShipFromAddress()));
+    }
+
+    public function testCreateXmlNodeWrongName()
+    {
+        $supplier = new Supplier();
+        $node     = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $supplier->createXmlNode($node);
+            $this->fail("Creat a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
+    }
+
+    public function testParseXmlNodeWrongName()
+    {
+        $supplier = new Supplier();
+        $node     = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $supplier->parseXmlNode($node);
+            $this->fail("Parse a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
     }
 
 }
