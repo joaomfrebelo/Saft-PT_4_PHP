@@ -25,11 +25,11 @@
     "require": {
         "php": "^7.4",
         "apache/log4php": "^2.3",
-        "joaomfrebelo/enum": "^1.0",
-        "joaomfrebelo/date": "^2.0"
+        "joaomfrebelo/enum": "^1.1",
+        "joaomfrebelo/date": "^2.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9",
-        "goetas-webservices/xsd2php": "^0.3"
-    }
+        "phpunit/phpunit": "^9"
+    },
+    "type": "library"
 }

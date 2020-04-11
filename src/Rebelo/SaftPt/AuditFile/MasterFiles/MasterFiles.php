@@ -121,6 +121,13 @@ class MasterFiles
     private array $taxTableEntry = array();
 
     /**
+     * Type of xml saft file export, simplified or complete
+     * @var \Rebelo\SaftPt\AuditFile\ExportType $exportType
+     * @since 1.0.0
+     */
+    private ExportType $exportType;
+
+    /**
      *
      * <pre>
      * &lt;xs:element name="MasterFiles"&gt;
@@ -134,11 +141,45 @@ class MasterFiles
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(?ExportType $exportType = null)
     {
         parent::__construct();
+        $this->setExportType(
+            $exportType === null
+                ? new ExportType(ExportType::C)
+                :
+                $exportType
+        );
+    }
+
+    /**
+     * Get the exported type setted
+     * @return \Rebelo\SaftPt\AuditFile\ExportType
+     * @since 1.0.0
+     */
+    public function getExportType(): ExportType
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'",
+                            $this->exportType->get()));
+        return $this->exportType;
+    }
+
+    /**
+     * Set the exported type
+     * @param \Rebelo\SaftPt\AuditFile\ExportType $exportType
+     * @return void
+     * @since 1.0.0
+     */
+    public function setExportType(ExportType $exportType): void
+    {
+        $this->exportType = $exportType;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
+                             $this->exportType->get()));
     }
 
     /**
@@ -163,8 +204,7 @@ class MasterFiles
      */
     public function getCustomer(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__ . " getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " getted");
         return $this->customer;
     }
 
@@ -183,7 +223,7 @@ class MasterFiles
         }
         else
         {
-// The index if obtaining this way because you can unset a key
+            // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->customer);
             $index = $keys[\count($keys) - 1] + 1;
         }
@@ -227,8 +267,7 @@ class MasterFiles
      */
     public function getSupplier(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__ . " getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " getted");
         return $this->supplier;
     }
 
@@ -247,7 +286,7 @@ class MasterFiles
         }
         else
         {
-// The index if obtaining this way because you can unset a key
+            // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->supplier);
             $index = $keys[\count($keys) - 1] + 1;
         }
@@ -311,7 +350,7 @@ class MasterFiles
         }
         else
         {
-// The index if obtaining this way because you can unset a key
+            // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->product);
             $index = $keys[\count($keys) - 1] + 1;
         }
@@ -440,11 +479,6 @@ class MasterFiles
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if (isset(AuditFile::$exportType) === false)
-        {
-            AuditFile::$exportType = new ExportType(ExportType::C);
-        }
-
         if ($node->getName() !== AuditFile::N_AUDITFILE)
         {
             $msg = \sprintf("Node name should be '%s' but is '%s",
@@ -459,7 +493,7 @@ class MasterFiles
         // GeneralLedgerAccounts is not implemented
         //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getCustomer()) > 0 &&
-            AuditFile::$exportType->get() == ExportType::C)
+            $this->exportType->get() == ExportType::C)
         {
             array_map(function($customer) use ($masterNode)
             {
@@ -470,7 +504,7 @@ class MasterFiles
 
         //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getSupplier()) > 0 &&
-            AuditFile::$exportType->get() == ExportType::C)
+            $this->exportType->get() == ExportType::C)
         {
             array_map(function($supplier) use ($masterNode)
             {
@@ -480,7 +514,7 @@ class MasterFiles
         }
         //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getProduct()) > 0 &&
-            AuditFile::$exportType->get() == ExportType::C)
+            $this->exportType->get() == ExportType::C)
         {
             array_map(function($product) use ($masterNode)
             {

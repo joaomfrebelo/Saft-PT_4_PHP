@@ -550,6 +550,9 @@ class Header
             throw new AuditFileException($msg);
         }
         $this->taxRegistrationNumber = $taxRegistrationNumber;
+        \Logger::getLogger(\get_class($this))->debug(
+            \sprintf(__METHOD__ . " setted to '%s'",
+                     \strval($this->taxRegistrationNumber)));
     }
 
     /**
@@ -648,12 +651,12 @@ class Header
         {
             $this->businessName = static::valTextMandMaxCar($businessName, 60,
                                                             __METHOD__);
-            \Logger::getLogger(\get_class($this))
-                ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                                 $this->businessName === null
-                            ? "null"
-                            : $this->businessName));
         }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
+                             $this->businessName === null
+                        ? "null"
+                        : $this->businessName));
     }
 
     /**

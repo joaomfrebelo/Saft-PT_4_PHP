@@ -251,18 +251,36 @@ class MasterFilesTest
         }
     }
 
+    public function testSetGetExportType()
+    {
+        $typeArray = array(
+            ExportType::C,
+            ExportType::S);
+
+        $master = new MasterFiles();
+        $this->assertEquals(ExportType::C, $master->getExportType()->get());
+
+        array_map(function($type)
+        {
+            $masterConst  = new MasterFiles(new ExportType($type));
+            $this->assertEquals($type, $masterConst->getExportType()->get());
+            $masterSetGet = new MasterFiles();
+            $masterSetGet->setExportType(new ExportType($type));
+            $this->assertEquals($type, $masterSetGet->getExportType()->get());
+        }, $typeArray);
+    }
+
     public function createMasterFile(int $nCount): MasterFiles
     {
-        AuditFile::$exportType = new ExportType(ExportType::C);
-        $master                = new MasterFiles();
-        $custTest              = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\CustomerTest();
-        $customer              = $custTest->createCustomer();
-        $supplierTest          = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\SupplierTest();
-        $supplier              = $supplierTest->createSupplier();
-        $productTest           = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\ProductTest();
-        $product               = $productTest->createProduct();
-        $taxTableEntryTest     = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\TaxTableEntryTest();
-        $taxTableEntry         = $taxTableEntryTest->createTaxTableEntry();
+        $master            = new MasterFiles();
+        $custTest          = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\CustomerTest();
+        $customer          = $custTest->createCustomer();
+        $supplierTest      = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\SupplierTest();
+        $supplier          = $supplierTest->createSupplier();
+        $productTest       = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\ProductTest();
+        $product           = $productTest->createProduct();
+        $taxTableEntryTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\TaxTableEntryTest();
+        $taxTableEntry     = $taxTableEntryTest->createTaxTableEntry();
 
         for ($n = 0; $n < $nCount; $n++)
         {
@@ -364,11 +382,11 @@ class MasterFilesTest
         }
 
         // Test simple export
-        $simple                = new \SimpleXMLElement(
+        $simple     = new \SimpleXMLElement(
             "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
         );
-        AuditFile::$exportType = new ExportType(ExportType::S);
-        $simpleNode            = $master->createXmlNode($simple);
+        $master->setExportType(new ExportType(ExportType::S));
+        $simpleNode = $master->createXmlNode($simple);
         $this->assertInstanceOf(\SimpleXMLElement::class, $simpleNode);
         $this->assertEquals(MasterFiles::N_MASTERFILES, $simpleNode->getName());
 
@@ -392,12 +410,11 @@ class MasterFilesTest
 
     public function testCreateEmptyXmlNode()
     {
-        AuditFile::$exportType = new ExportType(ExportType::C);
-        $master                = new MasterFiles();
-        $node                  = new \SimpleXMLElement(
+        $master     = new MasterFiles();
+        $node       = new \SimpleXMLElement(
             "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
         );
-        $masterNode            = $master->createXmlNode($node);
+        $masterNode = $master->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
         $this->assertEquals(MasterFiles::N_MASTERFILES, $masterNode->getName());
 
@@ -512,9 +529,8 @@ class MasterFilesTest
 
     public function testParseXmlNodeEmpty()
     {
-        AuditFile::$exportType = new ExportType(ExportType::C);
-        $master                = new MasterFiles();
-        $node                  = new \SimpleXMLElement(
+        $master = new MasterFiles();
+        $node   = new \SimpleXMLElement(
             "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
         );
 

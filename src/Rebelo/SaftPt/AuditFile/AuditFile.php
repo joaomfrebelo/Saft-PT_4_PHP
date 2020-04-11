@@ -51,21 +51,52 @@ class AuditFile
     /**
      * The type of saft xml exported<br>
      * Simplified or Complete
+     * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
      * @since 1.0.0
      */
-    public static ExportType $exportType;
+    private ExportType $exportType;
 
     /**
      * <xs:element name="AuditFile">
+     * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(?ExportType $exportType = null)
     {
         parent::__construct();
-        if (isset(static::$exportType) === false)
-        {
-            static::$exportType = new ExportType(ExportType::C);
-        }
+        $this->setExportType(
+            $exportType === null
+                ? new ExportType(ExportType::C)
+                :
+                $exportType
+        );
+    }
+
+    /**
+     * Get the exported type setted
+     * @return \Rebelo\SaftPt\AuditFile\ExportType
+     * @since 1.0.0
+     */
+    public function getExportType(): ExportType
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'",
+                            $this->exportType->get()));
+        return $this->exportType;
+    }
+
+    /**
+     * Set the exported type
+     * @param \Rebelo\SaftPt\AuditFile\ExportType $exportType
+     * @return void
+     * @since 1.0.0
+     */
+    public function setExportType(ExportType $exportType): void
+    {
+        $this->exportType = $exportType;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
+                             $this->exportType->get()));
     }
 
     /**
