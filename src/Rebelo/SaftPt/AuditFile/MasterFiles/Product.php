@@ -443,6 +443,7 @@ class Product
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement

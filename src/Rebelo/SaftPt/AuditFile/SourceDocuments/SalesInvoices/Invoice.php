@@ -1,12 +1,19 @@
 <?php
 
-namespace Rebelo\SaftPt\SourceDocuments\SalesInvoicesAType;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 /**
- * Class representing InvoiceAType
+ * Class representing Invoice
  */
-class InvoiceAType
+class Invoice
+    extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
+
+    /**
+     * <xs:element name="Invoice" minOccurs="0" maxOccurs="unbounded">
+     * Node Name
+     */
+    const N_INVOICE = "Invoice";
 
     /**
      * @var string $invoiceNo
@@ -102,8 +109,7 @@ class InvoiceAType
      * @var \Rebelo\SaftPt\SourceDocuments\SalesInvoicesAType\InvoiceAType\LineAType[] $line
      */
     private $line = [
-        
-    ];
+        ];
 
     /**
      * @var \Rebelo\SaftPt\SourceDocuments\SalesInvoicesAType\InvoiceAType\DocumentTotalsAType $documentTotals
@@ -114,8 +120,7 @@ class InvoiceAType
      * @var \Rebelo\SaftPt\WithholdingTaxType[] $withholdingTax
      */
     private $withholdingTax = [
-        
-    ];
+        ];
 
     /**
      * Gets as invoiceNo
@@ -647,6 +652,14 @@ class InvoiceAType
         return $this;
     }
 
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
+    }
 
 }
-

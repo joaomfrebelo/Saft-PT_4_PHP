@@ -33,6 +33,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
 
 /**
  * Class DocumentStatusTest
@@ -108,7 +109,7 @@ class DocumentStatusTest
         $docStatus = new DocumentStatus();
         $status    = InvoiceStatus::N;
         $docStatus->setInvoiceStatus(new InvoiceStatus($status));
-        $this->assertEquals($status, $docStatus->getInvoiceStatus()->get());
+        $this->assertSame($status, $docStatus->getInvoiceStatus()->get());
     }
 
     public function testInvoiceStatusDate()
@@ -116,7 +117,7 @@ class DocumentStatusTest
         $date      = new RDate();
         $docStatus = new DocumentStatus();
         $docStatus->setInvoiceStatusDate($date);
-        $this->assertEquals(
+        $this->assertSame(
             $date->format(RDate::DATE_T_TIME),
                           $docStatus->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
         );
@@ -127,7 +128,7 @@ class DocumentStatusTest
         $docStatus = new DocumentStatus();
         $reason    = "Test reason";
         $docStatus->setReason($reason);
-        $this->assertEquals($reason, $docStatus->getReason());
+        $this->assertSame($reason, $docStatus->getReason());
         $docStatus->setReason(null);
         $this->assertNull($docStatus->getReason());
         try
@@ -141,7 +142,7 @@ class DocumentStatusTest
             $this->assertInstanceOf(AuditFileException::class, $ex);
         }
         $docStatus->setReason(\str_pad($reason, 51, "9"));
-        $this->assertEquals(50, \strlen($docStatus->getReason()));
+        $this->assertSame(50, \strlen($docStatus->getReason()));
     }
 
     public function testSourceID()
@@ -149,7 +150,7 @@ class DocumentStatusTest
         $docStatus = new DocumentStatus();
         $sourceID  = "Test sourceID";
         $docStatus->setSourceID($sourceID);
-        $this->assertEquals($sourceID, $docStatus->getSourceID());
+        $this->assertSame($sourceID, $docStatus->getSourceID());
         try
         {
             $docStatus->setSourceID("");
@@ -161,7 +162,7 @@ class DocumentStatusTest
             $this->assertInstanceOf(AuditFileException::class, $ex);
         }
         $docStatus->setSourceID(\str_pad($sourceID, 31, "9"));
-        $this->assertEquals(30, \strlen($docStatus->getSourceID()));
+        $this->assertSame(30, \strlen($docStatus->getSourceID()));
     }
 
     public function testSourceBilling()
@@ -169,7 +170,178 @@ class DocumentStatusTest
         $billing   = SourceBilling::P;
         $docStatus = new DocumentStatus();
         $docStatus->setSourceBilling(new SourceBilling($billing));
-        $this->assertEquals($billing, $docStatus->getSourceBilling()->get());
+        $this->assertSame($billing, $docStatus->getSourceBilling()->get());
+    }
+
+    public function createDocumentStatus(): DocumentStatus
+    {
+        $docStatus = new DocumentStatus();
+        $docStatus->setInvoiceStatus(
+            new InvoiceStatus(InvoiceStatus::N)
+        );
+        $docStatus->setInvoiceStatusDate(new RDate());
+        $docStatus->setReason("Reason test");
+        $docStatus->setSourceBilling(
+            new SourceBilling(SourceBilling::P)
+        );
+        $docStatus->setSourceID("Test source ID");
+        return $docStatus;
+    }
+
+    public function testCreateXmlNode()
+    {
+        $docStatus  = $this->createDocumentStatus();
+        $node       = new \SimpleXMLElement(
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+        );
+        $docStaNode = $docStatus->createXmlNode($node);
+        $this->assertInstanceOf(\SimpleXMLElement::class, $docStaNode);
+        $this->assertSame(
+            DocumentStatus::N_DOCUMENTSTATUS, $docStaNode->getName()
+        );
+        $this->assertSame(
+            $docStatus->getInvoiceStatus()->get(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_INVOICESTATUS}
+        );
+        $this->assertSame(
+            $docStatus->getInvoiceStatusDate()
+                ->format(RDate::DATE_T_TIME),
+                         (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            ->{DocumentStatus::N_INVOICESTATUSDATE}
+        );
+        $this->assertSame(
+            $docStatus->getReason(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_REASON}
+        );
+        $this->assertSame(
+            $docStatus->getSourceBilling()->get(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEBILLING}
+        );
+        $this->assertSame(
+            $docStatus->getSourceID(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEID}
+        );
+    }
+
+    public function testCreateXmlNodeNullReason()
+    {
+        $docStatus  = $this->createDocumentStatus();
+        $docStatus->setReason(null);
+        $node       = new \SimpleXMLElement(
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+        );
+        $docStaNode = $docStatus->createXmlNode($node);
+        $this->assertInstanceOf(\SimpleXMLElement::class, $docStaNode);
+        $this->assertSame(
+            DocumentStatus::N_DOCUMENTSTATUS, $docStaNode->getName()
+        );
+        $this->assertSame(
+            $docStatus->getInvoiceStatus()->get(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_INVOICESTATUS}
+        );
+        $this->assertSame(
+            $docStatus->getInvoiceStatusDate()
+                ->format(RDate::DATE_T_TIME),
+                         (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            ->{DocumentStatus::N_INVOICESTATUSDATE}
+        );
+        $this->assertSame(0,
+                          $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            ->{DocumentStatus::N_REASON}->count()
+        );
+        $this->assertSame(
+            $docStatus->getSourceBilling()->get(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEBILLING}
+        );
+        $this->assertSame(
+            $docStatus->getSourceID(),
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEID}
+        );
+    }
+
+    public function testeParseXml()
+    {
+        $node   = new \SimpleXMLElement(
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+        );
+        $docSta = $this->createDocumentStatus();
+        $xml    = $docSta->createXmlNode($node)->asXML();
+
+        $parsed = new DocumentStatus();
+        $parsed->parseXmlNode(new \SimpleXMLElement($xml));
+
+        $this->assertSame($docSta->getInvoiceStatus()->get(),
+                          $parsed->getInvoiceStatus()->get());
+        $this->assertSame($docSta->getInvoiceStatusDate()
+                ->format(RDate::DATE_T_TIME),
+                         $parsed->getInvoiceStatusDate()
+                ->format(RDate::DATE_T_TIME));
+        $this->assertSame($docSta->getReason(), $parsed->getReason());
+        $this->assertSame($docSta->getSourceBilling()->get(),
+                          $parsed->getSourceBilling()->get());
+        $this->assertSame($docSta->getSourceID(), $parsed->getSourceID());
+    }
+
+    public function testeParseXmlReasonNull()
+    {
+        $node   = new \SimpleXMLElement(
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+        );
+        $docSta = $this->createDocumentStatus();
+        $docSta->setReason(null);
+        $xml    = $docSta->createXmlNode($node)->asXML();
+
+        $parsed = new DocumentStatus();
+        $parsed->parseXmlNode(new \SimpleXMLElement($xml));
+
+        $this->assertSame($docSta->getInvoiceStatus()->get(),
+                          $parsed->getInvoiceStatus()->get());
+        $this->assertSame($docSta->getInvoiceStatusDate()
+                ->format(RDate::DATE_T_TIME),
+                         $parsed->getInvoiceStatusDate()
+                ->format(RDate::DATE_T_TIME));
+        $this->assertSame($docSta->getReason(), $parsed->getReason());
+        $this->assertSame($docSta->getSourceBilling()->get(),
+                          $parsed->getSourceBilling()->get());
+        $this->assertSame($docSta->getSourceID(), $parsed->getSourceID());
+    }
+
+    public function testCreateXmlNodeWrongName()
+    {
+        $docStatus = new DocumentStatus();
+        $node      = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $docStatus->createXmlNode($node);
+            $this->fail("Creat a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
+    }
+
+    public function testParseXmlNodeWrongName()
+    {
+        $docStat = new DocumentStatus();
+        $node    = new \SimpleXMLElement("<root></root>"
+        );
+        try
+        {
+            $docStat->parseXmlNode($node);
+            $this->fail("Parse a xml node on a wrong node should throw "
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
+            );
+        }
     }
 
 }

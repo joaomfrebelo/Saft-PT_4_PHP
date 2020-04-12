@@ -1,0 +1,1568 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema
+        xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+        xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation"
+        xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" attributeFormDefault="unqualified"
+        elementFormDefault="qualified" id="SAF-T_PT"
+        targetNamespace="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" version="1.04_01"
+        vc:minVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>
+            <doc:Title>Standard Audit File - Portuguese Version</doc:Title>
+            <doc:Subject>Standard Audit File - Portuguese Version</doc:Subject>
+            <doc:Copyright>Copyright OECD</doc:Copyright>
+            <doc:Version>
+                <doc:Number>1.04_01</doc:Number>
+                <doc:Status>Production</doc:Status>
+            </doc:Version>
+            <doc:Author>Autoridade Tributaria e Aduaneira</doc:Author>
+            <doc:ModificationDate>2016-10-07</doc:ModificationDate>
+        </xs:documentation>
+    </xs:annotation>
+    <!-- Estrutura do ficheiro SAFT-PT-->
+    <xs:element name="AuditFile">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="1" ref="Header"/>
+                <xs:element name="MasterFiles">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element minOccurs="0" ref="GeneralLedgerAccounts"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" ref="Customer"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" ref="Supplier"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" ref="Product"/>
+                            <xs:element minOccurs="0" ref="TaxTable"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" ref="GeneralLedgerEntries"/>
+                <xs:element minOccurs="0" ref="SourceDocuments"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- Estrutura de cabecalho (AuditFile.Header) -->
+    <xs:element name="Header">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="AuditFileVersion"/>
+                <xs:element ref="CompanyID"/>
+                <xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/>
+                <xs:element ref="TaxAccountingBasis"/>
+                <xs:element ref="CompanyName" minOccurs="0"/>
+                <xs:element minOccurs="0" ref="BusinessName"/>
+                <xs:element ref="CompanyAddress" minOccurs="0"/>
+                <xs:element ref="FiscalYear"/>
+                <xs:element ref="StartDate"/>
+                <xs:element ref="EndDate"/>
+                <xs:element fixed="EUR" name="CurrencyCode"/>
+                <xs:element ref="DateCreated"/>
+                <xs:element ref="TaxEntity"/>
+                <xs:element ref="ProductCompanyTaxID" minOccurs="0"/>
+                <xs:element ref="SoftwareCertificateNumber" minOccurs="0"/>
+                <xs:element ref="ProductID" minOccurs="0"/>
+                <xs:element ref="ProductVersion" minOccurs="0"/>
+                <xs:element minOccurs="0" ref="HeaderComment"/>
+                <xs:element minOccurs="0" ref="Telephone"/>
+                <xs:element minOccurs="0" ref="Fax"/>
+                <xs:element minOccurs="0" ref="Email"/>
+                <xs:element minOccurs="0" ref="Website"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- Ficheiros Mestre (AuditFile.MasterFiles) -->
+    <!--    Estrutura do Plano de Contas (AuditFile.MasterFiles.GeneralLedgerAccounts)-->
+    <xs:element name="GeneralLedgerAccounts">
+        <xs:complexType>
+            <xs:sequence minOccurs="0">
+                <xs:element ref="TaxonomyReference" minOccurs="0"/>
+                <xs:element name="Account" maxOccurs="unbounded" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                            <xs:element name="AccountID" type="SAFPTGLAccountID" minOccurs="0"/>
+                            <xs:element ref="AccountDescription" minOccurs="0"/>
+                            <xs:element ref="OpeningDebitBalance" minOccurs="0"/>
+                            <xs:element ref="OpeningCreditBalance" minOccurs="0"/>
+                            <xs:element ref="ClosingDebitBalance" minOccurs="0"/>
+                            <xs:element ref="ClosingCreditBalance" minOccurs="0"/>
+                            <xs:element ref="GroupingCategory" minOccurs="0"/>
+                            <xs:element minOccurs="0" name="GroupingCode" type="SAFPTGLAccountID"/>
+                            <xs:element name="TaxonomyCode" type="SAFTaxonomyCode" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!--    Estrutura de Cliente (AuditFile.MasterFiles.Customer) -->
+    <xs:element name="Customer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="CustomerID"/>
+                <xs:element ref="AccountID" minOccurs="0"/>
+                <xs:element ref="CustomerTaxID"/>
+                <xs:element ref="CompanyName" minOccurs="0"/>
+                <xs:element minOccurs="0" ref="Contact"/>
+                <xs:element ref="BillingAddress"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="ShipToAddress"/>
+                <xs:element minOccurs="0" ref="Telephone"/>
+                <xs:element minOccurs="0" ref="Fax"/>
+                <xs:element minOccurs="0" ref="Email"/>
+                <xs:element minOccurs="0" ref="Website"/>
+                <xs:element ref="SelfBillingIndicator" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!--    Estrutura de Fornecedor (AuditFile.MasterFiles.Supplier) -->
+    <xs:element name="Supplier">
+        <xs:complexType>
+            <xs:sequence minOccurs="0">
+                <xs:element ref="SupplierID" minOccurs="0"/>
+                <xs:element ref="AccountID" minOccurs="0"/>
+                <xs:element ref="SupplierTaxID" minOccurs="0"/>
+                <xs:element ref="CompanyName" minOccurs="0"/>
+                <xs:element minOccurs="0" ref="Contact"/>
+                <xs:element name="BillingAddress" type="SupplierAddressStructure" minOccurs="0"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ShipFromAddress"
+                            type="SupplierAddressStructure"/>
+                <xs:element minOccurs="0" ref="Telephone"/>
+                <xs:element minOccurs="0" ref="Fax"/>
+                <xs:element minOccurs="0" ref="Email"/>
+                <xs:element minOccurs="0" ref="Website"/>
+                <xs:element ref="SelfBillingIndicator" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!--    Estrutura de produto (AuditFile.MasterFiles.Product)-->
+    <xs:element name="Product">
+        <xs:complexType>
+            <xs:sequence minOccurs="0">
+                <xs:element ref="ProductType" minOccurs="0"/>
+                <xs:element ref="ProductCode" minOccurs="0"/>
+                <xs:element minOccurs="0" ref="ProductGroup"/>
+                <xs:element ref="ProductDescription" minOccurs="0"/>
+                <xs:element ref="ProductNumberCode" minOccurs="0"/>
+                <xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!--    Estrutura de Impostos (AuditFile.MasterFiles.TaxTable) -->
+    <xs:element name="TaxTable">
+        <xs:complexType>
+            <xs:sequence minOccurs="0">
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="TaxTableEntry"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!--    Estrutura de Imposto -->
+    <xs:element name="TaxTableEntry">
+        <xs:complexType>
+            <xs:sequence minOccurs="0">
+                <xs:element ref="TaxType" minOccurs="0"/>
+                <xs:element ref="TaxCountryRegion" minOccurs="0"/>
+                <xs:element name="TaxCode" type="TaxTableEntryTaxCode" minOccurs="0"/>
+                <xs:element name="Description" type="SAFPTtextTypeMandatoryMax255Car" minOccurs="0"/>
+                <xs:element minOccurs="0" ref="TaxExpirationDate"/>
+                <xs:choice minOccurs="0">
+                    <xs:element ref="TaxPercentage" minOccurs="0"/>
+                    <xs:element ref="TaxAmount" minOccurs="0"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- Estrutura de Movimentos Contabilisticos (AuditFile.GeneralLedgerEntries)-->
+    <xs:element name="GeneralLedgerEntries">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="NumberOfEntries" minOccurs="0"/>
+                <xs:element ref="TotalDebit" minOccurs="0"/>
+                <xs:element ref="TotalCredit" minOccurs="0"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Journal">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                            <xs:element ref="JournalID" minOccurs="0"/>
+                            <xs:element ref="Description" minOccurs="0"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction">
+                                <xs:complexType>
+                                    <xs:sequence minOccurs="0">
+                                        <xs:element ref="TransactionID" minOccurs="0"/>
+                                        <xs:element name="Period" type="SAFPTAccountingPeriod"
+                                                    minOccurs="0"/>
+                                        <xs:element ref="TransactionDate" minOccurs="0"/>
+                                        <xs:element ref="SourceID" minOccurs="0"/>
+                                        <xs:element ref="Description" minOccurs="0"/>
+                                        <xs:element ref="DocArchivalNumber" minOccurs="0"/>
+                                        <xs:element ref="TransactionType" minOccurs="0"/>
+                                        <xs:element ref="GLPostingDate" minOccurs="0"/>
+                                        <xs:choice minOccurs="0">
+                                            <xs:element minOccurs="0" ref="CustomerID"/>
+                                            <xs:element minOccurs="0" ref="SupplierID"/>
+                                        </xs:choice>
+                                        <xs:element name="Lines" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:all minOccurs="0">
+                                                    <xs:element name="DebitLine"
+                                                                minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:sequence minOccurs="0">
+                                                                <xs:element ref="RecordID" minOccurs="0"/>
+                                                                <xs:element name="AccountID"
+                                                                            type="SAFPTGLAccountID" minOccurs="0"/>
+                                                                <xs:element ref="SourceDocumentID" minOccurs="0"/>
+                                                                <xs:element ref="SystemEntryDate" minOccurs="0"/>
+                                                                <xs:element ref="Description" minOccurs="0"/>
+                                                                <xs:element name="DebitAmount"
+                                                                            type="SAFmonetaryType" minOccurs="0"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="CreditLine"
+                                                                minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:sequence minOccurs="0">
+                                                                <xs:element ref="RecordID" minOccurs="0"/>
+                                                                <xs:element name="AccountID"
+                                                                            type="SAFPTGLAccountID" minOccurs="0"/>
+                                                                <xs:element ref="SourceDocumentID" minOccurs="0"/>
+                                                                <xs:element ref="SystemEntryDate" minOccurs="0"/>
+                                                                <xs:element ref="Description" minOccurs="0"/>
+                                                                <xs:element name="CreditAmount"
+                                                                            type="SAFmonetaryType" maxOccurs="unbounded"
+                                                                            minOccurs="0"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:all>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- Estrutura de Documentos Comerciais (AuditFile.SourceDocuments)-->
+    <xs:element name="SourceDocuments">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="SalesInvoices">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="NumberOfEntries"/>
+                            <xs:element ref="TotalDebit"/>
+                            <xs:element ref="TotalCredit"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="Invoice">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element ref="InvoiceNo"/>
+                                        <xs:element ref="ATCUD" minOccurs="0"/>
+                                        <!-- Estrutura da situacao atual do documento -->
+                                        <xs:element name="DocumentStatus">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="InvoiceStatus"/>
+                                                    <xs:element ref="InvoiceStatusDate"/>
+                                                    <xs:element minOccurs="0" ref="Reason"/>
+                                                    <xs:element ref="SourceID" minOccurs="0"/>
+                                                    <xs:element name="SourceBilling"
+                                                                type="SAFTPTSourceBilling" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element ref="Hash"/>
+                                        <xs:element minOccurs="0" ref="HashControl"/>
+                                        <xs:element minOccurs="0" ref="Period"/>
+                                        <xs:element ref="InvoiceDate"/>
+                                        <xs:element ref="InvoiceType"/>
+                                        <xs:element name="SpecialRegimes" type="SpecialRegimes"
+                                                    minOccurs="0"/>
+                                        <xs:element ref="SourceID" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="EACCode"/>
+                                        <xs:element ref="SystemEntryDate"/>
+                                        <xs:element minOccurs="0" ref="TransactionID"/>
+                                        <xs:element ref="CustomerID"/>
+                                        <xs:element minOccurs="0" maxOccurs="1" ref="ShipTo"/>
+                                        <xs:element minOccurs="0" maxOccurs="1" ref="ShipFrom"/>
+                                        <xs:element minOccurs="0" maxOccurs="1"
+                                                    ref="MovementEndTime"/>
+                                        <xs:element minOccurs="0" maxOccurs="1"
+                                                    ref="MovementStartTime"/>
+                                        <xs:element maxOccurs="unbounded" name="Line">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                                name="OrderReferences" type="OrderReferences"/>
+                                                    <xs:element ref="ProductCode" minOccurs="0"/>
+                                                    <xs:element ref="ProductDescription" minOccurs="0"/>
+                                                    <xs:element ref="Quantity" minOccurs="0"/>
+                                                    <xs:element ref="UnitOfMeasure" minOccurs="0"/>
+                                                    <xs:element ref="UnitPrice" minOccurs="0"/>
+                                                    <xs:element ref="TaxBase" minOccurs="0"/>
+                                                    <xs:element ref="TaxPointDate" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                                name="References" type="References"/>
+                                                    <xs:element ref="Description" minOccurs="0"/>
+                                                    <xs:element name="ProductSerialNumber"
+                                                                type="ProductSerialNumber" minOccurs="0"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element name="Tax" type="Tax"/>
+                                                    <xs:element minOccurs="0" ref="TaxExemptionReason"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" ref="SettlementAmount"/>
+                                                    <xs:element name="CustomsInformation"
+                                                                type="CustomsInformation" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="DocumentTotals">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <xs:element minOccurs="0" name="Currency"
+                                                                type="Currency"/>
+                                                    <!-- A estrutura Settlement representa acordos ou formas de pagamento futuros. Nao constitui em caso algum o somatorio dos descontos concedidos e reflectidos nas linhas dos documentos e a informacao aqui constante nao influi o montante total do documento (GrossTotal) -->
+                                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                                name="Settlement" type="Settlement"/>
+                                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                                name="Payment" type="PaymentMethod"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                    name="WithholdingTax" type="WithholdingTax"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="MovementOfGoods">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                            <xs:element ref="NumberOfMovementLines" minOccurs="0"/>
+                            <xs:element ref="TotalQuantityIssued" minOccurs="0"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="StockMovement">
+                                <xs:complexType>
+                                    <xs:sequence minOccurs="0">
+                                        <xs:element ref="DocumentNumber" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="ATCUD"/>
+                                        <!-- Estrutura da situacao atual do documento -->
+                                        <xs:element name="DocumentStatus" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="0">
+                                                    <xs:element ref="MovementStatus" minOccurs="0"/>
+                                                    <xs:element ref="MovementStatusDate" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" ref="Reason"/>
+                                                    <xs:element ref="SourceID" minOccurs="0"/>
+                                                    <xs:element name="SourceBilling"
+                                                                type="SAFTPTSourceBilling" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element ref="Hash" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="HashControl"/>
+                                        <xs:element minOccurs="0" ref="Period"/>
+                                        <xs:element ref="MovementDate" minOccurs="0"/>
+                                        <xs:element ref="MovementType" minOccurs="0"/>
+                                        <xs:element ref="SystemEntryDate" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="TransactionID"/>
+                                        <xs:choice minOccurs="0">
+                                            <xs:element ref="CustomerID" minOccurs="0"/>
+                                            <xs:element ref="SupplierID" minOccurs="0"/>
+                                        </xs:choice>
+                                        <xs:element ref="SourceID" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="EACCode"/>
+                                        <xs:element minOccurs="0" ref="MovementComments"/>
+                                        <xs:element minOccurs="0" maxOccurs="1" ref="ShipTo"/>
+                                        <xs:element minOccurs="0" maxOccurs="1" ref="ShipFrom"/>
+                                        <xs:element minOccurs="0" maxOccurs="1"
+                                                    ref="MovementEndTime"/>
+                                        <xs:element maxOccurs="1" ref="MovementStartTime"
+                                                    minOccurs="0"/>
+                                        <!-- Nos documentos resumo (MovementStatus "R"), na falta desta informacao em concreto, a hora de inicio de transporte (MovementStartTime) pode ser indicada com a concatenacao da data constante no campo MovementDate com a hora 00:00:00-->
+                                        <xs:element minOccurs="0" maxOccurs="1" ref="ATDocCodeID"/>
+                                        <xs:element maxOccurs="unbounded" name="Line" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="0">
+                                                    <xs:element ref="LineNumber" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                                name="OrderReferences" type="OrderReferences"/>
+                                                    <xs:element ref="ProductCode" minOccurs="0"/>
+                                                    <xs:element ref="ProductDescription" minOccurs="0"/>
+                                                    <xs:element ref="Quantity" minOccurs="0"/>
+                                                    <xs:element ref="UnitOfMeasure" minOccurs="0"/>
+                                                    <xs:element ref="UnitPrice" minOccurs="0"/>
+                                                    <xs:element ref="Description" minOccurs="0"/>
+                                                    <xs:element name="ProductSerialNumber"
+                                                                type="ProductSerialNumber" minOccurs="0"/>
+                                                    <xs:choice minOccurs="0">
+                                                        <xs:element ref="DebitAmount" minOccurs="0"/>
+                                                        <xs:element ref="CreditAmount" minOccurs="0"/>
+                                                    </xs:choice>
+                                                    <xs:element minOccurs="0" name="Tax"
+                                                                type="MovementTax"/>
+                                                    <xs:element minOccurs="0" ref="TaxExemptionReason"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" ref="SettlementAmount"/>
+                                                    <xs:element name="CustomsInformation"
+                                                                type="CustomsInformation" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="DocumentTotals" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="0">
+                                                    <xs:element ref="TaxPayable" minOccurs="0"/>
+                                                    <xs:element ref="NetTotal" minOccurs="0"/>
+                                                    <xs:element ref="GrossTotal" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" name="Currency"
+                                                                type="Currency"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="WorkingDocuments">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                            <xs:element ref="NumberOfEntries"/>
+                            <xs:element ref="TotalDebit"/>
+                            <xs:element ref="TotalCredit"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkDocument">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element ref="DocumentNumber"/>
+                                        <xs:element ref="ATCUD" minOccurs="0"/>
+                                        <xs:element name="DocumentStatus">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="WorkStatus"/>
+                                                    <xs:element ref="WorkStatusDate"/>
+                                                    <xs:element minOccurs="0" ref="Reason"/>
+                                                    <xs:element ref="SourceID" minOccurs="0"/>
+                                                    <xs:element name="SourceBilling"
+                                                                type="SAFTPTSourceBilling" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element ref="Hash"/>
+                                        <xs:element minOccurs="0" ref="HashControl"/>
+                                        <xs:element minOccurs="0" ref="Period"/>
+                                        <xs:element ref="WorkDate"/>
+                                        <xs:element ref="WorkType"/>
+                                        <xs:element ref="SourceID" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="EACCode"/>
+                                        <xs:element ref="SystemEntryDate"/>
+                                        <xs:element ref="TransactionID" minOccurs="0"/>
+                                        <xs:element ref="CustomerID"/>
+                                        <xs:element maxOccurs="unbounded" name="Line">
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="0">
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                                name="OrderReferences" type="OrderReferences"/>
+                                                    <xs:element ref="ProductCode" minOccurs="0"/>
+                                                    <xs:element ref="ProductDescription" minOccurs="0"/>
+                                                    <xs:element ref="Quantity" minOccurs="0"/>
+                                                    <xs:element ref="UnitOfMeasure" minOccurs="0"/>
+                                                    <xs:element ref="UnitPrice" minOccurs="0"/>
+                                                    <xs:element ref="TaxBase" minOccurs="0"/>
+                                                    <xs:element ref="TaxPointDate" minOccurs="0"/>
+                                                    <xs:element name="References" type="References"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xs:element ref="Description" minOccurs="0"/>
+                                                    <xs:element name="ProductSerialNumber"
+                                                                type="ProductSerialNumber" minOccurs="0"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element minOccurs="0" name="Tax" type="Tax"/>
+                                                    <xs:element minOccurs="0" ref="TaxExemptionReason"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element minOccurs="0" ref="SettlementAmount"/>
+                                                    <xs:element name="CustomsInformation"
+                                                                type="CustomsInformation" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="DocumentTotals">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <xs:element minOccurs="0" name="Currency"
+                                                                type="Currency"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="Payments">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="NumberOfEntries"/>
+                            <xs:element ref="TotalDebit"/>
+                            <xs:element ref="TotalCredit"/>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="Payment">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element ref="PaymentRefNo"/>
+                                        <xs:element ref="ATCUD" minOccurs="0"/>
+                                        <xs:element minOccurs="0" ref="Period"/>
+                                        <xs:element minOccurs="0" ref="TransactionID"/>
+                                        <xs:element ref="TransactionDate"/>
+                                        <xs:element name="PaymentType" type="SAFTPTPaymentType"/>
+                                        <xs:element minOccurs="0" ref="Description"/>
+                                        <xs:element minOccurs="0" ref="SystemID"/>
+                                        <xs:element name="DocumentStatus">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="PaymentStatus"/>
+                                                    <xs:element ref="PaymentStatusDate"/>
+                                                    <xs:element minOccurs="0" ref="Reason"/>
+                                                    <xs:element ref="SourceID" minOccurs="0"/>
+                                                    <xs:element name="SourcePayment"
+                                                                type="SAFTPTSourcePayment" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                    name="PaymentMethod" type="PaymentMethod"/>
+                                        <xs:element ref="SourceID" minOccurs="0"/>
+                                        <xs:element ref="SystemEntryDate"/>
+                                        <xs:element ref="CustomerID"/>
+                                        <xs:element maxOccurs="unbounded" name="Line">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element maxOccurs="unbounded"
+                                                                name="SourceDocumentID">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element ref="OriginatingON"/>
+                                                                <xs:element ref="InvoiceDate"/>
+                                                                <xs:element minOccurs="0" ref="Description"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element minOccurs="0" ref="SettlementAmount"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element minOccurs="0" name="Tax"
+                                                                type="PaymentTax"/>
+                                                    <xs:element minOccurs="0" ref="TaxExemptionReason"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="DocumentTotals">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <!-- O conteudo desta estrutura Settlement representa o somatorio dos descontos reflectidos no elemento SettlementAmount das linhas do recibo. Trata-se de um raciocinio diverso da tabela 4.1 SalesInvoices -->
+                                                    <xs:element minOccurs="0" name="Settlement">
+                                                        <xs:complexType>
+                                                            <xs:sequence minOccurs="0">
+                                                                <xs:element ref="SettlementAmount" minOccurs="0"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element minOccurs="0" name="Currency"
+                                                                type="Currency"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element minOccurs="0" maxOccurs="unbounded"
+                                                    name="WithholdingTax" type="WithholdingTax"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- ESTRUTURAS DE SUPORTE -->
+    <!-- Estrutura de Moradas -->
+    <xs:complexType name="AddressStructure">
+        <xs:sequence>
+            <xs:element minOccurs="0" ref="BuildingNumber"/>
+            <xs:element minOccurs="0" ref="StreetName"/>
+            <xs:element ref="AddressDetail" minOccurs="0"/>
+            <xs:element ref="City" minOccurs="0"/>
+            <xs:element ref="PostalCode" minOccurs="0"/>
+            <xs:element minOccurs="0" ref="Region"/>
+            <xs:element ref="Country"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Moradas para Portugal-->
+    <xs:complexType name="AddressStructurePT">
+        <xs:sequence minOccurs="0">
+            <xs:element minOccurs="0" ref="BuildingNumber"/>
+            <xs:element minOccurs="0" ref="StreetName"/>
+            <xs:element ref="AddressDetail" minOccurs="0"/>
+            <xs:element ref="City" minOccurs="0"/>
+            <xs:element name="PostalCode" type="PostalCodePT" minOccurs="0"/>
+            <xs:element minOccurs="0" ref="Region"/>
+            <xs:element fixed="PT" name="Country" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de valor monetario -->
+    <!-- Este elemento apenas deve ser gerado quando a moeda original do documento for diferente de euro -->
+    <xs:complexType name="Currency">
+        <xs:sequence minOccurs="0">
+            <xs:element ref="CurrencyCode" minOccurs="0"/>
+            <xs:element ref="CurrencyAmount" minOccurs="0"/>
+            <xs:element minOccurs="0" ref="ExchangeRate"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de caraterizacao aduaneira de produtos-->
+    <xs:complexType name="CustomsDetails">
+        <xs:sequence minOccurs="0">
+            <xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de informacao aduaneira-->
+    <xs:complexType name="CustomsInformation">
+        <xs:sequence minOccurs="0">
+            <xs:element ref="ARCNo" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="IECAmount" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Taxa de documentos de movimentacao de mercadorias-->
+    <xs:complexType name="MovementTax">
+        <xs:sequence minOccurs="0">
+            <xs:element name="TaxType" type="SAFTPTMovementTaxType" minOccurs="0"/>
+            <xs:element ref="TaxCountryRegion" minOccurs="0"/>
+            <xs:element name="TaxCode" type="SAFTPTMovementTaxCode" minOccurs="0"/>
+            <xs:element ref="TaxPercentage" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Referencias ao documento de origem-->
+    <xs:complexType name="OrderReferences">
+        <xs:sequence>
+            <xs:element minOccurs="0" ref="OriginatingON"/>
+            <xs:element minOccurs="0" ref="OrderDate"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de pagamentos-->
+    <xs:complexType name="PaymentMethod">
+        <xs:sequence minOccurs="0">
+            <xs:element ref="PaymentMechanism" minOccurs="0"/>
+            <xs:element name="PaymentAmount" type="SAFmonetaryType" minOccurs="0"/>
+            <xs:element name="PaymentDate" type="SAFdateType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Taxa dos recibos-->
+    <xs:complexType name="PaymentTax">
+        <xs:sequence>
+            <xs:element ref="TaxType"/>
+            <xs:element ref="TaxCountryRegion"/>
+            <xs:element name="TaxCode" type="PaymentTaxCode"/>
+            <xs:choice>
+                <xs:element ref="TaxPercentage"/>
+                <xs:element ref="TaxAmount"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de numero de serie do produto-->
+    <xs:complexType name="ProductSerialNumber">
+        <xs:sequence minOccurs="0">
+            <xs:element ref="SerialNumber" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de referencias a outros documentos em documentos retificativos de faturas-->
+    <xs:complexType name="References">
+        <xs:sequence minOccurs="0">
+            <xs:element minOccurs="0" ref="Reference"/>
+            <xs:element minOccurs="0" ref="Reason"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Acordos entre cliente e fornecedor-->
+    <xs:complexType name="Settlement">
+        <xs:sequence minOccurs="0">
+            <xs:element minOccurs="0" name="SettlementDiscount"
+                        type="SAFPTtextTypeMandatoryMax30Car"/>
+            <xs:element minOccurs="0" name="SettlementAmount" type="SAFmonetaryType"/>
+            <xs:element minOccurs="0" name="SettlementDate" type="SAFdateType"/>
+            <xs:element minOccurs="0" name="PaymentTerms" type="SAFPTtextTypeMandatoryMax100Car"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de entregas de produtos -->
+    <xs:complexType name="ShippingPointStructure">
+        <xs:sequence minOccurs="0">
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="DeliveryID"/>
+            <xs:element minOccurs="0" ref="DeliveryDate"/>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element minOccurs="0" ref="WarehouseID"/>
+                <xs:element minOccurs="0" ref="LocationID"/>
+            </xs:sequence>
+            <xs:element minOccurs="0" ref="Address"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Regimes especiais de faturacao-->
+    <xs:complexType name="SpecialRegimes">
+        <xs:sequence>
+            <xs:element ref="SelfBillingIndicator"/>
+            <xs:element ref="CashVATSchemeIndicator"/>
+            <xs:element ref="ThirdPartiesBillingIndicator"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Moradas para Fornecedores-->
+    <xs:complexType name="SupplierAddressStructure">
+        <xs:sequence>
+            <xs:element minOccurs="0" ref="BuildingNumber"/>
+            <xs:element minOccurs="0" ref="StreetName"/>
+            <xs:element ref="AddressDetail" minOccurs="0"/>
+            <xs:element ref="City" minOccurs="0"/>
+            <xs:element ref="PostalCode" minOccurs="0"/>
+            <xs:element minOccurs="0" ref="Region"/>
+            <xs:element name="Country" type="SupplierCountry" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Taxa -->
+    <xs:complexType name="Tax">
+        <xs:sequence>
+            <xs:element ref="TaxType"/>
+            <xs:element ref="TaxCountryRegion"/>
+            <xs:element ref="TaxCode"/>
+            <xs:choice>
+                <xs:element ref="TaxPercentage"/>
+                <xs:element ref="TaxAmount"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Estrutura de Retencao na fonte-->
+    <xs:complexType name="WithholdingTax">
+        <xs:sequence>
+            <xs:element minOccurs="0" ref="WithholdingTaxType"/>
+            <xs:element minOccurs="0" name="WithholdingTaxDescription"
+                        type="SAFPTtextTypeMandatoryMax60Car"/>
+            <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ELEMENTOS SIMPLES -->
+    <xs:element name="AccountDescription" type="SAFPTtextTypeMandatoryMax100Car"/>
+    <xs:element name="Address" type="AddressStructure"/>
+    <xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/>
+    <xs:element name="ARCNo" type="SAFPTtextTypeMandatoryMax21Car"/>
+    <xs:element name="ATCUD" type="SAFPTtextTypeMandatoryMax100Car"/>
+    <xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/>
+    <xs:element name="BillingAddress" type="AddressStructure"/>
+    <xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/>
+    <xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/>
+    <xs:element name="ClosingCreditBalance" type="SAFmonetaryType"/>
+    <xs:element name="ClosingDebitBalance" type="SAFmonetaryType"/>
+    <xs:element name="CNCode" type="SAFPTCNCode"/>
+    <xs:element name="CompanyAddress" type="AddressStructurePT"/>
+    <xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/>
+    <xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/>
+    <xs:element name="CreditAmount" type="SAFmonetaryType"/>
+    <xs:element name="CurrencyAmount" type="SAFmonetaryType"/>
+    <xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="DateCreated" type="SAFPTDateSpan"/>
+    <xs:element name="DebitAmount" type="SAFmonetaryType"/>
+    <xs:element name="DeliveryDate" type="SAFdateType"/>
+    <xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/>
+    <xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/>
+    <xs:element name="DocArchivalNumber" type="SAFTPTDocArchivalNumber"/>
+    <xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/>
+    <xs:element name="EndDate" type="SAFPTDateSpan"/>
+    <xs:element name="ExchangeRate" type="SAFdecimalType"/>
+    <xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/>
+    <xs:element name="GLPostingDate" type="SAFdateType"/>
+    <xs:element name="GrossTotal" type="SAFmonetaryType"/>
+    <xs:element name="Hash" type="SAFPTtextTypeMandatoryMax172Car"/>
+    <xs:element name="HashControl" type="SAFPTHashControl"/>
+    <xs:element name="HeaderComment" type="SAFPTtextTypeMandatoryMax255Car"/>
+    <xs:element name="IECAmount" type="SAFmonetaryType"/>
+    <xs:element name="InvoiceDate" type="SAFdateType"/>
+    <xs:element name="InvoiceStatusDate" type="SAFdateTimeType"/>
+    <xs:element name="JournalID" type="SAFPTJournalID"/>
+    <xs:element name="LineNumber" type="xs:nonNegativeInteger"/>
+    <xs:element name="LocationID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="MovementDate" type="SAFdateType"/>
+    <xs:element name="MovementEndTime" type="SAFdateTimeType"/>
+    <xs:element name="MovementStartTime" type="SAFdateTimeType"/>
+    <xs:element name="MovementStatusDate" type="SAFdateTimeType"/>
+    <xs:element name="NetTotal" type="SAFmonetaryType"/>
+    <xs:element name="NumberOfEntries" type="xs:nonNegativeInteger"/>
+    <xs:element name="NumberOfMovementLines" type="xs:nonNegativeInteger"/>
+    <xs:element name="OpeningCreditBalance" type="SAFmonetaryType"/>
+    <xs:element name="OpeningDebitBalance" type="SAFmonetaryType"/>
+    <xs:element name="OrderDate" type="SAFdateType"/>
+    <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="PaymentStatusDate" type="SAFdateTimeType"/>
+    <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
+    <xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="ProductCompanyTaxID" type="SAFPTtextTypeMandatoryMax20Car"/>
+    <xs:element name="ProductDescription" type="SAFPTProductDescription"/>
+    <xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/>
+    <xs:element name="ProductID" type="SAFPTProductID"/>
+    <xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="ProductVersion" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="Quantity" type="SAFdecimalType"/>
+    <xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/>
+    <xs:element name="RecordID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="Reference" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/>
+    <xs:element name="SerialNumber" type="SAFPTtextTypeMandatoryMax100Car"/>
+    <xs:element name="SettlementAmount" type="SAFmonetaryType"/>
+    <xs:element name="ShipFrom" type="ShippingPointStructure"/>
+    <xs:element name="ShipFromAddress" type="AddressStructure"/>
+    <xs:element name="ShipTo" type="ShippingPointStructure"/>
+    <xs:element name="ShipToAddress" type="AddressStructure"/>
+    <xs:element name="SoftwareCertificateNumber" type="xs:nonNegativeInteger"/>
+    <xs:element name="SourceDocumentID" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="StartDate" type="SAFPTDateSpan"/>
+    <xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/>
+    <xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="SupplierTaxID" type="SAFPTtextTypeMandatoryMax30Car"/>
+    <xs:element name="SystemEntryDate" type="SAFdateTimeType"/>
+    <xs:element name="SystemID" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="TaxAmount" type="SAFmonetaryType"/>
+    <xs:element name="TaxBase" type="SAFmonetaryType"/>
+    <xs:element name="TaxEntity" type="SAFPTtextTypeMandatoryMax20Car"/>
+    <xs:element name="TaxExemptionCode" type="SAFPTPortugueseTaxExemptionCode"/>
+    <xs:element name="TaxExemptionReason" type="SAFPTPortugueseTaxExemptionReason"/>
+    <xs:element name="TaxExpirationDate" type="SAFdateType"/>
+    <xs:element name="TaxPayable" type="SAFmonetaryType"/>
+    <xs:element name="TaxPercentage" type="SAFdecimalType"/>
+    <xs:element name="TaxPointDate" type="SAFdateType"/>
+    <xs:element name="TaxVerificationDate" type="SAFdateType"/>
+    <xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/>
+    <xs:element name="TotalCredit" type="SAFmonetaryType"/>
+    <xs:element name="TotalDebit" type="SAFmonetaryType"/>
+    <xs:element name="TotalQuantityIssued" type="SAFdecimalType"/>
+    <xs:element name="TransactionDate" type="SAFdateType"/>
+    <xs:element name="TransactionID" type="SAFPTTransactionID"/>
+    <xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/>
+    <xs:element name="UnitPrice" type="SAFmonetaryType"/>
+    <xs:element name="UNNumber" type="SAFPTUNNumber"/>
+    <xs:element name="WarehouseID" type="SAFPTtextTypeMandatoryMax50Car"/>
+    <xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/>
+    <xs:element name="WorkDate" type="SAFdateType"/>
+    <xs:element name="WorkStatusDate" type="SAFdateTimeType"/>
+    <!-- ELEMENTOS SIMPLES COM RESTRICOES ADICIONAIS-->
+    <!-- Codigo da Conta -->
+    <xs:element name="AccountID">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="1"/>
+                <xs:maxLength value="30"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="AuditFileVersion">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="1.04_01"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Indicador de regime de IVA de Caixa -->
+    <xs:element name="CashVATSchemeIndicator">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="1"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Identificacao da entidade a que respeitam os dados constantes no SAF-T-->
+    <xs:element name="CompanyID">
+        <xs:annotation>
+            <xs:documentation>Concatenacao da Conservatoria do Registo Comercial com o numero do registo comercial
+                separados pelo caracter espaco. Nos casos em que nao existe o registo comercial, deve ser indicado o
+                NIF.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="1"/>
+                <xs:maxLength value="50"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo do pais (ISO 3166 1-alpha-2) -->
+    <xs:element name="Country">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="2"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo da moeda (ISO 4217) -->
+    <xs:element name="CurrencyCode">
+        <!-- Nao consta o EUR por nao existirem situacoes que requeiram este codigo de moeda -->
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:length value="3"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Identificacao unica do documento de movimentacao de mercadorias e de conferencia-->
+    <xs:element name="DocumentNumber">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="1"/>
+                <xs:maxLength value="60"/>
+                <xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo CAE -->
+    <xs:element name="EACCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="(([0-9]*))"/>
+                <xs:length value="5"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Ano Fiscal -->
+    <xs:element name="FiscalYear">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="2000"/>
+                <xs:maxInclusive value="9999"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Categoria da conta -->
+    <xs:element name="GroupingCategory">
+        <xs:annotation>
+            <xs:documentation>GR para conta de 1. grau da contabilidade geral, GA para conta agregadora ou integradora
+                da contabilidade geral, GM para conta de movimento da contabilidade geral, AR para conta de 1. grau da
+                contabilidade analitica, AA para conta agregadora ou integradora da contabilidade analitica, AM para
+                conta de movimento da contabilidade analitica
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string"></xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo unico do documento de venda -->
+    <xs:element name="InvoiceNo">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/>
+                <xs:minLength value="1"/>
+                <xs:maxLength value="60"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Estado do documento SalesInvoices -->
+    <xs:element name="InvoiceStatus">
+        <xs:annotation>
+            <xs:documentation>N para Normal, S para Autofaturacao, A para Documento anulado, R para Documento de resumo
+                doutros documentos criados noutras aplicacoes e gerado nesta aplicacao, F para Documento faturado
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="N"/>
+                <xs:enumeration value="S"/>
+                <xs:enumeration value="A"/>
+                <xs:enumeration value="R"/>
+                <xs:enumeration value="F"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipo de documento de venda-->
+    <xs:element name="InvoiceType">
+        <xs:annotation>
+            <xs:documentation>
+                Restricao:FT para Fatura, emitida nos termos do artigo 36. do Codigo do IVA, FS para Fatura
+                simplificada, emitida nos termos do artigo 40. do Codigo do IVA, FR para Fatura-recibo, ND para Nota de
+                debito, NC para Nota de credito, VD para Venda a dinheiro e factura/recibo (a), TV para Talao de venda
+                (a), TD para Talao de devolucao (a), AA para Alienacao de ativos (a), DA para Devolucao de ativos (a).
+                Para o setor Segurador, ainda pode ser preenchido com: RP para Premio ou recibo de premio, RE para
+                Estorno ou recibo de estorno, CS para Imputacao a co-seguradoras, LD para Imputacao a co-seguradora
+                lider, RA para Resseguro aceite. (a) Para os dados ate 2012-12-31
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="FT"/>
+                <xs:enumeration value="FS"/>
+                <xs:enumeration value="FR"/>
+                <xs:enumeration value="ND"/>
+                <xs:enumeration value="NC"/>
+                <xs:enumeration value="VD"/>
+                <xs:enumeration value="TV"/>
+                <xs:enumeration value="TD"/>
+                <xs:enumeration value="AA"/>
+                <xs:enumeration value="DA"/>
+                <!-- Para o sector segurador-->
+                <xs:enumeration value="RP"/>
+                <xs:enumeration value="RE"/>
+                <xs:enumeration value="CS"/>
+                <xs:enumeration value="LD"/>
+                <xs:enumeration value="RA"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Estado do documento MovementOfGoods -->
+    <xs:element name="MovementStatus">
+        <xs:annotation>
+            <xs:documentation>N para Normal, T para Por conta de terceiros, A para Documento anulado, F para Documento
+                faturado, quando para este documento tambem existe na tabela 4.1. para Documentos comerciais a clientes
+                (SalesInvoices) o correspondente do tipo fatura ou fatura simplificada, R para Documento de resumo
+                doutros documentos criados noutras aplicacoes e gerado nesta aplicacao
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string"></xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipo de documento de movimentacao de mercadorias-->
+    <xs:element name="MovementType">
+        <xs:annotation>
+            <xs:documentation>
+                Restricao: Tipos de Documento (GR para Guia de remessa, GT para Guia de transporte incluindo as globais,
+                GA para Guia de movimentacao de ativos fixos proprios, GC para Guia de consignacao, GD para Guia ou nota
+                de devolucao
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string"></xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Meio de pagamento-->
+    <xs:element name="PaymentMechanism">
+        <xs:annotation>
+            <xs:documentation>
+                Restricao:CC para Cartao credito, CD para Cartao debito, CH para Cheque bancario, CI para credito
+                documentario internacional, CO para Cheque ou cartao oferta, CS para Compensacao de saldos em conta
+                corrente, DE para Dinheiro eletronico, por exemplo em cartoes de fidelidade ou de pontos, LC para Letra
+                comercial, MB para Referencias de pagamento para Multibanco, NU para Numerario, OU para Outros meios
+                aqui nao assinalados, PR para Permuta de bens, TB para Transferencia bancaria ou debito direto
+                autorizado, TR para titulos de compensacao extrassalarial independentemente do seu suporte, por exemplo,
+                titulos de refeicao, educacao, etc.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string"></xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo unico do documento de venda -->
+    <xs:element name="PaymentRefNo">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/>
+                <xs:minLength value="1"/>
+                <xs:maxLength value="60"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Estado do documento Payments -->
+    <xs:element name="PaymentStatus">
+        <xs:annotation>
+            <xs:documentation>N para normal, A para Anulado</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="N"/>
+                <xs:enumeration value="A"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Periodo contabilistico do documento -->
+    <xs:element name="Period">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="1"/>
+                <xs:maxInclusive value="12"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipos de produto -->
+    <xs:element name="ProductType">
+        <xs:annotation>
+            <xs:documentation>Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes debitados,
+                adiantamentos recebidos ou alienacao de ativos), E para Impostos Especiais de Consumo (ex.:IABA, ISP,
+                IT); I para impostos, taxas e encargos parafiscais exceto IVA e IS que deverao ser refletidos na tabela
+                2.5 Tabela de impostos (TaxTable)e Impostos Especiais de Consumo
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string"></xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Indicador de Autofaturacao -->
+    <xs:element name="SelfBillingIndicator">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="1"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipo de sistema que exportou o SAFT -->
+    <xs:element name="TaxAccountingBasis">
+        <xs:annotation>
+            <xs:documentation>C para Contabilidade, E para Faturacao emitida por terceiros, F para Faturacao, I para
+                Contabilidade integrada com a faturacao, P para Faturacao parcial, R para Recibos (a), S para
+                Autofaturacao, T para Documentos de transporte (a). (a) Deve ser indicado este tipo, se o programa
+                apenas este emitir este tipo de documento. Caso contrario, devera ser utilizado o tipo C, F ou I
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="C"/>
+                <xs:enumeration value="E"/>
+                <xs:enumeration value="F"/>
+                <xs:enumeration value="I"/>
+                <xs:enumeration value="P"/>
+                <xs:enumeration value="R"/>
+                <xs:enumeration value="S"/>
+                <xs:enumeration value="T"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo de de Imposto -->
+    <xs:element name="TaxCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="RED|INT|NOR|ISE|OUT|([a-zA-Z0-9.])*|NS"/>
+                <xs:minLength value="1"/>
+                <xs:maxLength value="10"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Pais ou regiao de Imposto -->
+    <xs:element name="TaxCountryRegion">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|XK|YE|YT|ZA|ZM|ZW|PT-AC|PT-MA" />
+                <xs:minLength value="2" />
+                <xs:maxLength value="5" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Categoria da conta -->
+    <xs:element name="TaxonomyReference">
+        <xs:annotation>
+            <xs:documentation>S para SNC base (Taxonomia S), M para SNC microentidades (Taxonomia M), N para Normas
+                Internacionais de Contabilidade (Taxonomia S), O para outros referenciais contabilisticos cuja taxonomia
+                nao se encontra codificada
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="S"/>
+                <xs:enumeration value="M"/>
+                <xs:enumeration value="N"/>
+                <xs:enumeration value="O"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipo de Imposto -->
+    <xs:element name="TaxType">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="IVA"/>
+                <xs:enumeration value="IS"/>
+                <xs:enumeration value="NS"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Indicador de faturacao emitida em nome e por conta de terceiros -->
+    <xs:element name="ThirdPartiesBillingIndicator">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="1"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipos de Movimento Contabilistico -->
+    <xs:element name="TransactionType">
+        <xs:annotation>
+            <xs:documentation>Restricao: N para Normal, R para Regularizacoes do periodo de tributacao, A para
+                Apuramento de resultados, J para Movimentos de ajustamento
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string"></xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Codigo do tipo de imposto retido -->
+    <xs:element name="WithholdingTaxType">
+        <xs:annotation>
+            <xs:documentation>Restricao: IRS para Imposto Sobre o Rendimento das Pessoas Singulares, IRC para Imposto
+                Sobre o Rendimento das Pessoas colectivas, IS para Imposto do selo
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="IRS"/>
+                <xs:enumeration value="IRC"/>
+                <xs:enumeration value="IS"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Estado do documento WorkingDocuments -->
+    <xs:element name="WorkStatus">
+        <xs:annotation>
+            <xs:documentation>N para Normal, A para Anulado, F para faturado (quando para este documento tambem existe
+                na tabela 4.1. o correspondente do tipo fatura ou fatura simplificada)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="N"/>
+                <xs:enumeration value="A"/>
+                <xs:enumeration value="F"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- Tipo de documento suscetivel de apresentacao ao cliente para conferencia de mercadorias ou de prestacao de servicos e fatura de consignacao nos termos do art. 38. do codigo do IVA -->
+    <xs:element name="WorkType">
+        <xs:annotation>
+            <xs:documentation>
+                Restricao: DC para documentos emitidos ate 2017-06-30, CM para consulta de mesa, CC para credito de
+                consignacao, FC para fatura de consignacao nos termos do art.38 do CIVA, FO para folha de obra, NE para
+                nota de encomenda, OU para outros documentos suscetiveis de apresentacao ao cliente para conferencia de
+                mercadorias ou de prestacao de servicos que nao se encontrem aqui devidamente identificados (ou seus
+                equivalentes), OR para orcamento, PF para fatura pro-forma. Para o setor Segurador quando para os tipos
+                de documentos a seguir identificados tambem deva existir na tabela 4.1 - Documentos comerciais a
+                clientes (SalesInvoices) a correspondente fatura ou documento rectificativo de fatura, ainda pode ser
+                preenchido com RP para premio ou recibo de premio, RE para estorno ou recibo de estorno, CS para
+                imputacao a co-seguradoras, LD para imputacao a co-seguradora lider, RA para resseguro aceite.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="CM"/>
+                <xs:enumeration value="CC"/>
+                <xs:enumeration value="FC"/>
+                <xs:enumeration value="FO"/>
+                <xs:enumeration value="NE"/>
+                <xs:enumeration value="OU"/>
+                <xs:enumeration value="OR"/>
+                <xs:enumeration value="PF"/>
+                <!-- Para para dados ate 2017-06-30-->
+                <xs:enumeration value="DC"/>
+                <!-- Para o sector segurador-->
+                <xs:enumeration value="RP"/>
+                <xs:enumeration value="RE"/>
+                <xs:enumeration value="CS"/>
+                <xs:enumeration value="LD"/>
+                <xs:enumeration value="RA"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!-- TIPOS DE DADOS BASE SAFT OCDE-->
+    <xs:simpleType name="SAFdateTimeType">
+        <xs:restriction base="xs:dateTime"/>
+    </xs:simpleType>
+    <xs:simpleType name="SAFdateType">
+        <xs:restriction base="xs:date"/>
+    </xs:simpleType>
+    <xs:simpleType name="SAFdecimalType">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.00"/>
+            <xs:maxInclusive value="9999999999999.99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFmonetaryType">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.00"/>
+            <xs:maxInclusive value="9999999999999.99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!--Codigo de classificacao da conta-->
+    <xs:simpleType name="SAFTaxonomyCode">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- TIPOS DE DADOS BASE SAFT Portugal -->
+    <!-- Codigo de de Imposto de pagamento-->
+    <xs:simpleType name="PaymentTaxCode">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+            <xs:pattern value="RED|INT|NOR|ISE|OUT|([a-zA-Z0-9.])*|NA"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Codigo Postal Portugues -->
+    <xs:simpleType name="PostalCodePT">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]{4}-[0-9]{3})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Periodo do movimento contabilistico -->
+    <xs:simpleType name="SAFPTAccountingPeriod">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Codigo de Nomenclatura Combinada  -->
+    <xs:simpleType name="SAFPTCNCode">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{8}"/>
+            <xs:length value="8"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTDateSpan">
+        <xs:restriction base="xs:date">
+            <xs:minInclusive value="2000-01-01"/>
+            <xs:maxInclusive value="9999-12-31"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFTPTDocArchivalNumber">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTGLAccountID">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="30"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTHashControl">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]+|[0-9.]+[0-9]+|([0-9-]+[^^]+)"/>
+            <xs:minLength value="1"/>
+            <xs:maxLength value="70"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTJournalID">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="30"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFTPTMovementTaxCode">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Tipo de Imposto da Tabela MovementOfGoods-->
+    <xs:simpleType name="SAFTPTMovementTaxType">
+        <xs:restriction base="xs:string"></xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFTPTPaymentType">
+        <xs:annotation>
+            <xs:documentation>
+                Restricao: RC para Recibo emitido no ambito do regime de IVA de Caixa (incluindo os relativos a
+                adiantamentos desse regime), RG para Outros recibos emitidos
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RC"/>
+            <xs:enumeration value="RG"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Codigo do motivo de isencao de imposto -->
+    <xs:simpleType name="SAFPTPortugueseTaxExemptionCode">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(M[0-9]{2})+" />
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Motivo de isencao de imposto -->
+    <xs:simpleType name="SAFPTPortugueseTaxExemptionReason">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="6"/>
+            <xs:maxLength value="60"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTPortugueseVatNumber">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="100000000"/>
+            <xs:maxInclusive value="999999999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Descrição do produto ou servico -->
+    <xs:simpleType name="SAFPTProductDescription">
+        <xs:annotation/>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="200"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTProductID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[^/]+/[^/]+"/>
+            <xs:minLength value="3"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Origem do documento -->
+    <xs:simpleType name="SAFTPTSourceBilling">
+        <xs:annotation>
+            <xs:documentation>P para documento produzido na aplicacao, I para documento integrado e produzido noutra
+                aplicacao, M para documento proveniente de recuperacao ou de emissao manual
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string"></xs:restriction>
+    </xs:simpleType>
+    <!-- Origem do documento -->
+    <xs:simpleType name="SAFTPTSourcePayment">
+        <xs:annotation>
+            <xs:documentation>P para documento produzido na aplicacao, I para documento integrado e produzido noutra
+                aplicacao, M para documento proveniente de recuperacao ou de emissao manual
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string"></xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax10Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax20Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax21Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="21"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax30Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="30"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax35Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="35"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax50Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax60Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="60"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax70Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="70"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax90Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="90"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax100Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax172Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="172"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax200Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="200"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax210Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="210"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax255Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMandatoryMax254Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="254"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTtextTypeMax40Car">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="0"/>
+            <xs:maxLength value="40"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SAFPTTransactionID">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="70"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Numero ONU para substancias perigosas -->
+    <xs:simpleType name="SAFPTUNNumber">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{4}"/>
+            <xs:length value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Codigo do pais (ISO 3166 1-alpha-2) -->
+    <xs:simpleType name="SupplierCountry">
+        <xs:restriction base="xs:string">
+            <xs:length value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Tipo de Imposto da tabela de impostos-->
+    <xs:simpleType name="TaxTableEntryTaxCode">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+            <xs:pattern value="RED|INT|NOR|ISE|OUT|([a-zA-Z0-9.])*|NS|NA"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

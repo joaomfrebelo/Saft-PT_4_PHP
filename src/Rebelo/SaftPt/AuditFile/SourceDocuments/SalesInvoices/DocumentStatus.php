@@ -4,6 +4,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
  * DocumentStatus
@@ -289,13 +290,50 @@ class DocumentStatus
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        $nodeDocStatus = new \SimpleXMLElement(
-            "<" . static::N_DOCUMENTSTATUS . "></" . static::N_DOCUMENTSTATUS . ">"
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
+        if ($node->getName() !== Invoice::N_INVOICE)
+        {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                            Invoice::N_INVOICE, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        $nodeDocStatus = $node->addChild(static::N_DOCUMENTSTATUS);
+
+        //<xs:element ref = "InvoiceStatus"/>
+        $nodeDocStatus->addChild(
+            static::N_INVOICESTATUS, $this->getInvoiceStatus()->get()
         );
+        //<xs:element ref = "InvoiceStatusDate"/>
+        $nodeDocStatus->addChild(
+            static::N_INVOICESTATUSDATE,
+            $this->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
+        );
+        //<xs:element ref = "Reason" minOccurs = "0"/>
+        if ($this->getReason() !== null)
+        {
+            $nodeDocStatus->addChild(
+                static::N_REASON, $this->getReason()
+            );
+        }
+        //<xs:element ref = "SourceID"/>
+        $nodeDocStatus->addChild(
+            static::N_SOURCEID, $this->getSourceID()
+        );
+        //<xs:element name = "SourceBilling" type = "SAFTPTSourceBilling"/>
+        $nodeDocStatus->addChild(
+            static::N_SOURCEBILLING, $this->getSourceBilling()->get()
+        );
+
+
         return $nodeDocStatus;
     }
 
@@ -303,11 +341,37 @@ class DocumentStatus
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
+        if ($node->getName() !== static::N_DOCUMENTSTATUS)
+        {
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_DOCUMENTSTATUS, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        $this->setInvoiceStatus(new InvoiceStatus(
+                (string) $node->{static::N_INVOICESTATUS}
+        ));
+        $this->setInvoiceStatusDate(RDate::parse(
+                RDate::DATE_T_TIME,
+                (string) $node->{static::N_INVOICESTATUSDATE}
+        ));
+        $this->setSourceBilling(new SourceBilling(
+                (string) $node->{static::N_SOURCEBILLING}
+        ));
+        $this->setSourceID((string) $node->{static::N_SOURCEID});
+        if ($node->{static::N_REASON}->count() > 0)
+        {
+            $this->setReason((string) $node->{static::N_REASON});
+        }
     }
 
 }
