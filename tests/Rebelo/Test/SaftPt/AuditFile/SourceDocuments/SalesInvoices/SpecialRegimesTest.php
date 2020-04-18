@@ -25,9 +25,10 @@
  */
 declare(strict_types=1);
 
+namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
+
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
 
 /**
@@ -72,12 +73,11 @@ class SpecialRegimesTest
     public function testCreateXmlNodeWrongName()
     {
         $sepReg = new SpecialRegimes();
-        $node   = new \SimpleXMLElement("<root></root>"
-        );
+        $node   = new \SimpleXMLElement("<root></root>");
         try
         {
             $sepReg->createXmlNode($node);
-            $this->fail("Creat a xml node on a wrong node should throw "
+            $this->fail("Create a xml node on a wrong node should throw "
                 . "\Rebelo\SaftPt\AuditFile\AuditFileException");
         }
         catch (\Exception | \Error $e)
@@ -91,8 +91,7 @@ class SpecialRegimesTest
     public function testParseXmlNodeWrongName()
     {
         $speReg = new SpecialRegimes();
-        $node   = new \SimpleXMLElement("<root></root>"
-        );
+        $node   = new \SimpleXMLElement("<root></root>");
         try
         {
             $speReg->parseXmlNode($node);
