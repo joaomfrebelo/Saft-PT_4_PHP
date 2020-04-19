@@ -27,6 +27,8 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AuditFileException;
+
 /**
  * Description of ADocumentTotals
  *
@@ -38,12 +40,206 @@ abstract class ADocumentTotals
 
     /**
      * Node name
+     * @since 1.0.0
      */
     const N_DOCUMENTTOTALS = "DocumentTotals";
 
+    /**
+     * Node name
+     * @since 1.0.0
+     */
+    const N_TAXPAYABLE = "TaxPayable";
+
+    /**
+     * Node name
+     * @since 1.0.0
+     */
+    const N_NETTOTAL = "NetTotal";
+
+    /**
+     * Node name
+     * @since 1.0.0
+     */
+    const N_GROSSTOTAL = "GrossTotal";
+
+    /**
+     * Node name
+     * @since 1.0.0
+     */
+    const N_CURRENCY = "Currency";
+
+    /**
+     * <xs:element ref="TaxPayable"/><br>
+     * @var float $taxPayable
+     * @since 1.0.0
+     */
+    private float $taxPayable;
+
+    /**
+     * <xs:element ref="NetTotal"/><br>
+     * @var float $netTotal
+     * @since 1.0.0
+     */
+    private float $netTotal;
+
+    /**
+     * <xs:element ref="GrossTotal"/><br>
+     * @var float $grossTotal
+     * @since 1.0.0
+     */
+    private float $grossTotal;
+
+    /**
+     * <xs:element name="Currency" type="Currency" minOccurs="0"/><br>
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null $currency
+     * @since 1.0.0
+     */
+    private ?Currency $currency = null;
+
+    /**
+     * @since 1.0.0
+     */
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * Gets as taxPayable<br>
+     * <xs:element ref="TaxPayable"/>
+     * @return float
+     * @since 1.0.0
+     */
+    public function getTaxPayable(): float
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->taxPayable));
+        return $this->taxPayable;
+    }
+
+    /**
+     * Sets a new taxPayable<br>
+     * <xs:element ref="TaxPayable"/>
+     * @param float $taxPayable
+     * @return void
+     * @since 1.0.0
+     */
+    public function setTaxPayable(float $taxPayable): void
+    {
+        $this->taxPayable = $taxPayable;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->taxPayable));
+    }
+
+    /**
+     * Gets as netTotal<br>
+     * <xs:element ref="NetTotal"/>
+     * @return float
+     * @since 1.0.0
+     */
+    public function getNetTotal(): float
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->netTotal));
+        return $this->netTotal;
+    }
+
+    /**
+     * Sets a new netTotal<br>
+     * <xs:element ref="NetTotal"/>
+     * @param float $netTotal
+     * @return void
+     * @since 1.0.0
+     */
+    public function setNetTotal(float $netTotal): void
+    {
+        $this->netTotal = $netTotal;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->netTotal));
+    }
+
+    /**
+     * Gets as grossTotal<br>
+     * <xs:element ref="GrossTotal"/>
+     * @return float
+     * @since 1.0.0
+     */
+    public function getGrossTotal(): float
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->grossTotal));
+        return $this->grossTotal;
+    }
+
+    /**
+     * Sets a new grossTotal<br>
+     * <xs:element ref="GrossTotal"/>
+     * @param float $grossTotal
+     * @return void
+     * @since 1.0.0
+     */
+    public function setGrossTotal(float $grossTotal): void
+    {
+        $this->grossTotal = $grossTotal;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->grossTotal));
+    }
+
+    /**
+     * Gets as currency<br>
+     * <xs:element name="Currency" type="Currency" minOccurs="0"/>
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null
+     * @since 1.0.0
+     */
+    public function getCurrency(): ?Currency
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__ . " getted '%s'",
+                            $this->currency === null
+                        ? "null"
+                        : $this->currency->getCurrencyCode()));
+        return $this->currency;
+    }
+
+    /**
+     * Sets a new currency<br>
+     * <xs:element name="Currency" type="Currency" minOccurs="0"/>
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null $currency
+     * @return void
+     * @since 1.0.0
+     */
+    public function setCurrency(?Currency $currency): void
+    {
+        $this->currency = $currency;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
+                             $this->currency === null
+                        ? "null"
+                        : $this->currency->getCurrencyCode()->get()));
+    }
+
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
     }
 
 }
