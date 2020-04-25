@@ -311,22 +311,22 @@ class Settlement
         }
 
         $settlNode = $node->addChild(static::N_SETTLEMENT);
-        if ($this->getSettlementDiscount() != null)
+        if ($this->getSettlementDiscount() !== null)
         {
             $settlNode->addChild(static::N_SETTLEMENTDISCOUNT,
                                  $this->getSettlementDiscount());
         }
-        if ($this->getSettlementAmount() != null)
+        if ($this->getSettlementAmount() !== null)
         {
             $settlNode->addChild(static::N_SETTLEMENTAMOUNT,
                                  \strval($this->getSettlementAmount()));
         }
-        if ($this->getSettlementDate() != null)
+        if ($this->getSettlementDate() !== null)
         {
             $settlNode->addChild(static::N_SETTLEMENTDATE,
                                  $this->getSettlementDate()->format(RDate::SQL_DATE));
         }
-        if ($this->getPaymentTerms() != null)
+        if ($this->getPaymentTerms() !== null)
         {
             $settlNode->addChild(static::N_PAYMENTTERMS,
                                  $this->getPaymentTerms());

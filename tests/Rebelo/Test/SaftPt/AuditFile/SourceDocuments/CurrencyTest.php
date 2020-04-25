@@ -59,7 +59,7 @@ class CurrencyTest
         try
         {
             $currency->getCurrencyCode();
-            $this->fail("Get CurrencyCode whitout be setted should throw "
+            $this->fail("Get CurrencyCode without be setted should throw "
                 . "\Error");
         }
         catch (\Exception | \Error $e)
@@ -72,7 +72,7 @@ class CurrencyTest
         try
         {
             $currency->getCurrencyAmount();
-            $this->fail("Get Ammout whitout be setted should throw "
+            $this->fail("Get Ammout without be setted should throw "
                 . "\Error");
         }
         catch (\Exception | \Error $e)
@@ -85,7 +85,7 @@ class CurrencyTest
         try
         {
             $currency->getExchangeRate();
-            $this->fail("Get ExchangeRate whitout be setted should throw "
+            $this->fail("Get ExchangeRate without be setted should throw "
                 . "\Error");
         }
         catch (\Exception | \Error $e)

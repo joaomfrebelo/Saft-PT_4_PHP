@@ -35,7 +35,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
  * PaymentMethod
- *
+ * <pre>
  * <!-- Estrutura de pagamentos-->
  *  &lt;xs:complexType name="PaymentMethod"&gt;
  *      &lt;xs:sequence&gt;
@@ -44,20 +44,13 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *          &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;
  *      &lt;/xs:sequence&gt;
  *  &lt;/xs:complexType&gt;
- *
+ * </pre>
  * @author João Rebelo
  * @since 1.0.0
  */
 class PaymentMethod
     extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
-    /**
-     * &lt;xs:complexType name="PaymentMethod"&gt;<br>
-     * Node name
-     * @since 1.0.0
-     */
-    const N_PAYMENTMETHOD = "PaymentMethod";
 
     /**
      * &lt;xs:element ref="PaymentMechanism" minOccurs="0"/&gt;<br>
@@ -214,7 +207,7 @@ class PaymentMethod
 
         if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS)
         {
-            $msg = \sprintf("Node name should be '%s' or '%S' but is '%s",
+            $msg = \sprintf("Node name should be '%s' or '%s' but is '%s",
                             Payment::N_PAYMENT,
                             ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
             );
@@ -223,22 +216,21 @@ class PaymentMethod
             throw new AuditFileException($msg);
         }
 
-        $payMethNode = $node->addChild(static::N_PAYMENTMETHOD);
-        if ($this->getPaymentMechanism() != null)
+        if ($this->getPaymentMechanism() !== null)
         {
-            $payMethNode->addChild(static::N_PAYMENTMECHANISM,
-                                   $this->getPaymentMechanism()->get());
+            $node->addChild(static::N_PAYMENTMECHANISM,
+                            $this->getPaymentMechanism()->get());
         }
-        $payMethNode->addChild(static::N_PAYMENTAMOUNT,
-                               \number_format(
+        $node->addChild(static::N_PAYMENTAMOUNT,
+                        \number_format(
                 $this->getPaymentAmount(), 6, ".", ""
             )
         );
-        $payMethNode->addChild(static::N_PAYMENTDATE,
-                               $this->getPaymentDate()->format(RDate::SQL_DATE)
+        $node->addChild(static::N_PAYMENTDATE,
+                        $this->getPaymentDate()->format(RDate::SQL_DATE)
         );
 
-        return $payMethNode;
+        return $node;
     }
 
     /**
@@ -252,10 +244,12 @@ class PaymentMethod
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_PAYMENTMETHOD)
+        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS)
         {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_PAYMENTMETHOD, $node->getName());
+            $msg = \sprintf("Node name should be '%s' or '%s' but is '%s'",
+                            Payment::N_PAYMENT,
+                            ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);

@@ -38,6 +38,14 @@ class Payment
 
     const N_PAYMENT = "Payment";
 
+    /**
+     * <xs:element name="PaymentMethod" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/>
+     * <br>
+     * Node name
+     * @since 1.0.0
+     */
+    const N_PAYMENTMETHOD = "PaymentMethod";
+
     public function __construct()
     {
         parent::__construct();

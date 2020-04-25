@@ -62,7 +62,7 @@ class PaymentMethodTest
         try
         {
             $payMeth->getPaymentAmount();
-            $this->fail("Get PaymentAmout whitout be setted should throw "
+            $this->fail("Get PaymentAmout without be setted should throw "
                 . "\Error");
         }
         catch (\Exception | \Error $e)
@@ -74,7 +74,7 @@ class PaymentMethodTest
         try
         {
             $payMeth->getPaymentDate();
-            $this->fail("Get PaymentDate whitout be setted should throw "
+            $this->fail("Get PaymentDate without be setted should throw "
                 . "\Error");
         }
         catch (\Exception | \Error $e)
@@ -111,6 +111,10 @@ class PaymentMethodTest
         $this->assertSame($date, $payMeth->getPaymentDate());
     }
 
+    /**
+     *
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod
+     */
     public function createPaymentMethod(): PaymentMethod
     {
         $payMeth = new PaymentMethod();
@@ -169,25 +173,18 @@ class PaymentMethodTest
         $this->assertInstanceOf(\SimpleXMLElement::class, $payMethNode);
 
         $this->assertSame(
-            PaymentMethod::N_PAYMENTMETHOD, $payMethNode->getName()
-        );
-
-        $this->assertSame(
             $payMeth->getPaymentMechanism()->get(),
-            (string) $node->{PaymentMethod::N_PAYMENTMETHOD}
-            ->{PaymentMethod::N_PAYMENTMECHANISM}
+            (string) $node->{PaymentMethod::N_PAYMENTMECHANISM}
         );
 
         $this->assertSame(
             $payMeth->getPaymentAmount(),
-            (float) $node->{PaymentMethod::N_PAYMENTMETHOD}
-            ->{PaymentMethod::N_PAYMENTAMOUNT}
+            (float) $node->{PaymentMethod::N_PAYMENTAMOUNT}
         );
 
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
-                                               (string) $node->{PaymentMethod::N_PAYMENTMETHOD}
-            ->{PaymentMethod::N_PAYMENTDATE}
+                                               (string) $node->{PaymentMethod::N_PAYMENTDATE}
         );
     }
 
@@ -203,13 +200,7 @@ class PaymentMethodTest
         $payMethNode = $payMeth->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $payMethNode);
 
-        $this->assertSame(
-            PaymentMethod::N_PAYMENTMETHOD, $payMethNode->getName()
-        );
-
-        $this->assertSame(0,
-                          $node->{PaymentMethod::N_PAYMENTMETHOD}
-            ->{PaymentMethod::N_PAYMENTMECHANISM}->count()
+        $this->assertSame(0, $node->{PaymentMethod::N_PAYMENTMECHANISM}->count()
         );
     }
 

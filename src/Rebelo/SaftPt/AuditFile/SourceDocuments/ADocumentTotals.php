@@ -197,7 +197,7 @@ abstract class ADocumentTotals
             ->info(\sprintf(__METHOD__ . " getted '%s'",
                             $this->currency === null
                         ? "null"
-                        : $this->currency->getCurrencyCode()));
+                        : $this->currency->getCurrencyCode()->get()));
         return $this->currency;
     }
 
@@ -219,7 +219,7 @@ abstract class ADocumentTotals
     }
 
     /**
-     *
+     * Create the commun XML nodes
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
@@ -227,10 +227,66 @@ abstract class ADocumentTotals
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
+        $docTotalNode = $node->addChild(static::N_DOCUMENTTOTALS);
+
+        $docTotalNode->addChild(
+            static::N_TAXPAYABLE,
+            \number_format($this->getTaxPayable(), 6, ".", "")
+        );
+        $docTotalNode->addChild(
+            static::N_NETTOTAL, \number_format($this->getNetTotal(), 6, ".", "")
+        );
+        $docTotalNode->addChild(
+            static::N_GROSSTOTAL,
+            \number_format($this->getGrossTotal(), 2, ".", "")
+        );
+
+        // In the Payment the Currency is in diferent order,
+        // must be created in the Payments\DocumentTotals
+        if (false === ($this instanceof \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals))
+        {
+            $this->createCurrencyNode($docTotalNode);
+        }
+        return $docTotalNode;
     }
 
     /**
+     * Create the Currency XMl node
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @throws AuditFileException
+     * @since 1.0.0
+     */
+    protected function createCurrencyNode(\SimpleXMLElement $node): void
+    {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
+        if ($node->getName() !== static::N_DOCUMENTTOTALS)
+        {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                            static::N_DOCUMENTTOTALS, $node->getName()
+            );
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        if ($this->getCurrency() !== null)
+        {
+
+            $this->getCurrency()->createXmlNode($node);
+        }
+        else
+        {
+            \Logger::getLogger(\get_class($this))->trace(__METHOD__
+                . " No Currency defined to create XMML node");
+        }
+    }
+
+    /**
+     * Parse the XML node
      *
      * @param \SimpleXMLElement $node
      * @return void
@@ -239,7 +295,36 @@ abstract class ADocumentTotals
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
+        if ($node->getName() !== static::N_DOCUMENTTOTALS)
+        {
+            $msg = sprintf("Node name should be '%s' but is '%s",
+                           static::N_DOCUMENTTOTALS, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        $this->setTaxPayable((float) $node->{static::N_TAXPAYABLE});
+        $this->setNetTotal((float) $node->{static::N_NETTOTAL});
+        $this->setGrossTotal((float) $node->{static::N_GROSSTOTAL});
+        if ($node->{static::N_CURRENCY}->count() > 0)
+        {
+            $currency = new Currency();
+            $currency->setCurrencyAmount(
+                (float) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYAMOUNT}
+            );
+            $currency->setExchangeRate(
+                (float) $node->{static::N_CURRENCY}->{Currency::N_EXCHANGERATE}
+            );
+            $currency->setCurrencyCode(
+                new \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode(
+                    (string) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYCODE}
+                )
+            );
+            $this->setCurrency($currency);
+        }
     }
 
 }

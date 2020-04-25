@@ -52,6 +52,8 @@ class CommnunTest
         $this->testProperties($refClas);
 
         $this->testMethods($refClas);
+
+        $this->testStrict($refClas);
     }
 
     public function testConstant(\ReflectionClass $refClas, string $class)
@@ -184,6 +186,22 @@ class CommnunTest
                                               $meth->getName()));
                 }
             }
+        }
+    }
+
+    public function testStrict(\ReflectionClass $refClas)
+    {
+        $path             = $refClas->getFileName();
+        $strFile          = file_get_contents($path);
+        $patternEquals    = "/ == /";
+        $patternNotEquals = "/ != /";
+        if (preg_match($patternEquals, $strFile) !== 0)
+        {
+            $this->fail("The 'strict' test fail, please switch the '==' for '==='");
+        }
+        if (preg_match($patternNotEquals, $strFile) !== 0)
+        {
+            $this->fail("The 'strict' test fail, please switch the '!=' for '!=='");
         }
     }
 

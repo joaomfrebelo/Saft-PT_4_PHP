@@ -141,6 +141,10 @@ class SettlementTest
         }
     }
 
+    /**
+     *
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement
+     */
     public function createSettlement(): Settlement
     {
         $settl = new Settlement();
