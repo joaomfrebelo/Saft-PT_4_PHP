@@ -319,7 +319,7 @@ class Settlement
         if ($this->getSettlementAmount() !== null)
         {
             $settlNode->addChild(static::N_SETTLEMENTAMOUNT,
-                                 \strval($this->getSettlementAmount()));
+                                 $this->floatFormat($this->getSettlementAmount()));
         }
         if ($this->getSettlementDate() !== null)
         {

@@ -234,17 +234,15 @@ class Currency
         }
 
         $currencyNode = $node->addChild(static::N_CURRENCY);
-        $currencyNode->addChild(static::N_CURRENCYCODE,
-                                $this->getCurrencyCode()->get());
-        $currencyNode->addChild(static::N_CURRENCYAMOUNT,
-                                \number_format(
-                $this->getCurrencyAmount(), 6, ".", ""
-            )
+        $currencyNode->addChild(
+            static::N_CURRENCYCODE, $this->getCurrencyCode()->get()
         );
-        $currencyNode->addChild(static::N_EXCHANGERATE,
-                                \number_format(
-                $this->getExchangeRate(), 6, ".", ""
-            )
+        $currencyNode->addChild(
+            static::N_CURRENCYAMOUNT,
+            $this->floatFormat($this->getCurrencyAmount())
+        );
+        $currencyNode->addChild(
+            static::N_EXCHANGERATE, $this->floatFormat($this->getExchangeRate())
         );
         return $currencyNode;
     }

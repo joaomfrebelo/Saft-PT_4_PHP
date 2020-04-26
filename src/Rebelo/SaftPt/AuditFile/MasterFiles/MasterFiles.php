@@ -217,7 +217,7 @@ class MasterFiles
      */
     public function addToCustomer(Customer $customer): int
     {
-        if (\count($this->customer) == 0)
+        if (\count($this->customer) === 0)
         {
             $index = 0;
         }
@@ -280,7 +280,7 @@ class MasterFiles
      */
     public function addToSupplier(Supplier $supplier): int
     {
-        if (\count($this->supplier) == 0)
+        if (\count($this->supplier) === 0)
         {
             $index = 0;
         }
@@ -344,7 +344,7 @@ class MasterFiles
      */
     public function addToProduct(Product $product): int
     {
-        if (\count($this->product) == 0)
+        if (\count($this->product) === 0)
         {
             $index = 0;
         }
@@ -426,7 +426,7 @@ class MasterFiles
      */
     public function addToTaxTableEntry(TaxTableEntry $taxTableEntry): int
     {
-        if (\count($this->taxTableEntry) == 0)
+        if (\count($this->taxTableEntry) === 0)
         {
             $index = 0;
         }
@@ -493,7 +493,7 @@ class MasterFiles
         // GeneralLedgerAccounts is not implemented
         //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getCustomer()) > 0 &&
-            $this->exportType->get() == ExportType::C)
+            $this->exportType->get() === ExportType::C)
         {
             array_map(function($customer) use ($masterNode)
             {
@@ -504,7 +504,7 @@ class MasterFiles
 
         //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getSupplier()) > 0 &&
-            $this->exportType->get() == ExportType::C)
+            $this->exportType->get() === ExportType::C)
         {
             array_map(function($supplier) use ($masterNode)
             {
@@ -514,7 +514,7 @@ class MasterFiles
         }
         //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getProduct()) > 0 &&
-            $this->exportType->get() == ExportType::C)
+            $this->exportType->get() === ExportType::C)
         {
             array_map(function($product) use ($masterNode)
             {

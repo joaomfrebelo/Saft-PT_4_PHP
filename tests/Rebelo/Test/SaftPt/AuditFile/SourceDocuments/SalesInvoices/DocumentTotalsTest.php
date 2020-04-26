@@ -160,6 +160,44 @@ class DocumentTotalsTest
 
     /**
      *
+     */
+    public function testNegativeSet()
+    {
+        $docTot = new DocumentTotals();
+        try
+        {
+            $docTot->setGrossTotal(-0.01);
+            $this->fail("Set GrossTotal to a negative number Should throw "
+                . "Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(AuditFileException::class, $e);
+        }
+        try
+        {
+            $docTot->setNetTotal(-0.01);
+            $this->fail("Set NetTotal to a negative number Should throw "
+                . "Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(AuditFileException::class, $e);
+        }
+        try
+        {
+            $docTot->setTaxPayable(-0.01);
+            $this->fail("Set TaxPayable to a negative number Should throw "
+                . "Rebelo\SaftPt\AuditFile\AuditFileException");
+        }
+        catch (\Exception | \Error $e)
+        {
+            $this->assertInstanceOf(AuditFileException::class, $e);
+        }
+    }
+
+    /**
+     *
      * @return DocumentTotals
      */
     public function createDocumentTotals(): DocumentTotals

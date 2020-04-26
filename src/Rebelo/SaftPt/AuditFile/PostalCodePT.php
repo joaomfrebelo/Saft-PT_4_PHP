@@ -99,6 +99,13 @@ class PostalCodePT
             ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->postalCodePT));
     }
 
+    /**
+     * Not implemented - The xml node is created in the aadress class
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @throws AuditFileException
+     * @since 1.0.0
+     */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         $msg = "The xml node is created in the aadress class"
@@ -108,6 +115,13 @@ class PostalCodePT
         throw new AuditFileException($msg);
     }
 
+    /**
+     * Not implemented - The xml parse node is created in the aadress class
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @throws AuditFileException
+     * @since 1.0.0
+     */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         $msg = "The xml parse node is created in the aadress class "

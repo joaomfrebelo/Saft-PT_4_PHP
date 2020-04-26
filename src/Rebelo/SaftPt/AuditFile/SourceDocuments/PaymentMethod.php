@@ -218,16 +218,16 @@ class PaymentMethod
 
         if ($this->getPaymentMechanism() !== null)
         {
-            $node->addChild(static::N_PAYMENTMECHANISM,
-                            $this->getPaymentMechanism()->get());
+            $node->addChild(
+                static::N_PAYMENTMECHANISM, $this->getPaymentMechanism()->get());
         }
-        $node->addChild(static::N_PAYMENTAMOUNT,
-                        \number_format(
-                $this->getPaymentAmount(), 6, ".", ""
-            )
+        $node->addChild(
+            static::N_PAYMENTAMOUNT,
+            $this->floatFormat($this->getPaymentAmount())
         );
-        $node->addChild(static::N_PAYMENTDATE,
-                        $this->getPaymentDate()->format(RDate::SQL_DATE)
+        $node->addChild(
+            static::N_PAYMENTDATE,
+            $this->getPaymentDate()->format(RDate::SQL_DATE)
         );
 
         return $node;

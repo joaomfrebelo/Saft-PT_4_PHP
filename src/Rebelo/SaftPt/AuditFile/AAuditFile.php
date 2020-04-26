@@ -184,4 +184,21 @@ abstract class AAuditFile
         }
     }
 
+    /**
+     * Format a float with grouped thousands
+     *
+     * @param float $float The float to be format
+     * @param int $decimals Number of decimals
+     * @param string $dec_point The decimal separator
+     * @param string $thousands_sep the thousends separator
+     * @return string
+     * @since 1.0.0
+     */
+    public function floatFormat(float $float, int $decimals = 6,
+                                string $dec_point = ".",
+                                string $thousands_sep = ""): string
+    {
+        return \number_format($float, $decimals, $dec_point, $thousands_sep);
+    }
+
 }

@@ -518,7 +518,7 @@ class Supplier
      */
     public function addToShipFromAddress(SupplierAddress $shipFromAddress): int
     {
-        if (\count($this->shipFromAddress) == 0)
+        if (\count($this->shipFromAddress) === 0)
         {
             $index = 0;
         }

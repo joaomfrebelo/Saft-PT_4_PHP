@@ -517,7 +517,7 @@ class Customer
      */
     public function addToShipToAddress(Address $shipToAddress): int
     {
-        if (\count($this->shipToAddress) == 0)
+        if (\count($this->shipToAddress) === 0)
         {
             $index = 0;
         }

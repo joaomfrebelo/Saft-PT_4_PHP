@@ -122,10 +122,18 @@ abstract class ADocumentTotals
      * <xs:element ref="TaxPayable"/>
      * @param float $taxPayable
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setTaxPayable(float $taxPayable): void
     {
+        if ($taxPayable < 0.0)
+        {
+            $msg = "Tax Payable can not be negative";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
         $this->taxPayable = $taxPayable;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->taxPayable));
@@ -149,10 +157,18 @@ abstract class ADocumentTotals
      * <xs:element ref="NetTotal"/>
      * @param float $netTotal
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setNetTotal(float $netTotal): void
     {
+        if ($netTotal < 0.0)
+        {
+            $msg = "Net Total can not be negative";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
         $this->netTotal = $netTotal;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->netTotal));
@@ -176,10 +192,18 @@ abstract class ADocumentTotals
      * <xs:element ref="GrossTotal"/>
      * @param float $grossTotal
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setGrossTotal(float $grossTotal): void
     {
+        if ($grossTotal < 0.0)
+        {
+            $msg = "Gross Total can not be negative";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
         $this->grossTotal = $grossTotal;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->grossTotal));
@@ -232,15 +256,15 @@ abstract class ADocumentTotals
         $docTotalNode = $node->addChild(static::N_DOCUMENTTOTALS);
 
         $docTotalNode->addChild(
-            static::N_TAXPAYABLE,
-            \number_format($this->getTaxPayable(), 6, ".", "")
+            static::N_TAXPAYABLE, $this->floatFormat($this->getTaxPayable())
         );
         $docTotalNode->addChild(
-            static::N_NETTOTAL, \number_format($this->getNetTotal(), 6, ".", "")
+            static::N_NETTOTAL, $this->floatFormat($this->getNetTotal())
         );
+        // GrossTotal is allways with 2 decimals, and the GrossTota value to the
+        // digital sign hash must be with 2 decimals too
         $docTotalNode->addChild(
-            static::N_GROSSTOTAL,
-            \number_format($this->getGrossTotal(), 2, ".", "")
+            static::N_GROSSTOTAL, $this->floatFormat($this->getGrossTotal(), 2)
         );
 
         // In the Payment the Currency is in diferent order,

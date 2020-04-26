@@ -126,7 +126,7 @@ class CustomsDetails
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        if (\count($this->cNCode) == 0)
+        if (\count($this->cNCode) === 0)
         {
             $index = 0;
         }
@@ -231,7 +231,7 @@ class CustomsDetails
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        if (\count($this->uNNumber) == 0)
+        if (\count($this->uNNumber) === 0)
         {
             $index = 0;
         }
@@ -351,7 +351,7 @@ class CustomsDetails
         if ($node->getName() !== static::N_CUSTOMSDETAILS)
         {
             $msg = sprintf("Node name should be '%s' and not '%s'",
-                          static::N_CUSTOMSDETAILS, $node->getName()
+                           static::N_CUSTOMSDETAILS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));

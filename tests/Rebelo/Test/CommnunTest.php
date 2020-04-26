@@ -100,6 +100,14 @@ class CommnunTest
 
             $doc = $meth->getDocComment();
 
+            if ($doc === false)
+            {
+                $this->fail(
+                    sprintf("The method '%s' of class '%s' does not have documentation",
+                            $meth->getName(), $refClas->getName()
+                ));
+            }
+
             // Verify if has return type
             $this->assertTrue($meth->hasReturnType(),
                               sprintf("method '%s' doesn't have a return type defined",
