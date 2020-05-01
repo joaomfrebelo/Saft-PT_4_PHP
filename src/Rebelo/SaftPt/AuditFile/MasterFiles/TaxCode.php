@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -44,10 +43,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @since 1.0.0
  * @author João Rebelo
  */
-class TaxCode
-    extends \Rebelo\Enum\AEnum
+class TaxCode extends \Rebelo\Enum\AEnum
 {
-
     /**
      *
      * @since 1.0.0
@@ -97,30 +94,22 @@ class TaxCode
      */
     public function __construct(string $value)
     {
-        try
-        {
+        try {
             parent::__construct($value);
-        }
-        catch (\Rebelo\Enum\EnumException $e)
-        {
+        } catch (\Rebelo\Enum\EnumException $e) {
             $reg = "/([a-zA-Z0-9.])*/";
             $msg = null;
-            if (\preg_match($reg, $value) !== 1)
-            {
+            if (\preg_match($reg, $value) !== 1) {
                 $msg = sprintf("The TaxCode must respect the RegExp '%s'", $reg);
-            }
-            elseif (\strlen($value) < 1 || \strlen($value) > 10)
-            {
+            } elseif (\strlen($value) < 1 || \strlen($value) > 10) {
                 $msg = "The TaxCode must have a length between '1' and '10'";
             }
-            if ($msg !== null)
-            {
+            if ($msg !== null) {
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $this->value = $value;
         }
     }
-
 }

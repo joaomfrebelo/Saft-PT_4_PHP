@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -33,10 +32,8 @@ namespace Rebelo\SaftPt\AuditFile;
  * @author João Rebelo
  * @since 1.0.0
  */
-class ExportType
-    extends \Rebelo\Enum\AEnum
+class ExportType extends \Rebelo\Enum\AEnum
 {
-
     /**
      * Simplified<br>
      * Generate the simplified saft file
@@ -59,5 +56,4 @@ class ExportType
     {
         parent::__construct($value);
     }
-
 }

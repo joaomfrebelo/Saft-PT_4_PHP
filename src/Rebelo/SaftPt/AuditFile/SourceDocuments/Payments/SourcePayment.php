@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -44,8 +43,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
  *
  * @author João Rebelo
  */
-class SourcePayment
-    extends \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling
+class SourcePayment extends \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling
 {
 
     /**
@@ -56,5 +54,4 @@ class SourcePayment
     {
         parent::__construct($value);
     }
-
 }

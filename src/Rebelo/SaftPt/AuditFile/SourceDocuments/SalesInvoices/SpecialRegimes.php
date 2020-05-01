@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -43,10 +42,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class SpecialRegimes
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node Name
      * @since 1.0.0
@@ -117,10 +114,8 @@ class SpecialRegimes
     public function getSelfBillingIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->selfBillingIndicator
-                        ? "true"
-                        : "false"));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->selfBillingIndicator ? "true" : "false"));
         return $this->selfBillingIndicator;
     }
 
@@ -132,10 +127,8 @@ class SpecialRegimes
     public function getCashVATSchemeIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->cashVATSchemeIndicator
-                        ? "true"
-                        : "false"));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->cashVATSchemeIndicator ? "true" : "false"));
         return $this->cashVATSchemeIndicator;
     }
 
@@ -147,10 +140,8 @@ class SpecialRegimes
     public function getThirdPartiesBillingIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->thirdPartiesBillingIndicator
-                        ? "true"
-                        : "false"));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->thirdPartiesBillingIndicator ? "true" : "false"));
         return $this->thirdPartiesBillingIndicator;
     }
 
@@ -164,10 +155,8 @@ class SpecialRegimes
     {
         $this->selfBillingIndicator = $SelfBillingIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->selfBillingIndicator
-                        ? "true"
-                        : "false"));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->selfBillingIndicator ? "true" : "false"));
     }
 
     /**
@@ -180,10 +169,8 @@ class SpecialRegimes
     {
         $this->cashVATSchemeIndicator = $CashVATSchemeIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->cashVATSchemeIndicator
-                        ? "true"
-                        : "false"));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->cashVATSchemeIndicator ? "true" : "false"));
     }
 
     /**
@@ -196,10 +183,8 @@ class SpecialRegimes
     {
         $this->thirdPartiesBillingIndicator = $ThirdPartiesBillingIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->thirdPartiesBillingIndicator
-                        ? "true"
-                        : "false"));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->thirdPartiesBillingIndicator ? "true" : "false"));
     }
 
     /**
@@ -213,12 +198,11 @@ class SpecialRegimes
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Invoice::N_INVOICE)
-        {
+        if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            Invoice::N_INVOICE, $node->getName());
+                Invoice::N_INVOICE, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -226,21 +210,15 @@ class SpecialRegimes
 
         $nodeSpeReg->addChild(
             static::N_SELFBILLINGINDICATOR,
-            $this->getSelfBillingIndicator()
-                ? "1"
-                : "0"
+            $this->getSelfBillingIndicator() ? "1" : "0"
         );
         $nodeSpeReg->addChild(
             static::N_CASHVATSCHEMEINDICATOR,
-            $this->getCashVATSchemeIndicator()
-                ? "1"
-                : "0"
+            $this->getCashVATSchemeIndicator() ? "1" : "0"
         );
         $nodeSpeReg->addChild(
             static::N_THIRDPARTIESBILLINGINDICATOR,
-            $this->getThirdPartiesBillingIndicator()
-                ? "1"
-                : "0"
+            $this->getThirdPartiesBillingIndicator() ? "1" : "0"
         );
         return $nodeSpeReg;
     }
@@ -256,12 +234,11 @@ class SpecialRegimes
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_SPECIALREGIMES)
-        {
+        if ($node->getName() !== static::N_SPECIALREGIMES) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_SPECIALREGIMES, $node->getName());
+                static::N_SPECIALREGIMES, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -277,5 +254,4 @@ class SpecialRegimes
             (string) $node->{static::N_THIRDPARTIESBILLINGINDICATOR} === "1"
         );
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,8 +31,7 @@ namespace Rebelo\SaftPt\AuditFile;
  *
  * @author João Rebelo
  */
-class AuditFileException
-    extends \Exception
+class AuditFileException extends \Exception
 {
 
     public function __construct(string $message = "", int $code = 0,
@@ -41,5 +39,4 @@ class AuditFileException
     {
         parent::__construct($message, $code, $previous);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -64,10 +63,8 @@ use Rebelo\Date\Date as RDate;
  *
  * @since 1.0.0
  */
-class Header
-    extends AAuditFile
+class Header extends AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -505,17 +502,16 @@ class Header
     public function setCompanyID(string $companyID): void
     {
         $valId = static::valTextMandMaxCar($companyID, 50, __METHOD__);
-        if (\preg_match("/([0-9]{9})+|([^^]+ [0-9\/]+)/", $valId) !== 1)
-        {
+        if (\preg_match("/([0-9]{9})+|([^^]+ [0-9\/]+)/", $valId) !== 1) {
             $msg = "Value Not valide";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->companyID = $valId;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->companyID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyID));
     }
 
     /**
@@ -528,8 +524,8 @@ class Header
     public function getTaxRegistrationNumber(): int
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->taxRegistrationNumber)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->taxRegistrationNumber)));
         return $this->taxRegistrationNumber;
     }
 
@@ -542,17 +538,16 @@ class Header
      */
     public function setTaxRegistrationNumber(int $taxRegistrationNumber): void
     {
-        if (!static::valPortugueseVatNumber($taxRegistrationNumber))
-        {
-            $msg = strval($taxRegistrationNumber) . " is not a valide PT nif";
+        if (!static::valPortugueseVatNumber($taxRegistrationNumber)) {
+            $msg = strval($taxRegistrationNumber)." is not a valide PT nif";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->taxRegistrationNumber = $taxRegistrationNumber;
         \Logger::getLogger(\get_class($this))->debug(
-            \sprintf(__METHOD__ . " setted to '%s'",
-                     \strval($this->taxRegistrationNumber)));
+            \sprintf(__METHOD__." setted to '%s'",
+                \strval($this->taxRegistrationNumber)));
     }
 
     /**
@@ -564,8 +559,8 @@ class Header
     public function getTaxAccountingBasis(): TaxAccountingBasis
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->taxAccountingBasis->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->taxAccountingBasis->get()));
         return $this->taxAccountingBasis;
     }
 
@@ -580,8 +575,8 @@ class Header
     {
         $this->taxAccountingBasis = $taxAccountingBasis;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->taxAccountingBasis->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->taxAccountingBasis->get()));
     }
 
     /**
@@ -594,7 +589,7 @@ class Header
     public function getCompanyName(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->companyName));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->companyName));
         return $this->companyName;
     }
 
@@ -609,9 +604,9 @@ class Header
     public function setCompanyName(string $companyName): void
     {
         $this->companyName = static::valTextMandMaxCar($companyName, 100,
-                                                       __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->companyName));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyName));
     }
 
     /**
@@ -625,10 +620,8 @@ class Header
     public function getBusinessName(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->businessName === null
-                        ? "null"
-                        : $this->businessName));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->businessName === null ? "null" : $this->businessName));
         return $this->businessName;
     }
 
@@ -643,20 +636,15 @@ class Header
      */
     public function setBusinessName(?string $businessName): void
     {
-        if ($businessName === null)
-        {
+        if ($businessName === null) {
             $this->businessName = $businessName;
-        }
-        else
-        {
+        } else {
             $this->businessName = static::valTextMandMaxCar($businessName, 60,
-                                                            __METHOD__);
+                    __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->businessName === null
-                        ? "null"
-                        : $this->businessName));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->businessName === null ? "null" : $this->businessName));
     }
 
     /**
@@ -710,8 +698,8 @@ class Header
     public function getFiscalYear(): int
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->fiscalYear)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->fiscalYear)));
         return $this->fiscalYear;
     }
 
@@ -738,17 +726,16 @@ class Header
     public function setFiscalYear(int $fiscalYear): void
     {
         $ano = \intval(\Date("Y"));
-        if ($fiscalYear < 2000 || $fiscalYear > $ano)
-        {
-            $msg = \strval($fiscalYear) . " is not a valide year";
+        if ($fiscalYear < 2000 || $fiscalYear > $ano) {
+            $msg = \strval($fiscalYear)." is not a valide year";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->fiscalYear = $fiscalYear;
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->fiscalYear)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->fiscalYear)));
     }
 
     /**
@@ -772,8 +759,8 @@ class Header
     public function getStartDate(): \Rebelo\Date\Date
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->startDate->getTimestamp())));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->startDate->getTimestamp())));
         return $this->startDate;
     }
 
@@ -799,19 +786,19 @@ class Header
     public function setStartDate(\Rebelo\Date\Date $startDate): void
     {
         $year    = \intval($startDate->format(\Rebelo\Date\Date::YAER));
-        $yearNow = \intval((new \Rebelo\Date\Date())->format(\Rebelo\Date\Date::YAER)) + 1;
-        if ($year < 2000 || $year > $yearNow)
-        {
+        $yearNow = \intval((new \Rebelo\Date\Date())->format(\Rebelo\Date\Date::YAER))
+            + 1;
+        if ($year < 2000 || $year > $yearNow) {
             $msg = \sprintf("Date must be between '%s' and '%s'", $year,
-                            $yearNow);
+                $yearNow);
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->startDate = $startDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->startDate->format(\Rebelo\Date\Date::SQL_DATE)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->startDate->format(\Rebelo\Date\Date::SQL_DATE)));
     }
 
     /**
@@ -834,8 +821,8 @@ class Header
     public function getEndDate(): \Rebelo\Date\Date
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)));
         return $this->endDate;
     }
 
@@ -858,19 +845,19 @@ class Header
     public function setEndDate(\Rebelo\Date\Date $endDate): void
     {
         $year    = \intval($endDate->format(\Rebelo\Date\Date::YAER));
-        $yearNow = \intval((new \Rebelo\Date\Date())->format(\Rebelo\Date\Date::YAER)) + 1;
-        if ($year < 2000 || $year > $yearNow)
-        {
+        $yearNow = \intval((new \Rebelo\Date\Date())->format(\Rebelo\Date\Date::YAER))
+            + 1;
+        if ($year < 2000 || $year > $yearNow) {
             $msg = \sprintf("Date must be between '%s' and '%s'", $year,
-                            $yearNow);
+                $yearNow);
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->endDate = $endDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)));
     }
 
     /**
@@ -882,7 +869,7 @@ class Header
     public function getCurrencyCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->currencyCode));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->currencyCode));
         return $this->currencyCode;
     }
 
@@ -895,8 +882,8 @@ class Header
     public function getDateCreated(): \Rebelo\Date\Date
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->dateCreated->format(\Rebelo\Date\Date::ATOM)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->dateCreated->format(\Rebelo\Date\Date::ATOM)));
         return $this->dateCreated;
     }
 
@@ -913,8 +900,8 @@ class Header
     {
         $this->dateCreated = $dateCreated;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->dateCreated->format(\Rebelo\Date\Date::ATOM)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->dateCreated->format(\Rebelo\Date\Date::ATOM)));
     }
 
     /**
@@ -927,7 +914,7 @@ class Header
     public function getTaxEntity(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->taxEntity));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxEntity));
         return $this->taxEntity;
     }
 
@@ -944,7 +931,7 @@ class Header
     {
         $this->taxEntity = static::valTextMandMaxCar($taxEntity, 20, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->taxEntity));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxEntity));
     }
 
     /**
@@ -958,8 +945,8 @@ class Header
     public function getProductCompanyTaxID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->productCompanyTaxID));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->productCompanyTaxID));
         return $this->productCompanyTaxID;
     }
 
@@ -975,10 +962,10 @@ class Header
     public function setProductCompanyTaxID(string $productCompanyTaxID): void
     {
         $this->productCompanyTaxID = static::valTextMandMaxCar($productCompanyTaxID,
-                                                               30, __METHOD__);
+                30, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->productCompanyTaxID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->productCompanyTaxID));
     }
 
     /**
@@ -993,8 +980,8 @@ class Header
     public function getSoftwareCertificateNumber(): int
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->softwareCertificateNumber));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->softwareCertificateNumber));
         return $this->softwareCertificateNumber;
     }
 
@@ -1009,17 +996,16 @@ class Header
      */
     public function setSoftwareCertificateNumber(int $softwareCertificateNumber): void
     {
-        if ($softwareCertificateNumber < 0)
-        {
+        if ($softwareCertificateNumber < 0) {
             $msg = "certification number must be non negative integer";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->softwareCertificateNumber = $softwareCertificateNumber;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->softwareCertificateNumber));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->softwareCertificateNumber));
     }
 
     /**
@@ -1041,7 +1027,7 @@ class Header
     public function getProductID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->productID));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productID));
         return $this->productID;
     }
 
@@ -1064,23 +1050,20 @@ class Header
     public function setProductID(string $productID): void
     {
         $msg = null;
-        if (\preg_match("/[^\/]+\/[^\/]/", $productID) !== 1)
-        {
+        if (\preg_match("/[^\/]+\/[^\/]/", $productID) !== 1) {
             $msg = "product doesn't match regexp '[^\/]+\/[^\/]'";
         }
-        if (\strlen($productID) < 3 || \strlen($productID) > 255)
-        {
+        if (\strlen($productID) < 3 || \strlen($productID) > 255) {
             $msg = "string length must be between 3 and 255";
         }
-        if ($msg !== null)
-        {
+        if ($msg !== null) {
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->productID = $productID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->productID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productID));
     }
 
     /**
@@ -1094,7 +1077,7 @@ class Header
     public function getProductVersion(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->productVersion));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productVersion));
         return $this->productVersion;
     }
 
@@ -1110,10 +1093,9 @@ class Header
     public function setProductVersion(string $productVersion): void
     {
         $this->productVersion = static::valTextMandMaxCar($productVersion, 30,
-                                                          __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->productVersion));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productVersion));
     }
 
     /**
@@ -1127,10 +1109,8 @@ class Header
     public function getHeaderComment(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->headerComment === null
-                        ? "null"
-                        : $this->headerComment));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->headerComment === null ? "null" : $this->headerComment));
         return $this->headerComment;
     }
 
@@ -1145,20 +1125,15 @@ class Header
      */
     public function setHeaderComment(?string $headerComment): void
     {
-        if ($headerComment === null)
-        {
+        if ($headerComment === null) {
             $this->headerComment = null;
-        }
-        else
-        {
+        } else {
             $this->headerComment = static::valTextMandMaxCar($headerComment,
-                                                             255, __METHOD__);
+                    255, __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->headerComment === null
-                        ? "null"
-                        : $this->headerComment));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->headerComment === null ? "null" : $this->headerComment));
     }
 
     /**
@@ -1172,10 +1147,8 @@ class Header
     public function getTelephone(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->telephone === null
-                        ? "null"
-                        : $this->telephone));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->telephone === null ? "null" : $this->telephone));
         return $this->telephone;
     }
 
@@ -1190,20 +1163,15 @@ class Header
      */
     public function setTelephone(?string $telephone): void
     {
-        if ($telephone === null)
-        {
+        if ($telephone === null) {
             $this->telephone = null;
-        }
-        else
-        {
+        } else {
             $this->telephone = static::valTextMandMaxCar($telephone, 20,
-                                                         __METHOD__);
+                    __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->telephone === null
-                        ? "null"
-                        : $this->telephone));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->telephone === null ? "null" : $this->telephone));
     }
 
     /**
@@ -1217,10 +1185,8 @@ class Header
     public function getFax(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->fax === null
-                        ? "null"
-                        : $this->fax));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->fax === null ? "null" : $this->fax));
         return $this->fax;
     }
 
@@ -1235,19 +1201,14 @@ class Header
      */
     public function setFax(?string $fax): void
     {
-        if ($fax === null)
-        {
+        if ($fax === null) {
             $this->fax = $fax;
-        }
-        else
-        {
+        } else {
             $this->fax = static::valTextMandMaxCar($fax, 20, __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->fax === null
-                        ? "null"
-                        : $this->fax));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->fax === null ? "null" : $this->fax));
     }
 
     /**
@@ -1261,10 +1222,8 @@ class Header
     public function getEmail(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->email === null
-                        ? "null"
-                        : $this->email));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->email === null ? "null" : $this->email));
         return $this->email;
     }
 
@@ -1279,31 +1238,23 @@ class Header
      */
     public function setEmail(?string $email): void
     {
-        if ($email === null)
-        {
+        if ($email === null) {
             $this->email = $email;
-        }
-        else
-        {
+        } else {
             if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
-                \strlen($email) > 254)
-            {
-                $msg = $email . " is not a valide email";
+                \strlen($email) > 254) {
+                $msg = $email." is not a valide email";
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
-            }
-            else
-            {
+            } else {
                 $this->email = $email;
             }
         }
         $this->email = $email;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->email === null
-                        ? "null"
-                        : $this->email));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->email === null ? "null" : $this->email));
     }
 
     /**
@@ -1317,10 +1268,8 @@ class Header
     public function getWebsite(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->website === null
-                        ? "null"
-                        : $this->website
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->website === null ? "null" : $this->website
         ));
         return $this->website;
     }
@@ -1336,27 +1285,21 @@ class Header
      */
     public function setWebsite(?string $website): void
     {
-        if ($website === null)
-        {
+        if ($website === null) {
             $this->website = $website;
-        }
-        else
-        {
+        } else {
             if (\filter_var($website, FILTER_VALIDATE_URL) === false ||
-                \strlen($website) > 60)
-            {
+                \strlen($website) > 60) {
                 $msg = "The URL is not valide";
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $this->website = $website;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->website === null
-                        ? "null"
-                        : $this->website));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->website === null ? "null" : $this->website));
     }
 
     /**
@@ -1371,58 +1314,52 @@ class Header
         $dateYmd    = RDate::SQL_DATE;
         $headerNode = $node->addChild(static::N_HEADER);
         $headerNode->addChild(static::N_AUDITFILEVERSION,
-                              $this->getAuditFileVersion());
+            $this->getAuditFileVersion());
         $headerNode->addChild(static::N_COMPANYID, $this->getCompanyID());
         $headerNode->addChild(static::N_TAXREGISTRATIONNUMBER,
-                              \strval($this->getTaxRegistrationNumber()));
+            \strval($this->getTaxRegistrationNumber()));
         $headerNode->addChild(static::N_TAXACCOUNTINGBASIS,
-                              $this->getTaxAccountingBasis()->get());
+            $this->getTaxAccountingBasis()->get());
         $headerNode->addChild(static::N_COMPANYNAME, $this->getCompanyName());
-        if ($this->getBusinessName() !== null)
-        {
+        if ($this->getBusinessName() !== null) {
             $headerNode->addChild(static::N_BUSINESSNAME,
-                                  $this->getBusinessName());
+                $this->getBusinessName());
         }
         $compAddr = $headerNode->addChild(static::N_COMPANYADDRESS);
         $this->getCompanyAddress()->createXmlNode($compAddr);
         $headerNode->addChild(static::N_FISCALYEAR,
-                              \strval($this->getFiscalYear()));
+            \strval($this->getFiscalYear()));
         $headerNode->addChild(static::N_STARTDATE,
-                              $this->getStartDate()->format($dateYmd));
+            $this->getStartDate()->format($dateYmd));
         $headerNode->addChild(static::N_ENDDATE,
-                              $this->getEndDate()->format($dateYmd));
+            $this->getEndDate()->format($dateYmd));
         $headerNode->addChild(static::N_CURRENCYCODE, $this->getCurrencyCode());
         $headerNode->addChild(static::N_DATECREATED,
-                              $this->getDateCreated()->format($dateYmd));
+            $this->getDateCreated()->format($dateYmd));
         $headerNode->addChild(static::N_TAXENTITY, $this->getTaxEntity());
         $headerNode->addChild(static::N_PRODUCTCOMPANYTAXID,
-                              $this->getProductCompanyTaxID());
+            $this->getProductCompanyTaxID());
         $headerNode->addChild(static::N_SOFTWARECERTIFICATENUMBER,
-                              \strval($this->getSoftwareCertificateNumber()));
+            \strval($this->getSoftwareCertificateNumber()));
         $headerNode->addChild(static::N_PRODUCTID, $this->getProductID());
         $headerNode->addChild(static::N_PRODUCTVERSION,
-                              $this->getProductVersion());
-        if ($this->getHeaderComment() !== null)
-        {
+            $this->getProductVersion());
+        if ($this->getHeaderComment() !== null) {
             $headerNode->addChild(static::N_HEADERCOMMENT,
-                                  $this->getHeaderComment());
+                $this->getHeaderComment());
         }
-        if ($this->getTelephone() !== null)
-        {
+        if ($this->getTelephone() !== null) {
             $headerNode->addChild(static::N_TELEPHONE, $this->getTelephone());
         }
 
-        if ($this->getFax() !== null)
-        {
+        if ($this->getFax() !== null) {
             $headerNode->addChild(static::N_FAX, $this->getFax());
         }
 
-        if ($this->getEmail() !== null)
-        {
+        if ($this->getEmail() !== null) {
             $headerNode->addChild(static::N_EMAIL, $this->getEmail());
         }
-        if ($this->getWebsite() !== null)
-        {
+        if ($this->getWebsite() !== null) {
             $headerNode->addChild(static::N_WEBSITE, $this->getWebsite());
         }
         return $headerNode;
@@ -1439,25 +1376,21 @@ class Header
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         $dateYmd = RDate::SQL_DATE;
-        if ($this->getAuditFileVersion() !== (string) $node->{static::N_AUDITFILEVERSION})
-        {
+        if ($this->getAuditFileVersion() !== (string) $node->{static::N_AUDITFILEVERSION}) {
             $msg = sprintf("Wrong audit file version, your file is '%s' and should be '%s'",
-                           $node->{static::N_AUDITFILEVERSION},
-                           $this->getAuditFileVersion());
+                $node->{static::N_AUDITFILEVERSION},
+                $this->getAuditFileVersion());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->setCompanyID((string) $node->{static::N_COMPANYID});
         $this->setTaxRegistrationNumber((int) $node->{static::N_TAXREGISTRATIONNUMBER});
         $this->setTaxAccountingBasis(new TaxAccountingBasis((string) $node->{static::N_TAXACCOUNTINGBASIS}));
         $this->setCompanyName((string) $node->{static::N_COMPANYNAME});
-        if ($node->{static::N_BUSINESSNAME}->count() > 0)
-        {
+        if ($node->{static::N_BUSINESSNAME}->count() > 0) {
             $this->setBusinessName((string) $node->{static::N_BUSINESSNAME});
-        }
-        else
-        {
+        } else {
             $this->setBusinessName(null);
         }
         $addr = new AddressPT();
@@ -1465,65 +1398,47 @@ class Header
         $this->setCompanyAddress($addr);
         $this->setFiscalYear((int) $node->{static::N_FISCALYEAR});
         $this->setStartDate(RDate::parse($dateYmd,
-                                         (string) $node->{static::N_STARTDATE}));
+                (string) $node->{static::N_STARTDATE}));
         $this->setEndDate(RDate::parse($dateYmd,
-                                       (string) $node->{static::N_ENDDATE}));
-        if ($this->getCurrencyCode() !== (string) $node->{static::N_CURRENCYCODE})
-        {
+                (string) $node->{static::N_ENDDATE}));
+        if ($this->getCurrencyCode() !== (string) $node->{static::N_CURRENCYCODE}) {
             $msg = sprintf("Wrong currency code, your currency is '%s' and should be '%s'",
-                           $node->{static::N_CURRENCYCODE},
-                           $this->getCurrencyCode());
+                $node->{static::N_CURRENCYCODE}, $this->getCurrencyCode());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->setDateCreated(RDate::parse($dateYmd,
-                                           (string) $node->{static::N_DATECREATED}));
+                (string) $node->{static::N_DATECREATED}));
         $this->setTaxEntity((string) $node->{static::N_TAXENTITY});
         $this->setProductCompanyTaxID((string) $node->{static::N_PRODUCTCOMPANYTAXID});
         $this->setSoftwareCertificateNumber((int) $node->{static::N_SOFTWARECERTIFICATENUMBER});
         $this->setProductID((string) $node->{static::N_PRODUCTID});
         $this->setProductVersion((string) $node->{static::N_PRODUCTVERSION});
-        if ($node->{static::N_HEADERCOMMENT}->count() > 0)
-        {
+        if ($node->{static::N_HEADERCOMMENT}->count() > 0) {
             $this->setHeaderComment((string) $node->{static::N_HEADERCOMMENT});
-        }
-        else
-        {
+        } else {
             $this->setHeaderComment(null);
         }
-        if ($node->{static::N_TELEPHONE}->count() > 0)
-        {
+        if ($node->{static::N_TELEPHONE}->count() > 0) {
             $this->setTelephone((string) $node->{static::N_TELEPHONE});
-        }
-        else
-        {
+        } else {
             $this->setTelephone(null);
         }
-        if ($node->{static::N_FAX}->count() > 0)
-        {
+        if ($node->{static::N_FAX}->count() > 0) {
             $this->setFax((string) $node->{static::N_FAX});
-        }
-        else
-        {
+        } else {
             $this->setFax(null);
         }
-        if ($node->{static::N_EMAIL}->count() > 0)
-        {
+        if ($node->{static::N_EMAIL}->count() > 0) {
             $this->setEmail((string) $node->{static::N_EMAIL});
-        }
-        else
-        {
+        } else {
             $this->setEmail(null);
         }
-        if ($node->{static::N_WEBSITE}->count() > 0)
-        {
+        if ($node->{static::N_WEBSITE}->count() > 0) {
             $this->setWebsite((string) $node->{static::N_WEBSITE});
-        }
-        else
-        {
+        } else {
             $this->setWebsite(null);
         }
     }
-
 }

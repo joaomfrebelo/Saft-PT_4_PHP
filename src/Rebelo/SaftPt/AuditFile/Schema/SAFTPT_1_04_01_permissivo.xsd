@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <xs:schema
-        xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-        xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation"
-        xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" attributeFormDefault="unqualified"
-        elementFormDefault="qualified" id="SAF-T_PT"
-        targetNamespace="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" version="1.04_01"
-        vc:minVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation"
+    xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" attributeFormDefault="unqualified"
+    elementFormDefault="qualified" id="SAF-T_PT"
+    targetNamespace="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" version="1.04_01"
+    vc:minVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation>
             <doc:Title>Standard Audit File - Portuguese Version</doc:Title>

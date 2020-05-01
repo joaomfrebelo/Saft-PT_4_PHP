@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,10 +31,8 @@ namespace Rebelo\SaftPt\AuditFile;
  *
  * @author João Rebelo
  */
-class Country
-    extends ACountry
+class Country extends ACountry
 {
-
     const DESCONHECIDO = "Desconhecido";
 
     /**
@@ -47,5 +44,4 @@ class Country
     {
         parent::__construct($value);
     }
-
 }

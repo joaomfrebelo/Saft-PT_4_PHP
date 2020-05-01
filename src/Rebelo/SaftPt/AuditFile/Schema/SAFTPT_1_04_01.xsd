@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <xs:schema xmlns:ns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"
-    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-    xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation"
-    xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" attributeFormDefault="unqualified"
-    elementFormDefault="qualified" id="SAF-T_PT"
-    targetNamespace="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" version="1.04_01"
-    vc:minVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2009/XMLSchema/XMLSchema">
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+           xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation"
+           xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" attributeFormDefault="unqualified"
+           elementFormDefault="qualified" id="SAF-T_PT"
+           targetNamespace="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" version="1.04_01"
+           vc:minVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2009/XMLSchema/XMLSchema">
     <xs:annotation>
         <xs:documentation>
             <doc:Title>Standard Audit File - Portuguese Version</doc:Title>
@@ -46,7 +46,7 @@
             <xs:field xpath="ns:AccountID"/>
         </xs:unique>
         <xs:keyref name="GroupingCodeConstraint" 
-            refer="AccountIDConstraint">
+                   refer="AccountIDConstraint">
             <xs:selector xpath="ns:MasterFiles/ns:GeneralLedgerAccounts/ns:Account"/>
             <xs:field xpath="ns:GroupingCode"/>
         </xs:keyref>
@@ -63,13 +63,13 @@
             <xs:field xpath="ns:ProductCode"/>
         </xs:unique>
         <xs:keyref name="GeneralLedgerEntriesDebitLineAccountIDConstraint"
-            refer="AccountIDConstraint">
+                   refer="AccountIDConstraint">
             <xs:selector
                 xpath="ns:GeneralLedgerEntries/ns:Journal/ns:Transaction/ns:Lines/ns:DebitLine"/>
             <xs:field xpath="ns:AccountID"/>
         </xs:keyref>
         <xs:keyref name="GeneralLedgerEntriesCreditLineAccountIDConstraint"
-            refer="AccountIDConstraint">
+                   refer="AccountIDConstraint">
             <xs:selector
                 xpath="ns:GeneralLedgerEntries/ns:Journal/ns:Transaction/ns:Lines/ns:CreditLine"/>
             <xs:field xpath="ns:AccountID"/>
@@ -236,7 +236,7 @@
                 <xs:element ref="Contact" minOccurs="0"/>
                 <xs:element name="BillingAddress" type="SupplierAddressStructure"/>
                 <xs:element name="ShipFromAddress" type="SupplierAddressStructure" minOccurs="0"
-                    maxOccurs="unbounded"/>
+                            maxOccurs="unbounded"/>
                 <xs:element ref="Telephone" minOccurs="0"/>
                 <xs:element ref="Fax" minOccurs="0"/>
                 <xs:element ref="Email" minOccurs="0"/>
@@ -312,35 +312,35 @@
                                         <xs:element name="Lines">
                                             <xs:complexType>
                                                 <xs:all>
-                                                  <xs:element name="DebitLine" maxOccurs="unbounded">
-                                                  <xs:complexType>
-                                                  <xs:sequence>
-                                                  <xs:element ref="RecordID"/>
-                                                  <xs:element name="AccountID"
-                                                  type="SAFPTGLAccountID"/>
-                                                  <xs:element ref="SourceDocumentID" minOccurs="0"/>
-                                                  <xs:element ref="SystemEntryDate"/>
-                                                  <xs:element ref="Description"/>
-                                                  <xs:element name="DebitAmount"
-                                                  type="SAFmonetaryType"/>
-                                                  </xs:sequence>
-                                                  </xs:complexType>
-                                                  </xs:element>
-                                                  <xs:element name="CreditLine"
-                                                  maxOccurs="unbounded">
-                                                  <xs:complexType>
-                                                  <xs:sequence>
-                                                  <xs:element ref="RecordID"/>
-                                                  <xs:element name="AccountID"
-                                                  type="SAFPTGLAccountID"/>
-                                                  <xs:element ref="SourceDocumentID" minOccurs="0"/>
-                                                  <xs:element ref="SystemEntryDate"/>
-                                                  <xs:element ref="Description"/>
-                                                  <xs:element name="CreditAmount"
-                                                  type="SAFmonetaryType"/>
-                                                  </xs:sequence>
-                                                  </xs:complexType>
-                                                  </xs:element>
+                                                    <xs:element name="DebitLine" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element ref="RecordID"/>
+                                                                <xs:element name="AccountID"
+                                                                            type="SAFPTGLAccountID"/>
+                                                                <xs:element ref="SourceDocumentID" minOccurs="0"/>
+                                                                <xs:element ref="SystemEntryDate"/>
+                                                                <xs:element ref="Description"/>
+                                                                <xs:element name="DebitAmount"
+                                                                            type="SAFmonetaryType"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="CreditLine"
+                                                                maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element ref="RecordID"/>
+                                                                <xs:element name="AccountID"
+                                                                            type="SAFPTGLAccountID"/>
+                                                                <xs:element ref="SourceDocumentID" minOccurs="0"/>
+                                                                <xs:element ref="SystemEntryDate"/>
+                                                                <xs:element ref="Description"/>
+                                                                <xs:element name="CreditAmount"
+                                                                            type="SAFmonetaryType"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
                                                 </xs:all>
                                             </xs:complexType>
                                         </xs:element>
@@ -372,12 +372,12 @@
                                         <xs:element name="DocumentStatus">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="InvoiceStatus"/>
-                                                  <xs:element ref="InvoiceStatusDate"/>
-                                                  <xs:element ref="Reason" minOccurs="0"/>
-                                                  <xs:element ref="SourceID"/>
-                                                  <xs:element name="SourceBilling"
-                                                  type="SAFTPTSourceBilling"/>
+                                                    <xs:element ref="InvoiceStatus"/>
+                                                    <xs:element ref="InvoiceStatusDate"/>
+                                                    <xs:element ref="Reason" minOccurs="0"/>
+                                                    <xs:element ref="SourceID"/>
+                                                    <xs:element name="SourceBilling"
+                                                                type="SAFTPTSourceBilling"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -395,65 +395,65 @@
                                         <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
                                         <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
                                         <xs:element ref="MovementEndTime" minOccurs="0"
-                                            maxOccurs="1"/>
+                                                    maxOccurs="1"/>
                                         <xs:element ref="MovementStartTime" minOccurs="0"
-                                            maxOccurs="1"/>
+                                                    maxOccurs="1"/>
                                         <xs:element name="Line" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="LineNumber"/>
-                                                  <xs:element name="OrderReferences"
-                                                  type="OrderReferences" minOccurs="0"
-                                                  maxOccurs="unbounded"/>
-                                                  <xs:element ref="ProductCode"/>
-                                                  <xs:element ref="ProductDescription"/>
-                                                  <xs:element ref="Quantity"/>
-                                                  <xs:element ref="UnitOfMeasure"/>
-                                                  <xs:element ref="UnitPrice"/>
-                                                  <xs:element ref="TaxBase" minOccurs="0"/>
-                                                  <xs:element ref="TaxPointDate"/>
-                                                  <xs:element name="References" type="References"
-                                                  minOccurs="0" maxOccurs="unbounded"/>
-                                                  <xs:element ref="Description"/>
-                                                  <xs:element name="ProductSerialNumber"
-                                                  type="ProductSerialNumber" minOccurs="0"/>
-                                                  <xs:choice>
-                                                  <xs:element ref="DebitAmount"/>
-                                                  <xs:element ref="CreditAmount"/>
-                                                  </xs:choice>
-                                                  <xs:element name="Tax" type="Tax"/>
-                                                  <xs:element ref="TaxExemptionReason" minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-                                                  <xs:element ref="SettlementAmount" minOccurs="0"/>
-                                                  <xs:element name="CustomsInformation"
-                                                  type="CustomsInformation" minOccurs="0"/>
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element name="OrderReferences"
+                                                                type="OrderReferences" minOccurs="0"
+                                                                maxOccurs="unbounded"/>
+                                                    <xs:element ref="ProductCode"/>
+                                                    <xs:element ref="ProductDescription"/>
+                                                    <xs:element ref="Quantity"/>
+                                                    <xs:element ref="UnitOfMeasure"/>
+                                                    <xs:element ref="UnitPrice"/>
+                                                    <xs:element ref="TaxBase" minOccurs="0"/>
+                                                    <xs:element ref="TaxPointDate"/>
+                                                    <xs:element name="References" type="References"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xs:element ref="Description"/>
+                                                    <xs:element name="ProductSerialNumber"
+                                                                type="ProductSerialNumber" minOccurs="0"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element name="Tax" type="Tax"/>
+                                                    <xs:element ref="TaxExemptionReason" minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element ref="SettlementAmount" minOccurs="0"/>
+                                                    <xs:element name="CustomsInformation"
+                                                                type="CustomsInformation" minOccurs="0"/>
                                                 </xs:sequence>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
                                                             false()
                                                         else
                                                             true()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxBase and ns:UnitPrice != 0)) then
                                                             false()
                                                         else
                                                             true()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxBase and ns:DebitAmount != 0) or (ns:TaxBase and ns:CreditAmount != 0)) then
                                                             false()
                                                         else
@@ -464,21 +464,21 @@
                                         <xs:element name="DocumentTotals">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="TaxPayable"/>
-                                                  <xs:element ref="NetTotal"/>
-                                                  <xs:element ref="GrossTotal"/>
-                                                  <xs:element name="Currency" type="Currency"
-                                                  minOccurs="0"/>
-                                                  <!-- A estrutura Settlement representa acordos ou formas de pagamento futuros. Nao constitui em caso algum o somatorio dos descontos concedidos e reflectidos nas linhas dos documentos e a informacao aqui constante nao influi o montante total do documento (GrossTotal) -->
-                                                  <xs:element name="Settlement" type="Settlement"
-                                                  minOccurs="0" maxOccurs="unbounded"/>
-                                                  <xs:element name="Payment" type="PaymentMethod"
-                                                  minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <xs:element name="Currency" type="Currency"
+                                                                minOccurs="0"/>
+                                                    <!-- A estrutura Settlement representa acordos ou formas de pagamento futuros. Nao constitui em caso algum o somatorio dos descontos concedidos e reflectidos nas linhas dos documentos e a informacao aqui constante nao influi o montante total do documento (GrossTotal) -->
+                                                    <xs:element name="Settlement" type="Settlement"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xs:element name="Payment" type="PaymentMethod"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="WithholdingTax" type="WithholdingTax"
-                                            minOccurs="0" maxOccurs="unbounded"/>
+                                                    minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
@@ -499,12 +499,12 @@
                                         <xs:element name="DocumentStatus">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="MovementStatus"/>
-                                                  <xs:element ref="MovementStatusDate"/>
-                                                  <xs:element ref="Reason" minOccurs="0"/>
-                                                  <xs:element ref="SourceID"/>
-                                                  <xs:element name="SourceBilling"
-                                                  type="SAFTPTSourceBilling"/>
+                                                    <xs:element ref="MovementStatus"/>
+                                                    <xs:element ref="MovementStatusDate"/>
+                                                    <xs:element ref="Reason" minOccurs="0"/>
+                                                    <xs:element ref="SourceID"/>
+                                                    <xs:element name="SourceBilling"
+                                                                type="SAFTPTSourceBilling"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -525,45 +525,45 @@
                                         <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
                                         <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
                                         <xs:element ref="MovementEndTime" minOccurs="0"
-                                            maxOccurs="1"/>
+                                                    maxOccurs="1"/>
                                         <xs:element ref="MovementStartTime" maxOccurs="1"/>
                                         <!-- Nos documentos resumo (MovementStatus "R"), na falta desta informacao em concreto, a hora de inicio de transporte (MovementStartTime) pode ser indicada com a concatenacao da data constante no campo MovementDate com a hora 00:00:00-->
                                         <xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/>
                                         <xs:element name="Line" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="LineNumber"/>
-                                                  <xs:element name="OrderReferences"
-                                                  type="OrderReferences" minOccurs="0"
-                                                  maxOccurs="unbounded"/>
-                                                  <xs:element ref="ProductCode"/>
-                                                  <xs:element ref="ProductDescription"/>
-                                                  <xs:element ref="Quantity"/>
-                                                  <xs:element ref="UnitOfMeasure"/>
-                                                  <xs:element ref="UnitPrice"/>
-                                                  <xs:element ref="Description"/>
-                                                  <xs:element name="ProductSerialNumber"
-                                                  type="ProductSerialNumber" minOccurs="0"/>
-                                                  <xs:choice>
-                                                  <xs:element ref="DebitAmount"/>
-                                                  <xs:element ref="CreditAmount"/>
-                                                  </xs:choice>
-                                                  <xs:element name="Tax" type="MovementTax"
-                                                  minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionReason" minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-                                                  <xs:element ref="SettlementAmount" minOccurs="0"/>
-                                                  <xs:element name="CustomsInformation"
-                                                  type="CustomsInformation" minOccurs="0"/>
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element name="OrderReferences"
+                                                                type="OrderReferences" minOccurs="0"
+                                                                maxOccurs="unbounded"/>
+                                                    <xs:element ref="ProductCode"/>
+                                                    <xs:element ref="ProductDescription"/>
+                                                    <xs:element ref="Quantity"/>
+                                                    <xs:element ref="UnitOfMeasure"/>
+                                                    <xs:element ref="UnitPrice"/>
+                                                    <xs:element ref="Description"/>
+                                                    <xs:element name="ProductSerialNumber"
+                                                                type="ProductSerialNumber" minOccurs="0"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element name="Tax" type="MovementTax"
+                                                                minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionReason" minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element ref="SettlementAmount" minOccurs="0"/>
+                                                    <xs:element name="CustomsInformation"
+                                                                type="CustomsInformation" minOccurs="0"/>
                                                 </xs:sequence>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
                                                             false()
                                                         else
@@ -574,11 +574,11 @@
                                         <xs:element name="DocumentTotals">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="TaxPayable"/>
-                                                  <xs:element ref="NetTotal"/>
-                                                  <xs:element ref="GrossTotal"/>
-                                                  <xs:element name="Currency" type="Currency"
-                                                  minOccurs="0"/>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <xs:element name="Currency" type="Currency"
+                                                                minOccurs="0"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -602,12 +602,12 @@
                                         <xs:element name="DocumentStatus">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="WorkStatus"/>
-                                                  <xs:element ref="WorkStatusDate"/>
-                                                  <xs:element ref="Reason" minOccurs="0"/>
-                                                  <xs:element ref="SourceID"/>
-                                                  <xs:element name="SourceBilling"
-                                                  type="SAFTPTSourceBilling"/>
+                                                    <xs:element ref="WorkStatus"/>
+                                                    <xs:element ref="WorkStatusDate"/>
+                                                    <xs:element ref="Reason" minOccurs="0"/>
+                                                    <xs:element ref="SourceID"/>
+                                                    <xs:element name="SourceBilling"
+                                                                type="SAFTPTSourceBilling"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -624,59 +624,59 @@
                                         <xs:element name="Line" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="LineNumber"/>
-                                                  <xs:element name="OrderReferences"
-                                                  type="OrderReferences" minOccurs="0"
-                                                  maxOccurs="unbounded"/>
-                                                  <xs:element ref="ProductCode"/>
-                                                  <xs:element ref="ProductDescription"/>
-                                                  <xs:element ref="Quantity"/>
-                                                  <xs:element ref="UnitOfMeasure"/>
-                                                  <xs:element ref="UnitPrice"/>
-                                                  <xs:element ref="TaxBase" minOccurs="0"/>
-                                                  <xs:element ref="TaxPointDate"/>
-                                                  <xs:element name="References" type="References"
-                                                  minOccurs="0" maxOccurs="unbounded"/>
-                                                  <xs:element ref="Description"/>
-                                                  <xs:element name="ProductSerialNumber"
-                                                  type="ProductSerialNumber" minOccurs="0"/>
-                                                  <xs:choice>
-                                                  <xs:element ref="DebitAmount"/>
-                                                  <xs:element ref="CreditAmount"/>
-                                                  </xs:choice>
-                                                  <xs:element name="Tax" type="Tax" minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionReason" minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-                                                  <xs:element ref="SettlementAmount" minOccurs="0"/>
-                                                  <xs:element name="CustomsInformation"
-                                                  type="CustomsInformation" minOccurs="0"/>
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element name="OrderReferences"
+                                                                type="OrderReferences" minOccurs="0"
+                                                                maxOccurs="unbounded"/>
+                                                    <xs:element ref="ProductCode"/>
+                                                    <xs:element ref="ProductDescription"/>
+                                                    <xs:element ref="Quantity"/>
+                                                    <xs:element ref="UnitOfMeasure"/>
+                                                    <xs:element ref="UnitPrice"/>
+                                                    <xs:element ref="TaxBase" minOccurs="0"/>
+                                                    <xs:element ref="TaxPointDate"/>
+                                                    <xs:element name="References" type="References"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xs:element ref="Description"/>
+                                                    <xs:element name="ProductSerialNumber"
+                                                                type="ProductSerialNumber" minOccurs="0"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element name="Tax" type="Tax" minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionReason" minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element ref="SettlementAmount" minOccurs="0"/>
+                                                    <xs:element name="CustomsInformation"
+                                                                type="CustomsInformation" minOccurs="0"/>
                                                 </xs:sequence>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
                                                             false()
                                                         else
                                                             true()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxBase and ns:UnitPrice != 0)) then
                                                             false()
                                                         else
                                                             true()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxBase and ns:DebitAmount != 0) or (ns:TaxBase and ns:CreditAmount != 0)) then
                                                             false()
                                                         else
@@ -687,11 +687,11 @@
                                         <xs:element name="DocumentTotals">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="TaxPayable"/>
-                                                  <xs:element ref="NetTotal"/>
-                                                  <xs:element ref="GrossTotal"/>
-                                                  <xs:element name="Currency" type="Currency"
-                                                  minOccurs="0"/>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <xs:element name="Currency" type="Currency"
+                                                                minOccurs="0"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -721,64 +721,64 @@
                                         <xs:element name="DocumentStatus">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="PaymentStatus"/>
-                                                  <xs:element ref="PaymentStatusDate"/>
-                                                  <xs:element ref="Reason" minOccurs="0"/>
-                                                  <xs:element ref="SourceID"/>
-                                                  <xs:element name="SourcePayment"
-                                                  type="SAFTPTSourcePayment"/>
+                                                    <xs:element ref="PaymentStatus"/>
+                                                    <xs:element ref="PaymentStatusDate"/>
+                                                    <xs:element ref="Reason" minOccurs="0"/>
+                                                    <xs:element ref="SourceID"/>
+                                                    <xs:element name="SourcePayment"
+                                                                type="SAFTPTSourcePayment"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="PaymentMethod" type="PaymentMethod"
-                                            minOccurs="0" maxOccurs="unbounded"/>
+                                                    minOccurs="0" maxOccurs="unbounded"/>
                                         <xs:element ref="SourceID"/>
                                         <xs:element ref="SystemEntryDate"/>
                                         <xs:element ref="CustomerID"/>
                                         <xs:element name="Line" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="LineNumber"/>
-                                                  <xs:element name="SourceDocumentID"
-                                                  maxOccurs="unbounded">
-                                                  <xs:complexType>
-                                                  <xs:sequence>
-                                                  <xs:element ref="OriginatingON"/>
-                                                  <xs:element ref="InvoiceDate"/>
-                                                  <xs:element ref="Description" minOccurs="0"/>
-                                                  </xs:sequence>
-                                                  </xs:complexType>
-                                                  </xs:element>
-                                                  <xs:element ref="SettlementAmount" minOccurs="0"/>
-                                                  <xs:choice>
-                                                  <xs:element ref="DebitAmount"/>
-                                                  <xs:element ref="CreditAmount"/>
-                                                  </xs:choice>
-                                                  <xs:element name="Tax" type="PaymentTax"
-                                                  minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionReason" minOccurs="0"/>
-                                                  <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+                                                    <xs:element ref="LineNumber"/>
+                                                    <xs:element name="SourceDocumentID"
+                                                                maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element ref="OriginatingON"/>
+                                                                <xs:element ref="InvoiceDate"/>
+                                                                <xs:element ref="Description" minOccurs="0"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element ref="SettlementAmount" minOccurs="0"/>
+                                                    <xs:choice>
+                                                        <xs:element ref="DebitAmount"/>
+                                                        <xs:element ref="CreditAmount"/>
+                                                    </xs:choice>
+                                                    <xs:element name="Tax" type="PaymentTax"
+                                                                minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionReason" minOccurs="0"/>
+                                                    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
                                                 </xs:sequence>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
                                                             true()
                                                         else
                                                             false()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
                                                             false()
                                                         else
                                                             true()"/>
                                                 <xs:assert
-                                                  test="
+                                                    test="
                                                         if (../ns:PaymentType eq 'RC' and not(ns:Tax)) then
                                                             false()
                                                         else
@@ -789,24 +789,24 @@
                                         <xs:element name="DocumentTotals">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                  <xs:element ref="TaxPayable"/>
-                                                  <xs:element ref="NetTotal"/>
-                                                  <xs:element ref="GrossTotal"/>
-                                                  <!-- O conteudo desta estrutura Settlement representa o somatorio dos descontos reflectidos no elemento SettlementAmount das linhas do recibo. Trata-se de um raciocinio diverso da tabela 4.1 SalesInvoices -->
-                                                  <xs:element name="Settlement" minOccurs="0">
-                                                  <xs:complexType>
-                                                  <xs:sequence>
-                                                  <xs:element ref="SettlementAmount"/>
-                                                  </xs:sequence>
-                                                  </xs:complexType>
-                                                  </xs:element>
-                                                  <xs:element name="Currency" type="Currency"
-                                                  minOccurs="0"/>
+                                                    <xs:element ref="TaxPayable"/>
+                                                    <xs:element ref="NetTotal"/>
+                                                    <xs:element ref="GrossTotal"/>
+                                                    <!-- O conteudo desta estrutura Settlement representa o somatorio dos descontos reflectidos no elemento SettlementAmount das linhas do recibo. Trata-se de um raciocinio diverso da tabela 4.1 SalesInvoices -->
+                                                    <xs:element name="Settlement" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element ref="SettlementAmount"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Currency" type="Currency"
+                                                                minOccurs="0"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="WithholdingTax" type="WithholdingTax"
-                                            minOccurs="0" maxOccurs="unbounded"/>
+                                                    minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
                                     <xs:assert
                                         test="
@@ -924,7 +924,7 @@
     <xs:complexType name="Settlement">
         <xs:sequence>
             <xs:element name="SettlementDiscount" type="SAFPTtextTypeMandatoryMax30Car"
-                minOccurs="0"/>
+                        minOccurs="0"/>
             <xs:element name="SettlementAmount" type="SAFmonetaryType" minOccurs="0"/>
             <xs:element name="SettlementDate" type="SAFdateType" minOccurs="0"/>
             <xs:element name="PaymentTerms" type="SAFPTtextTypeMandatoryMax100Car" minOccurs="0"/>
@@ -979,7 +979,7 @@
         <xs:sequence>
             <xs:element ref="WithholdingTaxType" minOccurs="0"/>
             <xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car"
-                minOccurs="0"/>
+                        minOccurs="0"/>
             <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
         </xs:sequence>
     </xs:complexType>

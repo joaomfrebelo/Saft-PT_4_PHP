@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -51,10 +50,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
  * @author João Rebelo
  * @since 1.0.0
  */
-class InvoiceStatus
-    extends \Rebelo\Enum\AEnum
+class InvoiceStatus extends \Rebelo\Enum\AEnum
 {
-
     /**
      * N para Normal<br>
      *  <xs:enumeration value="N"/>
@@ -118,5 +115,4 @@ class InvoiceStatus
     {
         parent::__construct($value);
     }
-
 }

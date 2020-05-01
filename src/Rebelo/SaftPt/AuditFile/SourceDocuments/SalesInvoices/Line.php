@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,9 +31,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
  *
  * @author João Rebelo
  */
-class Line
-    extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
-    implements \Rebelo\SaftPt\AuditFile\SourceDocuments\ILineInvoiveAndWorking
+class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine implements \Rebelo\SaftPt\AuditFile\SourceDocuments\ILineInvoiveAndWorking
 {
 
     use \Rebelo\SaftPt\AuditFile\SourceDocuments\TLineInvoiveAndWorking;
@@ -43,5 +40,4 @@ class Line
     {
         parent::__construct();
     }
-
 }

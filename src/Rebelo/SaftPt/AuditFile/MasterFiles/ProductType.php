@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -52,10 +51,8 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
  * @author João Rebelo
  * @since 1.0.0
  */
-class ProductType
-    extends \Rebelo\Enum\AEnum
+class ProductType extends \Rebelo\Enum\AEnum
 {
-
     /**
      * P para Produtos
      * @since 1.0.0
@@ -120,5 +117,4 @@ class ProductType
     {
         parent::__construct($value);
     }
-
 }

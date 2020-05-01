@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -37,10 +36,8 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
  * @author João Rebelo
  * @since 1.0.0
  */
-class OrderReferences
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -101,11 +98,9 @@ class OrderReferences
     public function getOriginatingON(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->originatingON === null
-                        ?
-                        "null"
-                        : $this->originatingON));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->originatingON === null ?
+                        "null" : $this->originatingON));
 
         return $this->originatingON;
     }
@@ -120,17 +115,13 @@ class OrderReferences
      */
     public function setOriginatingON(?string $originatingON): void
     {
-        $this->originatingON = $originatingON === null
-            ?
-            null
-            :
+        $this->originatingON = $originatingON === null ?
+            null :
             $this->valTextMandMaxCar($originatingON, 60, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->originatingON === null
-                        ?
-                        "null"
-                        : $this->originatingON));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->originatingON === null ?
+                        "null" : $this->originatingON));
     }
 
     /**
@@ -142,11 +133,9 @@ class OrderReferences
     public function getOrderDate(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->orderDate === null
-                        ?
-                        "null"
-                        : $this->orderDate->format(RDate::SQL_DATE)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->orderDate === null ?
+                        "null" : $this->orderDate->format(RDate::SQL_DATE)));
 
         return $this->orderDate;
     }
@@ -162,11 +151,9 @@ class OrderReferences
     {
         $this->orderDate = $orderDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->orderDate === null
-                        ?
-                        "null"
-                        : $this->orderDate->format(RDate::SQL_DATE)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->orderDate === null ?
+                        "null" : $this->orderDate->format(RDate::SQL_DATE)));
     }
 
     /**
@@ -180,26 +167,23 @@ class OrderReferences
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ALine::N_LINE)
-        {
+        if ($node->getName() !== ALine::N_LINE) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            ALine::N_LINE, $node->getName()
+                ALine::N_LINE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $ordeRefNode = $node->addChild(static::N_ORDERREFERENCES);
 
-        if ($this->getOriginatingON() !== null)
-        {
+        if ($this->getOriginatingON() !== null) {
             $ordeRefNode->addChild(
                 static::N_ORIGINATINGON, $this->getOriginatingON()
             );
         }
-        if ($this->getOrderDate() !== null)
-        {
+        if ($this->getOrderDate() !== null) {
             $ordeRefNode->addChild(
                 static::N_ORDERDATE,
                 $this->getOrderDate()->format(RDate::SQL_DATE)
@@ -220,38 +204,30 @@ class OrderReferences
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_ORDERREFERENCES)
-        {
+        if ($node->getName() !== static::N_ORDERREFERENCES) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_ORDERREFERENCES, $node->getName());
+                static::N_ORDERREFERENCES, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($node->{static::N_ORIGINATINGON}->count() > 0)
-        {
+        if ($node->{static::N_ORIGINATINGON}->count() > 0) {
             $this->setOriginatingON(
                 (string) $node->{static::N_ORIGINATINGON}
             );
-        }
-        else
-        {
+        } else {
             $this->setOriginatingON(null);
         }
 
-        if ($node->{static::N_ORDERDATE}->count() > 0)
-        {
+        if ($node->{static::N_ORDERDATE}->count() > 0) {
             $this->setOrderDate(
                 RDate::parse(
                     RDate::SQL_DATE, (string) $node->{static::N_ORDERDATE}
                 )
             );
-        }
-        else
-        {
+        } else {
             $this->setOrderDate(null);
         }
     }
-
 }

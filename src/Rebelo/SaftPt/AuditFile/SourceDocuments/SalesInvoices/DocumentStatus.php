@@ -26,10 +26,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class DocumentStatus
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node Name
      * @since 1.0.0
@@ -136,8 +134,8 @@ class DocumentStatus
     public function getInvoiceStatus(): InvoiceStatus
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->invoiceStatus->get())));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->invoiceStatus->get())));
         return $this->invoiceStatus;
     }
 
@@ -153,8 +151,8 @@ class DocumentStatus
     {
         $this->invoiceStatus = $invoiceStatus;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->invoiceStatus->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->invoiceStatus->get()));
     }
 
     /**
@@ -166,8 +164,8 @@ class DocumentStatus
     public function getInvoiceStatusDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->invoiceStatusDate->format(
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->invoiceStatusDate->format(
                         RDate::DATE_T_TIME
         )));
         return $this->invoiceStatusDate;
@@ -184,8 +182,8 @@ class DocumentStatus
     {
         $this->invoiceStatusDate = $invoiceStatusDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->invoiceStatusDate->format(RDate::DATE_T_TIME)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->invoiceStatusDate->format(RDate::DATE_T_TIME)));
     }
 
     /**
@@ -198,10 +196,8 @@ class DocumentStatus
     public function getReason(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->reason === null
-                        ? "null"
-                        : $this->reason ));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->reason === null ? "null" : $this->reason ));
         return $this->reason;
     }
 
@@ -216,15 +212,11 @@ class DocumentStatus
      */
     public function setReason(?string $reason): void
     {
-        $this->reason = $reason === null
-            ? null
-            :
+        $this->reason = $reason === null ? null :
             static::valTextMandMaxCar($reason, 50, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->reason === null
-                        ? "null"
-                        : $this->reason));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->reason === null ? "null" : $this->reason));
     }
 
     /**
@@ -237,7 +229,7 @@ class DocumentStatus
     public function getSourceID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->sourceID));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
@@ -254,7 +246,7 @@ class DocumentStatus
     {
         $this->sourceID = static::valTextMandMaxCar($sourceID, 30, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->sourceID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->sourceID));
     }
 
     /**
@@ -266,8 +258,8 @@ class DocumentStatus
     public function getSourceBilling(): SourceBilling
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->sourceBilling->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->sourceBilling->get()));
         return $this->sourceBilling;
     }
 
@@ -282,8 +274,8 @@ class DocumentStatus
     {
         $this->sourceBilling = $sourceBilling;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->sourceBilling->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->sourceBilling->get()));
     }
 
     /**
@@ -297,12 +289,11 @@ class DocumentStatus
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Invoice::N_INVOICE)
-        {
+        if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            Invoice::N_INVOICE, $node->getName());
+                Invoice::N_INVOICE, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -318,8 +309,7 @@ class DocumentStatus
             $this->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
         );
         //<xs:element ref = "Reason" minOccurs = "0"/>
-        if ($this->getReason() !== null)
-        {
+        if ($this->getReason() !== null) {
             $nodeDocStatus->addChild(
                 static::N_REASON, $this->getReason()
             );
@@ -348,12 +338,11 @@ class DocumentStatus
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTSTATUS)
-        {
+        if ($node->getName() !== static::N_DOCUMENTSTATUS) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_DOCUMENTSTATUS, $node->getName());
+                static::N_DOCUMENTSTATUS, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -368,10 +357,8 @@ class DocumentStatus
                 (string) $node->{static::N_SOURCEBILLING}
         ));
         $this->setSourceID((string) $node->{static::N_SOURCEID});
-        if ($node->{static::N_REASON}->count() > 0)
-        {
+        if ($node->{static::N_REASON}->count() > 0) {
             $this->setReason((string) $node->{static::N_REASON});
         }
     }
-
 }

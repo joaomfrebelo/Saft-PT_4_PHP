@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -37,10 +36,8 @@ namespace Rebelo\SaftPt\AuditFile;
  * @author João Rebelo
  * @since 1.0.0
  */
-class PostalCodePT
-    extends AAuditFile
+class PostalCodePT extends AAuditFile
 {
-
     /**
      * <pre>
      * <xs:pattern value="([0-9]{4}-[0-9]{3})"/>
@@ -59,8 +56,7 @@ class PostalCodePT
     public function __construct(string $postalCodePT = null)
     {
         parent::__construct();
-        if ($postalCodePT !== null)
-        {
+        if ($postalCodePT !== null) {
             $this->setPostalCode($postalCodePT);
         }
     }
@@ -74,7 +70,7 @@ class PostalCodePT
     public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->postalCodePT));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCodePT));
         return $this->postalCodePT;
     }
 
@@ -87,16 +83,15 @@ class PostalCodePT
      */
     public function setPostalCode(string $postalCode): void
     {
-        if (\preg_match("/^([0-9]{4}-[0-9]{3})$/", $postalCode) !== 1)
-        {
+        if (\preg_match("/^([0-9]{4}-[0-9]{3})$/", $postalCode) !== 1) {
             $msg = "PostalCodePT must respect /^([0-9]{4}-[0-9]{3})$/";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->postalCodePT = $postalCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->postalCodePT));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCodePT));
     }
 
     /**
@@ -109,9 +104,9 @@ class PostalCodePT
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         $msg = "The xml node is created in the aadress class"
-            . $node->__toString();
+            .$node->__toString();
         \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            ->error(\sprintf(__METHOD__." '%s'", $msg));
         throw new AuditFileException($msg);
     }
 
@@ -125,10 +120,9 @@ class PostalCodePT
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         $msg = "The xml parse node is created in the aadress class "
-            . $node->__toString();
+            .$node->__toString();
         \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            ->error(\sprintf(__METHOD__." '%s'", $msg));
         throw new AuditFileException($msg);
     }
-
 }

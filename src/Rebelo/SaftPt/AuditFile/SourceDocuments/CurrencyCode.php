@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,10 +31,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
  *
  * @author João Rebelo
  */
-class CurrencyCode
-    extends \Rebelo\Enum\AEnum
+class CurrencyCode extends \Rebelo\Enum\AEnum
 {
-
     /**
      * Iso code
      * @since 1.0.0
@@ -1189,5 +1186,4 @@ class CurrencyCode
     {
         return parent::__construct($value);
     }
-
 }

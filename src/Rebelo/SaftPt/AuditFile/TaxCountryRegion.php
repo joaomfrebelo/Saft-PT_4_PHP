@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,10 +31,8 @@ namespace Rebelo\SaftPt\AuditFile;
  *
  * @author João Rebelo
  */
-class TaxCountryRegion
-    extends Country
+class TaxCountryRegion extends Country
 {
-
     const PT_AC = "PT-AC";
     const PT_MA = "PT-MA";
 
@@ -48,5 +45,4 @@ class TaxCountryRegion
     {
         parent::__construct($value);
     }
-
 }

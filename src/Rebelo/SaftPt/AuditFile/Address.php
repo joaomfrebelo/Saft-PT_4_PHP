@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -34,10 +33,8 @@ namespace Rebelo\SaftPt\AuditFile;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Address
-    extends AAddress
+class Address extends AAddress
 {
-
     /**
      * <xs:element ref="PostalCode"/>
      * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
@@ -64,7 +61,7 @@ class Address
     public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->postalCode));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCode));
         return $this->postalCode;
     }
 
@@ -79,9 +76,9 @@ class Address
     public function setPostalCode(string $postalCode): void
     {
         $this->postalCode = static::valTextMandMaxCar($postalCode, 20,
-                                                      __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->postalCode));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
     }
 
     /**
@@ -94,8 +91,7 @@ class Address
     {
         $this->country = $country;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->country->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->country->get()));
     }
 
     /**
@@ -106,7 +102,7 @@ class Address
     public function getCountry(): Country
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->country->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->country->get()));
         return $this->country;
     }
 
@@ -142,5 +138,4 @@ class Address
         $this->setPostalCode((string) $node->{static::N_POSTALCODE});
         $this->setCountry(new Country((string) $node->{static::N_COUNTRY}));
     }
-
 }

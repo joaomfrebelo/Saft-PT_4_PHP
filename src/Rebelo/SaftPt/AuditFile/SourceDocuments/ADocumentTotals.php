@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -34,10 +33,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *
  * @author João Rebelo
  */
-abstract class ADocumentTotals
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -113,7 +110,7 @@ abstract class ADocumentTotals
     public function getTaxPayable(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->taxPayable));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxPayable));
         return $this->taxPayable;
     }
 
@@ -127,16 +124,15 @@ abstract class ADocumentTotals
      */
     public function setTaxPayable(float $taxPayable): void
     {
-        if ($taxPayable < 0.0)
-        {
+        if ($taxPayable < 0.0) {
             $msg = "Tax Payable can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->taxPayable = $taxPayable;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->taxPayable));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxPayable));
     }
 
     /**
@@ -148,7 +144,7 @@ abstract class ADocumentTotals
     public function getNetTotal(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->netTotal));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->netTotal));
         return $this->netTotal;
     }
 
@@ -162,16 +158,15 @@ abstract class ADocumentTotals
      */
     public function setNetTotal(float $netTotal): void
     {
-        if ($netTotal < 0.0)
-        {
+        if ($netTotal < 0.0) {
             $msg = "Net Total can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->netTotal = $netTotal;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->netTotal));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->netTotal));
     }
 
     /**
@@ -183,7 +178,7 @@ abstract class ADocumentTotals
     public function getGrossTotal(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->grossTotal));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->grossTotal));
         return $this->grossTotal;
     }
 
@@ -197,16 +192,15 @@ abstract class ADocumentTotals
      */
     public function setGrossTotal(float $grossTotal): void
     {
-        if ($grossTotal < 0.0)
-        {
+        if ($grossTotal < 0.0) {
             $msg = "Gross Total can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->grossTotal = $grossTotal;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->grossTotal));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->grossTotal));
     }
 
     /**
@@ -218,10 +212,8 @@ abstract class ADocumentTotals
     public function getCurrency(): ?Currency
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->currency === null
-                        ? "null"
-                        : $this->currency->getCurrencyCode()->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->currency === null ? "null" : $this->currency->getCurrencyCode()->get()));
         return $this->currency;
     }
 
@@ -236,10 +228,8 @@ abstract class ADocumentTotals
     {
         $this->currency = $currency;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->currency === null
-                        ? "null"
-                        : $this->currency->getCurrencyCode()->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->currency === null ? "null" : $this->currency->getCurrencyCode()->get()));
     }
 
     /**
@@ -269,8 +259,7 @@ abstract class ADocumentTotals
 
         // In the Payment the Currency is in diferent order,
         // must be created in the Payments\DocumentTotals
-        if (false === ($this instanceof \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals))
-        {
+        if (false === ($this instanceof \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals)) {
             $this->createCurrencyNode($docTotalNode);
         }
         return $docTotalNode;
@@ -287,25 +276,21 @@ abstract class ADocumentTotals
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== static::N_DOCUMENTTOTALS) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            static::N_DOCUMENTTOTALS, $node->getName()
+                static::N_DOCUMENTTOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($this->getCurrency() !== null)
-        {
+        if ($this->getCurrency() !== null) {
 
             $this->getCurrency()->createXmlNode($node);
-        }
-        else
-        {
+        } else {
             \Logger::getLogger(\get_class($this))->trace(__METHOD__
-                . " No Currency defined to create XMML node");
+                ." No Currency defined to create XMML node");
         }
     }
 
@@ -321,20 +306,18 @@ abstract class ADocumentTotals
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== static::N_DOCUMENTTOTALS) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_DOCUMENTTOTALS, $node->getName());
+                static::N_DOCUMENTTOTALS, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setTaxPayable((float) $node->{static::N_TAXPAYABLE});
         $this->setNetTotal((float) $node->{static::N_NETTOTAL});
         $this->setGrossTotal((float) $node->{static::N_GROSSTOTAL});
-        if ($node->{static::N_CURRENCY}->count() > 0)
-        {
+        if ($node->{static::N_CURRENCY}->count() > 0) {
             $currency = new Currency();
             $currency->setCurrencyAmount(
                 (float) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYAMOUNT}
@@ -350,5 +333,4 @@ abstract class ADocumentTotals
             $this->setCurrency($currency);
         }
     }
-
 }

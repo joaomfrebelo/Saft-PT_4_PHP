@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -28,34 +27,99 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 /**
- * Description of ALine
+ * ALine, abstract class of Line
  *
  * @author João Rebelo
+ * @since 1.0.0
  */
-class ALine
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
      */
     const N_LINE = "Line";
 
-//<xs:element ref="LineNumber"/>
+    /**
+     * <xs:element ref="LineNumber"/>
+     * Node Name
+     * @since 1.0.0
+     */
+    const N_LINENUMBER = "LineNumber";
+
+    /**
+     * <xs:element ref="LineNumber"/>
+     *
+     * @var int
+     * @since 1.0.0
+     */
+    private int $lineNumber;
+
+    /**
+     * <xs:element ref="LineNumber"/>
+     * @since 1.0.0
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
+    /**
+     * Get LineNumber<br>
+     * <xs:element ref="LineNumber"/>
+     * @return int
+     * @since 1.0.0
+     */
+    public function getLineNumber(): int
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->lineNumber)));
+        return $this->lineNumber;
+    }
+
+    /**
+     * Set LineNumber<br>
+     * <xs:element ref="LineNumber"/>
+     * @param int $lineNumber
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
+    public function setLineNumber(int $lineNumber): void
+    {
+        if ($lineNumber < 1) {
+            $msg = "Line Number can not be less than 1";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new \Rebelo\SaftPt\AuditFile\AuditFileException($msg);
+        }
+        $this->lineNumber = $lineNumber;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->lineNumber));
+    }
+
+    /**
+     * Create common xml node
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-
+        
     }
 
+    /**
+     * Parse common
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-
+        
     }
-
 }

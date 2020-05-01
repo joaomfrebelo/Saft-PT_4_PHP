@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -48,10 +47,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class PaymentMethod
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * &lt;xs:element ref="PaymentMechanism" minOccurs="0"/&gt;<br>
      * Node name
@@ -103,10 +100,8 @@ class PaymentMethod
     public function getPaymentMechanism(): ?PaymentMechanism
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->paymentMechanism === null
-                        ? "null"
-                        : $this->paymentMechanism->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->paymentMechanism === null ? "null" : $this->paymentMechanism->get()));
         return $this->paymentMechanism;
     }
 
@@ -121,10 +116,8 @@ class PaymentMethod
     {
         $this->paymentMechanism = $paymentMechanism;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->paymentMechanism === null
-                        ? "null"
-                        : $this->paymentMechanism->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->paymentMechanism === null ? "null" : $this->paymentMechanism->get()));
     }
 
     /**
@@ -136,8 +129,8 @@ class PaymentMethod
     public function getPaymentAmount(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->paymentAmount)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->paymentAmount)));
         return $this->paymentAmount;
     }
 
@@ -151,17 +144,16 @@ class PaymentMethod
      */
     public function setPaymentAmount(float $paymentAmount): void
     {
-        if ($paymentAmount < 0.0)
-        {
+        if ($paymentAmount < 0.0) {
             $msg = "PaymentAmount can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->paymentAmount = $paymentAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             \strval($this->paymentAmount)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    \strval($this->paymentAmount)));
     }
 
     /**
@@ -173,8 +165,8 @@ class PaymentMethod
     public function getPaymentDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->paymentDate->format(RDate::SQL_DATE)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->paymentDate->format(RDate::SQL_DATE)));
         return $this->paymentDate;
     }
 
@@ -189,8 +181,8 @@ class PaymentMethod
     {
         $this->paymentDate = $paymentDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->paymentDate->format(RDate::SQL_DATE)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->paymentDate->format(RDate::SQL_DATE)));
     }
 
     /**
@@ -205,19 +197,17 @@ class PaymentMethod
 
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
             $msg = \sprintf("Node name should be '%s' or '%s' but is '%s",
-                            Payment::N_PAYMENT,
-                            ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+                Payment::N_PAYMENT, ADocumentTotals::N_DOCUMENTTOTALS,
+                $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($this->getPaymentMechanism() !== null)
-        {
+        if ($this->getPaymentMechanism() !== null) {
             $node->addChild(
                 static::N_PAYMENTMECHANISM, $this->getPaymentMechanism()->get());
         }
@@ -244,25 +234,21 @@ class PaymentMethod
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
             $msg = \sprintf("Node name should be '%s' or '%s' but is '%s'",
-                            Payment::N_PAYMENT,
-                            ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+                Payment::N_PAYMENT, ADocumentTotals::N_DOCUMENTTOTALS,
+                $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($node->{static::N_PAYMENTMECHANISM}->count() > 0)
-        {
+        if ($node->{static::N_PAYMENTMECHANISM}->count() > 0) {
             $this->setPaymentMechanism(
                 new PaymentMechanism((string) $node->{static::N_PAYMENTMECHANISM})
             );
-        }
-        else
-        {
+        } else {
             $this->setPaymentMechanism(null);
         }
 
@@ -275,5 +261,4 @@ class PaymentMethod
             )
         );
     }
-
 }

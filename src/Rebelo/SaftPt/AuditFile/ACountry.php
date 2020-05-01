@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,10 +31,8 @@ namespace Rebelo\SaftPt\AuditFile;
  *
  * @author João Rebelo
  */
-abstract class ACountry
-    extends \Rebelo\Enum\AEnum
+abstract class ACountry extends \Rebelo\Enum\AEnum
 {
-
     const ISO_AD = "AD";
     const ISO_AE = "AE";
     const ISO_AF = "AF";
@@ -296,5 +293,4 @@ abstract class ACountry
     {
         parent::__construct($value);
     }
-
 }

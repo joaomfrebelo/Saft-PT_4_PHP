@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -54,10 +53,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class MasterFiles
-    extends AAuditFile
+class MasterFiles extends AAuditFile
 {
-
     /**
      * <xs:element name="MasterFiles">
      * @since 1.0.0
@@ -148,9 +145,7 @@ class MasterFiles
     {
         parent::__construct();
         $this->setExportType(
-            $exportType === null
-                ? new ExportType(ExportType::C)
-                :
+            $exportType === null ? new ExportType(ExportType::C) :
                 $exportType
         );
     }
@@ -163,8 +158,7 @@ class MasterFiles
     public function getExportType(): ExportType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->exportType->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->exportType->get()));
         return $this->exportType;
     }
 
@@ -178,8 +172,8 @@ class MasterFiles
     {
         $this->exportType = $exportType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->exportType->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->exportType->get()));
     }
 
     /**
@@ -192,7 +186,7 @@ class MasterFiles
     {
         $msg = "GeneralLedgerAccounts not implemented";
         \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            ->error(\sprintf(__METHOD__." '%s'", $msg));
         throw new \Rebelo\SaftPt\AuditFile\NotImplemented($msg);
     }
 
@@ -204,7 +198,7 @@ class MasterFiles
      */
     public function getCustomer(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
         return $this->customer;
     }
 
@@ -217,19 +211,16 @@ class MasterFiles
      */
     public function addToCustomer(Customer $customer): int
     {
-        if (\count($this->customer) === 0)
-        {
+        if (\count($this->customer) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->customer);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->customer[$index] = $customer;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
+            ->debug(__METHOD__." add to stack");
         return $index;
     }
 
@@ -267,7 +258,7 @@ class MasterFiles
      */
     public function getSupplier(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
         return $this->supplier;
     }
 
@@ -280,19 +271,16 @@ class MasterFiles
      */
     public function addToSupplier(Supplier $supplier): int
     {
-        if (\count($this->supplier) === 0)
-        {
+        if (\count($this->supplier) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->supplier);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->supplier[$index] = $supplier;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
+            ->debug(__METHOD__." add to stack");
         return $index;
     }
 
@@ -331,7 +319,7 @@ class MasterFiles
     public function getProduct(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__ . " getted");
+            ->info(__METHOD__." getted");
         return $this->product;
     }
 
@@ -344,19 +332,16 @@ class MasterFiles
      */
     public function addToProduct(Product $product): int
     {
-        if (\count($this->product) === 0)
-        {
+        if (\count($this->product) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->product);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->product[$index] = $product;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
+            ->debug(__METHOD__." add to stack");
         return $index;
     }
 
@@ -404,7 +389,7 @@ class MasterFiles
     public function getTaxTableEntry(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__ . " getted");
+            ->info(__METHOD__." getted");
         return $this->taxTableEntry;
     }
 
@@ -426,19 +411,16 @@ class MasterFiles
      */
     public function addToTaxTableEntry(TaxTableEntry $taxTableEntry): int
     {
-        if (\count($this->taxTableEntry) === 0)
-        {
+        if (\count($this->taxTableEntry) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
 // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->taxTableEntry);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->taxTableEntry[$index] = $taxTableEntry;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
+            ->debug(__METHOD__." add to stack");
         return $index;
     }
 
@@ -479,12 +461,11 @@ class MasterFiles
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== AuditFile::N_AUDITFILE)
-        {
+        if ($node->getName() !== AuditFile::N_AUDITFILE) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            AuditFile::N_AUDITFILE, $node->getName());
+                AuditFile::N_AUDITFILE, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -493,10 +474,8 @@ class MasterFiles
         // GeneralLedgerAccounts is not implemented
         //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getCustomer()) > 0 &&
-            $this->exportType->get() === ExportType::C)
-        {
-            array_map(function($customer) use ($masterNode)
-            {
+            $this->exportType->get() === ExportType::C) {
+            array_map(function($customer) use ($masterNode) {
                 /* @var $customer Customer */
                 $customer->createXmlNode($masterNode);
             }, $this->getCustomer());
@@ -504,31 +483,25 @@ class MasterFiles
 
         //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getSupplier()) > 0 &&
-            $this->exportType->get() === ExportType::C)
-        {
-            array_map(function($supplier) use ($masterNode)
-            {
+            $this->exportType->get() === ExportType::C) {
+            array_map(function($supplier) use ($masterNode) {
                 /* @var $supplier Supplier */
                 $supplier->createXmlNode($masterNode);
             }, $this->getSupplier());
         }
         //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getProduct()) > 0 &&
-            $this->exportType->get() === ExportType::C)
-        {
-            array_map(function($product) use ($masterNode)
-            {
+            $this->exportType->get() === ExportType::C) {
+            array_map(function($product) use ($masterNode) {
                 /* @var $product Product */
                 $product->createXmlNode($masterNode);
             }, $this->getProduct());
         }
 
         //<xs:element ref="TaxTable" minOccurs="0"/>
-        if (\count($this->getTaxTableEntry()) > 0)
-        {
+        if (\count($this->getTaxTableEntry()) > 0) {
             $taxTableNode = $masterNode->addChild(static::N_TAXTABLE);
-            array_map(function($taxTableEntry) use ($taxTableNode)
-            {
+            array_map(function($taxTableEntry) use ($taxTableNode) {
                 /* @var $taxTableEntry TaxTableEntry */
                 $taxTableEntry->createXmlNode($taxTableNode);
             }, $this->getTaxTableEntry());
@@ -547,22 +520,19 @@ class MasterFiles
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_MASTERFILES)
-        {
+        if ($node->getName() !== static::N_MASTERFILES) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_MASTERFILES, $node->getName());
+                static::N_MASTERFILES, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         // GeneralLedgerAccounts is not implemented
         //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
         $countCustomer = $node->{Customer::N_CUSTOMER}->count();
-        if ($countCustomer > 0)
-        {
-            for ($n = 0; $n < $countCustomer; $n++)
-            {
+        if ($countCustomer > 0) {
+            for ($n = 0; $n < $countCustomer; $n++) {
                 $customer = new Customer();
                 $customer->parseXmlNode($node->{Customer::N_CUSTOMER}[$n]);
                 $this->addToCustomer($customer);
@@ -571,10 +541,8 @@ class MasterFiles
 
         //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
         $countSupplier = $node->{Supplier::N_SUPPLIER}->count();
-        if ($countSupplier > 0)
-        {
-            for ($n = 0; $n < $countSupplier; $n++)
-            {
+        if ($countSupplier > 0) {
+            for ($n = 0; $n < $countSupplier; $n++) {
                 $supplier = new Supplier();
                 $supplier->parseXmlNode($node->{Supplier::N_SUPPLIER}[$n]);
                 $this->addToSupplier($supplier);
@@ -583,10 +551,8 @@ class MasterFiles
 
         //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
         $countProduct = $node->{Product::N_PRODUCT}->count();
-        if ($countProduct > 0)
-        {
-            for ($n = 0; $n < $countProduct; $n++)
-            {
+        if ($countProduct > 0) {
+            for ($n = 0; $n < $countProduct; $n++) {
                 $product = new Product();
                 $product->parseXmlNode($node->{Product::N_PRODUCT}[$n]);
                 $this->addToProduct($product);
@@ -594,14 +560,11 @@ class MasterFiles
         }
 
         //<xs:element ref="TaxTable" minOccurs="0"/>
-        if ($node->{static::N_TAXTABLE}->count() > 0)
-        {
+        if ($node->{static::N_TAXTABLE}->count() > 0) {
             $countTaxTableEntry = $node->{static::N_TAXTABLE}
                 ->{TaxTableEntry::N_TAXTABLEENTRY}->count();
-            if ($countTaxTableEntry > 0)
-            {
-                for ($n = 0; $n < $countTaxTableEntry; $n++)
-                {
+            if ($countTaxTableEntry > 0) {
+                for ($n = 0; $n < $countTaxTableEntry; $n++) {
                     $taxTableEntry = new TaxTableEntry();
                     $taxTableEntry->parseXmlNode(
                         $node->{static::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}[$n]
@@ -611,5 +574,4 @@ class MasterFiles
             }
         }
     }
-
 }

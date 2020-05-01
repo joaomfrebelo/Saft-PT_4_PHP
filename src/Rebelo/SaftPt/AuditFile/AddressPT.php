@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -36,10 +35,8 @@ use Rebelo\SaftPt\AuditFile\PostalCodePT;
  * @author João Rebelo
  * @since 1.0.0
  */
-class AddressPT
-    extends AAddress
+class AddressPT extends AAddress
 {
-
     /**
      * <xs:element name="PostalCode" type="PostalCodePT"/>
      * @var PostalCodePT
@@ -65,7 +62,7 @@ class AddressPT
     public function getCountry(): Country
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->country->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->country->get()));
         return $this->country;
     }
 
@@ -78,8 +75,8 @@ class AddressPT
     public function getPostalCode(): PostalCodePT
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->postalCodePT->getPostalCode()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->postalCodePT->getPostalCode()));
         return $this->postalCodePT;
     }
 
@@ -94,8 +91,8 @@ class AddressPT
     {
         $this->postalCodePT = $postalCodePT;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->postalCodePT->getPostalCode()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->postalCodePT->getPostalCode()));
     }
 
     /**
@@ -133,5 +130,4 @@ class AddressPT
             )
         );
     }
-
 }

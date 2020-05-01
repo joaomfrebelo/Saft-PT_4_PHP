@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -34,10 +33,8 @@ namespace Rebelo\SaftPt\AuditFile;
  * @author João Rebelo
  * @since 1.0.0
  */
-class SupplierAddress
-    extends AAddress
+class SupplierAddress extends AAddress
 {
-
     /**
      * <xs:element ref="Country"/>
      * @var Country
@@ -71,7 +68,7 @@ class SupplierAddress
     public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->postalCode));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCode));
         return $this->postalCode;
     }
 
@@ -86,9 +83,9 @@ class SupplierAddress
     public function setPostalCode(string $postalCode): void
     {
         $this->postalCode = static::valTextMandMaxCar($postalCode, 20,
-                                                      __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->postalCode));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
     }
 
     /**
@@ -101,8 +98,8 @@ class SupplierAddress
     {
         $this->suplierCountry = $country;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->suplierCountry->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->suplierCountry->get()));
     }
 
     /**
@@ -113,8 +110,8 @@ class SupplierAddress
     public function getCountry(): SupplierCountry
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->suplierCountry->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->suplierCountry->get()));
         return $this->suplierCountry;
     }
 
@@ -150,5 +147,4 @@ class SupplierAddress
         $this->setPostalCode((string) $node->{static::N_POSTALCODE});
         $this->setCountry(new SupplierCountry((string) $node->{static::N_COUNTRY}));
     }
-
 }

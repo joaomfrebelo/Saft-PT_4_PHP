@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -69,23 +68,18 @@ abstract class AAuditFile
     {
         $refClass = new \ReflectionClass($this);
 
-        foreach ($refClass->getProperties() as $prop)
-        {
+        foreach ($refClass->getProperties() as $prop) {
             /* @var $prop \ReflectionProperty */
             $prop->setAccessible(true);
-            try
-            {
+            try {
                 $value = $prop->getValue($this);
-                if (\is_object($value))
-                {
+                if (\is_object($value)) {
                     $prop->setValue($this, clone $value);
                 }
-            }
-            catch (\Error $e)
-            {
+            } catch (\Error $e) {
                 \Logger::getLogger(\get_class($this))
-                    ->debug(\sprintf(__METHOD__ . " cloning error '%s'",
-                                     $e->getMessage()));
+                    ->debug(\sprintf(__METHOD__." cloning error '%s'",
+                            $e->getMessage()));
             }
         }
     }
@@ -105,11 +99,10 @@ abstract class AAuditFile
                                              string $method): string
     {
         $subString = \substr(\trim($string), 0, $length);
-        if (strlen($subString) === 0 || is_bool($subString))
-        {
+        if (strlen($subString) === 0 || is_bool($subString)) {
             $msg = "string can not be empty";
             \Logger::getLogger(__CLASS__)
-                ->error(\sprintf($method . " '%s'", $msg));
+                ->error(\sprintf($method." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         return $subString;
@@ -125,12 +118,9 @@ abstract class AAuditFile
     {
         if ((preg_match("/^[1235689]{1}[0-9]{8}$/", \strval($nif)) &&
             self::validateMod11auxFunction(\strval($nif))) ||
-            $nif === 999999990)
-        {
+            $nif === 999999990) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -146,39 +136,29 @@ abstract class AAuditFile
      */
     public static function validateMod11auxFunction(string $nif): bool
     {
-        if (\strlen($nif) < 9)
-        {
+        if (\strlen($nif) < 9) {
             $nif = str_pad($nif, 9, 0, STR_PAD_LEFT);
         }
         $checkerVal = 0;
         $c          = array();
-        for ($i = strlen($nif) - 1; $i >= 0; $i--)
-        {
+        for ($i = strlen($nif) - 1; $i >= 0; $i--) {
             $c[] = $nif{$i};
         }
 
-        foreach ($c as $k => $v)
-        {
+        foreach ($c as $k => $v) {
             $checkerVal += ($k + 1) * $v;
         }
-        if (($checkerVal % 11) === 0)
-        {
+        if (($checkerVal % 11) === 0) {
             return true;
-        }
-        else
-        {
+        } else {
             $checkerVal = 0;
             $c[0]       = 10;
-            foreach ($c as $k => $v)
-            {
+            foreach ($c as $k => $v) {
                 $checkerVal += ($k + 1) * $v;
             }
-            if (($checkerVal % 11) === 0)
-            {
+            if (($checkerVal % 11) === 0) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -200,5 +180,4 @@ abstract class AAuditFile
     {
         return \number_format($float, $decimals, $dec_point, $thousands_sep);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,10 +31,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
  *
  * @author João Rebelo
  */
-class Payment
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Payment extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     const N_PAYMENT = "Payment";
 
     /**
@@ -58,7 +55,6 @@ class Payment
 
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-
+        
     }
-
 }

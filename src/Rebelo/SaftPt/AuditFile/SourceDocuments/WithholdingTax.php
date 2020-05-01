@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -37,10 +36,8 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
  * @author João Rebelo
  * @since 1.0.0
  */
-class WithholdingTax
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -112,11 +109,9 @@ class WithholdingTax
     public function getWithholdingTaxType(): ?WithholdingTaxType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->withholdingTaxType === null
-                        ?
-                        "null"
-                        : $this->withholdingTaxType->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->withholdingTaxType === null ?
+                        "null" : $this->withholdingTaxType->get()));
 
         return $this->withholdingTaxType;
     }
@@ -132,11 +127,9 @@ class WithholdingTax
     {
         $this->withholdingTaxType = $WithholdingTaxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->withholdingTaxType === null
-                        ?
-                        "null"
-                        : $this->withholdingTaxType->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->withholdingTaxType === null ?
+                        "null" : $this->withholdingTaxType->get()));
     }
 
     /**
@@ -148,11 +141,9 @@ class WithholdingTax
     public function getWithholdingTaxDescription(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->WithholdingTaxDescription === null
-                        ?
-                        "null"
-                        : $this->WithholdingTaxDescription));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->WithholdingTaxDescription === null ?
+                        "null" : $this->WithholdingTaxDescription));
         return $this->WithholdingTaxDescription;
     }
 
@@ -166,17 +157,13 @@ class WithholdingTax
      */
     public function setWithholdingTaxDescription(?string $WithholdingTaxDescription): void
     {
-        $this->WithholdingTaxDescription = $WithholdingTaxDescription === null
-            ?
-            null
-            : $this->valTextMandMaxCar($WithholdingTaxDescription, 60,
-                                       __METHOD__);
+        $this->WithholdingTaxDescription = $WithholdingTaxDescription === null ?
+            null : $this->valTextMandMaxCar($WithholdingTaxDescription, 60,
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->WithholdingTaxDescription === null
-                        ?
-                        "null"
-                        : $this->WithholdingTaxDescription));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->WithholdingTaxDescription === null ?
+                        "null" : $this->WithholdingTaxDescription));
     }
 
     /**
@@ -188,8 +175,8 @@ class WithholdingTax
     public function getWithholdingTaxAmount(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->WithholdingTaxAmount)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->WithholdingTaxAmount)));
         return $this->WithholdingTaxAmount;
     }
 
@@ -203,17 +190,16 @@ class WithholdingTax
      */
     public function setWithholdingTaxAmount(float $WithholdingTaxAmount): void
     {
-        if ($WithholdingTaxAmount < 0.0)
-        {
+        if ($WithholdingTaxAmount < 0.0) {
             $msg = "Withholding tax amount can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->WithholdingTaxAmount = $WithholdingTaxAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             \strval($this->WithholdingTaxAmount)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    \strval($this->WithholdingTaxAmount)));
     }
 
     /**
@@ -227,27 +213,23 @@ class WithholdingTax
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== Invoice::N_INVOICE)
-        {
+        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf("Node name should be '%s' or '%s' but is '%s",
-                            Payment::N_PAYMENT, Invoice::N_INVOICE,
-                            $node->getName()
+                Payment::N_PAYMENT, Invoice::N_INVOICE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $withholTaxNode = $node->addChild(static::N_WITHHOLDINGTAX);
-        if ($this->getWithholdingTaxType() !== null)
-        {
+        if ($this->getWithholdingTaxType() !== null) {
             $withholTaxNode->addChild(
                 static::N_WITHHOLDINGTAXTYPE,
                 $this->getWithholdingTaxType()->get()
             );
         }
-        if ($this->getWithholdingTaxDescription() !== null)
-        {
+        if ($this->getWithholdingTaxDescription() !== null) {
             $withholTaxNode->addChild(
                 static::N_WITHHOLDINGTAXDESCRIPTION,
                 $this->getWithholdingTaxDescription()
@@ -272,35 +254,28 @@ class WithholdingTax
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_WITHHOLDINGTAX)
-        {
+        if ($node->getName() !== static::N_WITHHOLDINGTAX) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_WITHHOLDINGTAX, $node->getName());
+                static::N_WITHHOLDINGTAX, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($node->{static::N_WITHHOLDINGTAXTYPE}->count() > 0)
-        {
+        if ($node->{static::N_WITHHOLDINGTAXTYPE}->count() > 0) {
             $taxType = new WithholdingTaxType(
                 (string) $node->{static::N_WITHHOLDINGTAXTYPE}
             );
             $this->setWithholdingTaxType($taxType);
-        }
-        else
-        {
+        } else {
             $this->setWithholdingTaxType(null);
         }
 
-        if ($node->{static::N_WITHHOLDINGTAXDESCRIPTION}->count() > 0)
-        {
+        if ($node->{static::N_WITHHOLDINGTAXDESCRIPTION}->count() > 0) {
             $this->setWithholdingTaxDescription(
                 (string) $node->{static::N_WITHHOLDINGTAXDESCRIPTION}
             );
-        }
-        else
-        {
+        } else {
             $this->setWithholdingTaxDescription(null);
         }
 
@@ -308,5 +283,4 @@ class WithholdingTax
             (float) $node->{static::N_WITHHOLDINGTAXAMOUNT}
         );
     }
-
 }

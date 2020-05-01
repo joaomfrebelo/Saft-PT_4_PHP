@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -48,10 +47,8 @@ use Rebelo\Date\Date as RDate;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Settlement
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      *
@@ -144,10 +141,8 @@ class Settlement
     public function getSettlementDiscount(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->settlementDiscount === null
-                        ? "null"
-                        : $this->settlementDiscount));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->settlementDiscount === null ? "null" : $this->settlementDiscount));
         return $this->settlementDiscount;
     }
 
@@ -162,16 +157,12 @@ class Settlement
      */
     public function setSettlementDiscount(?string $settlementDiscount): void
     {
-        $this->settlementDiscount = $settlementDiscount === null
-            ?
-            $settlementDiscount
-            :
+        $this->settlementDiscount = $settlementDiscount === null ?
+            $settlementDiscount :
             $this->valTextMandMaxCar($settlementDiscount, 30, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->settlementDiscount === null
-                        ? "null"
-                        : $this->settlementDiscount));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->settlementDiscount === null ? "null" : $this->settlementDiscount));
     }
 
     /**
@@ -183,10 +174,8 @@ class Settlement
     public function getSettlementAmount(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->settlementAmount === null
-                        ? "null"
-                        : \strval($this->settlementAmount)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)));
 
         return $this->settlementAmount;
     }
@@ -201,19 +190,16 @@ class Settlement
      */
     public function setSettlementAmount(?float $settlementAmount): void
     {
-        if ($settlementAmount < 0.0)
-        {
+        if ($settlementAmount < 0.0) {
             $msg = "SettlementAmount can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->settlementAmount = $settlementAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->settlementAmount === null
-                        ? "null"
-                        : \strval($this->settlementAmount)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)));
     }
 
     /**
@@ -225,10 +211,8 @@ class Settlement
     public function getSettlementDate(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->settlementDate === null
-                        ? "null"
-                        : $this->settlementDate->format(RDate::SQL_DATE)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->settlementDate === null ? "null" : $this->settlementDate->format(RDate::SQL_DATE)));
 
         return $this->settlementDate;
     }
@@ -244,10 +228,8 @@ class Settlement
     {
         $this->settlementDate = $settlementDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->settlementDate === null
-                        ? "null"
-                        : $this->settlementDate->format(RDate::SQL_DATE)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->settlementDate === null ? "null" : $this->settlementDate->format(RDate::SQL_DATE)));
     }
 
     /**
@@ -259,10 +241,8 @@ class Settlement
     public function getPaymentTerms(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->paymentTerms === null
-                        ? "null"
-                        : $this->paymentTerms));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->paymentTerms === null ? "null" : $this->paymentTerms));
 
         return $this->paymentTerms;
     }
@@ -277,16 +257,12 @@ class Settlement
      */
     public function setPaymentTerms(?string $paymentTerms): void
     {
-        $this->paymentTerms = $paymentTerms === null
-            ?
-            $paymentTerms
-            :
+        $this->paymentTerms = $paymentTerms === null ?
+            $paymentTerms :
             $this->valTextMandMaxCar($paymentTerms, 100, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->paymentTerms === null
-                        ? "null"
-                        : $this->paymentTerms));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->paymentTerms === null ? "null" : $this->paymentTerms));
     }
 
     /**
@@ -300,36 +276,31 @@ class Settlement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+                ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $settlNode = $node->addChild(static::N_SETTLEMENT);
-        if ($this->getSettlementDiscount() !== null)
-        {
+        if ($this->getSettlementDiscount() !== null) {
             $settlNode->addChild(static::N_SETTLEMENTDISCOUNT,
-                                 $this->getSettlementDiscount());
+                $this->getSettlementDiscount());
         }
-        if ($this->getSettlementAmount() !== null)
-        {
+        if ($this->getSettlementAmount() !== null) {
             $settlNode->addChild(static::N_SETTLEMENTAMOUNT,
-                                 $this->floatFormat($this->getSettlementAmount()));
+                $this->floatFormat($this->getSettlementAmount()));
         }
-        if ($this->getSettlementDate() !== null)
-        {
+        if ($this->getSettlementDate() !== null) {
             $settlNode->addChild(static::N_SETTLEMENTDATE,
-                                 $this->getSettlementDate()->format(RDate::SQL_DATE));
+                $this->getSettlementDate()->format(RDate::SQL_DATE));
         }
-        if ($this->getPaymentTerms() !== null)
-        {
+        if ($this->getPaymentTerms() !== null) {
             $settlNode->addChild(static::N_PAYMENTTERMS,
-                                 $this->getPaymentTerms());
+                $this->getPaymentTerms());
         }
         return $settlNode;
     }
@@ -345,47 +316,37 @@ class Settlement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_SETTLEMENT)
-        {
+        if ($node->getName() !== static::N_SETTLEMENT) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_SETTLEMENT, $node->getName());
+                static::N_SETTLEMENT, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setSettlementDiscount(
-            $node->{static::N_SETTLEMENTDISCOUNT}->count() > 0
-                ?
-                (string) $node->{static::N_SETTLEMENTDISCOUNT}
-                :
+            $node->{static::N_SETTLEMENTDISCOUNT}->count() > 0 ?
+                (string) $node->{static::N_SETTLEMENTDISCOUNT} :
                 null
         );
 
         $this->setSettlementAmount(
-            $node->{static::N_SETTLEMENTAMOUNT}->count() > 0
-                ?
-                (float) $node->{static::N_SETTLEMENTAMOUNT}
-                :
+            $node->{static::N_SETTLEMENTAMOUNT}->count() > 0 ?
+                (float) $node->{static::N_SETTLEMENTAMOUNT} :
                 null
         );
 
         $this->setSettlementDate(
-            $node->{static::N_SETTLEMENTDATE}->count() > 0
-                ?
+            $node->{static::N_SETTLEMENTDATE}->count() > 0 ?
                 RDate::parse(RDate::SQL_DATE,
-                             (string) $node->{static::N_SETTLEMENTDATE})
-                :
+                    (string) $node->{static::N_SETTLEMENTDATE}) :
                 null
         );
 
         $this->setPaymentTerms(
-            $node->{static::N_PAYMENTTERMS}->count() > 0
-                ?
-                (string) $node->{static::N_PAYMENTTERMS}
-                :
+            $node->{static::N_PAYMENTTERMS}->count() > 0 ?
+                (string) $node->{static::N_PAYMENTTERMS} :
                 null
         );
     }
-
 }

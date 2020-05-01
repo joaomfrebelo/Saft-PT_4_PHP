@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -43,10 +42,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * XSD Type: CustomsDetails
  * @since 1.0.0
  */
-class CustomsDetails
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * <xs:complexType name="CustomsDetails">
      * @since 1.0.0
@@ -119,26 +116,22 @@ class CustomsDetails
     public function addToCNCode(string $cNCode): int
     {
         $regexp = "/^([0-9]{8})$/";
-        if (\preg_match($regexp, $cNCode) !== 1)
-        {
+        if (\preg_match($regexp, $cNCode) !== 1) {
             $msg = sprintf("CNcode doesn't match regexp '%s'", $regexp);
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        if (\count($this->cNCode) === 0)
-        {
+        if (\count($this->cNCode) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->cNCode);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->cNCode[$index] = $cNCode;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " CNcode add to index " . \strval($index));
+            __METHOD__, " CNcode add to index ".\strval($index));
 
         return $index;
     }
@@ -197,8 +190,7 @@ class CustomsDetails
      */
     public function setCNCode(array $cNCode): void
     {
-        foreach ($cNCode as $code)
-        {
+        foreach ($cNCode as $code) {
             $this->addToCNCode($code);
         }
     }
@@ -224,26 +216,22 @@ class CustomsDetails
     public function addToUNNumber(string $uNNumber): int
     {
         $regexp = "/^([0-9]{4})$/";
-        if (\preg_match($regexp, $uNNumber) !== 1)
-        {
+        if (\preg_match($regexp, $uNNumber) !== 1) {
             $msg = sprintf("UN Number doesn't match regexp '%s'", $regexp);
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        if (\count($this->uNNumber) === 0)
-        {
+        if (\count($this->uNNumber) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->uNNumber);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->uNNumber[$index] = $uNNumber;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " UN number add to index " . \strval($index));
+            __METHOD__, " UN number add to index ".\strval($index));
 
         return $index;
     }
@@ -302,8 +290,7 @@ class CustomsDetails
      */
     public function setUNNumber(array $uNNumber): void
     {
-        foreach ($uNNumber as $number)
-        {
+        foreach ($uNNumber as $number) {
             $this->addToUNNumber($number);
         }
     }
@@ -317,21 +304,18 @@ class CustomsDetails
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if (\count($this->cNCode) === 0 && \count($this->uNNumber) === 0)
-        {
+        if (\count($this->cNCode) === 0 && \count($this->uNNumber) === 0) {
             \Logger::getLogger(\get_class($this))->debug(__METHOD__,
-                                                         " No details to create node");
+                " No details to create node");
             return $node;
         }
 
         $cusDetail = $node->addChild(static::N_CUSTOMSDETAILS);
 
-        foreach ($this->cNCode as $cNode)
-        {
+        foreach ($this->cNCode as $cNode) {
             $cusDetail->addChild(static::N_CNCODE, $cNode);
         }
-        foreach ($this->uNNumber as $number)
-        {
+        foreach ($this->uNNumber as $number) {
             $cusDetail->addChild(static::N_UNNUMBER, $number);
         }
         return $cusDetail;
@@ -348,28 +332,24 @@ class CustomsDetails
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_CUSTOMSDETAILS)
-        {
+        if ($node->getName() !== static::N_CUSTOMSDETAILS) {
             $msg = sprintf("Node name should be '%s' and not '%s'",
-                           static::N_CUSTOMSDETAILS, $node->getName()
+                static::N_CUSTOMSDETAILS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $countCnCode = $node->{static::N_CNCODE}->count();
-        for ($y = 0; $y < $countCnCode; $y++)
-        {
+        for ($y = 0; $y < $countCnCode; $y++) {
             $cnNode = $node->{static::N_CNCODE}[$y];
             $this->addToCNCode((string) $cnNode);
         }
         $countUNNumber = $node->{static::N_UNNUMBER}->count();
-        for ($z = 0; $z < $countUNNumber; $z++)
-        {
+        for ($z = 0; $z < $countUNNumber; $z++) {
             $unNum = $node->{static::N_UNNUMBER}[$z];
             $this->addToUNNumber((string) $unNum);
         }
     }
-
 }

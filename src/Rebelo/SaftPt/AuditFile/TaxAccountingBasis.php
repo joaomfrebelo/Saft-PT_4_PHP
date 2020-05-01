@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -55,10 +54,8 @@ namespace Rebelo\SaftPt\AuditFile;
  * @since 1.0.0
  * @author João Rebelo
  */
-class TaxAccountingBasis
-    extends \Rebelo\Enum\AEnum
+class TaxAccountingBasis extends \Rebelo\Enum\AEnum
 {
-
     /**
      * <xs:enumeration value="C"/><br>
      * C para Contabilidade
@@ -123,5 +120,4 @@ class TaxAccountingBasis
     {
         parent::__construct($value);
     }
-
 }

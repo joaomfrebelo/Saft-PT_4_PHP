@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -46,10 +45,8 @@ use Rebelo\Enum\AEnum;
  *
  * @author João Rebelo
  */
-class SourceBilling
-    extends AEnum
+class SourceBilling extends AEnum
 {
-
     /**
      * P -> para documento produzido na aplicacao<br>
      * <xs:enumeration value="P"/>
@@ -76,5 +73,4 @@ class SourceBilling
     {
         parent::__construct($value);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,8 +31,7 @@ namespace Rebelo\SaftPt\AuditFile;
  *
  * @author João Rebelo
  */
-class SupplierCountry
-    extends ACountry
+class SupplierCountry extends ACountry
 {
 
     /**
@@ -45,5 +43,4 @@ class SupplierCountry
     {
         parent::__construct($value);
     }
-
 }

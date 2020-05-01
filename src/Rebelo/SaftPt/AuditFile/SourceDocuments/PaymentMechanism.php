@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -65,10 +64,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
  * @author João Rebelo
  * @since 1.0.0
  */
-class PaymentMechanism
-    extends \Rebelo\Enum\AEnum
+class PaymentMechanism extends \Rebelo\Enum\AEnum
 {
-
     /**
      * CC para Cartao credito<br>
      * &lt;xs:enumeration value="CC"/&gt;
@@ -212,5 +209,4 @@ class PaymentMechanism
     {
         return parent::__construct($value);
     }
-
 }

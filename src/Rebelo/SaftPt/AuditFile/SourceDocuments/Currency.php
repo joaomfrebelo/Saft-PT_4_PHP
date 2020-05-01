@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -45,10 +44,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Currency
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Currency extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -120,8 +117,8 @@ class Currency
     public function getCurrencyCode(): CurrencyCode
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->currencyCode->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->currencyCode->get()));
         return $this->currencyCode;
     }
 
@@ -136,8 +133,8 @@ class Currency
     {
         $this->currencyCode = $currencyCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->currencyCode->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->currencyCode->get()));
     }
 
     /**
@@ -149,8 +146,8 @@ class Currency
     public function getCurrencyAmount(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->currencyAmount)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->currencyAmount)));
         return $this->currencyAmount;
     }
 
@@ -163,17 +160,16 @@ class Currency
      */
     public function setCurrencyAmount(float $currencyAmount): void
     {
-        if ($currencyAmount < 0.0)
-        {
+        if ($currencyAmount < 0.0) {
             $msg = "CurrencyAmout can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->currencyAmount = $currencyAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             \strval($this->currencyAmount)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    \strval($this->currencyAmount)));
     }
 
     /**
@@ -185,8 +181,8 @@ class Currency
     public function getExchangeRate(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            \strval($this->exchangeRate)));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    \strval($this->exchangeRate)));
         return $this->exchangeRate;
     }
 
@@ -199,17 +195,16 @@ class Currency
      */
     public function setExchangeRate(float $exchangeRate): void
     {
-        if ($exchangeRate < 0.0)
-        {
+        if ($exchangeRate < 0.0) {
             $msg = "ExchangeRate can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->exchangeRate = $exchangeRate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             \strval($this->exchangeRate)));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    \strval($this->exchangeRate)));
     }
 
     /**
@@ -223,13 +218,12 @@ class Currency
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+                ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -258,12 +252,11 @@ class Currency
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_CURRENCY)
-        {
+        if ($node->getName() !== static::N_CURRENCY) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_CURRENCY, $node->getName());
+                static::N_CURRENCY, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -273,5 +266,4 @@ class Currency
         $this->setCurrencyAmount((float) $node->{static::N_CURRENCYAMOUNT});
         $this->setExchangeRate((float) $node->{static::N_EXCHANGERATE});
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -48,10 +47,8 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * Class Product
  * @since 1.0.0
  */
-class Product
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -221,8 +218,7 @@ class Product
     public function getProductType(): ProductType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->productType->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productType->get()));
         return $this->productType;
     }
 
@@ -242,8 +238,8 @@ class Product
     {
         $this->productType = $productType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->productType->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->productType->get()));
     }
 
     /**
@@ -259,7 +255,7 @@ class Product
     public function getProductCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->productCode));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productCode));
         return $this->productCode;
     }
 
@@ -279,9 +275,9 @@ class Product
     public function setProductCode(string $productCode): void
     {
         $this->productCode = static::valTextMandMaxCar($productCode, 60,
-                                                       __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->productCode));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productCode));
     }
 
     /**
@@ -296,7 +292,7 @@ class Product
     public function getProductGroup(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->productGroup));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productGroup));
         return $this->productGroup;
     }
 
@@ -313,20 +309,15 @@ class Product
      */
     public function setProductGroup(?string $productGroup): void
     {
-        if ($productGroup === null)
-        {
+        if ($productGroup === null) {
             $this->productGroup = null;
-        }
-        else
-        {
+        } else {
             $this->productGroup = static::valTextMandMaxCar($productGroup, 50,
-                                                            __METHOD__);
+                    __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->productGroup === null
-                        ? "null"
-                        : $this->productGroup));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->productGroup === null ? "null" : $this->productGroup));
     }
 
     /**
@@ -341,8 +332,7 @@ class Product
     public function getProductDescription(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->productDescription));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productDescription));
         return $this->productDescription;
     }
 
@@ -359,18 +349,17 @@ class Product
      */
     public function setProductDescription(string $productDescription): void
     {
-        if (\strlen($productDescription) < 2)
-        {
+        if (\strlen($productDescription) < 2) {
             $msg = "Product description must have at leats 2 chars";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->productDescription = static::valTextMandMaxCar($productDescription,
-                                                              200, __METHOD__);
+                200, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->productDescription));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->productDescription));
     }
 
     /**
@@ -385,8 +374,7 @@ class Product
     public function getProductNumberCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->productNumberCode));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->productNumberCode));
         return $this->productNumberCode;
     }
 
@@ -404,10 +392,10 @@ class Product
     public function setProductNumberCode(string $productNumberCode): void
     {
         $this->productNumberCode = static::valTextMandMaxCar($productNumberCode,
-                                                             60, __METHOD__);
+                60, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->productDescription));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->productDescription));
     }
 
     /**
@@ -436,7 +424,7 @@ class Product
     public function setCustomsDetails(?CustomsDetails $customsDetails): void
     {
         $this->customsDetails = $customsDetails;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__ . " setted ");
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__." setted ");
     }
 
     /**
@@ -450,29 +438,26 @@ class Product
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== MasterFiles::N_MASTERFILES)
-        {
+        if ($node->getName() !== MasterFiles::N_MASTERFILES) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            MasterFiles::N_MASTERFILES, $node->getName());
+                MasterFiles::N_MASTERFILES, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $prodNode = $node->addChild(static::N_PRODUCT);
         $prodNode->addChild(static::N_PRODUCTTYPE,
-                            $this->getProductType()->get());
+            $this->getProductType()->get());
         $prodNode->addChild(static::N_PRODUCTCODE, $this->getProductCode());
-        if ($this->getProductGroup() !== null)
-        {
+        if ($this->getProductGroup() !== null) {
             $prodNode->addChild(static::N_PRODUCTGROUP, $this->getProductGroup());
         }
         $prodNode->addChild(static::N_PRODUCTDESCRIPTION,
-                            $this->getProductDescription());
+            $this->getProductDescription());
         $prodNode->addChild(static::N_PRODUCTNUMBERCODE,
-                            $this->getProductNumberCode());
-        if ($this->getCustomsDetails() !== null)
-        {
+            $this->getProductNumberCode());
+        if ($this->getCustomsDetails() !== null) {
             $this->getCustomsDetails()->createXmlNode($prodNode);
         }
         return $prodNode;
@@ -489,36 +474,28 @@ class Product
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_PRODUCT)
-        {
+        if ($node->getName() !== static::N_PRODUCT) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_PRODUCT, $node->getName());
+                static::N_PRODUCT, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->setProductType(new ProductType((string) $node->{static::N_PRODUCTTYPE}));
         $this->setProductCode((string) $node->{static::N_PRODUCTCODE});
-        if ($node->{static::N_PRODUCTGROUP}->count() > 0)
-        {
+        if ($node->{static::N_PRODUCTGROUP}->count() > 0) {
             $this->setProductGroup((string) $node->{static::N_PRODUCTGROUP});
-        }
-        else
-        {
+        } else {
             $this->setProductGroup(null);
         }
         $this->setProductDescription((string) $node->{static::N_PRODUCTDESCRIPTION});
         $this->setProductNumberCode((string) $node->{static::N_PRODUCTNUMBERCODE});
-        if ($node->{static::N_CUSTOMSDETAILS}->count() > 0)
-        {
+        if ($node->{static::N_CUSTOMSDETAILS}->count() > 0) {
             $cusDet = new CustomsDetails();
             $cusDet->parseXmlNode($node->{static::N_CUSTOMSDETAILS});
             $this->setCustomsDetails($cusDet);
-        }
-        else
-        {
+        } else {
             $this->setCustomsDetails(null);
         }
     }
-
 }

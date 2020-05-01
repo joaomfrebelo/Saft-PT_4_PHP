@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -36,10 +35,8 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
  * @author João Rebelo
  * @since 1.0.0
  */
-class DocumentTotals
-    extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals
+class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -100,7 +97,7 @@ class DocumentTotals
     public function getSettlement(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__ . " getted");
+            ->info(__METHOD__." getted");
         return $this->settlement;
     }
 
@@ -114,19 +111,16 @@ class DocumentTotals
      */
     public function addToSettlement(Settlement $settlement): int
     {
-        if (\count($this->settlement) === 0)
-        {
+        if (\count($this->settlement) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->settlement);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->settlement[$index] = $settlement;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
+            ->debug(__METHOD__." add to stack");
         return $index;
     }
 
@@ -166,7 +160,7 @@ class DocumentTotals
     public function getPayment(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__ . " getted");
+            ->info(__METHOD__." getted");
         return $this->payment;
     }
 
@@ -179,19 +173,16 @@ class DocumentTotals
      */
     public function addToPayment(PaymentMethod $paymentMethod): int
     {
-        if (\count($this->payment) === 0)
-        {
+        if (\count($this->payment) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->payment);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->payment[$index] = $paymentMethod;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__ . " add to stack");
+            ->debug(__METHOD__." add to stack");
         return $index;
     }
 
@@ -233,22 +224,19 @@ class DocumentTotals
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Invoice::N_INVOICE)
-        {
+        if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           Invoice::N_INVOICE, $node->getName());
+                Invoice::N_INVOICE, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $docTotNode = parent::createXmlNode($node);
-        foreach ($this->getSettlement() as $settlement)
-        {
+        foreach ($this->getSettlement() as $settlement) {
             /* @var $settlement Settlement */
             $settlement->createXmlNode($docTotNode);
         }
-        foreach ($this->getPayment() as $paymentMethod)
-        {
+        foreach ($this->getPayment() as $paymentMethod) {
             /* @var $paymentMethod PaymentMethod */
             $payNode = $docTotNode->addChild(static::N_PAYMENT);
             $paymentMethod->createXmlNode($payNode);
@@ -268,36 +256,30 @@ class DocumentTotals
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTTOTALS)
-        {
+        if ($node->getName() !== static::N_DOCUMENTTOTALS) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_DOCUMENTTOTALS, $node->getName());
+                static::N_DOCUMENTTOTALS, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         parent::parseXmlNode($node);
 
-        if ($node->{static::N_PAYMENT}->count() > 0)
-        {
-            for ($n = 0; $n < $node->{static::N_PAYMENT}->count(); $n++)
-            {
+        if ($node->{static::N_PAYMENT}->count() > 0) {
+            for ($n = 0; $n < $node->{static::N_PAYMENT}->count(); $n++) {
                 $paymentMethod = new PaymentMethod();
                 $paymentMethod->parseXmlNode($node->{static::N_PAYMENT}[$n]);
                 $this->addToPayment($paymentMethod);
             }
         }
 
-        if ($node->{static::N_SETTLEMENT}->count() > 0)
-        {
-            for ($n = 0; $n < $node->{static::N_SETTLEMENT}->count(); $n++)
-            {
+        if ($node->{static::N_SETTLEMENT}->count() > 0) {
+            for ($n = 0; $n < $node->{static::N_SETTLEMENT}->count(); $n++) {
                 $settlement = new Settlement();
                 $settlement->parseXmlNode($node->{static::N_SETTLEMENT}[$n]);
                 $this->addToSettlement($settlement);
             }
         }
     }
-
 }

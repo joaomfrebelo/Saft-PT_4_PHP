@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -45,10 +44,8 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
  * @author João Rebelo
  * @since 1.0.0
  */
-class TaxType
-    extends \Rebelo\Enum\AEnum
+class TaxType extends \Rebelo\Enum\AEnum
 {
-
     /**
      *
      * @since 1.0.0
@@ -88,5 +85,4 @@ class TaxType
     {
         parent::__construct($value);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -55,10 +54,8 @@ use Rebelo\SaftPt\AuditFile\Address;
  * Class Customer
  * @since 1.0.0
  */
-class Customer
-    extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -262,7 +259,7 @@ class Customer
     public function getCustomerID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->customerID));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->customerID));
         return $this->customerID;
     }
 
@@ -280,9 +277,9 @@ class Customer
     public function setCustomerID(string $customerID): void
     {
         $this->customerID = static::valTextMandMaxCar($customerID, 30,
-                                                      __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->customerID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerID));
     }
 
     /**
@@ -307,7 +304,7 @@ class Customer
     public function getAccountID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->accountID));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->accountID));
         return $this->accountID;
     }
 
@@ -334,26 +331,23 @@ class Customer
     {
         $msg    = null;
         $length = \strlen($accountID);
-        if ($length < 1 || $length > 30)
-        {
+        if ($length < 1 || $length > 30) {
             $msg = sprintf("AccountID length must be between 1 and 30 but have '%s'",
-                           $length);
+                $length);
         }
 
         $regexp = "/(([^^]*)|Desconhecido)/";
-        if (\preg_match($regexp, $accountID) !== 1)
-        {
+        if (\preg_match($regexp, $accountID) !== 1) {
             $msg = sprintf("AccountID does not respect the regexp '%s'", $regexp);
         }
-        if ($msg !== null)
-        {
+        if ($msg !== null) {
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->accountID = $accountID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->accountID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->accountID));
     }
 
     /**
@@ -367,7 +361,7 @@ class Customer
     public function getCustomerTaxID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->customerTaxID));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->customerTaxID));
         return $this->customerTaxID;
     }
 
@@ -384,18 +378,16 @@ class Customer
     {
         $msg    = null;
         $length = \strlen($customerTaxID);
-        if ($length < 1 || $length > 30)
-        {
+        if ($length < 1 || $length > 30) {
             $msg = sprintf("CustomerTaxID length must be between 1 and 30 but have '%s'",
-                           $length);
+                $length);
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->customerTaxID = $customerTaxID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->customerTaxID));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerTaxID));
     }
 
     /**
@@ -409,7 +401,7 @@ class Customer
     public function getCompanyName(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->companyName));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->companyName));
         return $this->companyName;
     }
 
@@ -426,9 +418,9 @@ class Customer
     public function setCompanyName(string $companyName): void
     {
         $this->companyName = static::valTextMandMaxCar($companyName, 100,
-                                                       __METHOD__);
+                __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->companyName));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyName));
     }
 
     /**
@@ -442,10 +434,8 @@ class Customer
     public function getContact(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->contact === null
-                        ? "null"
-                        : $this->contact));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->contact === null ? "null" : $this->contact));
         return $this->contact;
     }
 
@@ -462,18 +452,13 @@ class Customer
     public function setContact(?string $contact): void
     {
 
-        if ($contact === null)
-        {
+        if ($contact === null) {
             $this->contact = null;
-        }
-        else
-        {
+        } else {
             $this->contact = static::valTextMandMaxCar($contact, 50, __METHOD__);
             \Logger::getLogger(\get_class($this))
-                ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                                 $this->contact === null
-                            ? "null"
-                            : $this->contact));
+                ->debug(\sprintf(__METHOD__." setted to '%s'",
+                        $this->contact === null ? "null" : $this->contact));
         }
     }
 
@@ -517,19 +502,16 @@ class Customer
      */
     public function addToShipToAddress(Address $shipToAddress): int
     {
-        if (\count($this->shipToAddress) === 0)
-        {
+        if (\count($this->shipToAddress) === 0) {
             $index = 0;
-        }
-        else
-        {
+        } else {
             // The index if obtaining this way because you can unset a key
             $keys  = \array_keys($this->shipToAddress);
             $index = $keys[\count($keys) - 1] + 1;
         }
         $this->shipToAddress[$index] = $shipToAddress;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " ShipToAddress add to index " . \strval($index));
+            __METHOD__, " ShipToAddress add to index ".\strval($index));
         return $index;
     }
 
@@ -582,10 +564,8 @@ class Customer
     public function getTelephone(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->telephone === null
-                        ? "null"
-                        : $this->telephone));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->telephone === null ? "null" : $this->telephone));
         return $this->telephone;
     }
 
@@ -600,20 +580,15 @@ class Customer
      */
     public function setTelephone(?string $telephone): void
     {
-        if ($telephone === null)
-        {
+        if ($telephone === null) {
             $this->telephone = null;
-        }
-        else
-        {
+        } else {
             $this->telephone = static::valTextMandMaxCar($telephone, 20,
-                                                         __METHOD__);
+                    __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->telephone === null
-                        ? "null"
-                        : $this->telephone));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->telephone === null ? "null" : $this->telephone));
     }
 
     /**
@@ -626,10 +601,8 @@ class Customer
     public function getFax(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->fax === null
-                        ? "null"
-                        : $this->fax));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->fax === null ? "null" : $this->fax));
         return $this->fax;
     }
 
@@ -644,19 +617,14 @@ class Customer
      */
     public function setFax(?string $fax): void
     {
-        if ($fax === null)
-        {
+        if ($fax === null) {
             $this->fax = null;
-        }
-        else
-        {
+        } else {
             $this->fax = static::valTextMandMaxCar($fax, 20, __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->fax === null
-                        ? "null"
-                        : $this->fax));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->fax === null ? "null" : $this->fax));
     }
 
     /**
@@ -670,10 +638,8 @@ class Customer
     public function getEmail(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->email === null
-                        ? "null"
-                        : $this->email));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->email === null ? "null" : $this->email));
         return $this->email;
     }
 
@@ -689,31 +655,23 @@ class Customer
      */
     public function setEmail(?string $email): void
     {
-        if ($email === null)
-        {
+        if ($email === null) {
             $this->email = $email;
-        }
-        else
-        {
+        } else {
             if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
-                \strlen($email) > 254)
-            {
-                $msg = $email . " is not a valide email";
+                \strlen($email) > 254) {
+                $msg = $email." is not a valide email";
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
-            }
-            else
-            {
+            } else {
                 $this->email = $email;
             }
         }
         $this->email = $email;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->email === null
-                        ? "null"
-                        : $this->email));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->email === null ? "null" : $this->email));
     }
 
     /**
@@ -727,10 +685,8 @@ class Customer
     public function getWebsite(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->website === null
-                        ? "null"
-                        : $this->website));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->website === null ? "null" : $this->website));
         return $this->website;
     }
 
@@ -746,27 +702,21 @@ class Customer
      */
     public function setWebsite(?string $website): void
     {
-        if ($website === null)
-        {
+        if ($website === null) {
             $this->website = $website;
-        }
-        else
-        {
+        } else {
             if (\filter_var($website, FILTER_VALIDATE_URL) === false ||
-                \strlen($website) > 60)
-            {
+                \strlen($website) > 60) {
                 $msg = "The URL is not valide";
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $this->website = $website;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->website === null
-                        ? "null"
-                        : $this->website));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->website === null ? "null" : $this->website));
     }
 
     /**
@@ -789,10 +739,8 @@ class Customer
     public function getSelfBillingIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->website
-                        ? "true"
-                        : "false"));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->website ? "true" : "false"));
         return $this->selfBillingIndicator;
     }
 
@@ -819,10 +767,8 @@ class Customer
     {
         $this->selfBillingIndicator = $selfBillingIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->website
-                        ? "true"
-                        : "false"));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->website ? "true" : "false"));
     }
 
     /**
@@ -835,12 +781,11 @@ class Customer
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== MasterFiles::N_MASTERFILES)
-        {
+        if ($node->getName() !== MasterFiles::N_MASTERFILES) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                            MasterFiles::N_MASTERFILES, $node->getName());
+                MasterFiles::N_MASTERFILES, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -848,43 +793,35 @@ class Customer
         $customerNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
         $customerNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
         $customerNode->addChild(static::N_CUSTOMERTAXID,
-                                \strval($this->getCustomerTaxID()));
+            \strval($this->getCustomerTaxID()));
         $customerNode->addChild(static::N_COMPANYNAME, $this->getCompanyName());
-        if ($this->getContact() !== null)
-        {
+        if ($this->getContact() !== null) {
             $customerNode->addChild(static::N_CONTACT, $this->getContact());
         }
         $billAddr = $customerNode->addChild(static::N_BILLINGADDRESS);
         $this->getBillingAddress()->createXmlNode($billAddr);
 
-        foreach ($this->getShipToAddress() as $shipAddr)
-        {
+        foreach ($this->getShipToAddress() as $shipAddr) {
             /* @var $shipAddr Address */
             $shipAddr->createXmlNode($customerNode->addChild(static::N_SHIPTOADDRESS));
         }
 
-        if ($this->getTelephone() !== null)
-        {
+        if ($this->getTelephone() !== null) {
             $customerNode->addChild(static::N_TELEPHONE, $this->getTelephone());
         }
 
-        if ($this->getFax() !== null)
-        {
+        if ($this->getFax() !== null) {
             $customerNode->addChild(static::N_FAX, $this->getFax());
         }
 
-        if ($this->getEmail() !== null)
-        {
+        if ($this->getEmail() !== null) {
             $customerNode->addChild(static::N_EMAIL, $this->getEmail());
         }
-        if ($this->getWebsite() !== null)
-        {
+        if ($this->getWebsite() !== null) {
             $customerNode->addChild(static::N_WEBSITE, $this->getWebsite());
         }
         $customerNode->addChild(static::N_SELFBILLINGINDICATOR,
-                                $this->getSelfBillingIndicator()
-                ? "1"
-                : "0");
+            $this->getSelfBillingIndicator() ? "1" : "0");
         return $customerNode;
     }
 
@@ -898,24 +835,20 @@ class Customer
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if ($node->getName() !== static::N_CUSTOMER)
-        {
+        if ($node->getName() !== static::N_CUSTOMER) {
             $msg = sprintf("Node name should be '%s' but is '%s",
-                           static::N_CUSTOMER, $node->getName());
+                static::N_CUSTOMER, $node->getName());
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->setCustomerID((string) $node->{static::N_CUSTOMERID});
         $this->setAccountID((string) $node->{static::N_ACCOUNTID});
         $this->setCustomerTaxID((string) $node->{static::N_CUSTOMERTAXID});
         $this->setCompanyName((string) $node->{static::N_COMPANYNAME});
-        if ($node->{static::N_CONTACT}->count() > 0)
-        {
+        if ($node->{static::N_CONTACT}->count() > 0) {
             $this->setContact((string) $node->{static::N_CONTACT});
-        }
-        else
-        {
+        } else {
             $this->setContact(null);
         }
         $billAddr = new Address();
@@ -923,48 +856,33 @@ class Customer
         $this->setBillingAddress($billAddr);
 
         $count = $node->{static::N_SHIPTOADDRESS}->count();
-        for ($i = 0; $i <= $count - 1; $i++)
-        {
+        for ($i = 0; $i <= $count - 1; $i++) {
             $shToAddr = new Address();
             $shToAddr->parseXmlNode($node->{static::N_SHIPTOADDRESS}[$i]);
             $this->addToShipToAddress($shToAddr);
         }
 
-        $this->setSelfBillingIndicator(((int) $node->{static::N_SELFBILLINGINDICATOR}) === 1
-                ? true
-                : false );
-        if ($node->{static::N_TELEPHONE}->count() > 0)
-        {
+        $this->setSelfBillingIndicator(((int) $node->{static::N_SELFBILLINGINDICATOR})
+            === 1 ? true : false );
+        if ($node->{static::N_TELEPHONE}->count() > 0) {
             $this->setTelephone((string) $node->{static::N_TELEPHONE});
-        }
-        else
-        {
+        } else {
             $this->setTelephone(null);
         }
-        if ($node->{static::N_FAX}->count() > 0)
-        {
+        if ($node->{static::N_FAX}->count() > 0) {
             $this->setFax((string) $node->{static::N_FAX});
-        }
-        else
-        {
+        } else {
             $this->setFax(null);
         }
-        if ($node->{static::N_EMAIL}->count() > 0)
-        {
+        if ($node->{static::N_EMAIL}->count() > 0) {
             $this->setEmail((string) $node->{static::N_EMAIL});
-        }
-        else
-        {
+        } else {
             $this->setEmail(null);
         }
-        if ($node->{static::N_WEBSITE}->count() > 0)
-        {
+        if ($node->{static::N_WEBSITE}->count() > 0) {
             $this->setWebsite((string) $node->{static::N_WEBSITE});
-        }
-        else
-        {
+        } else {
             $this->setWebsite(null);
         }
     }
-
 }

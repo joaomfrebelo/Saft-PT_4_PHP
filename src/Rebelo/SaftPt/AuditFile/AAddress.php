@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -39,10 +38,8 @@ use Rebelo\SaftPt\AuditFile\AddressPT;
  * @author João Rebelo
  * @since 1.0.0
  */
-abstract class AAddress
-    extends AAuditFile
+abstract class AAddress extends AAuditFile
 {
-
     /**
      * Node name
      * @since 1.0.0
@@ -148,10 +145,8 @@ abstract class AAddress
     public function getBuildingNumber(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->buildingNumber === null
-                        ? "null"
-                        : $this->buildingNumber));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->buildingNumber === null ? "null" : $this->buildingNumber));
         return $this->buildingNumber;
     }
 
@@ -163,10 +158,8 @@ abstract class AAddress
     public function getStreetName(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->streetName === null
-                        ? "null"
-                        : $this->streetName));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->streetName === null ? "null" : $this->streetName));
         return $this->streetName;
     }
 
@@ -180,10 +173,8 @@ abstract class AAddress
     public function getAddressDetail(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->addressDetail === null
-                        ? "null"
-                        : $this->addressDetail));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->addressDetail === null ? "null" : $this->addressDetail));
         return $this->addressDetail;
     }
 
@@ -196,7 +187,7 @@ abstract class AAddress
     public function getCity(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'", $this->city));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->city));
         return $this->city;
     }
 
@@ -210,10 +201,8 @@ abstract class AAddress
     public function getRegion(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->region === null
-                        ? "null"
-                        : $this->region));
+            ->info(\sprintf(__METHOD__." getted '%s'",
+                    $this->region === null ? "null" : $this->region));
         return $this->region;
     }
 
@@ -228,20 +217,15 @@ abstract class AAddress
      */
     public function setBuildingNumber(?string $buildingNumber): void
     {
-        if ($buildingNumber !== null)
-        {
+        if ($buildingNumber !== null) {
             $this->buildingNumber = static::valTextMandMaxCar($buildingNumber,
-                                                              10, __METHOD__);
-        }
-        else
-        {
+                    10, __METHOD__);
+        } else {
             $this->buildingNumber = $buildingNumber;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->buildingNumber === null
-                        ? "null"
-                        : $this->buildingNumber));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->buildingNumber === null ? "null" : $this->buildingNumber));
     }
 
     /**
@@ -252,20 +236,15 @@ abstract class AAddress
      */
     public function setStreetName(?string $streetName): void
     {
-        if ($streetName === null)
-        {
+        if ($streetName === null) {
             $this->streetName = $streetName;
-        }
-        else
-        {
+        } else {
             $this->streetName = static::valTextMandMaxCar($streetName, 200,
-                                                          __METHOD__);
+                    __METHOD__);
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->streetName === null
-                        ? "null"
-                        : $this->streetName));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->streetName === null ? "null" : $this->streetName));
     }
 
     /**
@@ -278,20 +257,15 @@ abstract class AAddress
      */
     public function setAddressDetail(?string $addressDetail): void
     {
-        if ($addressDetail !== null)
-        {
+        if ($addressDetail !== null) {
             $this->addressDetail = static::valTextMandMaxCar($addressDetail,
-                                                             210, __METHOD__);
-        }
-        else
-        {
+                    210, __METHOD__);
+        } else {
             $this->addressDetail = $addressDetail;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->addressDetail === null
-                        ? "null"
-                        : $this->addressDetail));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->addressDetail === null ? "null" : $this->addressDetail));
     }
 
     /**
@@ -305,7 +279,7 @@ abstract class AAddress
     {
         $this->city = static::valTextMandMaxCar($city, 50, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->city));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->city));
     }
 
     /**
@@ -318,19 +292,14 @@ abstract class AAddress
      */
     public function setRegion(?string $region): void
     {
-        if ($region !== null)
-        {
+        if ($region !== null) {
             $this->region = static::valTextMandMaxCar($region, 50, __METHOD__);
-        }
-        else
-        {
+        } else {
             $this->region = $region;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->region === null
-                        ? "null"
-                        : $this->region));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->region === null ? "null" : $this->region));
     }
 
     /**
@@ -347,45 +316,33 @@ abstract class AAddress
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if ($this->getAddressDetail() !== null)
-        {
+        if ($this->getAddressDetail() !== null) {
             $node->addChild(static::N_ADDRESSDETAIL, $this->getAddressDetail());
-        }
-        elseif ($this->getStreetName() !== null)
-        {
+        } elseif ($this->getStreetName() !== null) {
             $node->addChild(static::N_STREETNAME, $this->getStreetName());
             $addr = $this->getStreetName();
-            if ($this->getBuildingNumber() !== null)
-            {
+            if ($this->getBuildingNumber() !== null) {
                 $node->addChild(static::N_BUILDINGNUMBER,
-                                $this->getBuildingNumber());
-                $addr .= " " . $this->getBuildingNumber();
+                    $this->getBuildingNumber());
+                $addr .= " ".$this->getBuildingNumber();
             }
             $node->addChild(static::N_ADDRESSDETAIL, $addr);
-        }
-        else
-        {
+        } else {
             throw new AuditFileException("The address structot doesn't have Address Detail and street name");
         }
         $node->addChild(static::N_CITY, $this->getCity());
-        if ($this instanceof Address || $this instanceof SupplierAddress)
-        {
+        if ($this instanceof Address || $this instanceof SupplierAddress) {
             $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
-        }
-        elseif ($this instanceof AddressPT)
-        {
+        } elseif ($this instanceof AddressPT) {
             $node->addChild(static::N_POSTALCODE,
-                            $this->getPostalCode()->getPostalCode());
-        }
-        else
-        {
+                $this->getPostalCode()->getPostalCode());
+        } else {
             $msg = "unknow address class instande to get the postal code";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        if ($this->getRegion() !== null)
-        {
+        if ($this->getRegion() !== null) {
             $node->addChild(static::N_REGION, $this->getRegion());
         }
         return $node;
@@ -400,20 +357,16 @@ abstract class AAddress
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if ($node->{static::N_STREETNAME}->count() > 0)
-        {
+        if ($node->{static::N_STREETNAME}->count() > 0) {
             $this->setStreetName((string) $node->{static::N_STREETNAME});
         }
-        if ($node->{static::N_BUILDINGNUMBER}->count() > 0)
-        {
+        if ($node->{static::N_BUILDINGNUMBER}->count() > 0) {
             $this->setBuildingNumber((string) $node->{static::N_BUILDINGNUMBER});
         }
         $this->setAddressDetail((string) $node->{static::N_ADDRESSDETAIL});
         $this->setCity((string) $node->{static::N_CITY});
-        if ($node->{static::N_REGION}->count() > 0)
-        {
+        if ($node->{static::N_REGION}->count() > 0) {
             $this->setRegion((string) $node->{static::N_REGION});
         }
     }
-
 }

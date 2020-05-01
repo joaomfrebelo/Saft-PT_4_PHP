@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -38,10 +37,8 @@ namespace Rebelo\SaftPt\AuditFile;
  * @author João Rebelo
  * @since 1.0.0
  */
-class CurrencyCode
-    extends \Rebelo\Enum\AEnum
+class CurrencyCode extends \Rebelo\Enum\AEnum
 {
-
     const ISO_AED = "AED";
     const ISO_AFN = "AFN";
     const ISO_ALL = "ALL";
@@ -241,5 +238,4 @@ class CurrencyCode
     {
         parent::__construct($value);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
@@ -13,10 +12,8 @@ use \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
  * <xs:element name="AuditFile">
  * @since 1.0.0
  */
-class AuditFile
-    extends AAuditFile
+class AuditFile extends AAuditFile
 {
-
     const N_AUDITFILE = "AuditFile";
 
     /**
@@ -65,9 +62,7 @@ class AuditFile
     {
         parent::__construct();
         $this->setExportType(
-            $exportType === null
-                ? new ExportType(ExportType::C)
-                :
+            $exportType === null ? new ExportType(ExportType::C) :
                 $exportType
         );
     }
@@ -80,8 +75,7 @@ class AuditFile
     public function getExportType(): ExportType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__ . " getted '%s'",
-                            $this->exportType->get()));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->exportType->get()));
         return $this->exportType;
     }
 
@@ -95,8 +89,8 @@ class AuditFile
     {
         $this->exportType = $exportType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__ . " setted to '%s'",
-                             $this->exportType->get()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->exportType->get()));
     }
 
     /**
@@ -160,7 +154,7 @@ class AuditFile
     public function getGeneralLedgerEntries(): GeneralLedgerEntries
     {
         \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__ . " '%s'", "Not implemented"));
+            ->error(\sprintf(__METHOD__." '%s'", "Not implemented"));
         throw new NotImplemented("Not implemented");
     }
 
@@ -173,7 +167,7 @@ class AuditFile
     public function setGeneralLedgerEntries(GeneralLedgerEntries $generalLedgerEntries): AuditFile
     {
         \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__ . " '%s'", "Not implemented"));
+            ->error(\sprintf(__METHOD__." '%s'", "Not implemented"));
         throw new NotImplemented("Not implemented");
     }
 
@@ -210,7 +204,6 @@ class AuditFile
 
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-
+        
     }
-
 }

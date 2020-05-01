@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -32,10 +31,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
  *
  * @author João Rebelo
  */
-class WithholdingTaxType
-    extends \Rebelo\Enum\AEnum
+class WithholdingTaxType extends \Rebelo\Enum\AEnum
 {
-
     /**
      * IRS para Imposto Sobre o Rendimento das Pessoas Singulares
      * @since 1.0.0
@@ -78,5 +75,4 @@ class WithholdingTaxType
     {
         parent::__construct($value);
     }
-
 }
