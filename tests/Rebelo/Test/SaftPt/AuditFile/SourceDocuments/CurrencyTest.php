@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -38,8 +37,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *
  * @author João Rebelo
  */
-class CurrencyTest
-    extends TestCase
+class CurrencyTest extends TestCase
 {
 
     /**
@@ -56,40 +54,31 @@ class CurrencyTest
     {
         $currency = new Currency();
         $this->assertInstanceOf(Currency::class, $currency);
-        try
-        {
+        try {
             $currency->getCurrencyCode();
             $this->fail("Get CurrencyCode without be setted should throw "
-                . "\Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Error");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
         }
 
-        try
-        {
+        try {
             $currency->getCurrencyAmount();
             $this->fail("Get Ammout without be setted should throw "
-                . "\Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Error");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
         }
 
-        try
-        {
+        try {
             $currency->getExchangeRate();
             $this->fail("Get ExchangeRate without be setted should throw "
-                . "\Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Error");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
@@ -103,14 +92,11 @@ class CurrencyTest
         $currency->setCurrencyAmount($amount);
         $this->assertSame($amount, $currency->getCurrencyAmount());
 
-        try
-        {
+        try {
             $currency->setCurrencyAmount(-1.9);
             $this->fail("A negative CurrencyAmount should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -120,14 +106,11 @@ class CurrencyTest
         $rate = 1.59;
         $currency->setExchangeRate($rate);
         $this->assertSame($rate, $currency->getExchangeRate());
-        try
-        {
+        try {
             $currency->setExchangeRate(-1.9);
             $this->fail("A negative ExchangeRate should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -139,14 +122,11 @@ class CurrencyTest
     {
         $currency = new Currency();
         $node     = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $currency->createXmlNode($node);
             $this->fail("Create a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -157,14 +137,11 @@ class CurrencyTest
     {
         $currency = new Currency();
         $node     = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $currency->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -184,7 +161,7 @@ class CurrencyTest
     {
         $currency = $this->createCurrency();
         $node     = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
 
         $currencyNode = $currency->createXmlNode($node);
@@ -217,7 +194,7 @@ class CurrencyTest
     {
         $currency = $this->createCurrency();
         $node     = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml      = $currency->createXmlNode($node)->asXML();
 
@@ -225,12 +202,11 @@ class CurrencyTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($currency->getCurrencyCode()->get(),
-                          $parsed->getCurrencyCode()->get());
+            $parsed->getCurrencyCode()->get());
         $this->assertSame($currency->getCurrencyAmount(),
-                          $parsed->getCurrencyAmount());
+            $parsed->getCurrencyAmount());
         $this->assertSame(
             $currency->getExchangeRate(), $parsed->getExchangeRate()
         );
     }
-
 }

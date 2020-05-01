@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -40,8 +39,7 @@ use Rebelo\Date\Date as RDate;
  *
  * @author João Rebelo
  */
-class PaymentMethodTest
-    extends TestCase
+class PaymentMethodTest extends TestCase
 {
 
     /**
@@ -59,38 +57,29 @@ class PaymentMethodTest
         $payMeth = new PaymentMethod();
         $this->assertInstanceOf(PaymentMethod::class, $payMeth);
         $this->assertNull($payMeth->getPaymentMechanism());
-        try
-        {
+        try {
             $payMeth->getPaymentAmount();
             $this->fail("Get PaymentAmout without be setted should throw "
-                . "\Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Error");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
         }
-        try
-        {
+        try {
             $payMeth->getPaymentDate();
             $this->fail("Get PaymentDate without be setted should throw "
-                . "\Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Error");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
         }
-        try
-        {
+        try {
             $payMeth->setPaymentAmount(-1.9);
             $this->fail("A negative PaymentAmounte should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -130,14 +119,11 @@ class PaymentMethodTest
     {
         $payMeth = new PaymentMethod();
         $node    = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $payMeth->createXmlNode($node);
             $this->fail("Create a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -148,14 +134,11 @@ class PaymentMethodTest
     {
         $payMeth = new PaymentMethod();
         $node    = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $payMeth->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -166,7 +149,7 @@ class PaymentMethodTest
     {
         $payMeth = $this->createPaymentMethod();
         $node    = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
 
         $payMethNode = $payMeth->createXmlNode($node);
@@ -184,7 +167,7 @@ class PaymentMethodTest
 
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
-                                               (string) $node->{PaymentMethod::N_PAYMENTDATE}
+            (string) $node->{PaymentMethod::N_PAYMENTDATE}
         );
     }
 
@@ -194,7 +177,7 @@ class PaymentMethodTest
         $payMeth->setPaymentMechanism(null);
 
         $node = new \SimpleXMLElement(
-            "<" . Payment::N_PAYMENT . "></" . Payment::N_PAYMENT . ">"
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
         );
 
         $payMethNode = $payMeth->createXmlNode($node);
@@ -208,7 +191,7 @@ class PaymentMethodTest
     {
         $payMeth = $this->createPaymentMethod();
         $node    = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml     = $payMeth->createXmlNode($node)->asXML();
 
@@ -216,12 +199,12 @@ class PaymentMethodTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($payMeth->getPaymentMechanism()->get(),
-                          $parsed->getPaymentMechanism()->get());
+            $parsed->getPaymentMechanism()->get());
         $this->assertSame($payMeth->getPaymentAmount(),
-                          $parsed->getPaymentAmount());
+            $parsed->getPaymentAmount());
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
-                                               $parsed->getPaymentDate()->format(RDate::SQL_DATE)
+            $parsed->getPaymentDate()->format(RDate::SQL_DATE)
         );
     }
 
@@ -230,7 +213,7 @@ class PaymentMethodTest
         $payMeth = $this->createPaymentMethod();
         $payMeth->setPaymentMechanism(null);
         $node    = new \SimpleXMLElement(
-            "<" . Payment::N_PAYMENT . "></" . Payment::N_PAYMENT . ">"
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
         );
         $xml     = $payMeth->createXmlNode($node)->asXML();
 
@@ -239,11 +222,10 @@ class PaymentMethodTest
 
         $this->assertNull($parsed->getPaymentMechanism());
         $this->assertSame($payMeth->getPaymentAmount(),
-                          $parsed->getPaymentAmount());
+            $parsed->getPaymentAmount());
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
-                                               $parsed->getPaymentDate()->format(RDate::SQL_DATE)
+            $parsed->getPaymentDate()->format(RDate::SQL_DATE)
         );
     }
-
 }

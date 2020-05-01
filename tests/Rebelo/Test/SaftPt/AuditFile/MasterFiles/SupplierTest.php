@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -39,8 +38,7 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
  *
  * @author João Rebelo
  */
-class SupplierTest
-    extends TestCase
+class SupplierTest extends TestCase
 {
 
     /**
@@ -77,33 +75,24 @@ class SupplierTest
     {
         $supplier = new Supplier();
 
-        try
-        {
+        try {
             $supplier->getSupplierID();
             $this->fail("Get supplier id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $supplierId = "Contumer 1209";
         $supplier->setSupplierID($supplierId);
         $this->assertEquals($supplierId, $supplier->getSupplierID());
-        try
-        {
+        try {
             $supplier->setSupplierID("");
             $this->fail("set supplier id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $supplier->setSupplierID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -115,13 +104,10 @@ class SupplierTest
     {
         $supplier = new Supplier();
 
-        try
-        {
+        try {
             $supplier->getAccountID();
             $this->fail("Get Account id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $accountId = "AccountID999";
@@ -129,30 +115,21 @@ class SupplierTest
         $this->assertEquals($accountId, $supplier->getAccountID());
         $supplier->setAccountID("Desconhecido");
         $this->assertEquals("Desconhecido", $supplier->getAccountID());
-        try
-        {
+        try {
             $supplier->setAccountID("");
             $this->fail("set account id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $supplier->setAccountID(str_pad("A", 32, "A"));
             $this->fail("set account id with length greater then 30 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $supplier->setAccountID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -164,42 +141,30 @@ class SupplierTest
     {
         $supplier = new Supplier();
 
-        try
-        {
+        try {
             $supplier->getSupplierTaxID();
             $this->fail("Get Costomer tax id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $supplierTaxId = "SupplierTaxID999";
         $supplier->setSupplierTaxID($supplierTaxId);
         $this->assertEquals($supplierTaxId, $supplier->getSupplierTaxID());
-        try
-        {
+        try {
             $supplier->setSupplierTaxID("");
             $this->fail("set supplier tax id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $supplier->setSupplierTaxID(str_pad("A", 32, "A"));
             $this->fail("set supplier tax id with length greater then 30 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $supplier->setSupplierTaxID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -211,13 +176,10 @@ class SupplierTest
     {
         $supplier = new Supplier();
 
-        try
-        {
+        try {
             $supplier->getCompanyName();
             $this->fail("Get CompanyName without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $name = "CompanyName FACTURACAO";
@@ -225,21 +187,15 @@ class SupplierTest
         $this->assertEquals($name, $supplier->getCompanyName());
         $supplier->setCompanyName(\str_pad("_", 109, "_"));
         $this->assertEquals(100, \strlen($supplier->getCompanyName()));
-        try
-        {
+        try {
             $supplier->setCompanyName("");
             $this->fail("set company name id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $supplier->setCompanyName(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -258,13 +214,10 @@ class SupplierTest
         $this->assertEquals($name, $supplier->getContact());
         $supplier->setContact(\str_pad("_", 51, "_"));
         $this->assertEquals(50, \strlen($supplier->getContact()));
-        try
-        {
+        try {
             $supplier->setContact("");
             $this->fail("set contact name with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
         $supplier->setContact(null);
@@ -278,28 +231,22 @@ class SupplierTest
     {
         $supplier = new Supplier();
 
-        try
-        {
+        try {
             $supplier->getBillingAddress();
             $this->fail("Get BillingSupplierAddress without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
         $address = new SupplierAddress();
         $supplier->setBillingAddress($address);
         $this->assertInstanceOf(SupplierAddress::class,
-                                $supplier->getBillingAddress());
+            $supplier->getBillingAddress());
 
-        try
-        {
+        try {
             $supplier->setBillingAddress(null);
             $this->fail("Set BillingSupplierAddress to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -344,13 +291,10 @@ class SupplierTest
         $supplier->setTelephone(\str_pad("_", 300, "_"));
         $this->assertEquals(20, \strlen($supplier->getTelephone()));
 
-        try
-        {
+        try {
             $supplier->setTelephone("");
             $this->fail("set Telephone with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -374,13 +318,10 @@ class SupplierTest
         $supplier->setFax(\str_pad("_", 300, "_"));
         $this->assertEquals(20, \strlen($supplier->getFax()));
 
-        try
-        {
+        try {
             $supplier->setFax("");
             $this->fail("set fax with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -401,33 +342,24 @@ class SupplierTest
         $supplier->setEmail($email);
         $this->assertEquals($email, $supplier->getEmail());
 
-        try
-        {
+        try {
             $supplier->setEmail(\str_pad($email, 255, "a", STR_PAD_LEFT));
             $this->fail("set Email with length > 254 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $supplier->setEmail("isNotEmail");
             $this->fail("set Email with wrong string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $supplier->setEmail("");
             $this->fail("set Email with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -448,33 +380,24 @@ class SupplierTest
         $supplier->setWebsite($website);
         $this->assertEquals($website, $supplier->getWebsite());
 
-        try
-        {
+        try {
             $supplier->setWebsite(\str_pad($website, 61, "a", STR_PAD_RIGHT));
             $this->fail("set Website with length > 60 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $supplier->setWebsite("isNotWebsite");
             $this->fail("set Website with wrong string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $supplier->setWebsite("");
             $this->fail("set Website with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -531,68 +454,68 @@ class SupplierTest
     public function testCreateXmlNode()
     {
         $node = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
 
         $supplier = $this->createSupplier();
 
         $this->assertInstanceOf(\SimpleXMLElement::class,
-                                $supplier->createXmlNode($node));
+            $supplier->createXmlNode($node));
         $supplierNode = $node->{Supplier::N_SUPPLIER};
         $this->assertEquals($supplier->getSupplierID(),
-                            (string) $supplierNode->{Supplier::N_SUPPLIERID}
+            (string) $supplierNode->{Supplier::N_SUPPLIERID}
         );
         $this->assertEquals($supplier->getAccountID(),
-                            (string) $supplierNode->{Supplier::N_ACCOUNTID}
+            (string) $supplierNode->{Supplier::N_ACCOUNTID}
         );
         $this->assertEquals($supplier->getSupplierTaxID(),
-                            (int) $supplierNode->{Supplier::N_SUPPLIERTAXID}
+            (int) $supplierNode->{Supplier::N_SUPPLIERTAXID}
         );
         $this->assertEquals($supplier->getCompanyName(),
-                            (string) $supplierNode->{Supplier::N_COMPANYNAME}
+            (string) $supplierNode->{Supplier::N_COMPANYNAME}
         );
         $this->assertEquals($supplier->getContact(),
-                            (string) $supplierNode->{Supplier::N_CONTACT}
+            (string) $supplierNode->{Supplier::N_CONTACT}
         );
         $this->assertEquals($supplier->getBillingAddress()->getAddressDetail(),
-                            (string) $supplierNode
+            (string) $supplierNode
             ->{Supplier::N_BILLINGADDRESS}
             ->{SupplierAddress::N_ADDRESSDETAIL}
         );
 
         $shToAddr = $supplier->getShipFromAddress();
         $this->assertEquals($shToAddr[0]->getAddressDetail(),
-                            (string) $supplierNode
+            (string) $supplierNode
             ->{Supplier::N_SHIPTOADDRESS}
             ->{SupplierAddress::N_ADDRESSDETAIL}
         );
 
         $this->assertEquals($supplier->getTelephone(),
-                            (string) $supplierNode->{Supplier::N_TELEPHONE}
+            (string) $supplierNode->{Supplier::N_TELEPHONE}
         );
         $this->assertEquals($supplier->getFax(),
-                            (string) $supplierNode->{Supplier::N_FAX}
+            (string) $supplierNode->{Supplier::N_FAX}
         );
         $this->assertEquals($supplier->getEmail(),
-                            (string) $supplierNode->{Supplier::N_EMAIL}
+            (string) $supplierNode->{Supplier::N_EMAIL}
         );
         $this->assertEquals($supplier->getWebsite(),
-                            (string) $supplierNode->{Supplier::N_WEBSITE}
+            (string) $supplierNode->{Supplier::N_WEBSITE}
         );
 
         $this->setNullsSupplier($supplier);
 
         unset($node);
         $nodeNull         = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
         $supplier->createXmlNode($nodeNull);
         $supplierNodeNull = $nodeNull->{Supplier::N_SUPPLIER};
         $this->assertEquals(0, $supplierNodeNull->{Supplier::N_CONTACT}->count());
         $this->assertEquals(0,
-                            $supplierNodeNull->{Supplier::N_SHIPTOADDRESS}->count());
+            $supplierNodeNull->{Supplier::N_SHIPTOADDRESS}->count());
         $this->assertEquals(0,
-                            $supplierNodeNull->{Supplier::N_TELEPHONE}->count());
+            $supplierNodeNull->{Supplier::N_TELEPHONE}->count());
         $this->assertEquals(0, $supplierNodeNull->{Supplier::N_FAX}->count());
         $this->assertEquals(0, $supplierNodeNull->{Supplier::N_EMAIL}->count());
         $this->assertEquals(0, $supplierNodeNull->{Supplier::N_WEBSITE}->count());
@@ -601,7 +524,7 @@ class SupplierTest
     public function testParseXmlNode()
     {
         $node = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
 
         $supplier = $this->createSupplier();
@@ -613,14 +536,14 @@ class SupplierTest
         $this->assertEquals($supplier->getSupplierID(), $parsed->getSupplierID());
         $this->assertEquals($supplier->getAccountID(), $parsed->getAccountID());
         $this->assertEquals($supplier->getCompanyName(),
-                            $parsed->getCompanyName());
+            $parsed->getCompanyName());
         $this->assertEquals($supplier->getContact(), $parsed->getContact());
         $this->assertEquals($supplier->getBillingAddress()->getAddressDetail(),
-                            $parsed->getBillingAddress()->getAddressDetail());
+            $parsed->getBillingAddress()->getAddressDetail());
         $cusShToAddr = $supplier->getShipFromAddress();
         $parShTAddr  = $parsed->getShipFromAddress();
         $this->assertEquals($cusShToAddr[0]->getAddressDetail(),
-                            $parShTAddr[0]->getAddressDetail());
+            $parShTAddr[0]->getAddressDetail());
         $this->assertEquals($supplier->getTelephone(), $parsed->getTelephone());
         $this->assertEquals($supplier->getFax(), $parsed->getFax());
         $this->assertEquals($supplier->getEmail(), $parsed->getEmail());
@@ -649,14 +572,11 @@ class SupplierTest
         $supplier = new Supplier();
         $node     = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $supplier->createXmlNode($node);
             $this->fail("Creat a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -668,18 +588,14 @@ class SupplierTest
         $supplier = new Supplier();
         $node     = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $supplier->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
     }
-
 }

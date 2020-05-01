@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -37,8 +36,7 @@ use Rebelo\SaftPt\AuditFile\Country;
  *
  * @author João Rebelo
  */
-class AddressTest
-    extends TestCase
+class AddressTest extends TestCase
 {
 
     public function testReflection()
@@ -60,13 +58,10 @@ class AddressTest
         $this->assertNull($address->getBuildingNumber());
         $address->setBuildingNumber(\str_pad("_", 11, "_"));
         $this->assertEquals(10, \strlen($address->getBuildingNumber()));
-        try
-        {
+        try {
             $address->setBuildingNumber("");
             $this->fail("setBuildingNumber should throw AuditFileException whene empty");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -78,13 +73,10 @@ class AddressTest
         $this->assertNull($address->getStreetName());
         $address->setStreetName(\str_pad("_", 209, "_"));
         $this->assertEquals(200, \strlen($address->getStreetName()));
-        try
-        {
+        try {
             $address->setStreetName("");
             $this->fail("setStreetName should throw AuditFileException whene empty");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -96,23 +88,17 @@ class AddressTest
         $this->assertNull($address->getAddressDetail());
         $address->setAddressDetail(\str_pad("_", 212, "_"));
         $this->assertEquals(210, \strlen($address->getAddressDetail()));
-        try
-        {
+        try {
             $address->setAddressDetail("");
             $this->fail("setAddressDetail should throw AuditFileException whene empty");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $address->getCity();
             $this->fail("getCity should throw Error whene not initialized");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $city = "the city";
@@ -120,13 +106,10 @@ class AddressTest
         $this->assertEquals($city, $address->getCity());
         $address->setCity(\str_pad("_", 59, "_"));
         $this->assertEquals(50, \strlen($address->getCity()));
-        try
-        {
+        try {
             $address->setCity(null);
             $this->fail("setCity should throw Erro whene setted to null");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
 
@@ -138,45 +121,33 @@ class AddressTest
         $this->assertNull($address->getRegion());
         $address->setRegion(\str_pad("_", 212, "_"));
         $this->assertEquals(50, \strlen($address->getRegion()));
-        try
-        {
+        try {
             $address->setRegion("");
             $this->fail("setRegion should throw AuditFileException whene empty");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $address->getCountry();
             $this->fail("getCountry should throw Error whene not initialized");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $coIso = \Rebelo\SaftPt\AuditFile\Country::ISO_BR;
         $address->setCountry(new \Rebelo\SaftPt\AuditFile\Country($coIso));
         $this->assertEquals($coIso, $address->getCountry()->get());
-        try
-        {
+        try {
             $address->setCountry(null);
             $this->fail("setCountry should throw Error whene setted to null");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
 
-        try
-        {
+        try {
             $address->getPostalCode();
             $this->fail("getPostalCode should throw Error whene not initialized");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $posCode = "12548447-999";
@@ -184,13 +155,10 @@ class AddressTest
         $this->assertEquals($posCode, $address->getPostalCode());
         $address->setPostalCode(\str_pad("_", 212, "_"));
         $this->assertEquals(20, \strlen($address->getPostalCode()));
-        try
-        {
+        try {
             $address->setPostalCode(null);
             $this->fail("setPostalCode should throw Erro whene setted to null");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -207,21 +175,21 @@ class AddressTest
         $address->setRegion("Lisbon");
 
         $this->assertInstanceOf(\SimpleXMLElement::class,
-                                $address->createXmlNode($addrNode));
+            $address->createXmlNode($addrNode));
 
         $this->assertEquals($address->getBuildingNumber(),
-                            $addrNode->{Address::N_BUILDINGNUMBER});
+            $addrNode->{Address::N_BUILDINGNUMBER});
         $this->assertEquals($address->getStreetName(),
-                            $addrNode->{Address::N_STREETNAME});
-        $this->assertEquals($address->getStreetName() . " " . $address->getBuildingNumber(),
-                            $addrNode->{Address::N_ADDRESSDETAIL});
+            $addrNode->{Address::N_STREETNAME});
+        $this->assertEquals($address->getStreetName()." ".$address->getBuildingNumber(),
+            $addrNode->{Address::N_ADDRESSDETAIL});
         $this->assertEquals($address->getCity(), $addrNode->{Address::N_CITY});
         $this->assertEquals($address->getCountry()->get(),
-                            $addrNode->{Address::N_COUNTRY});
+            $addrNode->{Address::N_COUNTRY});
         $this->assertEquals($address->getPostalCode(),
-                            $addrNode->{Address::N_POSTALCODE});
+            $addrNode->{Address::N_POSTALCODE});
         $this->assertEquals($address->getRegion(),
-                            $addrNode->{Address::N_REGION});
+            $addrNode->{Address::N_REGION});
 
         $address->setBuildingNumber(null);
         $address->setStreetName(null);
@@ -230,18 +198,18 @@ class AddressTest
 
         $node = new \SimpleXMLElement("<Address></Address>");
         $this->assertInstanceOf(\SimpleXMLElement::class,
-                                $address->createXmlNode($node));
+            $address->createXmlNode($node));
 
         $this->assertEquals(0, $node->{Address::N_BUILDINGNUMBER}->count());
         $this->assertEquals(0, $node->{Address::N_STREETNAME}->count());
         $this->assertEquals(0, $node->{Address::N_REGION}->count());
         $this->assertEquals($address->getAddressDetail(),
-                            $node->{Address::N_ADDRESSDETAIL});
+            $node->{Address::N_ADDRESSDETAIL});
         $this->assertEquals($address->getCity(), $node->{Address::N_CITY});
         $this->assertEquals($address->getCountry()->get(),
-                            $node->{Address::N_COUNTRY});
+            $node->{Address::N_COUNTRY});
         $this->assertEquals($address->getPostalCode(),
-                            $node->{Address::N_POSTALCODE});
+            $node->{Address::N_POSTALCODE});
     }
 
     public function testParseXmlNode()
@@ -260,15 +228,15 @@ class AddressTest
         $parsed = new Address();
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals($address->getBuildingNumber(),
-                            $parsed->getBuildingNumber());
+            $parsed->getBuildingNumber());
         $this->assertEquals($address->getStreetName(), $parsed->getStreetName());
         $this->assertEquals($address->getCity(), $parsed->getCity());
         $this->assertEquals($address->getCountry()->get(),
-                            $parsed->getCountry()->get());
+            $parsed->getCountry()->get());
         $this->assertEquals($address->getPostalCode(), $parsed->getPostalCode());
         $this->assertEquals($address->getRegion(), $parsed->getRegion());
-        $this->assertEquals($address->getStreetName() . " " . $address->getBuildingNumber(),
-                            $parsed->getAddressDetail());
+        $this->assertEquals($address->getStreetName()." ".$address->getBuildingNumber(),
+            $parsed->getAddressDetail());
     }
 
     public function testClone()
@@ -280,5 +248,4 @@ class AddressTest
         $this->assertEquals($addr->getCountry()->get(), Country::ISO_PT);
         $this->assertEquals($clone->getCountry()->get(), Country::ISO_BR);
     }
-
 }

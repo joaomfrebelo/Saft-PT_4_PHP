@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -40,8 +39,7 @@ use Rebelo\Date\Date as RDate;
  *
  * @author João Rebelo
  */
-class HeaderTest
-    extends TestCase
+class HeaderTest extends TestCase
 {
 
     /**
@@ -80,42 +78,30 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getCompanyID();
             $this->fail("Get company id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $companyId = "Conser 1209";
         $header->setCompanyID($companyId);
         $this->assertEquals($companyId, $header->getCompanyID());
-        try
-        {
+        try {
             $header->setCompanyID("");
             $this->fail("set company id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $header->setCompanyID("aaaaa");
             $this->fail("set company id with wrong regexp string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $header->setCompanyID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -127,33 +113,24 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getTaxRegistrationNumber();
             $this->fail("Get tax registration number without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxRegNum = 999999990;
         $header->setTaxRegistrationNumber($taxRegNum);
         $this->assertEquals($taxRegNum, $header->getTaxRegistrationNumber());
-        try
-        {
+        try {
             $header->setTaxRegistrationNumber(111222333);
             $this->fail("set tax registration number with wrong number should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $header->setTaxRegistrationNumber(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -165,33 +142,24 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getTaxAccountingBasis();
             $this->fail("Get TaxAccountingBasis without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $basis = TaxAccountingBasis::FACTURACAO;
         $header->setTaxAccountingBasis(new TaxAccountingBasis($basis));
         $this->assertEquals($basis, $header->getTaxAccountingBasis()->get());
-        try
-        {
+        try {
             $header->setTaxAccountingBasis("F");
             $this->fail("set tax account basis id with string should throw TypeError");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
-        try
-        {
+        try {
             $header->setTaxAccountingBasis(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -203,13 +171,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getCompanyName();
             $this->fail("Get CompanyName without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $name = "CompanyName FACTURACAO";
@@ -217,21 +182,15 @@ class HeaderTest
         $this->assertEquals($name, $header->getCompanyName());
         $header->setCompanyName(\str_pad("_", 109, "_"));
         $this->assertEquals(100, \strlen($header->getCompanyName()));
-        try
-        {
+        try {
             $header->setCompanyName("");
             $this->fail("set company name id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $header->setCompanyName(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -250,13 +209,10 @@ class HeaderTest
         $this->assertEquals($name, $header->getBusinessName());
         $header->setBusinessName(\str_pad("_", 109, "_"));
         $this->assertEquals(60, \strlen($header->getBusinessName()));
-        try
-        {
+        try {
             $header->setBusinessName("");
             $this->fail("set business name with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
         $header->setBusinessName(null);
@@ -270,13 +226,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getCompanyAddress();
             $this->fail("Get CompanyAddress without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -284,13 +237,10 @@ class HeaderTest
         $header->setCompanyAddress($address);
         $this->assertInstanceOf(AddressPT::class, $header->getCompanyAddress());
 
-        try
-        {
+        try {
             $header->setCompanyAddress(null);
             $this->fail("Set CompanyAddress to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -302,13 +252,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getFiscalYear();
             $this->fail("Get FiscalYear without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -316,33 +263,24 @@ class HeaderTest
         $header->setFiscalYear($year);
         $this->assertEquals($year, $header->getFiscalYear());
 
-        try
-        {
+        try {
             $header->setFiscalYear(1999);
             $this->fail("set a fiscal year earlier than 2000 should throw AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setFiscalYear(\intval(\Date("Y")) + 2);
             $this->fail("set a fiscal year older than now + 2Y should throw AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setFiscalYear(null);
             $this->fail("Set FiscalYear to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -354,13 +292,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getStartDate();
             $this->fail("Get StartDate without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -368,37 +303,28 @@ class HeaderTest
         $date->setDate(2020, 10, 20);
         $header->setStartDate($date);
         $this->assertEquals($date->getTimestamp(),
-                            $header->getStartDate()->getTimestamp());
+            $header->getStartDate()->getTimestamp());
 
-        try
-        {
+        try {
             $date->setDate(1999, 10, 05);
             $header->setStartDate($date);
             $this->fail("set a start date earlier than 2000 should throw AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $date->setDate(\intval(\Date("Y") + 2), 10, 5);
             $header->setStartDate($date);
             $this->fail("set a start date older than now + 2Y should throw AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setStartDate(null);
             $this->fail("Set StartDate to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -410,13 +336,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getEndDate();
             $this->fail("Get EndDate without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -424,37 +347,28 @@ class HeaderTest
         $date->setDate(2020, 10, 20);
         $header->setEndDate($date);
         $this->assertEquals($date->getTimestamp(),
-                            $header->getEndDate()->getTimestamp());
+            $header->getEndDate()->getTimestamp());
 
-        try
-        {
+        try {
             $date->setDate(1999, 10, 05);
             $header->setEndDate($date);
             $this->fail("set a end date earlier than 2000 should throw AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $date->setDate(\intval(\Date("Y") + 2), 10, 5);
             $header->setEndDate($date);
             $this->fail("set a end date older than now + 2Y should throw AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setEndDate(null);
             $this->fail("Set EndDate to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -468,13 +382,13 @@ class HeaderTest
 
         $now = new RDate();
         $this->assertEquals($now->getTimestamp(),
-                            $header->getDateCreated()->getTimestamp());
+            $header->getDateCreated()->getTimestamp());
 
         $date = new RDate();
         $date->setDate(2020, 10, 20);
         $header->setDateCreated($date);
         $this->assertEquals($date->getTimestamp(),
-                            $header->getDateCreated()->getTimestamp());
+            $header->getDateCreated()->getTimestamp());
     }
 
     /**
@@ -484,13 +398,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getTaxEntity();
             $this->fail("Get TaxEntity without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -501,23 +412,17 @@ class HeaderTest
         $header->setTaxEntity(\str_pad("_", 109, "_"));
         $this->assertEquals(20, \strlen($header->getTaxEntity()));
 
-        try
-        {
+        try {
             $header->setTaxEntity("");
             $this->fail("set tax entity with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setTaxEntity(null);
             $this->fail("Set TaxEntity to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -529,13 +434,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getProductCompanyTaxID();
             $this->fail("Get ProductCompanyTaxID without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -546,23 +448,17 @@ class HeaderTest
         $header->setProductCompanyTaxID(\str_pad("_", 300, "_"));
         $this->assertEquals(30, \strlen($header->getProductCompanyTaxID()));
 
-        try
-        {
+        try {
             $header->setProductCompanyTaxID("");
             $this->fail("set ProductCompanyTaxID with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setProductCompanyTaxID(null);
             $this->fail("Set ProductCompanyTaxID to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -574,13 +470,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getSoftwareCertificateNumber();
             $this->fail("Get SoftwareCertificateNumber without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -588,23 +481,17 @@ class HeaderTest
         $header->setSoftwareCertificateNumber($number);
         $this->assertEquals($number, $header->getSoftwareCertificateNumber());
 
-        try
-        {
+        try {
             $header->setSoftwareCertificateNumber(-1);
             $this->fail("set SoftwareCertificateNumber less than zero should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setSoftwareCertificateNumber(null);
             $this->fail("Set SoftwareCertificateNumber to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -616,13 +503,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getProductID();
             $this->fail("Get ProductID without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -630,23 +514,17 @@ class HeaderTest
         $header->setProductID($productId);
         $this->assertEquals($productId, $header->getProductID());
 
-        try
-        {
+        try {
             $header->setProductID("");
             $this->fail("set ProductID with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setProductID(null);
             $this->fail("Set ProductID to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -658,13 +536,10 @@ class HeaderTest
     {
         $header = new Header();
 
-        try
-        {
+        try {
             $header->getProductVersion();
             $this->fail("Get ProductVersion without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -675,23 +550,17 @@ class HeaderTest
         $header->setProductVersion(\str_pad("_", 300, "_"));
         $this->assertEquals(30, \strlen($header->getProductVersion()));
 
-        try
-        {
+        try {
             $header->setProductVersion("");
             $this->fail("set ProductVersion with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setProductVersion(null);
             $this->fail("Set ProductVersion to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -712,13 +581,10 @@ class HeaderTest
         $header->setHeaderComment(\str_pad("_", 300, "_"));
         $this->assertEquals(255, \strlen($header->getHeaderComment()));
 
-        try
-        {
+        try {
             $header->setHeaderComment("");
             $this->fail("set HeaderComment with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -742,13 +608,10 @@ class HeaderTest
         $header->setTelephone(\str_pad("_", 300, "_"));
         $this->assertEquals(20, \strlen($header->getTelephone()));
 
-        try
-        {
+        try {
             $header->setTelephone("");
             $this->fail("set Telephone with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -772,13 +635,10 @@ class HeaderTest
         $header->setFax(\str_pad("_", 300, "_"));
         $this->assertEquals(20, \strlen($header->getFax()));
 
-        try
-        {
+        try {
             $header->setFax("");
             $this->fail("set fax with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -799,33 +659,24 @@ class HeaderTest
         $header->setEmail($email);
         $this->assertEquals($email, $header->getEmail());
 
-        try
-        {
+        try {
             $header->setEmail(\str_pad($email, 255, "a", STR_PAD_LEFT));
             $this->fail("set Email with length > 254 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setEmail("isNotEmail");
             $this->fail("set Email with wrong string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setEmail("");
             $this->fail("set Email with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -846,33 +697,24 @@ class HeaderTest
         $header->setWebsite($website);
         $this->assertEquals($website, $header->getWebsite());
 
-        try
-        {
+        try {
             $header->setWebsite(\str_pad($website, 61, "a", STR_PAD_RIGHT));
             $this->fail("set Website with length > 60 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setWebsite("isNotWebsite");
             $this->fail("set Website with wrong string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $header->setWebsite("");
             $this->fail("set Website with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -940,77 +782,77 @@ class HeaderTest
         $header = $this->createHeader();
 
         $this->assertInstanceOf(\SimpleXMLElement::class,
-                                $header->createXmlNode($node));
+            $header->createXmlNode($node));
         $headerNode = $node->{Header::N_HEADER};
         $this->assertEquals($header->getAuditFileVersion(),
-                            (string) $headerNode->{Header::N_AUDITFILEVERSION}
+            (string) $headerNode->{Header::N_AUDITFILEVERSION}
         );
         $this->assertEquals($header->getCompanyID(),
-                            (string) $headerNode->{Header::N_COMPANYID}
+            (string) $headerNode->{Header::N_COMPANYID}
         );
         $this->assertEquals($header->getTaxRegistrationNumber(),
-                            (int) $headerNode->{Header::N_TAXREGISTRATIONNUMBER}
+            (int) $headerNode->{Header::N_TAXREGISTRATIONNUMBER}
         );
         $this->assertEquals($header->getTaxAccountingBasis()->get(),
-                            (string) $headerNode->{Header::N_TAXACCOUNTINGBASIS}
+            (string) $headerNode->{Header::N_TAXACCOUNTINGBASIS}
         );
         $this->assertEquals($header->getCompanyName(),
-                            (string) $headerNode->{Header::N_COMPANYNAME}
+            (string) $headerNode->{Header::N_COMPANYNAME}
         );
         $this->assertEquals($header->getBusinessName(),
-                            (string) $headerNode->{Header::N_BUSINESSNAME}
+            (string) $headerNode->{Header::N_BUSINESSNAME}
         );
         $this->assertEquals($header->getCompanyAddress()->getAddressDetail(),
-                            (string) $headerNode
+            (string) $headerNode
             ->{Header::N_COMPANYADDRESS}
             ->{AddressPT::N_ADDRESSDETAIL}
         );
         $this->assertEquals($header->getFiscalYear(),
-                            (int) $headerNode->{Header::N_FISCALYEAR});
+            (int) $headerNode->{Header::N_FISCALYEAR});
         $this->assertEquals($header->getStartDate()
                 ->format(RDate::SQL_DATE),
-                         (string) $headerNode->{Header::N_STARTDATE}
+            (string) $headerNode->{Header::N_STARTDATE}
         );
         $this->assertEquals($header->getEndDate()
                 ->format(RDate::SQL_DATE),
-                         (string) $headerNode->{Header::N_ENDDATE}
+            (string) $headerNode->{Header::N_ENDDATE}
         );
         $this->assertEquals($header->getDateCreated()
                 ->format(RDate::SQL_DATE),
-                         (string) $headerNode->{Header::N_DATECREATED}
+            (string) $headerNode->{Header::N_DATECREATED}
         );
         $this->assertEquals($header->getCurrencyCode(),
-                            (string) $headerNode->{Header::N_CURRENCYCODE}
+            (string) $headerNode->{Header::N_CURRENCYCODE}
         );
         $this->assertEquals($header->getTaxEntity(),
-                            (string) $headerNode->{Header::N_TAXENTITY}
+            (string) $headerNode->{Header::N_TAXENTITY}
         );
         $this->assertEquals($header->getProductCompanyTaxID(),
-                            (string) $headerNode->{Header::N_PRODUCTCOMPANYTAXID}
+            (string) $headerNode->{Header::N_PRODUCTCOMPANYTAXID}
         );
         $this->assertEquals($header->getSoftwareCertificateNumber(),
-                            (int) $headerNode->{Header::N_SOFTWARECERTIFICATENUMBER}
+            (int) $headerNode->{Header::N_SOFTWARECERTIFICATENUMBER}
         );
         $this->assertEquals($header->getProductID(),
-                            (string) $headerNode->{Header::N_PRODUCTID}
+            (string) $headerNode->{Header::N_PRODUCTID}
         );
         $this->assertEquals($header->getProductVersion(),
-                            (string) $headerNode->{Header::N_PRODUCTVERSION}
+            (string) $headerNode->{Header::N_PRODUCTVERSION}
         );
         $this->assertEquals($header->getHeaderComment(),
-                            (string) $headerNode->{Header::N_HEADERCOMMENT}
+            (string) $headerNode->{Header::N_HEADERCOMMENT}
         );
         $this->assertEquals($header->getTelephone(),
-                            (string) $headerNode->{Header::N_TELEPHONE}
+            (string) $headerNode->{Header::N_TELEPHONE}
         );
         $this->assertEquals($header->getFax(),
-                            (string) $headerNode->{Header::N_FAX}
+            (string) $headerNode->{Header::N_FAX}
         );
         $this->assertEquals($header->getEmail(),
-                            (string) $headerNode->{Header::N_EMAIL}
+            (string) $headerNode->{Header::N_EMAIL}
         );
         $this->assertEquals($header->getWebsite(),
-                            (string) $headerNode->{Header::N_WEBSITE}
+            (string) $headerNode->{Header::N_WEBSITE}
         );
 
         $this->setNullsHeader($header);
@@ -1020,9 +862,9 @@ class HeaderTest
         $header->createXmlNode($nodeNull);
         $headerNodeNull = $nodeNull->{Header::N_HEADER};
         $this->assertEquals(0,
-                            $headerNodeNull->{Header::N_BUSINESSNAME}->count());
+            $headerNodeNull->{Header::N_BUSINESSNAME}->count());
         $this->assertEquals(0,
-                            $headerNodeNull->{Header::N_HEADERCOMMENT}->count());
+            $headerNodeNull->{Header::N_HEADERCOMMENT}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_TELEPHONE}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_FAX}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_EMAIL}->count());
@@ -1039,39 +881,39 @@ class HeaderTest
         $parsed = new Header();
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals($header->getAuditFileVersion(),
-                            $parsed->getAuditFileVersion());
+            $parsed->getAuditFileVersion());
         $this->assertEquals($header->getCompanyID(), $parsed->getCompanyID());
         $this->assertEquals($header->getTaxRegistrationNumber(),
-                            $parsed->getTaxRegistrationNumber());
+            $parsed->getTaxRegistrationNumber());
         $this->assertEquals($header->getTaxAccountingBasis()->get(),
-                            $parsed->getTaxAccountingBasis()->get());
+            $parsed->getTaxAccountingBasis()->get());
         $this->assertEquals($header->getCompanyName(), $parsed->getCompanyName());
         $this->assertEquals($header->getBusinessName(),
-                            $parsed->getBusinessName());
+            $parsed->getBusinessName());
         $this->assertEquals($header->getCompanyAddress()->getAddressDetail(),
-                            $parsed->getCompanyAddress()->getAddressDetail());
+            $parsed->getCompanyAddress()->getAddressDetail());
         $this->assertEquals($header->getFiscalYear(), $parsed->getFiscalYear());
         $this->assertEquals($header->getStartDate()
                 ->format(RDate::SQL_DATE),
-                         $parsed->getStartDate()->format(RDate::SQL_DATE));
+            $parsed->getStartDate()->format(RDate::SQL_DATE));
         $this->assertEquals($header->getEndDate()
                 ->format(RDate::SQL_DATE),
-                         $parsed->getEndDate()->format(RDate::SQL_DATE));
+            $parsed->getEndDate()->format(RDate::SQL_DATE));
         $this->assertEquals($header->getDateCreated()
                 ->format(RDate::SQL_DATE),
-                         $parsed->getDateCreated()->format(RDate::SQL_DATE));
+            $parsed->getDateCreated()->format(RDate::SQL_DATE));
         $this->assertEquals($header->getCurrencyCode(),
-                            $parsed->getCurrencyCode());
+            $parsed->getCurrencyCode());
         $this->assertEquals($header->getTaxEntity(), $parsed->getTaxEntity());
         $this->assertEquals($header->getProductCompanyTaxID(),
-                            $parsed->getProductCompanyTaxID());
+            $parsed->getProductCompanyTaxID());
         $this->assertEquals($header->getSoftwareCertificateNumber(),
-                            $parsed->getSoftwareCertificateNumber());
+            $parsed->getSoftwareCertificateNumber());
         $this->assertEquals($header->getProductID(), $parsed->getProductID());
         $this->assertEquals($header->getProductVersion(),
-                            $parsed->getProductVersion());
+            $parsed->getProductVersion());
         $this->assertEquals($header->getHeaderComment(),
-                            $parsed->getHeaderComment());
+            $parsed->getHeaderComment());
         $this->assertEquals($header->getTelephone(), $parsed->getTelephone());
         $this->assertEquals($header->getFax(), $parsed->getFax());
         $this->assertEquals($header->getEmail(), $parsed->getEmail());
@@ -1100,5 +942,4 @@ class HeaderTest
             $header->getStartDate()->getTimestamp()
         );
     }
-
 }

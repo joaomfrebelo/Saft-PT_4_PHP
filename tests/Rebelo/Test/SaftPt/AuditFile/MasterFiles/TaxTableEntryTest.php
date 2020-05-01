@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -41,8 +40,7 @@ use Rebelo\Date\Date as RDate;
  *
  * @author João Rebelo
  */
-class TaxTableEntryTest
-    extends TestCase
+class TaxTableEntryTest extends TestCase
 {
 
     /**
@@ -76,34 +74,25 @@ class TaxTableEntryTest
     {
         $taxEntTab = new TaxTableEntry();
 
-        try
-        {
+        try {
             $taxEntTab->getDescription();
             $this->fail("Get description without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $description = "description";
         $taxEntTab->setDescription($description);
         $this->assertEquals($description, $taxEntTab->getDescription());
-        try
-        {
+        try {
             $taxEntTab->setDescription("");
             $this->fail("set description with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $taxEntTab->setDescription(null);
             $this->fail("Set Description shoul to null shuld throw TypeError");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -115,13 +104,10 @@ class TaxTableEntryTest
     {
         $taxEntTab = new TaxTableEntry();
 
-        try
-        {
+        try {
             $taxEntTab->getTaxCode();
             $this->fail("Get TaxCode without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxCode = TaxCode::NOR;
@@ -132,13 +118,10 @@ class TaxTableEntryTest
         $taxEntTab->setTaxCode(new TaxCode($taxRegExp));
         $this->assertEquals($taxRegExp, $taxEntTab->getTaxCode()->get());
 
-        try
-        {
+        try {
             $taxEntTab->setTaxCode(null);
             $this->fail("Set TaxCode shoul to null shuld throw TypeError");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -150,26 +133,20 @@ class TaxTableEntryTest
     {
         $taxEntTab = new TaxTableEntry();
 
-        try
-        {
+        try {
             $taxEntTab->getTaxCountryRegion();
             $this->fail("Get TaxCountryRegion without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxCouReg = TaxCountryRegion::ISO_PT;
         $taxEntTab->setTaxCountryRegion(new TaxCountryRegion($taxCouReg));
         $this->assertEquals($taxCouReg, $taxEntTab->getTaxCountryRegion()->get());
 
-        try
-        {
+        try {
             $taxEntTab->setTaxCountryRegion(null);
             $this->fail("Set TaxCountryRegion shoul to null shuld throw TypeError");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -181,26 +158,20 @@ class TaxTableEntryTest
     {
         $taxEntTab = new TaxTableEntry();
 
-        try
-        {
+        try {
             $taxEntTab->getTaxType();
             $this->fail("Get TaxType without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxType = TaxType::IVA;
         $taxEntTab->setTaxType(new TaxType($taxType));
         $this->assertEquals($taxType, $taxEntTab->getTaxType()->get());
 
-        try
-        {
+        try {
             $taxEntTab->setTaxType(null);
             $this->fail("Set TaxType shoul to null shuld throw TypeError");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -216,7 +187,7 @@ class TaxTableEntryTest
 
         $taxEntTab->setTaxExpirationDate($date);
         $this->assertEquals($date->format(RDate::SQL_DATE),
-                                          $taxEntTab->getTaxExpirationDate()->format(RDate::SQL_DATE));
+            $taxEntTab->getTaxExpirationDate()->format(RDate::SQL_DATE));
 
         $taxEntTab->setTaxExpirationDate(null);
         $this->assertNull($taxEntTab->getTaxExpirationDate());
@@ -234,23 +205,17 @@ class TaxTableEntryTest
         $taxEntTab->setTaxPercentage($percent);
         $this->assertEquals($percent, $taxEntTab->getTaxPercentage());
 
-        try
-        {
+        try {
             $taxEntTab->setTaxAmount(999.00);
             $this->fail("Set Tax amount whene Tax percentage is setted should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $taxEntTab->setTaxPercentage(-23.00);
             $this->fail("Set Tax percentage to a negative number should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -270,22 +235,16 @@ class TaxTableEntryTest
         $taxEntTab->setTaxAmount($amount);
         $this->assertEquals($amount, $taxEntTab->getTaxAmount());
 
-        try
-        {
+        try {
             $taxEntTab->setTaxPercentage(23.00);
             $this->fail("Set Tax percentage whene Tax amount is setted should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $taxEntTab->setTaxAmount(-230.99);
             $this->fail("Set a negative amount should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -332,64 +291,64 @@ class TaxTableEntryTest
     public function testCreateXmlNode()
     {
         $node = new \SimpleXMLElement(
-            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
         );
 
         $entry = $this->createTaxTableEntry();
 
         $this->assertInstanceOf(\SimpleXMLElement::class,
-                                $entry->createXmlNode($node));
+            $entry->createXmlNode($node));
 
         $entryNode = $node->{TaxTableEntry::N_TAXTABLEENTRY};
         $this->assertEquals($entry->getDescription(),
-                            (string) $entryNode->{TaxTableEntry::N_DESCRIPTION});
+            (string) $entryNode->{TaxTableEntry::N_DESCRIPTION});
         $this->assertEquals($entry->getTaxCode()->get(),
-                            (string) $entryNode->{TaxTableEntry::N_TAXCODE});
+            (string) $entryNode->{TaxTableEntry::N_TAXCODE});
         $this->assertEquals($entry->getTaxCountryRegion()->get(),
-                            (string) $entryNode->{TaxTableEntry::N_TAXCOUNTRYREGION});
+            (string) $entryNode->{TaxTableEntry::N_TAXCOUNTRYREGION});
         $this->assertEquals(
             $entry->getTaxExpirationDate()
                 ->format(RDate::SQL_DATE),
-                         (string) $entryNode->{TaxTableEntry::N_TAXEXPIRATIONDATE}
+            (string) $entryNode->{TaxTableEntry::N_TAXEXPIRATIONDATE}
         );
         $this->assertEquals($entry->getTaxPercentage(),
-                            (float) $entryNode->{TaxTableEntry::N_TAXPERCENTAGE});
+            (float) $entryNode->{TaxTableEntry::N_TAXPERCENTAGE});
         $this->assertEquals($entry->getTaxType()->get(),
-                            (string) $entryNode->{TaxTableEntry::N_TAXTYPE});
+            (string) $entryNode->{TaxTableEntry::N_TAXTYPE});
 
         $this->assertEquals(0, $entryNode->{TaxTableEntry::N_TAXAMOUNT}->count());
 
         unset($entryNode);
 
         $nodeAmount = new \SimpleXMLElement(
-            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
         );
 
         $this->changeTaxPercToAmount($entry);
         $entry->createXmlNode($nodeAmount);
         $this->assertEquals(0,
-                            $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXPERCENTAGE}->count());
+            $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXPERCENTAGE}->count());
 
         $this->assertEquals($entry->getTaxAmount(),
-                            (float) $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXAMOUNT});
+            (float) $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXAMOUNT});
 
 
         unset($nodeAmount);
 
         $nodeNull = new \SimpleXMLElement(
-            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
         );
 
         $this->setNullTaxTableEntry($entry);
         $entry->createXmlNode($nodeNull);
         $this->assertEquals(0,
-                            $nodeNull->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXEXPIRATIONDATE}->count());
+            $nodeNull->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXEXPIRATIONDATE}->count());
     }
 
     public function testParseXmlNode()
     {
         $node = new \SimpleXMLElement(
-            "<" . MasterFiles::N_TAXTABLE . "></" . MasterFiles::N_TAXTABLE . ">"
+            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
         );
 
         $entry = $this->createTaxTableEntry();
@@ -400,15 +359,15 @@ class TaxTableEntryTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals($entry->getDescription(), $parsed->getDescription());
         $this->assertEquals($entry->getTaxCode()->get(),
-                            $parsed->getTaxCode()->get());
+            $parsed->getTaxCode()->get());
         $this->assertEquals($entry->getTaxCountryRegion()->get(),
-                            $parsed->getTaxCountryRegion()->get());
+            $parsed->getTaxCountryRegion()->get());
         $this->assertEquals($entry->getTaxExpirationDate()->format(RDate::SQL_DATE),
-                                                                   $parsed->getTaxExpirationDate()->format(RDate::SQL_DATE));
+            $parsed->getTaxExpirationDate()->format(RDate::SQL_DATE));
         $this->assertEquals($entry->getTaxPercentage(),
-                            $parsed->getTaxPercentage());
+            $parsed->getTaxPercentage());
         $this->assertEquals($entry->getTaxType()->get(),
-                            $parsed->getTaxType()->get());
+            $parsed->getTaxType()->get());
         $this->assertNull($parsed->getTaxAmount());
 
         unset($parsed);
@@ -419,7 +378,7 @@ class TaxTableEntryTest
         $parsedAmount->parseXmlNode(new \SimpleXMLElement($xmlAmount));
         $this->assertNull($parsedAmount->getTaxPercentage());
         $this->assertEquals($entry->getTaxAmount(),
-                            $parsedAmount->getTaxAmount());
+            $parsedAmount->getTaxAmount());
 
         unset($parsedAmount);
 
@@ -435,14 +394,11 @@ class TaxTableEntryTest
         $taxTableEntry = new TaxTableEntry();
         $node          = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $taxTableEntry->createXmlNode($node);
             $this->fail("Creat a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -454,18 +410,14 @@ class TaxTableEntryTest
         $taxTableEntry = new TaxTableEntry();
         $node          = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $taxTableEntry->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
     }
-
 }

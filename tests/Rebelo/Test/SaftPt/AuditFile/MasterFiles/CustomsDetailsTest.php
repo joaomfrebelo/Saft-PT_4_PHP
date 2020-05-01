@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -36,8 +35,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *
  * @author João Rebelo
  */
-class CustomsDetailsTest
-    extends TestCase
+class CustomsDetailsTest extends TestCase
 {
 
     /**
@@ -82,22 +80,16 @@ class CustomsDetailsTest
         $custDetail->unsetCNCode($index);
         $this->assertFalse($custDetail->issetCNCode($index));
 
-        try
-        {
+        try {
             $custDetail->addToCNCode("999");
             $this->fail("Add CNCode that does not respect regexp should throw AuditFileException");
-        }
-        catch (AuditFileException $e)
-        {
+        } catch (AuditFileException $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $custDetail->addToCNCode("9999999999");
             $this->fail("Add CNCode that does not respect regexp should throw AuditFileException");
-        }
-        catch (AuditFileException $e)
-        {
+        } catch (AuditFileException $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
     }
@@ -124,22 +116,16 @@ class CustomsDetailsTest
         $custDetail->unsetUNNumber($index);
         $this->assertFalse($custDetail->issetUNNumber($index));
 
-        try
-        {
+        try {
             $custDetail->addToUNNumber("999");
             $this->fail("Add UNNumber that does not respect regexp should throw AuditFileException");
-        }
-        catch (AuditFileException $e)
-        {
+        } catch (AuditFileException $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $custDetail->addToUNNumber("9999999999");
             $this->fail("Add UNNumber that does not respect regexp should throw AuditFileException");
-        }
-        catch (AuditFileException $e)
-        {
+        } catch (AuditFileException $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
     }
@@ -166,19 +152,17 @@ class CustomsDetailsTest
         $customsNode = $customsDetail->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $customsNode);
         $this->assertEquals(CustomsDetails::N_CUSTOMSDETAILS,
-                            $customsNode->getName());
+            $customsNode->getName());
 
         $cNcodeNode = $customsNode->{CustomsDetails::N_CNCODE};
-        for ($n = 0; $n < $cNcodeNode->count(); $n++)
-        {
+        for ($n = 0; $n < $cNcodeNode->count(); $n++) {
             $this->assertEquals(
                 $customsDetail->getCNCode()[$n], (string) $cNcodeNode[$n]
             );
         }
 
         $uNNumberNode = $customsNode->{CustomsDetails::N_UNNUMBER};
-        for ($n = 0; $n < $uNNumberNode->count(); $n++)
-        {
+        for ($n = 0; $n < $uNNumberNode->count(); $n++) {
             $this->assertEquals(
                 $customsDetail->getUNNumber()[$n], (string) $uNNumberNode[$n]
             );
@@ -194,18 +178,16 @@ class CustomsDetailsTest
 
         $customsDetail = $this->createCustomsDetail();
         $countUnNumber = \count($customsDetail->getUNNumber());
-        for ($n = 0; $n < $countUnNumber; $n++)
-        {
+        for ($n = 0; $n < $countUnNumber; $n++) {
             $customsDetail->unsetUNNumber($n);
         }
         $customsNode = $customsDetail->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $customsNode);
         $this->assertEquals(CustomsDetails::N_CUSTOMSDETAILS,
-                            $customsNode->getName());
+            $customsNode->getName());
 
         $cNcodeNode = $customsNode->{CustomsDetails::N_CNCODE};
-        for ($n = 0; $n < $cNcodeNode->count(); $n++)
-        {
+        for ($n = 0; $n < $cNcodeNode->count(); $n++) {
             $this->assertEquals(
                 $customsDetail->getCNCode()[$n], (string) $cNcodeNode[$n]
             );
@@ -224,21 +206,19 @@ class CustomsDetailsTest
 
         $customsDetail = $this->createCustomsDetail();
         $countCnCode   = \count($customsDetail->getCNCode());
-        for ($n = 0; $n < $countCnCode; $n++)
-        {
+        for ($n = 0; $n < $countCnCode; $n++) {
             $customsDetail->unsetCNCode($n);
         }
         $customsNode = $customsDetail->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $customsNode);
         $this->assertEquals(CustomsDetails::N_CUSTOMSDETAILS,
-                            $customsNode->getName());
+            $customsNode->getName());
 
         $cNcodeNode = $customsNode->{CustomsDetails::N_CNCODE};
         $this->assertEquals(0, $cNcodeNode->count());
 
         $uNNumberNode = $customsNode->{CustomsDetails::N_UNNUMBER};
-        for ($n = 0; $n < $uNNumberNode->count(); $n++)
-        {
+        for ($n = 0; $n < $uNNumberNode->count(); $n++) {
             $this->assertEquals(
                 $customsDetail->getUNNumber()[$n], (string) $uNNumberNode[$n]
             );
@@ -262,16 +242,14 @@ class CustomsDetailsTest
         $this->assertEquals(2, $countCnCode);
         $this->assertEquals(2, $countUNNumber);
 
-        for ($n = 0; $n < $countCnCode; $n++)
-        {
+        for ($n = 0; $n < $countCnCode; $n++) {
             $this->assertEquals($customsDetail->getCNCode()[$n],
-                                $parsed->getCNCode()[$n]);
+                $parsed->getCNCode()[$n]);
         }
 
-        for ($n = 0; $n < $countUNNumber; $n++)
-        {
+        for ($n = 0; $n < $countUNNumber; $n++) {
             $this->assertEquals($customsDetail->getUNNumber()[$n],
-                                $parsed->getUNNumber()[$n]);
+                $parsed->getUNNumber()[$n]);
         }
     }
 
@@ -284,8 +262,7 @@ class CustomsDetailsTest
 
         $customsDetail = $this->createCustomsDetail();
         $countUnNumber = \count($customsDetail->getUNNumber());
-        for ($n = 0; $n < $countUnNumber; $n++)
-        {
+        for ($n = 0; $n < $countUnNumber; $n++) {
             $customsDetail->unsetUNNumber($n);
         }
         $xml = $customsDetail->createXmlNode($node)->asXML();
@@ -299,10 +276,9 @@ class CustomsDetailsTest
         $this->assertEquals(2, $countCnCode);
         $this->assertEquals(0, $countUNNumber);
 
-        for ($n = 0; $n < $countCnCode; $n++)
-        {
+        for ($n = 0; $n < $countCnCode; $n++) {
             $this->assertEquals($customsDetail->getCNCode()[$n],
-                                $parsed->getCNCode()[$n]);
+                $parsed->getCNCode()[$n]);
         }
     }
 
@@ -315,8 +291,7 @@ class CustomsDetailsTest
 
         $customsDetail = $this->createCustomsDetail();
         $count         = \count($customsDetail->getCNCode());
-        for ($n = 0; $n < $count; $n++)
-        {
+        for ($n = 0; $n < $count; $n++) {
             $customsDetail->unsetCNCode($n);
         }
         $xml = $customsDetail->createXmlNode($node)->asXML();
@@ -330,11 +305,9 @@ class CustomsDetailsTest
         $this->assertEquals(0, $countCnCode);
         $this->assertEquals(2, $countUNNumber);
 
-        for ($n = 0; $n < $countUNNumber; $n++)
-        {
+        for ($n = 0; $n < $countUNNumber; $n++) {
             $this->assertEquals($customsDetail->getUNNumber()[$n],
-                                $parsed->getUNNumber()[$n]);
+                $parsed->getUNNumber()[$n]);
         }
     }
-
 }

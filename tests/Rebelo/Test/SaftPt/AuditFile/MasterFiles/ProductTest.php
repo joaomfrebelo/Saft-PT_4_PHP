@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -39,8 +38,7 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
  *
  * @author João Rebelo
  */
-class ProductTest
-    extends TestCase
+class ProductTest extends TestCase
 {
 
     /**
@@ -65,40 +63,28 @@ class ProductTest
         $this->assertNull($product->getProductGroup());
         $this->assertNull($product->getCustomsDetails());
 
-        try
-        {
+        try {
             $product->getProductCode();
             $this->fail("Get ProductCode without initialize should throw Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
-        try
-        {
+        try {
             $product->getProductDescription();
             $this->fail("Get ProductDescription without initialize should throw Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
-        try
-        {
+        try {
             $product->getProductNumberCode();
             $this->fail("Get ProductNumberCode without initialize should throw Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
-        try
-        {
+        try {
             $product->getProductType();
             $this->fail("Get ProductType without initialize should throw Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
     }
@@ -119,15 +105,12 @@ class ProductTest
         $this->assertEquals($code, $product->getProductCode());
         $product->setProductCode(str_pad("A", 61, "9"));
         $this->assertEquals(60, \strlen($product->getProductCode()));
-        try
-        {
+        try {
             $product->setProductCode("");
-            $this->fail("Set ProductCode to a empty string should throws '" . AuditFileException::class . "'");
-        }
-        catch (\Exception | \Error $ex)
-        {
+            $this->fail("Set ProductCode to a empty string should throws '".AuditFileException::class."'");
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(AuditFileException::class, $ex,
-                                    "Set ProductCode to a empty string should throws '" . AuditFileException::class . "'");
+                "Set ProductCode to a empty string should throws '".AuditFileException::class."'");
         }
 
 
@@ -139,15 +122,12 @@ class ProductTest
         $this->assertNull($product->getProductGroup());
         $product->setProductGroup(str_pad("A", 61, "9"));
         $this->assertEquals(50, \strlen($product->getProductGroup()));
-        try
-        {
+        try {
             $product->setProductGroup("");
-            $this->fail("Set ProductGroup to a empty string should throws '" . AuditFileException::class . "'");
-        }
-        catch (\Exception | \Error $ex)
-        {
+            $this->fail("Set ProductGroup to a empty string should throws '".AuditFileException::class."'");
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(AuditFileException::class, $ex,
-                                    "Set ProductGroup to a empty string should throws '" . AuditFileException::class . "'");
+                "Set ProductGroup to a empty string should throws '".AuditFileException::class."'");
         }
 
         $desc = "Description of product";
@@ -155,15 +135,12 @@ class ProductTest
         $this->assertEquals($desc, $product->getProductDescription());
         $product->setProductDescription(str_pad("A", 201, "9"));
         $this->assertEquals(200, \strlen($product->getProductDescription()));
-        try
-        {
+        try {
             $product->setProductDescription("A");
-            $this->fail("Set ProductDescription to a string length less then 2 should throws '" . AuditFileException::class . "'");
-        }
-        catch (\Exception | \Error $ex)
-        {
+            $this->fail("Set ProductDescription to a string length less then 2 should throws '".AuditFileException::class."'");
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(AuditFileException::class, $ex,
-                                    "Set ProductDescription to a string  length less than 2 should throws '" . AuditFileException::class . "'");
+                "Set ProductDescription to a string  length less than 2 should throws '".AuditFileException::class."'");
         }
 
         $numCode = "CD999";
@@ -171,15 +148,12 @@ class ProductTest
         $this->assertEquals($numCode, $product->getProductNumberCode());
         $product->setProductNumberCode(str_pad("A", 61, "9"));
         $this->assertEquals(60, \strlen($product->getProductNumberCode()));
-        try
-        {
+        try {
             $product->setProductNumberCode("");
-            $this->fail("Set ProductNumberCode to a empty string should throws '" . AuditFileException::class . "'");
-        }
-        catch (\Exception | \Error $ex)
-        {
+            $this->fail("Set ProductNumberCode to a empty string should throws '".AuditFileException::class."'");
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(AuditFileException::class, $ex,
-                                    "Set ProductNumberCode to a empty string should throws '" . AuditFileException::class . "'");
+                "Set ProductNumberCode to a empty string should throws '".AuditFileException::class."'");
         }
 
         $CNCode     = "12345678";
@@ -187,7 +161,7 @@ class ProductTest
         $index      = $custDetail->addToCNCode($CNCode);
         $product->setCustomsDetails($custDetail);
         $this->assertEquals($CNCode,
-                            $product->getCustomsDetails()->getCNCode()[$index]);
+            $product->getCustomsDetails()->getCNCode()[$index]);
     }
 
     /**
@@ -216,30 +190,28 @@ class ProductTest
     {
         $prod           = $this->createProduct();
         $node           = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
         $prodNode       = $prod->createXmlNode($node);
         $custDetailNode = $prodNode->{Product::N_CUSTOMSDETAILS};
-        for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_CNCODE}->count(); $n++)
-        {
+        for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_CNCODE}->count(); $n++) {
             $this->assertEquals($prod->getCustomsDetails()->getCNCode()[$n],
-                                (string) $custDetailNode->{CustomsDetails::N_CNCODE}[$n]);
+                (string) $custDetailNode->{CustomsDetails::N_CNCODE}[$n]);
         }
-        for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_UNNUMBER}->count(); $n++)
-        {
+        for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_UNNUMBER}->count(); $n++) {
             $this->assertEquals($prod->getCustomsDetails()->getUNNumber()[$n],
-                                (string) $custDetailNode->{CustomsDetails::N_UNNUMBER}[$n]);
+                (string) $custDetailNode->{CustomsDetails::N_UNNUMBER}[$n]);
         }
         $this->assertEquals($prod->getProductCode(),
-                            (string) $prodNode->{Product::N_PRODUCTCODE});
+            (string) $prodNode->{Product::N_PRODUCTCODE});
         $this->assertEquals($prod->getProductDescription(),
-                            (string) $prodNode->{Product::N_PRODUCTDESCRIPTION});
+            (string) $prodNode->{Product::N_PRODUCTDESCRIPTION});
         $this->assertEquals($prod->getProductGroup(),
-                            (string) $prodNode->{Product::N_PRODUCTGROUP});
+            (string) $prodNode->{Product::N_PRODUCTGROUP});
         $this->assertEquals($prod->getProductNumberCode(),
-                            (string) $prodNode->{Product::N_PRODUCTNUMBERCODE});
+            (string) $prodNode->{Product::N_PRODUCTNUMBERCODE});
         $this->assertEquals($prod->getProductType()->get(),
-                            (string) $prodNode->{Product::N_PRODUCTTYPE});
+            (string) $prodNode->{Product::N_PRODUCTTYPE});
 
         $prod->setProductGroup(null);
         $prod->setCustomsDetails(null);
@@ -254,7 +226,7 @@ class ProductTest
     public function testParseXmlNode()
     {
         $node    = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
         $product = $this->createProduct();
         $xml     = $product->createXmlNode($node)->asXML();
@@ -263,19 +235,19 @@ class ProductTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertEquals($product->getProductCode(),
-                            $parsed->getProductCode());
+            $parsed->getProductCode());
         $this->assertEquals($product->getProductDescription(),
-                            $parsed->getProductDescription());
+            $parsed->getProductDescription());
         $this->assertEquals($product->getProductGroup(),
-                            $parsed->getProductGroup());
+            $parsed->getProductGroup());
         $this->assertEquals($product->getProductNumberCode(),
-                            $parsed->getProductNumberCode());
+            $parsed->getProductNumberCode());
         $this->assertEquals($product->getProductType()->get(),
-                            $parsed->getProductType()->get());
+            $parsed->getProductType()->get());
         $this->assertEquals($product->getCustomsDetails()->getCNCode()[0],
-                            $parsed->getCustomsDetails()->getCNCode()[0]);
+            $parsed->getCustomsDetails()->getCNCode()[0]);
         $this->assertEquals($product->getCustomsDetails()->getUNNumber()[0],
-                            $parsed->getCustomsDetails()->getUNNumber()[0]);
+            $parsed->getCustomsDetails()->getUNNumber()[0]);
 
         $product->setProductGroup(null);
         $product->setCustomsDetails(null);
@@ -292,14 +264,11 @@ class ProductTest
         $product = new Product();
         $node    = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $product->createXmlNode($node);
             $this->fail("Creat a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -311,18 +280,14 @@ class ProductTest
         $product = new Product();
         $node    = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $product->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
     }
-
 }

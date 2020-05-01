@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -39,8 +38,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
  *
  * @author João Rebelo
  */
-class WithholdingTaxTest
-    extends TestCase
+class WithholdingTaxTest extends TestCase
 {
 
     /**
@@ -60,13 +58,10 @@ class WithholdingTaxTest
         $this->assertNull($withHolTax->getWithholdingTaxType());
         $this->assertNull($withHolTax->getWithholdingTaxDescription());
 
-        try
-        {
+        try {
             $withHolTax->getWithholdingTaxAmount();
             $this->fail("Get WithholdingTaxAmount without initialization Should throw \Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
     }
@@ -91,29 +86,23 @@ class WithholdingTaxTest
         $this->assertNull($withHolTax->getWithholdingTaxDescription());
         $withHolTax->setWithholdingTaxDescription(\str_pad("A", 61, "A"));
         $this->assertSame(60,
-                          \strlen($withHolTax->getWithholdingTaxDescription()));
-        try
-        {
+            \strlen($withHolTax->getWithholdingTaxDescription()));
+        try {
             $withHolTax->setWithholdingTaxDescription("");
             $this->fail("Set WithholdingTaxDescription to an empty string Should "
-                . "throw \Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."throw \Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
         $amount = 0.99;
         $withHolTax->setWithholdingTaxAmount($amount);
         $this->assertSame($amount, $withHolTax->getWithholdingTaxAmount());
-        try
-        {
+        try {
             $withHolTax->setWithholdingTaxAmount(-0.01);
             $this->fail("Set WithholdingTaxAmount to a negative number Should "
-                . "throw \Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."throw \Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
     }
@@ -140,14 +129,11 @@ class WithholdingTaxTest
     {
         $withholdingTax = new WithholdingTax();
         $node           = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $withholdingTax->createXmlNode($node);
             $this->fail("Create a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -161,14 +147,11 @@ class WithholdingTaxTest
     {
         $withholdingTax = new WithholdingTax();
         $node           = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $withholdingTax->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -182,7 +165,7 @@ class WithholdingTaxTest
     {
         $withholdingTax = $this->createWithholdingTax();
         $node           = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
 
         $withHolTaxNode = $withholdingTax->createXmlNode($node);
@@ -220,7 +203,7 @@ class WithholdingTaxTest
         $withholdingTax->setWithholdingTaxType(null);
         $withholdingTax->setWithholdingTaxDescription(null);
         $node           = new \SimpleXMLElement(
-            "<" . Payment::N_PAYMENT . "></" . Payment::N_PAYMENT . ">"
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
         );
 
         $withHolTaxNode = $withholdingTax->createXmlNode($node);
@@ -231,12 +214,12 @@ class WithholdingTaxTest
         );
 
         $this->assertSame(0,
-                          $node->{WithholdingTax::N_WITHHOLDINGTAX}
+            $node->{WithholdingTax::N_WITHHOLDINGTAX}
             ->{WithholdingTax::N_WITHHOLDINGTAXTYPE}->count()
         );
 
         $this->assertSame(0,
-                          $node->{WithholdingTax::N_WITHHOLDINGTAX}
+            $node->{WithholdingTax::N_WITHHOLDINGTAX}
             ->{WithholdingTax::N_WITHHOLDINGTAXDESCRIPTION}->count()
         );
 
@@ -254,7 +237,7 @@ class WithholdingTaxTest
     {
         $withholdingTax = $this->createWithholdingTax();
         $node           = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml            = $withholdingTax->createXmlNode($node)->asXML();
 
@@ -284,7 +267,7 @@ class WithholdingTaxTest
         $withholdingTax->setWithholdingTaxType(null);
         $withholdingTax->setWithholdingTaxDescription(null);
         $node           = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml            = $withholdingTax->createXmlNode($node)->asXML();
 
@@ -298,5 +281,4 @@ class WithholdingTaxTest
             $parsed->getWithholdingTaxAmount()
         );
     }
-
 }

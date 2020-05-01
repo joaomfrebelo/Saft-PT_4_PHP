@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -27,11 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\Test\SaftPt\AuditFile\MasterFile;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'CustomerTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'CustomsDetailsTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'SupplierTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'TaxTableEntryTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'ProductTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'CustomerTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'CustomsDetailsTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'SupplierTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'TaxTableEntryTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'ProductTest.php';
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
@@ -47,8 +46,7 @@ use Rebelo\SaftPt\AuditFile\ExportType;
  *
  * @author João Rebelo
  */
-class MasterFilesTest
-    extends TestCase
+class MasterFilesTest extends TestCase
 {
 
     public function testReflection()
@@ -66,13 +64,10 @@ class MasterFilesTest
         $this->assertEquals(array(), $master->getProduct());
         $this->assertEquals(array(), $master->getSupplier());
         $this->assertEquals(array(), $master->getTaxTableEntry());
-        try
-        {
+        try {
             $master->getGeneralLedgerAccounts();
             $this->fail("getGeneralLedgerAccounts should throw \Rebelo\SaftPt\AuditFile\NotImplemented");
-        }
-        catch (\Exception | \Error $ex)
-        {
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\NotImplemented::class, $ex
             );
@@ -83,16 +78,14 @@ class MasterFilesTest
     {
         $custTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\CustomerTest();
         $customer = $custTest->createCustomer();
-        if (($customer instanceof Customer) === false)
-        {
+        if (($customer instanceof Customer) === false) {
             $this->fail("Was not possible to create the Customer instance");
         }
 
         $master = new MasterFiles();
 
         $nCount = 5;
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nCustomer = clone $customer;
             $nCustomer->setCustomerID(\strval($n));
             $this->assertEquals($n, $master->addToCustomer($nCustomer));
@@ -109,10 +102,8 @@ class MasterFilesTest
         /* @var $unStack Customer[] */
         $unStack = $master->getCustomer();
         $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++)
-        {
-            if ($n === $unset)
-            {
+        for ($n = 0; $n < $nCount; $n++) {
+            if ($n === $unset) {
                 $this->assertFalse(\array_key_exists($unset, $unStack));
                 continue;
             }
@@ -126,16 +117,14 @@ class MasterFilesTest
     {
         $supplierTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\SupplierTest();
         $supplier     = $supplierTest->createSupplier();
-        if (($supplier instanceof Supplier) === false)
-        {
+        if (($supplier instanceof Supplier) === false) {
             $this->fail("Was not possible to create the Supplier instance");
         }
 
         $master = new MasterFiles();
 
         $nCount = 5;
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nSupplier = clone $supplier;
             $nSupplier->setSupplierID(\strval($n));
             $this->assertEquals($n, $master->addToSupplier($nSupplier));
@@ -152,10 +141,8 @@ class MasterFilesTest
         /* @var $unStack Supplier[] */
         $unStack = $master->getSupplier();
         $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++)
-        {
-            if ($n === $unset)
-            {
+        for ($n = 0; $n < $nCount; $n++) {
+            if ($n === $unset) {
                 $this->assertFalse(\array_key_exists($unset, $unStack));
                 continue;
             }
@@ -169,16 +156,14 @@ class MasterFilesTest
     {
         $productTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\ProductTest();
         $product     = $productTest->createProduct();
-        if (($product instanceof Product) === false)
-        {
+        if (($product instanceof Product) === false) {
             $this->fail("Was not possible to create the Product instance");
         }
 
         $master = new MasterFiles();
 
         $nCount = 5;
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nProduct = clone $product;
             $nProduct->setProductNumberCode(\strval($n));
             $this->assertEquals($n, $master->addToProduct($nProduct));
@@ -195,10 +180,8 @@ class MasterFilesTest
         /* @var $unStack Product[] */
         $unStack = $master->getProduct();
         $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++)
-        {
-            if ($n === $unset)
-            {
+        for ($n = 0; $n < $nCount; $n++) {
+            if ($n === $unset) {
                 $this->assertFalse(\array_key_exists($unset, $unStack));
                 continue;
             }
@@ -212,16 +195,14 @@ class MasterFilesTest
     {
         $taxTableEntryTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\TaxTableEntryTest();
         $taxTableEntry     = $taxTableEntryTest->createTaxTableEntry();
-        if (($taxTableEntry instanceof TaxTableEntry) === false)
-        {
+        if (($taxTableEntry instanceof TaxTableEntry) === false) {
             $this->fail("Was not possible to create the TaxTableEntry instance");
         }
 
         $master = new MasterFiles();
 
         $nCount = 5;
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nTaxTableEntry = clone $taxTableEntry;
             $nTaxTableEntry->setTaxPercentage((float) $n);
             $this->assertEquals($n, $master->addToTaxTableEntry($nTaxTableEntry));
@@ -238,10 +219,8 @@ class MasterFilesTest
         /* @var $unStack TaxTableEntry[] */
         $unStack = $master->getTaxTableEntry();
         $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++)
-        {
-            if ($n === $unset)
-            {
+        for ($n = 0; $n < $nCount; $n++) {
+            if ($n === $unset) {
                 $this->assertFalse(\array_key_exists($unset, $unStack));
                 continue;
             }
@@ -260,8 +239,7 @@ class MasterFilesTest
         $master = new MasterFiles();
         $this->assertEquals(ExportType::C, $master->getExportType()->get());
 
-        array_map(function($type)
-        {
+        array_map(function($type) {
             $masterConst  = new MasterFiles(new ExportType($type));
             $this->assertEquals($type, $masterConst->getExportType()->get());
             $masterSetGet = new MasterFiles();
@@ -282,31 +260,27 @@ class MasterFilesTest
         $taxTableEntryTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\TaxTableEntryTest();
         $taxTableEntry     = $taxTableEntryTest->createTaxTableEntry();
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nCustomer = clone $customer;
             $nCustomer->setCustomerID(\strval($n));
             $master->addToCustomer($nCustomer);
         }
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nSupplier = clone $supplier;
             $nSupplier->setSupplierID(\strval($n));
             $master->addToSupplier($nSupplier);
         }
 
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nProduct = clone $product;
             $nProduct->setProductNumberCode(\strval($n));
             $master->addToProduct($nProduct);
         }
 
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nTaxTableEntry = clone $taxTableEntry;
             $nTaxTableEntry->setTaxPercentage((float) $n);
             $master->addToTaxTableEntry($nTaxTableEntry);
@@ -322,7 +296,7 @@ class MasterFilesTest
         $master = $this->createMasterFile($nCount);
 
         $node = new \SimpleXMLElement(
-            "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
+            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
 
         $masterNode = $master->createXmlNode($node);
@@ -346,44 +320,40 @@ class MasterFilesTest
             $node->{MasterFiles::N_MASTERFILES}->{MasterFiles::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}->count()
         );
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $customerNode = $node->{MasterFiles::N_MASTERFILES}->{Customer::N_CUSTOMER}[$n];
             $this->assertEquals(
                 \strval($n), (string) $customerNode->{Customer::N_CUSTOMERID}
             );
         }
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $supplierNode = $node->{MasterFiles::N_MASTERFILES}->{Supplier::N_SUPPLIER}[$n];
             $this->assertEquals(
                 \strval($n), (string) $supplierNode->{Supplier::N_SUPPLIERID}
             );
         }
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $productNode = $node->{MasterFiles::N_MASTERFILES}->{Product::N_PRODUCT}[$n];
             $this->assertEquals(
                 \strval($n),
-                        (string) $productNode->{Product::N_PRODUCTNUMBERCODE}
+                (string) $productNode->{Product::N_PRODUCTNUMBERCODE}
             );
         }
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $taxTableEntryNode = $node->{MasterFiles::N_MASTERFILES}
                 ->{MasterFiles::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}[$n];
             $this->assertEquals(
                 \strval($n),
-                        (string) $taxTableEntryNode->{TaxTableEntry::N_TAXPERCENTAGE}
+                (string) $taxTableEntryNode->{TaxTableEntry::N_TAXPERCENTAGE}
             );
         }
 
         // Test simple export
         $simple     = new \SimpleXMLElement(
-            "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
+            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
         $master->setExportType(new ExportType(ExportType::S));
         $simpleNode = $master->createXmlNode($simple);
@@ -412,7 +382,7 @@ class MasterFilesTest
     {
         $master     = new MasterFiles();
         $node       = new \SimpleXMLElement(
-            "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
+            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
         $masterNode = $master->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
@@ -441,14 +411,11 @@ class MasterFilesTest
         $master = new MasterFiles();
         $node   = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $masterNode = $master->createXmlNode($node);
             $this->fail("Creat a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -460,14 +427,11 @@ class MasterFilesTest
         $master = new MasterFiles();
         $node   = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $masterNode = $master->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -479,7 +443,7 @@ class MasterFilesTest
         $nCount = 5;
         $master = $this->createMasterFile($nCount);
         $node   = new \SimpleXMLElement(
-            "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
+            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
 
         $xml    = $master->createXmlNode($node)->asXML();
@@ -492,8 +456,7 @@ class MasterFilesTest
 
         /* @var $customerStack Customer[] */
         $customerStack = $parsed->getCustomer();
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $this->assertEquals(
                 \strval($n), $customerStack[$n]->getCustomerID()
             );
@@ -501,8 +464,7 @@ class MasterFilesTest
 
         /* @var $supplierStack Supplier[] */
         $supplierStack = $parsed->getSupplier();
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $this->assertEquals(
                 \strval($n), $supplierStack[$n]->getSupplierID()
             );
@@ -510,8 +472,7 @@ class MasterFilesTest
 
         /* @var $productStack Product[] */
         $productStack = $parsed->getProduct();
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $this->assertEquals(
                 \strval($n), $productStack[$n]->getProductNumberCode()
             );
@@ -519,8 +480,7 @@ class MasterFilesTest
 
         /* @var $taxTableEntryStack TaxTableEntry[] */
         $taxTableEntryStack = $parsed->getTaxTableEntry();
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $this->assertEquals(
                 (float) $n, $taxTableEntryStack[$n]->getTaxPercentage()
             );
@@ -531,7 +491,7 @@ class MasterFilesTest
     {
         $master = new MasterFiles();
         $node   = new \SimpleXMLElement(
-            "<" . AuditFile::N_AUDITFILE . "></" . AuditFile::N_AUDITFILE . ">"
+            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
 
         $xml    = $master->createXmlNode($node)->asXML();
@@ -542,5 +502,4 @@ class MasterFilesTest
         $this->assertEquals(0, \count($parsed->getProduct()));
         $this->assertEquals(0, \count($parsed->getTaxTableEntry()));
     }
-
 }

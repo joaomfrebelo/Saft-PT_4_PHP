@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -36,8 +35,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
  *
  * @author João Rebelo
  */
-class SpecialRegimesTest
-    extends TestCase
+class SpecialRegimesTest extends TestCase
 {
 
     /**
@@ -74,14 +72,11 @@ class SpecialRegimesTest
     {
         $sepReg = new SpecialRegimes();
         $node   = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $sepReg->createXmlNode($node);
             $this->fail("Create a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -92,14 +87,11 @@ class SpecialRegimesTest
     {
         $speReg = new SpecialRegimes();
         $node   = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $speReg->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -146,15 +138,14 @@ class SpecialRegimesTest
 
     public function testCreateXmlNode()
     {
-        foreach ($this->getTruesTable() as $bool)
-        {
+        foreach ($this->getTruesTable() as $bool) {
             $specReg = new SpecialRegimes();
             $specReg->setCashVATSchemeIndicator($bool[0]);
             $specReg->setSelfBillingIndicator($bool[1]);
             $specReg->setThirdPartiesBillingIndicator($bool[2]);
 
             $node       = new \SimpleXMLElement(
-                "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+                "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
             );
             $speRegNode = $specReg->createXmlNode($node);
             $this->assertInstanceOf(\SimpleXMLElement::class, $speRegNode);
@@ -162,21 +153,15 @@ class SpecialRegimesTest
                 SpecialRegimes::N_SPECIALREGIMES, $speRegNode->getName()
             );
             $this->assertSame(
-                $specReg->getCashVATSchemeIndicator()
-                    ? "1"
-                    : "0",
+                $specReg->getCashVATSchemeIndicator() ? "1" : "0",
                 (string) $node->{SpecialRegimes::N_SPECIALREGIMES}->{SpecialRegimes::N_CASHVATSCHEMEINDICATOR}
             );
             $this->assertSame(
-                $specReg->getSelfBillingIndicator()
-                    ? "1"
-                    : "0",
+                $specReg->getSelfBillingIndicator() ? "1" : "0",
                 (string) $node->{SpecialRegimes::N_SPECIALREGIMES}->{SpecialRegimes::N_SELFBILLINGINDICATOR}
             );
             $this->assertSame(
-                $specReg->getThirdPartiesBillingIndicator()
-                    ? "1"
-                    : "0",
+                $specReg->getThirdPartiesBillingIndicator() ? "1" : "0",
                 (string) $node->{SpecialRegimes::N_SPECIALREGIMES}->{SpecialRegimes::N_THIRDPARTIESBILLINGINDICATOR}
             );
         }
@@ -184,10 +169,9 @@ class SpecialRegimesTest
 
     public function testeParseXml()
     {
-        foreach ($this->getTruesTable() as $bool)
-        {
+        foreach ($this->getTruesTable() as $bool) {
             $node   = new \SimpleXMLElement(
-                "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+                "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
             );
             $speReg = new SpecialRegimes();
             $xml    = $speReg->createXmlNode($node)->asXML();
@@ -202,8 +186,7 @@ class SpecialRegimesTest
             $this->assertSame($bool[0], $parsed->getCashVATSchemeIndicator());
             $this->assertSame($bool[1], $parsed->getSelfBillingIndicator());
             $this->assertSame($bool[2],
-                              $parsed->getThirdPartiesBillingIndicator());
+                $parsed->getThirdPartiesBillingIndicator());
         }
     }
-
 }

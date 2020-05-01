@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -39,8 +38,7 @@ use Rebelo\SaftPt\AuditFile\Country;
  *
  * @author João Rebelo
  */
-class CustomerTest
-    extends TestCase
+class CustomerTest extends TestCase
 {
 
     /**
@@ -77,33 +75,24 @@ class CustomerTest
     {
         $customer = new Customer();
 
-        try
-        {
+        try {
             $customer->getCustomerID();
             $this->fail("Get customer id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $customerId = "Contumer 1209";
         $customer->setCustomerID($customerId);
         $this->assertEquals($customerId, $customer->getCustomerID());
-        try
-        {
+        try {
             $customer->setCustomerID("");
             $this->fail("set customer id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $customer->setCustomerID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -115,13 +104,10 @@ class CustomerTest
     {
         $customer = new Customer();
 
-        try
-        {
+        try {
             $customer->getAccountID();
             $this->fail("Get Account id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $accountId = "AccountID999";
@@ -129,30 +115,21 @@ class CustomerTest
         $this->assertEquals($accountId, $customer->getAccountID());
         $customer->setAccountID("Desconhecido");
         $this->assertEquals("Desconhecido", $customer->getAccountID());
-        try
-        {
+        try {
             $customer->setAccountID("");
             $this->fail("set account id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $customer->setAccountID(str_pad("A", 32, "A"));
             $this->fail("set account id with length greater then 30 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $customer->setAccountID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -164,42 +141,30 @@ class CustomerTest
     {
         $customer = new Customer();
 
-        try
-        {
+        try {
             $customer->getCustomerTaxID();
             $this->fail("Get Costomer tax id without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $customerTaxId = "CustomerTaxID999";
         $customer->setCustomerTaxID($customerTaxId);
         $this->assertEquals($customerTaxId, $customer->getCustomerTaxID());
-        try
-        {
+        try {
             $customer->setCustomerTaxID("");
             $this->fail("set customer tax id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $customer->setCustomerTaxID(str_pad("A", 32, "A"));
             $this->fail("set customer tax id with length greater then 30 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $customer->setCustomerTaxID(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -211,13 +176,10 @@ class CustomerTest
     {
         $customer = new Customer();
 
-        try
-        {
+        try {
             $customer->getCompanyName();
             $this->fail("Get CompanyName without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $name = "CompanyName FACTURACAO";
@@ -225,21 +187,15 @@ class CustomerTest
         $this->assertEquals($name, $customer->getCompanyName());
         $customer->setCompanyName(\str_pad("_", 109, "_"));
         $this->assertEquals(100, \strlen($customer->getCompanyName()));
-        try
-        {
+        try {
             $customer->setCompanyName("");
             $this->fail("set company name id with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $customer->setCompanyName(null);
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -258,13 +214,10 @@ class CustomerTest
         $this->assertEquals($name, $customer->getContact());
         $customer->setContact(\str_pad("_", 51, "_"));
         $this->assertEquals(50, \strlen($customer->getContact()));
-        try
-        {
+        try {
             $customer->setContact("");
             $this->fail("set contact name with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
         $customer->setContact(null);
@@ -278,13 +231,10 @@ class CustomerTest
     {
         $customer = new Customer();
 
-        try
-        {
+        try {
             $customer->getBillingAddress();
             $this->fail("Get BillingAddress without initialize should throw error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -292,13 +242,10 @@ class CustomerTest
         $customer->setBillingAddress($address);
         $this->assertInstanceOf(Address::class, $customer->getBillingAddress());
 
-        try
-        {
+        try {
             $customer->setBillingAddress(null);
             $this->fail("Set BillingAddress to null should throw TypeError");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
@@ -343,13 +290,10 @@ class CustomerTest
         $customer->setTelephone(\str_pad("_", 300, "_"));
         $this->assertEquals(20, \strlen($customer->getTelephone()));
 
-        try
-        {
+        try {
             $customer->setTelephone("");
             $this->fail("set Telephone with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -373,13 +317,10 @@ class CustomerTest
         $customer->setFax(\str_pad("_", 300, "_"));
         $this->assertEquals(20, \strlen($customer->getFax()));
 
-        try
-        {
+        try {
             $customer->setFax("");
             $this->fail("set fax with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -400,33 +341,24 @@ class CustomerTest
         $customer->setEmail($email);
         $this->assertEquals($email, $customer->getEmail());
 
-        try
-        {
+        try {
             $customer->setEmail(\str_pad($email, 255, "a", STR_PAD_LEFT));
             $this->fail("set Email with length > 254 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $customer->setEmail("isNotEmail");
             $this->fail("set Email with wrong string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $customer->setEmail("");
             $this->fail("set Email with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -447,33 +379,24 @@ class CustomerTest
         $customer->setWebsite($website);
         $this->assertEquals($website, $customer->getWebsite());
 
-        try
-        {
+        try {
             $customer->setWebsite(\str_pad($website, 61, "a", STR_PAD_RIGHT));
             $this->fail("set Website with length > 60 should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $customer->setWebsite("isNotWebsite");
             $this->fail("set Website with wrong string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
-        try
-        {
+        try {
             $customer->setWebsite("");
             $this->fail("set Website with empty string should throw AuditFileException");
-        }
-        catch (\Exception | \TypeError $e)
-        {
+        } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
 
@@ -530,68 +453,68 @@ class CustomerTest
     public function testCreateXmlNode()
     {
         $node = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
 
         $customer = $this->createCustomer();
 
         $this->assertInstanceOf(\SimpleXMLElement::class,
-                                $customer->createXmlNode($node));
+            $customer->createXmlNode($node));
         $customerNode = $node->{Customer::N_CUSTOMER};
         $this->assertEquals($customer->getCustomerID(),
-                            (string) $customerNode->{Customer::N_CUSTOMERID}
+            (string) $customerNode->{Customer::N_CUSTOMERID}
         );
         $this->assertEquals($customer->getAccountID(),
-                            (string) $customerNode->{Customer::N_ACCOUNTID}
+            (string) $customerNode->{Customer::N_ACCOUNTID}
         );
         $this->assertEquals($customer->getCustomerTaxID(),
-                            (int) $customerNode->{Customer::N_CUSTOMERTAXID}
+            (int) $customerNode->{Customer::N_CUSTOMERTAXID}
         );
         $this->assertEquals($customer->getCompanyName(),
-                            (string) $customerNode->{Customer::N_COMPANYNAME}
+            (string) $customerNode->{Customer::N_COMPANYNAME}
         );
         $this->assertEquals($customer->getContact(),
-                            (string) $customerNode->{Customer::N_CONTACT}
+            (string) $customerNode->{Customer::N_CONTACT}
         );
         $this->assertEquals($customer->getBillingAddress()->getAddressDetail(),
-                            (string) $customerNode
+            (string) $customerNode
             ->{Customer::N_BILLINGADDRESS}
             ->{Address::N_ADDRESSDETAIL}
         );
 
         $shToAddr = $customer->getShipToAddress();
         $this->assertEquals($shToAddr[0]->getAddressDetail(),
-                            (string) $customerNode
+            (string) $customerNode
             ->{Customer::N_SHIPTOADDRESS}
             ->{Address::N_ADDRESSDETAIL}
         );
 
         $this->assertEquals($customer->getTelephone(),
-                            (string) $customerNode->{Customer::N_TELEPHONE}
+            (string) $customerNode->{Customer::N_TELEPHONE}
         );
         $this->assertEquals($customer->getFax(),
-                            (string) $customerNode->{Customer::N_FAX}
+            (string) $customerNode->{Customer::N_FAX}
         );
         $this->assertEquals($customer->getEmail(),
-                            (string) $customerNode->{Customer::N_EMAIL}
+            (string) $customerNode->{Customer::N_EMAIL}
         );
         $this->assertEquals($customer->getWebsite(),
-                            (string) $customerNode->{Customer::N_WEBSITE}
+            (string) $customerNode->{Customer::N_WEBSITE}
         );
 
         $this->setNullsCustomer($customer);
 
         unset($node);
         $nodeNull         = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
         $customer->createXmlNode($nodeNull);
         $customerNodeNull = $nodeNull->{Customer::N_CUSTOMER};
         $this->assertEquals(0, $customerNodeNull->{Customer::N_CONTACT}->count());
         $this->assertEquals(0,
-                            $customerNodeNull->{Customer::N_SHIPTOADDRESS}->count());
+            $customerNodeNull->{Customer::N_SHIPTOADDRESS}->count());
         $this->assertEquals(0,
-                            $customerNodeNull->{Customer::N_TELEPHONE}->count());
+            $customerNodeNull->{Customer::N_TELEPHONE}->count());
         $this->assertEquals(0, $customerNodeNull->{Customer::N_FAX}->count());
         $this->assertEquals(0, $customerNodeNull->{Customer::N_EMAIL}->count());
         $this->assertEquals(0, $customerNodeNull->{Customer::N_WEBSITE}->count());
@@ -600,7 +523,7 @@ class CustomerTest
     public function testParseXmlNode()
     {
         $node = new \SimpleXMLElement(
-            "<" . MasterFiles::N_MASTERFILES . "></" . MasterFiles::N_MASTERFILES . ">"
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
 
         $customer = $this->createCustomer();
@@ -612,14 +535,14 @@ class CustomerTest
         $this->assertEquals($customer->getCustomerID(), $parsed->getCustomerID());
         $this->assertEquals($customer->getAccountID(), $parsed->getAccountID());
         $this->assertEquals($customer->getCompanyName(),
-                            $parsed->getCompanyName());
+            $parsed->getCompanyName());
         $this->assertEquals($customer->getContact(), $parsed->getContact());
         $this->assertEquals($customer->getBillingAddress()->getAddressDetail(),
-                            $parsed->getBillingAddress()->getAddressDetail());
+            $parsed->getBillingAddress()->getAddressDetail());
         $cusShToAddr = $customer->getShipToAddress();
         $parShTAddr  = $parsed->getShipToAddress();
         $this->assertEquals($cusShToAddr[0]->getAddressDetail(),
-                            $parShTAddr[0]->getAddressDetail());
+            $parShTAddr[0]->getAddressDetail());
         $this->assertEquals($customer->getTelephone(), $parsed->getTelephone());
         $this->assertEquals($customer->getFax(), $parsed->getFax());
         $this->assertEquals($customer->getEmail(), $parsed->getEmail());
@@ -648,14 +571,11 @@ class CustomerTest
         $customer = new Customer();
         $node     = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $customer->createXmlNode($node);
             $this->fail("Creat a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -667,18 +587,14 @@ class CustomerTest
         $customer = new Customer();
         $node     = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $customer->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
     }
-
 }

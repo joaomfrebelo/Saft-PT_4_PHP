@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -38,8 +37,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
  *
  * @author João Rebelo
  */
-class SettlementTest
-    extends TestCase
+class SettlementTest extends TestCase
 {
 
     /**
@@ -71,14 +69,11 @@ class SettlementTest
         $this->assertNull($settl->getSettlementDiscount());
         $settl->setSettlementDiscount(str_pad("A", 39, "B"));
         $this->assertSame(30, \strlen($settl->getSettlementDiscount()));
-        try
-        {
+        try {
             $settl->setSettlementDiscount("");
             $this->fail("Set SettlementDiscount to an empty string "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -93,14 +88,11 @@ class SettlementTest
         $this->assertSame($amount, $settl->getSettlementAmount());
         $settl->setSettlementAmount(null);
         $this->assertNull($settl->getSettlementAmount());
-        try
-        {
+        try {
             $settl->setSettlementAmount(-1.0);
             $this->fail("Set SettlementAmount to a negative number "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -127,14 +119,11 @@ class SettlementTest
         $this->assertNull($settl->getPaymentTerms());
         $settl->setPaymentTerms(str_pad("A", 110, "B"));
         $this->assertSame(100, \strlen($settl->getPaymentTerms()));
-        try
-        {
+        try {
             $settl->setPaymentTerms("");
             $this->fail("Set PaymentTerms to an empty string "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -159,14 +148,11 @@ class SettlementTest
     {
         $settl = new Settlement();
         $node  = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $settl->createXmlNode($node);
             $this->fail("Create a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -177,14 +163,11 @@ class SettlementTest
     {
         $settl = new Settlement();
         $node  = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $settl->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -195,7 +178,7 @@ class SettlementTest
     {
         $settl = $this->createSettlement();
         $node  = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
 
         $settlNode = $settl->createXmlNode($node);
@@ -219,7 +202,7 @@ class SettlementTest
 
         $this->assertSame(
             $settl->getSettlementDate()->format(RDate::SQL_DATE),
-                                                (string) $node->{Settlement::N_SETTLEMENT}
+            (string) $node->{Settlement::N_SETTLEMENT}
             ->{Settlement::N_SETTLEMENTDATE}
         );
 
@@ -234,7 +217,7 @@ class SettlementTest
     {
         $settl = new Settlement();
         $node  = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
 
         $settlNode = $settl->createXmlNode($node);
@@ -265,7 +248,7 @@ class SettlementTest
     {
         $settl = $this->createSettlement();
         $node  = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml   = $settl->createXmlNode($node)->asXML();
 
@@ -273,12 +256,12 @@ class SettlementTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($settl->getSettlementDiscount(),
-                          $parsed->getSettlementDiscount());
+            $parsed->getSettlementDiscount());
         $this->assertSame($settl->getSettlementAmount(),
-                          $parsed->getSettlementAmount());
+            $parsed->getSettlementAmount());
         $this->assertSame(
             $settl->getSettlementDate()->format(RDate::SQL_DATE),
-                                                $parsed->getSettlementDate()->format(RDate::SQL_DATE)
+            $parsed->getSettlementDate()->format(RDate::SQL_DATE)
         );
         $this->assertSame($settl->getPaymentTerms(), $parsed->getPaymentTerms());
     }
@@ -287,7 +270,7 @@ class SettlementTest
     {
         $settl = new Settlement();
         $node  = new \SimpleXMLElement(
-            "<" . ADocumentTotals::N_DOCUMENTTOTALS . "></" . ADocumentTotals::N_DOCUMENTTOTALS . ">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml   = $settl->createXmlNode($node)->asXML();
 
@@ -299,5 +282,4 @@ class SettlementTest
         $this->assertNull($parsed->getSettlementDate());
         $this->assertNull($parsed->getPaymentTerms());
     }
-
 }

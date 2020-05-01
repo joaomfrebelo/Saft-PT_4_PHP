@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -40,8 +39,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
  *
  * @author João Rebelo
  */
-class DocumentStatusTest
-    extends TestCase
+class DocumentStatusTest extends TestCase
 {
 
     /**
@@ -63,43 +61,31 @@ class DocumentStatusTest
 
         $this->assertNull($docStatus->getReason());
 
-        try
-        {
+        try {
             $docStatus->getInvoiceStatus();
             $this->fail("getInvoiceStatus should throw error before setted");
-        }
-        catch (\Exception | \Error $ex)
-        {
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(\Error::class, $ex);
         }
 
-        try
-        {
+        try {
             $docStatus->getInvoiceStatusDate();
             $this->fail("getInvoiceStatusDate should throw error before setted");
-        }
-        catch (\Exception | \Error $ex)
-        {
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(\Error::class, $ex);
         }
 
-        try
-        {
+        try {
             $docStatus->getSourceBilling();
             $this->fail("getSourceBilling should throw error before setted");
-        }
-        catch (\Exception | \Error $ex)
-        {
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(\Error::class, $ex);
         }
 
-        try
-        {
+        try {
             $docStatus->getSourceID();
             $this->fail("getSourceID should throw error before setted");
-        }
-        catch (\Exception | \Error $ex)
-        {
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(\Error::class, $ex);
         }
     }
@@ -119,7 +105,7 @@ class DocumentStatusTest
         $docStatus->setInvoiceStatusDate($date);
         $this->assertSame(
             $date->format(RDate::DATE_T_TIME),
-                          $docStatus->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
+            $docStatus->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
         );
     }
 
@@ -131,14 +117,11 @@ class DocumentStatusTest
         $this->assertSame($reason, $docStatus->getReason());
         $docStatus->setReason(null);
         $this->assertNull($docStatus->getReason());
-        try
-        {
+        try {
             $docStatus->setReason("");
             $this->fail("Reason should throw AuditFileException "
-                . "when setted to an empty string");
-        }
-        catch (\Exception | \Error $ex)
-        {
+                ."when setted to an empty string");
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(AuditFileException::class, $ex);
         }
         $docStatus->setReason(\str_pad($reason, 51, "9"));
@@ -151,14 +134,11 @@ class DocumentStatusTest
         $sourceID  = "Test sourceID";
         $docStatus->setSourceID($sourceID);
         $this->assertSame($sourceID, $docStatus->getSourceID());
-        try
-        {
+        try {
             $docStatus->setSourceID("");
             $this->fail("SourceID should throw AuditFileException "
-                . "when setted to an empty string");
-        }
-        catch (\Exception | \Error $ex)
-        {
+                ."when setted to an empty string");
+        } catch (\Exception | \Error $ex) {
             $this->assertInstanceOf(AuditFileException::class, $ex);
         }
         $docStatus->setSourceID(\str_pad($sourceID, 31, "9"));
@@ -192,7 +172,7 @@ class DocumentStatusTest
     {
         $docStatus  = $this->createDocumentStatus();
         $node       = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $docStaNode = $docStatus->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $docStaNode);
@@ -206,7 +186,7 @@ class DocumentStatusTest
         $this->assertSame(
             $docStatus->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME),
-                         (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
             ->{DocumentStatus::N_INVOICESTATUSDATE}
         );
         $this->assertSame(
@@ -228,7 +208,7 @@ class DocumentStatusTest
         $docStatus  = $this->createDocumentStatus();
         $docStatus->setReason(null);
         $node       = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $docStaNode = $docStatus->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $docStaNode);
@@ -242,11 +222,11 @@ class DocumentStatusTest
         $this->assertSame(
             $docStatus->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME),
-                         (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
             ->{DocumentStatus::N_INVOICESTATUSDATE}
         );
         $this->assertSame(0,
-                          $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            $node->{DocumentStatus::N_DOCUMENTSTATUS}
             ->{DocumentStatus::N_REASON}->count()
         );
         $this->assertSame(
@@ -262,7 +242,7 @@ class DocumentStatusTest
     public function testeParseXml()
     {
         $node   = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $docSta = $this->createDocumentStatus();
         $xml    = $docSta->createXmlNode($node)->asXML();
@@ -271,21 +251,21 @@ class DocumentStatusTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($docSta->getInvoiceStatus()->get(),
-                          $parsed->getInvoiceStatus()->get());
+            $parsed->getInvoiceStatus()->get());
         $this->assertSame($docSta->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME),
-                         $parsed->getInvoiceStatusDate()
+            $parsed->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME));
         $this->assertSame($docSta->getReason(), $parsed->getReason());
         $this->assertSame($docSta->getSourceBilling()->get(),
-                          $parsed->getSourceBilling()->get());
+            $parsed->getSourceBilling()->get());
         $this->assertSame($docSta->getSourceID(), $parsed->getSourceID());
     }
 
     public function testeParseXmlReasonNull()
     {
         $node   = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $docSta = $this->createDocumentStatus();
         $docSta->setReason(null);
@@ -295,14 +275,14 @@ class DocumentStatusTest
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($docSta->getInvoiceStatus()->get(),
-                          $parsed->getInvoiceStatus()->get());
+            $parsed->getInvoiceStatus()->get());
         $this->assertSame($docSta->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME),
-                         $parsed->getInvoiceStatusDate()
+            $parsed->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME));
         $this->assertSame($docSta->getReason(), $parsed->getReason());
         $this->assertSame($docSta->getSourceBilling()->get(),
-                          $parsed->getSourceBilling()->get());
+            $parsed->getSourceBilling()->get());
         $this->assertSame($docSta->getSourceID(), $parsed->getSourceID());
     }
 
@@ -311,14 +291,11 @@ class DocumentStatusTest
         $docStatus = new DocumentStatus();
         $node      = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $docStatus->createXmlNode($node);
             $this->fail("Creat a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -330,18 +307,14 @@ class DocumentStatusTest
         $docStat = new DocumentStatus();
         $node    = new \SimpleXMLElement("<root></root>"
         );
-        try
-        {
+        try {
             $docStat->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
     }
-
 }

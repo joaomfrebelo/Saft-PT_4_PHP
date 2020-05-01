@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -27,8 +26,8 @@ declare(strict_types=1);
 
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'SettlementTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'PaymentMethodTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'SettlementTest.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PaymentMethodTest.php';
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals;
@@ -44,8 +43,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
  *
  * @author João Rebelo
  */
-class DocumentTotalsTest
-    extends TestCase
+class DocumentTotalsTest extends TestCase
 {
 
     /**
@@ -69,33 +67,24 @@ class DocumentTotalsTest
         $this->assertSame(0, \count($documentTotals->getSettlement()));
         $this->assertSame(0, \count($documentTotals->getPayment()));
 
-        try
-        {
+        try {
             $documentTotals->getGrossTotal();
             $this->fail("Get GrossTotal without initialization Should throw \Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
-        try
-        {
+        try {
             $documentTotals->getNetTotal();
             $this->fail("Get NetTotal without initialization Should throw \Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
-        try
-        {
+        try {
             $documentTotals->getTaxPayable();
             $this->fail("Get TaxPayable without initialization Should throw \Error");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
     }
@@ -128,8 +117,7 @@ class DocumentTotalsTest
         $payment = $payTest->createPaymentMethod();
 
         $nCount = 5;
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nPayment = clone $payment;
             $nPayment->setPaymentAmount((float) $n);
             $this->assertSame($n, $documentTotals->addToPayment($nPayment));
@@ -144,8 +132,7 @@ class DocumentTotalsTest
         $settTest   = new \Rebelo\Test\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SettlementTest();
         $settlement = $settTest->createSettlement();
 
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             $nSettlement = clone $settlement;
             $nSettlement->setSettlementAmount((float) ($n));
             $this->assertSame($n, $documentTotals->addToSettlement($nSettlement));
@@ -164,34 +151,25 @@ class DocumentTotalsTest
     public function testNegativeSet()
     {
         $docTot = new DocumentTotals();
-        try
-        {
+        try {
             $docTot->setGrossTotal(-0.01);
             $this->fail("Set GrossTotal to a negative number Should throw "
-                . "Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $docTot->setNetTotal(-0.01);
             $this->fail("Set NetTotal to a negative number Should throw "
-                . "Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $docTot->setTaxPayable(-0.01);
             $this->fail("Set TaxPayable to a negative number Should throw "
-                . "Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
     }
@@ -223,8 +201,7 @@ class DocumentTotalsTest
         $settlement = $settTest->createSettlement();
 
         $nCount = 5;
-        for ($n = 0; $n < $nCount; $n++)
-        {
+        for ($n = 0; $n < $nCount; $n++) {
             /* @var $pay \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod */
             $pay = clone $payment;
             $pay->setPaymentAmount((float) $n);
@@ -246,14 +223,11 @@ class DocumentTotalsTest
     {
         $docTot = new DocumentTotals();
         $node   = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $docTot->createXmlNode($node);
             $this->fail("Create a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -267,14 +241,11 @@ class DocumentTotalsTest
     {
         $docTot = new DocumentTotals();
         $node   = new \SimpleXMLElement("<root></root>");
-        try
-        {
+        try {
             $docTot->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
-                . "\Rebelo\SaftPt\AuditFile\AuditFileException");
-        }
-        catch (\Exception | \Error $e)
-        {
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
@@ -285,7 +256,7 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $node   = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
 
         $docTotNode = $docTot->createXmlNode($node);
@@ -322,8 +293,7 @@ class DocumentTotalsTest
         $nCount    = 5;
         $settStack = $docTot->getSettlement();
         $payStack  = $docTot->getPayment();
-        for ($n = 0; $n < 5; $n++)
-        {
+        for ($n = 0; $n < 5; $n++) {
             /* @var $settlement Settlement */
             $settlement = $settStack[$n];
             $this->assertSame(
@@ -350,7 +320,7 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $node   = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml    = $docTot->createXmlNode($node)->asXML();
 
@@ -374,8 +344,7 @@ class DocumentTotalsTest
             $parsed->getTaxPayable(), $docTot->getTaxPayable()
         );
 
-        for ($n = 0; $n < 5; $n++)
-        {
+        for ($n = 0; $n < 5; $n++) {
             /* @var $set Settlement */
             $set = $docTot->getSettlement()[$n];
             /* @var $par Settlement */
@@ -385,8 +354,7 @@ class DocumentTotalsTest
             );
         }
 
-        for ($n = 0; $n < 5; $n++)
-        {
+        for ($n = 0; $n < 5; $n++) {
             /* @var $pay PaymentMethod */
             $pay = $docTot->getPayment()[$n];
             /* @var $par PaymentMethod */
@@ -402,7 +370,7 @@ class DocumentTotalsTest
         $docTot = $this->createDocumentTotals();
         $docTot->setCurrency(null);
         $node   = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
 
         $docTotNode = $docTot->createXmlNode($node);
@@ -413,7 +381,7 @@ class DocumentTotalsTest
         );
 
         $this->assertSame(0,
-                          $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENTTOTALS}
             ->{DocumentTotals::N_CURRENCY}->count()
         );
     }
@@ -422,13 +390,12 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $nCount = $docTot->getSettlement();
-        for ($n = 0; $n < \count($nCount); $n++)
-        {
+        for ($n = 0; $n < \count($nCount); $n++) {
             $docTot->unsetSettlement($n);
         }
 
         $node = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
 
         $docTotNode = $docTot->createXmlNode($node);
@@ -439,7 +406,7 @@ class DocumentTotalsTest
         );
 
         $this->assertSame(0,
-                          $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENTTOTALS}
             ->{DocumentTotals::N_SETTLEMENT}->count()
         );
     }
@@ -448,13 +415,12 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $nCount = $docTot->getPayment();
-        for ($n = 0; $n < \count($nCount); $n++)
-        {
+        for ($n = 0; $n < \count($nCount); $n++) {
             $docTot->unsetPayment($n);
         }
 
         $node = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
 
         $docTotNode = $docTot->createXmlNode($node);
@@ -465,7 +431,7 @@ class DocumentTotalsTest
         );
 
         $this->assertSame(0,
-                          $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENTTOTALS}
             ->{DocumentTotals::N_PAYMENT}->count()
         );
     }
@@ -478,7 +444,7 @@ class DocumentTotalsTest
         $docTot = $this->createDocumentTotals();
         $docTot->setCurrency(null);
         $node   = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml    = $docTot->createXmlNode($node)->asXML();
 
@@ -495,12 +461,11 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $nCount = $docTot->getSettlement();
-        for ($n = 0; $n < \count($nCount); $n++)
-        {
+        for ($n = 0; $n < \count($nCount); $n++) {
             $docTot->unsetSettlement($n);
         }
         $node = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml  = $docTot->createXmlNode($node)->asXML();
 
@@ -517,12 +482,11 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $nCount = $docTot->getPayment();
-        for ($n = 0; $n < \count($nCount); $n++)
-        {
+        for ($n = 0; $n < \count($nCount); $n++) {
             $docTot->unsetPayment($n);
         }
         $node = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml  = $docTot->createXmlNode($node)->asXML();
 
@@ -539,12 +503,11 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $nCount = $docTot->getSettlement();
-        for ($n = 1; $n < \count($nCount); $n++)
-        {
+        for ($n = 1; $n < \count($nCount); $n++) {
             $docTot->unsetSettlement($n);
         }
         $node = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml  = $docTot->createXmlNode($node)->asXML();
 
@@ -561,12 +524,11 @@ class DocumentTotalsTest
     {
         $docTot = $this->createDocumentTotals();
         $nCount = $docTot->getPayment();
-        for ($n = 1; $n < \count($nCount); $n++)
-        {
+        for ($n = 1; $n < \count($nCount); $n++) {
             $docTot->unsetPayment($n);
         }
         $node = new \SimpleXMLElement(
-            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $xml  = $docTot->createXmlNode($node)->asXML();
 
@@ -575,5 +537,4 @@ class DocumentTotalsTest
 
         $this->assertSame(1, \count($parsed->getPayment()));
     }
-
 }

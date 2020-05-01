@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -36,8 +35,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *
  * @author João Rebelo
  */
-class PostalCodePTTest
-    extends TestCase
+class PostalCodePTTest extends TestCase
 {
 
     public function testReflection()
@@ -50,37 +48,27 @@ class PostalCodePTTest
         $posCod = new PostalCodePT();
         $this->assertInstanceOf(PostalCodePT::class, $posCod);
 
-        try
-        {
+        try {
             $posCod->getPostalCode();
             $this->fail("getPostalCode should throw Error whene not initialized");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $code = "1999-999";
         $posCod->setPostalCode($code);
         $this->assertEquals($code, $posCod->getPostalCode());
 
-        try
-        {
+        try {
             $posCod->setPostalCode("999-000");
             $this->fail("setPostalCode should throw AuditFileException whene not initialized");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(AuditFileException::class, $e);
         }
-        try
-        {
+        try {
             $posCod->setPostalCode(null);
             $this->fail("setPostalCode should throw TypeError whene setted to null");
-        }
-        catch (\Exception | \Error $e)
-        {
+        } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
-
 }
