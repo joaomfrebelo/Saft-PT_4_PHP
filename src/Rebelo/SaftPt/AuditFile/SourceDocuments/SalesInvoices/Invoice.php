@@ -12,6 +12,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Node Name
      */
     const N_INVOICE = "Invoice";
+    const N_INVOICENO = "InvoiceNo";
 
     /**
      * @var string $invoiceNo
@@ -657,6 +658,6 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        
+
     }
 }

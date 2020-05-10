@@ -28,7 +28,7 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
 use Rebelo\Date\Date as RDate;
 
@@ -123,7 +123,7 @@ class OrderReferencesTest extends TestCase
     {
         $orderRef = $this->createOrderReferences();
         $node     = new \SimpleXMLElement(
-            "<".ALine::N_LINE."></".ALine::N_LINE.">"
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
 
         $orderRefNode = $orderRef->createXmlNode($node);
@@ -155,7 +155,7 @@ class OrderReferencesTest extends TestCase
     {
         $orderRef = new OrderReferences();
         $node     = new \SimpleXMLElement(
-            "<".ALine::N_LINE."></".ALine::N_LINE.">"
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
 
         $orderRefNode = $orderRef->createXmlNode($node);
@@ -183,7 +183,7 @@ class OrderReferencesTest extends TestCase
     {
         $orderRefTax = $this->createOrderReferences();
         $node        = new \SimpleXMLElement(
-            "<".ALine::N_LINE."></".ALine::N_LINE.">"
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
 
@@ -206,7 +206,7 @@ class OrderReferencesTest extends TestCase
     {
         $orderRefTax = new OrderReferences();
         $node        = new \SimpleXMLElement(
-            "<".ALine::N_LINE."></".ALine::N_LINE.">"
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
 

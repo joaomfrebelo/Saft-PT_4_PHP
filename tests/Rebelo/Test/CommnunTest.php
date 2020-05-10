@@ -60,8 +60,8 @@ class CommnunTest extends TestCase
             $refConst = new \ReflectionClassConstant($class, $constName);
             $consDoc  = $refConst->getDocComment();
             if ($consDoc == false) {
-                $this->fail(sprintf("Constant '%s' of class '%s' doen't have doc comment"),
-                    $constName, $class);
+                $this->fail(sprintf("Constant '%s' of class '%s' doen't have doc comment",
+                        $constName, $class));
             }
             $this->assertEquals(1, \preg_match("/@since(.*)/", $consDoc),
                 sprintf("Constant '%s' with value '%s' doesn't have the @since tag",

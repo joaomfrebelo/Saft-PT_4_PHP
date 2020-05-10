@@ -548,8 +548,7 @@
                                                         <xs:element ref="DebitAmount"/>
                                                         <xs:element ref="CreditAmount"/>
                                                     </xs:choice>
-                                                    <xs:element name="Tax" type="MovementTax"
-                                                                minOccurs="0"/>
+                                                    <xs:element name="Tax" type="MovementTax" minOccurs="0"/>
                                                     <xs:element ref="TaxExemptionReason" minOccurs="0"/>
                                                     <xs:element ref="TaxExemptionCode" minOccurs="0"/>
                                                     <xs:element ref="SettlementAmount" minOccurs="0"/>

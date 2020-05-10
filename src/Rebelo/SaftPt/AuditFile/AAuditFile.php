@@ -91,13 +91,24 @@ abstract class AAuditFile
      * @param string $string
      * @param int $length
      * @param string $method
+     * @param bool $trucate If truncate is set to <code>false</code> and the string is bigger will throw AuditFileException
      * @return string
      * @throws AuditFileException
      * @since 1.0.0
      */
     public static function valTextMandMaxCar(string $string, int $length,
-                                             string $method): string
+                                             string $method,
+                                             bool $trucate = true): string
     {
+        if ($trucate === false && \strlen($string) > $length) {
+            $msg = \sprintf(
+                "string length '%s' is bigger than '\$length' '%s' ",
+                (string) \strlen($string), (string) $length
+            );
+            \Logger::getLogger(__CLASS__)
+                ->error(\sprintf($method." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
         $subString = \substr(\trim($string), 0, $length);
         if (strlen($subString) === 0 || is_bool($subString)) {
             $msg = "string can not be empty";
@@ -178,6 +189,9 @@ abstract class AAuditFile
                                 string $dec_point = ".",
                                 string $thousands_sep = ""): string
     {
+//        if (IS_UNIT_TEST) {
+//            return \strval($float);
+//        }
         return \number_format($float, $decimals, $dec_point, $thousands_sep);
     }
 }

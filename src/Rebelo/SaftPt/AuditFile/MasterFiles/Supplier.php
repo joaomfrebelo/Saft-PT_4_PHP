@@ -418,8 +418,6 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->companyName = static::valTextMandMaxCar($companyName, 100,
                 __METHOD__);
-
-
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyName));
     }
@@ -748,16 +746,16 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * Sets a new selfBillingIndicator
      * <pre>
-     * <xs:element ref="SelfBillingIndicator"/>
-     * <!-- Indicador de Autofaturacao -->
-     *   <xs:element name="SelfBillingIndicator">
-     *       <xs:simpleType>
-     *           <xs:restriction base="xs:integer">
-     *               <xs:minInclusive value="0"/>
-     *               <xs:maxInclusive value="1"/>
-     *           </xs:restriction>
-     *       </xs:simpleType>
-     *   </xs:element>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     * &lt;!-- Indicador de Autofaturacao --&gt;
+     *   &lt;xs:element name="SelfBillingIndicator"&gt;
+     *       &lt;xs:simpleType&gt;
+     *           &lt;xs:restriction base="xs:integer"&gt;
+     *               &lt;xs:minInclusive value="0"/&gt;
+     *               &lt;xs:maxInclusive value="1"/&gt;
+     *           &lt;/xs:restriction&gt;
+     *       &lt;/xs:simpleType&gt;
+     *   &lt;/xs:element&gt;
      * </pre>
      *
      * @param bool $selfBillingIndicator

@@ -24,10 +24,10 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
- * Line
+ * Workdocument Line
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -36,14 +36,15 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
 {
 
     /**
-     * /**
      * Invoice Line<br>
      * <pre>
      * &lt;xs:element name="Line" maxOccurs="unbounded"&gt;
      *  &lt;xs:complexType&gt;
      *      &lt;xs:sequence&gt;
      *          &lt;xs:element ref="LineNumber"/&gt;
-     *          &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *          &lt;xs:element name="OrderReferences"
+     *                      type="OrderReferences" minOccurs="0"
+     *                      maxOccurs="unbounded"/&gt;
      *          &lt;xs:element ref="ProductCode"/&gt;
      *          &lt;xs:element ref="ProductDescription"/&gt;
      *          &lt;xs:element ref="Quantity"/&gt;
@@ -51,9 +52,11 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
      *          &lt;xs:element ref="UnitPrice"/&gt;
      *          &lt;xs:element ref="TaxBase" minOccurs="0"/&gt;
      *          &lt;xs:element ref="TaxPointDate"/&gt;
-     *          &lt;xs:element name="References" type="References" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *          &lt;xs:element name="References" type="References"
+     *                      minOccurs="0" maxOccurs="unbounded"/&gt;
      *          &lt;xs:element ref="Description"/&gt;
-     *          &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
+     *          &lt;xs:element name="ProductSerialNumber"
+     *                      type="ProductSerialNumber" minOccurs="0"/&gt;
      *          &lt;xs:choice&gt;
      *              &lt;xs:element ref="DebitAmount"/&gt;
      *              &lt;xs:element ref="CreditAmount"/&gt;
@@ -62,7 +65,8 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
      *          &lt;xs:element ref="TaxExemptionReason" minOccurs="0"/&gt;
      *          &lt;xs:element ref="TaxExemptionCode" minOccurs="0"/&gt;
      *          &lt;xs:element ref="SettlementAmount" minOccurs="0"/&gt;
-     *          &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
+     *          &lt;xs:element name="CustomsInformation"
+     *                      type="CustomsInformation" minOccurs="0"/&gt;
      *      &lt;/xs:sequence&gt;
      *      &lt;xs:assert
      *          test="
@@ -109,14 +113,14 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
      * Create XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws AuditFileException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        if ($node->getName() !== Invoice::N_INVOICE) {/// if node is Invoice
+        if ($node->getName() !== WorkDocument::N_WORKDOCUMENT) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                Invoice::N_INVOICE, $node->getName());
+                WorkDocument::N_WORKDOCUMENT, $node->getName());
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

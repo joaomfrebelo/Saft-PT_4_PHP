@@ -24,25 +24,77 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
- * TaxCountryRegion
+ * MovementTaxCode
  *
  * @author João Rebelo
  */
-class TaxCountryRegion extends Country
+class MovementTaxCode extends \Rebelo\Enum\AEnum
 {
-    const PT_AC = "PT-AC";
-    const PT_MA = "PT-MA";
+    /**
+     *
+     * @since 1.0.0
+     */
+    const RED = "RED";
 
     /**
      *
-     * @param string $value
      * @since 1.0.0
      */
-    public function __construct(string $value)
+    const INT = "INT";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    const NOR = "NOR";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    const ISE = "ISE";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    const OUT = "OUT";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    const NS  = "NS";
+
+    /**
+     * MovementTaxCode
+     * <pre>
+     *  &lt;xs:simpleType name="SAFTPTMovementTaxCode"&gt;
+     *  &lt;xs:restriction base="xs:string"&gt;
+     *       &lt;xs:pattern value="RED|INT|NOR|ISE|OUT|NS"/&gt;
+     *       &lt;xs:minLength value="1"/&gt;
+     *       &lt;xs:maxLength value="3"/&gt;
+     *      &lt;/xs:restriction&gt;
+     *  &lt;/xs:simpleType&gt;
+     * </pre>
+     * @param type $value
+     * @since 1.0.0
+     */
+    public function __construct($value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Ge enum value
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return parent::get();
     }
 }

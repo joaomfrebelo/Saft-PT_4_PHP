@@ -24,25 +24,29 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 /**
- * TaxCountryRegion
+ * Description of SalesInvoices
  *
  * @author João Rebelo
  */
-class TaxCountryRegion extends Country
+class SalesInvoices extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-    const PT_AC = "PT-AC";
-    const PT_MA = "PT-MA";
+    const N_SALESINVOICES = "SalesInvoices";
 
-    /**
-     *
-     * @param string $value
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
+    public function __construct()
     {
-        parent::__construct($value);
+        parent::__construct();
+    }
+
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
     }
 }

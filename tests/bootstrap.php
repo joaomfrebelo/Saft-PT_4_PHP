@@ -14,6 +14,11 @@ require __DIR__
     .DIRECTORY_SEPARATOR.'Test'
     .DIRECTORY_SEPARATOR.'CommnunTest.php';
 
+require __DIR__
+    .DIRECTORY_SEPARATOR.'Rebelo'
+    .DIRECTORY_SEPARATOR.'Test'
+    .DIRECTORY_SEPARATOR.'TXmlTest.php';
+
 spl_autoload_register(function ($class) {
     if (\strpos("\\", $class) === 0) {
         /** @var string Class name Striped of the first blackslash */
@@ -33,3 +38,11 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Define SAFT Demo path
+define(
+    "SAFT_DEMO_PATH",
+    __DIR__.DIRECTORY_SEPARATOR."Ressources"
+    .DIRECTORY_SEPARATOR."saft_idemo599999999.xml"
+);
+
+define("IS_UNIT_TEST", true);

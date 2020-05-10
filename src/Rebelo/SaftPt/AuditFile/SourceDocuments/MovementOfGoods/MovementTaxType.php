@@ -22,30 +22,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
- * Function and properties
- * comumn to Invoice, Movement of Goods
- * and Working Documents
+ * MovementTaxType
+ *
  * @author João Rebelo
+ * @since 1.0.0
  */
-trait TLine
+class MovementTaxType extends \Rebelo\Enum\AEnum
 {
-//     <xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/>
-//     <xs:element ref="ProductCode"/>
-//     <xs:element ref="ProductDescription"/>
-//     <xs:element ref="Quantity"/>
-//     <xs:element ref="UnitOfMeasure"/>
-//     <xs:element ref="UnitPrice"/>
-//    <xs:element ref="Description"/>
-//    <xs:element name="ProductSerialNumber"
-//    <xs:element ref="DebitAmount"/>
-//    <xs:element ref="CreditAmount"/>
-//    <xs:element ref="TaxExemptionReason" minOccurs="0"/>
-//    <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-//    <xs:element ref="SettlementAmount" minOccurs="0"/>
-//    <xs:element name="CustomsInformation"
-//    type="CustomsInformation" minOccurs="0"/>
+    /**
+     *
+     * @since 1.0.0
+     */
+    const IVA = "IVA";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    const NS = "NS";
+
+    /**
+     *  <!-- Tipo de Imposto da Tabela MovementOfGoods-->
+     * <pre>
+     *   &lt;xs:simpleType name="SAFTPTMovementTaxType"&gt;
+     *       &lt;xs:restriction base="xs:string"&gt;
+     *           &lt;xs:enumeration value="IVA"/&gt;
+     *           &lt;xs:enumeration value="NS"/&gt;
+     *       &lt;/xs:restriction&gt;
+     *   &lt;/xs:simpleType&gt;
+     * @param string $value
+     * </pre>
+     * @since 1.0.0
+     */
+    public function __construct(string $value)
+    {
+        parent::__construct($value);
+    }
+
+    /**
+     * Get enum value
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return parent::get();
+    }
 }

@@ -28,7 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
 /**
  * Description of OrderReferences
@@ -167,9 +167,9 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ALine::N_LINE) {
+        if ($node->getName() !== A2Line::N_LINE) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
-                ALine::N_LINE, $node->getName()
+                A2Line::N_LINE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));

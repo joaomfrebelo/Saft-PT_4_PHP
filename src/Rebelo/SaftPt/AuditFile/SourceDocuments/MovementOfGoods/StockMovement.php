@@ -24,13 +24,56 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
+ * StockMovement
  *
  * @author João Rebelo
+ * @since 1.0.0
  */
-interface ILineInvoiveAndWorking
+class StockMovement extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-//put your code here
+    /**
+     *
+     * @since 1.0.0
+     */
+    const N_STOCKMOVEMENT = "StockMovement";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    const n_DOCUMENTNUMBER = "DocumentNumber";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @since 1.0.0
+     */
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @since 1.0.0
+     */
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
+    }
 }

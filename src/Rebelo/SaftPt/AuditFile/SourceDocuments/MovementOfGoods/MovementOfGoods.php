@@ -24,14 +24,45 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
- * Description of ILine
+ * MovementOfGoods
  *
  * @author João Rebelo
  */
-class ILine
+class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-//put your code here
+    const N_MOVEMENTOFGOODS = "MovementOfGoods";
+
+    /**
+     *
+     * @since 1.0.0
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @since 1.0.0
+     */
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    /**
+     *
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @since 1.0.0
+     */
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
+    }
 }

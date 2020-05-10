@@ -22,19 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
+ * Description of WorkDocument
  *
  * @author João Rebelo
  */
-trait TLineInvoiveAndWorking
+class WorkDocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-//    <xs:element ref="TaxBase" minOccurs="0"/>
-//    <xs:element ref="TaxPointDate"/>
-//    <xs:element name="References" type="References"
-//    minOccurs="0" maxOccurs="unbounded"/>
-//    </xs:choice>
-//    <xs:element name="Tax" type="Tax"/>
+    const N_WORKDOCUMENT   = "WorkDocument";
+    const N_DOCUMENTNUMBER = "DocumentNumber";
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
+    {
+
+    }
+
+    public function parseXmlNode(\SimpleXMLElement $node): void
+    {
+
+    }
 }
