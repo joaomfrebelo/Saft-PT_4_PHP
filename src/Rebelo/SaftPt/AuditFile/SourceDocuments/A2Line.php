@@ -107,27 +107,6 @@ abstract class A2Line extends ALine
     const N_CREDITAMOUNT = "CreditAmount";
 
     /**
-     *
-     * Node name
-     * @since 1.0.0
-     */
-    const N_TAXEXEMPTIONREASON = "TaxExemptionReason";
-
-    /**
-     * <xs:element ref="DebitAmount"/>
-     * Node name
-     * @since 1.0.0
-     */
-    const N_TAXEXEMPTIONCODE = "TaxExemptionCode";
-
-    /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
-     * Node name
-     * @since 1.0.0
-     */
-    const N_SETTLEMENTAMOUNT = "SettlementAmount";
-
-    /**
      * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
      * Node name
      * @since 1.0.0
@@ -189,27 +168,6 @@ abstract class A2Line extends ALine
      * @since 1.0.0
      */
     private ?ProductSerialNumber $productSerialNumber = null;
-
-    /**
-     * <xs:element ref="TaxExemptionReason" minOccurs="0"/>
-     * @var string|null
-     * @since 1.0.0
-     */
-    private ?string $taxExemptionReason = null;
-
-    /**
-     * <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode|null
-     * @since 1.0.0
-     */
-    private ?TaxExemptionCode $taxExemptionCode = null;
-
-    /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
-     * @var float|null
-     * @since 1.0.0
-     */
-    private ?float $settlementAmount = null;
 
     /**
      * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
@@ -515,125 +473,6 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * Get Tax ExemptionReason
-     * <pre>
-     * &lt;xs:element ref="TaxExemptionReason" minOccurs="0"/&gt;&lt;br&gt;
-     * &lt;xs:element name="TaxExemptionReason" type="SAFPTPortugueseTaxExemptionReason"/&gt;
-     * &lt;xs:simpleType name="SAFPTPortugueseTaxExemptionReason"&gt;
-     *      &lt;xs:restriction base="xs:string"&gt;
-     *           &lt;xs:minLength value="6"/&gt;
-     *           &lt;xs:maxLength value="60"/&gt;
-     *      &lt;/xs:restriction&gt;
-     *  &lt;/xs:simpleType&gt;
-     * </pre>
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getTaxExemptionReason(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->taxExemptionReason === null ? "null" :
-                        $this->taxExemptionReason));
-        return $this->taxExemptionReason;
-    }
-
-    /**
-     * Set Tax ExemptionReason
-     * <pre>
-     * &lt;xs:element ref="TaxExemptionReason" minOccurs="0"/&gt;&lt;br&gt;
-     * &lt;xs:element name="TaxExemptionReason" type="SAFPTPortugueseTaxExemptionReason"/&gt;
-     * &lt;xs:simpleType name="SAFPTPortugueseTaxExemptionReason"&gt;
-     *      &lt;xs:restriction base="xs:string"&gt;
-     *           &lt;xs:minLength value="6"/&gt;
-     *           &lt;xs:maxLength value="60"/&gt;
-     *      &lt;/xs:restriction&gt;
-     *  &lt;/xs:simpleType&gt;
-     * </pre>
-     * @param string|null $taxExemptionReason
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @since 1.0.0
-     */
-    public function setTaxExemptionReason(?string $taxExemptionReason): void
-    {
-        if ($taxExemptionReason !== null && \strlen($taxExemptionReason) < 6) {
-            $msg = "Tax Exemption Reason can not have less than 6 caracters";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-
-        $this->taxExemptionReason = $taxExemptionReason === null ? null :
-            $this->valTextMandMaxCar($taxExemptionReason, 60, __METHOD__);
-    }
-
-    /**
-     * <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode|null
-     * @since 1.0.0
-     */
-    public function getTaxExemptionCode(): ?TaxExemptionCode
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->taxExemptionCode === null ? "null" :
-                        $this->taxExemptionCode->get()));
-        return $this->taxExemptionCode;
-    }
-
-    /**
-     * <xs:element ref="TaxExemptionCode" minOccurs="0"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode|null $taxExemptionCode
-     * @return void
-     * @since 1.0.0
-     */
-    public function setTaxExemptionCode(?TaxExemptionCode $taxExemptionCode): void
-    {
-        $this->taxExemptionCode = $taxExemptionCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->taxExemptionCode === null ? "null" :
-                        $this->taxExemptionCode->get()));
-    }
-
-    /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
-     * @return float|null
-     * @since 1.0.0
-     */
-    public function getSettlementAmount(): ?float
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->settlementAmount === null ? "null" :
-                        \strval($this->settlementAmount)));
-        return $this->settlementAmount;
-    }
-
-    /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
-     * @param float|null $settlementAmount
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @since 1.0.0
-     */
-    public function setSettlementAmount(?float $settlementAmount): void
-    {
-        if ($settlementAmount !== null && $settlementAmount < 0.0) {
-            $msg = "Settlement Amout can not be less than 0.0";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        $this->settlementAmount = $settlementAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->settlementAmount === null ? "null" :
-                        \strval($this->settlementAmount)));
-    }
-
-    /**
      * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation|null
      * @since 1.0.0
@@ -658,7 +497,7 @@ abstract class A2Line extends ALine
         $this->customsInformation = $customsInformation;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->settlementAmount === null ? "null" :
+                    $this->customsInformation === null ? "null" :
                         "CustomsInformation"));
     }
 

@@ -27,22 +27,13 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 /**
- * Description of Payment
+ * Payments
  *
  * @author João Rebelo
  */
-class Payment extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Payments extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-    const N_PAYMENT = "Payment";
-    const N_PAYMENTREFNO = "PaymentRefNo";
-
-    /**
-     * <xs:element name="PaymentMethod" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/>
-     * <br>
-     * Node name
-     * @since 1.0.0
-     */
-    const N_PAYMENTMETHOD = "PaymentMethod";
+    const N_PAYMENTS = "Payments";
 
     public function __construct()
     {
