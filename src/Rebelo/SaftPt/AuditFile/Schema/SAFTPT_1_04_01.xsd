@@ -738,8 +738,7 @@
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element ref="LineNumber"/>
-                                                    <xs:element name="SourceDocumentID"
-                                                                maxOccurs="unbounded">
+                                                    <xs:element name="SourceDocumentID" maxOccurs="unbounded">
                                                         <xs:complexType>
                                                             <xs:sequence>
                                                                 <xs:element ref="OriginatingON"/>

@@ -196,6 +196,8 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
         if ($node->getName() !== Payment::N_PAYMENT) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
                 Payment::N_PAYMENT, $node->getName());
@@ -247,6 +249,8 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+
         parent::parseXmlNode($node);
 
         $sourceCount = $node->{static::N_SOURCEDOCUMENTID}->count();

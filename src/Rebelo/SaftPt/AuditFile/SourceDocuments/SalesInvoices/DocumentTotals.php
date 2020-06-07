@@ -269,7 +269,9 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         if ($node->{static::N_PAYMENT}->count() > 0) {
             for ($n = 0; $n < $node->{static::N_PAYMENT}->count(); $n++) {
                 $paymentMethod = new PaymentMethod();
-                $paymentMethod->parseXmlNode($node->{static::N_PAYMENT}[$n]);
+                $paymentMethod->parseXmlNode(
+                    $node->{static::N_PAYMENT}[$n]->{PaymentMethod::N_PAYMENTMETHOD}
+                );
                 $this->addToPayment($paymentMethod);
             }
         }

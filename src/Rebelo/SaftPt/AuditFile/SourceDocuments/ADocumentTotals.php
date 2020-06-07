@@ -286,7 +286,6 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         if ($this->getCurrency() !== null) {
-
             $this->getCurrency()->createXmlNode($node);
         } else {
             \Logger::getLogger(\get_class($this))->trace(__METHOD__

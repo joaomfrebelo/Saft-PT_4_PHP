@@ -30,6 +30,7 @@ use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
@@ -49,6 +50,12 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  */
 class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
+    /**
+     * Node name
+     * @since 1.0.0
+     */
+    const N_PAYMENTMETHOD = "PaymentMethod";
+
     /**
      * &lt;xs:element ref="PaymentMechanism" minOccurs="0"/&gt;<br>
      * Node name
@@ -207,20 +214,22 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
             throw new AuditFileException($msg);
         }
 
+        $nodePayMethod = $node->addChild(static::N_PAYMENTMETHOD);
+
         if ($this->getPaymentMechanism() !== null) {
-            $node->addChild(
+            $nodePayMethod->addChild(
                 static::N_PAYMENTMECHANISM, $this->getPaymentMechanism()->get());
         }
-        $node->addChild(
+        $nodePayMethod->addChild(
             static::N_PAYMENTAMOUNT,
             $this->floatFormat($this->getPaymentAmount())
         );
-        $node->addChild(
+        $nodePayMethod->addChild(
             static::N_PAYMENTDATE,
             $this->getPaymentDate()->format(RDate::SQL_DATE)
         );
 
-        return $node;
+        return $nodePayMethod;
     }
 
     /**
@@ -234,9 +243,13 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
+        if (false === \in_array($node->getName(),
+                [static::N_PAYMENTMETHOD,
+                    ADocumentTotals::N_DOCUMENTTOTALS,
+                    DocumentTotals::N_PAYMENT])
+        ) {
             $msg = \sprintf("Node name should be '%s' or '%s' but is '%s'",
-                Payment::N_PAYMENT, ADocumentTotals::N_DOCUMENTTOTALS,
+                Payment::N_PAYMENTMETHOD, ADocumentTotals::N_DOCUMENTTOTALS,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))

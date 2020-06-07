@@ -227,7 +227,7 @@ class LineTest extends TestCase
             $lineStack  = $paymentXml->{Line::N_LINE};
 
             if ($lineStack->count() === 0) {
-                $this->fail("No lines in Invoice");
+                $this->fail("No lines in Payment");
             }
 
             for ($l = 0; $l < $lineStack->count(); $l++) {

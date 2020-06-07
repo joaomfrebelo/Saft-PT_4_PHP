@@ -157,17 +157,17 @@ class PaymentMethodTest extends TestCase
 
         $this->assertSame(
             $payMeth->getPaymentMechanism()->get(),
-            (string) $node->{PaymentMethod::N_PAYMENTMECHANISM}
+            (string) $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTMECHANISM}
         );
 
         $this->assertSame(
             $payMeth->getPaymentAmount(),
-            (float) $node->{PaymentMethod::N_PAYMENTAMOUNT}
+            (float) $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTAMOUNT}
         );
 
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
-            (string) $node->{PaymentMethod::N_PAYMENTDATE}
+            (string) $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTDATE}
         );
     }
 
@@ -183,7 +183,8 @@ class PaymentMethodTest extends TestCase
         $payMethNode = $payMeth->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $payMethNode);
 
-        $this->assertSame(0, $node->{PaymentMethod::N_PAYMENTMECHANISM}->count()
+        $this->assertSame(0,
+            $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTMECHANISM}->count()
         );
     }
 
