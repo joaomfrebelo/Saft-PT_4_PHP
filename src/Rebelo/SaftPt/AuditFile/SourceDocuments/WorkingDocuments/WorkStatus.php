@@ -27,43 +27,51 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
- * Description of WorkingDocuments
+ * WorkStatus
  *
  * @author João Rebelo
  * @since 1.0.0
  */
-class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class WorkStatus extends \Rebelo\Enum\AEnum
 {
-    const N_WORKINGDOCUMENTS = "WorkingDocuments";
-
     /**
-     *
+     * N para Normal
      * @since 1.0.0
      */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    const N = "N";
 
     /**
-     *
-     * @param \SimpleXMLElement $node
-     * @return \SimpleXMLElement
+     * A para Anulado
      * @since 1.0.0
      */
-    public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
-    {
-
-    }
+    const A = "A";
 
     /**
-     *
-     * @param \SimpleXMLElement $node
-     * @return void
+     * F para faturado
      * @since 1.0.0
      */
-    public function parseXmlNode(\SimpleXMLElement $node): void
-    {
+    const F = "F";
 
+    /**
+     * &lt;!-- Estado do documento WorkingDocuments --&gt;
+     * &lt;xs:element name="WorkStatus"&gt;
+     *  &lt;xs:annotation&gt;
+     *      &lt;xs:documentation&gt;N para Normal, A para Anulado, F para faturado (quando para este
+     *          documento tambem existe na tabela 4.1. o correspondente do tipo fatura ou fatura
+     *          simplificada) &lt;/xs:documentation&gt;
+     *  &lt;/xs:annotation&gt;
+     *  &lt;xs:simpleType&gt;
+     *      &lt;xs:restriction base="xs:string"&gt;
+     *          &lt;xs:enumeration value="N"/&gt;
+     *          &lt;xs:enumeration value="A"/&gt;
+     *          &lt;xs:enumeration value="F"/&gt;
+     *      &lt;/xs:restriction&gt;
+     *  &lt;/xs:simpleType&gt;
+     * @param string $value
+     * @since 1.0.0
+     */
+    public function __construct(string $value)
+    {
+        return parent::__construct($value);
     }
 }

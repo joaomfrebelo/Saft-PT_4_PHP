@@ -206,7 +206,7 @@ class LineTest extends TestCase
 
     /**
      * Reads all Payments's lines from the Demo SAFT in Test\Ressources
-     * and parse them to Line class, after tahr generate a xml from the
+     * and parse them to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      */
     public function testCreateParseXml()

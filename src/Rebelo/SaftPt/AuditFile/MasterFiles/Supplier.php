@@ -774,6 +774,7 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create the xml node for Supplier
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -828,6 +829,7 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Pasrse the xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

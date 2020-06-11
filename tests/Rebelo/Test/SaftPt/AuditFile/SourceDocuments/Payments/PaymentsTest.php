@@ -119,7 +119,7 @@ class PaymentsTest extends TestCase
 
     /**
      * Reads all Payments  from the Demo SAFT in Test\Ressources
-     * and parse them to Payment class, after tahr generate a xml from the
+     * and parse them to Payment class, after that generate a xml from the
      * Payment class and test if the xml strings are equal
      */
     public function testCreateParseXml()
