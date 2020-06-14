@@ -125,7 +125,7 @@ class DocumentTotalsTest extends TestCase
 
     /**
      * Reads all Payments's Documents totals from the Demo SAFT in Test\Ressources
-     * and parse them to DocumentTotals class, after that generate a xml from the
+     * and parse then to DocumentTotals class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      */
     public function testCreateParseXml()

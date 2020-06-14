@@ -24,40 +24,33 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
- * MovementOfGoods
+ * AShippingPoint base class for ShipFrom and ShipTo
  *
  * @author João Rebelo
  * @since 1.0.0
  */
-class MovementOfGoods extends ADocument
+abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
-    /**
-     * Node Name
-     * @since 1.0.0
-     */
-    const N_MOVEMENTOFGOODS = "MovementOfGoods";
-    const N_DOCUMENTNUMBER  = "DocumentNumber";
-////<xs:element name = "DocumentStatus">
-    const N_MOVEMENTDATE      = "MovementDate";
-    const N_MOVEMENTTYPE      = "MovementType";
-    const N_SUPPLIERID        = "SupplierID";
-    const N_MOVEMENTCOMMENTS  = "MovementComments";
-    const N_SHIPTO            = "ShipTo";
-    const N_SHIPFROM          = "ShipFrom";
-    const N_MOVEMENTENDTIME   = "MovementEndTime";
-    const N_MOVEMENTSTARTTIME = "MovementStartTime";
-    const N_ATDOCCODEID       = "ATDocCodeID";
-
-////<xs:element name = "Line" maxOccurs = "unbounded">
-////"DocumentTotals">
 
     /**
-     *
+     * <pre>
+     * &lt;xs:complexType name="ShippingPointStructure"&gt;
+     *   &lt;xs:sequence&gt;
+     *       &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *       &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;
+     *       &lt;xs:sequence minOccurs="0" maxOccurs="unbounded"&gt;
+     *           &lt;xs:element ref="WarehouseID" minOccurs="0"/&gt;
+     *           &lt;xs:element ref="LocationID" minOccurs="0"/&gt;
+     *       &lt;/xs:sequence&gt;
+     *       &lt;xs:element ref="Address" minOccurs="0"/&gt;
+     *   &lt;/xs:sequence&gt;
+     *  &lt;/xs:complexType&gt;
+     * </pre>
      * @since 1.0.0
      */
     public function __construct()
@@ -66,9 +59,11 @@ class MovementOfGoods extends ADocument
     }
 
     /**
-     *
+     * Create the xml node, the ShipFrom an ShipTo node muste be created
+     * in the child class
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -77,9 +72,10 @@ class MovementOfGoods extends ADocument
     }
 
     /**
-     *
+     * Parse the xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

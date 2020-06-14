@@ -359,7 +359,7 @@ class LineTest extends TestCase
 
     /**
      * Reads all invoices's lines from the Demo SAFT in Test\Ressources
-     * and parse them to Line class, after that generate a xml from the
+     * and parse then to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      */
     public function testCreateParseXml()
@@ -405,12 +405,12 @@ class LineTest extends TestCase
                     $assertXml = $this->xmlIsEqual($lineXml, $xml);
                     $this->assertTrue($assertXml,
                         \sprintf("Fail on Document '%s' Line '%s' with error '%s'",
-                            $movStockXml->{StockMovement::n_DOCUMENTNUMBER},
+                            $movStockXml->{StockMovement::N_DOCUMENTNUMBER},
                             $lineXml->{Line::N_LINENUMBER}, $assertXml)
                     );
                 } catch (\Exception | \Error $e) {
                     $this->fail(\sprintf("Fail on Document '%s' Line '%s' with error '%s'",
-                            $movStockXml->{StockMovement::n_DOCUMENTNUMBER},
+                            $movStockXml->{StockMovement::N_DOCUMENTNUMBER},
                             $lineXml->{Line::N_LINENUMBER}, $e->getMessage()));
                 }
             }

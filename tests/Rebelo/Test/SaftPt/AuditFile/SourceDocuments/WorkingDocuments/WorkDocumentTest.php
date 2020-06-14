@@ -33,7 +33,6 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line;
@@ -329,7 +328,7 @@ class WorkDocumentTest extends TestCase
 
     /**
      * Reads all WorkDocument from the Demo SAFT in Test\Ressources
-     * and parse them to WorkDocument class, after that generate a xml from the
+     * and parse then to WorkDocument class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      */
     public function testCreateParseXml()

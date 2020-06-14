@@ -44,7 +44,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *
      * @since 1.0.0
      */
-    const n_DOCUMENTNUMBER = "DocumentNumber";
+    const N_DOCUMENTNUMBER = "DocumentNumber";
 
     /**
      *

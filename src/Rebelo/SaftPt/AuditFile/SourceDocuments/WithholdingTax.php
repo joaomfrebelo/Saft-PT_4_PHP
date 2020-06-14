@@ -74,14 +74,14 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @var string|null
      * @since 1.0.0
      */
-    private ?string $WithholdingTaxDescription = null;
+    private ?string $withholdingTaxDescription = null;
 
     /**
      * <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
      * @var float
      * @since 1.0.0
      */
-    private float $WithholdingTaxAmount;
+    private float $withholdingTaxAmount;
 
     /**
      * &lt;!-- Estrutura de Retencao na fonte--&gt;
@@ -142,28 +142,28 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))
             ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->WithholdingTaxDescription === null ?
-                        "null" : $this->WithholdingTaxDescription));
-        return $this->WithholdingTaxDescription;
+                    $this->withholdingTaxDescription === null ?
+                        "null" : $this->withholdingTaxDescription));
+        return $this->withholdingTaxDescription;
     }
 
     /**
      * Set the Tax description<br>
      * <xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/>
-     * @param string|null $WithholdingTaxDescription
+     * @param string|null $withholdingTaxDescription
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setWithholdingTaxDescription(?string $WithholdingTaxDescription): void
+    public function setWithholdingTaxDescription(?string $withholdingTaxDescription): void
     {
-        $this->WithholdingTaxDescription = $WithholdingTaxDescription === null ?
-            null : $this->valTextMandMaxCar($WithholdingTaxDescription, 60,
+        $this->withholdingTaxDescription = $withholdingTaxDescription === null ?
+            null : $this->valTextMandMaxCar($withholdingTaxDescription, 60,
                 __METHOD__);
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->WithholdingTaxDescription === null ?
-                        "null" : $this->WithholdingTaxDescription));
+                    $this->withholdingTaxDescription === null ?
+                        "null" : $this->withholdingTaxDescription));
     }
 
     /**
@@ -176,30 +176,30 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))
             ->info(\sprintf(__METHOD__." getted '%s'",
-                    \strval($this->WithholdingTaxAmount)));
-        return $this->WithholdingTaxAmount;
+                    \strval($this->withholdingTaxAmount)));
+        return $this->withholdingTaxAmount;
     }
 
     /**     *
      * Get Tax amount
      * <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
-     * @param float $WithholdingTaxAmount
+     * @param float $withholdingTaxAmount
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setWithholdingTaxAmount(float $WithholdingTaxAmount): void
+    public function setWithholdingTaxAmount(float $withholdingTaxAmount): void
     {
-        if ($WithholdingTaxAmount < 0.0) {
+        if ($withholdingTaxAmount < 0.0) {
             $msg = "Withholding tax amount can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $this->WithholdingTaxAmount = $WithholdingTaxAmount;
+        $this->withholdingTaxAmount = $withholdingTaxAmount;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    \strval($this->WithholdingTaxAmount)));
+                    \strval($this->withholdingTaxAmount)));
     }
 
     /**

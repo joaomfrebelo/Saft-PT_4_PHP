@@ -24,17 +24,17 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
+namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus;
 
 /**
  * Line
@@ -66,13 +66,13 @@ class DocumentStatusTest extends TestCase
         $this->assertInstanceOf(DocumentStatus::class, $docStatus);
         $this->assertNull($docStatus->getReason());
 
-        $status = WorkStatus::N;
-        $docStatus->setWorkStatus(new WorkStatus($status));
-        $this->assertSame($status, $docStatus->getWorkStatus()->get());
+        $status = MovementStatus::N;
+        $docStatus->setMovementStatus(new MovementStatus($status));
+        $this->assertSame($status, $docStatus->getMovementStatus()->get());
 
         $date = new RDate();
-        $docStatus->setWorkStatusDate($date);
-        $this->assertSame($date, $docStatus->getWorkStatusDate());
+        $docStatus->setMovementStatusDate($date);
+        $this->assertSame($date, $docStatus->getMovementStatusDate());
 
         $reason = "Reason of status";
         $docStatus->setReason($reason);
@@ -109,21 +109,21 @@ class DocumentStatusTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        $workdocStack = $saftDemoXml
+        $stockMovDocStack = $saftDemoXml
             ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{WorkingDocuments::N_WORKINGDOCUMENTS}
-            ->{WorkDocument::N_WORKDOCUMENT};
+            ->{MovementOfGoods::N_MOVEMENTOFGOODS}
+            ->{StockMovement::N_STOCKMOVEMENT};
 
-        if ($workdocStack->count() === 0) {
-            $this->fail("No invoices in XML");
+        if ($stockMovDocStack->count() === 0) {
+            $this->fail("No StockMovements in XML");
         }
 
-        for ($i = 0; $i < $workdocStack->count(); $i++) {
-            $workdocStackXml = $workdocStack[$i];
-            $statusStack     = $workdocStackXml->{DocumentStatus::N_DOCUMENTSTATUS};
+        for ($i = 0; $i < $stockMovDocStack->count(); $i++) {
+            $stockMovDocStackXml = $stockMovDocStack[$i];
+            $statusStack         = $stockMovDocStackXml->{DocumentStatus::N_DOCUMENTSTATUS};
 
             if ($statusStack->count() === 0) {
-                $this->fail("No documemntstatus in Workdoc");
+                $this->fail("No documemntstatus in StockMov");
             }
 
             for ($l = 0; $l < $statusStack->count(); $l++) {
@@ -132,27 +132,27 @@ class DocumentStatusTest extends TestCase
                 $docStatus = new DocumentStatus();
                 $docStatus->parseXmlNode($statusXml);
 
-                $xmlRootNode      = new \SimpleXMLElement(
+                $xmlRootNode       = new \SimpleXMLElement(
                     '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
                     'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
                     'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
                 );
-                $sourceDocNode    = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-                $workingdocsNode  = $sourceDocNode->addChild(WorkingDocuments::N_WORKINGDOCUMENTS);
-                $workdocStackNode = $workingdocsNode->addChild(WorkDocument::N_WORKDOCUMENT);
+                $sourceDocNode     = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+                $movOfGoodsNode    = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
+                $stockMovStackNode = $movOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
 
-                $xml = $docStatus->createXmlNode($workdocStackNode);
+                $xml = $docStatus->createXmlNode($stockMovStackNode);
 
                 try {
                     $assertXml = $this->xmlIsEqual($statusXml, $xml);
                     $this->assertTrue($assertXml,
                         \sprintf("Fail on Document '%s' with error '%s'",
-                            $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
+                            $stockMovDocStackXml->{StockMovement::N_DOCUMENTNUMBER},
                             $assertXml)
                     );
                 } catch (\Exception | \Error $e) {
                     $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
-                            $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
+                            $stockMovDocStackXml->{StockMovement::N_DOCUMENTNUMBER},
                             $e->getMessage()));
                 }
             }

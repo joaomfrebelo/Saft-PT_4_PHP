@@ -24,37 +24,23 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
+namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
- * MovementOfGoods
+ * ShipTo
  *
  * @author João Rebelo
  * @since 1.0.0
  */
-class MovementOfGoods extends ADocument
+class ShipTo extends AShippingPoint
 {
     /**
-     * Node Name
+     *
      * @since 1.0.0
      */
-    const N_MOVEMENTOFGOODS = "MovementOfGoods";
-    const N_DOCUMENTNUMBER  = "DocumentNumber";
-////<xs:element name = "DocumentStatus">
-    const N_MOVEMENTDATE      = "MovementDate";
-    const N_MOVEMENTTYPE      = "MovementType";
-    const N_SUPPLIERID        = "SupplierID";
-    const N_MOVEMENTCOMMENTS  = "MovementComments";
-    const N_SHIPTO            = "ShipTo";
-    const N_SHIPFROM          = "ShipFrom";
-    const N_MOVEMENTENDTIME   = "MovementEndTime";
-    const N_MOVEMENTSTARTTIME = "MovementStartTime";
-    const N_ATDOCCODEID       = "ATDocCodeID";
-
-////<xs:element name = "Line" maxOccurs = "unbounded">
-////"DocumentTotals">
+    const N_SHIPTO = "ShipTo";
 
     /**
      *
@@ -69,21 +55,23 @@ class MovementOfGoods extends ADocument
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-
+        return parent::createXmlNode($node);
     }
 
     /**
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-
+        parent::parseXmlNode($node);
     }
 }

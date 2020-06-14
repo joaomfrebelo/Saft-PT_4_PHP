@@ -139,7 +139,7 @@ class WorkDocument extends ADocument
             \strlen($documentNumber) < 1 ||
             \preg_match("/[^ ]+ [^\/^ ]+\/[0-9]+/", $documentNumber) !== 1
         ) {
-            $msg = "DocumentNumber length meust be between 1 and 60 and must respect regexp";
+            $msg = "DocumentNumber length must be between 1 and 60 and must respect regexp";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -261,7 +261,7 @@ class WorkDocument extends ADocument
         }
         $this->line[$index] = $line;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, "ShipFromAddress add to index ".\strval($index));
+            __METHOD__, "Line add to index ".\strval($index));
         return $index;
     }
 

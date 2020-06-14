@@ -251,7 +251,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         $docTotalNode->addChild(
             static::N_NETTOTAL, $this->floatFormat($this->getNetTotal())
         );
-        // GrossTotal is allways with 2 decimals, and the GrossTota value to the
+        // GrossTotal is allways with 2 decimals, and the GrossTotal value to the
         // digital sign hash must be with 2 decimals too
         $docTotalNode->addChild(
             static::N_GROSSTOTAL, $this->floatFormat($this->getGrossTotal(), 2)

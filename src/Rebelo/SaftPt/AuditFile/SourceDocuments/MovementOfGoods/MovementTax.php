@@ -237,7 +237,8 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Line::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s", Line::N_LINE,
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s", Line::N_LINE,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
