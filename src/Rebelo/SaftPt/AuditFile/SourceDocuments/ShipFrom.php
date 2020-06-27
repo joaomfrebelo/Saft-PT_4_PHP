@@ -27,6 +27,8 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
 
 /**
  * ShipTo
@@ -43,7 +45,21 @@ class ShipFrom extends AShippingPoint
     const N_SHIPFROM = "ShipFrom";
 
     /**
-     *
+     * ShipFrom
+     * <pre>
+     * &lt;:element name="ShipFrom" type="ShippingPointStructure"/&gt;
+     * &lt;xs:complexType name="ShippingPointStructure"&gt;
+     *   &lt;xs:sequence&gt;
+     *       &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *       &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;
+     *       &lt;xs:sequence minOccurs="0" maxOccurs="unbounded"&gt;
+     *           &lt;xs:element ref="WarehouseID" minOccurs="0"/&gt;
+     *           &lt;xs:element ref="LocationID" minOccurs="0"/&gt;
+     *       &lt;/xs:sequence&gt;
+     *       &lt;xs:element ref="Address" minOccurs="0"/&gt;
+     *   &lt;/xs:sequence&gt;
+     *   &lt;/xs:complexType&gt;
+     * </pre>
      * @since 1.0.0
      */
     public function __construct()
@@ -60,7 +76,18 @@ class ShipFrom extends AShippingPoint
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        return parent::createXmlNode($node);
+        if ($node->getName() !== Invoice::N_INVOICE &&
+            $node->getName() !== StockMovement::N_STOCKMOVEMENT) {
+            $msg = \sprintf(
+                "Node name should be '%s' or but is '%s", Invoice::N_INVOICE,
+                StockMovement::N_STOCKMOVEMENT, $node->getName()
+            );
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+        $shipNode = $node->addChild(static::N_SHIPFROM);
+        return parent::createXmlNode($shipNode);
     }
 
     /**
@@ -72,6 +99,15 @@ class ShipFrom extends AShippingPoint
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
+        if ($node->getName() !== static::N_SHIPFROM) {
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s", static::N_SHIPFROM,
+                $node->getName()
+            );
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
         parent::parseXmlNode($node);
     }
 }

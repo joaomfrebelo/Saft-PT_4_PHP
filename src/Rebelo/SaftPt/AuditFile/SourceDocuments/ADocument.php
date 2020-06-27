@@ -193,7 +193,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @var string
      * @since 1.0.0
      */
-    private string $customerID;
+    protected string $customerID;
 
     /**
      * Abstract class for common method and properties of WorkDocument,

@@ -26,24 +26,33 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 
 /**
- * MovementOfGoods
+ * Description of DocumentTotals
  *
  * @author João Rebelo
  * @since 1.0.0
  */
-class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class DocumentTotals extends ADocumentTotals
 {
-    /**
-     * Node Name
-     * @since 1.0.0
-     */
-    const N_MOVEMENTOFGOODS = "MovementOfGoods";
 
     /**
      *
+     * <pre>
+     *  &lt;xs:element name="DocumentTotals"&gt;
+     *       &lt;xs:complexType&gt;
+     *           &lt;xs:sequence&gt;
+     *               &lt;xs:element ref="TaxPayable"/&gt;
+     *               &lt;xs:element ref="NetTotal"/&gt;
+     *               &lt;xs:element ref="GrossTotal"/&gt;
+     *               &lt;xs:element name="Currency" type="Currency"
+     *                           minOccurs="0"/&gt;
+     *           &lt;/xs:sequence&gt;
+     *       &lt;/xs:complexType&gt;
+     *   &lt;/xs:element&gt;
+     * </pre>
      * @since 1.0.0
      */
     public function __construct()
@@ -52,24 +61,24 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     *
+     * Create the xml node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
+        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-    }
-
-    /**
-     *
-     * @param \SimpleXMLElement $node
-     * @return void
-     * @since 1.0.0
-     */
-    public function parseXmlNode(\SimpleXMLElement $node): void
-    {
-
+        if ($node->getName() !== StockMovement::N_STOCKMOVEMENT) {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                StockMovement::N_STOCKMOVEMENT, $node->getName()
+            );
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+        return parent::createXmlNode($node);
     }
 }
