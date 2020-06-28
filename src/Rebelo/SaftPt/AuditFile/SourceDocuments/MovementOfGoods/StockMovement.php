@@ -219,7 +219,6 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
     /**
      * StockMovement
-     * </pre>
      * &lt;xs:element name="StockMovement" minOccurs="0" maxOccurs="unbounded"&gt;
      *   &lt;xs:complexType&gt;
      *       &lt;xs:sequence&gt;
@@ -252,7 +251,6 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
-     * </pre>
      * @since 1.0.0
      */
     public function __construct()
@@ -262,7 +260,6 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
     /**
      * Get DocumentNumber
-     * <pre>
      * &lt;xs:element ref="DocumentNumber"/&gt;
      * &lt;xs:element name="DocumentNumber"&gt;
      *   &lt;xs:simpleType&gt;
@@ -273,7 +270,6 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
-     * </pre>
      * @return string
      * @since 1.0.0
      */
