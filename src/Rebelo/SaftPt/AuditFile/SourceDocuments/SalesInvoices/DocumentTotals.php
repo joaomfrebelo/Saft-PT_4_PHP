@@ -238,8 +238,7 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         }
         foreach ($this->getPayment() as $paymentMethod) {
             /* @var $paymentMethod PaymentMethod */
-            $payNode = $docTotNode->addChild(static::N_PAYMENT);
-            $paymentMethod->createXmlNode($payNode);
+            $paymentMethod->createXmlNode($docTotNode);
         }
         return $docTotNode;
     }
@@ -270,7 +269,7 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
             for ($n = 0; $n < $node->{static::N_PAYMENT}->count(); $n++) {
                 $paymentMethod = new PaymentMethod();
                 $paymentMethod->parseXmlNode(
-                    $node->{static::N_PAYMENT}[$n]->{PaymentMethod::N_PAYMENTMETHOD}
+                    $node->{static::N_PAYMENT}[$n]
                 );
                 $this->addToPayment($paymentMethod);
             }

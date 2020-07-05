@@ -309,7 +309,7 @@ class DocumentTotalsTest extends TestCase
 
             $this->assertSame(
                 $payment->getPaymentAmount(),
-                (float) $pNode->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTAMOUNT}
+                (float) $pNode->{PaymentMethod::N_PAYMENTAMOUNT}
             );
         }
     }

@@ -1235,7 +1235,8 @@ class Payment extends \Rebelo\SaftPt\AuditFile\AAuditFile
         $docTotals->parseXmlNode($node->{DocumentTotals::N_DOCUMENTTOTALS});
         $this->setDocumentTotals($docTotals);
 
-        for ($n = 0; $n < $node->{WithholdingTax::N_WITHHOLDINGTAX}->count(); $n++) {
+        $whtCount = $node->{WithholdingTax::N_WITHHOLDINGTAX}->count();
+        for ($n = 0; $n < $whtCount; $n++) {
             $tax = new WithholdingTax();
             $tax->parseXmlNode($node->{WithholdingTax::N_WITHHOLDINGTAX}[$n]);
             $this->addToWithholdingTax($tax);

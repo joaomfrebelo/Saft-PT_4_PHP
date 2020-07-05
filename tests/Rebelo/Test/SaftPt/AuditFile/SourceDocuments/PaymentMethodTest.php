@@ -157,17 +157,17 @@ class PaymentMethodTest extends TestCase
 
         $this->assertSame(
             $payMeth->getPaymentMechanism()->get(),
-            (string) $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTMECHANISM}
+            (string) $payMethNode->{PaymentMethod::N_PAYMENTMECHANISM}
         );
 
         $this->assertSame(
             $payMeth->getPaymentAmount(),
-            (float) $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTAMOUNT}
+            (float) $payMethNode->{PaymentMethod::N_PAYMENTAMOUNT}
         );
 
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
-            (string) $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTDATE}
+            (string) $payMethNode->{PaymentMethod::N_PAYMENTDATE}
         );
     }
 

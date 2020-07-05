@@ -214,7 +214,10 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $nodePayMethod = $node->addChild(static::N_PAYMENTMETHOD);
+        $nodePayMethod = $node->getName() === Payment::N_PAYMENT ?
+            $node->addChild(static::N_PAYMENTMETHOD) :
+            $nodePayMethod = $node->addChild(SalesInvoices\DocumentTotals::N_PAYMENT);
+
 
         if ($this->getPaymentMechanism() !== null) {
             $nodePayMethod->addChild(

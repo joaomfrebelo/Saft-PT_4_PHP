@@ -790,6 +790,8 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * Create XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Error
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -896,9 +898,10 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     }
 
     /**
-     *
+     * Parse XML node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

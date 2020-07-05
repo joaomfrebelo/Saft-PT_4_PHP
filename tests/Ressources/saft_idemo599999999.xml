@@ -3705,7 +3705,7 @@
                     <Currency>
                         <CurrencyCode>USD</CurrencyCode>
                         <CurrencyAmount>317.45</CurrencyAmount>
-                        <ExchangeRate>0.7407465742636636</ExchangeRate>
+                        <ExchangeRate>0.740747</ExchangeRate>
                     </Currency>
                 </DocumentTotals>
             </Invoice>
