@@ -114,7 +114,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        if ($node->getName() !== Invoice::N_INVOICE) {/// if node is Invoice
+        if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf("Node name should be '%s' but is '%s",
                 Invoice::N_INVOICE, $node->getName());
             \Logger::getLogger(\get_class($this))

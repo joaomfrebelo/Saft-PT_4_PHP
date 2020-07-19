@@ -387,13 +387,6 @@ class CustomerTest extends TestCase
         }
 
         try {
-            $customer->setWebsite("isNotWebsite");
-            $this->fail("set Website with wrong string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
             $customer->setWebsite("");
             $this->fail("set Website with empty string should throw AuditFileException");
         } catch (\Exception | \TypeError $e) {

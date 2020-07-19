@@ -462,8 +462,6 @@ class InvoiceTest extends TestCase
 
             $xml = $invoice->createXmlNode($invoiceNode);
 
-            file_put_contents("d:/todelete/xml.xml", $xml->asXML());
-            file_put_contents("d:/todelete/saftxml.xml", $invoiceXml->asXML());
             try {
                 $assertXml = $this->xmlIsEqual($invoiceXml, $xml);
                 $this->assertTrue($assertXml,

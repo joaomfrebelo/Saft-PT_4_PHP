@@ -384,6 +384,7 @@ class MasterFilesTest extends TestCase
         $node       = new \SimpleXMLElement(
             "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
+        $master->setExportType(new ExportType(ExportType::S));
         $masterNode = $master->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
         $this->assertEquals(MasterFiles::N_MASTERFILES, $masterNode->getName());
@@ -409,6 +410,7 @@ class MasterFilesTest extends TestCase
     public function testCreateXmlNodeWrongName()
     {
         $master = new MasterFiles();
+        $master->setExportType(new ExportType(ExportType::S));
         $node   = new \SimpleXMLElement("<root></root>"
         );
         try {
@@ -425,8 +427,8 @@ class MasterFilesTest extends TestCase
     public function testParseXmlNodeWrongName()
     {
         $master = new MasterFiles();
-        $node   = new \SimpleXMLElement("<root></root>"
-        );
+        $master->setExportType(new ExportType(ExportType::S));
+        $node   = new \SimpleXMLElement("<root></root>");
         try {
             $masterNode = $master->parseXmlNode($node);
             $this->fail("Parse a xml node on a wrong node should throw "
@@ -442,10 +444,11 @@ class MasterFilesTest extends TestCase
     {
         $nCount = 5;
         $master = $this->createMasterFile($nCount);
+        $master->setExportType(new ExportType(ExportType::S));
         $node   = new \SimpleXMLElement(
             "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
-
+        $master->setExportType(new ExportType(ExportType::C));
         $xml    = $master->createXmlNode($node)->asXML();
         $parsed = new MasterFiles();
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
@@ -490,6 +493,7 @@ class MasterFilesTest extends TestCase
     public function testParseXmlNodeEmpty()
     {
         $master = new MasterFiles();
+        $master->setExportType(new ExportType(ExportType::S));
         $node   = new \SimpleXMLElement(
             "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );

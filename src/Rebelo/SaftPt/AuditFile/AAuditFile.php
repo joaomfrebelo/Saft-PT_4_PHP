@@ -34,6 +34,13 @@ namespace Rebelo\SaftPt\AuditFile;
  */
 abstract class AAuditFile
 {
+    /**
+     * The type of saft xml exported<br>
+     * Simplified or Complete
+     * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
+     * @since 1.0.0
+     */
+    private ExportType $exportType;
 
     /**
      *
@@ -42,6 +49,32 @@ abstract class AAuditFile
     public function __construct()
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+    }
+
+    /**
+     * Get the exported type setted
+     * @return \Rebelo\SaftPt\AuditFile\ExportType
+     * @since 1.0.0
+     */
+    public function getExportType(): ExportType
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->exportType->get()));
+        return $this->exportType;
+    }
+
+    /**
+     * Set the exported type
+     * @param \Rebelo\SaftPt\AuditFile\ExportType $exportType
+     * @return void
+     * @since 1.0.0
+     */
+    public function setExportType(ExportType $exportType): void
+    {
+        $this->exportType = $exportType;
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'",
+                    $this->exportType->get()));
     }
 
     /**

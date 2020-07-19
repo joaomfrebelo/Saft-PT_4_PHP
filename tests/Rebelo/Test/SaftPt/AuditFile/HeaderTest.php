@@ -705,13 +705,6 @@ class HeaderTest extends TestCase
         }
 
         try {
-            $header->setWebsite("isNotWebsite");
-            $this->fail("set Website with wrong string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
             $header->setWebsite("");
             $this->fail("set Website with empty string should throw AuditFileException");
         } catch (\Exception | \TypeError $e) {

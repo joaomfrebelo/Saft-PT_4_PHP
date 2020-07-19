@@ -118,13 +118,6 @@ class MasterFiles extends AAuditFile
     private array $taxTableEntry = array();
 
     /**
-     * Type of xml saft file export, simplified or complete
-     * @var \Rebelo\SaftPt\AuditFile\ExportType $exportType
-     * @since 1.0.0
-     */
-    private ExportType $exportType;
-
-    /**
      *
      * <pre>
      * &lt;xs:element name="MasterFiles"&gt;
@@ -148,32 +141,6 @@ class MasterFiles extends AAuditFile
             $exportType === null ? new ExportType(ExportType::C) :
                 $exportType
         );
-    }
-
-    /**
-     * Get the exported type setted
-     * @return \Rebelo\SaftPt\AuditFile\ExportType
-     * @since 1.0.0
-     */
-    public function getExportType(): ExportType
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->exportType->get()));
-        return $this->exportType;
-    }
-
-    /**
-     * Set the exported type
-     * @param \Rebelo\SaftPt\AuditFile\ExportType $exportType
-     * @return void
-     * @since 1.0.0
-     */
-    public function setExportType(ExportType $exportType): void
-    {
-        $this->exportType = $exportType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->exportType->get()));
     }
 
     /**
@@ -474,28 +441,32 @@ class MasterFiles extends AAuditFile
         // GeneralLedgerAccounts is not implemented
         //<xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/>
         if (\count($this->getCustomer()) > 0 &&
-            $this->exportType->get() === ExportType::C) {
+            $this->getExportType()->get() === ExportType::C) {
             array_map(function($customer) use ($masterNode) {
                 /* @var $customer Customer */
                 $customer->createXmlNode($masterNode);
             }, $this->getCustomer());
         }
 
-        //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
-        if (\count($this->getSupplier()) > 0 &&
-            $this->exportType->get() === ExportType::C) {
-            array_map(function($supplier) use ($masterNode) {
-                /* @var $supplier Supplier */
-                $supplier->createXmlNode($masterNode);
-            }, $this->getSupplier());
-        }
-        //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
-        if (\count($this->getProduct()) > 0 &&
-            $this->exportType->get() === ExportType::C) {
-            array_map(function($product) use ($masterNode) {
-                /* @var $product Product */
-                $product->createXmlNode($masterNode);
-            }, $this->getProduct());
+
+        // Suppliers and Products are not exported in simplified Saft
+        if ($this->getExportType()->get() === ExportType::C) {
+
+            //<xs:element ref="Supplier" minOccurs="0" maxOccurs="unbounded"/>
+            if (\count($this->getSupplier()) > 0) {
+                array_map(function($supplier) use ($masterNode) {
+                    /* @var $supplier Supplier */
+                    $supplier->createXmlNode($masterNode);
+                }, $this->getSupplier());
+            }
+
+            //<xs:element ref="Product" minOccurs="0" maxOccurs="unbounded"/>
+            if (\count($this->getProduct()) > 0) {
+                array_map(function($product) use ($masterNode) {
+                    /* @var $product Product */
+                    $product->createXmlNode($masterNode);
+                }, $this->getProduct());
+            }
         }
 
         //<xs:element ref="TaxTable" minOccurs="0"/>

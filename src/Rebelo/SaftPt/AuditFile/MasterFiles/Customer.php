@@ -702,18 +702,8 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function setWebsite(?string $website): void
     {
-        if ($website === null) {
-            $this->website = $website;
-        } else {
-            if (\filter_var($website, FILTER_VALIDATE_URL) === false ||
-                \strlen($website) > 60) {
-                $msg = "The URL is not valide";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
-                throw new AuditFileException($msg);
-            }
-            $this->website = $website;
-        }
+        $this->website = $website === null ? null :
+            $this->valTextMandMaxCar($website, 60, __METHOD__, false);
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'",
                     $this->website === null ? "null" : $this->website));

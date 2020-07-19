@@ -24,13 +24,15 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
+namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\{
+    SourceDocuments,
+    SalesInvoices\Invoice,
+    SalesInvoices\SalesInvoices
+};
 
 /**
  * Line
@@ -38,7 +40,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class WorkingDocumentsTest extends TestCase
+class SalesInvoicesTest extends TestCase
 {
 
     use \Rebelo\Test\TXmlTest;
@@ -49,7 +51,7 @@ class WorkingDocumentsTest extends TestCase
     public function testReflection()
     {
         (new \Rebelo\Test\CommnunTest())
-            ->testReflection(WorkingDocuments::class);
+            ->testReflection(SalesInvoices::class);
         $this->assertTrue(true);
     }
 
@@ -58,9 +60,9 @@ class WorkingDocumentsTest extends TestCase
      */
     public function testInstance()
     {
-        $workingDocs = new WorkingDocuments();
-        $this->assertInstanceOf(WorkingDocuments::class, $workingDocs);
-        $this->assertSame(0, \count($workingDocs->getWorkDocument()));
+        $salesInvoices = new SalesInvoices();
+        $this->assertInstanceOf(SalesInvoices::class, $salesInvoices);
+        $this->assertSame(0, \count($salesInvoices->getInvoice()));
     }
 
     /**
@@ -68,14 +70,14 @@ class WorkingDocumentsTest extends TestCase
      */
     public function testNumberOfEntries()
     {
-        $workingDocs = new WorkingDocuments();
-        $entries     = [0, 999];
+        $salesInvoices = new SalesInvoices();
+        $entries       = [0, 999];
         foreach ($entries as $num) {
-            $workingDocs->setNumberOfEntries($num);
-            $this->assertSame($num, $workingDocs->getNumberOfEntries());
+            $salesInvoices->setNumberOfEntries($num);
+            $this->assertSame($num, $salesInvoices->getNumberOfEntries());
         }
         try {
-            $workingDocs->setNumberOfEntries(-1);
+            $salesInvoices->setNumberOfEntries(-1);
             $this->fail("Set NumberOdEntries to a negative number should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException");
         } catch (\Exception | \Error $e) {
@@ -88,14 +90,14 @@ class WorkingDocumentsTest extends TestCase
      */
     public function testTotalDebit()
     {
-        $workingDocs = new WorkingDocuments();
-        $debitStack  = [0.0, 9.99];
+        $salesInvoices = new SalesInvoices();
+        $debitStack    = [0.0, 9.99];
         foreach ($debitStack as $debit) {
-            $workingDocs->setTotalDebit($debit);
-            $this->assertSame($debit, $workingDocs->getTotalDebit());
+            $salesInvoices->setTotalDebit($debit);
+            $this->assertSame($debit, $salesInvoices->getTotalDebit());
         }
         try {
-            $workingDocs->setTotalDebit(-0.19);
+            $salesInvoices->setTotalDebit(-0.19);
             $this->fail("Set TotalDebit to a negative number should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException");
         } catch (\Exception | \Error $e) {
@@ -108,14 +110,14 @@ class WorkingDocumentsTest extends TestCase
      */
     public function testTotalCredit()
     {
-        $workingDocs = new WorkingDocuments();
-        $creditStack = [0.0, 9.99];
+        $salesInvoices = new SalesInvoices();
+        $creditStack   = [0.0, 9.99];
         foreach ($creditStack as $creditStack) {
-            $workingDocs->setTotalCredit($creditStack);
-            $this->assertSame($creditStack, $workingDocs->getTotalCredit());
+            $salesInvoices->setTotalCredit($creditStack);
+            $this->assertSame($creditStack, $salesInvoices->getTotalCredit());
         }
         try {
-            $workingDocs->setTotalDebit(-0.19);
+            $salesInvoices->setTotalDebit(-0.19);
             $this->fail("Set TotalCredit to a negative number should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException");
         } catch (\Exception | \Error $e) {
@@ -126,30 +128,30 @@ class WorkingDocumentsTest extends TestCase
     /**
      *
      */
-    public function testWorkDocument()
+    public function testInvoice()
     {
-        $workingDocs = new WorkingDocuments();
-        $nMax        = 9;
+        $salesInvoices = new SalesInvoices();
+        $nMax          = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $workDoc = new WorkDocument();
-            $workDoc->setAtcud(\strval($n));
-            $index   = $workingDocs->addToWorkDocument($workDoc);
+            $invoice = new Invoice();
+            $invoice->setAtcud(\strval($n));
+            $index   = $salesInvoices->addToInvoice($invoice);
             $this->assertSame($n, $index);
             $this->assertSame(
-                \strval($n), $workingDocs->getWorkDocument()[$n]->getAtcud()
+                \strval($n), $salesInvoices->getInvoice()[$n]->getAtcud()
             );
         }
 
-        $this->assertSame($nMax, \count($workingDocs->getWorkDocument()));
+        $this->assertSame($nMax, \count($salesInvoices->getInvoice()));
 
         $unset = 2;
-        $workingDocs->unsetWorkDocument($unset);
-        $this->assertFalse($workingDocs->issetWorkDocument($unset));
-        $this->assertSame($nMax - 1, \count($workingDocs->getWorkDocument()));
+        $salesInvoices->unsetInvoice($unset);
+        $this->assertFalse($salesInvoices->issetInvoice($unset));
+        $this->assertSame($nMax - 1, \count($salesInvoices->getInvoice()));
     }
 
     /**
-     * Reads WorkingDocuments from the Demo SAFT in Test\Ressources
+     * Reads SalesInvoices from the Demo SAFT in Test\Ressources
      * and parse then to WorkDocument class, after that generate a xml from the
      * class and test if the xml strings are equal
      */
@@ -157,16 +159,18 @@ class WorkingDocumentsTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        $workingDocsXml = $saftDemoXml
+        $salesInvoicesXml = $saftDemoXml
             ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{WorkingDocuments::N_WORKINGDOCUMENTS};
+            ->{SalesInvoices::N_SALESINVOICES};
 
-        if ($workingDocsXml->count() === 0) {
-            $this->fail("No WorkingDocs in XML");
+        if ($salesInvoicesXml->count() === 0) {
+            $this->fail("No SalesInvoices in XML");
         }
 
-        $workingDoc = new WorkingDocuments();
-        $workingDoc->parseXmlNode($workingDocsXml);
+
+
+        $salesInvoices = new SalesInvoices();
+        $salesInvoices->parseXmlNode($salesInvoicesXml);
 
         $xmlRootNode   = new \SimpleXMLElement(
             '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
@@ -175,10 +179,10 @@ class WorkingDocumentsTest extends TestCase
         );
         $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
 
-        $xml = $workingDoc->createXmlNode($sourceDocNode);
+        $xml = $salesInvoices->createXmlNode($sourceDocNode);
 
         try {
-            $assertXml = $this->xmlIsEqual($workingDocsXml, $xml);
+            $assertXml = $this->xmlIsEqual($salesInvoicesXml, $xml);
             $this->assertTrue($assertXml,
                 \sprintf("Fail with error '%s'", $assertXml)
             );

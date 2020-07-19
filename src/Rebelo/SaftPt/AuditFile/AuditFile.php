@@ -14,6 +14,10 @@ use \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
  */
 class AuditFile extends AAuditFile
 {
+    /**
+     * Node name
+     * @since 1.0.0
+     */
     const N_AUDITFILE = "AuditFile";
 
     /**
@@ -46,14 +50,6 @@ class AuditFile extends AAuditFile
     private SourceDocuments $sourceDocuments;
 
     /**
-     * The type of saft xml exported<br>
-     * Simplified or Complete
-     * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
-     * @since 1.0.0
-     */
-    private ExportType $exportType;
-
-    /**
      * <xs:element name="AuditFile">
      * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
      * @since 1.0.0
@@ -68,36 +64,10 @@ class AuditFile extends AAuditFile
     }
 
     /**
-     * Get the exported type setted
-     * @return \Rebelo\SaftPt\AuditFile\ExportType
-     * @since 1.0.0
-     */
-    public function getExportType(): ExportType
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->exportType->get()));
-        return $this->exportType;
-    }
-
-    /**
-     * Set the exported type
-     * @param \Rebelo\SaftPt\AuditFile\ExportType $exportType
-     * @return void
-     * @since 1.0.0
-     */
-    public function setExportType(ExportType $exportType): void
-    {
-        $this->exportType = $exportType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->exportType->get()));
-    }
-
-    /**
      *
      * Gets as header <br>
      * <xs:element ref="Header" minOccurs="1"/>
-     * @return \Rebelo\SaftPt\Header
+     * @return \Rebelo\SaftPt\AuditFile\Header
      * @since 1.0.0
      */
     public function getHeader(): Header
@@ -109,15 +79,14 @@ class AuditFile extends AAuditFile
     /**
      * Sets a new header <br>
      * <xs:element ref="Header" minOccurs="1"/>
-     * @param \Rebelo\SaftPt\Header $header
-     * @return self
+     * @param \Rebelo\SaftPt\AuditFile\Header $header
+     * @return void
      * @since 1.0.0
      */
-    public function setHeader(Header $header): AuditFile
+    public function setHeader(Header $header): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $this->header = $header;
-        return $this;
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
     }
 
     /**
@@ -135,21 +104,22 @@ class AuditFile extends AAuditFile
     /**
      * Sets a new masterFiles <br>
      * <xs:element name="MasterFiles">
-     * @param \Rebelo\SaftPt\AuditFile\MasterFiles $masterFiles
-     * @return self
+     * @param \Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles $masterFiles
+     * @return void
      * @since 1.0.0
      */
-    public function setMasterFiles(MasterFiles $masterFiles): AuditFile
+    public function setMasterFiles(MasterFiles $masterFiles): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $this->masterFiles = $masterFiles;
-        return $this;
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
     }
 
     /**
      * Gets as generalLedgerEntries <br>
      * <xs:element ref="GeneralLedgerEntries" minOccurs="0"/>
      * @return \Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries
+     * @throws \Rebelo\SaftPt\AuditFile\NotImplemented
+     * @since 1.0.0
      */
     public function getGeneralLedgerEntries(): GeneralLedgerEntries
     {
@@ -162,9 +132,11 @@ class AuditFile extends AAuditFile
      * Sets a new generalLedgerEntries <br>
      * <xs:element ref="GeneralLedgerEntries" minOccurs="0"/>
      * @param \Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries $generalLedgerEntries
-     * @return self
+     * @throws \Rebelo\SaftPt\AuditFile\NotImplemented
+     * @return void
+     * @since 1.0.0
      */
-    public function setGeneralLedgerEntries(GeneralLedgerEntries $generalLedgerEntries): AuditFile
+    public function setGeneralLedgerEntries(GeneralLedgerEntries $generalLedgerEntries): void
     {
         \Logger::getLogger(\get_class($this))
             ->error(\sprintf(__METHOD__." '%s'", "Not implemented"));
@@ -187,23 +159,80 @@ class AuditFile extends AAuditFile
      * Sets a new sourceDocuments <br>
      * <xs:element ref="SourceDocuments" minOccurs="0"/>
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments $sourceDocuments
-     * @return self
+     * @return void
      * @since 1.0.0
      */
-    public function setSourceDocuments(SourceDocuments $sourceDocuments): SourceDocuments
+    public function setSourceDocuments(SourceDocuments $sourceDocuments): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $this->sourceDocuments = $sourceDocuments;
-        return $this;
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
     }
 
+    /**
+     * Create the XML node
+     * @param \SimpleXMLElement $node
+     * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Error
+     * @since 1.0.0
+     */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-
+        if ($node->getName() !== static::N_AUDITFILE) {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                static::N_AUDITFILE, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+        $this->getMasterFiles()->setExportType($this->getExportType());
+        $this->getSourceDocuments()->setExportType($this->getExportType());
+        $this->getHeader()->createXmlNode($node);
+        $this->getMasterFiles()->createXmlNode($node);
+        $this->getSourceDocuments()->createXmlNode($node);
+        return $node;
     }
 
+    /**
+     * Parse the complete XML saft file
+     * @param \SimpleXMLElement $node
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        
+        if ($node->getName() !== static::N_AUDITFILE) {
+            $msg = \sprintf("Node name should be '%s' but is '%s",
+                static::N_AUDITFILE, $node->getName());
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+        $header = new Header();
+        $header->parseXmlNode($node->{Header::N_HEADER});
+        $this->setHeader($header);
+
+        $master = new MasterFiles();
+        $master->parseXmlNode($node->{MasterFiles::N_MASTERFILES});
+        $this->setMasterFiles($master);
+
+        $sourceDocs = new SourceDocuments();
+        $sourceDocs->parseXmlNode($node->{SourceDocuments::N_SOURCEDOCUMENTS});
+        $this->setSourceDocuments($sourceDocs);
+    }
+
+    /**
+     * Create the AuditFile Xml Root element
+     * @return \SimpleXMLElement
+     * @since 1.0.0
+     */
+    public function createRootElement(): \SimpleXMLElement
+    {
+        return RSimpleXMLElement::getInstance(
+                '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
+                'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
+                'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
+        );
     }
 }
