@@ -27,8 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\ExportType;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{
     SourceDocuments,
     SalesInvoices\SalesInvoices,
@@ -50,37 +49,54 @@ class SourceDocumentsTest extends TestCase
     /**
      *
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(SourceDocuments::class);
         $this->assertTrue(true);
     }
 
-    public function testInstanceAndSetGet()
+    public function testInstance(): void
     {
-        $sourceDoc = new SourceDocuments();
+        $sourceDoc = new SourceDocuments(new ErrorRegister());
+        $this->assertNull($sourceDoc->getSalesInvoices(false));
+        $this->assertNull($sourceDoc->getMovementOfGoods(false));
+        $this->assertNull($sourceDoc->getWorkingDocuments(false));
+        $this->assertNull($sourceDoc->getPayments(false));
+    }
+
+    public function testInstanceAndSetGet(): void
+    {
+        $sourceDoc = new SourceDocuments(new ErrorRegister());
         $this->assertInstanceOf(SourceDocuments::class, $sourceDoc);
 
-        $sourceDoc->setSalesInvoices(new SalesInvoices());
         $this->assertInstanceOf(
             SalesInvoices::class, $sourceDoc->getSalesInvoices()
         );
 
-        $sourceDoc->setMovementOfGoods(new MovementOfGoods());
+        $sourceDoc->setSalesInvoicesAsNull();
+        $this->assertNull($sourceDoc->getSalesInvoices(false));
+
         $this->assertInstanceOf(
             MovementOfGoods::class, $sourceDoc->getMovementOfGoods()
         );
 
-        $sourceDoc->setWorkingDocuments(new WorkingDocuments());
+        $sourceDoc->setMovementOfGoodsAsNull();
+        $this->assertNull($sourceDoc->getMovementOfGoods(false));
+
         $this->assertInstanceOf(
             WorkingDocuments::class, $sourceDoc->getWorkingDocuments()
         );
 
-        $sourceDoc->setPayments(new Payments());
+        $sourceDoc->setWorkingDocumentsAsNull();
+        $this->assertNull($sourceDoc->getWorkingDocuments(false));
+
         $this->assertInstanceOf(
             Payments::class, $sourceDoc->getPayments()
         );
+
+        $sourceDoc->setPaymentsAsNull();
+        $this->assertNull($sourceDoc->getPayments(false));
     }
 
     /**
@@ -88,7 +104,7 @@ class SourceDocumentsTest extends TestCase
      * and parse then to SourceDocuments class, after that generate a xml from the
      * class and test if the xml strings are equal
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -99,15 +115,10 @@ class SourceDocumentsTest extends TestCase
             $this->fail("No SourceDocs in XML");
         }
 
-        $sourceDoc = new SourceDocuments();
-        $sourceDoc->setExportType(new ExportType(ExportType::C));
+        $sourceDoc = new SourceDocuments(new ErrorRegister());
         $sourceDoc->parseXmlNode($sourceDocsXml);
 
-        $xmlRootNode = new \SimpleXMLElement(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-        );
+        $xmlRootNode = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
 
         $auditNode = $xmlRootNode->addChild(
             \Rebelo\SaftPt\AuditFile\AuditFile::N_AUDITFILE
@@ -117,7 +128,8 @@ class SourceDocumentsTest extends TestCase
 
         try {
             $assertXml = $this->xmlIsEqual($sourceDocsXml, $xml);
-            $this->assertTrue($assertXml,
+            $this->assertTrue(
+                $assertXml,
                 \sprintf("Fail with error '%s'", $assertXml)
             );
         } catch (\Exception | \Error $e) {

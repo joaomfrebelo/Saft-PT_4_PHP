@@ -37,11 +37,11 @@ class GeneralLedgerEntries
 
     /**
      *
-     * @throws NotImplemented
+     * @throws \Rebelo\SaftPt\AuditFile\NotImplemented
      * @since 1.0.0
      */
     public function __construct()
     {
-        throw new NotImplemented("Class not implemented");
+        throw new \Rebelo\SaftPt\AuditFile\NotImplemented("Class not implemented");
     }
 }

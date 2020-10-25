@@ -5,4 +5,8 @@
 .buildpath/
 .project/
 /.metadata
-composer.phar
+logs
+.phpunit.result.cache
+.buildpath
+.composer.lock
+.project

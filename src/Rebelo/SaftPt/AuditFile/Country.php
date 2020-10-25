@@ -44,4 +44,16 @@ class Country extends ACountry
     {
         parent::__construct($value);
     }
+
+    /**
+     *
+     * Get Country as string
+     *
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
+    }
 }

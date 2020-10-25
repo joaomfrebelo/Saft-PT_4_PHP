@@ -29,33 +29,37 @@ namespace Rebelo\SaftPt\AuditFile;
 /**
  * AddressPT<br>
  * Estrutura de Moradas para Portugal<br>
- * <xs:complexType name="AddressStructure">
+ * &lt;xs:complexType name="AddressStructure">
  * @author João Rebelo
  * @since 1.0.0
  */
 class Address extends AAddress
 {
     /**
-     * <xs:element ref="PostalCode"/>
-     * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
+     * &lt;xs:element ref="PostalCode"/&gt;
+     * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
      * @var string
      * @since 1.0.0
      */
     private string $postalCode;
 
     /**
-     * <xs:complexType name="AddressStructure">
+     * Address<br>
+     * &lt;xs:complexType name="AddressStructure">
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    function __construct()
+    function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     * <xs:element ref="PostalCode"/>
-     * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
+     * Get PostalCode<br>
+     * &lt;xs:element ref="PostalCode"/&gt;<br>
+     * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getPostalCode(): string
@@ -66,23 +70,46 @@ class Address extends AAddress
     }
 
     /**
-     * <xs:element ref="PostalCode"/>
-     * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
-     *
-     * @param string $postalCode
-     * @return void
+     * Get if is set PostalCode
+     * @return bool
      * @since 1.0.0
      */
-    public function setPostalCode(string $postalCode): void
+    public function issetPostalCode(): bool
     {
-        $this->postalCode = static::valTextMandMaxCar($postalCode, 20,
-                __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
+        return isset($this->postalCode);
     }
 
     /**
-     * <xs:element ref="Country"/>
+     * Set PostalCode<br>
+     * &lt;xs:element ref="PostalCode"/&gt;<br>
+     * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
+     *
+     * @param string $postalCode
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setPostalCode(string $postalCode): bool
+    {
+        try {
+            $this->postalCode = static::valTextMandMaxCar(
+                $postalCode, 20, __METHOD__
+            );
+            $return           = true;
+        } catch (AuditFileException $e) {
+            $this->postalCode = $postalCode;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("PostalCode_not_valid");
+            $return           = false;
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
+        return $return;
+    }
+
+    /**
+     * Set Country<br>
+     * &lt;xs:element ref="Country"/&gt;<br>
      * @param \Rebelo\SaftPt\AuditFile\Country $country
      * @return void
      * @since 1.0.0
@@ -95,8 +122,10 @@ class Address extends AAddress
     }
 
     /**
-     * <xs:element ref="Country"/>
+     * Get Country
+     * &lt;xs:element ref="Country"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\Country
+     * @throws \Error
      * @since 1.0.0
      */
     public function getCountry(): Country
@@ -104,6 +133,16 @@ class Address extends AAddress
         \Logger::getLogger(\get_class($this))
             ->info(\sprintf(__METHOD__." getted '%s'", $this->country->get()));
         return $this->country;
+    }
+
+    /**
+     * Get if is set Country
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetCountry(): bool
+    {
+        return isset($this->country);
     }
 
     /**
@@ -121,7 +160,12 @@ class Address extends AAddress
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::createXmlNode($node);
-        $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+        if (isset($this->country)) {
+            $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+        } else {
+            $node->addChild(static::N_COUNTRY);
+            $this->getErrorRegistor()->addOnCreateXmlNode("AddressDetail_not_valid");
+        }
         return $node;
     }
 

@@ -32,7 +32,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line;
@@ -49,9 +49,10 @@ class WorkDocumentTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(WorkDocument::class);
@@ -59,271 +60,289 @@ class WorkDocumentTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $this->assertInstanceOf(WorkDocument::class, $workDocument);
         $this->assertNull($workDocument->getPeriod());
         $this->assertNull($workDocument->getEacCode());
-        $this->assertNull($workDocument->getTransactionID());
+        $this->assertNull($workDocument->getTransactionID(false));
+        $this->assertNull($workDocument->getDocTotalcal());
         $this->assertSame(0, \count($workDocument->getLine()));
+
+        $this->assertFalse($workDocument->issetAtcud());
+        $this->assertFalse($workDocument->issetCustomerID());
+        $this->assertFalse($workDocument->issetDocumentNumber());
+        $this->assertFalse($workDocument->issetDocumentStatus());
+        $this->assertFalse($workDocument->issetDocumentTotals());
+        $this->assertFalse($workDocument->issetHash());
+        $this->assertFalse($workDocument->issetHashControl());
+        $this->assertFalse($workDocument->issetSourceID());
+        $this->assertFalse($workDocument->issetSystemEntryDate());
+        $this->assertFalse($workDocument->issetWorkDate());
+        $this->assertFalse($workDocument->issetWorkType());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentNumber()
+    public function testDocumentNumber(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $docNum       = "ORC OR/999";
-        $workDocument->setDocumentNumber($docNum);
+        $this->assertTrue($workDocument->setDocumentNumber($docNum));
+        $this->assertTrue($workDocument->issetDocumentNumber());
         $this->assertSame($docNum, $workDocument->getDocumentNumber());
-        try {
-            $workDocument->setDocumentNumber("ORCA /1");
-            $this->fail("Set a wrong DocumentNumber should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "ORCA /1";
+        $this->assertFalse($workDocument->setDocumentNumber($wrong));
+        $this->assertSame($wrong, $workDocument->getDocumentNumber());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentStatus()
+    public function testDocumentStatus(): void
     {
-        $workDocument = new WorkDocument();
-        $status       = new DocumentStatus();
-        $workDocument->setDocumentStatus($status);
+        $workDocument = new WorkDocument(new ErrorRegister());
         $this->assertInstanceOf(
             DocumentStatus::class, $workDocument->getDocumentStatus()
         );
+        $this->assertTrue($workDocument->issetDocumentStatus());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testAtcud()
+    public function testAtcud(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $atcud        = "999";
-        $workDocument->setAtcud($atcud);
+        $this->assertTrue($workDocument->setAtcud($atcud));
+        $this->assertTrue($workDocument->issetAtcud());
         $this->assertSame($atcud, $workDocument->getAtcud());
-        try {
-            $workDocument->setAtcud(str_pad($atcud, 120, "A"));
-            $this->fail("Set a wrong ATCUD should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($atcud, 120, "A");
+        $this->assertFalse($workDocument->setAtcud($wrong));
+        $this->assertSame($wrong, $workDocument->getAtcud());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHash()
+    public function testHash(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $hash         = \md5("hash");
-        $workDocument->setHash($hash);
+        $this->assertTrue($workDocument->setHash($hash));
+        $this->assertTrue($workDocument->issetHash());
         $this->assertSame($hash, $workDocument->getHash());
-        try {
-            $workDocument->setHash(str_pad($hash, 200, "A"));
-            $this->fail("Set a Hash length to big should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($hash, 200, "A");
+        $this->assertFalse($workDocument->setHash($wrong));
+        $this->assertSame($wrong, $workDocument->getHash());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHashControl()
+    public function testHashControl(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $control      = "1";
-        $workDocument->setHashControl($control);
+        $this->assertTrue($workDocument->setHashControl($control));
+        $this->assertTrue($workDocument->issetHashControl());
         $this->assertSame($control, $workDocument->getHashControl());
-        try {
-            $workDocument->setHashControl(\str_pad("Z1", 71, "9"));
-            $this->fail("Set a wrong HashControl should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad("Z1", 71, "9");
+        $this->assertFalse($workDocument->setHashControl($wrong));
+        $this->assertSame($wrong, $workDocument->getHashControl());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testPeriod()
+    public function testPeriod(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $period       = 9;
-        $workDocument->setPeriod($period);
+        $this->assertTrue($workDocument->setPeriod($period));
         $this->assertSame($period, $workDocument->getPeriod());
-        try {
-            $workDocument->setPeriod(0);
-            $this->fail("Set periodo to less than 1 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $workDocument->setPeriod(13);
-            $this->fail("Set periodo to greater than 12 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        $workDocument->setPeriod(null);
+
+        $wrong = 0;
+        $this->assertFalse($workDocument->setPeriod($wrong));
+        $this->assertSame($wrong, $workDocument->getPeriod());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = 13;
+        $workDocument->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($workDocument->setPeriod($wrong2));
+        $this->assertSame($wrong2, $workDocument->getPeriod());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
+
+        $workDocument->getErrorRegistor()->cleaeAllErrors();
+        $this->assertTrue($workDocument->setPeriod(null));
         $this->assertNull($workDocument->getPeriod());
+        $this->assertEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testWorkDate()
+    public function testWorkDate(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $date         = new RDate();
         $workDocument->setWorkDate($date);
         $this->assertSame($date, $workDocument->getWorkDate());
+        $this->assertTrue($workDocument->issetWorkDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testWorkType()
+    public function testWorkType(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $type         = WorkType::CC;
         $workDocument->setWorkType(new WorkType($type));
         $this->assertSame($type, $workDocument->getWorkType()->get());
+        $this->assertTrue($workDocument->issetWorkType());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSourceID()
+    public function testSourceID(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $source       = "Rebelo";
-        $workDocument->setSourceID($source);
+        $this->assertTrue($workDocument->setSourceID($source));
         $this->assertSame($source, $workDocument->getSourceID());
-        $workDocument->setSourceID(\str_pad($source, 50, "9"));
+        $this->assertTrue($workDocument->issetSourceID());
+        $this->assertTrue($workDocument->setSourceID(\str_pad($source, 50, "9")));
         $this->assertSame(30, \strlen($workDocument->getSourceID()));
+
+        $this->assertFalse($workDocument->setSourceID(""));
+        $this->assertSame("", $workDocument->getSourceID());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testEACCode()
+    public function testEACCode(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $eaccode      = "49499";
-        $workDocument->setEacCode($eaccode);
+        $this->assertTrue($workDocument->setEacCode($eaccode));
         $this->assertSame($eaccode, $workDocument->getEacCode());
         $workDocument->setEacCode(null);
         $this->assertNull($workDocument->getEacCode());
-        try {
-            $workDocument->setEacCode("9999");
-            $this->fail("Set a wrong eaccode should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $workDocument->setEacCode("999999");
-            $this->fail("Set a wrong eaccode should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "9999";
+        $this->assertFalse($workDocument->setEacCode($wrong));
+        $this->assertSame($wrong, $workDocument->getEacCode());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = "999999";
+        $workDocument->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($workDocument->setEacCode($wrong2));
+        $this->assertSame($wrong2, $workDocument->getEacCode());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSystemEntryDate()
+    public function testSystemEntryDate(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $date         = new RDate();
         $workDocument->setSystemEntryDate($date);
         $this->assertSame($date, $workDocument->getSystemEntryDate());
+        $this->assertTrue($workDocument->issetSystemEntryDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTransactionId()
+    public function testTransactionId(): void
     {
-        $workDocument = new WorkDocument();
-        $transaction  = new \Rebelo\SaftPt\AuditFile\TransactionID();
+        $workDocument = new WorkDocument(new ErrorRegister());
+        $transaction  = $workDocument->getTransactionID();
         $transaction->setDate(new RDate());
         $transaction->setDocArchivalNumber("A");
         $transaction->setJournalID("9");
-        $workDocument->setTransactionID($transaction);
         $this->assertSame($transaction, $workDocument->getTransactionID());
-        $workDocument->setTransactionID(null);
-        $this->assertNull($workDocument->getTransactionID());
+        $workDocument->setTransactionIDAsNull();
+        $this->assertNull($workDocument->getTransactionID(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCustomerId()
+    public function testCustomerId(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $id           = "A999";
-        $workDocument->setCustomerID($id);
+        $this->assertTrue($workDocument->setCustomerID($id));
+        $this->assertTrue($workDocument->issetCustomerID());
         $this->assertSame($id, $workDocument->getCustomerID());
-        try {
-            $workDocument->setCustomerID(\str_pad($id, 31, "999999"));
-            $this->fail("Set a wrong customerid should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($id, 31, "999999");
+        $this->assertFalse($workDocument->setCustomerID($wrong));
+        $this->assertSame($wrong, $workDocument->getCustomerID());
+        $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testLine()
+    public function testLine(): void
     {
-        $workDocument = new WorkDocument();
+        $workDocument = new WorkDocument(new ErrorRegister());
         $nMax         = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $line  = new Line();
-            $line->setLineNumber($n + 1);
-            $index = $workDocument->addToLine($line);
-            $this->assertSame($n, $index);
+            $line = $workDocument->addLine();
             $this->assertSame(
                 $n + 1, $workDocument->getLine()[$n]->getLineNumber()
             );
         }
-
-        $this->assertSame($nMax, \count($workDocument->getLine()));
-
-        $unset = 2;
-        $workDocument->unsetLine($unset);
-        $this->assertFalse($workDocument->issetLine($unset));
-        $this->assertSame($nMax - 1, \count($workDocument->getLine()));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentTotals()
+    public function testDocumentTotals(): void
     {
-        $workDocument = new WorkDocument();
-        $totals       = new DocumentTotals();
-        $workDocument->setDocumentTotals($totals);
-        $this->assertSame($totals, $workDocument->getDocumentTotals());
+        $workDocument = new WorkDocument(new ErrorRegister());
+        $this->assertInstanceOf(
+            DocumentTotals::class, $workDocument->getDocumentTotals()
+        );
+        $this->assertTrue($workDocument->issetDocumentTotals());
     }
 
     /**
@@ -331,7 +350,7 @@ class WorkDocumentTest extends TestCase
      * and parse then to WorkDocument class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -347,31 +366,111 @@ class WorkDocumentTest extends TestCase
         for ($n = 0; $n < $workdocStack->count(); $n++) {
             /* @var $workdocXml \SimpleXMLElement */
             $workdocXml = $workdocStack[$n];
-            $workdoc    = new WorkDocument();
+            $workdoc    = new WorkDocument(new ErrorRegister());
             $workdoc->parseXmlNode($workdocXml);
 
-            $xmlRootNode     = new \SimpleXMLElement(
-                '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-            );
+            $xmlRootNode     = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
             $sourceDocNode   = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
             $workingdocsNode = $sourceDocNode->addChild(WorkingDocuments::N_WORKINGDOCUMENTS);
 
             $xml = $workdoc->createXmlNode($workingdocsNode);
-
+            $xml->asXML("d:/todelete/work.xml");
             try {
                 $assertXml = $this->xmlIsEqual($workdocXml, $xml);
-                $this->assertTrue($assertXml,
-                    \sprintf("Fail on Document '%s' with error '%s'",
+                $this->assertTrue(
+                    $assertXml,
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
                         $workdocXml->{WorkDocument::N_DOCUMENTNUMBER},
-                        $assertXml)
+                        $assertXml
+                    )
                 );
             } catch (\Exception | \Error $e) {
-                $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                $this->fail(
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
                         $workdocXml->{WorkDocument::N_DOCUMENTNUMBER},
-                        $e->getMessage()));
+                        $e->getMessage()
+                    )
+                );
             }
+
+            $this->assertEmpty($workdoc->getErrorRegistor()->getOnCreateXmlNode());
+            $this->assertEmpty($workdoc->getErrorRegistor()->getOnSetValue());
+            $this->assertEmpty($workdoc->getErrorRegistor()->getLibXmlError());
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $workDocNode = new \SimpleXMLElement(
+            "<".WorkingDocuments::N_WORKINGDOCUMENTS."></".WorkingDocuments::N_WORKINGDOCUMENTS.">"
+        );
+        $workDoc     = new WorkDocument(new ErrorRegister());
+        $xml         = $workDoc->createXmlNode($workDocNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($workDoc->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($workDoc->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($workDoc->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $workDocNode = new \SimpleXMLElement(
+            "<".WorkingDocuments::N_WORKINGDOCUMENTS."></".WorkingDocuments::N_WORKINGDOCUMENTS.">"
+        );
+        $workDoc     = new WorkDocument(new ErrorRegister());
+        $workDoc->setAtcud("");
+        $workDoc->setCustomerID("");
+        $workDoc->setDocumentNumber("");
+        $workDoc->setEacCode("");
+        $workDoc->setHash("");
+        $workDoc->setHashControl("");
+        $workDoc->setPeriod(-1);
+        $workDoc->setSourceID("");
+
+        $xml = $workDoc->createXmlNode($workDocNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($workDoc->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($workDoc->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($workDoc->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDocTotalcal(): void
+    {
+        $workDoc = new WorkDocument(new ErrorRegister());
+        $workDoc->setDocTotalcal(new \Rebelo\SaftPt\Validate\DocTotalCalc());
+        $this->assertInstanceOf(
+            \Rebelo\SaftPt\Validate\DocTotalCalc::class,
+            $workDoc->getDocTotalcal()
+        );
     }
 }

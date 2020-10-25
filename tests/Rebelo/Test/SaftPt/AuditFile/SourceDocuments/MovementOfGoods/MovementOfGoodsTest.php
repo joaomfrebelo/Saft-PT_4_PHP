@@ -29,13 +29,13 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\{
-    MovementOfGoods,
-    StockMovement
+    MovementOfGoods
 };
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc;
 
 /**
- * Line
+ * MovementOfGoodsTest
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -46,9 +46,10 @@ class MovementOfGoodsTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(MovementOfGoods::class);
@@ -56,86 +57,87 @@ class MovementOfGoodsTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $movOfGo = new MovementOfGoods();
+        $movOfGo = new MovementOfGoods(new ErrorRegister());
         $this->assertInstanceOf(MovementOfGoods::class, $movOfGo);
         $this->assertSame(0, \count($movOfGo->getStockMovement()));
+
+        $this->assertFalse($movOfGo->issetNumberOfMovementLines());
+        $this->assertFalse($movOfGo->issetTotalQuantityIssued());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testNumberOfMovementLines()
+    public function testNumberOfMovementLines(): void
     {
-        $movOfGo = new MovementOfGoods();
+        $movOfGo = new MovementOfGoods(new ErrorRegister());
         $entries = [0, 999];
         foreach ($entries as $num) {
-            $movOfGo->setNumberOfMovementLines($num);
+            $this->assertTrue($movOfGo->setNumberOfMovementLines($num));
             $this->assertSame($num, $movOfGo->getNumberOfMovementLines());
+            $this->assertTrue($movOfGo->issetNumberOfMovementLines());
         }
-        try {
-            $movOfGo->setNumberOfMovementLines(-1);
-            $this->fail("Set NumberOfMovementLines to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = -1;
+        $this->assertFalse($movOfGo->setNumberOfMovementLines($wrong));
+        $this->assertSame($wrong, $movOfGo->getNumberOfMovementLines());
+        $this->assertNotEmpty($movOfGo->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTotalQuantityIssued()
+    public function testTotalQuantityIssued(): void
     {
-        $movOfGo = new MovementOfGoods();
+        $movOfGo = new MovementOfGoods(new ErrorRegister());
         $stack   = [0.0, 9.99];
-        foreach ($stack as $qt) {
-            $movOfGo->setTotalQuantityIssued($qt);
-            $this->assertSame($qt, $movOfGo->getTotalQuantityIssued());
+
+        foreach ($stack as $num) {
+            $this->assertTrue($movOfGo->setTotalQuantityIssued($num));
+            $this->assertSame($num, $movOfGo->getTotalQuantityIssued());
+            $this->assertTrue($movOfGo->issetTotalQuantityIssued());
         }
-        try {
-            $movOfGo->setTotalQuantityIssued(-0.001);
-            $this->fail("Set TotalQuantityIssued to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = -1.0;
+        $this->assertFalse($movOfGo->setTotalQuantityIssued($wrong));
+        $this->assertSame($wrong, $movOfGo->getTotalQuantityIssued());
+        $this->assertNotEmpty($movOfGo->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testStockMovement()
+    public function testStockMovement(): void
     {
-        $movOfGo = new MovementOfGoods();
+        $movOfGo = new MovementOfGoods(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $stkMov = new StockMovement();
+            $stkMov = $movOfGo->addStockMovement();
             $stkMov->setAtDocCodeID(\strval($n));
-            $index  = $movOfGo->addToStockMovement($stkMov);
-            $this->assertSame($n, $index);
             $this->assertSame(
                 \strval($n), $movOfGo->getStockMovement()[$n]->getAtDocCodeID()
             );
         }
 
         $this->assertSame($nMax, \count($movOfGo->getStockMovement()));
-
-        $unset = 2;
-        $movOfGo->unsetStockMovement($unset);
-        $this->assertFalse($movOfGo->issetStockMovement($unset));
-        $this->assertSame($nMax - 1, \count($movOfGo->getStockMovement()));
     }
 
     /**
      * Reads MovementOfGoods from the Demo SAFT in Test\Ressources
      * and parse then to MovementOfGoods class, after that generate a xml from the
      * class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -147,25 +149,195 @@ class MovementOfGoodsTest extends TestCase
             $this->fail("No StockMovement in XML");
         }
 
-        $movStkDoc = new MovementOfGoods();
+        $movStkDoc = new MovementOfGoods(new ErrorRegister());
         $movStkDoc->parseXmlNode($movStkDocsXml);
 
-        $xmlRootNode   = new \SimpleXMLElement(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-        );
+        $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
         $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
 
         $xml = $movStkDoc->createXmlNode($sourceDocNode);
 
         try {
             $assertXml = $this->xmlIsEqual($movStkDocsXml, $xml);
-            $this->assertTrue($assertXml,
-                \sprintf("Fail with error '%s'", $assertXml)
+            $this->assertTrue(
+                $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
         } catch (\Exception | \Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
+
+        $this->assertEmpty($movStkDoc->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($movStkDoc->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($movStkDoc->getErrorRegistor()->getOnSetValue());
     }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $movOfGoodsNode = new \SimpleXMLElement(
+            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+        );
+        $movOfGoods     = new MovementOfGoods(new ErrorRegister());
+        $xml            = $movOfGoods->createXmlNode($movOfGoodsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($movOfGoods->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($movOfGoods->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($movOfGoods->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $movOfGoodsNode = new \SimpleXMLElement(
+            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+        );
+        $movOfGoods     = new MovementOfGoods(new ErrorRegister());
+        $movOfGoods->setNumberOfMovementLines(-1);
+        $movOfGoods->setTotalQuantityIssued(-9.0);
+
+        $xml = $movOfGoods->createXmlNode($movOfGoodsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($movOfGoods->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($movOfGoods->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($movOfGoods->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function movOfGoodsTableTotalCalc() : void
+    {
+        $movOfGoods = new MovementOfGoods(new ErrorRegister());
+        $this->assertNull($movOfGoods->getMovOfGoodsTableTotalCalc());
+
+        $movOfGoods->setMovOfGoodsTableTotalCalc(new MovOfGoodsTableTotalCalc());
+        $this->assertInstanceOf(
+            MovOfGoodsTableTotalCalc::class,
+            $movOfGoods->getMovOfGoodsTableTotalCalc(),
+        );
+    }
+    
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetOrder(): void
+    {
+        $movementOfGoods = new MovementOfGoods(new ErrorRegister());
+        $docNo      = array(
+            "GT GT/1",
+            "GD GD/4",
+            "GT GT/5",
+            "GT GT/2",
+            "GT GT/9",
+            "GT GT/4",
+            "GT GT/3",
+            "GT GT/10",
+            "GD GD/3",
+            "GD GD/2",
+            "GD GD/1",
+            "GT B/3",
+            "GT B/1",
+            "GT B/2",
+        );
+        foreach ($docNo as $no) {
+            $movementOfGoods->addStockMovement()->setDocumentNumber($no);
+        }
+
+        $order = $movementOfGoods->getOrder();
+        $this->assertSame(array("GD", "GT"), \array_keys($order));
+        $this->assertSame(array("GD"), \array_keys($order["GD"]));
+        $this->assertSame(array("B", "GT"), \array_keys($order["GT"]));
+        $this->assertSame(
+            array(1, 2, 3, 4, 5, 9, 10), \array_keys($order["GT"]["GT"])
+        );
+        $this->assertSame(array(1, 2, 3), \array_keys($order["GT"]["B"]));
+        $this->assertSame(array(1, 2, 3, 4), \array_keys($order["GD"]["GD"]));
+
+        foreach ($order as $type => $serieStack) {
+            foreach ($serieStack as $serie => $noSatck) {
+                foreach ($noSatck as $no => $stkMv) {
+                    /* @var $stkMv \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
+                    $this->assertSame(
+                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        $stkMv->getDocumentNumber()
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDuplicateNumber(): void
+    {
+        $stkMv = new MovementOfGoods(new ErrorRegister());
+        $stkNo      = array(
+            "GT GT/1",
+            "GD GD/4",
+            "GT GT/1",
+            "GT GT/2",
+            "GT GT/9",
+            "GT GT/4",
+            "GT GT/3",
+            "GT GT/10",
+            "GD GD/3",
+            "GD GD/2",
+            "GD GD/1",
+            "GT B/3",
+            "GT B/1",
+            "GT B/2",
+        );
+        foreach ($stkNo as $no) {
+            $stkMv->addStockMovement()->setDocumentNumber($no);
+        }
+
+        $stkMv->getOrder();
+        $this->assertNotEmpty($stkMv->getErrorRegistor()->getValidationErrors());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNoNumber(): void
+    {
+        $stkMov = new MovementOfGoods(new ErrorRegister());
+        $stkMvNo      = array(
+            "GT GT/1",
+            "GT B/2"
+        );
+        foreach ($stkMvNo as $no) {
+            $stkMov->addStockMovement()->setDocumentNumber($no);
+        }
+        $stkMov->addStockMovement();
+        $stkMov->getOrder();
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getValidationErrors());
+    }
+    
 }

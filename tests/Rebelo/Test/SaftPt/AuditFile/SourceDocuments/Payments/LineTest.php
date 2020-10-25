@@ -28,8 +28,7 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments;
@@ -49,7 +48,7 @@ class LineTest extends TestCase
     /**
      *
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Line::class);
@@ -59,96 +58,98 @@ class LineTest extends TestCase
     /**
      *
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $this->assertInstanceOf(Line::class, $line);
         $this->assertNull($line->getCreditAmount());
         $this->assertNull($line->getDebitAmount());
         $this->assertNull($line->getSettlementAmount());
-        $this->assertNull($line->getTax());
+        $this->assertNull($line->getTax(false));
         $this->assertNull($line->getTaxExemptionCode());
         $this->assertNull($line->getTaxExemptionReason());
         $this->assertSame(0, \count($line->getSourceDocumentID()));
+
+        $this->assertFalse($line->issetLineNumber());
     }
 
     /**
      *
      */
-    public function testSetGetLineNumber()
+    public function testSetGetLineNumber(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $num  = 1;
-        $line->setLineNumber(1);
+        $this->assertTrue($line->setLineNumber(1));
         $this->assertSame($num, $line->getLineNumber());
+        $this->assertTrue($line->issetLineNumber());
+
+        $wrong = -1;
+        $this->assertFalse($line->setLineNumber($wrong));
+        $this->assertSame($wrong, $line->getLineNumber());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      *
      */
-    public function testSetSourceDocumentID()
+    public function testSetSourceDocumentID(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $nMax = 9;
 
         for ($n = 0; $n < $nMax; $n++) {
-            $source = new SourceDocumentID();
+            $source = $line->addSourceDocumentID();
             $source->setOriginatingON(\strval($n));
-            $index  = $line->addToSourceDocumentID($source);
-            $this->assertSame($n, $index);
             /* @var $stack \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID */
             $stack  = $line->getSourceDocumentID();
-            $this->assertSame(\strval($n), $stack[$index]->getOriginatingON());
+            $this->assertSame(\strval($n), $stack[$n]->getOriginatingON());
         }
-
-        $unset = 2;
-        $line->unsetSourceDocumentID($unset);
-        $this->assertSame($nMax - 1, \count($line->getSourceDocumentID()));
-        $this->assertFalse($line->issetSourceDocumentID($unset));
     }
 
     /**
      *
      */
-    public function testSetGetTax()
+    public function testSetGetTax(): void
     {
-        $line = new Line();
-        $line->setTax(new Tax());
+        $line = new Line(new ErrorRegister());
         $this->assertInstanceOf(Tax::class, $line->getTax());
     }
 
     /**
      *
      */
-    public function testSetGetTaxExemptionReason()
+    public function testSetGetTaxExemptionReason(): void
     {
-        $line   = new Line();
+        $line   = new Line(new ErrorRegister());
         $reason = "Tax Exception Reason";
-        $line->setTaxExemptionReason($reason);
+        $this->assertTrue($line->setTaxExemptionReason($reason));
         $this->assertSame($reason, $line->getTaxExemptionReason());
-        $line->setTaxExemptionReason(\str_pad($reason, 99, "9"));
+        $this->assertTrue($line->setTaxExemptionReason(\str_pad($reason, 99, "9")));
         $this->assertSame(60, \strlen($line->getTaxExemptionReason()));
-        try {
-            $line->setTaxExemptionReason("AAAAA");
-            $this->fail("TaxExemptionReason with length less than 6 must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
-        $line->setTaxExemptionReason(null);
+        $wrong = "AAAAA";
+        $this->assertFalse(
+            $line->setTaxExemptionReason($wrong),
+            "TaxExemptionReason with length less than 6"
+        );
+        $this->assertSame($wrong, $line->getTaxExemptionReason());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+
+        $this->assertTrue($line->setTaxExemptionReason(null));
         $this->assertNull($line->getTaxExemptionReason());
     }
 
     /**
      *
      */
-    public function testSetGetTaxExemptionCode()
+    public function testSetGetTaxExemptionCode(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $line->setTaxExemptionCode(new TaxExemptionCode(TaxExemptionCode::M01));
-        $this->assertInstanceOf(TaxExemptionCode::class,
-            $line->getTaxExemptionCode());
+        $this->assertInstanceOf(
+            TaxExemptionCode::class, $line->getTaxExemptionCode()
+        );
         $line->setTaxExemptionCode(null);
         $this->assertNull($line->getTaxExemptionCode());
     }
@@ -156,52 +157,50 @@ class LineTest extends TestCase
     /**
      *
      */
-    public function testSettlementAmount()
+    public function testSettlementAmount(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $sett = 9.09;
-        $line->setSettlementAmount($sett);
+        $this->assertTrue($line->setSettlementAmount($sett));
         $this->assertSame($sett, $line->getSettlementAmount());
         $line->setSettlementAmount(null);
         $this->assertNull($line->getSettlementAmount());
     }
 
-    public function testSetGetDebitCredit()
+    public function testSetGetDebitCredit(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $deb  = 9.09;
         $cre  = 19.49;
 
-        $line->setDebitAmount($deb);
+        $this->assertTrue($line->setDebitAmount($deb));
         $this->assertSame($deb, $line->getDebitAmount());
-        $line->setDebitAmount(null);
+        $this->assertTrue($line->setDebitAmount(null));
         $this->assertNull($line->getDebitAmount());
 
-        $line->setCreditAmount($cre);
+        $this->assertTrue($line->setCreditAmount($cre));
         $this->assertSame($cre, $line->getCreditAmount());
-        $line->setCreditAmount(null);
+        $this->assertTrue($line->setCreditAmount(null));
         $this->assertNull($line->getCreditAmount());
 
-        try {
-            $line->setDebitAmount($deb);
-            $line->setCreditAmount($cre);
-            $this->fail("When set CreditAmount without DebiAmout be null should throw"
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
         $line->setDebitAmount(null);
         $line->setCreditAmount(null);
 
-        try {
-            $line->setCreditAmount($cre);
-            $line->setDebitAmount($deb);
-            $this->fail("When set DebiAmout without  CreditAmount be null should throw"
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $line->setCreditAmount($cre);
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setDebitAmount($deb));
+        $this->assertSame($deb, $line->getDebitAmount());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+
+        $line->setDebitAmount(null);
+        $line->setCreditAmount(null);
+
+        $line->setDebitAmount($deb);
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setCreditAmount($cre));
+        $this->assertSame($cre, $line->getCreditAmount());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
@@ -209,7 +208,7 @@ class LineTest extends TestCase
      * and parse then to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -233,15 +232,11 @@ class LineTest extends TestCase
             for ($l = 0; $l < $lineStack->count(); $l++) {
                 /* @var $lineXml \SimpleXMLElement */
                 $lineXml = $lineStack[$l];
-                $line    = new Line();
+                $line    = new Line(new ErrorRegister());
                 $line->parseXmlNode($lineXml);
 
 
-                $xmlRootNode   = new \SimpleXMLElement(
-                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                    'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-                );
+                $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
                 $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
                 $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
                 $payNode       = $paymentsNode->addChild(Payment::N_PAYMENT);
@@ -250,17 +245,83 @@ class LineTest extends TestCase
 
                 try {
                     $assertXml = $this->xmlIsEqual($lineXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Payment '%s' Line '%s' with error '%s'",
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Payment '%s' Line '%s' with error '%s'",
                             $paymentXml->{Payment::N_PAYMENTREFNO},
-                            $lineXml->{Line::N_LINENUMBER}, $assertXml)
+                            $lineXml->{Line::N_LINENUMBER}, $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' Line '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' Line '%s' with error '%s'",
                             $paymentXml->{Payment::N_PAYMENTREFNO},
-                            $lineXml->{Line::N_LINENUMBER}, $e->getMessage()));
+                            $lineXml->{Line::N_LINENUMBER}, $e->getMessage()
+                        )
+                    );
                 }
+                $this->assertEmpty($line->getErrorRegistor()->getOnCreateXmlNode());
+                $this->assertEmpty($line->getErrorRegistor()->getOnSetValue());
+                $this->assertEmpty($line->getErrorRegistor()->getLibXmlError());
             }
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $lineNode = new \SimpleXMLElement(
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        );
+        $line     = new Line(new ErrorRegister());
+        $xml      = $line->createXmlNode($lineNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($line->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($line->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $lineNode = new \SimpleXMLElement(
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        );
+        $line     = new Line(new ErrorRegister());
+        $line->setCreditAmount(-9.09);
+        $line->setDebitAmount(-9.49);
+        $line->setLineNumber(-1);
+        $line->setSettlementAmount(-4.49);
+        $line->setTaxExemptionReason("");
+
+        $xml = $line->createXmlNode($lineNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($line->getErrorRegistor()->getLibXmlError());
     }
 }

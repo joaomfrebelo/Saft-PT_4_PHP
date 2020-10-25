@@ -24,9 +24,9 @@ $msg = "????";
  
  -----------------------------------------------------------
  
- $valide        = static::valTextMandMaxCar($, 100,
+ $valid        = static::valTextMandMaxCar($, 100,
                                                        __METHOD__);
-        $this-> = $valide;
+        $this-> = $valid;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__ . " setted to '%s'", $this->));
 			
@@ -37,4 +37,7 @@ $msg = "????";
         return $this->companyName;
 		
 -----------------------------------------------------------------------		
+
+
+     * @return bool true if the value is valid
     

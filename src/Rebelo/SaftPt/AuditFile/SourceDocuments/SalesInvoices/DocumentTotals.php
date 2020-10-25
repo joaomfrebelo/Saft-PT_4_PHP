@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
 
@@ -50,20 +51,21 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
     const N_PAYMENT = "Payment";
 
     /**
-     * <xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement[]
      * @since 1.0.0
      */
     private array $settlement = array();
 
     /**
-     * <xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod[]
      * @since 1.0.0
      */
     private array $payment = array();
 
     /**
+     * DocumentTotals
      * <pre>
      * &lt;xs:element name="DocumentTotals"&gt;
      *    &lt;xs:complexType&gt;
@@ -79,17 +81,20 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
      *    &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     *
-     * Get Settlement stack<br>     *
-     * <xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/>
+     * Get Settlement stack<br>
+     * Agreements or payment methods.<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary.     *
+     * &lt;xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/&gt;
      *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement[]
      * @since 1.0.0
@@ -103,56 +108,29 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
 
     /**
      * Add Settlement to the stack<br>
-     * <xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/>
+     * When this method is invoked a new Settlement is created
+     * add to the stack and returned to e populate<br>
+     * &lt;xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/&gt;
      *
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement $settlement
-     * @return int
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement
      * @since 1.0.0
      */
-    public function addToSettlement(Settlement $settlement): int
+    public function addSettlement(): Settlement
     {
-        if (\count($this->settlement) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->settlement);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->settlement[$index] = $settlement;
+        $settlement         = new Settlement($this->getErrorRegistor());
+        $this->settlement[] = $settlement;
         \Logger::getLogger(\get_class($this))
             ->debug(__METHOD__." add to stack");
-        return $index;
-    }
-
-    /**
-     * isset Settlement index
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetSettlement(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->settlement[$index]);
-    }
-
-    /**
-     * unset Settlement
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetSettlement(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->settlement[$index]);
+        return $settlement;
     }
 
     /**
      * Get Pyment stack<br>
-     * <xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/>
+     * Payment method used. In case of mixed payments,
+     * the amounts shall be indicated by type of mean of payment and date of payment.
+     * If there is a need to make more than one reference, this structure can
+     * be generated as many times as necessary.<br>
+     * &lt;xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/&gt;
      *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod[]
      * @since 1.0.0
@@ -166,50 +144,23 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
 
     /**
      * Add a PaymentMethod to the Payment stack<br>
-     * <xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod $paymentMethod
-     * @return int
+     * When this method is invoked a new Instance of PaymentMethod is created,
+     * add to the Payment stack and returned to be populated<br>
+     * Payment method used. In case of mixed payments,
+     * the amounts shall be indicated by type of mean of payment and date of payment.
+     * If there is a need to make more than one reference, this structure can
+     * be generated as many times as necessary.<br>
+     * &lt;xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod
      * @since 1.0.0
      */
-    public function addToPayment(PaymentMethod $paymentMethod): int
+    public function addPayment(): PaymentMethod
     {
-        if (\count($this->payment) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->payment);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->payment[$index] = $paymentMethod;
+        $paymentMethod   = new PaymentMethod($this->getErrorRegistor());
+        $this->payment[] = $paymentMethod;
         \Logger::getLogger(\get_class($this))
             ->debug(__METHOD__." add to stack");
-        return $index;
-    }
-
-    /**
-     * isset PaymentMethod index
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetPayment(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->payment[$index]);
-    }
-
-    /**
-     * unset PaymentMethod
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetPayment(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->payment[$index]);
+        return $paymentMethod;
     }
 
     /**
@@ -225,21 +176,26 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Invoice::N_INVOICE) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                Invoice::N_INVOICE, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                Invoice::N_INVOICE, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $docTotNode = parent::createXmlNode($node);
+
         foreach ($this->getSettlement() as $settlement) {
             /* @var $settlement Settlement */
             $settlement->createXmlNode($docTotNode);
         }
+
         foreach ($this->getPayment() as $paymentMethod) {
             /* @var $paymentMethod PaymentMethod */
             $paymentMethod->createXmlNode($docTotNode);
         }
+
         return $docTotNode;
     }
 
@@ -256,8 +212,10 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENTTOTALS) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_DOCUMENTTOTALS, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_DOCUMENTTOTALS, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -267,19 +225,17 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
 
         if ($node->{static::N_PAYMENT}->count() > 0) {
             for ($n = 0; $n < $node->{static::N_PAYMENT}->count(); $n++) {
-                $paymentMethod = new PaymentMethod();
-                $paymentMethod->parseXmlNode(
+                $this->addPayment()->parseXmlNode(
                     $node->{static::N_PAYMENT}[$n]
                 );
-                $this->addToPayment($paymentMethod);
             }
         }
 
         if ($node->{static::N_SETTLEMENT}->count() > 0) {
             for ($n = 0; $n < $node->{static::N_SETTLEMENT}->count(); $n++) {
-                $settlement = new Settlement();
-                $settlement->parseXmlNode($node->{static::N_SETTLEMENT}[$n]);
-                $this->addToSettlement($settlement);
+                $this->addSettlement()->parseXmlNode(
+                    $node->{static::N_SETTLEMENT}[$n]
+                );
             }
         }
     }

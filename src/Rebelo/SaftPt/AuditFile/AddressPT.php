@@ -30,32 +30,34 @@ use Rebelo\SaftPt\AuditFile\PostalCodePT;
 
 /**
  * AddressPT<br>
- * Estrutura de Moradas para Portugal<br>
- * <xs:complexType name="AddressStructurePT">
+ * Portuguese address structur<br>
+ * &lt;xs:complexType name="AddressStructurePT">
  * @author João Rebelo
  * @since 1.0.0
  */
 class AddressPT extends AAddress
 {
     /**
-     * <xs:element name="PostalCode" type="PostalCodePT"/>
-     * @var PostalCodePT
+     * &lt;xs:element name="PostalCode" type="PostalCodePT"/&gt;
+     * @var string
      * @since 1.0.0
      */
-    private PostalCodePT $postalCodePT;
+    protected string $postalCodePT;
 
     /**
-     * <xs:complexType name="AddressStructurePT">
+     * &lt;xs:complexType name="AddressStructurePT">
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    function __construct()
+    function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
         $this->country = new Country(Country::ISO_PT);
     }
 
     /**
-     * <xs:element ref="Country"/>
+     * Get Country<br>
+     * &lt;xs:element ref="Country"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\Country
      * @since 1.0.0
      */
@@ -67,32 +69,52 @@ class AddressPT extends AAddress
     }
 
     /**
-     * <xs:element name="PostalCode" type="PostalCodePT"/>
-     *
-     * @return \Rebelo\SaftPt\AuditFile\PostalCodePT
+     * Get PostalCode<br>
+     * This get will create the PostalCodePT instance
+     * &lt;xs:element name="PostalCode" type="PostalCodePT"/&gt;     *
+     * @return string
+     * @throws \Error
      * @since 1.0.0
      */
-    public function getPostalCode(): PostalCodePT
+    public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->postalCodePT->getPostalCode()));
+            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCodePT));
         return $this->postalCodePT;
     }
 
     /**
-     * <xs:element name="PostalCode" type="PostalCodePT"/>
-
-     * @param \Rebelo\SaftPt\AuditFile\PostalCodePT $postalCodePT
-     * @return void
+     * Get if is set PostalCode
+     * @return bool
      * @since 1.0.0
      */
-    public function setPostalCode(PostalCodePT $postalCodePT): void
+    public function issetPostalCode(): bool
     {
-        $this->postalCodePT = $postalCodePT;
+        return isset($this->postalCodePT);
+    }
+
+    /**
+     * Set PostalCode
+     * &lt;xs:simpleType name="PostalCodePT"><br>
+     * &lt;xs:pattern value="([0-9]{4}-[0-9]{3})"/&gt;<br>     *
+     * @param string $postalCode
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setPostalCode(string $postalCode): bool
+    {
+        if (\preg_match("/^([0-9]{4}-[0-9]{3})$/", $postalCode) !== 1) {
+            $msg    = "PostalCodePT must respect /^([0-9]{4}-[0-9]{3})$/";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $return = false;
+        } else {
+            $return = true;
+        }
+        $this->postalCodePT = $postalCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->postalCodePT->getPostalCode()));
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCodePT));
+        return $return;
     }
 
     /**
@@ -115,7 +137,7 @@ class AddressPT extends AAddress
     }
 
     /**
-     *
+     * Parse XML node
      * @param \SimpleXMLElement $node
      * @return void
      * @since 1.0.0
@@ -125,9 +147,7 @@ class AddressPT extends AAddress
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::parseXmlNode($node);
         $this->setPostalCode(
-            new PostalCodePT(
-                $node->{static::N_POSTALCODE}->__toString()
-            )
+            (string) $node->{static::N_POSTALCODE}
         );
     }
 }

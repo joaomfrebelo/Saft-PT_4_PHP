@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
-use Rebelo\SaftPt\AuditFile\ExportType;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{
     SalesInvoices\SalesInvoices,
     MovementOfGoods\MovementOfGoods,
@@ -50,152 +51,162 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_SOURCEDOCUMENTS = "SourceDocuments";
 
     /**
-     *  <xs:element name="SalesInvoices" minOccurs="0">
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices
+     *  &lt;xs:element name="SalesInvoices" minOccurs="0"&gt;
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices|null
      * @since 1.0.0
      */
-    private SalesInvoices $salesInvoices;
+    private ?SalesInvoices $salesInvoices = null;
 
     /**
-     * <xs:element name="MovementOfGoods" minOccurs="0">
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods
+     * &lt;xs:element name="MovementOfGoods" minOccurs="0"&gt;
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods|null
      * @since 1.0.0
      */
-    private MovementOfGoods $movementOfGoods;
+    private ?MovementOfGoods $movementOfGoods = null;
 
     /**
-     * <xs:element name="WorkingDocuments" minOccurs="0">
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments
+     * &lt;xs:element name="WorkingDocuments" minOccurs="0"&gt;
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments|null
      * @since 1.0.0
      */
-    private WorkingDocuments $workingDocuments;
+    private ?WorkingDocuments $workingDocuments = null;
 
     /**
-     * <xs:element name="Payments" minOccurs="0">
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments
+     * &lt;xs:element name="Payments" minOccurs="0"&gt;
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments|null
      * @since 1.0.0
      */
-    private Payments $payments;
+    private ?Payments $payments = null;
 
     /**
      *
+     * @param ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get SalesInvoices<br>
-     * <xs:element name="SalesInvoices" minOccurs="0">
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices
-     * @throws \Error
+     * If $create is true a new instance is created if wasn't before, add to the stack
+     * than returned to be populated<br>
+     * &lt;xs:element name="SalesInvoices" minOccurs="0"&gt;
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices|null
+     * @param bool $create if true a new Instance will be created if wasn't before
      * @since 1.0.0
      */
-    public function getSalesInvoices(): SalesInvoices
+    public function getSalesInvoices(bool $create = true): ?SalesInvoices
     {
+        if ($create && $this->salesInvoices === null) {
+            $this->salesInvoices = new SalesInvoices($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->salesInvoices;
     }
 
     /**
-     * Get SalesInvoices<br>
-     * <xs:element name="SalesInvoices" minOccurs="0">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices $salesInvoices
+     * Set SalesInvoices As Null
      * @return void
      * @since 1.0.0
      */
-    public function setSalesInvoices(SalesInvoices $salesInvoices): void
+    public function setSalesInvoicesAsNull(): void
     {
-        $this->salesInvoices = $salesInvoices;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        $this->salesInvoices = null;
     }
 
     /**
      * Set MovementOfGoods<br>
-     * <xs:element name="MovementOfGoods" minOccurs="0">
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods
-     * @throws \Error
+     * If $create is true a new instance is created if wasn't before, add to the stack
+     * than returned to be populated<br>
+     * &lt;xs:element name="MovementOfGoods" minOccurs="0"&gt;
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods|null
+     * @param bool $create if true a new Instance will be created if wasn't before
      * @since 1.0.0
      */
-    public function getMovementOfGoods(): MovementOfGoods
+    public function getMovementOfGoods(bool $create = true): ?MovementOfGoods
     {
+        if ($create && $this->movementOfGoods === null) {
+            $this->movementOfGoods = new MovementOfGoods($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->movementOfGoods;
     }
 
     /**
-     * Set MovementOfGoods<br>
-     * <xs:element name="MovementOfGoods" minOccurs="0">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods $movementOfGoods
+     * Set MovementOfGoods As Null
      * @return void
      * @since 1.0.0
      */
-    public function setMovementOfGoods(MovementOfGoods $movementOfGoods): void
+    public function setMovementOfGoodsAsNull(): void
     {
-        $this->movementOfGoods = $movementOfGoods;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        $this->movementOfGoods = null;
     }
 
     /**
      * Set WorkingDocuments<br>
-     * <xs:element name="WorkingDocuments" minOccurs="0">
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments
-     * @throws \Error
+     * If $create is true a new instance is created if wasn't before, add to the stack
+     * than returned to be populated<br>
+     * &lt;xs:element name="WorkingDocuments" minOccurs="0"&gt;
+     * @param bool $create if true a new Instance will be created if wasn't before
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments|null
      * @since 1.0.0
      */
-    public function getWorkingDocuments(): WorkingDocuments
+    public function getWorkingDocuments(bool $create = true): ?WorkingDocuments
     {
+        if ($create && $this->workingDocuments === null) {
+            $this->workingDocuments = new WorkingDocuments($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->workingDocuments;
     }
 
     /**
-     * Set WorkingDocuments<br>
-     * <xs:element name="WorkingDocuments" minOccurs="0">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments $workingDocuments
+     * Set WorkingDocuments As Null
      * @return void
      * @since 1.0.0
      */
-    public function setWorkingDocuments(WorkingDocuments $workingDocuments): void
+    public function setWorkingDocumentsAsNull(): void
     {
-        $this->workingDocuments = $workingDocuments;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        $this->workingDocuments = null;
     }
 
     /**
      * Set Payments<br>
-     * <xs:element name="Payments" minOccurs="0">
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments
+     * If $create is true a new instance is created if wasn't before, add to the stack
+     * than returned to be populated<br>
+     * &lt;xs:element name="Payments" minOccurs="0"&gt;
+     * @param bool $create if true a new Instance will be created if wasn't before
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments|null
      * @throws \Error
      * @since 1.0.0
      */
-    public function getPayments(): Payments
+    public function getPayments(bool $create = true): ?Payments
     {
+        if ($create && $this->payments === null) {
+            $this->payments = new Payments($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->payments;
     }
 
     /**
-     * Set Payments<br>
-     * <xs:element name="Payments" minOccurs="0">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments
+     * Set Payments As Null
      * @return void
      * @since 1.0.0
      */
-    public function setPayments(Payments $payments): void
+    public function setPaymentsAsNull(): void
     {
-        $this->payments = $payments;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        $this->payments = null;
     }
 
     /**
@@ -211,8 +222,10 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== AuditFile::N_AUDITFILE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                AuditFile::N_AUDITFILE, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                AuditFile::N_AUDITFILE, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -220,24 +233,19 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $souDocNode = $node->addChild(static::N_SOURCEDOCUMENTS);
 
-        if (isset($this->salesInvoices)) {
+        if ($this->salesInvoices !== null) {
             $this->getSalesInvoices()->createXmlNode($souDocNode);
         }
 
-        //Simplifeid saft only export SalesInvoices
-        if ($this->getExportType()->isEqual(ExportType::S)) {
-            return $souDocNode;
-        }
-
-        if (isset($this->movementOfGoods)) {
+        if ($this->movementOfGoods !== null) {
             $this->getMovementOfGoods()->createXmlNode($souDocNode);
         }
 
-        if (isset($this->workingDocuments)) {
+        if ($this->workingDocuments !== null) {
             $this->getWorkingDocuments()->createXmlNode($souDocNode);
         }
 
-        if (isset($this->payments)) {
+        if ($this->payments !== null) {
             $this->getPayments()->createXmlNode($souDocNode);
         }
 
@@ -256,35 +264,35 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_SOURCEDOCUMENTS) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_SOURCEDOCUMENTS, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_SOURCEDOCUMENTS, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         if ($node->{SalesInvoices::N_SALESINVOICES}->count() > 0) {
-            $salesInv = new SalesInvoices();
-            $salesInv->parseXmlNode($node->{SalesInvoices::N_SALESINVOICES});
-            $this->setSalesInvoices($salesInv);
+            $this->getSalesInvoices()->parseXmlNode(
+                $node->{SalesInvoices::N_SALESINVOICES}
+            );
         }
 
         if ($node->{MovementOfGoods::N_MOVEMENTOFGOODS}->count() > 0) {
-            $movOfGod = new MovementOfGoods();
-            $movOfGod->parseXmlNode($node->{MovementOfGoods::N_MOVEMENTOFGOODS});
-            $this->setMovementOfGoods($movOfGod);
+            $this->getMovementOfGoods()->parseXmlNode(
+                $node->{MovementOfGoods::N_MOVEMENTOFGOODS}
+            );
         }
 
         if ($node->{WorkingDocuments::N_WORKINGDOCUMENTS}->count() > 0) {
-            $workDoc = new WorkingDocuments();
-            $workDoc->parseXmlNode($node->{WorkingDocuments::N_WORKINGDOCUMENTS});
-            $this->setWorkingDocuments($workDoc);
+            $this->getWorkingDocuments()->parseXmlNode(
+                $node->{WorkingDocuments::N_WORKINGDOCUMENTS}
+            );
         }
 
         if ($node->{Payments::N_PAYMENTS}->count() > 0) {
-            $pay = new Payments();
-            $pay->parseXmlNode($node->{Payments::N_PAYMENTS});
-            $this->setPayments($pay);
+            $this->getPayments()->parseXmlNode($node->{Payments::N_PAYMENTS});
         }
     }
 }

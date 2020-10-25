@@ -27,94 +27,115 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 /**
- * Description of ProductType
+ * Description of ProductType<br>
+ * The field shall be filled in with:<br>
+ * “P” - Products;<br>
+ * “S” - Services;<br>
+ * “O” - Others (e.g. charged freights, advance payments received or sale of assets);<br>
+ * “E” - Excise duties - (e.g. IABA, ISP, IT);<br>
+ * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
+ * which shall appear in table 2.5. – TaxTable and Excise Duties which
+ * shall be filled in with the "E" code.
  * <pre>
- *     <xs:element name="ProductType">
- *      <xs:annotation>
- *          <xs:documentation>Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
+ *     &lt;xs:element name="ProductType"&gt;
+ *      &lt;xs:annotation>
+ *          &lt;xs:documentation>Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
  *              debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
  *              Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
  *              parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
- *              impostos (TaxTable)e Impostos Especiais de Consumo </xs:documentation>
- *      </xs:annotation>
- *      <xs:simpleType>
- *          <xs:restriction base="xs:string">
- *              <xs:enumeration value="P"/>
- *              <xs:enumeration value="S"/>
- *              <xs:enumeration value="O"/>
- *              <xs:enumeration value="E"/>
- *              <xs:enumeration value="I"/>
- *          </xs:restriction>
- *      </xs:simpleType>
- *  </xs:element>
+ *              impostos (TaxTable)e Impostos Especiais de Consumo &lt;/xs:documentation&gt;
+ *      &lt;/xs:annotation>
+ *      &lt;xs:simpleType>
+ *          &lt;xs:restriction base="xs:string">
+ *              &lt;xs:enumeration value="P"/&gt;
+ *              &lt;xs:enumeration value="S"/&gt;
+ *              &lt;xs:enumeration value="O"/&gt;
+ *              &lt;xs:enumeration value="E"/&gt;
+ *              &lt;xs:enumeration value="I"/&gt;
+ *          &lt;/xs:restriction&gt;
+ *      &lt;/xs:simpleType&gt;
+ *  &lt;/xs:element&gt;
  * </pre>
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\ProductType P()
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\ProductType S()
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\ProductType O()
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\ProductType E()
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\ProductType I()
  * @author João Rebelo
  * @since 1.0.0
  */
 class ProductType extends \Rebelo\Enum\AEnum
 {
     /**
-     * P para Produtos
+     * “P” - Products
      * @since 1.0.0
      */
     const P = "P";
 
     /**
-     * S para Servicos
+     * “S” - Services
      * @since 1.0.0
      */
     const S = "S";
 
     /**
-     * O para Outros<br>
-     * (Ex: portes
-     * debitados, adiantamentos recebidos ou alienacao de ativos)
+     * “O” - Others <br>
+     * (e.g. charged freights, advance payments received or sale of assets)
      * @since 1.0.0
      */
     const O = "O";
 
     /**
-     *  E para Impostos<br>
-     *  Especiais de Consumo (ex.:IABA, ISP, IT)
+     *  “E” - Excise duties - (e.g. IABA, ISP, IT)
      * @since 1.0.0
      */
     const E = "E";
 
     /**
-     * I para impostos<br>
-     * taxas e encargos parafiscais exceto IVA e IS que deverao
-     * ser refletidos na tabela 2.5 Tabela de
-     * impostos (TaxTable)e Impostos Especiais de Consumo
+     * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
+     * which shall appear in table 2.5. – TaxTable and Excise Duties which
+     * shall be filled in with the "E" code.
      * @since 1.0.0
      */
     const I = "I";
 
     /**
-     *
+     * ProductType<br>
+     * <br>
+     * The field shall be filled in with:<br>
+     * “P” - Products;<br>
+     * “S” - Services;<br>
+     * “O” - Others (e.g. charged freights, advance payments received or sale of assets);<br>
+     * “E” - Excise duties - (e.g. IABA, ISP, IT);<br>
+     * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
+     * which shall appear in table 2.5. – TaxTable and Excise Duties which
+     * shall be filled in with the "E" code.
      * <pre>
-     *     <xs:element name="ProductType">
-     *      <xs:annotation>
-     *          <xs:documentation>Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
-     *              debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
-     *              Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
-     *              parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
-     *              impostos (TaxTable)e Impostos Especiais de Consumo </xs:documentation>
-     *      </xs:annotation>
-     *      <xs:simpleType>
-     *          <xs:restriction base="xs:string">
-     *              <xs:enumeration value="P"/>
-     *              <xs:enumeration value="S"/>
-     *              <xs:enumeration value="O"/>
-     *              <xs:enumeration value="E"/>
-     *              <xs:enumeration value="I"/>
-     *          </xs:restriction>
-     *      </xs:simpleType>
-     *  </xs:element>
+     *     &lt;xs:element name="ProductType">
+     *      &lt;xs:simpleType>
+     *          &lt;xs:restriction base="xs:string">
+     *              &lt;xs:enumeration value="P"/&gt;
+     *              &lt;xs:enumeration value="S"/&gt;
+     *              &lt;xs:enumeration value="O"/&gt;
+     *              &lt;xs:enumeration value="E"/&gt;
+     *              &lt;xs:enumeration value="I"/&gt;
+     *          &lt;/xs:restriction&gt;
+     *      &lt;/xs:simpleType&gt;
+     *  &lt;/xs:element&gt;
      * </pre>
-     * @param type $value
+     * @param Mixed $value
      */
     public function __construct($value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

@@ -27,11 +27,14 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
 
 /**
- * ShipTo
+ * ShipTo<br>
+ * Information about the place and delivery date of the products that are
+ * sold to the client, or anyone assigned by him in the case of triangular transactions.
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -40,7 +43,9 @@ class ShipTo extends AShippingPoint
 {
     /**
      *
-     * ShipTo
+     * ShipTo<br>
+     * Information about the place and delivery date of the products that are
+     * sold to the client, or anyone assigned by him in the case of triangular transactions.
      * <pre>
      * &lt;:element name="ShipTo" type="ShippingPointStructure"/&gt;
      * &lt;xs:complexType name="ShippingPointStructure"&gt;
@@ -60,12 +65,15 @@ class ShipTo extends AShippingPoint
     const N_SHIPTO = "ShipTo";
 
     /**
-     *
+     * ShipTo<br>
+     * Information about the place and delivery date of the products that are
+     * sold to the client, or anyone assigned by him in the case of triangular transactions.
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
@@ -80,7 +88,7 @@ class ShipTo extends AShippingPoint
         if ($node->getName() !== Invoice::N_INVOICE &&
             $node->getName() !== StockMovement::N_STOCKMOVEMENT) {
             $msg = \sprintf(
-                "Node name should be '%s' or but is '%s", Invoice::N_INVOICE,
+                "Node name should be '%s' or but is '%s",
                 StockMovement::N_STOCKMOVEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))

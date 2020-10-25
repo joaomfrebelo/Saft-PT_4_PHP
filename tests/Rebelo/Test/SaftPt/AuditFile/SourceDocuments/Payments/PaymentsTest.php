@@ -28,9 +28,8 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Class LineTest
@@ -43,9 +42,10 @@ class PaymentsTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Payments::class);
@@ -53,76 +53,106 @@ class PaymentsTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $payments = new Payments();
+        $payments = new Payments(new ErrorRegister());
         $this->assertInstanceOf(Payments::class, $payments);
         $this->assertSame(0, \count($payments->getPayment()));
 
-        $entries = 9;
-        $payments->setNumberOfEntries($entries);
-        $this->assertSame($entries, $payments->getNumberOfEntries());
-        try {
-            $payments->setNumberOfEntries(-1);
-            $this->fail("Set a negative number of entries should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        $debit = 4.49;
-        $payments->setTotalDebit($debit);
-        $this->assertSame($debit, $payments->getTotalDebit());
-        try {
-            $payments->setTotalDebit(-0.01);
-            $this->fail("Set a negative debit should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        $credit = 9.49;
-        $payments->setTotalCredit($credit);
-        $this->assertSame($credit, $payments->getTotalCredit());
-        try {
-            $payments->setTotalCredit(-0.01);
-            $this->fail("Set a negative credit should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertFalse($payments->issetNumberOfEntries());
+        $this->assertFalse($payments->issetTotalCredit());
+        $this->assertFalse($payments->issetTotalDebit());
+        $this->assertNull($payments->getDocTableTotalCalc());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testPayment()
+    public function testNumberOfEntries(): void
     {
-        $payments = new Payments();
+        $payments = new Payments(new ErrorRegister());
+        $entries  = [0, 999];
+        foreach ($entries as $num) {
+            $this->assertTrue($payments->setNumberOfEntries($num));
+            $this->assertSame($num, $payments->getNumberOfEntries());
+            $this->assertTrue($payments->issetNumberOfEntries());
+        }
+
+        $wrong = -1;
+        $this->assertFalse($payments->setNumberOfEntries($wrong));
+        $this->assertSame($wrong, $payments->getNumberOfEntries());
+        $this->assertNotEmpty($payments->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testTotalDebit(): void
+    {
+        $payments   = new Payments(new ErrorRegister());
+        $debitStack = [0.0, 9.99];
+        foreach ($debitStack as $debit) {
+            $this->assertTrue($payments->setTotalDebit($debit));
+            $this->assertSame($debit, $payments->getTotalDebit());
+            $this->assertTrue($payments->issetTotalDebit());
+        }
+
+        $wrong = -19.9;
+        $this->assertFalse($payments->setTotalDebit($wrong));
+        $this->assertSame($wrong, $payments->getTotalDebit());
+        $this->assertNotEmpty($payments->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testTotalCredit(): void
+    {
+        $payments    = new Payments(new ErrorRegister());
+        $creditStack = [0.0, 9.99];
+        foreach ($creditStack as $credit) {
+            $this->assertTrue($payments->setTotalCredit($credit));
+            $this->assertSame($credit, $payments->getTotalCredit());
+            $this->assertTrue($payments->issetTotalCredit());
+        }
+
+        $wrong = -19.9;
+        $this->assertFalse($payments->setTotalCredit($wrong));
+        $this->assertSame($wrong, $payments->getTotalCredit());
+        $this->assertNotEmpty($payments->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testPayment(): void
+    {
+        $payments = new Payments(new ErrorRegister());
         $nMax     = 9;
         for ($n = 1; $n < $nMax; $n++) {
-            $pay   = new Payment();
+            $pay = $payments->addPayment();
             $pay->setATCUD(\strval($n));
-            $index = $payments->addToPayment($pay);
-            $this->assertSame($index, $n - 1);
             $this->assertSame(
-                \strval($n), $payments->getPayment()[$index]->getATCUD()
+                \strval($n), $payments->getPayment()[$n - 1]->getATCUD()
             );
         }
-        $unset = 2;
-        $payments->unsetPayment($unset);
-        $this->assertSame($nMax - 2, \count($payments->getPayment()));
-        $this->assertFalse($payments->issetPayment($unset));
     }
 
     /**
      * Reads all Payments  from the Demo SAFT in Test\Ressources
      * and parse then to Payment class, after that generate a xml from the
      * Payment class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -135,14 +165,10 @@ class PaymentsTest extends TestCase
             $this->fail("No Payment in XML");
         }
 
-        $payments = new Payments();
+        $payments = new Payments(new ErrorRegister());
         $payments->parseXmlNode($paymentsXml);
 
-        $xmlRootNode   = new \SimpleXMLElement(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-        );
+        $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
         $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
 
         $xml = $payments->createXmlNode($sourceDocNode);
@@ -155,7 +181,80 @@ class PaymentsTest extends TestCase
             );
         } catch (\Exception | \Error $e) {
             $this->fail(
-                \sprintf("Fail on Payment '%s'", $e->getMessage()));
+                \sprintf("Fail on Payment '%s'", $e->getMessage())
+            );
         }
+
+        $this->assertEmpty($payments->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payments->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($payments->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $paymentsNode = new \SimpleXMLElement(
+            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+        );
+        $payments     = new Payments(new ErrorRegister());
+        $xml          = $payments->createXmlNode($paymentsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($payments->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payments->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($payments->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $paymentsNode = new \SimpleXMLElement(
+            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+        );
+        $payments     = new Payments(new ErrorRegister());
+        $payments->setNumberOfEntries(-1);
+        $payments->setTotalCredit(-0.99);
+        $payments->setTotalDebit(-0.95);
+
+        $xml = $payments->createXmlNode($paymentsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($payments->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($payments->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($payments->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDocTableTotalCalc(): void
+    {
+        $payments = new Payments(new ErrorRegister());
+        $payments->setDocTableTotalCalc(new \Rebelo\SaftPt\Validate\DocTableTotalCalc);
+        $this->assertInstanceOf(
+            \Rebelo\SaftPt\Validate\DocTableTotalCalc::class,
+            $payments->getDocTableTotalCalc()
+        );
     }
 }

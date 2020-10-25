@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
@@ -46,9 +46,10 @@ class DocumentTotalsTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(DocumentTotals::class);
@@ -56,79 +57,143 @@ class DocumentTotalsTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstanceSetGet()
+    public function testInstance(): void
     {
-        $docTotals = new DocumentTotals();
+        $docTotals = new DocumentTotals(new ErrorRegister());
         $this->assertInstanceOf(DocumentTotals::class, $docTotals);
         $this->assertNull($docTotals->getSettlementAmount());
-        $this->assertNull($docTotals->getCurrency());
+        $this->assertNull($docTotals->getCurrency(false));
+        $this->assertFalse($docTotals->issetGrossTotal());
+        $this->assertFalse($docTotals->issetNetTotal());
+        $this->assertFalse($docTotals->issetTaxPayable());
+    }
 
-        $tax = 9.99;
-        $docTotals->setTaxPayable($tax);
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceSetGetTaxPayable(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $tax       = 9.99;
+        $this->assertTrue($docTotals->setTaxPayable($tax));
+        $this->assertTrue($docTotals->issetTaxPayable());
         $this->assertSame($tax, $docTotals->getTaxPayable());
+    }
 
-        $net = 19.99;
-        $docTotals->setNetTotal($net);
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceSetGetNetTotal(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $net       = 19.99;
+        $this->assertTrue($docTotals->setNetTotal($net));
+        $this->assertTrue($docTotals->issetNetTotal());
         $this->assertSame($net, $docTotals->getNetTotal());
+    }
 
-        $gross = 99.99;
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceSetGetGrossTotal(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $gross     = 99.99;
         $docTotals->setGrossTotal($gross);
+        $this->assertTrue($docTotals->issetGrossTotal());
         $this->assertSame($gross, $docTotals->getGrossTotal());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceSetGetSettlementAmount(): void
+    {
+        $docTotals  = new DocumentTotals(new ErrorRegister());
         $settlement = 29.99;
-        $docTotals->setSettlementAmount($settlement);
+        $this->assertTrue($docTotals->setSettlementAmount($settlement));
         $this->assertSame($settlement, $docTotals->getSettlementAmount());
+    }
 
-        $currency = new Currency();
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceSetGetCurrency(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $currency  = $docTotals->getCurrency();
         $currency->setCurrencyCode(new CurrencyCode(CurrencyCode::ISO_GBP));
-        $docTotals->setCurrency($currency);
         $this->assertInstanceOf(Currency::class, $docTotals->getCurrency());
     }
 
-    public function testNegativeFloat()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNegativeFloatGrossTotal(): void
     {
-        $docTotals = new DocumentTotals();
-        try {
-            $docTotals->setGrossTotal(-0.09);
-            $this->fail("Set GrossTotal to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException;");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $worng     = -0.09;
+        $this->assertFalse($docTotals->setGrossTotal($worng));
+        $this->assertSame($worng, $docTotals->getGrossTotal());
+        $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
+    }
 
-        try {
-            $docTotals->setNetTotal(-0.09);
-            $this->fail("Set NetTotal to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException;");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNegativeFloatNetTotal(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $worng     = -0.09;
+        $this->assertFalse($docTotals->setNetTotal($worng));
+        $this->assertSame($worng, $docTotals->getNetTotal());
+        $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
+    }
 
-        try {
-            $docTotals->setSettlementAmount(-0.09);
-            $this->fail("Set SettlementAmount to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException;");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNegativeFloatSettlementAmount(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $worng     = -0.09;
+        $this->assertFalse($docTotals->setSettlementAmount($worng));
+        $this->assertSame($worng, $docTotals->getSettlementAmount());
+        $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
+    }
 
-        try {
-            $docTotals->setTaxPayable(-0.09);
-            $this->fail("Set TaxPayable to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException;");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNegativeFloatTaxPayable(): void
+    {
+        $docTotals = new DocumentTotals(new ErrorRegister());
+        $worng     = -0.09;
+        $this->assertFalse($docTotals->setTaxPayable($worng));
+        $this->assertSame($worng, $docTotals->getTaxPayable());
+        $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      * Reads all Payments's Documents totals from the Demo SAFT in Test\Ressources
      * and parse then to DocumentTotals class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -152,15 +217,11 @@ class DocumentTotalsTest extends TestCase
             for ($l = 0; $l < $docTotalsStack->count(); $l++) {
                 /* @var $docTotalsXml \SimpleXMLElement */
                 $docTotalsXml = $docTotalsStack[$l];
-                $docTotals    = new DocumentTotals();
+                $docTotals    = new DocumentTotals(new ErrorRegister());
                 $docTotals->parseXmlNode($docTotalsXml);
 
 
-                $xmlRootNode   = new \SimpleXMLElement(
-                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                    'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-                );
+                $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
                 $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
                 $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
                 $payNode       = $paymentsNode->addChild(Payment::N_PAYMENT);
@@ -169,25 +230,37 @@ class DocumentTotalsTest extends TestCase
 
                 try {
                     $assertXml = $this->xmlIsEqual($docTotalsXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Payment '%s' with error '%s'",
-                            $paymentXml->{Payment::N_PAYMENTREFNO}, $assertXml)
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Payment '%s' with error '%s'",
+                            $paymentXml->{Payment::N_PAYMENTREFNO}, $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $paymentXml->{Payment::N_PAYMENTREFNO},
-                            $e->getMessage()));
+                            $e->getMessage()
+                        )
+                    );
                 }
+
+                $this->assertEmpty($docTotals->getErrorRegistor()->getLibXmlError());
+                $this->assertEmpty($docTotals->getErrorRegistor()->getOnCreateXmlNode());
+                $this->assertEmpty($docTotals->getErrorRegistor()->getOnSetValue());
             }
         }
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXmlCurrency()
+    public function testCreateParseXmlCurrency(): void
     {
-        $docTotals  = new DocumentTotals();
+        $docTotals  = new DocumentTotals(new ErrorRegister());
         $tax        = 9.99;
         $docTotals->setTaxPayable($tax);
         $net        = 19.99;
@@ -197,25 +270,20 @@ class DocumentTotalsTest extends TestCase
         $settlement = 29.99;
         $docTotals->setSettlementAmount($settlement);
 
-        $currency = new Currency();
+        $currency = $docTotals->getCurrency();
         $currency->setCurrencyCode(new CurrencyCode(CurrencyCode::ISO_GBP));
         $currency->setCurrencyAmount(100.0);
         $currency->setExchangeRate(0.99);
-        $docTotals->setCurrency($currency);
         $this->assertInstanceOf(Currency::class, $docTotals->getCurrency());
 
-        $xmlRootNode   = new \SimpleXMLElement(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-        );
+        $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
         $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
         $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
         $payNode       = $paymentsNode->addChild(Payment::N_PAYMENT);
 
         $xml = $docTotals->createXmlNode($payNode);
 
-        $parsed = new DocumentTotals();
+        $parsed = new DocumentTotals(new ErrorRegister());
         $parsed->parseXmlNode($xml);
 
         $this->assertSame(
@@ -238,5 +306,68 @@ class DocumentTotalsTest extends TestCase
         $this->assertSame(
             $docTotals->getTaxPayable(), $parsed->getTaxPayable()
         );
+
+        $this->assertEmpty($docTotals->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($docTotals->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($docTotals->getErrorRegistor()->getOnSetValue());
+
+        $this->assertEmpty($parsed->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($parsed->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($parsed->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $totalsNode = new \SimpleXMLElement(
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        );
+        $totals     = new DocumentTotals(new ErrorRegister());
+        $xml        = $totals->createXmlNode($totalsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($totals->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($totals->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($totals->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $totalsNode = new \SimpleXMLElement(
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        );
+        $totals     = new DocumentTotals(new ErrorRegister());
+        $totals->setGrossTotal(-9.03);
+        $totals->setGrossTotal(-9.45);
+        $totals->setTaxPayable(-9.74);
+        $totals->setSettlementAmount(-0.01);
+
+        $xml = $totals->createXmlNode($totalsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($totals->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($totals->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($totals->getErrorRegistor()->getLibXmlError());
     }
 }

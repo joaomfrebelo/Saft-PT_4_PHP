@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
@@ -42,53 +42,47 @@ class ReferencesTest extends TestCase
     /**
      *
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(References::class);
         $this->assertTrue(true);
     }
 
-    public function testInstanceSetGet()
+    public function testInstanceSetGet(): void
     {
-        $ref = new References();
+        $ref = new References(new ErrorRegister());
         $this->assertInstanceOf(References::class, $ref);
         $this->assertNull($ref->getReason());
         $this->assertNull($ref->getReference());
 
         $refer = "Reference document";
-        $ref->setReference($refer);
+        $this->assertTrue($ref->setReference($refer));
         $this->assertSame($refer, $ref->getReference());
-        $ref->setReference(null);
+        $this->assertTrue($ref->setReference(null));
         $this->assertNull($ref->getReference());
 
         $reason = "Reason of ref";
-        $ref->setReason($reason);
+        $this->assertTrue($ref->setReason($reason));
         $this->assertSame($reason, $ref->getReason());
-        $ref->setReason(null);
+        $this->assertTrue($ref->setReason(null));
         $this->assertNull($ref->getReason());
 
-        $ref->setReference(\str_pad($refer, 70, "A"));
+        $this->assertTrue($ref->setReference(\str_pad($refer, 70, "A")));
         $this->assertSame(60, \strlen($ref->getReference()));
 
-        $ref->setReason(\str_pad($reason, 70, "A"));
+        $this->assertTrue($ref->setReason(\str_pad($reason, 70, "A")));
         $this->assertSame(50, \strlen($ref->getReason()));
 
-        try {
-            $ref->setReference("");
-            $this->fail("Set Reference to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $ref->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($ref->setReference(""));
+        $this->assertSame("", $ref->getReference());
+        $this->assertNotEmpty($ref->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $ref->setReason("");
-            $this->fail("Set Reason to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $ref->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($ref->setReason(""));
+        $this->assertSame("", $ref->getReason());
+        $this->assertNotEmpty($ref->getErrorRegistor()->getOnSetValue());
     }
 
     /**
@@ -96,7 +90,7 @@ class ReferencesTest extends TestCase
      */
     public function createReferences(): References
     {
-        $ref = new References();
+        $ref = new References(new ErrorRegister());
         $ref->setReference("Reference");
         $ref->setReason("Reason");
 
@@ -106,14 +100,16 @@ class ReferencesTest extends TestCase
     /**
      *
      */
-    public function testCreateXmlNodeWrongName()
+    public function testCreateXmlNodeWrongName(): void
     {
-        $ref  = new References();
+        $ref  = new References(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $ref->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -124,14 +120,16 @@ class ReferencesTest extends TestCase
     /**
      *
      */
-    public function testParseXmlNodeWrongName()
+    public function testParseXmlNodeWrongName(): void
     {
-        $ref  = new References();
+        $ref  = new References(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $ref->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -142,7 +140,7 @@ class ReferencesTest extends TestCase
     /**
      *
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
         $ref  = $this->createReferences();
         $node = new \SimpleXMLElement(
@@ -165,14 +163,18 @@ class ReferencesTest extends TestCase
             $ref->getReason(),
             (string) $node->{References::N_REFERENCES}->{References::N_REASON}
         );
+
+        $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      *
      */
-    public function testCreateXmlNodeNull()
+    public function testCreateXmlNodeNull(): void
     {
-        $ref  = new References();
+        $ref  = new References(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
@@ -184,27 +186,37 @@ class ReferencesTest extends TestCase
             References::N_REFERENCES, $refNode->getName()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{References::N_REFERENCES}->{References::N_REFERENCE}->count()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{References::N_REFERENCES}->{References::N_REASON}->count()
         );
+
+        $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      *
      */
-    public function testeParseXml()
+    public function testeParseXml(): void
     {
         $ref  = $this->createReferences();
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $ref->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new References();
+        $parsed = new References(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
@@ -214,20 +226,28 @@ class ReferencesTest extends TestCase
         $this->assertSame(
             $ref->getReason(), $parsed->getReason()
         );
+
+        $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      *
      */
-    public function testeParseXmlNull()
+    public function testeParseXmlNull(): void
     {
-        $ref  = new References();
+        $ref  = new References(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $ref->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new References();
+        $parsed = new References(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
@@ -237,5 +257,62 @@ class ReferencesTest extends TestCase
         $this->assertSame(
             $ref->getReason(), $parsed->getReason()
         );
+
+        $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $refNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $ref     = new References(new ErrorRegister());
+        $xml     = $ref->createXmlNode($refNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($ref->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ref->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $refNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $ref     = new References(new ErrorRegister());
+        $ref->setReference("");
+        $ref->setReason("");
+
+        $xml = $ref->createXmlNode($refNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($ref->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($ref->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
     }
 }

@@ -27,52 +27,63 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
- * MovementType
- *
+ * MovementType<br>
+ * Shall be filled in with:<br>
+ * "GR" - Delivery note;<br>
+ * "GT" - Transport guide (include here the global transport documents);<br>
+ * “GA” – Transport document for own fixed assets;<br>
+ * “GC” - Consignment note;<br>
+ * “GD” – Return note.<br>
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods GR()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods GT()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods GA()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods GC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods GD()
  * @author João Rebelo
  * @since 1.0.0
  */
 class MovementType extends \Rebelo\Enum\AEnum
 {
     /**
-     * GR para Guia de remessa
+     * "GR" - Delivery note
      * @since 1.0.0
      */
     const GR = "GR";
 
     /**
-     * GT para Guia de transporte incluindo as globais
+     * "GT" - Transport guide (include here the global transport documents)
      * @since 1.0.0
      */
     const GT = "GT";
 
     /**
-     * GA para Guia de movimentacao de ativos fixos proprios
+     * “GA” – Transport document for own fixed assets
      * @since 1.0.0
      */
     const GA = "GA";
 
     /**
-     * GC para Guia de consignacao
+     * “GC” - Consignment note
      * @since 1.0.0
      */
     const GC = "GC";
 
     /**
-     * GD para Guia ou nota de devolucao
+     * “GD” – Return note
      * @since 1.0.0
      */
     const GD = "GD";
 
     /**
-     *
+     * <br>
+     * Shall be filled in with:<br>
+     * "GR" - Delivery note;<br>
+     * "GT" - Transport guide (include here the global transport documents);<br>
+     * “GA” – Transport document for own fixed assets;<br>
+     * “GC” - Consignment note;<br>
+     * “GD” – Return note.<br>
      * <pre>
      * &lt;xs:element name="MovementType"&gt;
-     *   &lt;xs:annotation&gt;
-     *       &lt;xs:documentation&gt; Restricao: Tipos de Documento (GR para Guia de remessa, GT para Guia
-     *           de transporte incluindo as globais, GA para Guia de movimentacao de ativos fixos
-     *           proprios, GC para Guia de consignacao, GD para Guia ou nota de devolucao
-     *       &lt;/xs:documentation&gt;
      *   &lt;/xs:annotation&gt;
      *   &lt;xs:simpleType&gt;
      *       &lt;xs:restriction base="xs:string"&gt;
@@ -91,5 +102,15 @@ class MovementType extends \Rebelo\Enum\AEnum
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

@@ -26,6 +26,7 @@
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Function and properties
@@ -37,148 +38,160 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
 abstract class A2Line extends ALine
 {
     /**
-     * <xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_ORDERREFERENCES = "OrderReferences";
 
     /**
-     * <xs:element ref="ProductCode"/>
+     * &lt;xs:element ref="ProductCode"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_PRODUCTCODE = "ProductCode";
 
     /**
-     * <xs:element ref="ProductDescription"/>
+     * &lt;xs:element ref="ProductDescription"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_PRODUCTDESCRIPTION = "ProductDescription";
 
     /**
-     * <xs:element ref="Quantity"/>
+     * &lt;xs:element ref="Quantity"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_QUANTITY = "Quantity";
 
     /**
-     * <xs:element ref="UnitOfMeasure"/>
+     * &lt;xs:element ref="UnitOfMeasure"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_UNITOFMEASURE = "UnitOfMeasure";
 
     /**
-     * <xs:element ref="UnitPrice"/>
+     * &lt;xs:element ref="UnitPrice"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_UNITPRICE = "UnitPrice";
 
     /**
-     * <xs:element ref="Description"/>
+     * &lt;xs:element ref="Description"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_DESCRIPTION = "Description";
 
     /**
-     * <xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/>
+     * &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_PRODUCTSERIALNUMBER = "ProductSerialNumber";
 
     /**
-     * <xs:element ref="DebitAmount"/>
+     * &lt;xs:element ref="DebitAmount"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_DEBITAMOUNT = "DebitAmount";
 
     /**
-     * <xs:element ref="CreditAmount"/>
+     * &lt;xs:element ref="CreditAmount"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_CREDITAMOUNT = "CreditAmount";
 
     /**
-     * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
+     * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_CUSTOMSINFORMATION = "CustomsInformation";
 
     /**
-     * <xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences[]
      * @since 1.0.0
      */
-    private array $orderReferences = array();
+    protected array $orderReferences = array();
 
     /**
-     * <xs:element ref="ProductCode"/>
+     * &lt;xs:element ref="ProductCode"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private string $productCode;
+    protected string $productCode;
 
     /**
-     * <xs:element ref="ProductDescription"/>
+     * &lt;xs:element ref="ProductDescription"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private string $productDescription;
+    protected string $productDescription;
 
     /**
-     * <xs:element ref="Quantity"/>
+     * &lt;xs:element ref="Quantity"/&gt;
      * @var float
      * @since 1.0.0
      */
-    private float $quantity;
+    protected float $quantity;
 
     /**
-     * <xs:element ref="UnitOfMeasure"/>
+     * &lt;xs:element ref="UnitOfMeasure"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private string $unitOfMeasure;
+    protected string $unitOfMeasure;
 
     /**
-     * <xs:element ref="UnitPrice"/>
+     * &lt;xs:element ref="UnitPrice"/&gt;
      * @var float
      * @since 1.0.0
      */
-    private float $unitPrice;
+    protected float $unitPrice;
 
     /**
-     * <xs:element ref="Description"/>
+     * &lt;xs:element ref="Description"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private string $description;
+    protected string $description;
 
     /**
-     * <xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/>
+     * &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null
      * @since 1.0.0
      */
-    private ?ProductSerialNumber $productSerialNumber = null;
+    protected ?ProductSerialNumber $productSerialNumber = null;
 
     /**
-     * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
+     * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation
      * @since 1.0.0
      */
-    private ?CustomsInformation $customsInformation = null;
+    protected ?CustomsInformation $customsInformation = null;
 
     /**
-     * <xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/>
-     *
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     * @since 1.0.0
+     */
+    public function __construct(ErrorRegister $errorRegister)
+    {
+        parent::__construct($errorRegister);
+    }
+
+    /**
+     * GetOrderReferences<br>
+     * References to invoices on the correspondent correcting documents.
+     * If there is a need to make more than one reference, this structure
+     * can be generated as many times as necessary.<br>     *
+     * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences[]
      * @since 1.0.0
      */
@@ -190,57 +203,33 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * <xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/>
+     * AddOrderReferences<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary<br>
+     * Every time that this method is invoked a new instance of OrderReferences
+     * is created, add to the stack and returned to be populaed<br>
+     * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
      *
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences $orderReferences
-     * @return int
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences $orderReferences The new instance created
      * @since 1.0.0
      */
-    public function addToOrderReferences(OrderReferences $orderReferences): int
+    public function addOrderReferences(): OrderReferences
     {
-        if (\count($this->orderReferences) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->orderReferences);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->orderReferences[$index] = $orderReferences;
+        $orderReferences         = new OrderReferences($this->getErrorRegistor());
+        $this->orderReferences[] = $orderReferences;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, "OrderReferences add to index ".\strval($index));
-        return $index;
+            __METHOD__."OrderReferences add to index "
+        );
+        return $orderReferences;
     }
 
     /**
-     * isset OrderReferences
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetOrderReferences(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->orderReferences[$index]);
-    }
-
-    /**
-     * unset OrderReferences
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetOrderReferences(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->orderReferences[$index]);
-    }
-
-    /**
-     * <xs:element ref="ProductCode"/><br>
-     * <xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * Get ProductCode<br>
+     * Record Key related to table 2.4. – Product in field 2.4.2. - ProductCode.<br>
+     * &lt;xs:element ref="ProductCode"/&gt;<br>
+     * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getProductCode(): string
@@ -251,23 +240,47 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * <xs:element ref="ProductCode"/><br>
-     * <xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/>
-     * @param string $productCode
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set ProductCode
+     * @return bool
      * @since 1.0.0
      */
-    public function setProductCode(string $productCode): void
+    public function issetProductCode(): bool
     {
-        $this->productCode = $this->valTextMandMaxCar($productCode, 60,
-            __METHOD__, false);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productCode));
+        return isset($this->productCode);
     }
 
     /**
-     * Get ProductDescription
+     * Set ProductCode<br>
+     * Record Key related to table 2.4. – Product in field 2.4.2. - ProductCode.<br>
+     * &lt;xs:element ref="ProductCode"/&gt;<br>
+     * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
+     * @param string $productCode
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setProductCode(string $productCode): bool
+    {
+        try {
+            $this->productCode = $this->valTextMandMaxCar(
+                $productCode, 60, __METHOD__, false
+            );
+            $return            = true;
+        } catch (AuditFileException $e) {
+            $this->productCode = $productCode;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
+            $return            = false;
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productCode));
+        return $return;
+    }
+
+    /**
+     * Get ProductDescription<br>
+     * Description of the invoice line, related to table 2.4. –
+     * Product in field 2.4.4. – ProductDescription.
      * <pre>
      * &lt;xs:element ref="ProductDescription"/&gt;
      * &lt;xs:element name="ProductDescription" type="SAFPTProductDescription"/&gt;
@@ -290,7 +303,19 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * Set ProductDescription
+     * Get if is set ProductDescription
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetProductDescription(): bool
+    {
+        return isset($this->productDescription);
+    }
+
+    /**
+     * Set ProductDescriptionet ProductDescription<br>
+     * Description of the invoice line, related to table 2.4. –
+     * Product in field 2.4.4. – ProductDescription.
      * <pre>
      * &lt;xs:element ref="ProductDescription"/&gt;
      * &lt;xs:element name="ProductDescription" type="SAFPTProductDescription"/&gt;
@@ -303,28 +328,45 @@ abstract class A2Line extends ALine
      * &lt;/xs:simpleType&gt;
      * </pre>
      * @param string $productDescription
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setProductDescription(string $productDescription): void
+    public function setProductDescription(string $productDescription): bool
     {
-        if (\strlen($productDescription) < 2) {
-            $msg = "Product descriiptin can not have less than 2 caracters";
+        try {
+            if (\strlen($productDescription) < 2) {
+                $msg = "Product descriiptin can not have less than 2 caracters";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            $this->productDescription = $this->valTextMandMaxCar(
+                $productDescription,
+                200, __METHOD__
+            );
+            $return                   = true;
+        } catch (AuditFileException $e) {
+            $this->productDescription = $productDescription;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
+            $return                   = false;
         }
-        $this->productDescription = $this->valTextMandMaxCar($productDescription,
-            200, __METHOD__);
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->productDescription));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->productDescription
+                )
+            );
+        return $return;
     }
 
     /**
-     * <xs:element ref="Quantity"/>
+     * Get Quantity<br>
+     * &lt;xs:element ref="Quantity"/&gt;
      * @return float
+     * @throws \Error
      * @since 1.0.0
      */
     public function getQuantity(): float
@@ -335,28 +377,43 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * <xs:element ref="Quantity"/>
-     * @param float $quantity
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set Quantity
+     * @return bool
      * @since 1.0.0
      */
-    public function setQuantity(float $quantity): void
+    public function issetQuantity(): bool
+    {
+        return isset($this->quantity);
+    }
+
+    /**
+     * Set Quantity<br>
+     * &lt;xs:element ref="Quantity"/&gt;
+     * @param float $quantity
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setQuantity(float $quantity): bool
     {
         if ($quantity < 0.0) {
-            $msg = "Quantity can not be less than 0.0";
+            $msg    = "Quantity can not be less than 0.0";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("Quantity_not_valid");
+        } else {
+            $return = true;
         }
         $this->quantity = $quantity;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->quantity));
+        return $return;
     }
 
     /**
-     * <xs:element ref="UnitOfMeasure"/><br>
-     * <xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/>
+     * Get UnitOfMeasure<br>
+     * &lt;xs:element ref="UnitOfMeasure"/&gt;<br>
+     * &lt;xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
      * @return string
      * @since 1.0.0
      */
@@ -368,24 +425,50 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * <xs:element ref="UnitOfMeasure"/><br>
-     * <xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @param string $unitOfMeasure
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set UnitOfMeasure
+     * @return bool
      * @since 1.0.0
      */
-    public function setUnitOfMeasure(string $unitOfMeasure): void
+    public function issetUnitOfMeasure(): bool
     {
-        $this->unitOfMeasure = $this->valTextMandMaxCar($unitOfMeasure, 20,
-            __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->unitOfMeasure));
+        return isset($this->unitOfMeasure);
     }
 
     /**
-     * <xs:element ref="UnitPrice"/>
+     * Set UnitOfMeasure<br>
+     * &lt;xs:element ref="UnitOfMeasure"/&gt;<br>
+     * &lt;xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     * @param string $unitOfMeasure
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setUnitOfMeasure(string $unitOfMeasure): bool
+    {
+        try {
+            $this->unitOfMeasure = $this->valTextMandMaxCar(
+                $unitOfMeasure, 20, __METHOD__
+            );
+            $return              = true;
+        } catch (AuditFileException $e) {
+            $this->unitOfMeasure = $unitOfMeasure;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("UnitOfMeasure_not_valid");
+            $return              = false;
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->unitOfMeasure));
+        return $return;
+    }
+
+    /**
+     * Get UnitPrice<br>
+     * Price per Unit without tax, and after the deduction of the line and header discounts.
+     * It shall be filled in with "0.00" if there is any requirement to
+     * fill in the field 4.1.4.19.8. - TaxBase.<br>
+     * &lt;xs:element ref="UnitPrice"/&gt;
      * @return float
+     * @throws \error
      * @since 1.0.0
      */
     public function getUnitPrice(): float
@@ -396,30 +479,50 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * <xs:element ref="UnitPrice"/>
-     * @param float $unitPrice
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set UnitPrice
+     * @return bool
      * @since 1.0.0
      */
-    public function setUnitPrice(float $unitPrice): void
+    public function issetUnitPrice(): bool
     {
+        return isset($this->unitPrice);
+    }
 
+    /**
+     * Set UnitPrice<br>
+     * Price per Unit without tax, and after the deduction of the line and header discounts.
+     * It shall be filled in with "0.00" if there is any requirement to
+     * fill in the field 4.1.4.19.8. - TaxBase.<br>
+     * &lt;xs:element ref="UnitPrice"/&gt;
+     * @param float $unitPrice
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setUnitPrice(float $unitPrice): bool
+    {
         if ($unitPrice < 0.0) {
-            $msg = "Quantity can not be less than 0.0";
+            $msg    = "Quantity can not be less than 0.0";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("UnitPrice_not_valid");
+        } else {
+            $return = true;
         }
         $this->unitPrice = $unitPrice;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->unitPrice));
+        return $return;
     }
 
     /**
-     * <xs:element ref="Description"/><br>
-     * <xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * Get Description<br>
+     * Description of the document line.
+     * Line description of the document<br>
+     * &lt;xs:element ref="Description"/&gt;<br>
+     * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getDescription(): string
@@ -430,75 +533,120 @@ abstract class A2Line extends ALine
     }
 
     /**
-     * <xs:element ref="Description"/><br>
-     * <xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/>
-     * @param string $description
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set Description
+     * @return bool
      * @since 1.0.0
      */
-    public function setDescription(string $description): void
+    public function issetDescription(): bool
     {
-        $this->description = $this->valTextMandMaxCar($description, 200,
-            __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->description));
+        return isset($this->description);
     }
 
     /**
-     * <xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/>
+     * Set Description<br>
+     * Description of the document line.<br>
+     * &lt;xs:element ref="Description"/&gt;<br>
+     * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
+     * @param string $description
+     * @return bool true if the value is valid
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
+    public function setDescription(string $description): bool
+    {
+        try {
+            $this->description = $this->valTextMandMaxCar(
+                $description, 200, __METHOD__
+            );
+            $return            = true;
+        } catch (AuditFileException $e) {
+            $this->description = $description;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
+            $return            = false;
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->description));
+        return $return;
+    }
+
+    /**
+     * GetProductSerialNumber<br>
+     * When this method is invoked and $create is true a new instance
+     * of ProductSerialNumber will be created, if not previousm, add to the stack and
+     * returned to be populaed<br>
+     * &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
+     * @param bool $create If true a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null
      * @since 1.0.0
      */
-    public function getProductSerialNumber(): ?ProductSerialNumber
+    public function getProductSerialNumber(bool $create = true): ?ProductSerialNumber
     {
+        if ($create && $this->productSerialNumber === null) {
+            $this->productSerialNumber = new ProductSerialNumber(
+                $this->getErrorRegistor()
+            );
+        }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->productSerialNumber === null ? "null" : "ProductSerialNumber getted"));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->productSerialNumber === null ? "null" : "ProductSerialNumber getted"
+                )
+            );
         return $this->productSerialNumber;
     }
 
     /**
-     * <xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null $productSerialNumber
+     * Set ProductSerialNumberAsNull
      * @return void
      * @since 1.0.0
      */
-    public function setProductSerialNumber(?ProductSerialNumber $productSerialNumber): void
+    public function setProductSerialNumberAsNull(): void
     {
-        $this->productSerialNumber = $productSerialNumber;
+        $this->productSerialNumber = null;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->productSerialNumber === null ? "null" : "ProductSerialNumber"));
+            ->info(__METHOD__." ProductSerialNumberAsNull setted to null");
     }
 
     /**
-     * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
+     * Get CustomsInformation<br>
+     * When this method is invoked and $create is true a new instance
+     * of CustomsInformation will be created, if not previousm, add to the stack and
+     * returned to be populaed<br>
+     * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
+     * @param bool $create If true a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation|null
      * @since 1.0.0
      */
-    public function getCustomsInformation(): ?CustomsInformation
+    public function getCustomsInformation(bool $create = true): ?CustomsInformation
     {
+        if ($create && $this->customsInformation === null) {
+            $this->customsInformation = new CustomsInformation(
+                $this->getErrorRegistor()
+            );
+        }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->customsInformation === null ? "null" :
-                        "CustomsInformation"));
+                    "CustomsInformation"
+                )
+            );
         return $this->customsInformation;
     }
 
     /**
-     * <xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation|null $customsInformation
+     * Set CustomsInformation As Null
      * @return void
      * @since 1.0.0
      */
-    public function setCustomsInformation(?CustomsInformation $customsInformation): void
+    public function setCustomsInformationAsNull(): void
     {
-        $this->customsInformation = $customsInformation;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->customsInformation === null ? "null" :
-                        "CustomsInformation"));
+        $this->customsInformation = null;
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted to null");
     }
 
     /**
@@ -517,18 +665,49 @@ abstract class A2Line extends ALine
                 $orderReferences->createXmlNode($lineNode);
             }
         }
-        $lineNode->addChild(static::N_PRODUCTCODE, $this->getProductCode());
 
-        $lineNode->addChild(static::N_PRODUCTDESCRIPTION,
-            $this->getProductDescription());
+        if (isset($this->productCode)) {
+            $lineNode->addChild(static::N_PRODUCTCODE, $this->getProductCode());
+        } else {
+            $lineNode->addChild(static::N_PRODUCTCODE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("ProductCode_not_valid");
+        }
 
-        $lineNode->addChild(static::N_QUANTITY,
-            $this->floatFormat($this->getQuantity()));
+        if (isset($this->productDescription)) {
+            $lineNode->addChild(
+                static::N_PRODUCTDESCRIPTION, $this->getProductDescription()
+            );
+        } else {
+            $lineNode->addChild(static::N_PRODUCTDESCRIPTION);
+            $this->getErrorRegistor()->addOnCreateXmlNode("ProductDescription_not_valid");
+        }
 
-        $lineNode->addChild(static::N_UNITOFMEASURE, $this->getUnitOfMeasure());
+        if (isset($this->quantity)) {
+            $lineNode->addChild(
+                static::N_QUANTITY, $this->floatFormat($this->getQuantity())
+            );
+        } else {
+            $lineNode->addChild(static::N_QUANTITY);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Quantity_not_valid");
+        }
 
-        $lineNode->addChild(static::N_UNITPRICE,
-            $this->floatFormat($this->getUnitPrice()));
+        if (isset($this->unitOfMeasure)) {
+            $lineNode->addChild(
+                static:: N_UNITOFMEASURE, $this->getUnitOfMeasure()
+            );
+        } else {
+            $lineNode->addChild(static:: N_UNITOFMEASURE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("UnitOfMeasure_not_valid");
+        }
+
+        if (isset($this->unitPrice)) {
+            $lineNode->addChild(
+                static::N_UNITPRICE, $this->floatFormat($this->getUnitPrice())
+            );
+        } else {
+            $lineNode->addChild(static::N_UNITPRICE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("UnitPrice_not_valid");
+        }
 
         return $lineNode;
     }
@@ -553,19 +732,27 @@ abstract class A2Line extends ALine
      */
     protected function createXmlNodeTaxExcSettAndCustoms(\SimpleXMLElement $node): void
     {
+
         if ($this->getTaxExemptionReason() !== null) {
-            $node->addChild(static::N_TAXEXEMPTIONREASON,
-                $this->getTaxExemptionReason());
+            $node->addChild(
+                static::N_TAXEXEMPTIONREASON, $this->getTaxExemptionReason()
+            );
         }
+
         if ($this->getTaxExemptionCode() !== null) {
-            $node->addChild(static::N_TAXEXEMPTIONCODE,
-                $this->getTaxExemptionCode()->get());
+            $node->addChild(
+                static::N_TAXEXEMPTIONCODE, $this->getTaxExemptionCode()->get()
+            );
         }
+
         if ($this->getSettlementAmount() !== null) {
-            $node->addChild(static::N_SETTLEMENTAMOUNT,
-                $this->floatFormat($this->getSettlementAmount()));
+            $node->addChild(
+                static::N_SETTLEMENTAMOUNT,
+                $this->floatFormat($this->getSettlementAmount())
+            );
         }
-        if ($this->getCustomsInformation() !== null) {
+
+        if ($this->getCustomsInformation(false) !== null) {
             $this->getCustomsInformation()->createXmlNode($node);
         }
     }
@@ -579,11 +766,8 @@ abstract class A2Line extends ALine
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         parent::parseXmlNode($node);
-
-        for ($n = 0; $n < $node->{static::N_ORDERREFERENCES}->count(); $n++) {
-            $orderRef = new OrderReferences();
-            $orderRef->parseXmlNode($node->{static::N_ORDERREFERENCES}[$n]);
-            $this->addToOrderReferences($orderRef);
+        for ($n = 0; $n < $node->{static::N_ORDERREFERENCES }->count(); $n++) {
+            $this->addOrderReferences()->parseXmlNode($node->{static::N_ORDERREFERENCES}[$n]);
         }
 
         $this->setProductCode((string) $node->{static::N_PRODUCTCODE});
@@ -593,28 +777,37 @@ abstract class A2Line extends ALine
         $this->setUnitPrice((float) $node->{static::N_UNITPRICE});
 
         if ($node->{static::N_PRODUCTSERIALNUMBER}->count() > 0) {
-            $psn = new ProductSerialNumber();
-            $psn->parseXmlNode($node->{static::N_PRODUCTSERIALNUMBER});
-            $this->setProductSerialNumber($psn);
+            $this->getProductSerialNumber()->parseXmlNode(
+                $node->{static::N_PRODUCTSERIALNUMBER}
+            );
         }
 
         $this->setDescription((string) $node->{static::N_DESCRIPTION});
+
         if ($node->{static::N_TAXEXEMPTIONREASON}->count() > 0) {
-            $this->setTaxExemptionReason((string) $node->{static::N_TAXEXEMPTIONREASON});
+            $this->setTaxExemptionReason(
+                (string) $node->{static::N_TAXEXEMPTIONREASON}
+            );
         }
+
         if ($node->{static::N_TAXEXEMPTIONCODE}->count() > 0) {
             $this->setTaxExemptionCode(
                 new TaxExemptionCode(
                     (string) $node->{static::N_TAXEXEMPTIONCODE}
-            ));
+                )
+            );
         }
+
         if ($node->{static::N_SETTLEMENTAMOUNT}->count() > 0) {
-            $this->setSettlementAmount((float) $node->{static::N_SETTLEMENTAMOUNT});
+            $this->setSettlementAmount(
+                (float) $node->{static::N_SETTLEMENTAMOUNT}
+            );
         }
+
         if ($node->{static::N_CUSTOMSINFORMATION}->count() > 0) {
-            $ci = new CustomsInformation();
-            $ci->parseXmlNode($node->{static::N_CUSTOMSINFORMATION});
-            $this->setCustomsInformation($ci);
+            $this->getCustomsInformation()->parseXmlNode(
+                $node->{static::N_CUSTOMSINFORMATION}
+            );
         }
     }
 }

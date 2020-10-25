@@ -36,11 +36,22 @@ class SupplierCountry extends ACountry
 
     /**
      *
-     * @since 1.0.0
+     *
      * @param string $value
+     * @since 1.0.0
      */
     public function __construct(string $value)
     {
         parent::__construct($value);
     }
+
+    /**
+     * Get the value as string
+     * @return string
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
+    }
+
 }

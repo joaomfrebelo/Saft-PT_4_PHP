@@ -26,42 +26,46 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+
 /**
  * AddressPT<br>
  * Estrutura de Moradas para Portugal<br>
- * <xs:complexType name="SupplierAddressStructure">
+ * &lt;xs:complexType name="SupplierAddressStructure">
  * @author João Rebelo
  * @since 1.0.0
  */
 class SupplierAddress extends AAddress
 {
     /**
-     * <xs:element ref="Country"/>
-     * @var Country
+     * &lt;xs:element ref="Country"/&gt;
+     * @var \Rebelo\SaftPt\AuditFile\SupplierCountry
      * @since 1.0.0
      */
     protected SupplierCountry $suplierCountry;
 
     /**
-     * <xs:element ref="PostalCode"/>
-     * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
+     * &lt;xs:element ref="PostalCode"/&gt;
+     * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
      * @var string
      * @since 1.0.0
      */
     private string $postalCode;
 
     /**
-     * <xs:complexType name="SupplierAddressStructure">
+     * &lt;xs:complexType name="SupplierAddressStructure">
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    function __construct()
+    function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     * <xs:element ref="PostalCode"/>
-     * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
+     * Get PostalCode<br>
+     * &lt;xs:element ref="PostalCode"/&gt;
+     * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
      * @return string
      * @since 1.0.0
      */
@@ -73,23 +77,45 @@ class SupplierAddress extends AAddress
     }
 
     /**
-     * <xs:element ref="PostalCode"/>
-     * <xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/>
-     *
-     * @param string $postalCode
-     * @return void
+     * Get if is set PostalCode
+     * @return bool
      * @since 1.0.0
      */
-    public function setPostalCode(string $postalCode): void
+    public function issetPostalCode(): bool
     {
-        $this->postalCode = static::valTextMandMaxCar($postalCode, 20,
-                __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
+        return isset($this->postalCode);
     }
 
     /**
-     * <xs:element ref="Country"/>
+     * &lt;xs:element ref="PostalCode"/&gt;
+     * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
+     * @param string $postalCode
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setPostalCode(string $postalCode): bool
+    {
+        try {
+            $this->postalCode = static::valTextMandMaxCar(
+                $postalCode, 20, __METHOD__
+            );
+            $return           = true;
+        } catch (AuditFileException $e) {
+            $this->postalCode = $postalCode;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("PostalCode_not_valid");
+            $return           = false;
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
+        return $return;
+    }
+
+    /**
+     * Set Country<br>
+     * &lt;xs:element ref="Country"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SupplierCountry $country
      * @return void
      * @since 1.0.0
@@ -98,21 +124,41 @@ class SupplierAddress extends AAddress
     {
         $this->suplierCountry = $country;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->suplierCountry->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->suplierCountry->get()
+                )
+            );
     }
 
     /**
-     * <xs:element ref="Country"/>
+     * Get Country
+     * &lt;xs:element ref="Country"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SupplierCountry
+     * @throws \Error
      * @since 1.0.0
      */
     public function getCountry(): SupplierCountry
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->suplierCountry->get()));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->suplierCountry->get()
+                )
+            );
         return $this->suplierCountry;
+    }
+
+    /**
+     * Get if is set Country
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetCountry(): bool
+    {
+        return isset($this->suplierCountry);
     }
 
     /**
@@ -130,12 +176,18 @@ class SupplierAddress extends AAddress
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::createXmlNode($node);
-        $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+
+        if (isset($this->suplierCountry)) {
+            $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+        } else {
+            $node->addChild(static::N_COUNTRY);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Country_not_valid");
+        }
         return $node;
     }
 
     /**
-     *
+     * Parse Xml node
      * @param \SimpleXMLElement $node
      * @return void
      * @since 1.0.0

@@ -27,11 +27,11 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile;
 
 use PHPUnit\Framework\TestCase;
+use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\Header;
 use Rebelo\SaftPt\AuditFile\AddressPT;
-use Rebelo\SaftPt\AuditFile\PostalCodePT;
 use Rebelo\SaftPt\AuditFile\TaxAccountingBasis;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 
 /**
@@ -43,40 +43,59 @@ class HeaderTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())->testReflection(\Rebelo\SaftPt\AuditFile\Header::class);
         $this->assertTrue(true);
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
         $this->assertInstanceOf(Header::class, $header);
         $this->assertEquals("EUR", $header->getCurrencyCode());
+
+        $this->assertFalse($header->issetCompanyAddress());
+        $this->assertFalse($header->issetCompanyID());
+        $this->assertFalse($header->issetCompanyName());
+        $this->assertTrue($header->issetCurrencyCode());
+        $this->assertTrue($header->issetDateCreated());
+        $this->assertFalse($header->issetEndDate());
+        $this->assertFalse($header->issetFiscalYear());
+        $this->assertFalse($header->issetProductCompanyTaxID());
+        $this->assertFalse($header->issetProductVersion());
+        $this->assertFalse($header->issetSoftwareCertificateNumber());
+        $this->assertFalse($header->issetStartDate());
+        $this->assertFalse($header->issetTaxAccountingBasis());
+        $this->assertFalse($header->issetTaxEntity());
+        $this->assertFalse($header->issetTaxRegistrationNumber());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetAuditFileVersion()
+    public function testSetGetAuditFileVersion(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertEquals("1.04_01", $header->getAuditFileVersion());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSestGetCompanyID()
+    public function testSestGetCompanyID(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getCompanyID();
@@ -85,33 +104,35 @@ class HeaderTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $companyId = "Conser 1209";
-        $header->setCompanyID($companyId);
+        $this->assertTrue($header->setCompanyID($companyId));
         $this->assertEquals($companyId, $header->getCompanyID());
+        $this->assertTrue($header->issetCompanyID());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setCompanyID(""));
+        $this->assertEmpty($header->getCompanyID());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong = "aaaaa";
+        $this->assertFalse($header->setCompanyID($wrong));
+        $this->assertSame($wrong, $header->getCompanyID());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
         try {
-            $header->setCompanyID("");
-            $this->fail("set company id with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $header->setCompanyID("aaaaa");
-            $this->fail("set company id with wrong regexp string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $header->setCompanyID(null);
+            $header->setCompanyID(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetTaxRegistrationNumber()
+    public function testSetGetTaxRegistrationNumber(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getTaxRegistrationNumber();
@@ -120,27 +141,34 @@ class HeaderTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxRegNum = 999999990;
-        $header->setTaxRegistrationNumber($taxRegNum);
+        $this->assertTrue(
+            $header->setTaxRegistrationNumber($taxRegNum)
+        );
         $this->assertEquals($taxRegNum, $header->getTaxRegistrationNumber());
+        $this->assertTrue($header->issetTaxRegistrationNumber());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong = 111222333;
+        $this->assertFalse(
+            $header->setTaxRegistrationNumber($wrong)
+        );
+        $this->assertSame($wrong, $header->getTaxRegistrationNumber());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
         try {
-            $header->setTaxRegistrationNumber(111222333);
-            $this->fail("set tax registration number with wrong number should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $header->setTaxRegistrationNumber(null);
+            $header->setTaxRegistrationNumber(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTaxAccountingBasis()
+    public function testTaxAccountingBasis(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getTaxAccountingBasis();
@@ -151,25 +179,28 @@ class HeaderTest extends TestCase
         $basis = TaxAccountingBasis::FACTURACAO;
         $header->setTaxAccountingBasis(new TaxAccountingBasis($basis));
         $this->assertEquals($basis, $header->getTaxAccountingBasis()->get());
+        $this->assertTrue($header->issetTaxAccountingBasis());
+
         try {
-            $header->setTaxAccountingBasis("F");
+            $header->setTaxAccountingBasis("F");/** @phpstan-ignore-line */
             $this->fail("set tax account basis id with string should throw TypeError");
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
         try {
-            $header->setTaxAccountingBasis(null);
+            $header->setTaxAccountingBasis(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCompanyName()
+    public function testCompanyName(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getCompanyName();
@@ -178,79 +209,67 @@ class HeaderTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $name = "CompanyName FACTURACAO";
-        $header->setCompanyName($name);
+        $this->assertTrue($header->setCompanyName($name));
         $this->assertEquals($name, $header->getCompanyName());
-        $header->setCompanyName(\str_pad("_", 109, "_"));
+        $this->assertTrue($header->issetCompanyName());
+        $this->assertTrue($header->setCompanyName(\str_pad("_", 109, "_")));
         $this->assertEquals(100, \strlen($header->getCompanyName()));
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setCompanyName(""));
+        $this->assertSame("", $header->getCompanyName());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
         try {
-            $header->setCompanyName("");
-            $this->fail("set company name id with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $header->setCompanyName(null);
+            $header->setCompanyName(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testBusinessName()
+    public function testBusinessName(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertNull($header->getBusinessName());
 
         $name = "business name test";
-        $header->setBusinessName($name);
+        $this->assertTrue($header->setBusinessName($name));
         $this->assertEquals($name, $header->getBusinessName());
-        $header->setBusinessName(\str_pad("_", 109, "_"));
+        $this->assertTrue($header->setBusinessName(\str_pad("_", 109, "_")));
         $this->assertEquals(60, \strlen($header->getBusinessName()));
-        try {
-            $header->setBusinessName("");
-            $this->fail("set business name with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setBusinessName(""));
+        $this->assertSame("", $header->getBusinessName());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
         $header->setBusinessName(null);
         $this->assertNull($header->getBusinessName());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCompanyAddress()
+    public function testCompanyAddress(): void
     {
-        $header = new Header();
-
-        try {
-            $header->getCompanyAddress();
-            $this->fail("Get CompanyAddress without initialize should throw error");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Error::class, $e);
-        }
-
-        $address = new AddressPT();
-        $header->setCompanyAddress($address);
+        $header = new Header(new ErrorRegister());
         $this->assertInstanceOf(AddressPT::class, $header->getCompanyAddress());
-
-        try {
-            $header->setCompanyAddress(null);
-            $this->fail("Set CompanyAddress to null should throw TypeError");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\TypeError::class, $e);
-        }
+        $this->assertTrue($header->issetCompanyAddress());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testFiscalYear()
+    public function testFiscalYear(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getFiscalYear();
@@ -260,25 +279,24 @@ class HeaderTest extends TestCase
         }
 
         $year = 2020;
-        $header->setFiscalYear($year);
+        $this->assertTrue($header->setFiscalYear($year));
         $this->assertEquals($year, $header->getFiscalYear());
+        $this->assertTrue($header->issetFiscalYear());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong = 1999;
+        $this->assertFalse($header->setFiscalYear($wrong));
+        $this->assertSame($wrong, $header->getFiscalYear());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong2 = \intval(\Date("Y")) + 2;
+        $this->assertFalse($header->setFiscalYear($wrong2));
+        $this->assertSame($wrong2, $header->getFiscalYear());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $header->setFiscalYear(1999);
-            $this->fail("set a fiscal year earlier than 2000 should throw AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $header->setFiscalYear(\intval(\Date("Y")) + 2);
-            $this->fail("set a fiscal year older than now + 2Y should throw AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $header->setFiscalYear(null);
+            $header->setFiscalYear(null);/** @phpstan-ignore-line */
             $this->fail("Set FiscalYear to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -286,11 +304,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testStartDate()
+    public function testStartDate(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getStartDate();
@@ -301,28 +320,26 @@ class HeaderTest extends TestCase
 
         $date = new RDate();
         $date->setDate(2020, 10, 20);
-        $header->setStartDate($date);
-        $this->assertEquals($date->getTimestamp(),
-            $header->getStartDate()->getTimestamp());
+        $this->assertTrue($header->setStartDate($date));
+        $this->assertTrue($header->issetStartDate());
+        $this->assertEquals(
+            $date->getTimestamp(), $header->getStartDate()->getTimestamp()
+        );
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $date->setDate(1999, 10, 05);
+        $this->assertFalse($header->setStartDate($date));
+        $this->assertSame("1999-10-05", $date->format(RDate::SQL_DATE));
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $date->setDate(\intval(\Date("Y") + 2), 10, 5);
+        $this->assertFalse($header->setStartDate($date));
+        $this->assertSame($date, $header->getStartDate());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $date->setDate(1999, 10, 05);
-            $header->setStartDate($date);
-            $this->fail("set a start date earlier than 2000 should throw AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $date->setDate(\intval(\Date("Y") + 2), 10, 5);
-            $header->setStartDate($date);
-            $this->fail("set a start date older than now + 2Y should throw AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $header->setStartDate(null);
+            $header->setStartDate(null);/** @phpstan-ignore-line */
             $this->fail("Set StartDate to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -330,11 +347,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testEndDate()
+    public function testEndDate(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getEndDate();
@@ -345,28 +363,26 @@ class HeaderTest extends TestCase
 
         $date = new RDate();
         $date->setDate(2020, 10, 20);
-        $header->setEndDate($date);
-        $this->assertEquals($date->getTimestamp(),
-            $header->getEndDate()->getTimestamp());
+        $this->assertTrue($header->setEndDate($date));
+        $this->assertTrue($header->issetEndDate());
+        $this->assertEquals(
+            $date->getTimestamp(), $header->getEndDate()->getTimestamp()
+        );
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $date->setDate(1999, 10, 05);
+        $this->assertFalse($header->setEndDate($date));
+        $this->assertSame($date, $header->getEndDate());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $date->setDate(\intval(\Date("Y") + 2), 10, 5);
+        $this->assertFalse($header->setEndDate($date));
+        $this->assertSame($date, $header->getEndDate());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $date->setDate(1999, 10, 05);
-            $header->setEndDate($date);
-            $this->fail("set a end date earlier than 2000 should throw AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $date->setDate(\intval(\Date("Y") + 2), 10, 5);
-            $header->setEndDate($date);
-            $this->fail("set a end date older than now + 2Y should throw AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $header->setEndDate(null);
+            $header->setEndDate(null);/** @phpstan-ignore-line */
             $this->fail("Set EndDate to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -374,29 +390,34 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDateCreated()
+    public function testDateCreated(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $now = new RDate();
-        $this->assertEquals($now->getTimestamp(),
-            $header->getDateCreated()->getTimestamp());
+        $this->assertEquals(
+            $now->getTimestamp(), $header->getDateCreated()->getTimestamp()
+        );
 
         $date = new RDate();
         $date->setDate(2020, 10, 20);
         $header->setDateCreated($date);
-        $this->assertEquals($date->getTimestamp(),
-            $header->getDateCreated()->getTimestamp());
+        $this->assertEquals(
+            $date->getTimestamp(), $header->getDateCreated()->getTimestamp()
+        );
+        $this->assertTrue($header->issetDateCreated());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTaxEntity()
+    public function testTaxEntity(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getTaxEntity();
@@ -406,21 +427,20 @@ class HeaderTest extends TestCase
         }
 
         $taxEntity = "tax entity test";
-        $header->setTaxEntity($taxEntity);
+        $this->assertTrue($header->setTaxEntity($taxEntity));
+        $this->assertTrue($header->issetTaxEntity());
         $this->assertEquals($taxEntity, $header->getTaxEntity());
 
-        $header->setTaxEntity(\str_pad("_", 109, "_"));
+        $this->assertTrue($header->setTaxEntity(\str_pad("_", 109, "_")));
         $this->assertEquals(20, \strlen($header->getTaxEntity()));
 
-        try {
-            $header->setTaxEntity("");
-            $this->fail("set tax entity with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setTaxEntity(""));
+        $this->assertSame("", $header->getTaxEntity());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $header->setTaxEntity(null);
+            $header->setTaxEntity(null);/** @phpstan-ignore-line */
             $this->fail("Set TaxEntity to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -428,11 +448,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testProductCompanyTaxID()
+    public function testProductCompanyTaxID(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getProductCompanyTaxID();
@@ -442,21 +463,20 @@ class HeaderTest extends TestCase
         }
 
         $taxEntity = "ProductCompanyTaxID test";
-        $header->setProductCompanyTaxID($taxEntity);
+        $this->assertTrue($header->setProductCompanyTaxID($taxEntity));
+        $this->assertTrue($header->issetProductCompanyTaxID());
         $this->assertEquals($taxEntity, $header->getProductCompanyTaxID());
 
-        $header->setProductCompanyTaxID(\str_pad("_", 300, "_"));
+        $this->assertTrue($header->setProductCompanyTaxID(\str_pad("_", 300, "_")));
         $this->assertEquals(30, \strlen($header->getProductCompanyTaxID()));
 
-        try {
-            $header->setProductCompanyTaxID("");
-            $this->fail("set ProductCompanyTaxID with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setProductCompanyTaxID(""));
+        $this->assertSame("", $header->getProductCompanyTaxID());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $header->setProductCompanyTaxID(null);
+            $header->setProductCompanyTaxID(null);/** @phpstan-ignore-line */
             $this->fail("Set ProductCompanyTaxID to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -464,11 +484,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSoftwareCertificateNumber()
+    public function testSoftwareCertificateNumber(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getSoftwareCertificateNumber();
@@ -478,18 +499,18 @@ class HeaderTest extends TestCase
         }
 
         $number = 1999;
-        $header->setSoftwareCertificateNumber($number);
+        $this->assertTrue($header->setSoftwareCertificateNumber($number));
         $this->assertEquals($number, $header->getSoftwareCertificateNumber());
+        $this->assertTrue($header->issetSoftwareCertificateNumber());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong = -1;
+        $this->assertFalse($header->setSoftwareCertificateNumber($wrong));
+        $this->assertSame($wrong, $header->getSoftwareCertificateNumber());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $header->setSoftwareCertificateNumber(-1);
-            $this->fail("set SoftwareCertificateNumber less than zero should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $header->setSoftwareCertificateNumber(null);
+            $header->setSoftwareCertificateNumber(null);/** @phpstan-ignore-line */
             $this->fail("Set SoftwareCertificateNumber to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -497,11 +518,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testProductID()
+    public function testProductID(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getProductID();
@@ -511,18 +533,17 @@ class HeaderTest extends TestCase
         }
 
         $productId = "1999/1";
-        $header->setProductID($productId);
+        $this->assertTrue($header->setProductID($productId));
         $this->assertEquals($productId, $header->getProductID());
+        $this->assertTrue($header->issetProductID());
+
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setProductID(""));
+        $this->assertSame("", $header->getProductID());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $header->setProductID("");
-            $this->fail("set ProductID with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-
-        try {
-            $header->setProductID(null);
+            $header->setProductID(null);/** @phpstan-ignore-line */
             $this->fail("Set ProductID to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -530,11 +551,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testProductVersion()
+    public function testProductVersion(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         try {
             $header->getProductVersion();
@@ -544,21 +566,20 @@ class HeaderTest extends TestCase
         }
 
         $productVersion = "ProductVersion test";
-        $header->setProductVersion($productVersion);
+        $this->assertTrue($header->setProductVersion($productVersion));
         $this->assertEquals($productVersion, $header->getProductVersion());
+        $this->assertTrue($header->issetProductVersion());
 
-        $header->setProductVersion(\str_pad("_", 300, "_"));
+        $this->assertTrue($header->setProductVersion(\str_pad("_", 300, "_")));
         $this->assertEquals(30, \strlen($header->getProductVersion()));
 
-        try {
-            $header->setProductVersion("");
-            $this->fail("set ProductVersion with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setProductVersion(""));
+        $this->assertSame("", $header->getProductVersion());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         try {
-            $header->setProductVersion(null);
+            $header->setProductVersion(null);/** @phpstan-ignore-line */
             $this->fail("Set ProductVersion to null should throw TypeError");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
@@ -566,150 +587,142 @@ class HeaderTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHeaderComment()
+    public function testHeaderComment(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertNull($header->getHeaderComment());
 
         $headerComment = "HeaderComment test";
-        $header->setHeaderComment($headerComment);
+        $this->assertTrue($header->setHeaderComment($headerComment));
         $this->assertEquals($headerComment, $header->getHeaderComment());
 
-        $header->setHeaderComment(\str_pad("_", 300, "_"));
+        $this->assertTrue($header->setHeaderComment(\str_pad("_", 300, "_")));
         $this->assertEquals(255, \strlen($header->getHeaderComment()));
 
-        try {
-            $header->setHeaderComment("");
-            $this->fail("set HeaderComment with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setHeaderComment(""));
+        $this->assertSame("", $header->getHeaderComment());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $header->setHeaderComment(null);
         $this->assertNull($header->getHeaderComment());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTelephone()
+    public function testTelephone(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertNull($header->getTelephone());
 
         $telephone = "Telephone test";
-        $header->setTelephone($telephone);
+        $this->assertTrue($header->setTelephone($telephone));
         $this->assertEquals($telephone, $header->getTelephone());
 
-        $header->setTelephone(\str_pad("_", 300, "_"));
+        $this->assertTrue($header->setTelephone(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($header->getTelephone()));
 
-        try {
-            $header->setTelephone("");
-            $this->fail("set Telephone with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setTelephone(""));
+        $this->assertSame("", $header->getTelephone());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $header->setTelephone(null);
         $this->assertNull($header->getTelephone());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testFax()
+    public function testFax(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertNull($header->getFax());
 
         $fax = "Fax test";
-        $header->setFax($fax);
+        $this->assertTrue($header->setFax($fax));
         $this->assertEquals($fax, $header->getFax());
 
-        $header->setFax(\str_pad("_", 300, "_"));
+        $this->assertTrue($header->setFax(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($header->getFax()));
 
-        try {
-            $header->setFax("");
-            $this->fail("set fax with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setFax(""));
+        $this->assertSame("", $header->getFax());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $header->setFax(null);
         $this->assertNull($header->getFax());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testEmail()
+    public function testEmail(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertNull($header->getEmail());
 
         $email = "email@email.pt";
-        $header->setEmail($email);
+        $this->assertTrue($header->setEmail($email));
         $this->assertEquals($email, $header->getEmail());
 
-        try {
-            $header->setEmail(\str_pad($email, 255, "a", STR_PAD_LEFT));
-            $this->fail("set Email with length > 254 should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong = \str_pad($email, 255, "a", STR_PAD_LEFT);
+        $this->assertFalse($header->setEmail($wrong));
+        $this->assertSame($wrong, $header->getEmail());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $header->setEmail("isNotEmail");
-            $this->fail("set Email with wrong string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong2 = "isNotEmail";
+        $this->assertFalse($header->setEmail($wrong2));
+        $this->assertSame($wrong2, $header->getEmail());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $header->setEmail("");
-            $this->fail("set Email with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setEmail(""));
+        $this->assertSame("", $header->getEmail());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $header->setEmail(null);
         $this->assertNull($header->getEmail());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testWebsite()
+    public function testWebsite(): void
     {
-        $header = new Header();
+        $header = new Header(new ErrorRegister());
 
         $this->assertNull($header->getWebsite());
 
         $website = "http://saft.pt";
-        $header->setWebsite($website);
+        $this->assertTrue($header->setWebsite($website));
         $this->assertEquals($website, $header->getWebsite());
 
-        try {
-            $header->setWebsite(\str_pad($website, 61, "a", STR_PAD_RIGHT));
-            $this->fail("set Website with length > 60 should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $wrong = \str_pad($website, 61, "a", STR_PAD_RIGHT);
+        $this->assertFalse($header->setWebsite($wrong));
+        $this->assertSame($wrong, $header->getWebsite());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $header->setWebsite("");
-            $this->fail("set Website with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $header->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($header->setWebsite(""));
+        $this->assertSame("", $header->getWebsite());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $header->setWebsite(null);
         $this->assertNull($header->getWebsite());
@@ -721,18 +734,19 @@ class HeaderTest extends TestCase
      */
     public function createHeader(): Header
     {
-        $address = new AddressPT();
+        $header = new Header(new ErrorRegister());
+
+        $address = $header->getCompanyAddress();
         $address->setAddressDetail("Street test 999");
         $address->setCity("Sintra");
-        $address->setPostalCode(new PostalCodePT("1999-999"));
+        $address->setPostalCode("1999-999");
         $address->setRegion("Lisbon");
 
-        $now    = new RDate();
-        $start  = (clone $now)->setDay(1);
-        $end    = (clone $now)->setDay(28);
-        $header = new Header();
+        $now   = new RDate();
+        $start = (clone $now)->setDay(1);
+        $end   = (clone $now)->setDay(28);
+
         $header->setBusinessName("Business Name test");
-        $header->setCompanyAddress($address);
         $header->setCompanyID("999999990");
         $header->setCompanyName("SAFT-PT 4 PHP");
         $header->setDateCreated($now);
@@ -758,7 +772,7 @@ class HeaderTest extends TestCase
      * Set the properties that can have nulll to null
      * @param Header $header
      */
-    public function setNullsHeader(Header $header)
+    public function setNullsHeader(Header $header): void
     {
         $header->setBusinessName(null);
         $header->setHeaderComment(null);
@@ -768,159 +782,275 @@ class HeaderTest extends TestCase
         $header->setWebsite(null);
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode(): void
     {
-        $node = new \SimpleXMLElement("<root></root>");
+        $auditFile = new AuditFile();
+        $node      = $auditFile->createRootElement();
 
         $header = $this->createHeader();
 
-        $this->assertInstanceOf(\SimpleXMLElement::class,
-            $header->createXmlNode($node));
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, $header->createXmlNode($node)
+        );
+
         $headerNode = $node->{Header::N_HEADER};
-        $this->assertEquals($header->getAuditFileVersion(),
+
+        $this->assertEquals(
+            $header->getAuditFileVersion(),
             (string) $headerNode->{Header::N_AUDITFILEVERSION}
         );
-        $this->assertEquals($header->getCompanyID(),
+
+        $this->assertEquals(
+            $header->getCompanyID(),
             (string) $headerNode->{Header::N_COMPANYID}
         );
-        $this->assertEquals($header->getTaxRegistrationNumber(),
+
+        $this->assertEquals(
+            $header->getTaxRegistrationNumber(),
             (int) $headerNode->{Header::N_TAXREGISTRATIONNUMBER}
         );
-        $this->assertEquals($header->getTaxAccountingBasis()->get(),
+
+        $this->assertEquals(
+            $header->getTaxAccountingBasis()->get(),
             (string) $headerNode->{Header::N_TAXACCOUNTINGBASIS}
         );
-        $this->assertEquals($header->getCompanyName(),
+
+        $this->assertEquals(
+            $header->getCompanyName(),
             (string) $headerNode->{Header::N_COMPANYNAME}
         );
-        $this->assertEquals($header->getBusinessName(),
+
+        $this->assertEquals(
+            $header->getBusinessName(),
             (string) $headerNode->{Header::N_BUSINESSNAME}
         );
-        $this->assertEquals($header->getCompanyAddress()->getAddressDetail(),
-            (string) $headerNode
-            ->{Header::N_COMPANYADDRESS}
-            ->{AddressPT::N_ADDRESSDETAIL}
+
+        $this->assertEquals(
+            $header->getCompanyAddress()->getAddressDetail(),
+            (string) $headerNode->{Header::N_COMPANYADDRESS}->{AddressPT::N_ADDRESSDETAIL}
         );
-        $this->assertEquals($header->getFiscalYear(),
-            (int) $headerNode->{Header::N_FISCALYEAR});
-        $this->assertEquals($header->getStartDate()
-                ->format(RDate::SQL_DATE),
+
+        $this->assertEquals(
+            $header->getFiscalYear(), (int) $headerNode->{Header::N_FISCALYEAR}
+        );
+
+        $this->assertEquals(
+            $header->getStartDate()->format(RDate::SQL_DATE),
             (string) $headerNode->{Header::N_STARTDATE}
         );
-        $this->assertEquals($header->getEndDate()
+
+        $this->assertEquals(
+            $header->getEndDate()
                 ->format(RDate::SQL_DATE),
             (string) $headerNode->{Header::N_ENDDATE}
         );
-        $this->assertEquals($header->getDateCreated()
+
+        $this->assertEquals(
+            $header->getDateCreated()
                 ->format(RDate::SQL_DATE),
             (string) $headerNode->{Header::N_DATECREATED}
         );
-        $this->assertEquals($header->getCurrencyCode(),
+
+        $this->assertEquals(
+            $header->getCurrencyCode(),
             (string) $headerNode->{Header::N_CURRENCYCODE}
         );
-        $this->assertEquals($header->getTaxEntity(),
+
+        $this->assertEquals(
+            $header->getTaxEntity(),
             (string) $headerNode->{Header::N_TAXENTITY}
         );
-        $this->assertEquals($header->getProductCompanyTaxID(),
+
+        $this->assertEquals(
+            $header->getProductCompanyTaxID(),
             (string) $headerNode->{Header::N_PRODUCTCOMPANYTAXID}
         );
-        $this->assertEquals($header->getSoftwareCertificateNumber(),
+
+        $this->assertEquals(
+            $header->getSoftwareCertificateNumber(),
             (int) $headerNode->{Header::N_SOFTWARECERTIFICATENUMBER}
         );
-        $this->assertEquals($header->getProductID(),
+
+        $this->assertEquals(
+            $header->getProductID(),
             (string) $headerNode->{Header::N_PRODUCTID}
         );
-        $this->assertEquals($header->getProductVersion(),
+
+        $this->assertEquals(
+            $header->getProductVersion(),
             (string) $headerNode->{Header::N_PRODUCTVERSION}
         );
-        $this->assertEquals($header->getHeaderComment(),
+        $this->assertEquals(
+            $header->getHeaderComment(),
             (string) $headerNode->{Header::N_HEADERCOMMENT}
         );
-        $this->assertEquals($header->getTelephone(),
+
+        $this->assertEquals(
+            $header->getTelephone(),
             (string) $headerNode->{Header::N_TELEPHONE}
         );
-        $this->assertEquals($header->getFax(),
+
+        $this->assertEquals(
+            $header->getFax(),
             (string) $headerNode->{Header::N_FAX}
         );
-        $this->assertEquals($header->getEmail(),
+
+        $this->assertEquals(
+            $header->getEmail(),
             (string) $headerNode->{Header::N_EMAIL}
         );
-        $this->assertEquals($header->getWebsite(),
+
+        $this->assertEquals(
+            $header->getWebsite(),
             (string) $headerNode->{Header::N_WEBSITE}
         );
+
+        $this->assertEmpty($header->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($header->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $this->setNullsHeader($header);
 
         unset($node);
-        $nodeNull       = new \SimpleXMLElement("<root></root>");
+
+        $nodeNull       = $auditFile->createRootElement();
         $header->createXmlNode($nodeNull);
         $headerNodeNull = $nodeNull->{Header::N_HEADER};
-        $this->assertEquals(0,
-            $headerNodeNull->{Header::N_BUSINESSNAME}->count());
-        $this->assertEquals(0,
-            $headerNodeNull->{Header::N_HEADERCOMMENT}->count());
+        $this->assertEquals(
+            0, $headerNodeNull->{Header::N_BUSINESSNAME}->count()
+        );
+        $this->assertEquals(
+            0, $headerNodeNull->{Header::N_HEADERCOMMENT}->count()
+        );
         $this->assertEquals(0, $headerNodeNull->{Header::N_TELEPHONE}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_FAX}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_EMAIL}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_WEBSITE}->count());
+
+        $this->assertEmpty($header->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($header->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($header->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testParseXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNode(): void
     {
-        $node = new \SimpleXMLElement("<root></root>");
-
+        $auditFile = new AuditFile();
+        $node      = $auditFile->createRootElement();
         $header = $this->createHeader();
         $xml    = $header->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
 
-        $parsed = new Header();
+        $parsed = new Header(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
-        $this->assertEquals($header->getAuditFileVersion(),
-            $parsed->getAuditFileVersion());
+
+        $this->assertEquals(
+            $header->getAuditFileVersion(), $parsed->getAuditFileVersion()
+        );
+
         $this->assertEquals($header->getCompanyID(), $parsed->getCompanyID());
-        $this->assertEquals($header->getTaxRegistrationNumber(),
-            $parsed->getTaxRegistrationNumber());
-        $this->assertEquals($header->getTaxAccountingBasis()->get(),
-            $parsed->getTaxAccountingBasis()->get());
+
+        $this->assertEquals(
+            $header->getTaxRegistrationNumber(),
+            $parsed->getTaxRegistrationNumber()
+        );
+
+        $this->assertEquals(
+            $header->getTaxAccountingBasis()->get(),
+            $parsed->getTaxAccountingBasis()->get()
+        );
+
         $this->assertEquals($header->getCompanyName(), $parsed->getCompanyName());
-        $this->assertEquals($header->getBusinessName(),
-            $parsed->getBusinessName());
-        $this->assertEquals($header->getCompanyAddress()->getAddressDetail(),
-            $parsed->getCompanyAddress()->getAddressDetail());
+
+        $this->assertEquals(
+            $header->getBusinessName(), $parsed->getBusinessName()
+        );
+        $this->assertEquals(
+            $header->getCompanyAddress()->getAddressDetail(),
+            $parsed->getCompanyAddress()->getAddressDetail()
+        );
+
         $this->assertEquals($header->getFiscalYear(), $parsed->getFiscalYear());
-        $this->assertEquals($header->getStartDate()
-                ->format(RDate::SQL_DATE),
-            $parsed->getStartDate()->format(RDate::SQL_DATE));
-        $this->assertEquals($header->getEndDate()
-                ->format(RDate::SQL_DATE),
-            $parsed->getEndDate()->format(RDate::SQL_DATE));
-        $this->assertEquals($header->getDateCreated()
-                ->format(RDate::SQL_DATE),
-            $parsed->getDateCreated()->format(RDate::SQL_DATE));
-        $this->assertEquals($header->getCurrencyCode(),
-            $parsed->getCurrencyCode());
+
+        $this->assertEquals(
+            $header->getStartDate()->format(RDate::SQL_DATE),
+            $parsed->getStartDate()->format(RDate::SQL_DATE)
+        );
+
+        $this->assertEquals(
+            $header->getEndDate()->format(RDate::SQL_DATE),
+            $parsed->getEndDate()->format(RDate::SQL_DATE)
+        );
+
+        $this->assertEquals(
+            $header->getDateCreated()->format(RDate::SQL_DATE),
+            $parsed->getDateCreated()->format(RDate::SQL_DATE)
+        );
+
+        $this->assertEquals(
+            $header->getCurrencyCode(), $parsed->getCurrencyCode()
+        );
+
         $this->assertEquals($header->getTaxEntity(), $parsed->getTaxEntity());
-        $this->assertEquals($header->getProductCompanyTaxID(),
-            $parsed->getProductCompanyTaxID());
-        $this->assertEquals($header->getSoftwareCertificateNumber(),
-            $parsed->getSoftwareCertificateNumber());
+
+        $this->assertEquals(
+            $header->getProductCompanyTaxID(), $parsed->getProductCompanyTaxID()
+        );
+
+        $this->assertEquals(
+            $header->getSoftwareCertificateNumber(),
+            $parsed->getSoftwareCertificateNumber()
+        );
+
         $this->assertEquals($header->getProductID(), $parsed->getProductID());
-        $this->assertEquals($header->getProductVersion(),
-            $parsed->getProductVersion());
-        $this->assertEquals($header->getHeaderComment(),
-            $parsed->getHeaderComment());
+
+        $this->assertEquals(
+            $header->getProductVersion(), $parsed->getProductVersion()
+        );
+
+        $this->assertEquals(
+            $header->getHeaderComment(), $parsed->getHeaderComment()
+        );
+
         $this->assertEquals($header->getTelephone(), $parsed->getTelephone());
         $this->assertEquals($header->getFax(), $parsed->getFax());
         $this->assertEquals($header->getEmail(), $parsed->getEmail());
         $this->assertEquals($header->getWebsite(), $parsed->getWebsite());
 
+        $this->assertEmpty($header->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($header->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($header->getErrorRegistor()->getOnSetValue());
+
         unset($parsed);
         $this->setNullsHeader($header);
-        $parsedNull = new Header();
-        $parsedNull->parseXmlNode(new \SimpleXMLElement(
-                $header->createXmlNode($node)->asXML()
-        ));
+        $parsedNull = new Header(new ErrorRegister());
+
+        $xmlToParse = $header->createXmlNode($node)->asXML();
+        if ($xmlToParse === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $parsedNull->parseXmlNode(
+            new \SimpleXMLElement($xmlToParse)
+        );
     }
 
-    public function testClone()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testClone(): void
     {
         $header = $this->createHeader();
         $clone  = clone $header;
@@ -934,5 +1064,71 @@ class HeaderTest extends TestCase
             $clone->getStartDate()->getTimestamp(),
             $header->getStartDate()->getTimestamp()
         );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $auditFile = new AuditFile();
+        $node      = $auditFile->createRootElement();
+        $header = new Header(new ErrorRegister());
+        $xml    = $header->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($header->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($header->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $auditFile = new AuditFile();
+        $node      = $auditFile->createRootElement();
+        $header = new Header(new ErrorRegister());
+        $header->setBusinessName("");
+        $header->setCompanyID("");
+        $header->setCompanyName("");
+        $header->setEmail("aaaa");
+        $header->setEndDate((new RDate())->addYears(-9));
+        $header->setStartDate((new RDate())->addYears(-9));
+        $header->setFax("");
+        $header->setFiscalYear(99);
+        $header->setHeaderComment("");
+        $header->setProductCompanyTaxID("----");
+        $header->setProductID("---");
+        $header->setProductVersion("****");
+        $header->setSoftwareCertificateNumber(-99);
+        $header->setTaxEntity("");
+        $header->setTaxRegistrationNumber(-999);
+        $header->setTelephone("");
+        $header->setWebsite("");
+
+        $xml = $header->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($header->getErrorRegistor()->getLibXmlError());
     }
 }

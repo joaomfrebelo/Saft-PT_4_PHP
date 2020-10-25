@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 
@@ -63,27 +64,28 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_WITHHOLDINGTAXAMOUNT = "WithholdingTaxAmount";
 
     /**
-     * <xs:element ref="WithholdingTaxType" minOccurs="0"/>
+     * &lt;xs:element ref="WithholdingTaxType" minOccurs="0"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType
      * @since 1.0.0
      */
     private ?WithholdingTaxType $withholdingTaxType = null;
 
     /**
-     * <xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/>
+     * &lt;xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/&gt;
      * @var string|null
      * @since 1.0.0
      */
     private ?string $withholdingTaxDescription = null;
 
     /**
-     * <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
+     * &lt;xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/&gt;
      * @var float
      * @since 1.0.0
      */
     private float $withholdingTaxAmount;
 
     /**
+     * WithholdingTax
      * &lt;!-- Estrutura de Retencao na fonte--&gt;
      * &lt;xs:complexType name="WithholdingTax"&gt;
      *     &lt;xs:sequence&gt;
@@ -93,113 +95,178 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *         &lt;xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/&gt;
      *     &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get the tax type<br>
-     * <xs:element ref="WithholdingTaxType" minOccurs="0"/>
+     * Indicate the type of withholding tax in this field, filling in:<br>
+     * “IRS” – Personal income tax;<br>
+     * “IRC” – Corporate income tax;<br>
+     * “IS” – Stamp Duty.<br>
+     * &lt;xs:element ref="WithholdingTaxType" minOccurs="0"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType|null
      * @since 1.0.0
      */
     public function getWithholdingTaxType(): ?WithholdingTaxType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->withholdingTaxType === null ?
-                        "null" : $this->withholdingTaxType->get()));
+                    "null" : $this->withholdingTaxType->get()
+                )
+            );
 
         return $this->withholdingTaxType;
     }
 
     /**
-     * Set the tax type<br>
-     * <xs:element ref="WithholdingTaxType" minOccurs="0"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType|null $WithholdingTaxType
+     * Set the tax type<br><br>
+     * Indicate the type of withholding tax in this field, filling in:<br>
+     * “IRS” – Personal income tax;<br>
+     * “IRC” – Corporate income tax;<br>
+     * “IS” – Stamp Duty.<br>
+     * &lt;xs:element ref="WithholdingTaxType" minOccurs="0"/&gt;
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType|null $withholdingTaxType
      * @return void
      * @since 1.0.0
      */
-    public function setWithholdingTaxType(?WithholdingTaxType $WithholdingTaxType): void
+    public function setWithholdingTaxType(?WithholdingTaxType $withholdingTaxType): void
     {
-        $this->withholdingTaxType = $WithholdingTaxType;
+        $this->withholdingTaxType = $withholdingTaxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->withholdingTaxType === null ?
-                        "null" : $this->withholdingTaxType->get()));
+                    "null" : $this->withholdingTaxType->get()
+                )
+            );
     }
 
     /**
      * Get the Tax description<br>
-     * <xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/>
+     * Indicate the applicable legal framework.<br>
+     * In case WithholdingTaxType = IS, fill in with the corresponding table code.<br>
+     * &lt;xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getWithholdingTaxDescription(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->withholdingTaxDescription === null ?
-                        "null" : $this->withholdingTaxDescription));
+                    "null" : $this->withholdingTaxDescription
+                )
+            );
         return $this->withholdingTaxDescription;
     }
 
     /**
      * Set the Tax description<br>
-     * <xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/>
+     * Indicate the applicable legal framework.<br>
+     * In case WithholdingTaxType = IS, fill in with the corresponding table code.<br>
+     * &lt;xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/&gt;
      * @param string|null $withholdingTaxDescription
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setWithholdingTaxDescription(?string $withholdingTaxDescription): void
+    public function setWithholdingTaxDescription(?string $withholdingTaxDescription): bool
     {
-        $this->withholdingTaxDescription = $withholdingTaxDescription === null ?
-            null : $this->valTextMandMaxCar($withholdingTaxDescription, 60,
-                __METHOD__);
+        try {
+            $this->withholdingTaxDescription = $withholdingTaxDescription === null
+                    ? null : $this->valTextMandMaxCar(
+                        $withholdingTaxDescription, 60, __METHOD__
+                    );
+            $return                          = true;
+        } catch (AuditFileException $e) {
+            $this->withholdingTaxDescription = $withholdingTaxDescription;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("WithholdingTaxDescription_not_valid");
+            $return                          = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->withholdingTaxDescription === null ?
-                        "null" : $this->withholdingTaxDescription));
+                    "null" : $this->withholdingTaxDescription
+                )
+            );
+        return $return;
     }
 
     /**
-     * Get Tax amount
-     * <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
+     * Get Tax amount<br>
+     * Fill in withheld tax amount.
+     * &lt;xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/&gt;
      * @return float
+     * @throws \Error
      * @since 1.0.0
      */
     public function getWithholdingTaxAmount(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    \strval($this->withholdingTaxAmount)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    \strval($this->withholdingTaxAmount)
+                )
+            );
         return $this->withholdingTaxAmount;
     }
 
-    /**     *
-     * Get Tax amount
-     * <xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/>
+    /**
+     * Get if is set WithholdingTaxAmount
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetWithholdingTaxAmount(): bool
+    {
+        return isset($this->withholdingTaxAmount);
+    }
+
+    /**
+     * Get Tax amount<br>
+     * Fill in withheld tax amount.
+     * &lt;xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/&gt;
      * @param float $withholdingTaxAmount
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setWithholdingTaxAmount(float $withholdingTaxAmount): void
+    public function setWithholdingTaxAmount(float $withholdingTaxAmount): bool
     {
         if ($withholdingTaxAmount < 0.0) {
-            $msg = "Withholding tax amount can not be negative";
+            $msg    = "Withholding tax amount can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("WithholdingTaxAmount_not_valid");
+        } else {
+            $return = true;
         }
         $this->withholdingTaxAmount = $withholdingTaxAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    \strval($this->withholdingTaxAmount)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    \strval($this->withholdingTaxAmount)
+                )
+            );
+        return $return;
     }
 
     /**
@@ -214,7 +281,8 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== Invoice::N_INVOICE) {
-            $msg = \sprintf("Node name should be '%s' or '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' or '%s' but is '%s",
                 Payment::N_PAYMENT, Invoice::N_INVOICE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -223,22 +291,30 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         $withholTaxNode = $node->addChild(static::N_WITHHOLDINGTAX);
+
         if ($this->getWithholdingTaxType() !== null) {
             $withholTaxNode->addChild(
                 static::N_WITHHOLDINGTAXTYPE,
                 $this->getWithholdingTaxType()->get()
             );
         }
+
         if ($this->getWithholdingTaxDescription() !== null) {
             $withholTaxNode->addChild(
                 static::N_WITHHOLDINGTAXDESCRIPTION,
                 $this->getWithholdingTaxDescription()
             );
         }
-        $withholTaxNode->addChild(
-            static::N_WITHHOLDINGTAXAMOUNT,
-            $this->floatFormat($this->getWithholdingTaxAmount())
-        );
+
+        if (isset($this->withholdingTaxAmount)) {
+            $withholTaxNode->addChild(
+                static::N_WITHHOLDINGTAXAMOUNT,
+                $this->floatFormat($this->getWithholdingTaxAmount())
+            );
+        } else {
+            $withholTaxNode->addChild(static::N_WITHHOLDINGTAXAMOUNT);
+            $this->getErrorRegistor()->addOnCreateXmlNode("WithholdingTaxAmount_not_valid");
+        }
 
         return $withholTaxNode;
     }
@@ -255,8 +331,10 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_WITHHOLDINGTAX) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_WITHHOLDINGTAX, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_WITHHOLDINGTAX, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

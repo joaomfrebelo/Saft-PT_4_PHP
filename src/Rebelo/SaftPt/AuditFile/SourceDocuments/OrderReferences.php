@@ -27,11 +27,14 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
 /**
- * Description of OrderReferences
+ * OrderReferences<br>
+ * If there is a need to make more than one reference,
+ * this structure can be generated as many times as necessary.
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -57,8 +60,8 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_ORDERDATE = "OrderDate";
 
     /**
-     * <xs:element ref="OriginatingON" minOccurs="0"/>
-     * <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;
+     * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      *
      * @var string|null
      * @since 1.0.0
@@ -66,83 +69,114 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private ?string $originatingON = null;
 
     /**
-     * <xs:element ref="OrderDate" minOccurs="0"/><br>
-     * <xs:element name="OrderDate" type="SAFdateType"/>
+     * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="OrderDate" type="SAFdateType"/&gt;
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     private ?RDate $orderDate = null;
 
     /**
-     * &lt;!-- Estrutura de Referencias ao documento de origem--&gt;
+     * OrderReferences<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary.
+     * <pre>
      * &lt;xs:complexType name="OrderReferences"&gt;
      *  &lt;xs:sequence&gt;
      *      &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;
      *      &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
      *  &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
+     * </pre>
+     * @param ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get OriginatingON<br>
-     * <xs:element ref="OriginatingON" minOccurs="0"/><br>
-     * <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * In case the document is included in SAF-T (PT)
+     * the number structure of the field of origin should be used.<br>
+     * &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getOriginatingON(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->originatingON === null ?
-                        "null" : $this->originatingON));
+                    "null" : $this->originatingON
+                )
+            );
 
         return $this->originatingON;
     }
 
     /**
      * Set OriginatingON<br>
-     * <xs:element ref="OriginatingON" minOccurs="0"/><br>
-     * <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * In case the document is included in SAF-T (PT)
+     * the number structure of the field of origin should be used.<br>
+     * &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @param string|null $originatingON
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setOriginatingON(?string $originatingON): void
+    public function setOriginatingON(?string $originatingON): bool
     {
-        $this->originatingON = $originatingON === null ?
-            null :
-            $this->valTextMandMaxCar($originatingON, 60, __METHOD__);
+        try {
+            $this->originatingON = $originatingON === null ?
+                null :
+                $this->valTextMandMaxCar($originatingON, 60, __METHOD__);
+            $return              = true;
+        } catch (AuditFileException $e) {
+            $this->originatingON = $originatingON;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("OriginatingON_not_valid");
+            $return              = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->originatingON === null ?
-                        "null" : $this->originatingON));
+                    "null" : $this->originatingON
+                )
+            );
+        return $return;
     }
 
     /**
      * Get OrderDate<br>
-     * <xs:element ref="OrderDate" minOccurs="0"/>
+     * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
      * @return \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     public function getOrderDate(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->orderDate === null ?
-                        "null" : $this->orderDate->format(RDate::SQL_DATE)));
+                    "null" : $this->orderDate->format(RDate::SQL_DATE)
+                )
+            );
 
         return $this->orderDate;
     }
 
     /**
      * Set OrderDate<br>
-     * <xs:element ref="OrderDate" minOccurs="0"/>
+     * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
      * @param \Rebelo\Date\Date|null $orderDate
      * @return void
      * @since 1.0.0
@@ -151,9 +185,13 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->orderDate = $orderDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->orderDate === null ?
-                        "null" : $this->orderDate->format(RDate::SQL_DATE)));
+                    "null" : $this->orderDate->format(RDate::SQL_DATE)
+                )
+            );
     }
 
     /**
@@ -168,7 +206,8 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
                 A2Line::N_LINE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -205,8 +244,10 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_ORDERREFERENCES) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_ORDERREFERENCES, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_ORDERREFERENCES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

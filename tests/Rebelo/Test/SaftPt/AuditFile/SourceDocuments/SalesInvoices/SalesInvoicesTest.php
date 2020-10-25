@@ -27,10 +27,9 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{
     SourceDocuments,
-    SalesInvoices\Invoice,
     SalesInvoices\SalesInvoices
 };
 
@@ -46,9 +45,10 @@ class SalesInvoicesTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(SalesInvoices::class);
@@ -56,106 +56,108 @@ class SalesInvoicesTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $salesInvoices = new SalesInvoices();
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
         $this->assertInstanceOf(SalesInvoices::class, $salesInvoices);
         $this->assertSame(0, \count($salesInvoices->getInvoice()));
+
+        $this->assertFalse($salesInvoices->issetNumberOfEntries());
+        $this->assertFalse($salesInvoices->issetTotalCredit());
+        $this->assertFalse($salesInvoices->issetTotalDebit());
+        $this->assertNull($salesInvoices->getDocTableTotalCalc());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testNumberOfEntries()
+    public function testNumberOfEntries(): void
     {
-        $salesInvoices = new SalesInvoices();
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
         $entries       = [0, 999];
         foreach ($entries as $num) {
-            $salesInvoices->setNumberOfEntries($num);
+            $this->assertTrue($salesInvoices->setNumberOfEntries($num));
             $this->assertSame($num, $salesInvoices->getNumberOfEntries());
+            $this->assertTrue($salesInvoices->issetNumberOfEntries());
         }
-        try {
-            $salesInvoices->setNumberOfEntries(-1);
-            $this->fail("Set NumberOdEntries to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = -1;
+        $this->assertFalse($salesInvoices->setNumberOfEntries($wrong));
+        $this->assertSame($wrong, $salesInvoices->getNumberOfEntries());
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTotalDebit()
+    public function testTotalDebit(): void
     {
-        $salesInvoices = new SalesInvoices();
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
         $debitStack    = [0.0, 9.99];
         foreach ($debitStack as $debit) {
-            $salesInvoices->setTotalDebit($debit);
+            $this->assertTrue($salesInvoices->setTotalDebit($debit));
             $this->assertSame($debit, $salesInvoices->getTotalDebit());
+            $this->assertTrue($salesInvoices->issetTotalDebit());
         }
-        try {
-            $salesInvoices->setTotalDebit(-0.19);
-            $this->fail("Set TotalDebit to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = -19.9;
+        $this->assertFalse($salesInvoices->setTotalDebit($wrong));
+        $this->assertSame($wrong, $salesInvoices->getTotalDebit());
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTotalCredit()
+    public function testTotalCredit(): void
     {
-        $salesInvoices = new SalesInvoices();
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
         $creditStack   = [0.0, 9.99];
-        foreach ($creditStack as $creditStack) {
-            $salesInvoices->setTotalCredit($creditStack);
-            $this->assertSame($creditStack, $salesInvoices->getTotalCredit());
+        foreach ($creditStack as $credit) {
+            $this->assertTrue($salesInvoices->setTotalCredit($credit));
+            $this->assertSame($credit, $salesInvoices->getTotalCredit());
+            $this->assertTrue($salesInvoices->issetTotalCredit());
         }
-        try {
-            $salesInvoices->setTotalDebit(-0.19);
-            $this->fail("Set TotalCredit to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = -19.9;
+        $this->assertFalse($salesInvoices->setTotalCredit($wrong));
+        $this->assertSame($wrong, $salesInvoices->getTotalCredit());
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInvoice()
+    public function testInvoice(): void
     {
-        $salesInvoices = new SalesInvoices();
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
         $nMax          = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $invoice = new Invoice();
+            $invoice = $salesInvoices->addInvoice();
             $invoice->setAtcud(\strval($n));
-            $index   = $salesInvoices->addToInvoice($invoice);
-            $this->assertSame($n, $index);
             $this->assertSame(
                 \strval($n), $salesInvoices->getInvoice()[$n]->getAtcud()
             );
         }
 
         $this->assertSame($nMax, \count($salesInvoices->getInvoice()));
-
-        $unset = 2;
-        $salesInvoices->unsetInvoice($unset);
-        $this->assertFalse($salesInvoices->issetInvoice($unset));
-        $this->assertSame($nMax - 1, \count($salesInvoices->getInvoice()));
     }
 
     /**
      * Reads SalesInvoices from the Demo SAFT in Test\Ressources
      * and parse then to WorkDocument class, after that generate a xml from the
      * class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -169,25 +171,194 @@ class SalesInvoicesTest extends TestCase
 
 
 
-        $salesInvoices = new SalesInvoices();
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
         $salesInvoices->parseXmlNode($salesInvoicesXml);
 
-        $xmlRootNode   = new \SimpleXMLElement(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-        );
+        $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
         $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
 
         $xml = $salesInvoices->createXmlNode($sourceDocNode);
 
         try {
             $assertXml = $this->xmlIsEqual($salesInvoicesXml, $xml);
-            $this->assertTrue($assertXml,
+            $this->assertTrue(
+                $assertXml,
                 \sprintf("Fail with error '%s'", $assertXml)
             );
         } catch (\Exception | \Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
+
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $workingDocsNode = new \SimpleXMLElement(
+            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+        );
+        $salesInvoices   = new SalesInvoices(new ErrorRegister());
+        $xml             = $salesInvoices->createXmlNode($workingDocsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $workingDocsNode = new \SimpleXMLElement(
+            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+        );
+        $salesInvoices   = new SalesInvoices(new ErrorRegister());
+        $salesInvoices->setNumberOfEntries(-1);
+        $salesInvoices->setTotalCredit(-0.99);
+        $salesInvoices->setTotalDebit(-0.95);
+
+        $xml = $salesInvoices->createXmlNode($workingDocsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($salesInvoices->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetOrder(): void
+    {
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
+        $inoiceNo      = array(
+            "FT FT/1",
+            "FS FS/4",
+            "FT FT/5",
+            "FT FT/2",
+            "FT FT/9",
+            "FT FT/4",
+            "FT FT/3",
+            "FT FT/10",
+            "FS FS/3",
+            "FS FS/2",
+            "FS FS/1",
+            "FT B/3",
+            "FT B/1",
+            "FT B/2",
+        );
+        foreach ($inoiceNo as $no) {
+            $salesInvoices->addInvoice()->setInvoiceNo($no);
+        }
+
+        $order = $salesInvoices->getOrder();
+        $this->assertSame(array("FS", "FT"), \array_keys($order));
+        $this->assertSame(array("FS"), \array_keys($order["FS"]));
+        $this->assertSame(array("B", "FT"), \array_keys($order["FT"]));
+        $this->assertSame(
+            array(1, 2, 3, 4, 5, 9, 10), \array_keys($order["FT"]["FT"])
+        );
+        $this->assertSame(array(1, 2, 3), \array_keys($order["FT"]["B"]));
+        $this->assertSame(array(1, 2, 3, 4), \array_keys($order["FS"]["FS"]));
+
+        foreach ($order as $type => $serieStack) {
+            foreach ($serieStack as $serie => $noSatck) {
+                foreach ($noSatck as $no => $invoice) {
+                    /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+                    $this->assertSame(
+                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        $invoice->getInvoiceNo()
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDuplicateNumber(): void
+    {
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
+        $inoiceNo      = array(
+            "FT FT/1",
+            "FS FS/4",
+            "FT FT/1",
+            "FT FT/2",
+            "FT FT/9",
+            "FT FT/4",
+            "FT FT/3",
+            "FT FT/10",
+            "FS FS/3",
+            "FS FS/2",
+            "FS FS/1",
+            "FT B/3",
+            "FT B/1",
+            "FT B/2",
+        );
+        foreach ($inoiceNo as $no) {
+            $salesInvoices->addInvoice()->setInvoiceNo($no);
+        }
+
+        $salesInvoices->getOrder();
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getValidationErrors());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNoNumber(): void
+    {
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
+        $inoiceNo      = array(
+            "FT FT/1",
+            "FT B/2"
+        );
+        foreach ($inoiceNo as $no) {
+            $salesInvoices->addInvoice()->setInvoiceNo($no);
+        }
+        $salesInvoices->addInvoice();
+        $salesInvoices->getOrder();
+        $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getValidationErrors());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDocTableTotalCalc(): void
+    {
+        $salesInvoices = new SalesInvoices(new ErrorRegister());
+        $salesInvoices->setDocTableTotalCalc(new \Rebelo\SaftPt\Validate\DocTableTotalCalc);
+        $this->assertInstanceOf(
+            \Rebelo\SaftPt\Validate\DocTableTotalCalc::class,
+            $salesInvoices->getDocTableTotalCalc()
+        );
     }
 }

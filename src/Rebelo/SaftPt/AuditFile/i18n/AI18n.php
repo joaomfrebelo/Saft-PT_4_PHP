@@ -24,36 +24,34 @@
  */
 declare(strict_types=1);
 
-namespace Rebelo\SaftPt\AuditFile;
+namespace Rebelo\SaftPt\AuditFile\i18n;
 
 /**
- * Saft XML Export Type
+ * Description of AI18n
  *
  * @author João Rebelo
  * @since 1.0.0
  */
-class ExportType extends \Rebelo\Enum\AEnum
+abstract class AI18n implements II18n
 {
     /**
-     * Simplified<br>
-     * Generate the simplified saft file
-     * @since 1.0.0
-     */
-    const S = "S";
-
-    /**
-     * Complete<br>
-     * Generate the complete saft file
-     * @since 1.0.0
-     */
-    const C = "C";
-
-    /**
      *
-     * @param string $value
+     * @var string[]
+     * @since 1.0.0
      */
-    public function __construct(string $value)
+    public array $stack = array();
+
+    /**
+     * Get the translation
+     * @param string $string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(string $string): string
     {
-        parent::__construct($value);
+        if (\array_key_exists($string, $this->stack)) {
+            return $this->stack[$string];
+        }
+        return $string;
     }
 }

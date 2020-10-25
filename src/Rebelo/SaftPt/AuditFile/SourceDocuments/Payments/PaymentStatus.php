@@ -27,15 +27,21 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 /**
- * PaymentStatus
+ * PaymentStatus<br>
+ * To fill in with:
+ * “N” – Normal receipt in force;<br>
+ * “A” – Cancelled receipt.<br>
  *
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus N()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus A()
  * @author João Rebelo
  * @since 1.0.0
  */
 class PaymentStatus extends \Rebelo\Enum\AEnum
 {
     /**
-     * N para normal
+     * “N” – Normal receipt in force
+     * “A” – Cancelled receipt.
      * @since 1.0.0
      */
     const N = "N";
@@ -47,9 +53,11 @@ class PaymentStatus extends \Rebelo\Enum\AEnum
     const A = "A";
 
     /**
-     * PaymentStatus
+     * PaymentStatus<br>
+     * To fill in with:<br>
+     * “N” – Normal receipt in force;<br>
+     * “A” – Cancelled receipt.<br>
      * <pre>
-     * <!-- Estado do documento Payments -->
      *  &lt;xs:element name="PaymentStatus"&gt;
      *      &lt;xs:annotation&gt;
      *          &lt;xs:documentation&gt;N para normal, A para Anulado &lt;/xs:documentation&gt;
@@ -68,5 +76,15 @@ class PaymentStatus extends \Rebelo\Enum\AEnum
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get enum value
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

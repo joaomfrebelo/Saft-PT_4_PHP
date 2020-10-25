@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * ALine, abstract class of Line
@@ -43,21 +44,21 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_LINE = "Line";
 
     /**
-     * <xs:element ref="LineNumber"/>
+     * &lt;xs:element ref="LineNumber"/&gt;
      * Node Name
      * @since 1.0.0
      */
     const N_LINENUMBER = "LineNumber";
 
     /**
-     * <xs:element ref="DebitAmount"/>
+     * &lt;xs:element ref="DebitAmount"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_DEBITAMOUNT = "DebitAmount";
 
     /**
-     * <xs:element ref="CreditAmount"/>
+     * &lt;xs:element ref="CreditAmount"/&gt;
      * Node name
      * @since 1.0.0
      */
@@ -71,21 +72,21 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_TAXEXEMPTIONREASON = "TaxExemptionReason";
 
     /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
+     * &lt;xs:element ref="SettlementAmount" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_SETTLEMENTAMOUNT = "SettlementAmount";
 
     /**
-     * <xs:element ref="DebitAmount"/>
+     * &lt;xs:element ref="DebitAmount"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_TAXEXEMPTIONCODE = "TaxExemptionCode";
 
     /**
-     * <xs:element ref="LineNumber"/>
+     * &lt;xs:element ref="LineNumber"/&gt;
      *
      * @var int
      * @since 1.0.0
@@ -93,166 +94,240 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private int $lineNumber;
 
     /**
-     * <xs:element ref="DebitAmount"/>
+     * &lt;xs:element ref="DebitAmount"/&gt;
      * @var float|null
      * @since 1.0.0
      */
     private ?float $debitAmount = null;
 
     /**
-     * <xs:element ref="CreditAmount"/>
+     * &lt;xs:element ref="CreditAmount"/&gt;
      * @var float|null
      * @since 1.0.0
      */
     private ?float $creditAmount = null;
 
     /**
-     * <xs:element ref="TaxExemptionReason" minOccurs="0"/>
+     * &lt;xs:element ref="TaxExemptionReason" minOccurs="0"/&gt;
      * @var string|null
      * @since 1.0.0
      */
     private ?string $taxExemptionReason = null;
 
     /**
-     * <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+     * &lt;xs:element ref="TaxExemptionCode" minOccurs="0"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode|null
      * @since 1.0.0
      */
     private ?TaxExemptionCode $taxExemptionCode = null;
 
     /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
+     * &lt;xs:element ref="SettlementAmount" minOccurs="0"/&gt;
      * @var float|null
      * @since 1.0.0
      */
     private ?float $settlementAmount = null;
 
     /**
-     * <xs:element ref="LineNumber"/>
+     * &lt;xs:element ref="LineNumber"/&gt;
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get LineNumber<br>
-     * <xs:element ref="LineNumber"/>
+     * Lines should be exported in the same order as on the original receipt.<br>
+     * &lt;xs:element ref="LineNumber"/&gt;
      * @return int
+     * @throws \Error
      * @since 1.0.0
      */
     public function getLineNumber(): int
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    \strval($this->lineNumber)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    \strval($this->lineNumber)
+                )
+            );
         return $this->lineNumber;
     }
 
     /**
-     * Set LineNumber<br>
-     * <xs:element ref="LineNumber"/>
-     * @param int $lineNumber
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set LineNumber
+     * @return bool
      * @since 1.0.0
      */
-    public function setLineNumber(int $lineNumber): void
+    public function issetLineNumber(): bool
+    {
+        return isset($this->lineNumber);
+    }
+
+    /**
+     * Set LineNumber<br>
+     * Lines should be exported in the same order as on the original receipt.<br>
+     * &lt;xs:element ref="LineNumber"/&gt;
+     * @param int $lineNumber
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setLineNumber(int $lineNumber): bool
     {
         if ($lineNumber < 1) {
-            $msg = "Line Number can not be less than 1";
+            $msg    = "Line Number can not be less than 1";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new \Rebelo\SaftPt\AuditFile\AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("LineNumber_not_valid");
+        } else {
+            $return = true;
         }
         $this->lineNumber = $lineNumber;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->lineNumber));
+        return $return;
     }
 
     /**
-     * <xs:element ref="DebitAmount"/>
+     * Get DebitAmount<br>
+     * Amount of the line of the debit documents.
+     * This amount is without tax, after the deduction of the line and header discounts.
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="DebitAmount"/&gt;
      * @return float|null
      * @since 1.0.0
      */
     public function getDebitAmount(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->debitAmount === null ? "null" : \strval($this->debitAmount)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->debitAmount === null ? "null" : \strval($this->debitAmount)
+                )
+            );
         return $this->debitAmount;
     }
 
     /**
-     * <xs:element ref="DebitAmount"/>
+     * Set DebitAmount<br>
+     * Amount of the line of the debit documents.
+     * This amount is without tax, after the deduction of the line and header discounts.
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="DebitAmount"/&gt;
      * @param float|null $debitAmount
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setDebitAmount(?float $debitAmount): void
+    public function setDebitAmount(?float $debitAmount): bool
     {
-        if ($debitAmount < 0.0) {
-            $msg = "Debit Amout can not be less than 0.0";
+        try {
+            if ($debitAmount < 0.0) {
+                $msg = "Debit Amout can not be less than 0.0";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            if ($this->getCreditAmount() !== null && $debitAmount !== null) {
+                $msg = "Debit Amout onlu can be setted if Credit Amount is null";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            $return = true;
+        } catch (AuditFileException $e) {
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        if ($this->getCreditAmount() !== null && $debitAmount !== null) {
-            $msg = "Debit Amout onlu can be setted if Credit Amount is null";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("DebitAmount_not_valid");
+            $return = false;
         }
         $this->debitAmount = $debitAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->debitAmount === null ? "null" : \strval($this->debitAmount)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->debitAmount === null ? "null" : \strval($this->debitAmount)
+                )
+            );
+        return $return;
     }
 
     /**
-     * <xs:element ref="CreditAmount"/>
+     * Get CreditAmount<br>
+     * Amount of the line of the credit documents.
+     * This amount is without tax, after the deduction of the line and header discounts.
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="CreditAmount"/&gt;
      * @return float|null
      * @since 1.0.0
      */
     public function getCreditAmount(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->creditAmount === null ? "null" : \strval($this->creditAmount)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->creditAmount === null ? "null" : \strval($this->creditAmount)
+                )
+            );
         return $this->creditAmount;
     }
 
     /**
-     * <xs:element ref="CreditAmount"/>
+     * Set CreditAmount<br>
+     * Amount of the line of the credit documents.
+     * This amount is without tax, after the deduction of the line and header discounts.
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="CreditAmount"/&gt;
      * @param float|null $creditAmount
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setCreditAmount(?float $creditAmount): void
+    public function setCreditAmount(?float $creditAmount): bool
     {
-        if ($creditAmount < 0.0) {
-            $msg = "Credit Amout can not be less than 0.0";
+        try {
+            if ($creditAmount < 0.0) {
+                $msg = "Credit Amout can not be less than 0.0";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            if ($this->getDebitAmount() !== null && $creditAmount !== null) {
+                $msg = "Credit Amout onlu can be setted if Debit Amount is null";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            $return = true;
+        } catch (AuditFileException $e) {
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        if ($this->getDebitAmount() !== null && $creditAmount !== null) {
-            $msg = "Credit Amout onlu can be setted if Debit Amount is null";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("CreditAmount_not_valid");
+            $return = false;
         }
         $this->creditAmount = $creditAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->creditAmount === null ? "null" : \strval($this->creditAmount)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->creditAmount === null ? "null" : \strval($this->creditAmount)
+                )
+            );
+        return $return;
     }
 
     /**
-     * Get Tax ExemptionReason
+     * Get Tax ExemptionReason<br>
+     * When fields 4.3.4.14.15.4. - TaxPercentage or 4.3.4.14.15.5. - TaxAmount
+     * fields are equal to zero, it is required to fill in this field.
+     * It must be referred to the applicable legal rule/procedure.
+     * This field should also be filled in, for the cases not subject to
+     * tax mentioned on table 2.5. – TaxTable
      * <pre>
      * &lt;xs:element ref="TaxExemptionReason" minOccurs="0"/&gt;&lt;br&gt;
      * &lt;xs:element name="TaxExemptionReason" type="SAFPTPortugueseTaxExemptionReason"/&gt;
@@ -269,14 +344,23 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getTaxExemptionReason(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->taxExemptionReason === null ? "null" :
-                        $this->taxExemptionReason));
+                    $this->taxExemptionReason
+                )
+            );
         return $this->taxExemptionReason;
     }
 
     /**
-     * Set Tax ExemptionReason
+     * Set Tax ExemptionReason<br>
+     * When fields 4.3.4.14.15.4. - TaxPercentage or 4.3.4.14.15.5. - TaxAmount
+     * fields are equal to zero, it is required to fill in this field.
+     * It must be referred to the applicable legal rule/procedure.
+     * This field should also be filled in, for the cases not subject to
+     * tax mentioned on table 2.5. – TaxTable
      * <pre>
      * &lt;xs:element ref="TaxExemptionReason" minOccurs="0"/&gt;&lt;br&gt;
      * &lt;xs:element name="TaxExemptionReason" type="SAFPTPortugueseTaxExemptionReason"/&gt;
@@ -288,39 +372,70 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *  &lt;/xs:simpleType&gt;
      * </pre>
      * @param string|null $taxExemptionReason
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxExemptionReason(?string $taxExemptionReason): void
+    public function setTaxExemptionReason(?string $taxExemptionReason): bool
     {
-        if ($taxExemptionReason !== null && \strlen($taxExemptionReason) < 6) {
-            $msg = "Tax Exemption Reason can not have less than 6 caracters";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
+        try {
+            if ($taxExemptionReason !== null && \strlen($taxExemptionReason) < 6) {
+                $msg = "Tax Exemption Reason can not have less than 6 caracters";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            $this->taxExemptionReason = $taxExemptionReason === null ? null :
+                $this->valTextMandMaxCar($taxExemptionReason, 60, __METHOD__);
 
-        $this->taxExemptionReason = $taxExemptionReason === null ? null :
-            $this->valTextMandMaxCar($taxExemptionReason, 60, __METHOD__);
+            $return = true;
+        } catch (AuditFileException $e) {
+            $this->taxExemptionReason = $taxExemptionReason;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("TaxExemptionReason_not_valid");
+            $return                   = false;
+        }
+        return $return;
     }
 
     /**
-     * <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+     * Get TaxExemptionCode<br>
+     * It shall be filled in with the code of the reason for exemption or
+     * non-settlement, which is included in the
+     * "Manual de Integração de Software – Comunicação das Faturas à
+     * AT" (Software Integration Manual - Communication of the Invoices to Tax and Customs Authority).
+     * The filling is required when fields 4.1.4.19.15.4. -
+     * TaxPercentage or 4.1.4.19.15.5. - Tax amount are equal to zero.
+     * This field shall also be filled in, for the cases not to subject to the
+     * taxes mentioned in table 2.5. - TaxTable.<br>
+     * &lt;xs:element ref="TaxExemptionCode" minOccurs="0"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode|null
      * @since 1.0.0
      */
     public function getTaxExemptionCode(): ?TaxExemptionCode
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->taxExemptionCode === null ? "null" :
-                        $this->taxExemptionCode->get()));
+                    $this->taxExemptionCode->get()
+                )
+            );
         return $this->taxExemptionCode;
     }
 
     /**
-     * <xs:element ref="TaxExemptionCode" minOccurs="0"/>
+     * Set TaxExemptionCode<br>
+     * It shall be filled in with the code of the reason for exemption or
+     * non-settlement, which is included in the
+     * "Manual de Integração de Software – Comunicação das Faturas à
+     * AT" (Software Integration Manual - Communication of the Invoices to Tax and Customs Authority).
+     * The filling is required when fields 4.1.4.19.15.4. -
+     * TaxPercentage or 4.1.4.19.15.5. - Tax amount are equal to zero.
+     * This field shall also be filled in, for the cases not to subject to the
+     * taxes mentioned in table 2.5. - TaxTable.<br>
+     * &lt;xs:element ref="TaxExemptionCode" minOccurs="0"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode|null $taxExemptionCode
      * @return void
      * @since 1.0.0
@@ -329,45 +444,68 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxExemptionCode = $taxExemptionCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->taxExemptionCode === null ? "null" :
-                        $this->taxExemptionCode->get()));
+                    $this->taxExemptionCode->get()
+                )
+            );
     }
 
     /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
+     * Get SettlementAmount<br>
+     * Shall present all the discounts
+     * (the proportion of global discounts for this line and the specific of the same line)
+     * affecting the amount on field 4.1.4.20.3. – GrossTotal.<br>
+     * &lt;xs:element ref="SettlementAmount" minOccurs="0"/&gt;
      * @return float|null
      * @since 1.0.0
      */
     public function getSettlementAmount(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->settlementAmount === null ? "null" :
-                        \strval($this->settlementAmount)));
+                    \strval($this->settlementAmount)
+                )
+            );
         return $this->settlementAmount;
     }
 
     /**
-     * <xs:element ref="SettlementAmount" minOccurs="0"/>
+     * set SettlementAmount<br>
+     * Shall present all the discounts
+     * (the proportion of global discounts for this line and the specific of the same line)
+     * affecting the amount on field 4.1.4.20.3. – GrossTotal.<br>
+     * &lt;xs:element ref="SettlementAmount" minOccurs="0"/&gt;
      * @param float|null $settlementAmount
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setSettlementAmount(?float $settlementAmount): void
+    public function setSettlementAmount(?float $settlementAmount): bool
     {
         if ($settlementAmount !== null && $settlementAmount < 0.0) {
-            $msg = "Settlement Amout can not be less than 0.0";
+            $msg    = "Settlement Amout can not be less than 0.0";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("SettlementAmount_not_valid");
+        } else {
+            $return = true;
         }
         $this->settlementAmount = $settlementAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->settlementAmount === null ? "null" :
-                        \strval($this->settlementAmount)));
+                    \strval($this->settlementAmount)
+                )
+            );
+        return $return;
     }
 
     /**
@@ -380,7 +518,17 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         $lineNode = $node->addChild(ALine::N_LINE);
-        $lineNode->addChild(ALine::N_LINENUMBER, \strval($this->getLineNumber()));
+
+        if (isset($this->lineNumber)) {
+            $lineNode->addChild(
+                ALine::N_LINENUMBER,
+                \strval($this->getLineNumber())
+            );
+        } else {
+            $lineNode->addChild(ALine::N_LINENUMBER);
+            $this->getErrorRegistor()->addOnCreateXmlNode("LineNumber_not_valid");
+        }
+
         return $lineNode;
     }
 
@@ -394,32 +542,42 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     protected function createXmlNodeDebitCreditNode(\SimpleXMLElement $node): void
     {
         if ($node->getName() !== static::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                ALine::N_LINE, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                ALine::N_LINE, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $this->getErrorRegistor()->addOnCreateXmlNode("LineNumber_not_valid");
         }
+
         if ($this->getDebitAmount() !== null && $this->getCreditAmount() !== null) {
             $msg = "Debit and Credit amount can not be setted at same time";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Debit_and_Credit_setted_at_same_time");
         }
+
+        if ($this->getDebitAmount() === null && $this->getCreditAmount() === null) {
+            $msg = "No Debit or Credit amount setted";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $this->getErrorRegistor()->addOnCreateXmlNode("No_Debit_or_Credit_setted");
+        }
+
         if ($this->getDebitAmount() !== null) {
-            $node->addChild(static::N_DEBITAMOUNT,
-                $this->floatFormat($this->getDebitAmount()));
-            return;
+            $node->addChild(
+                static::N_DEBITAMOUNT,
+                $this->floatFormat($this->getDebitAmount())
+            );
         }
+
         if ($this->getCreditAmount() !== null) {
-            $node->addChild(static::N_CREDITAMOUNT,
-                $this->floatFormat($this->getCreditAmount()));
-            return;
+            $node->addChild(
+                static::N_CREDITAMOUNT,
+                $this->floatFormat($this->getCreditAmount())
+            );
         }
-        $msg = "No Debit or Credit amount setted";
-        \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__." '%s'", $msg));
-        throw new AuditFileException($msg);
     }
 
     /**
@@ -434,8 +592,10 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== ALine::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                ALine::N_LINE, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                ALine::N_LINE, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

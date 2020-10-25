@@ -28,8 +28,17 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Address;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
+ * 2.2. - Customer<br>
+ * This table shall contain all the existing records operated during the
+ * taxation period in the relevant customers’ file, as well as those which
+ * may be implicit in the operations and do not exist in the relevant file.
+ * If, for instance, there is a sale for cash showing only the customer’s
+ * taxpayer registration number or his name, and not included in the customers
+ * file of the application, this client’s data shall be exported
+ * as client in the SAF-T (PT).
  * <pre>
  *     &lt;xs:element name="Customer"&gt;
  *       &lt;xs:complexType&gt;
@@ -54,7 +63,7 @@ use Rebelo\SaftPt\AuditFile\Address;
  * Class Customer
  * @since 1.0.0
  */
-class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Customer extends ACustomerSupplier
 {
     /**
      * Node name
@@ -72,67 +81,13 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_ACCOUNTID = "AccountID";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
     const N_CUSTOMERTAXID = "CustomerTaxID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_COMPANYNAME = "CompanyName";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_CONTACT = "Contact";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_BILLINGADDRESS = "BillingAddress";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
     const N_SHIPTOADDRESS = "ShipToAddress";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_TELEPHONE = "Telephone";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_FAX = "Fax";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_EMAIL = "Email";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_WEBSITE = "Website";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_SELFBILLINGINDICATOR = "SelfBillingIndicator";
 
     /**
      * &lt;xs:element ref="CustomerID"/&gt;
@@ -142,32 +97,11 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private string $customerID;
 
     /**
-     * &lt;xs:element ref="AccountID"/&gt;
-     * @var string $accountID
-     * @since 1.0.0
-     */
-    private string $accountID;
-
-    /**
      * &lt;xs:element ref="CustomerTaxID"/&gt;
      * @var string $customerTaxID
      * @since 1.0.0
      */
     private string $customerTaxID;
-
-    /**
-     * &lt;xs:element ref="CompanyName"/&gt;
-     * @var string $companyName
-     * @since 1.0.0
-     */
-    private string $companyName;
-
-    /**
-     * &lt;xs:element ref="Contact" minOccurs="0"/&gt;
-     * @var string|null $contact
-     * @since 1.0.0
-     */
-    private ?string $contact = null;
 
     /**
      * &lt;xs:element ref="BillingAddress"/&gt;
@@ -184,42 +118,14 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private array $shipToAddress = array();
 
     /**
-     * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
-     * @var string|null $telephone
-     * @since 1.0.0
-     */
-    private ?string $telephone = null;
-
-    /**
-     * &lt;xs:element ref="Fax" minOccurs="0"/&gt;
-     * @var string|null $fax
-     * @since 1.0.0
-     */
-    private ?string $fax = null;
-
-    /**
-     * &lt;xs:element ref="Email" minOccurs="0"/&gt;
-     * @var string|null $email
-     * @since 1.0.0
-     */
-    private ?string $email = null;
-
-    /**
-     * &lt;xs:element ref="Website" minOccurs="0"/&gt;
-     * @var string|null $website
-     * @since 1.0.0
-     */
-    private ?string $website = null;
-
-    /**
-     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
-     * @var bool $selfBillingIndicator
-     * @since 1.0.0
-     */
-    private bool $selfBillingIndicator;
-
-    /**
-     *
+     * Customer<br>
+     * This table shall contain all the existing records operated during the
+     * taxation period in the relevant customers’ file, as well as those
+     * which may be implicit in the operations and do not exist in the relevant file.
+     * If, for instance, there is a sale for cash showing only the customer’s
+     * taxpayer registration number or his name, and not included in the customers
+     * file of the application, this client’s data shall be exported as client
+     * in the SAF-T (PT).
      * <pre>
      *     &lt;xs:element name="Customer"&gt;
      *       &lt;xs:complexType&gt;
@@ -240,20 +146,26 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *       &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     * Gets as customerID
+     * Gets as customerID<br>
+     * In the list of clients cannot exist more than one registration
+     * with the same CustomerID. In the case of final consumers,
+     * a generic client with the designation of “Consumidor final”
+     * (Final Consumer) shall be created.
      * <pre>
      * &lt;xs:element ref="CustomerID"/&gt;
      * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * </pre>
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getCustomerID(): string
@@ -264,98 +176,60 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new customerID
+     * Get if is set CustomerID
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetCustomerID(): bool
+    {
+        return isset($this->customerID);
+    }
+
+    /**
+     * Sets a new customerID<br>
+     * In the list of clients cannot exist more than one registration
+     * with the same CustomerID. In the case of final consumers,
+     * a generic client with the designation of “Consumidor final”
+     * (Final Consumer) shall be created.
      * <pre>
      * &lt;xs:element ref="CustomerID"/&gt;
      * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * </pre>
      * @param string $customerID
-     * @return void
-     * @throws AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setCustomerID(string $customerID): void
+    public function setCustomerID(string $customerID): bool
     {
-        $this->customerID = static::valTextMandMaxCar($customerID, 30,
-                __METHOD__);
+        try {
+            $this->customerID = static::valTextMandMaxCar(
+                $customerID, 30,
+                __METHOD__
+            );
+            $return           = true;
+        } catch (AuditFileException $e) {
+            $this->customerID = $customerID;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("CustomerID_not_valid");
+            $return           = false;
+        }
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerID));
-    }
-
-    /**
-     * Gets as accountID
-     *
-     * <pre>
-     * &lt;xs:element ref="AccountID"/&gt;
-     * &lt;xs:element name="AccountID"&gt;
-     *      &lt;xs:simpleType&gt;
-     *          &lt;xs:restriction base="xs:string"&gt;
-     *              &lt;xs:pattern value="(([^^]*)|Desconhecido)"/&gt;
-     *              &lt;xs:minLength value="1"/&gt;
-     *              &lt;xs:maxLength value="30"/&gt;
-     *          &lt;/xs:restriction&gt;
-     *      &lt;/xs:simpleType&gt;
-     *  &lt;/xs:element&gt;
-     * </pre>
-     *
-     * @return string
-     * @since 1.0.0
-     */
-    public function getAccountID(): string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->accountID));
-        return $this->accountID;
-    }
-
-    /**
-     * Sets a new accountID
-     * <pre>
-     * &lt;xs:element ref="AccountID"/&gt;
-     * &lt;xs:element name="AccountID"&gt;
-     *      &lt;xs:simpleType&gt;
-     *          &lt;xs:restriction base="xs:string"&gt;
-     *              &lt;xs:pattern value="(([^^]*)|Desconhecido)"/&gt;
-     *              &lt;xs:minLength value="1"/&gt;
-     *              &lt;xs:maxLength value="30"/&gt;
-     *          &lt;/xs:restriction&gt;
-     *      &lt;/xs:simpleType&gt;
-     *  &lt;/xs:element&gt;
-     * </pre>
-     *
-     * @param string $accountID
-     * @return void
-     * @since 1.0.0
-     */
-    public function setAccountID(string $accountID): void
-    {
-        $msg    = null;
-        $length = \strlen($accountID);
-        if ($length < 1 || $length > 30) {
-            $msg = sprintf("AccountID length must be between 1 and 30 but have '%s'",
-                $length);
-        }
-
-        $regexp = "/(([^^]*)|Desconhecido)/";
-        if (\preg_match($regexp, $accountID) !== 1) {
-            $msg = sprintf("AccountID does not respect the regexp '%s'", $regexp);
-        }
-        if ($msg !== null) {
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        $this->accountID = $accountID;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->accountID));
+        return $return;
     }
 
     /**
      * Gets as customerTaxID<br>
-     * <xs:element ref="CustomerTaxID"/><br>
-     * <xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/>
+     * It must be indicated without the country’s prefix.
+     * The generic client, corresponding to the
+     * aforementioned “Consumidor final” (Final consumer)
+     * shall be identified with the Tax Identification Number “999999990”.<br>
+     * &lt;xs:element ref="CustomerTaxID"/&gt;<br>
+     * &lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      *
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getCustomerTaxID(): string
@@ -366,179 +240,100 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new customerTaxID<br>
-     * <xs:element ref="CustomerTaxID"/><br>
-     * <xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/>
-     *
-     * @param string $customerTaxID
-     * @return void
+     * Get if is set CustomerTaxID
+     * @return bool
      * @since 1.0.0
      */
-    public function setCustomerTaxID(string $customerTaxID): void
+    public function issetCustomerTaxID(): bool
+    {
+        return isset($this->customerTaxID);
+    }
+
+    /**
+     * Sets a new customerTaxID<br>
+     * It must be indicated without the country’s prefix.
+     * The generic client, corresponding to the
+     * aforementioned “Consumidor final” (Final consumer)
+     * shall be identified with the Tax Identification Number “999999990”.<br>
+     * &lt;xs:element ref="CustomerTaxID"/&gt;<br>
+     * &lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
+     * @param string $customerTaxID
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setCustomerTaxID(string $customerTaxID): bool
     {
         $msg    = null;
         $length = \strlen($customerTaxID);
         if ($length < 1 || $length > 30) {
-            $msg = sprintf("CustomerTaxID length must be between 1 and 30 but have '%s'",
-                $length);
+            $msg    = sprintf(
+                "CustomerTaxID length must be between 1 and 30 but have '%s'",
+                $length
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("CustomerTaxID_not_valid");
+        } else {
+            $return = true;
         }
         $this->customerTaxID = $customerTaxID;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerTaxID));
-    }
-
-    /**
-     * Gets as companyName<br>
-     * <xs:element ref="CompanyName"/><br>
-     * <xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/>
-     *
-     * @return string
-     * @since 1.0.0
-     */
-    public function getCompanyName(): string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->companyName));
-        return $this->companyName;
-    }
-
-    /**
-     * Sets a new companyName<br>
-     * <xs:element ref="CompanyName"/><br>
-     * <xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/>
-     *
-     * @param string $companyName
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setCompanyName(string $companyName): void
-    {
-        $this->companyName = static::valTextMandMaxCar($companyName, 100,
-                __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyName));
-    }
-
-    /**
-     * Gets as contact<br>
-     * <xs:element ref="Contact" minOccurs="0"/><br>
-     * <xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getContact(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->contact === null ? "null" : $this->contact));
-        return $this->contact;
-    }
-
-    /**
-     * Sets a new contact<br>
-     * <xs:element ref="Contact" minOccurs="0"/><br>
-     * <xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/>
-     *
-     * @param string|null $contact
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setContact(?string $contact): void
-    {
-
-        if ($contact === null) {
-            $this->contact = null;
-        } else {
-            $this->contact = static::valTextMandMaxCar($contact, 50, __METHOD__);
-            \Logger::getLogger(\get_class($this))
-                ->debug(\sprintf(__METHOD__." setted to '%s'",
-                        $this->contact === null ? "null" : $this->contact));
-        }
+        return $return;
     }
 
     /**
      * Gets as billingAddress<br>
-     * <xs:element ref="BillingAddress"/><br>
-     * <xs:element name="BillingAddress" type="AddressStructure"/>
+     * Head office address or the fixed /permanent establishment address,
+     * located on Portuguese territory.<br>
+     * The Address instance will be create once you get this method<br>
+     * &lt;xs:element ref="BillingAddress"/&gt;<br>
+     * &lt;xs:element name="BillingAddress" type="AddressStructure"/&gt;
      *
      * @return \Rebelo\SaftPt\AuditFile\Address
      * @since 1.0.0
      */
     public function getBillingAddress(): Address
     {
+        if (isset($this->billingAddress) === false) {
+            $this->billingAddress = new Address($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->billingAddress;
     }
 
     /**
-     * Sets a new billingAddress<br>
-     * <xs:element ref="BillingAddress"/><br>
-     * <xs:element name="BillingAddress" type="AddressStructure"/>
-     *
-     * @param \Rebelo\SaftPt\AuditFile\Address $billingAddress
-     * @return void
+     * Get if is set BillingAddress
+     * @return bool
      * @since 1.0.0
      */
-    public function setBillingAddress(Address $billingAddress): void
+    public function issetBillingAddress(): bool
     {
-        $this->billingAddress = $billingAddress;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        return isset($this->billingAddress);
     }
 
     /**
      * Adds as shipToAddress<br>
-     * <xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/><br>
-     * <xs:element name="ShipToAddress" type="AddressStructure"/>
+     * This method every time that is invoked will return a new Instance
+     * of 'Address' that shal must be populated with the correct values.<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary.<br>
+     * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
+     * &lt;xs:element name="ShipToAddress" type="AddressStructure"/&gt;
      *
-     * @param \Rebelo\SaftPt\AuditFile\Address $shipToAddress
-     * @return int The stack index
+     * @return \Rebelo\SaftPt\AuditFile\Address The new Address instance that was add and must be populated
      * @since 1.0.0
      */
-    public function addToShipToAddress(Address $shipToAddress): int
+    public function addShipToAddress(): Address
     {
-        if (\count($this->shipToAddress) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->shipToAddress);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->shipToAddress[$index] = $shipToAddress;
+        $shipToAddress         = new Address($this->getErrorRegistor());
+        $this->shipToAddress[] = $shipToAddress;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " ShipToAddress add to index ".\strval($index));
-        return $index;
-    }
-
-    /**
-     * isset shipToAddress
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetShipToAddress(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->shipToAddress[$index]);
-    }
-
-    /**
-     * unset shipToAddress
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetShipToAddress(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->shipToAddress[$index]);
+            __METHOD__." ShipToAddress add to stack "
+        );
+        return $shipToAddress;
     }
 
     /**
@@ -554,214 +349,6 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Gets as telephone<br>
-     * <xs:element ref="Telephone" minOccurs="0"/><br>
-     * <xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getTelephone(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->telephone === null ? "null" : $this->telephone));
-        return $this->telephone;
-    }
-
-    /**
-     * Sets a new telephone<br>
-     * <xs:element ref="Telephone" minOccurs="0"/><br>
-     * <xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @param string|null $telephone
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setTelephone(?string $telephone): void
-    {
-        if ($telephone === null) {
-            $this->telephone = null;
-        } else {
-            $this->telephone = static::valTextMandMaxCar($telephone, 20,
-                    __METHOD__);
-        }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->telephone === null ? "null" : $this->telephone));
-    }
-
-    /**
-     * Gets as fax<br>
-     * <xs:element ref="Fax" minOccurs="0"/><br>
-     * <xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getFax(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->fax === null ? "null" : $this->fax));
-        return $this->fax;
-    }
-
-    /**
-     * Sets a new fax<br>
-     * <xs:element ref="Fax" minOccurs="0"/><br>
-     * <xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @param string|null $fax
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setFax(?string $fax): void
-    {
-        if ($fax === null) {
-            $this->fax = null;
-        } else {
-            $this->fax = static::valTextMandMaxCar($fax, 20, __METHOD__);
-        }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->fax === null ? "null" : $this->fax));
-    }
-
-    /**
-     * Gets as email<br>
-     * <xs:element ref="Email" minOccurs="0"/><br>
-     * <xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getEmail(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->email === null ? "null" : $this->email));
-        return $this->email;
-    }
-
-    /**
-     * Sets a new email<br>
-     * <xs:element ref="Email" minOccurs="0"/><br>
-     * <xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/>
-     *
-     * @param string|null $email
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setEmail(?string $email): void
-    {
-        if ($email === null) {
-            $this->email = $email;
-        } else {
-            if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
-                \strlen($email) > 254) {
-                $msg = $email." is not a valide email";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
-                throw new AuditFileException($msg);
-            } else {
-                $this->email = $email;
-            }
-        }
-        $this->email = $email;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->email === null ? "null" : $this->email));
-    }
-
-    /**
-     * Gets as website<br>
-     * <xs:element ref="Website" minOccurs="0"/><br>
-     * <xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getWebsite(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->website === null ? "null" : $this->website));
-        return $this->website;
-    }
-
-    /**
-     * Sets a new website<br>
-     * <xs:element ref="Website" minOccurs="0"/><br>
-     * <xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/>
-     *
-     * @param string|null $website
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setWebsite(?string $website): void
-    {
-        $this->website = $website === null ? null :
-            $this->valTextMandMaxCar($website, 60, __METHOD__, false);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->website === null ? "null" : $this->website));
-    }
-
-    /**
-     * Gets as selfBillingIndicator
-     * <pre>
-     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
-     * <!-- Indicador de Autofaturacao -->
-     *   &lt;xs:element name="SelfBillingIndicator"&gt;
-     *       &lt;xs:simpleType&gt;
-     *           &lt;xs:restriction base="xs:integer"&gt;
-     *               &lt;xs:minInclusive value="0"/&gt;
-     *               &lt;xs:maxInclusive value="1"/&gt;
-     *           &lt;/xs:restriction&gt;
-     *       &lt;/xs:simpleType&gt;
-     *   &lt;/xs:element&gt;
-     * </pre>
-     * @return bool
-     * @since 1.0.0
-     */
-    public function getSelfBillingIndicator(): bool
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->website ? "true" : "false"));
-        return $this->selfBillingIndicator;
-    }
-
-    /**
-     * Sets a new selfBillingIndicator
-     * <pre>
-     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
-     * <!-- Indicador de Autofaturacao -->
-     *   &lt;xs:element name="SelfBillingIndicator"&gt;
-     *       &lt;xs:simpleType&gt;
-     *           &lt;xs:restriction base="xs:integer"&gt;
-     *               &lt;xs:minInclusive value="0"/&gt;
-     *               &lt;xs:maxInclusive value="1"/&gt;
-     *           &lt;/xs:restriction&gt;
-     *       &lt;/xs:simpleType&gt;
-     *   &lt;/xs:element&gt;
-     * </pre>
-     *
-     * @param bool $selfBillingIndicator
-     * @return void
-     * @since 1.0.0
-     */
-    public function setSelfBillingIndicator(bool $selfBillingIndicator): void
-    {
-        $this->selfBillingIndicator = $selfBillingIndicator;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->website ? "true" : "false"));
-    }
-
-    /**
      * Create the xml node for Customer
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
@@ -772,24 +359,59 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== MasterFiles::N_MASTERFILES) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                MasterFiles::N_MASTERFILES, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                MasterFiles::N_MASTERFILES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $customerNode = $node->addChild(static::N_CUSTOMER);
-        $customerNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
-        $customerNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
-        $customerNode->addChild(static::N_CUSTOMERTAXID,
-            \strval($this->getCustomerTaxID()));
-        $customerNode->addChild(static::N_COMPANYNAME, $this->getCompanyName());
+
+        if (isset($this->customerID)) {
+            $customerNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
+        } else {
+            $customerNode->addChild(static::N_CUSTOMERID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
+        }
+
+        if (isset($this->accountID)) {
+            $customerNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
+        } else {
+            $customerNode->addChild(static::N_ACCOUNTID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("AccountID_not_valid");
+        }
+
+        if (isset($this->customerTaxID)) {
+            $customerNode->addChild(
+                static::N_CUSTOMERTAXID, \strval($this->getCustomerTaxID())
+            );
+        } else {
+            $customerNode->addChild(static::N_CUSTOMERTAXID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("CustomerTaxID_not_valid");
+        }
+
+        if (isset($this->companyName)) {
+            $customerNode->addChild(
+                static::N_COMPANYNAME, $this->getCompanyName()
+            );
+        } else {
+            $customerNode->addChild(static::N_COMPANYNAME);
+            $this->getErrorRegistor()->addOnCreateXmlNode("CompanyName_not_valid");
+        }
+
         if ($this->getContact() !== null) {
             $customerNode->addChild(static::N_CONTACT, $this->getContact());
         }
+
         $billAddr = $customerNode->addChild(static::N_BILLINGADDRESS);
-        $this->getBillingAddress()->createXmlNode($billAddr);
+        if (isset($this->billingAddress)) {
+            $this->getBillingAddress()->createXmlNode($billAddr);
+        } else {
+            $this->getErrorRegistor()->addOnCreateXmlNode("BillingAddress_not_valid");
+        }
 
         foreach ($this->getShipToAddress() as $shipAddr) {
             /* @var $shipAddr Address */
@@ -807,11 +429,21 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
         if ($this->getEmail() !== null) {
             $customerNode->addChild(static::N_EMAIL, $this->getEmail());
         }
+
         if ($this->getWebsite() !== null) {
             $customerNode->addChild(static::N_WEBSITE, $this->getWebsite());
         }
-        $customerNode->addChild(static::N_SELFBILLINGINDICATOR,
-            $this->getSelfBillingIndicator() ? "1" : "0");
+
+        if (isset($this->selfBillingIndicator)) {
+            $customerNode->addChild(
+                static::N_SELFBILLINGINDICATOR,
+                $this->getSelfBillingIndicator() ? "1" : "0"
+            );
+        } else {
+            $customerNode->addChild(static::N_SELFBILLINGINDICATOR);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SelfBillingIndicator_not_valid");
+        }
+
         return $customerNode;
     }
 
@@ -826,8 +458,10 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         if ($node->getName() !== static::N_CUSTOMER) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_CUSTOMER, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_CUSTOMER, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -841,19 +475,20 @@ class Customer extends \Rebelo\SaftPt\AuditFile\AAuditFile
         } else {
             $this->setContact(null);
         }
-        $billAddr = new Address();
-        $billAddr->parseXmlNode($node->{static::N_BILLINGADDRESS});
-        $this->setBillingAddress($billAddr);
+
+        $this->getBillingAddress()->parseXmlNode($node->{static::N_BILLINGADDRESS});
 
         $count = $node->{static::N_SHIPTOADDRESS}->count();
         for ($i = 0; $i <= $count - 1; $i++) {
-            $shToAddr = new Address();
-            $shToAddr->parseXmlNode($node->{static::N_SHIPTOADDRESS}[$i]);
-            $this->addToShipToAddress($shToAddr);
+            $this->addShipToAddress()->parseXmlNode(
+                $node->{static::N_SHIPTOADDRESS}[$i]
+            );
         }
 
-        $this->setSelfBillingIndicator(((int) $node->{static::N_SELFBILLINGINDICATOR})
-            === 1 ? true : false );
+        $this->setSelfBillingIndicator(
+            ((int) $node->{static::N_SELFBILLINGINDICATOR})
+            === 1 ? true : false 
+        );
         if ($node->{static::N_TELEPHONE}->count() > 0) {
             $this->setTelephone((string) $node->{static::N_TELEPHONE});
         } else {

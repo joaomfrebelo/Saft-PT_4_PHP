@@ -1168,7 +1168,8 @@ class CurrencyCode extends \Rebelo\Enum\AEnum
     const ISO_ZWR = "ZWR";
 
     /**
-     * <!-- Codigo da moeda (ISO 4217) -->
+     * CurrencyCode (ISO 4217)<br>
+     * <pre>
      *   &lt;xs:element name="CurrencyCode"&gt;
      *       &lt;!-- Nao consta o EUR por nao existirem situacoes que requeiram este codigo de moeda --&gt;
      *       &lt;xs:simpleType&gt;
@@ -1179,11 +1180,22 @@ class CurrencyCode extends \Rebelo\Enum\AEnum
      *           &lt;/xs:restriction&gt;
      *       &lt;/xs:simpleType&gt;
      *   &lt;/xs:element&gt;
+     * </pre>
      * @param string $value
-     * @return void
+     * @since 1.0.0
      */
     public function __construct(string $value)
     {
-        return parent::__construct($value);
+        parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

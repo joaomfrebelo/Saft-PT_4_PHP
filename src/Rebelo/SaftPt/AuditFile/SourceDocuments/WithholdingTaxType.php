@@ -27,7 +27,11 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 /**
- * WithholdingTaxType
+ * WithholdingTaxType<br>
+ * Indicate the type of withholding tax in this field, filling in:<br>
+ * “IRS” – Personal income tax;<br>
+ * “IRC” – Corporate income tax;<br>
+ * “IS” – Stamp Duty.<br>
  *
  * @author João Rebelo
  */
@@ -52,8 +56,11 @@ class WithholdingTaxType extends \Rebelo\Enum\AEnum
     const IS = "IS";
 
     /**
+     * Indicate the type of withholding tax in this field, filling in:<br>
+     * “IRS” – Personal income tax;<br>
+     * “IRC” – Corporate income tax;<br>
+     * “IS” – Stamp Duty.<br>
      * <pre>
-     * <!-- Codigo do tipo de imposto retido -->
      * &lt;xs:element name="WithholdingTaxType"&gt;
      *     &lt;xs:annotation&gt;
      *         &lt;xs:documentation&gt;Restricao: IRS para Imposto Sobre o Rendimento das Pessoas Singulares,
@@ -74,5 +81,14 @@ class WithholdingTaxType extends \Rebelo\Enum\AEnum
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

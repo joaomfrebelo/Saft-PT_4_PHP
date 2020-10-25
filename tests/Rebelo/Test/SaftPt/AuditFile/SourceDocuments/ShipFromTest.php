@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\Address;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom;
@@ -44,9 +44,10 @@ class ShipFromTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(ShipFrom::class);
@@ -54,84 +55,79 @@ class ShipFromTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $ship = new ShipFrom();
+        $ship = new ShipFrom(new ErrorRegister());
         $this->assertInstanceOf(ShipFrom::class, $ship);
 
-        $this->assertNull($ship->getAddress());
+
+        $this->assertNull($ship->getAddress(false));
         $this->assertNull($ship->getDeliveryDate());
         $this->assertSame(0, \count($ship->getDeliveryID()));
         $this->assertSame(0, \count($ship->getWarehouse()));
 
         $ids = ["A", "B", "C"];
         foreach ($ids as $k => $id) {
-            $index = $ship->addToDeliveryID($id);
-            $this->assertSame($ids[$k], $ship->getDeliveryID()[$index]);
-            $this->assertSame($k, $index);
+            $this->assertTrue($ship->addDeliveryID($id));
+            $this->assertSame($ids[$k], $ship->getDeliveryID()[$k]);
         }
 
-        $indLen = $ship->addToDeliveryID(\str_pad("A", 300, "A"));
-        $this->assertSame(255, \strlen($ship->getDeliveryID()[$indLen]));
-        try {
-            $ship->addToDeliveryID("");
-            $this->fail("Set DeliveryID to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($ship->addDeliveryID(\str_pad("A", 300, "A")));
+        $this->assertSame(255, \strlen($ship->getDeliveryID()[++$k]));
+
+        $ship->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($ship->addDeliveryID(""));
+        $this->assertSame("", $ship->getDeliveryID()[++$k]);
+        $this->assertNotEmpty($ship->getErrorRegistor()->getOnSetValue());
 
         $deliveryDate = new RDate();
         $ship->setDeliveryDate($deliveryDate);
         $this->assertSame($deliveryDate, $ship->getDeliveryDate());
 
         foreach ($ids as $k => $id) {
-            $warehouse = new Warehouse();
+            $warehouse = $ship->addWarehouse();
             $warehouse->setWarehouseID($id);
-            $index     = $ship->addToWarehouse($warehouse);
-            $this->assertSame($warehouse, $ship->getWarehouse()[$index]);
-            $this->assertSame($k, $index);
+            $this->assertSame($warehouse, $ship->getWarehouse()[$k]);
         }
 
-        $ship->setAddress(new Address());
         $this->assertInstanceOf(Address::class, $ship->getAddress());
-        $ship->setAddress(null);
-        $this->assertNull($ship->getAddress());
+        $ship->setAddressToNull();
+        $this->assertNull($ship->getAddress(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
-        $ship = new ShipFrom();
+        $ship = new ShipFrom(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
         );
 
         $ids          = ["A", "B", "C"];
         $deliveryDate = new RDate();
-        $address      = new Address();
+        $address      = $ship->getAddress();
         $address->setCity("Lisboa");
         $address->setCountry(new Country(Country::ISO_PT));
         $address->setAddressDetail("Rua das Escolas Gerais");
         $address->setPostalCode("1999-999");
 
         foreach ($ids as $id) {
-            $ship->addToDeliveryID($id);
-            $warehouse = new Warehouse();
+            $this->assertTrue($ship->addDeliveryID($id));
+            $warehouse = $ship->addWarehouse();
             $warehouse->setLocationID("L-".$id);
             $warehouse->setWarehouseID("W-".$id);
-            $ship->addToWarehouse($warehouse);
         }
 
         $ship->setDeliveryDate($deliveryDate);
-        $ship->setAddress($address);
 
         $shipNode = $ship->createXmlNode($node);
-        $parse    = new ShipFrom();
+        $parse    = new ShipFrom(new ErrorRegister());
         $parse->parseXmlNode($shipNode);
 
         foreach ($ids as $k => $id) {
@@ -178,6 +174,63 @@ class ShipFromTest extends TestCase
 
         $this->assertSame(
             $ship->getAddress()->getAddressDetail(),
-            $parse->getAddress()->getAddressDetail());
+            $parse->getAddress()->getAddressDetail()
+        );
+
+        $this->assertEmpty($ship->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ship->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ship->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $shipToNode = new \SimpleXMLElement(
+            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+        );
+        $ship       = new ShipFrom(new ErrorRegister());
+        $xml        = $ship->createXmlNode($shipToNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($ship->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ship->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($ship->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $shipToNode = new \SimpleXMLElement(
+            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+        );
+        $ship       = new ShipFrom(new ErrorRegister());
+        $ship->addDeliveryID("");
+
+        $xml = $ship->createXmlNode($shipToNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($ship->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($ship->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($ship->getErrorRegistor()->getLibXmlError());
     }
 }

@@ -28,14 +28,16 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\{
+    AAuditFile,
     AuditFileException,
+    ErrorRegister,
     SourceDocuments\ShipFrom,
     SourceDocuments\ShipTo,
     SourceDocuments\WithholdingTax
 };
 
 /**
- * Description of Invoice
+ * Invoice
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -109,101 +111,107 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     const N_DOCUMENTTOTALS = "DocumentTotals";
 
     /**
-     * <xs:element ref="InvoiceNo"/>
+     * &lt;xs:element ref="InvoiceNo"/&gt;
      * @var string
      * @since 1.0.0
      */
     private string $invoiceNo;
 
     /**
-     * <xs:element name="DocumentStatus">
+     * &lt;xs:element name="DocumentStatus">
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus
      * @since 1.0.0
      */
     private DocumentStatus $documentStatus;
 
     /**
-     * <xs:element ref="InvoiceDate"/>
+     * &lt;xs:element ref="InvoiceDate"/&gt;
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
     private RDate $invoiceDate;
 
     /**
-     * <xs:element ref="InvoiceType"/>
+     * &lt;xs:element ref="InvoiceType"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType
      * @since 1.0.0
      */
     private InvoiceType $invoiceType;
 
     /**
-     * <xs:element name="SpecialRegimes" type="SpecialRegimes"/>
+     * &lt;xs:element name="SpecialRegimes" type="SpecialRegimes"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes
      * @since 1.0.0
      */
     private SpecialRegimes $specialRegimes;
 
     /**
-     * <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
+     * &lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null
      * @since 1.0.0
      */
     private ?ShipTo $shipTo = null;
 
     /**
-     * <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
+     * &lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null
      * @since 1.0.0
      */
     private ?ShipFrom $shipFrom = null;
 
     /**
-     * <xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/>
+     * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     private ?RDate $movementEndTime = null;
 
     /**
-     * <xs:element ref="MovementStartTime" minOccurs="0" maxOccurs="1"/>
+     * &lt;xs:element ref="MovementStartTime" minOccurs="0" maxOccurs="1"/&gt;
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     private ?RDate $movementStartTime = null;
 
     /**
-     * <xs:element name="Line" maxOccurs="unbounded">
+     * &lt;xs:element name="Line" maxOccurs="unbounded">
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line[]
      * @since 1.0.0
      */
     private array $line = array();
 
     /**
-     * <xs:element name="DocumentTotals"><br>
+     * &lt;xs:element name="DocumentTotals"><br>
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals
      * @since 1.0.0
      */
     private DocumentTotals $documentTotals;
 
     /**
-     * <xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax[]
      * @since 1.0.0
      */
     private array $withholdingTax = array();
 
     /**
-     *
+     * Invoice<br>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get InvoiceNo<br>
-     * <xs:element ref="InvoiceNo"/>
+     * It is made of the document type internal code, followed by a space,
+     * followed by the identifier of the document series, followed by (/) and by a
+     * sequential number of the document within the series.
+     * In this field cannot exist records with the same identification.
+     * The same document type internal code cannot be used for different types of documents.<br>
+     * &lt;xs:element ref="InvoiceNo"/&gt;
      * @return string
      * @throws \Error
      * @since 1.0.0
@@ -211,69 +219,89 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     public function getInvoiceNo(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'", $this->invoiceNo
-        ));
+                )
+            );
         return $this->invoiceNo;
     }
 
     /**
-     * Set InvoiceNo<br>
-     * <xs:element ref="InvoiceNo"/>
-     * @param string $invoiceNo
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set InvoiceNo
+     * @return bool
      * @since 1.0.0
      */
-    public function setInvoiceNo(string $invoiceNo): void
+    public function issetInvoiceNo(): bool
     {
-        if (\strlen($invoiceNo) > 60 ||
-            \strlen($invoiceNo) < 1 ||
-            \preg_match("/[^ ]+ [^\/^ ]+\/[0-9]+/", $invoiceNo) !== 1
-        ) {
-            $msg = "DocumentNumber length must be between 1 and 60 and must respect regexp";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        $this->invoiceNo = $invoiceNo;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
-                    __METHOD__." setted to '%s'", $this->invoiceNo
-        ));
+        return isset($this->invoiceNo);
     }
 
     /**
-     * Get DocumentStatus
-     * <xs:element name="DocumentStatus">
+     * Set InvoiceNo<br>
+     * It is made of the document type internal code, followed by a space,
+     * followed by the identifier of the document series, followed by (/) and by a
+     * sequential number of the document within the series.
+     * In this field cannot exist records with the same identification.
+     * The same document type internal code cannot be used for different types of documents.<br>
+     * &lt;xs:element ref="InvoiceNo"/&gt;
+     * @param string $invoiceNo
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setInvoiceNo(string $invoiceNo): bool
+    {
+        if (AAuditFile::validateDocNumber($invoiceNo) === false) {
+            $msg    = "DocumentNumber length must be between 1 and 60 and must respect regexp";
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue($msg);
+        } else {
+            $return = true;
+        }
+        $this->invoiceNo = $invoiceNo;
+        \Logger::getLogger(\get_class($this))
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'", $this->invoiceNo
+                )
+            );
+        return $return;
+    }
+
+    /**
+     * Get DocumentStatus<br>
+     * When this method is invoked a new instance of DocumentStatus is created if
+     * wasn't before and returned to be populated<br>
+     * &lt;xs:element name="DocumentStatus">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus
-     * @throws \Error
      * @since 1.0.0
      */
     public function getDocumentStatus(): DocumentStatus
     {
+        if (isset($this->documentStatus) === false) {
+            $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->documentStatus;
     }
 
     /**
-     * Set DocumentStatus
-     * <xs:element name="DocumentStatus">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus $documentStatus
-     * @return void
+     * Get if is set DocumentStatus
+     * @return bool
      * @since 1.0.0
      */
-    public function setDocumentStatus(DocumentStatus $documentStatus): void
+    public function issetDocumentStatus(): bool
     {
-        $this->documentStatus = $documentStatus;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
+        return isset($this->documentStatus);
     }
 
     /**
      * Get InvoiceDate<br>
-     * <xs:element ref="InvoiceDate"/>
+     * Sale document’s issue date.<br>
+     * &lt;xs:element ref="InvoiceDate"/&gt;
      * @return \Rebelo\Date\Date
      * @throws \Error
      * @since 1.0.0
@@ -281,16 +309,29 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     public function getInvoiceDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
                     $this->invoiceDate->format(RDate::SQL_DATE)
-        ));
+                )
+            );
         return $this->invoiceDate;
     }
 
     /**
+     * Get if is set InvoiceDate
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetInvoiceDate(): bool
+    {
+        return isset($this->invoiceDate);
+    }
+
+    /**
      * Set InvoiceDate<br>
-     * <xs:element ref="InvoiceDate"/>
+     * Sale document’s issue date.<br>
+     * &lt;xs:element ref="InvoiceDate"/&gt;
      * @param \Rebelo\Date\Date $invoiceDate
      * @return void
      * @since 1.0.0
@@ -299,15 +340,34 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->invoiceDate = $invoiceDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
                     $this->invoiceDate->format(RDate::SQL_DATE)
-        ));
+                )
+            );
     }
 
     /**
-     * Get InvoiceType<br>
-     * <xs:element ref="InvoiceType"/>
+     * Get  InvoiceType<br>
+     * The field shall be filled in with:
+     * “FT” - Invoice;
+     * “FS” - Simplified Invoice issued according to article 40 of the VAT code;
+     * “FR” – Invoice-receipt;
+     * “ND” - Debit note;
+     * “NC” - Credit note;
+     * “VD” - Sale for cash and invoice/sales ticket; (a)
+     * “TV” - Sale ticket; (a)
+     * “TD” - Devolution ticket; (a)
+     * “AA” - Assets sales; (a)
+     * “DA” - Assets returns. (a) For the Insurance sector when it must not
+     * be included in table 4.3. - WorkingDocuments, may also be filled in with:
+     * “RP” – Premium or premium receipt;
+     * “RE” - Return insurance or receipt of return insurance;
+     * “CS” - Imputation to co-insurance companies;
+     * “LD” - Imputation to a leader co-insurance company;
+     * “RA” - Accepted reinsurance. (a) For data up to 2012-12-31.
+     * &lt;xs:element ref="InvoiceType"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType
      * @throws \Error
      * @since 1.0.0
@@ -315,15 +375,44 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     public function getInvoiceType(): InvoiceType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'", $this->invoiceType->get()
-        ));
+                )
+            );
         return $this->invoiceType;
     }
 
     /**
+     * Get if is set InvoiceType
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetInvoiceType(): bool
+    {
+        return isset($this->invoiceType);
+    }
+
+    /**
      * Set InvoiceType<br>
-     * <xs:element ref="InvoiceType"/>
+     * The field shall be filled in with:
+     * “FT” - Invoice;
+     * “FS” - Simplified Invoice issued according to article 40 of the VAT code;
+     * “FR” – Invoice-receipt;
+     * “ND” - Debit note;
+     * “NC” - Credit note;
+     * “VD” - Sale for cash and invoice/sales ticket; (a)
+     * “TV” - Sale ticket; (a)
+     * “TD” - Devolution ticket; (a)
+     * “AA” - Assets sales; (a)
+     * “DA” - Assets returns. (a) For the Insurance sector when it must not
+     * be included in table 4.3. - WorkingDocuments, may also be filled in with:
+     * “RP” – Premium or premium receipt;
+     * “RE” - Return insurance or receipt of return insurance;
+     * “CS” - Imputation to co-insurance companies;
+     * “LD” - Imputation to a leader co-insurance company;
+     * “RA” - Accepted reinsurance. (a) For data up to 2012-12-31.
+     * &lt;xs:element ref="InvoiceType"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType $invoiceType
      * @since 1.0.0
      * @return void
@@ -332,129 +421,145 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->invoiceType = $invoiceType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'", $this->invoiceType->get()
-        ));
+                )
+            );
     }
 
     /**
      * Get SpecialRegimes<br>
-     * <xs:element name="SpecialRegimes" type="SpecialRegimes"/>
+     * When this method is invoked a new instance of SpecialRegimes is created if
+     * wasn't previous and returned to be populated<br>
+     * &lt;xs:element name="SpecialRegimes" type="SpecialRegimes"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes
-     * @throws \Error
      * @since 1.0.0
      */
     public function getSpecialRegimes(): SpecialRegimes
     {
+        if (isset($this->specialRegimes) === false) {
+            $this->specialRegimes = new SpecialRegimes($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->specialRegimes;
     }
 
     /**
-     * Set SpecialRegimes<br>
-     * <xs:element name="SpecialRegimes" type="SpecialRegimes"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes $specialRegimes
+     * Get if is set SpecialRegimes
+     * @return bool
      * @since 1.0.0
-     * @return void
      */
-    public function setSpecialRegimes(SpecialRegimes $specialRegimes): void
+    public function issetSpecialRegimes(): bool
     {
-        $this->specialRegimes = $specialRegimes;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
+        return isset($this->specialRegimes);
     }
 
     /**
      * Get ShipTo<br>
-     * <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
+     * Information about the place and delivery date of the products
+     * that are sold to the client, or anyone assigned by him in the
+     * case of triangular transactions.<br>
+     * When this method is invoked if $create is true and wasn't created
+     * previous a new instance of ShipTo is created and then returned
+     * to be populated<br>
+     * &lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&gt;     *
+     * @param bool $create if true and wasn't previous a new instance will be created
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null
      * @since 1.0.0
      */
-    public function getShipTo(): ?ShipTo
+    public function getShipTo(bool $create = true): ?ShipTo
     {
+        if ($create && $this->shipTo === null) {
+            $this->shipTo = new ShipTo($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'", "ShipTo"
                 )
-        );
+            );
         return $this->shipTo;
     }
 
     /**
-     * Set ShipTo<br>
-     * <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null $shipTo
+     * Set ShipTo As Null
      * @return void
      * @since 1.0.0
      */
-    public function setShipTo(?ShipTo $shipTo): void
+    public function setShipToAsNull(): void
     {
-        $this->shipTo = $shipTo;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
-                    __METHOD__." setted to '%s'", "ShipTo"
-                )
-        );
+        $this->shipTo = null;
     }
 
     /**
      * Get ShipFrom<br>
-     * <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
+     * Information about the place and date of the shipping
+     * of the goods sold to the customer.<br><br>
+     * When this method is invoked if $create is true and wasn't created
+     * previous a new instance of ShipFrom is created and then returned
+     * to be populated<br>
+     * &lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&gt;  *
+     * @param bool $create if true and wasn't previous a new instance will be created
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null
      * @since 1.0.0
      */
-    public function getShipFrom(): ?ShipFrom
+    public function getShipFrom(bool $create = true): ?ShipFrom
     {
+        if ($create && $this->shipFrom === null) {
+            $this->shipFrom = new ShipFrom($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'", "ShipFrom"
                 )
-        );
+            );
         return $this->shipFrom;
     }
 
     /**
-     * Set ShipFrom<br>
-     * <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null $shipFrom
+     * Set ShipFrom As Null
      * @return void
      * @since 1.0.0
      */
-    public function setShipFrom(?ShipFrom $shipFrom): void
+    public function setShipFromAsNull(): void
     {
-        $this->shipFrom = $shipFrom;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
-                    __METHOD__." setted to '%s'", "ShipFrom"
-                )
-        );
+        $this->shipFrom = null;
     }
 
     /**
      * Set MovementEndTime<br>
-     * <xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="MovementEndTime" type="SAFdateTimeType"/>
+     * [Date and time of the end of the transport]<br>
+     * Date and time type “YYYY-MM-DDThh:mm:ss”, “ss” may be “00”
+     * if no specific information is available.<br>
+     * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     public function getMovementEndTime(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
                     $this->movementEndTime === null ?
                         "null" :
                         $this->movementEndTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
         return $this->movementEndTime;
     }
 
     /**
      * Get MovementEndTime<br>
-     * <xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="MovementEndTime" type="SAFdateTimeType"/>
+     * [Date and time of the end of the transport]<br>
+     * Date and time type “YYYY-MM-DDThh:mm:ss”, “ss” may be “00”
+     * if no specific information is available.<br>
+     * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date|null $movementEndTime
      * @return void
      * @since 1.0.0
@@ -463,38 +568,53 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->movementEndTime = $movementEndTime;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
                     $this->movementEndTime === null ?
                         "null" :
                         $this->movementEndTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
     }
 
     /**
      * Get MovementStartTime<br>
-     * <xs:element ref="MovementStartTime" minOccurs="0"  maxOccurs="1"/><br>
-     * <xs:element name="MovementStartTime" type="SAFdateTimeType"/>
+     * [Date and time of the beginning of the transport]<br>
+     * Date and time type “YYYY-MM-DDThh:mm:ss”, “ss” may be “00” if no
+     * specific information is available.
+     * The filling is required if the document also serves as a
+     * transportation document as provided for under
+     * the “Regime de bens em Circulação”<br>
+     * [Goods Circulation Regime], approved by Decree No. 147/2003 of 11th July.
+     * &lt;xs:element ref="MovementStartTime" minOccurs="0"  maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     public function getMovementStartTime(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
                     $this->movementStartTime === null ? "null" :
                         $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
         return $this->movementStartTime;
     }
 
     /**
      * Set MovementStartTime<br>
-     * <xs:element ref="MovementStartTime" maxOccurs="1"/><br>
-     * <xs:element name="MovementStartTime" type="SAFdateTimeType"/>
+     * [Date and time of the beginning of the transport]<br>
+     * Date and time type “YYYY-MM-DDThh:mm:ss”, “ss” may be “00” if no
+     * specific information is available.
+     * The filling is required if the document also serves as a
+     * transportation document as provided for under
+     * the “Regime de bens em Circulação”<br>
+     * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date|null $movementStartTime
      * @return void
      * @since 1.0.0
@@ -503,152 +623,99 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->movementStartTime = $movementStartTime;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
                     $this->movementStartTime === null ? "null" :
                         $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
     }
 
     /**
      * Get Line Stack<br>
-     * <xs:element name="Line" maxOccurs="unbounded">
+     * &lt;xs:element name="Line" maxOccurs="unbounded">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line[]
      * @since 1.0.0
      */
     public function getLine(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted stack with '%s' elements",
                     \count($this->line)
                 )
-        );
+            );
         return $this->line;
     }
 
     /**
      * Add Line to stack<br>
-     * <xs:element name="Line" maxOccurs="unbounded">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
-     * @return int
+     * &lt;xs:element name="Line" maxOccurs="unbounded">
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line
      * @since 1.0.0
      */
-    public function addToLine(Line $line): int
+    public function addLine(): Line
     {
-        if (\count($this->line) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->line);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->line[$index] = $line;
+        $line         = new Line($this->getErrorRegistor());
+        $this->line[] = $line;
+        $line->setLineNumber(\count($this->line));
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " Line add to index ".\strval($index));
-        return $index;
-    }
-
-    /**
-     * isset line
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetLine(int $index): bool
-    {
-        return isset($this->line[$index]);
+            __METHOD__." Line add to index "
+        );
+        return $line;
     }
 
     /**
      * Set DocumentTotals<br>
-     * <xs:element name="DocumentTotals">
+     * When this method is invoked a new instance of DocumentTotals is created
+     * if wasn't previous and than returned to be populated<br>
+     * &lt;xs:element name="DocumentTotals">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals
      * @since 1.0.0
      */
     public function getDocumentTotals(): DocumentTotals
     {
+        if (isset($this->documentTotals) === false) {
+            $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(__METHOD__." getted");
         return $this->documentTotals;
     }
 
     /**
-     * Set DocumentTotals<br>
-     * <xs:element name="DocumentTotals">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals $documentTotals
-     * @since 1.0.0
-     * @return void
-     */
-    public function setDocumentTotals(DocumentTotals $documentTotals): void
-    {
-        $this->documentTotals = $documentTotals;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted");
-    }
-
-    /**
-     * unset line
-     *
-     * @param int $index
-     * @return void
+     * Get if is set DocumentTotals
+     * @return bool
      * @since 1.0.0
      */
-    public function unsetLine(int $index): void
+    public function issetDocumentTotals(): bool
     {
-        unset($this->line[$index]);
+        return isset($this->documentTotals);
     }
 
     /**
      * Adds as withholdingTax <br>
-     * <xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/>
-     * @return int
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax $withholdingTax
+     * When this method is invoked a new instance of WithholdingTax is created,
+     * add to the stack  and returned to be populated<br>
+     * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax
      * @since 1.0.0
      */
-    public function addToWithholdingTax(WithholdingTax $withholdingTax): int
+    public function addWithholdingTax(): WithholdingTax
     {
-        if (\count($this->withholdingTax) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->withholdingTax);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->withholdingTax[$index] = $withholdingTax;
+        $withholdingTax         = new WithholdingTax($this->getErrorRegistor());
+        $this->withholdingTax[] = $withholdingTax;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " WithholdingTax add to index ".\strval($index));
-        return $index;
-    }
-
-    /**
-     * isset withholdingTax
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetWithholdingTax(int $index): bool
-    {
-        return isset($this->withholdingTax[$index]);
-    }
-
-    /**
-     * unset withholdingTax
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetWithholdingTax(int $index): void
-    {
-        unset($this->withholdingTax[$index]);
+            __METHOD__." WithholdingTax add to index"
+        );
+        return $withholdingTax;
     }
 
     /**
      * Gets as withholdingTax<br>
-     * <xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax[]
      * @since 1.0.0
      */
@@ -672,63 +739,141 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== SalesInvoices::N_SALESINVOICES) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                SalesInvoices::N_SALESINVOICES, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                SalesInvoices::N_SALESINVOICES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $invNode = $node->addChild(self::N_INVOICE);
-        $invNode->addChild(static::N_INVOICENO, $this->getInvoiceNo());
-        $invNode->addChild(static::N_ATCUD, $this->getAtcud());
-        $this->getDocumentStatus()->createXmlNode($invNode);
-        $invNode->addChild(static::N_HASH, $this->getHash());
-        $invNode->addChild(static::N_HASHCONTROL, $this->getHashControl());
+
+        if (isset($this->invoiceNo)) {
+            $invNode->addChild(static::N_INVOICENO, $this->getInvoiceNo());
+        } else {
+            $invNode->addChild(static::N_INVOICENO);
+            $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceNo_not_valid");
+        }
+
+        if (isset($this->atcud)) {
+            $invNode->addChild(static::N_ATCUD, $this->getAtcud());
+        } else {
+            $invNode->addChild(static::N_ATCUD);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Atcud_not_valid");
+        }
+
+        if (isset($this->documentStatus)) {
+            $this->getDocumentStatus()->createXmlNode($invNode);
+        } else {
+            $invNode->addChild(DocumentStatus::N_INVOICESTATUS);
+            $this->getErrorRegistor()->addOnCreateXmlNode("DocumentStatus_not_valid");
+        }
+
+        if (isset($this->hash)) {
+            $invNode->addChild(static::N_HASH, $this->getHash());
+        } else {
+            $invNode->addChild(static::N_HASH);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Hash_not_valid");
+        }
+
+        if (isset($this->hashControl)) {
+            $invNode->addChild(static::N_HASHCONTROL, $this->getHashControl());
+        } else {
+            $invNode->addChild(static::N_HASHCONTROL);
+            $this->getErrorRegistor()->addOnCreateXmlNode("HashControl_not_valid");
+        }
+
         if ($this->getPeriod() !== null) {
-            $invNode->addChild(static::N_PERIOD, \strval($this->getPeriod()));
+            $invNode->addChild(static ::N_PERIOD, \strval($this->getPeriod()));
         }
-        $invNode->addChild(
-            static::N_INVOICEDATE,
-            $this->getInvoiceDate()->format(RDate::SQL_DATE)
-        );
-        $invNode->addChild(static::N_INVOICETYPE, $this->getInvoiceType()->get());
-        $this->getSpecialRegimes()->createXmlNode($invNode);
-        $invNode->addChild(static::N_SOURCEID, $this->getSourceID());
+
+        if (isset($this->invoiceDate)) {
+            $invNode->addChild(
+                static::N_INVOICEDATE,
+                $this->getInvoiceDate()->format(RDate::SQL_DATE)
+            );
+        } else {
+            $invNode->addChild(static::N_INVOICEDATE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceDate_not_valid");
+        }
+
+        if (isset($this->invoiceType)) {
+            $invNode->addChild(
+                static:: N_INVOICETYPE, $this->getInvoiceType()->get()
+            );
+        } else {
+            $invNode->addChild(static::N_INVOICETYPE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceType_not_valid");
+        }
+
+        if (isset($this->specialRegimes)) {
+            $this->getSpecialRegimes()->createXmlNode($invNode);
+        } else {
+            $invNode->addChild(static::N_SPECIALREGIMES);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SpecialRegimes_not_valid");
+        }
+
+        if (isset($this->sourceID)) {
+            $invNode->addChild(static:: N_SOURCEID, $this->getSourceID());
+        } else {
+            $invNode->addChild(static::N_SOURCEID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SpecialRegimes_not_valid");
+        }
+
         if ($this->getEacCode() !== null) {
-            $invNode->addChild(static::N_EACCODE, $this->getEacCode());
+            $invNode->addChild(static:: N_EACCODE, $this->getEacCode());
         }
-        $invNode->addChild(
-            static::N_SYSTEMENTRYDATE,
-            $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
-        );
-        if ($this->getTransactionID() !== null) {
+
+        if (isset($this->systemEntryDate)) {
+            $invNode->addChild(
+                static::N_SYSTEMENTRYDATE,
+                $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
+            );
+        } else {
+            $invNode->addChild(static::N_SYSTEMENTRYDATE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
+        }
+
+        if ($this->getTransactionID(false) !== null) {
             $this->getTransactionID()->createXmlNode($invNode);
         }
-        $invNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
-        if ($this->getShipTo() !== null) {
+
+        if (isset($this->customerID)) {
+            $invNode->addChild(static:: N_CUSTOMERID, $this->getCustomerID());
+        } else {
+            $invNode->addChild(static::N_CUSTOMERID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
+        }
+
+        if ($this->getShipTo(false) !== null) {
             $this->getShipTo()->createXmlNode($invNode);
         }
-        if ($this->getShipFrom() !== null) {
+
+        if ($this->getShipFrom(false) !== null) {
             $this->getShipFrom()->createXmlNode($invNode);
         }
+
         if ($this->getMovementEndTime() !== null) {
             $invNode->addChild(
                 static::N_MOVEMENTENDTIME,
                 $this->getMovementEndTime()->format(RDate::DATE_T_TIME)
             );
         }
+
         if ($this->getMovementStartTime() !== null) {
             $invNode->addChild(
                 static::N_MOVEMENTSTARTTIME,
                 $this->getMovementStartTime()->format(RDate::DATE_T_TIME)
             );
         }
+
         if (\count($this->line) === 0) {
             $msg = "Invoice without lines";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Invoice_without_lines");
         }
 
         foreach ($this->getLine() as $line) {
@@ -736,7 +881,12 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $line->createXmlNode($invNode);
         }
 
-        $this->getDocumentTotals()->createXmlNode($invNode);
+        if (isset($this->documentTotals)) {
+            $this->getDocumentTotals()->createXmlNode($invNode);
+        } else {
+            $invNode->addChild(DocumentTotals::N_DOCUMENTTOTALS);
+            $this->getErrorRegistor()->addOnCreateXmlNode("DocumentTotals_not_valid");
+        }
 
         foreach ($this->getWithholdingTax() as $tax) {
             /* @var $tax WithholdingTax */
@@ -757,37 +907,37 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_INVOICE) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_INVOICE, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s", static:: N_INVOICE,
+                $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
+
         parent::parseXmlNode($node);
+
         $this->setInvoiceNo((string) $node->{static::N_INVOICENO});
         $this->setInvoiceType(new InvoiceType((string) $node->{static::N_INVOICETYPE}));
-        $status = new DocumentStatus();
-        $status->parseXmlNode($node->{DocumentStatus::N_DOCUMENTSTATUS});
-        $this->setDocumentStatus($status);
+        $this->getDocumentStatus()->parseXmlNode($node->{DocumentStatus::N_DOCUMENTSTATUS});
+
         $this->setInvoiceDate(
-            RDate::parse(RDate::SQL_DATE,
-                (string) $node->{static::N_INVOICEDATE})
+            RDate::parse(
+                RDate::SQL_DATE, (string) $node->{static::N_INVOICEDATE}
+            )
         );
+
         if ($node->{static::N_SPECIALREGIMES}->count() > 0) {
-            $spcReg = new SpecialRegimes();
-            $spcReg->parseXmlNode($node->{static::N_SPECIALREGIMES});
-            $this->setSpecialRegimes($spcReg);
+            $this->getSpecialRegimes()->parseXmlNode($node->{static::N_SPECIALREGIMES});
         }
+
         if ($node->{static::N_SHIPTO}->count() > 0) {
-            $shipTo = new ShipTo();
-            $shipTo->parseXmlNode($node->{static::N_SHIPTO});
-            $this->setShipTo($shipTo);
+            $this->getShipTo()->parseXmlNode($node->{static::N_SHIPTO});
         }
 
         if ($node->{static::N_SHIPFROM}->count() > 0) {
-            $shipFrom = new ShipFrom();
-            $shipFrom->parseXmlNode($node->{static::N_SHIPFROM});
-            $this->setShipFrom($shipFrom);
+            $this->getShipFrom()->parseXmlNode($node->{static::N_SHIPFROM});
         }
 
         if ($node->{static::N_MOVEMENTENDTIME}->count() > 0) {
@@ -810,20 +960,18 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
         $nLine = $node->{Line::N_LINE}->count();
         for ($n = 0; $n < $nLine; $n++) {
-            $line = new Line();
-            $line->parseXmlNode($node->{Line::N_LINE}[$n]);
-            $this->addToLine($line);
+            $this->addLine()->parseXmlNode($node->{Line::N_LINE}[$n]);
         }
 
-        $totals = new DocumentTotals();
-        $totals->parseXmlNode($node->{DocumentTotals::N_DOCUMENTTOTALS});
-        $this->setDocumentTotals($totals);
+        $this->getDocumentTotals()->parseXmlNode(
+            $node->{DocumentTotals::N_DOCUMENTTOTALS}
+        );
 
         $whtCount = $node->{WithholdingTax::N_WITHHOLDINGTAX}->count();
         for ($n = 0; $n < $whtCount; $n++) {
-            $tax = new WithholdingTax();
-            $tax->parseXmlNode($node->{WithholdingTax::N_WITHHOLDINGTAX}[$n]);
-            $this->addToWithholdingTax($tax);
+            $this->addWithholdingTax()->parseXmlNode(
+                $node->{WithholdingTax::N_WITHHOLDINGTAX}[$n]
+            );
         }
     }
 }

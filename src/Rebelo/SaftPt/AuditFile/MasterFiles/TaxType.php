@@ -27,9 +27,11 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 /**
- * TaxType
- *
- * <!-- Tipo de Imposto -->
+ * TaxType<br>
+ * This field shall be filled in with the tax type:<br>
+ * “IVA” – Value Added Tax;<br>
+ * “IS” – Stamp Duty;<br>
+ * “NS” – Not subject to VAT or Stamp Duty.<br>
  * <pre>
  *  &lt;xs:element name="TaxType"&gt;
  *      &lt;xs:simpleType&gt;
@@ -41,31 +43,37 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IVA()
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IS()
+ * @method Rebelo\SaftPt\AuditFile\MasterFiles\TaxType NS()
  * @author João Rebelo
  * @since 1.0.0
  */
 class TaxType extends \Rebelo\Enum\AEnum
 {
     /**
-     *
+     * “IVA” – Value Added Tax;
      * @since 1.0.0
      */
     const IVA = "IVA";
 
     /**
-     *
+     * “IS” – Stamp Duty
      * @since 1.0.0
      */
     const IS = "IS";
 
     /**
-     *
+     * “NS” – Not subject to VAT or Stamp Duty
      * @since 1.0.0
      */
     const NS = "NS";
 
     /**
-     * <!-- Tipo de Imposto -->
+     * This field shall be filled in with the tax type:<br>
+     * “IVA” – Value Added Tax;<br>
+     * “IS” – Stamp Duty;<br>
+     * “NS” – Not subject to VAT or Stamp Duty.<br>
      * <pre>
      *  &lt;xs:element name="TaxType"&gt;
      *      &lt;xs:simpleType&gt;
@@ -84,5 +92,14 @@ class TaxType extends \Rebelo\Enum\AEnum
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

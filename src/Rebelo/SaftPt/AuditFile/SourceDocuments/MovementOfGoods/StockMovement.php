@@ -30,6 +30,8 @@ use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 
 /**
  * StockMovement
@@ -124,22 +126,22 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     private string $documentNumber;
 
     /**
-     * <xs:element name="DocumentStatus">
+     * &lt;xs:element name="DocumentStatus">
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus
      * @since 1.0.0
      */
     private DocumentStatus $documentStatus;
 
     /**
-     * <xs:element ref="MovementDate"/><br>
-     * <xs:element name="MovementDate" type="SAFdateType"/>
+     * &lt;xs:element ref="MovementDate"/&gt;<br>
+     * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
     private RDate $movementDate;
 
     /**
-     * <xs:element ref="MovementType"/>
+     * &lt;xs:element ref="MovementType"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType
      * @since 1.0.0
      */
@@ -158,60 +160,60 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     private string $supplierID;
 
     /**
-     * <xs:element ref="MovementComments" minOccurs="0"/><br>
-     * <xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="MovementComments" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @var string|null
      * @since 1.0.0
      */
     private ?string $movementComments = null;
 
     /**
-     * <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
+     * &lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null
      * @since 1.0.0
      */
     private ?ShipTo $shipTo = null;
 
     /**
-     * <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
+     * &lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null
      * @since 1.0.0
      */
     private ?ShipFrom $shipFrom = null;
 
     /**
-     * <xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="MovementEndTime" type="SAFdateTimeType"/>
+     * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     private ?RDate $movementEndTime = null;
 
     /**
-     * <xs:element ref="MovementStartTime" maxOccurs="1"/><br>
-     * <xs:element name="MovementStartTime" type="SAFdateTimeType"/>
+     * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
     private RDate $movementStartTime;
 
     /**
-     * <xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * &lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @var string|null
      * @since 1.0.0
      */
     private ?string $atDocCodeID = null;
 
     /**
-     * <xs:element name="Line" maxOccurs="unbounded">
+     * &lt;xs:element name="Line" maxOccurs="unbounded">
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line[]
      * @since 1.0.0
      */
     private array $line = array();
 
     /**
-     * <xs:element name="DocumentTotals">
+     * &lt;xs:element name="DocumentTotals">
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals
      * @since 1.0.0
      */
@@ -219,6 +221,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
     /**
      * StockMovement
+     * <pre>
      * &lt;xs:element name="StockMovement" minOccurs="0" maxOccurs="unbounded"&gt;
      *   &lt;xs:complexType&gt;
      *       &lt;xs:sequence&gt;
@@ -251,11 +254,13 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
+     * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
@@ -282,7 +287,10 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
     /**
      *
-     * Get DocumentNumber
+     * Get DocumentNumber<br>
+     * This identification is sequentially composed by following elements:
+     * the document type internal code, followed by a space, followed by the identifier of the document series, followed by (/) and by the sequential number of that document within the series.
+     * This field does not allow records with the same identification.
      * <pre>
      * &lt;xs:element ref="DocumentNumber"/&gt;
      * &lt;xs:element name="DocumentNumber"&gt;
@@ -296,42 +304,69 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      *  &lt;/xs:element&gt;
      * </pre>
      * @param string $documentNumber
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setDocumentNumber(string $documentNumber): void
+    public function setDocumentNumber(string $documentNumber): bool
     {
-        if (\strlen($documentNumber) > 60 ||
-            \strlen($documentNumber) < 1 ||
-            \preg_match("/[^ ]+ [^\/^ ]+\/[0-9]+/", $documentNumber) !== 1
-        ) {
-            $msg = "DocumentNumber length must be between 1 and 60 and must respect regexp";
+        if (AAuditFile::validateDocNumber($documentNumber) === false) {
+            $msg    = "DocumentNumber length must be between 1 and 60 and must respect regexp";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("DocumentNumber_not_valid");
+        } else {
+            $return = true;
         }
         $this->documentNumber = $documentNumber;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->documentNumber));
+        return $return;
     }
 
     /**
-     * Set DocumentStatus<br>
-     * <xs:element name="DocumentStatus">
+     * Get if is set DocumentNumber
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetDocumentNumber(): bool
+    {
+        return isset($this->documentNumber);
+    }
+
+    /**
+     * Set DocumentStatus<br><br>
+     * This identification is sequentially composed by following elements:
+     * the document type internal code, followed by a space, followed by the identifier of the document series, followed by (/) and by the sequential number of that document within the series.
+     * This field does not allow records with the same identification.
+     * &lt;xs:element name="DocumentStatus">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus
+     * @throws \Error
      * @since 1.0.0
      */
     public function getDocumentStatus(): DocumentStatus
     {
+        if (isset($this->documentStatus) === false) {
+            $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
             ->info(\sprintf(__METHOD__." getted '%s'", "DocumentSatus"));
         return $this->documentStatus;
     }
 
     /**
+     * Get if is set DocumentStatus
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetDocumentStatus(): bool
+    {
+        return isset($this->documentStatus);
+    }
+
+    /**
      * Set DocumentStatus<br>
-     * <xs:element name="DocumentStatus">
+     * &lt;xs:element name="DocumentStatus">
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus $documentStatus
      * @return void
      * @since 1.0.0
@@ -343,24 +378,44 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             ->debug(\sprintf(__METHOD__." setted to '%s'", "DocumentStatus"));
     }
 
-    /**     *
-     * <xs:element ref="MovementDate"/><br>
-     * <xs:element name="MovementDate" type="SAFdateType"/>
+    /**
+     * Get MovementDate<br>
+     * Date of the last record of the document status to the second.
+     * Date and time type: “YYYY-MM-DDThh:mm:ss”.
+     * &lt;xs:element ref="MovementDate"/&gt;<br>
+     * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
      * @return \Rebelo\Date\Date
      * @since 1.0.0
      */
     public function getMovementDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->movementDate->format(RDate::SQL_DATE)
-        ));
+                )
+            );
         return $this->movementDate;
     }
 
     /**
-     * <xs:element ref="MovementDate"/><br>
-     * <xs:element name="MovementDate" type="SAFdateType"/>
+     * Get if is set MovementDate
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetMovementDate(): bool
+    {
+        return isset($this->movementDate);
+    }
+
+    /**
+     * Set MovementDate<br>
+     * Date of the last record of the document status to the second.
+     * Date and time type: “YYYY-MM-DDThh:mm:ss”.
+     * &lt;xs:element ref="MovementDate"/&gt;<br>
+     * &lt;xs:element ref="MovementDate"/&gt;<br>
+     * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
      * @param \Rebelo\Date\Date $movementDate
      * @return void
      * @since 1.0.0
@@ -369,29 +424,57 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->movementDate = $movementDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->movementDate->format(RDate::SQL_DATE)
-        ));
+                )
+            );
     }
 
     /**
      * Get MovementType <br>
-     * <xs:element ref="MovementType"/>
+     * Shall be filled in with:<br>
+     * "GR" - Delivery note;<br>
+     * "GT" - Transport guide (include here the global transport documents);<br>
+     * “GA” – Transport document for own fixed assets;<br>
+     * “GC” - Consignment note;<br>
+     * “GD” – Return note.<br>
+     * &lt;xs:element ref="MovementType"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType
      * @since 1.0.0
      */
     public function getMovementType(): MovementType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->movementType->get()
-        ));
+                )
+            );
         return $this->movementType;
     }
 
     /**
+     * Get if is set MovementType
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetMovementType(): bool
+    {
+        return isset($this->movementType);
+    }
+
+    /**
      * Set MovementType <br>
-     * <xs:element ref="MovementType"/>
+     * Shall be filled in with:<br>
+     * "GR" - Delivery note;<br>
+     * "GT" - Transport guide (include here the global transport documents);<br>
+     * “GA” – Transport document for own fixed assets;<br>
+     * “GC” - Consignment note;<br>
+     * “GD” – Return note.<br>
+     * &lt;xs:element ref="MovementType"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType $movementType
      * @return void
      * @since 1.0.0
@@ -400,12 +483,22 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->movementType = $movementType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->movementType->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->movementType->get()
+                )
+            );
     }
 
     /**
-     * Set CustomerID
+     * Set CustomerID<br>
+     * The unique key of table 2.2. – Customer complying with rule defined
+     * for field 2.2.1. - CustomerID.
+     * In case of bills/notes without recipient, the generic customer
+     * of table 2.2. – Customer, shall be used.
+     * This fields shall also be filled out in case of transport
+     * documents referring to movements of goods of the sender himself.
      * <pre>
      * &lt;xs:choice&gt;
      *    &lt;xs:element ref="CustomerID"/&gt;
@@ -413,23 +506,32 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;/xs:choice&gt;
      * </pre>
      * @param string $customerID
-     * @return void
-     * @throws AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setCustomerID(string $customerID): void
+    public function setCustomerID(string $customerID): bool
     {
         if (isset($this->supplierID)) {
-            $msg = "Can not set CustomerID if SupplierID is setted";
+            $msg              = "Can not set CustomerID if SupplierID is setted";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return           = false;
+            $this->getErrorRegistor()->addOnSetValue("CustomerID_and_SupplierID_at_same_time");
+            $this->customerID = $customerID;
+            return $return;
+        } else {
+            return parent::setCustomerID($customerID);
         }
-        parent::setCustomerID($customerID);
     }
 
     /**
-     * Set SupplierID
+     * Set SupplierID<br>
+     * The unique key of table 2.3. – Supplier, complying with rule defined
+     * for field 2.3.1. – SupplierID, in case of return notes or
+     * transport notes regarding movable assets produced or assembled
+     * according to an order of materials supplied for this purpose
+     * by the owner (work from materials supplied without the ownership
+     * being transferred).<br>
      * <pre>
      * &lt;xs:choice&gt;
      *    &lt;xs:element ref="CustomerID"/&gt;
@@ -437,19 +539,38 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;/xs:choice&gt;
      * </pre>
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getSupplierID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->supplierID
-        ));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'", $this->supplierID
+                )
+            );
         return $this->supplierID;
     }
 
     /**
-     *
-     * Set SupplierID
+     * Get if is set SupplierID
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetSupplierID(): bool
+    {
+        return isset($this->supplierID);
+    }
+
+    /**     *
+     * Set SupplierID<br>
+     * The unique key of table 2.3. – Supplier, complying with rule defined
+     * for field 2.3.1. – SupplierID, in case of return notes or
+     * transport notes regarding movable assets produced or assembled
+     * according to an order of materials supplied for this purpose
+     * by the owner (work from materials supplied without the ownership
+     * being transferred).<br>
      * <pre>
      * &lt;xs:choice&gt;
      *    &lt;xs:element ref="CustomerID"/&gt;
@@ -458,155 +579,185 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * </pre>
      * @param string $supplierID
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setSupplierID(string $supplierID): void
+    public function setSupplierID(string $supplierID): bool
     {
-        if (isset($this->customerID)) {
-            $msg = "Can not set SupplierID if CustomerID is setted";
+        try {
+            if (isset($this->customerID)) {
+                $msg = "Can not set SupplierID if CustomerID is setted";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                $this->getErrorRegistor()->addOnSetValue("CustomerID_and_SupplierID_at_same_time");
+                throw new AuditFileException($msg);
+            }
+            $this->supplierID = $this->valTextMandMaxCar(
+                $supplierID, 30, __METHOD__, false
+            );
+            $return           = true;
+        } catch (AuditFileException $e) {
+            $this->supplierID = $supplierID;
+            $return           = false;
+            $this->getErrorRegistor()->addOnSetValue("SupplierID_not_valid");
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+                ->error(\sprintf(__METHOD__." '%s'", $e->getMessage()));
         }
-        $this->supplierID = $this->valTextMandMaxCar(
-            $supplierID, 30, __METHOD__, false
-        );
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'", $this->supplierID
                 )
-        );
+            );
+        return $return;
     }
 
     /**
      * Get MovementComments
-     * <xs:element ref="MovementComments" minOccurs="0"/><br>
-     * <xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="MovementComments" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getMovementComments(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
                     $this->movementComments === null ? "null" : $this->movementComments
-        ));
+                )
+            );
         return $this->movementComments;
     }
 
     /**
-     * Set MovementComments
-     * <xs:element ref="MovementComments" minOccurs="0"/><br>
-     * <xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * Set MovementComments<br>
+     * &lt;xs:element ref="MovementComments" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @param string|null $movementComments
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setMovementComments(?string $movementComments): void
+    public function setMovementComments(?string $movementComments): bool
     {
-        $this->movementComments = $movementComments === null ? null :
-            $this->valTextMandMaxCar(
-                $movementComments, 60, __METHOD__
-        );
+        try {
+            $this->movementComments = $movementComments === null ? null :
+                $this->valTextMandMaxCar(
+                    $movementComments, 60, __METHOD__
+                );
+            $return                 = true;
+        } catch (AuditFileException $e) {
+            $this->movementComments = $movementComments;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductNumberCode_not_valid");
+            $return                 = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
-                    $this->movementComments === null ? "null" : $this->movementComments
-        ));
+                    $this->movementComments === null ? "null" : $this->
+                        movementComments
+                )
+            );
+        return $return;
     }
 
     /**
      * Get ShipTo<br>
-     * <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
+     * Information about the delivery place and date,
+     * where and when the goods have been made available for the client,
+     * or anyone assigned by him in the case of triangular transactions.<br>
+     * &lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&gt;
+     * @param bool $create if true a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null
      * @since 1.0.0
      */
-    public function getShipTo(): ?ShipTo
+    public function getShipTo(bool $create = true): ?ShipTo
     {
+        if ($create && $this->shipTo === null) {
+            $this->shipTo = new ShipTo($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
-                    __METHOD__." getted '%s'", "ShipTo"
-                )
-        );
+            ->info(
+                \sprintf(__METHOD__." getted '%s'", "ShipTo")
+            );
         return $this->shipTo;
     }
 
     /**
-     * Set ShipTo<br>
-     * <xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null $shipTo
+     * Set ShipTo As Null
      * @return void
      * @since 1.0.0
      */
-    public function setShipTo(?ShipTo $shipTo): void
+    public function setShipToAsNull(): void
     {
-        $this->shipTo = $shipTo;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
-                    __METHOD__." setted to '%s'", "ShipTo"
-                )
-        );
+        $this->shipTo = null;
     }
 
     /**
      * Get ShipFrom<br>
-     * <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
+     * Information about the place and date of the shipping of
+     * the articles sold to the customer.<br>
+     * &lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&gt;
+     * @param bool $create if true a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null
      * @since 1.0.0
      */
-    public function getShipFrom(): ?ShipFrom
+    public function getShipFrom(bool $create = true): ?ShipFrom
     {
+        if ($create && $this->shipFrom === null) {
+            $this->shipFrom = new ShipFrom($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'", "ShipFrom"
                 )
-        );
+            );
         return $this->shipFrom;
     }
 
     /**
-     * Set ShipFrom<br>
-     * <xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null $shipFrom
+     * Set ShipFrom As Null
      * @return void
      * @since 1.0.0
      */
-    public function setShipFrom(?ShipFrom $shipFrom): void
+    public function setShipFromAsNull(): void
     {
-        $this->shipFrom = $shipFrom;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
-                    __METHOD__." setted to '%s'", "ShipFrom"
-                )
-        );
+        $this->shipFrom = null;
     }
 
     /**
      * Set MovementEndTime<br>
-     * <xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="MovementEndTime" type="SAFdateTimeType"/>
+     * Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”,
+     * if no specific information is available.<br>
+     * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     public function getMovementEndTime(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
                     $this->movementEndTime === null ?
-                        "null" :
-                        $this->movementEndTime->format(RDate::DATE_T_TIME)
+                        "null" : $this->movementEndTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
         return $this->movementEndTime;
     }
 
     /**
      * Get MovementEndTime<br>
-     * <xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="MovementEndTime" type="SAFdateTimeType"/>
+     * Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”,
+     * if no specific information is available.<br>
+     * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date|null $movementEndTime
      * @return void
      * @since 1.0.0
@@ -615,37 +766,53 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->movementEndTime = $movementEndTime;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
                     $this->movementEndTime === null ?
-                        "null" :
-                        $this->movementEndTime->format(RDate::DATE_T_TIME)
+                        "null" : $this->movementEndTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
     }
 
     /**
      * Get MovementStartTime<br>
-     * <xs:element ref="MovementStartTime" maxOccurs="1"/><br>
-     * <xs:element name="MovementStartTime" type="SAFdateTimeType"/>
+     * Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”, ”
+     * if no specific information is available.<br>
+     * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date
+     * @throws \Error
      * @since 1.0.0
      */
     public function getMovementStartTime(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
                     $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
         return $this->movementStartTime;
     }
 
     /**
+     * Get if is set MovementStartTime
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetMovementStartTime(): bool
+    {
+        return isset($this->movementStartTime);
+    }
+
+    /**
      * Set MovementStartTime<br>
-     * <xs:element ref="MovementStartTime" maxOccurs="1"/><br>
-     * <xs:element name="MovementStartTime" type="SAFdateTimeType"/>
+     * Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”, ”
+     * if no specific information is available.<br>
+     * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date $movementStartTime
      * @return void
      * @since 1.0.0
@@ -654,136 +821,128 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->movementStartTime = $movementStartTime;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
                     $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
-        );
+            );
     }
 
     /**
      * Get AtDocCodeID<br>
-     * <xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * Identification code given by the Tax Authority to the document,
+     * according to Decree No. 147/2003, of 11th July.<br>
+     * &lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getAtDocCodeID(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted '%s'",
-                    $this->atDocCodeID === null ? "null" :
-                        $this->atDocCodeID
+                    $this->atDocCodeID === null ? "null" : $this->atDocCodeID
                 )
-        );
+            );
         return $this->atDocCodeID;
     }
 
     /**
      * Set AtDocCodeID<br>
-     * <xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/><br>
-     * <xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * Identification code given by the Tax Authority to the document,
+     * according to Decree No. 147/2003, of 11th July.<br>
+     * &lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&gt;<br>
+     * &lt;xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @param string|null $atDocCodeID
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setAtDocCodeID(?string $atDocCodeID): void
+    public function setAtDocCodeID(?string $atDocCodeID): bool
     {
-        $this->atDocCodeID = $atDocCodeID === null ? null :
-            $this->valTextMandMaxCar($atDocCodeID, 200, __METHOD__, false);
+        try {
+            $this->atDocCodeID = $atDocCodeID === null ? null :
+                $this->valTextMandMaxCar($atDocCodeID, 200, __METHOD__, false);
+            $return            = true;
+        } catch (AuditFileException $e) {
+            $this->atDocCodeID = $atDocCodeID;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("AtDocCodeID_not_valid");
+            $return            = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(
+            ->debug(
+                \sprintf(
                     __METHOD__." setted to '%s'",
                     $this->atDocCodeID === "null" ?
-                        "" : $this->atDocCodeID
+                        "" : $this->
+                        atDocCodeID
                 )
-        );
+            );
+        return $return;
     }
 
     /**
      * Get Line Stack<br>
-     * <xs:element name="Line" maxOccurs="unbounded">
+     * &lt;xs:element name="Line" maxOccurs="unbounded">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line[]
      * @since 1.0.0
      */
     public function getLine(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(
+            ->info(
+                \sprintf(
                     __METHOD__." getted stack with '%s' elements",
                     \count($this->line)
                 )
-        );
+            );
         return $this->line;
     }
 
     /**
      * Add Line to stack<br>
-     * <xs:element name="Line" maxOccurs="unbounded">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line $line
-     * @return int
+     * &lt;xs:element name="Line" maxOccurs="unbounded">
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line
      * @since 1.0.0
      */
-    public function addToLine(Line $line): int
+    public function addLine(): Line
     {
-        if (\count($this->line) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->line);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->line[$index] = $line;
+        $line         = new Line($this->getErrorRegistor());
+        $this->line[] = $line;
+        $line->setLineNumber(\count($this->line));
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " Line add to index ".\strval($index));
-        return $index;
+            __METHOD__." Line add to stack"
+        );
+        return $line;
     }
 
     /**
-     * isset line
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetLine(int $index): bool
-    {
-        return isset($this->line[$index]);
-    }
-
-    /**
-     * unset line
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetLine(int $index): void
-    {
-        unset($this->line[$index]);
-    }
-
-    /**
-     *
+     * Get DocumentTotals<br>
+     * When this method is invoked a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals
      * @since 1.0.0
      */
     public function getDocumentTotals(): DocumentTotals
     {
+        if (isset($this->documentTotals) === false) {
+            $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
         return $this->documentTotals;
     }
 
     /**
-     *
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals $documentTotals
-     * @return void
+     * Get if is set DocumentTotals
+     * @return bool
      * @since 1.0.0
      */
-    public function setDocumentTotals(DocumentTotals $documentTotals): void
+    public function issetDocumentTotals(): bool
     {
-        $this->documentTotals = $documentTotals;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." setted");
+        return isset($this->documentTotals);
     }
 
     /**
@@ -799,33 +958,87 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== MovementOfGoods::N_MOVEMENTOFGOODS) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                MovementOfGoods::N_MOVEMENTOFGOODS, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                MovementOfGoods::N_MOVEMENTOFGOODS, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $stkMov = $node->addChild(static::N_STOCKMOVEMENT);
-        $stkMov->addChild(static::N_DOCUMENTNUMBER, $this->getDocumentNumber());
-        $stkMov->addChild(static::N_ATCUD, $this->getAtcud());
-        $this->getDocumentStatus()->createXmlNode($stkMov);
-        $stkMov->addChild(static::N_HASH, $this->getHash());
-        $stkMov->addChild(self::N_HASHCONTROL, $this->getHashControl());
+
+        if (isset($this->documentNumber)) {
+            $stkMov->addChild(
+                static::N_DOCUMENTNUMBER, $this->getDocumentNumber()
+            );
+        } else {
+            $stkMov->addChild(static::N_DOCUMENTNUMBER);
+            $this->getErrorRegistor()->addOnCreateXmlNode("DocumentNumber_not_valid");
+        }
+
+        if (isset($this->atcud)) {
+            $stkMov->addChild(static::N_ATCUD, $this->getAtcud());
+        } else {
+            $stkMov->addChild(static::N_ATCUD);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Atcud_not_valid");
+        }
+
+        if (isset($this->documentStatus)) {
+            $this->getDocumentStatus()->createXmlNode($stkMov);
+        } else {
+            $stkMov->addChild(DocumentStatus::N_DOCUMENTSTATUS);
+            $this->getErrorRegistor()->addOnCreateXmlNode("DocumentStatus_not_valid");
+        }
+
+        if (isset($this->hash)) {
+            $stkMov->addChild(static::N_HASH, $this->getHash());
+        } else {
+            $stkMov->addChild(static::N_HASH);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Hash_not_valid");
+        }
+
+        if (isset($this->hashControl)) {
+            $stkMov->addChild(self::N_HASHCONTROL, $this->getHashControl());
+        } else {
+            $stkMov->addChild(static::N_HASHCONTROL);
+            $this->getErrorRegistor()->addOnCreateXmlNode("HashControl_not_valid");
+        }
+
         if ($this->getPeriod() !== null) {
             $stkMov->addChild(static::N_PERIOD, \strval($this->getPeriod()));
         }
-        $stkMov->addChild(
-            static::N_MOVEMENTDATE,
-            $this->getMovementDate()->format(RDate::SQL_DATE)
-        );
-        $stkMov->addChild(
-            static::N_MOVEMENTTYPE, $this->getMovementType()->get()
-        );
-        $stkMov->addChild(
-            static::N_SYSTEMENTRYDATE,
-            $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
-        );
-        if ($this->getTransactionID() !== null) {
+
+        if (isset($this->movementDate)) {
+            $stkMov->addChild(
+                static::N_MOVEMENTDATE,
+                $this->getMovementDate()->format(RDate::SQL_DATE)
+            );
+        } else {
+            $stkMov->addChild(static::N_MOVEMENTDATE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("MovementDate_not_valid");
+        }
+
+        if (isset($this->movementType)) {
+            $stkMov->addChild(
+                static::N_MOVEMENTTYPE, $this->getMovementType()->get()
+            );
+        } else {
+            $stkMov->addChild(static::N_MOVEMENTTYPE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("MovementType_not_valid");
+        }
+
+        if (isset($this->systemEntryDate)) {
+            $stkMov->addChild(
+                static::N_SYSTEMENTRYDATE,
+                $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
+            );
+        } else {
+            $stkMov->addChild(static::N_SYSTEMENTRYDATE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
+        }
+
+        if ($this->getTransactionID(false) !== null) {
             $this->getTransactionID()->createXmlNode($stkMov);
         }
 
@@ -833,7 +1046,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $msg = "CustomerID or SupplierID must be setted";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_and_SupplierID_not_setted");
         }
 
         if (isset($this->customerID)) {
@@ -844,7 +1057,12 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $stkMov->addChild(static::N_SUPPLIERID, $this->getSupplierID());
         }
 
-        $stkMov->addChild(static::N_SOURCEID, $this->getSourceID());
+        if (isset($this->sourceID)) {
+            $stkMov->addChild(static::N_SOURCEID, $this->getSourceID());
+        } else {
+            $stkMov->addChild(static::N_SOURCEID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
+        }
 
         if ($this->getEacCode() !== null) {
             $stkMov->addChild(static::N_EACCODE, $this->getEacCode());
@@ -856,11 +1074,11 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             );
         }
 
-        if ($this->getShipTo() !== null) {
+        if ($this->getShipTo(false) !== null) {
             $this->getShipTo()->createXmlNode($stkMov);
         }
 
-        if ($this->getShipFrom() !== null) {
+        if ($this->getShipFrom(false) !== null) {
             $this->getShipFrom()->createXmlNode($stkMov);
         }
 
@@ -871,10 +1089,15 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             );
         }
 
-        $stkMov->addChild(
-            static::N_MOVEMENTSTARTTIME,
-            $this->getMovementStartTime()->format(RDate::DATE_T_TIME)
-        );
+        if (isset($this->movementStartTime)) {
+            $stkMov->addChild(
+                static::N_MOVEMENTSTARTTIME,
+                $this->getMovementStartTime()->format(RDate::DATE_T_TIME)
+            );
+        } else {
+            $stkMov->addChild(static::N_MOVEMENTSTARTTIME);
+            $this->getErrorRegistor()->addOnCreateXmlNode("MovementStartTime_not_valid");
+        }
 
         if ($this->getAtDocCodeID() !== null) {
             $stkMov->addChild(static::N_ATDOCCODEID, $this->getAtDocCodeID());
@@ -884,7 +1107,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $msg = "StockMovement without lines";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $this->getErrorRegistor()->addOnCreateXmlNode("StockMovement_without_lines");
         }
 
         foreach ($this->getLine() as $line) {
@@ -892,7 +1115,12 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $line->createXmlNode($stkMov);
         }
 
-        $this->getDocumentTotals()->createXmlNode($stkMov);
+        if (isset($this->documentTotals)) {
+            $this->getDocumentTotals()->createXmlNode($stkMov);
+        } else {
+            $stkMov->addChild(DocumentTotals::N_DOCUMENTTOTALS);
+            $this->getErrorRegistor()->addOnCreateXmlNode("DocumentTotals_not_valid");
+        }
 
         return $stkMov;
     }
@@ -909,21 +1137,26 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_STOCKMOVEMENT) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_STOCKMOVEMENT, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_STOCKMOVEMENT, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
+
         parent::parseXmlNode($node);
 
         $this->setDocumentNumber((string) $node->{static::N_DOCUMENTNUMBER});
-        $status = new DocumentStatus();
-        $status->parseXmlNode($node->{DocumentStatus::N_DOCUMENTSTATUS});
-        $this->setDocumentStatus($status);
+        $this->getDocumentStatus()->parseXmlNode(
+            $node->{DocumentStatus::N_DOCUMENTSTATUS}
+        );
+
         $this->setMovementDate(
             RDate::parse(RDate::SQL_DATE, (string) $node->{self::N_MOVEMENTDATE})
         );
+
         $this->setMovementType(
             new MovementType((string) $node->{static::N_MOVEMENTTYPE})
         );
@@ -937,15 +1170,11 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         if ($node->{static::N_SHIPTO}->count() > 0) {
-            $shipTo = new ShipTo();
-            $shipTo->parseXmlNode($node->{static::N_SHIPTO});
-            $this->setShipTo($shipTo);
+            $this->getShipTo()->parseXmlNode($node->{static::N_SHIPTO});
         }
 
         if ($node->{static::N_SHIPFROM}->count() > 0) {
-            $shipFrom = new ShipFrom();
-            $shipFrom->parseXmlNode($node->{static::N_SHIPFROM});
-            $this->setShipFrom($shipFrom);
+            $this->getShipFrom()->parseXmlNode($node->{static::N_SHIPFROM});
         }
 
         if ($node->{static::N_MOVEMENTENDTIME}->count() > 0) {
@@ -970,13 +1199,11 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
         $nLine = $node->{Line::N_LINE}->count();
         for ($n = 0; $n < $nLine; $n++) {
-            $line = new Line();
-            $line->parseXmlNode($node->{Line::N_LINE}[$n]);
-            $this->addToLine($line);
+            $this->addLine()->parseXmlNode($node->{Line::N_LINE}[$n]);
         }
 
-        $totals = new DocumentTotals();
-        $totals->parseXmlNode($node->{DocumentTotals::N_DOCUMENTTOTALS});
-        $this->setDocumentTotals($totals);
+        $this->getDocumentTotals()->parseXmlNode(
+            $node->{DocumentTotals::N_DOCUMENTTOTALS}
+        );
     }
 }

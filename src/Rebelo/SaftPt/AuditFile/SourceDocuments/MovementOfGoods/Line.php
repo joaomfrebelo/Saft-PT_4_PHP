@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+
 /**
  * StockMovement's Line
  *
@@ -75,50 +77,32 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line
      *         &lt;xs:element name="CustomsInformation"
      *                     type="CustomsInformation" minOccurs="0"/&gt;
      *     &lt;/xs:sequence&gt;
-     *     &lt;xs:assert
-     *         test="
-     *             if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage !== 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
-     *                 true()
-     *             else
-     *                 false()"/&gt;
-     *     &lt;xs:assert
-     *         test="
-     *             if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
-     *                 false()
-     *             else
-     *                 true()"
-     *     /&gt;
      *    &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
+     * Get Tax<br>
+     * This structure shall only be created for documents with a value in the database.<br>
      * &lt;xs:element name="Tax" type="MovementTax" minOccurs="0"/&gt;
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTax|null
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTax|null     *
+     * @param bool $create if true a new instance is created if wasn't previous
      * @since 1.0.0
      */
-    public function getTax(): ?MovementTax
+    public function getTax(bool $create = true): ?MovementTax
     {
+        if ($create && $this->tax === null) {
+            $this->tax = new MovementTax($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
         return $this->tax;
-    }
-
-    /**
-     * &lt;xs:element name="Tax" type="MovementTax" minOccurs="0"/&gt;
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTax|null $tax
-     * @return void
-     * @since 1.0.0
-     */
-    public function setTax(?MovementTax $tax): void
-    {
-        $this->tax = $tax;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." setted");
     }
 
     /**
@@ -132,15 +116,20 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line
     {
         $lineNode = parent::createXmlNode($node);
 
+        if (isset($this->description)) {
+            $lineNode->addChild(static::N_DESCRIPTION, $this->getDescription());
+        } else {
+            $lineNode->addChild(static::N_DESCRIPTION);
+            $this->getErrorRegistor()->addOnCreateXmlNode("Description_not_valid");
+        }
 
-        $lineNode->addChild(static::N_DESCRIPTION, $this->getDescription());
-
-        if ($this->getProductSerialNumber() !== null) {
+        if ($this->getProductSerialNumber(false) !== null) {
             $this->getProductSerialNumber()->createXmlNode($lineNode);
         }
+
         parent::createXmlNodeDebitCreditNode($lineNode);
 
-        if ($this->getTax() !== null) {
+        if ($this->getTax(false) !== null) {
             $this->getTax()->createXmlNode($lineNode);
         }
 
@@ -166,9 +155,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->{static::N_TAX}->count() > 0) {
-            $movTax = new MovementTax();
-            $movTax->parseXmlNode($node->{static::N_TAX});
-            $this->setTax($movTax);
+            $this->getTax()->parseXmlNode($node->{static::N_TAX});
         }
     }
 }

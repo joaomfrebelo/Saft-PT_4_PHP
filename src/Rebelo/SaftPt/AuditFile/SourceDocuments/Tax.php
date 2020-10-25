@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
@@ -33,7 +34,6 @@ use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
 
 /**
  * Tax
- * <!-- Estrutura de Taxa -->
  * &lt;xs:complexType name="Tax"&gt;
  *     &lt;xs:sequence&gt;
  *         &lt;xs:element ref="TaxType"/&gt;
@@ -87,42 +87,42 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_TAXAMOUNT = "TaxAmount";
 
     /**
-     * <xs:element ref="TaxType"/>
+     * &lt;xs:element ref="TaxType"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType
      * @since 1.0.0
      */
     private TaxType $taxType;
 
     /**
-     * <xs:element ref="TaxCountryRegion"/>
+     * &lt;xs:element ref="TaxCountryRegion"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\TaxCountryRegion
      * @since 1.0.0
      */
     private TaxCountryRegion $taxCountryRegion;
 
     /**
-     * <xs:element ref="TaxCode"/>
+     * &lt;xs:element ref="TaxCode"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode
      * @since 1.0.0
      */
     private TaxCode $taxCode;
 
     /**
-     * <xs:element ref="TaxPercentage"/>
+     * &lt;xs:element ref="TaxPercentage"/&gt;
      * @var float|null
      * @since 1.0.0
      */
     private ?float $taxPercentage = null;
 
     /**
-     * <xs:element ref="TaxAmount"/>
+     * &lt;xs:element ref="TaxAmount"/&gt;
      * @var float|null
      * @since 1.0.0
      */
     private ?float $taxAmount = null;
 
     /**
-     * <!-- Estrutura de Taxa -->
+     * Tax
      * <pre>
      * &lt;xs:complexType name="Tax"&gt;
      *     &lt;xs:sequence&gt;
@@ -136,16 +136,22 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *     &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     * Get TaxType
+     * Get TaxType<br>
+     * This field shall be filled in with the tax type:
+     * “IVA” - Value Added Tax;<br>
+     * “IS” - Stamp Duty;<br>
+     * “NS” - Not subject IVA or IS.<br>
      * @return \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxType(): TaxType
@@ -156,7 +162,21 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Set Tax Type
+     * Get if is set TaxType
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxType(): bool
+    {
+        return isset($this->taxType);
+    }
+
+    /**
+     * Set Tax Type<br>
+     * This field shall be filled in with the tax type:
+     * “IVA” - Value Added Tax;<br>
+     * “IS” - Stamp Duty;<br>
+     * “NS” - Not subject IVA or IS.<br>
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType $taxType
      * @return void
      * @since 1.0.0
@@ -169,21 +189,46 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Get TaxCountryRegion
+     * Get TaxCountryRegion<br>
+     * The field shall be filled in according to norm ISO 3166-1-alpha-2.<br>
+     * In the case of the Autonomous Regions of the Azores and Madeira Island
+     * it must be filled in with:<br>
+     * “PT-AC” - Fiscal area of the Autonomous Region of the Azores;<br>
+     * “PT-MA” - Fiscal area of the Autonomous Region of the Madeira Island.<br>
      * @return \Rebelo\SaftPt\AuditFile\TaxCountryRegion
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxCountryRegion(): TaxCountryRegion
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->taxCountryRegion->get()));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->taxCountryRegion->get()
+                )
+            );
         return $this->taxCountryRegion;
     }
 
     /**
-     * Set TaxCountryRegion
-     * @param Rebelo\SaftPt\AuditFile\TaxCountryRegion $taxCountryRegion
+     * Get if is set TaxCountryRegion
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxCountryRegion(): bool
+    {
+        return isset($this->taxCountryRegion);
+    }
+
+    /**
+     * Set TaxCountryRegion<br>
+     * The field shall be filled in according to norm ISO 3166-1-alpha-2.<br>
+     * In the case of the Autonomous Regions of the Azores and Madeira Island
+     * it must be filled in with:<br>
+     * “PT-AC” - Fiscal area of the Autonomous Region of the Azores;<br>
+     * “PT-MA” - Fiscal area of the Autonomous Region of the Madeira Island.<br>
+     * @param \Rebelo\SaftPt\AuditFile\TaxCountryRegion $taxCountryRegion
      * @return void
      * @since 1.0.0
      */
@@ -191,13 +236,29 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxCountryRegion = $taxCountryRegion;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->taxCountryRegion->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->taxCountryRegion->get()
+                )
+            );
     }
 
     /**
-     * Get Tax Code
-     * @return Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode
+     * Get Tax Code<br>
+     * Tax rate code in the table of taxes.<br>
+     * In case field 4.1.4.19.15.1. - TaxType = IVA, the field must be filled in with:<br>
+     * “RED” - Reduced tax rate;<br>
+     * “INT” - Intermediate tax rate;<br>
+     * “NOR” - Normal tax rate;<br>
+     * “ISE” - Exempted;<br>
+     * “OUT” - Others, applicable to the special VAT regimes.<br>
+     * In case field 4.1.4.19.15.1 TaxType = IS, the field shall be filled in with:
+     * The correspondent code of the Stamp Duty’s table;<br>
+     * “ISE” - Exempted.<br>
+     * In case it is not subject to tax, fill in with “NS”.
+     * @return \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxCode(): TaxCode
@@ -208,8 +269,29 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Set Tax Code
-     * @param Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode $taxCode
+     * Get if is set TaxCode
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxCode(): bool
+    {
+        return isset($this->taxCode);
+    }
+
+    /**
+     * Set Tax Code<br>
+     * Tax rate code in the table of taxes.<br>
+     * In case field 4.1.4.19.15.1. - TaxType = IVA, the field must be filled in with:<br>
+     * “RED” - Reduced tax rate;<br>
+     * “INT” - Intermediate tax rate;<br>
+     * “NOR” - Normal tax rate;<br>
+     * “ISE” - Exempted;<br>
+     * “OUT” - Others, applicable to the special VAT regimes.<br>
+     * In case field 4.1.4.19.15.1 TaxType = IS, the field shall be filled in with:
+     * The correspondent code of the Stamp Duty’s table;<br>
+     * “ISE” - Exempted.<br>
+     * In case it is not subject to tax, fill in with “NS”.
+     * @param \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode $taxCode
      * @return void
      * @since 1.0.0
      */
@@ -221,75 +303,115 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Get Tax Percentage
+     * Get Tax Percentage<br>
+     * When it deals with a tax rate percentage it is required to fill in this field.
+     * Percentage of the tax rate corresponding to the tax applicable to
+     * field 4.4.4.19.13. - DebitAmount or to field 4.1.4.19.14. - CreditAmount.
+     * In case of exemption or not subject to tax, fill in with “0” (zero).
      * @return float|null
      * @since 1.0.0
      */
     public function getTaxPercentage(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->taxPercentage === null ?
-                        "null" : \strval($this->taxPercentage)));
+                    "null" : \strval($this->taxPercentage)
+                )
+            );
         return $this->taxPercentage;
     }
 
     /**
-     * Set Tax Percentage
+     * Set Tax Percentage<br>
+     * When it deals with a tax rate percentage it is required to fill in this field.
+     * Percentage of the tax rate corresponding to the tax applicable to
+     * field 4.4.4.19.13. - DebitAmount or to field 4.1.4.19.14. - CreditAmount.
+     * In case of exemption or not subject to tax, fill in with “0” (zero).
      * @param float|null $taxPercentage
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxPercentage(?float $taxPercentage): void
+    public function setTaxPercentage(?float $taxPercentage): bool
     {
         if ($this->getTaxAmount() !== null && $taxPercentage !== null) {
-            $msg = "Tax Percentage and Tax Amount can not be setted at the same time";
+            $msg    = "Tax Percentage and Tax Amount can not be setted at the same time";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_setted");
+        } elseif ($taxPercentage < 0.0 || $taxPercentage > 100.00) {
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("TaxPercentage_not_valid");
+        } else {
+            $return = true;
         }
         $this->taxPercentage = $taxPercentage;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->taxPercentage === null ?
-                        "null" : \strval($this->taxPercentage)));
+                    "null" : \strval($this->taxPercentage)
+                )
+            );
+        return $return;
     }
 
     /**
-     * Get Tax Amount
+     * Get Tax Amount<br>
+     * The filling is required, in the case of a fixed unitary fee of stamp duty.
+     * This value, multiplied by the Quantity contributes for the TaxPayable field.
      * @return float|null
      * @since 1.0.0
      */
     public function getTaxAmount(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->taxAmount === null ?
-                        "null" : \strval($this->taxAmount)));
+                    "null" : \strval($this->taxAmount)
+                )
+            );
         return $this->taxAmount;
     }
 
     /**
-     * Set Tax Amout
+     * Set Tax Amout<br>
+     * The filling is required, in the case of a fixed unitary fee of stamp duty.
+     * This value, multiplied by the Quantity contributes for the TaxPayable field.
      * @param float|null $taxAmount
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxAmount(?float $taxAmount): void
+    public function setTaxAmount(?float $taxAmount): bool
     {
         if ($this->getTaxPercentage() !== null && $taxAmount !== null) {
-            $msg = "Tax Percentage and Tax Amount can not be setted at the same time";
+            $msg    = "Tax Percentage and Tax Amount can not be setted at the same time";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_setted");
+        } elseif ($taxAmount < 0.0) {
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("TaxAmount_not_valid");
+        } else {
+            $return = true;
         }
         $this->taxAmount = $taxAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->taxAmount === null ?
-                        "null" : \strval($this->taxAmount)));
+                    "null" : \strval($this->taxAmount)
+                )
+            );
+        return $return;
     }
 
     /**
@@ -304,7 +426,8 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
                 A2Line::N_LINE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -313,18 +436,43 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         $taxNode = $node->addChild(static::N_TAX);
-        $taxNode->addChild(static::N_TAXTYPE, $this->getTaxType()->get());
-        $taxNode->addChild(static::N_TAXCOUNTRYREGION,
-            $this->getTaxCountryRegion()->get());
-        $taxNode->addChild(static::N_TAXCODE, $this->getTaxCode()->get());
+
+        if (isset($this->taxType)) {
+            $taxNode->addChild(static::N_TAXTYPE, $this->getTaxType()->get());
+        } else {
+            $taxNode->addChild(static::N_TAXTYPE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxType_not_valid");
+        }
+
+        if (isset($this->taxCountryRegion)) {
+            $taxNode->addChild(
+                static::N_TAXCOUNTRYREGION, $this->getTaxCountryRegion()->get()
+            );
+        } else {
+            $taxNode->addChild(static::N_TAXCOUNTRYREGION);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxCountryRegion_not_valid");
+        }
+
+        if (isset($this->taxCode)) {
+            $taxNode->addChild(static::N_TAXCODE, $this->getTaxCode()->get());
+        } else {
+            $taxNode->addChild(static::N_TAXCODE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxCode_not_valid");
+        }
+
         if ($this->getTaxPercentage() !== null) {
-            $taxNode->addChild(static::N_TAXPERCENTAGE,
-                $this->floatFormat($this->getTaxPercentage()));
+            $taxNode->addChild(
+                static::N_TAXPERCENTAGE,
+                $this->floatFormat($this->getTaxPercentage())
+            );
         }
+
         if ($this->getTaxAmount() !== null) {
-            $taxNode->addChild(static::N_TAXAMOUNT,
-                $this->floatFormat($this->getTaxAmount()));
+            $taxNode->addChild(
+                static::N_TAXAMOUNT, $this->floatFormat($this->getTaxAmount())
+            );
         }
+
         return $taxNode;
     }
 
@@ -340,8 +488,10 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_TAX) {
-            $msg = sprintf("Node name should be '%s' but is '%s", static::N_TAX,
-                $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s", static::N_TAX,
+                $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -349,10 +499,15 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $this->setTaxCode(new TaxCode((string) $node->{static::N_TAXCODE}));
         $this->setTaxType(new TaxType((string) $node->{static::N_TAXTYPE}));
-        $this->setTaxCountryRegion(new TaxCountryRegion((string) $node->{static::N_TAXCOUNTRYREGION}));
+
+        $this->setTaxCountryRegion(
+            new TaxCountryRegion((string) $node->{static::N_TAXCOUNTRYREGION})
+        );
+
         if ($node->{static::N_TAXPERCENTAGE}->count() > 0) {
             $this->setTaxPercentage((float) $node->{static::N_TAXPERCENTAGE});
         }
+
         if ($node->{static::N_TAXAMOUNT}->count() > 0) {
             $this->setTaxAmount((float) $node->{static::N_TAXAMOUNT});
         }

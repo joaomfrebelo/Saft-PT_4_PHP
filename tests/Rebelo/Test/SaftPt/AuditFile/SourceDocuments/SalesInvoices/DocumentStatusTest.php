@@ -31,7 +31,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
 
 /**
@@ -43,23 +43,32 @@ class DocumentStatusTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(DocumentStatus::class);
         $this->assertTrue(true);
     }
 
-    public function testInstance()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstance(): void
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $this->assertInstanceOf(
             DocumentStatus::class, $docStatus
         );
 
         $this->assertNull($docStatus->getReason());
+        $this->assertFalse($docStatus->issetInvoiceStatus());
+        $this->assertFalse($docStatus->issetInvoiceStatusDate());
+        $this->assertFalse($docStatus->issetSourceBilling());
+        $this->assertFalse($docStatus->issetSourceID());
 
         try {
             $docStatus->getInvoiceStatus();
@@ -90,72 +99,93 @@ class DocumentStatusTest extends TestCase
         }
     }
 
-    public function testInvoiceStatus()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInvoiceStatus(): void
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $status    = InvoiceStatus::N;
         $docStatus->setInvoiceStatus(new InvoiceStatus($status));
         $this->assertSame($status, $docStatus->getInvoiceStatus()->get());
+        $this->assertTrue($docStatus->issetInvoiceStatus());
     }
 
-    public function testInvoiceStatusDate()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInvoiceStatusDate(): void
     {
         $date      = new RDate();
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $docStatus->setInvoiceStatusDate($date);
         $this->assertSame(
             $date->format(RDate::DATE_T_TIME),
             $docStatus->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
         );
+        $this->assertTrue($docStatus->issetInvoiceStatusDate());
     }
 
-    public function testReazon()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testReazon(): void
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $reason    = "Test reason";
-        $docStatus->setReason($reason);
+        $this->assertTrue($docStatus->setReason($reason));
         $this->assertSame($reason, $docStatus->getReason());
-        $docStatus->setReason(null);
+        $this->assertTrue($docStatus->setReason(null));
         $this->assertNull($docStatus->getReason());
-        try {
-            $docStatus->setReason("");
-            $this->fail("Reason should throw AuditFileException "
-                ."when setted to an empty string");
-        } catch (\Exception | \Error $ex) {
-            $this->assertInstanceOf(AuditFileException::class, $ex);
-        }
-        $docStatus->setReason(\str_pad($reason, 51, "9"));
+        $this->assertTrue($docStatus->setReason(\str_pad($reason, 51, "9")));
         $this->assertSame(50, \strlen($docStatus->getReason()));
+
+        $this->assertFalse($docStatus->setReason(""));
+        $this->assertSame("", $docStatus->getReason());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testSourceID()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSourceID(): void
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $sourceID  = "Test sourceID";
-        $docStatus->setSourceID($sourceID);
+        $this->assertTrue($docStatus->setSourceID($sourceID));
         $this->assertSame($sourceID, $docStatus->getSourceID());
-        try {
-            $docStatus->setSourceID("");
-            $this->fail("SourceID should throw AuditFileException "
-                ."when setted to an empty string");
-        } catch (\Exception | \Error $ex) {
-            $this->assertInstanceOf(AuditFileException::class, $ex);
-        }
-        $docStatus->setSourceID(\str_pad($sourceID, 31, "9"));
+        $this->assertTrue($docStatus->issetSourceID());
+        $this->assertTrue($docStatus->setSourceID(\str_pad($sourceID, 31, "9")));
         $this->assertSame(30, \strlen($docStatus->getSourceID()));
+
+        $this->assertFalse($docStatus->setSourceID(""));
+        $this->assertSame("", $docStatus->getSourceID());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testSourceBilling()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSourceBilling(): void
     {
         $billing   = SourceBilling::P;
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $docStatus->setSourceBilling(new SourceBilling($billing));
         $this->assertSame($billing, $docStatus->getSourceBilling()->get());
+        $this->assertTrue($docStatus->issetSourceBilling());
     }
 
+    /**
+     * @author João Rebelo
+     */
     public function createDocumentStatus(): DocumentStatus
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $docStatus->setInvoiceStatus(
             new InvoiceStatus(InvoiceStatus::N)
         );
@@ -168,101 +198,150 @@ class DocumentStatusTest extends TestCase
         return $docStatus;
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode(): void
     {
-        $docStatus  = $this->createDocumentStatus();
-        $node       = new \SimpleXMLElement(
+        $docStatus = $this->createDocumentStatus();
+        $node      = new \SimpleXMLElement(
             "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
+
         $docStaNode = $docStatus->createXmlNode($node);
+
         $this->assertInstanceOf(\SimpleXMLElement::class, $docStaNode);
+
         $this->assertSame(
             DocumentStatus::N_DOCUMENTSTATUS, $docStaNode->getName()
         );
+
         $this->assertSame(
             $docStatus->getInvoiceStatus()->get(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_INVOICESTATUS}
         );
+
         $this->assertSame(
             $docStatus->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
             ->{DocumentStatus::N_INVOICESTATUSDATE}
         );
+
         $this->assertSame(
             $docStatus->getReason(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_REASON}
         );
+
         $this->assertSame(
             $docStatus->getSourceBilling()->get(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEBILLING}
         );
+
         $this->assertSame(
             $docStatus->getSourceID(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEID}
         );
     }
 
-    public function testCreateXmlNodeNullReason()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeNullReason(): void
     {
-        $docStatus  = $this->createDocumentStatus();
+        $docStatus = $this->createDocumentStatus();
         $docStatus->setReason(null);
-        $node       = new \SimpleXMLElement(
+        $node      = new \SimpleXMLElement(
             "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
+
         $docStaNode = $docStatus->createXmlNode($node);
+
         $this->assertInstanceOf(\SimpleXMLElement::class, $docStaNode);
+
         $this->assertSame(
             DocumentStatus::N_DOCUMENTSTATUS, $docStaNode->getName()
         );
+
         $this->assertSame(
             $docStatus->getInvoiceStatus()->get(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_INVOICESTATUS}
         );
+
         $this->assertSame(
             $docStatus->getInvoiceStatusDate()
                 ->format(RDate::DATE_T_TIME),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}
             ->{DocumentStatus::N_INVOICESTATUSDATE}
         );
-        $this->assertSame(0,
+
+        $this->assertSame(
+            0,
             $node->{DocumentStatus::N_DOCUMENTSTATUS}
             ->{DocumentStatus::N_REASON}->count()
         );
+
         $this->assertSame(
             $docStatus->getSourceBilling()->get(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEBILLING}
         );
+
         $this->assertSame(
             $docStatus->getSourceID(),
             (string) $node->{DocumentStatus::N_DOCUMENTSTATUS}->{DocumentStatus::N_SOURCEID}
         );
     }
 
-    public function testeParseXml()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testeParseXml(): void
     {
         $node   = new \SimpleXMLElement(
             "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
         );
         $docSta = $this->createDocumentStatus();
         $xml    = $docSta->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new DocumentStatus();
+        $parsed = new DocumentStatus(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
-        $this->assertSame($docSta->getInvoiceStatus()->get(),
-            $parsed->getInvoiceStatus()->get());
-        $this->assertSame($docSta->getInvoiceStatusDate()
-                ->format(RDate::DATE_T_TIME),
-            $parsed->getInvoiceStatusDate()
-                ->format(RDate::DATE_T_TIME));
+        $this->assertSame(
+            $docSta->getInvoiceStatus()->get(),
+            $parsed->getInvoiceStatus()->get()
+        );
+
+        $this->assertSame(
+            $docSta->getInvoiceStatusDate()->format(RDate::DATE_T_TIME),
+            $parsed->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
+        );
+
         $this->assertSame($docSta->getReason(), $parsed->getReason());
-        $this->assertSame($docSta->getSourceBilling()->get(),
-            $parsed->getSourceBilling()->get());
+
+        $this->assertSame(
+            $docSta->getSourceBilling()->get(),
+            $parsed->getSourceBilling()->get()
+        );
+
         $this->assertSame($docSta->getSourceID(), $parsed->getSourceID());
+
+        $this->assertEmpty($docSta->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($docSta->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docSta->getErrorRegistor()->getLibXmlError());
     }
 
-    public function testeParseXmlReasonNull()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testeParseXmlReasonNull(): void
     {
         $node   = new \SimpleXMLElement(
             "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
@@ -270,31 +349,52 @@ class DocumentStatusTest extends TestCase
         $docSta = $this->createDocumentStatus();
         $docSta->setReason(null);
         $xml    = $docSta->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new DocumentStatus();
+        $parsed = new DocumentStatus(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
-        $this->assertSame($docSta->getInvoiceStatus()->get(),
-            $parsed->getInvoiceStatus()->get());
-        $this->assertSame($docSta->getInvoiceStatusDate()
-                ->format(RDate::DATE_T_TIME),
-            $parsed->getInvoiceStatusDate()
-                ->format(RDate::DATE_T_TIME));
+        $this->assertSame(
+            $docSta->getInvoiceStatus()->get(),
+            $parsed->getInvoiceStatus()->get()
+        );
+
+        $this->assertSame(
+            $docSta->getInvoiceStatusDate()->format(RDate::DATE_T_TIME),
+            $parsed->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
+        );
+
         $this->assertSame($docSta->getReason(), $parsed->getReason());
-        $this->assertSame($docSta->getSourceBilling()->get(),
-            $parsed->getSourceBilling()->get());
+
+        $this->assertSame(
+            $docSta->getSourceBilling()->get(),
+            $parsed->getSourceBilling()->get()
+        );
+
         $this->assertSame($docSta->getSourceID(), $parsed->getSourceID());
+
+        $this->assertEmpty($docSta->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($docSta->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docSta->getErrorRegistor()->getLibXmlError());
     }
 
-    public function testCreateXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWrongName(): void
     {
-        $docStatus = new DocumentStatus();
-        $node      = new \SimpleXMLElement("<root></root>"
-        );
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $node      = new \SimpleXMLElement("<root></root>");
         try {
             $docStatus->createXmlNode($node);
-            $this->fail("Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Creat a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -302,19 +402,77 @@ class DocumentStatusTest extends TestCase
         }
     }
 
-    public function testParseXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNodeWrongName(): void
     {
-        $docStat = new DocumentStatus();
-        $node    = new \SimpleXMLElement("<root></root>"
-        );
+        $docStat = new DocumentStatus(new ErrorRegister());
+        $node    = new \SimpleXMLElement("<root></root>");
         try {
             $docStat->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $statusNode = new \SimpleXMLElement(
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+        );
+        $status     = new DocumentStatus(new ErrorRegister());
+        $xml        = $status->createXmlNode($statusNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($status->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($status->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $statusNode = new \SimpleXMLElement(
+            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+        );
+        $status     = new DocumentStatus(new ErrorRegister());
+        $status->setReason("");
+        $status->setSourceID("");
+
+        $xml = $status->createXmlNode($statusNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($status->getErrorRegistor()->getLibXmlError());
     }
 }

@@ -27,10 +27,10 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
- *
- * <!-- Estrutura de Regimes especiais de faturacao-->
+ * SpecialRegimes<br>
  *  &lt;xs:complexType name="SpecialRegimes"&gt;
  *      &lt;xs:sequence&gt;
  *          &lt;xs:element ref="SelfBillingIndicator"/&gt;
@@ -69,122 +69,166 @@ class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_THIRDPARTIESBILLINGINDICATOR = "ThirdPartiesBillingIndicator";
 
     /**
-     * <xs:element ref="SelfBillingIndicator"/>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
      * @var bool
      * @since 1.0.0
      */
     private bool $selfBillingIndicator = false;
 
     /**
-     *  <xs:element ref="CashVATSchemeIndicator"/>
+     *  &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
      * @var bool
      * @since 1.0.0
      */
     private bool $cashVATSchemeIndicator = false;
 
     /**
-     * <xs:element ref="ThirdPartiesBillingIndicator"/>
+     * &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
      * @var bool
      * @since 1.0.0
      */
     private bool $thirdPartiesBillingIndicator = false;
 
     /**
-     * <!-- Estrutura de Regimes especiais de faturacao-->
-     *  &lt;xs:complexType name="SpecialRegimes"&gt;
+     * SpecialRegimes<br>
+     * &lt;xs:complexType name="SpecialRegimes"&gt;
      *      &lt;xs:sequence&gt;
      *          &lt;xs:element ref="SelfBillingIndicator"/&gt;
      *          &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
      *          &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
      *      &lt;/xs:sequence&gt;
      *  &lt;/xs:complexType&gt;
-     *
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     *  <xs:element ref="SelfBillingIndicator"/>
+     * GetSelfBillingIndicator<br>
+     * The field shall be filled in with “1” if it concerns
+     * self-billing and otherwise with “0” (Zero).<br>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
      * @return bool
      * @since 1.0.0
      */
     public function getSelfBillingIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->selfBillingIndicator ? "true" : "false"));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->selfBillingIndicator ? "true" : "false"
+                )
+            );
         return $this->selfBillingIndicator;
     }
 
     /**
-     *  <xs:element ref="CashVATSchemeIndicator"/>
+     * Get CashVATSchemeIndicator<br>
+     * Accession indicator to the VAT cash method.
+     * Should be filled in with “1” in case the method has
+     * been accessed and with “0” (zero) if not.<br>
+     *  &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
      * @return bool
      * @since 1.0.0
      */
     public function getCashVATSchemeIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->cashVATSchemeIndicator ? "true" : "false"));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->cashVATSchemeIndicator ? "true" : "false"
+                )
+            );
         return $this->cashVATSchemeIndicator;
     }
 
     /**
-     * <xs:element ref="ThirdPartiesBillingIndicator"/>
+     * GetThirdPartiesBillingIndicator<br>
+     * Should be filled in with “1” for invoices issued on behalf of
+     * third persons and with “0” (zero) if not.<br>
+     * &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
      * @return bool
      * @since 1.0.0
      */
     public function getThirdPartiesBillingIndicator(): bool
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->thirdPartiesBillingIndicator ? "true" : "false"));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->thirdPartiesBillingIndicator ? "true" : "false"
+                )
+            );
         return $this->thirdPartiesBillingIndicator;
     }
 
     /**
-     *  <xs:element ref="SelfBillingIndicator"/>
-     * @param bool $SelfBillingIndicator
+     * SetSelfBillingIndicator<br>
+     * The field shall be filled in with “1” if it concerns
+     * self-billing and otherwise with “0” (Zero).<br>
+     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     * @param bool $selfBillingIndicator
      * @return void
      * @since 1.0.0
      */
-    public function setSelfBillingIndicator(bool $SelfBillingIndicator): void
+    public function setSelfBillingIndicator(bool $selfBillingIndicator): void
     {
-        $this->selfBillingIndicator = $SelfBillingIndicator;
+        $this->selfBillingIndicator = $selfBillingIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->selfBillingIndicator ? "true" : "false"));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->selfBillingIndicator ? "true" : "false"
+                )
+            );
     }
 
     /**
-     * <xs:element ref="CashVATSchemeIndicator"/>
-     * @param bool $CashVATSchemeIndicator
+     * Set CashVATSchemeIndicator<br>
+     * Accession indicator to the VAT cash method.
+     * Should be filled in with “1” in case the method has
+     * been accessed and with “0” (zero) if not.<br>
+     * &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
+     * @param bool $cashVATSchemeIndicator
      * @return void
      * @since 1.0.0
      */
-    public function setCashVATSchemeIndicator(bool $CashVATSchemeIndicator): void
+    public function setCashVATSchemeIndicator(bool $cashVATSchemeIndicator): void
     {
-        $this->cashVATSchemeIndicator = $CashVATSchemeIndicator;
+        $this->cashVATSchemeIndicator = $cashVATSchemeIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->cashVATSchemeIndicator ? "true" : "false"));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->cashVATSchemeIndicator ? "true" : "false"
+                )
+            );
     }
 
     /**
-     * <xs:element ref="ThirdPartiesBillingIndicator"/>
-     * @param bool $ThirdPartiesBillingIndicator
+     * <br>
+     * Should be filled in with “1” for invoices issued on behalf of
+     * third persons and with “0” (zero) if not.<br>
+     * &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
+     * @param bool $thirdPartiesBillingIndicator
      * @return void
      * @since 1.0.0
      */
-    public function setThirdPartiesBillingIndicator(bool $ThirdPartiesBillingIndicator): void
+    public function setThirdPartiesBillingIndicator(bool $thirdPartiesBillingIndicator): void
     {
-        $this->thirdPartiesBillingIndicator = $ThirdPartiesBillingIndicator;
+        $this->thirdPartiesBillingIndicator = $thirdPartiesBillingIndicator;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->thirdPartiesBillingIndicator ? "true" : "false"));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->thirdPartiesBillingIndicator ? "true" : "false"
+                )
+            );
     }
 
     /**
@@ -199,8 +243,10 @@ class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Invoice::N_INVOICE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                Invoice::N_INVOICE, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                Invoice::N_INVOICE, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -235,8 +281,10 @@ class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_SPECIALREGIMES) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_SPECIALREGIMES, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_SPECIALREGIMES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

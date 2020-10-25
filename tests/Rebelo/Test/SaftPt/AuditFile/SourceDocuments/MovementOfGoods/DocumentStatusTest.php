@@ -31,7 +31,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus;
@@ -48,9 +48,10 @@ class DocumentStatusTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(DocumentStatus::class);
@@ -58,54 +59,106 @@ class DocumentStatusTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $this->assertInstanceOf(DocumentStatus::class, $docStatus);
         $this->assertNull($docStatus->getReason());
+        $this->assertFalse($docStatus->issetSourceID());
+        $this->assertFalse($docStatus->issetMovementStatus());
+        $this->assertFalse($docStatus->issetMovementStatusDate());
+        $this->assertFalse($docStatus->issetSourceBilling());
+    }
 
-        $status = MovementStatus::N;
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetMovementStatus(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $status    = MovementStatus::N;
         $docStatus->setMovementStatus(new MovementStatus($status));
         $this->assertSame($status, $docStatus->getMovementStatus()->get());
+        $this->assertTrue($docStatus->issetMovementStatus());
+    }
 
-        $date = new RDate();
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetMovementStatusDate(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $date      = new RDate();
         $docStatus->setMovementStatusDate($date);
         $this->assertSame($date, $docStatus->getMovementStatusDate());
+        $this->assertTrue($docStatus->issetMovementStatusDate());
+    }
 
-        $reason = "Reason of status";
-        $docStatus->setReason($reason);
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetReason(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $reason    = "Reason of status";
+        $this->assertTrue($docStatus->setReason($reason));
         $this->assertSame($reason, $docStatus->getReason());
-        $docStatus->setReason(null);
+        $this->assertTrue($docStatus->setReason(null));
         $this->assertNull($docStatus->getReason());
-        $docStatus->setReason(str_pad($reason, 50, "A"));
+        $this->assertTrue($docStatus->setReason(str_pad($reason, 50, "A")));
         $this->assertSame(50, \strlen($docStatus->getReason()));
 
-        $sourceId = "operator";
+        $this->assertFalse($docStatus->setReason(""));
+        $this->assertSame("", $docStatus->getReason());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetSourceID(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $sourceId  = "operator";
         $docStatus->setSourceID($sourceId);
         $this->assertSame($sourceId, $docStatus->getSourceID());
+        $this->assertTrue($docStatus->issetSourceID());
         $docStatus->setSourceID(str_pad($sourceId, 50, "A"));
         $this->assertSame(30, \strlen($docStatus->getSourceID()));
-        try {
-            $docStatus->setSourceID("");
-            $this->fail("Set SourceID to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
-        $srcBill = SourceBilling::M;
+        $this->assertFalse($docStatus->setSourceID(""));
+        $this->assertSame("", $docStatus->getSourceID());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetSourceBilling(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $srcBill   = SourceBilling::M;
         $docStatus->setSourceBilling(new SourceBilling($srcBill));
         $this->assertSame($srcBill, $docStatus->getSourceBilling()->get());
+        $this->assertTrue($docStatus->issetSourceBilling());
     }
 
     /**
      * Reads all workstaus from the Demo SAFT in Test\Ressources
      * and parse then to workstatus class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -129,14 +182,10 @@ class DocumentStatusTest extends TestCase
             for ($l = 0; $l < $statusStack->count(); $l++) {
                 /* @var $statusXml \SimpleXMLElement */
                 $statusXml = $statusStack[$l];
-                $docStatus = new DocumentStatus();
+                $docStatus = new DocumentStatus(new ErrorRegister());
                 $docStatus->parseXmlNode($statusXml);
 
-                $xmlRootNode       = new \SimpleXMLElement(
-                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                    'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-                );
+                $xmlRootNode       = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
                 $sourceDocNode     = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
                 $movOfGoodsNode    = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
                 $stockMovStackNode = $movOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
@@ -145,17 +194,84 @@ class DocumentStatusTest extends TestCase
 
                 try {
                     $assertXml = $this->xmlIsEqual($statusXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Document '%s' with error '%s'",
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $stockMovDocStackXml->{StockMovement::N_DOCUMENTNUMBER},
-                            $assertXml)
+                            $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $stockMovDocStackXml->{StockMovement::N_DOCUMENTNUMBER},
-                            $e->getMessage()));
+                            $e->getMessage()
+                        )
+                    );
                 }
             }
         }
+
+        /* @phpstan-ignore-next-line */
+        $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
+        /* @phpstan-ignore-next-line */
+        $this->assertEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+        /* @phpstan-ignore-next-line */
+        $this->assertEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $productNode = new \SimpleXMLElement(
+            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+        );
+        $docStatus   = new DocumentStatus(new ErrorRegister());
+        $xml         = $docStatus->createXmlNode($productNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $docStatusNode = new \SimpleXMLElement(
+            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+        );
+        $docStatus     = new DocumentStatus(new ErrorRegister());
+        $docStatus->setReason("");
+        $docStatus->setSourceID("");
+
+        $xml = $docStatus->createXmlNode($docStatusNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
     }
 }

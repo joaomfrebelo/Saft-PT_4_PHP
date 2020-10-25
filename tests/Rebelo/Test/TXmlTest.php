@@ -36,15 +36,15 @@ trait TXmlTest
      *
      * @param \SimpleXMLElement $xml1
      * @param \SimpleXMLElement $xml2
-     * @param bool $text_strict
+     * @param bool $textStrict
      * @return boolean|string
      */
     public function xmlIsEqual(\SimpleXMLElement $xml1,
                                  \SimpleXMLElement $xml2,
-                                 bool $text_strict = false)
+                                 bool $textStrict = false)
     {
         // compare text content
-        if ($text_strict) {
+        if ($textStrict) {
             if ("$xml1" != "$xml2") {
                 return "mismatched text content (strict)";
             }
@@ -105,27 +105,29 @@ trait TXmlTest
         // cycle over children
         if (count($search1) != count($search2))
                 return "mismatched children count";  // xml2 has less or more children names (we don't have to search through xml2's children too)
-        foreach ($search1 as $child_name => $children) {
-            if (!isset($search2[$child_name]))
-                    return "xml2 does not have child $child_name";  // xml2 has none of this child
-            if (count($search1[$child_name]) != count($search2[$child_name]))
-                    return "mismatched $child_name children count";  // xml2 has less or more children
+        foreach ($search1 as $childName => $children) {
+            if (!isset($search2[$childName]))
+                    return "xml2 does not have child $childName";  // xml2 has none of this child
+            if (count($search1[$childName]) != count($search2[$childName]))
+                    return "mismatched $childName children count";  // xml2 has less or more children
             foreach ($children as $child) {
                 // do any of search2 children match?
-                $found_match = false;
+                $foundMatch = false;
                 $reasons     = array();
-                foreach ($search2[$child_name] as $id => $second_child) {
-                    if (($r = $this->xmlIsEqual($child, $second_child)) === true) {
+                foreach ($search2[$childName] as $id => $secondChild) {
+                    if (($r = $this->xmlIsEqual($child, $secondChild)) === true) {
                         // found a match: delete second
-                        $found_match = true;
-                        unset($search2[$child_name][$id]);
+                        $foundMatch = true;
+                        unset($search2[$childName][$id]);
                     } else {
                         $reasons[] = $r;
                     }
                 }
-                if (!$found_match)
-                        return "xml2 does not have specific $child_name child: ".implode("; ",
-                            $reasons);
+                if (!$foundMatch)
+                        return "xml2 does not have specific $childName child: ".implode(
+                            "; ",
+                            $reasons
+                        );
             }
         }
 
@@ -147,23 +149,23 @@ trait TXmlTest
             // cycle over children
             if (count($search1) != count($search2))
                     return "mismatched ns:$ns children count";  // xml2 has less or more children names (we don't have to search through xml2's children too)
-            foreach ($search1 as $child_name => $children) {
-                if (!isset($search2[$child_name]))
-                        return "xml2 does not have ns:$ns child $child_name";  // xml2 has none of this child
-                if (count($search1[$child_name]) != count($search2[$child_name]))
-                        return "mismatched ns:$ns $child_name children count";  // xml2 has less or more children
+            foreach ($search1 as $childName => $children) {
+                if (!isset($search2[$childName]))
+                        return "xml2 does not have ns:$ns child $childName";  // xml2 has none of this child
+                if (count($search1[$childName]) != count($search2[$childName]))
+                        return "mismatched ns:$ns $childName children count";  // xml2 has less or more children
                 foreach ($children as $child) {
                     // do any of search2 children match?
-                    $found_match = false;
-                    foreach ($search2[$child_name] as $id => $second_child) {
-                        if ($this->xmlIsEqual($child, $second_child) === true) {
+                    $foundMatch = false;
+                    foreach ($search2[$childName] as $id => $secondChild) {
+                        if ($this->xmlIsEqual($child, $secondChild) === true) {
                             // found a match: delete second
-                            $found_match = true;
-                            unset($search2[$child_name][$id]);
+                            $foundMatch = true;
+                            unset($search2[$childName][$id]);
                         }
                     }
-                    if (!$found_match)
-                            return "xml2 does not have specific ns:$ns $child_name child";
+                    if (!$foundMatch)
+                            return "xml2 does not have specific ns:$ns $childName child";
                 }
             }
         }

@@ -27,10 +27,8 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
@@ -51,9 +49,10 @@ class LineTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Line::class);
@@ -61,308 +60,331 @@ class LineTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $this->assertInstanceOf(Line::class, $line);
         $this->assertSame([], $line->getOrderReferences());
-        $this->assertNull($line->getProductSerialNumber());
+        $this->assertNull($line->getProductSerialNumber(false));
         $this->assertNull($line->getDebitAmount());
         $this->assertNull($line->getCreditAmount());
         $this->assertNull($line->getTaxExemptionReason());
         $this->assertNull($line->getTaxExemptionCode());
         $this->assertNull($line->getSettlementAmount());
-        $this->assertNull($line->getCustomsInformation());
+        $this->assertNull($line->getCustomsInformation(false));
+
+        $this->assertFalse($line->issetDescription());
+        $this->assertFalse($line->issetLineNumber());
+        $this->assertFalse($line->issetProductCode());
+        $this->assertFalse($line->issetProductDescription());
+        $this->assertFalse($line->issetQuantity());
+        $this->assertFalse($line->issetUnitOfMeasure());
+        $this->assertFalse($line->issetUnitPrice());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetLineNumber()
+    public function testSetGetLineNumber(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $num  = 1;
-        $line->setLineNumber(1);
+        $this->assertTrue($line->setLineNumber(1));
         $this->assertSame($num, $line->getLineNumber());
+        $this->assertTrue($line->issetLineNumber());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetOrderReferences()
+    public function testSetGetOrderReferences(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $nMax = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $ordRef = new OrderReferences();
+            $ordRef = $line->addOrderReferences();
             $ori    = "Order ".\strval($n);
             $ordRef->setOriginatingON($ori);
-            $index  = $line->addToOrderReferences($ordRef);
-            $this->assertSame($n, $index);
             /* @var $getOrd \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences */
             $getOrd = $line->getOrderReferences()[$n];
             $this->assertSame($ori, $getOrd->getOriginatingON());
         }
-        $uset = 2;
-        $line->unsetOrderReferences($uset);
-        $this->assertFalse($line->issetOrderReferences($uset));
-        $this->assertSame($nMax - 1, \count($line->getOrderReferences()));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetProductCode()
+    public function testSetGetProductCode(): void
     {
-        $line    = new Line();
+        $line    = new Line(new ErrorRegister());
         $proCode = "Product code";
-        $line->setProductCode($proCode);
+        $this->assertTrue($line->setProductCode($proCode));
         $this->assertSame($proCode, $line->getProductCode());
-        try {
-            $line->setProductCode(\str_pad($proCode, 70, "9"));
-            $this->fail("ProductCode length greater than 60 must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $line->setProductCode("");
-            $this->fail("ProductCode empty must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($line->issetProductCode());
+
+        $wrong = \str_pad($proCode, 70, "9");
+        $this->assertFalse($line->setProductCode($wrong));
+        $this->assertSame($wrong, $line->getProductCode());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setProductCode(""));
+        $this->assertSame("", $line->getProductCode());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetProductDescription()
+    public function testSetGetProductDescription(): void
     {
-        $line           = new Line();
+        $line           = new Line(new ErrorRegister());
         $proDescription = "Product description";
-        $line->setProductDescription($proDescription);
+        $this->assertTrue($line->setProductDescription($proDescription));
+        $this->assertTrue($line->issetProductDescription());
         $this->assertSame($proDescription, $line->getProductDescription());
-        $line->setProductDescription(\str_pad("A", 299, "A"));
+        $this->assertTrue($line->setProductDescription(\str_pad("A", 299, "A")));
         $this->assertSame(200, \strlen($line->getProductDescription()));
-        try {
-            $line->setProductDescription("A");
-            $this->fail("ProductDescription length less than 2 must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "A";
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setProductDescription($wrong));
+        $this->assertSame($wrong, $line->getProductDescription());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setProductDescription(""));
+        $this->assertSame("", $line->getProductDescription());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetQuantity()
+    public function testSetGetQuantity(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $qt   = 1.99;
-        $line->setQuantity($qt);
+        $this->assertTrue($line->setQuantity($qt));
         $this->assertSame($qt, $line->getQuantity());
-        try {
-            $line->setQuantity(-0.0001);
-            $this->fail("Quantity less than zero must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($line->issetQuantity());
+
+        $wrong = -0.0001;
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setQuantity($wrong));
+        $this->assertSame($wrong, $line->getQuantity());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetUnitOfMeasure()
+    public function testSetGetUnitOfMeasure(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $unit = "Unidade";
-        $line->setUnitOfMeasure($unit);
+        $this->assertTrue($line->setUnitOfMeasure($unit));
+        $this->assertTrue($line->issetUnitOfMeasure());
         $this->assertSame($unit, $line->getUnitOfMeasure());
-        $line->setUnitOfMeasure(\str_pad($unit, 70, "9"));
+        $this->assertTrue($line->setUnitOfMeasure(\str_pad($unit, 70, "9")));
         $this->assertSame(20, \strlen($line->getUnitOfMeasure()));
-        try {
-            $line->setUnitOfMeasure("");
-            $this->fail("UnitOfMeasure empty must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $this->assertFalse($line->setUnitOfMeasure(""));
+        $this->assertSame("", $line->getUnitOfMeasure());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetUnitPrice()
+    public function testSetGetUnitPrice(): void
     {
-        $line  = new Line();
+        $line  = new Line(new ErrorRegister());
         $price = 1.99;
-        $line->setUnitPrice($price);
+        $this->assertTrue($line->setUnitPrice($price));
         $this->assertSame($price, $line->getUnitPrice());
-        try {
-            $line->setUnitPrice(-0.0001);
-            $this->fail("UnitPrice less than zero must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($line->issetUnitPrice());
+
+        $wrong = -0.0001;
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setUnitPrice($wrong));
+        $this->assertSame($wrong, $line->getUnitPrice());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetDescription()
+    public function testSetGetDescription(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $desc = "Line description";
-        $line->setDescription($desc);
+        $this->assertTrue($line->setDescription($desc));
+        $this->assertTrue($line->issetDescription());
         $this->assertSame($desc, $line->getDescription());
-        $line->setDescription(\str_pad($desc, 299, "9"));
+        $this->assertTrue($line->setDescription(\str_pad($desc, 299, "9")));
         $this->assertSame(200, \strlen($line->getDescription()));
-        try {
-            $line->setDescription("");
-            $this->fail("Description empty must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $this->assertFalse($line->setDescription(""));
+        $this->assertSame("", $line->getDescription());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetProductSerialNumber()
+    public function testSetGetProductSerialNumber(): void
     {
-        $line = new Line();
-        $line->setProductSerialNumber(new ProductSerialNumber());
-        $this->assertInstanceOf(ProductSerialNumber::class,
-            $line->getProductSerialNumber());
-        $line->setProductSerialNumber(null);
-        $this->assertNull($line->getProductSerialNumber());
+        $line = new Line(new ErrorRegister());
+        $this->assertInstanceOf(
+            ProductSerialNumber::class, $line->getProductSerialNumber()
+        );
+        $line->setProductSerialNumberAsNull();
+        $this->assertNull($line->getProductSerialNumber(false));
     }
 
-    public function testSetGetDebitCredit()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetDebitCredit(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $deb  = 9.09;
         $cre  = 19.49;
 
-        $line->setDebitAmount($deb);
+        $this->assertTrue($line->setDebitAmount($deb));
         $this->assertSame($deb, $line->getDebitAmount());
-        $line->setDebitAmount(null);
+        $this->assertTrue($line->setDebitAmount(null));
         $this->assertNull($line->getDebitAmount());
 
-        $line->setCreditAmount($cre);
+        $this->assertTrue($line->setCreditAmount($cre));
         $this->assertSame($cre, $line->getCreditAmount());
-        $line->setCreditAmount(null);
+        $this->assertTrue($line->setCreditAmount(null));
         $this->assertNull($line->getCreditAmount());
 
-        try {
-            $line->setDebitAmount($deb);
-            $line->setCreditAmount($cre);
-            $this->fail("When set CreditAmount without DebiAmout be null should throw"
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
         $line->setDebitAmount(null);
         $line->setCreditAmount(null);
 
-        try {
-            $line->setCreditAmount($cre);
-            $line->setDebitAmount($deb);
-            $this->fail("When set DebiAmout without  CreditAmount be null should throw"
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $line->setCreditAmount($cre);
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setDebitAmount($deb));
+        $this->assertSame($deb, $line->getDebitAmount());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+
+        $line->setDebitAmount(null);
+        $line->setCreditAmount(null);
+
+        $line->setDebitAmount($deb);
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setCreditAmount($cre));
+        $this->assertSame($cre, $line->getCreditAmount());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetTax()
+    public function testSetGetTax(): void
     {
-        $line = new Line();
-        $line->setTax(new MovementTax());
+        $line = new Line(new ErrorRegister());
         $this->assertInstanceOf(MovementTax::class, $line->getTax());
-        $line->setTax(null);
-        $this->assertNull($line->getTax());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetTaxExemptionReason()
+    public function testSetGetTaxExemptionReason(): void
     {
-        $line   = new Line();
+        $line   = new Line(new ErrorRegister());
         $reason = "Tax Exception Reason";
-        $line->setTaxExemptionReason($reason);
+        $this->assertTrue($line->setTaxExemptionReason($reason));
         $this->assertSame($reason, $line->getTaxExemptionReason());
-        $line->setTaxExemptionReason(\str_pad($reason, 99, "9"));
+        $this->assertTrue($line->setTaxExemptionReason(\str_pad($reason, 99, "9")));
         $this->assertSame(60, \strlen($line->getTaxExemptionReason()));
-        try {
-            $line->setTaxExemptionReason("AAAAA");
-            $this->fail("TaxExemptionReason with length less than 6 must throw "
-                ."Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
-        $line->setTaxExemptionReason(null);
+        $wrong = "AAAAA";
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setTaxExemptionReason($wrong));
+        $this->assertSame($wrong, $line->getTaxExemptionReason());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+
+        $this->assertTrue($line->setTaxExemptionReason(null));
         $this->assertNull($line->getTaxExemptionReason());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetTaxExemptionCode()
+    public function testSetGetTaxExemptionCode(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $line->setTaxExemptionCode(new TaxExemptionCode(TaxExemptionCode::M01));
-        $this->assertInstanceOf(TaxExemptionCode::class,
-            $line->getTaxExemptionCode());
+        $this->assertInstanceOf(
+            TaxExemptionCode::class, $line->getTaxExemptionCode()
+        );
         $line->setTaxExemptionCode(null);
         $this->assertNull($line->getTaxExemptionCode());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSettlementAmount()
+    public function testSettlementAmount(): void
     {
-        $line = new Line();
+        $line = new Line(new ErrorRegister());
         $sett = 9.09;
-        $line->setSettlementAmount($sett);
+        $this->assertTrue($line->setSettlementAmount($sett));
         $this->assertSame($sett, $line->getSettlementAmount());
-        $line->setSettlementAmount(null);
+        $this->assertTrue($line->setSettlementAmount(null));
         $this->assertNull($line->getSettlementAmount());
+
+        $wrong = -0.0001;
+        $line->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($line->setSettlementAmount($wrong));
+        $this->assertSame($wrong, $line->getSettlementAmount());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetCustomsInformation()
+    public function testSetGetCustomsInformation(): void
     {
-        $line = new Line();
-        $line->setCustomsInformation(new CustomsInformation());
-        $this->assertInstanceOf(CustomsInformation::class,
-            $line->getCustomsInformation());
-        $line->setCustomsInformation(null);
-        $this->assertNull($line->getCustomsInformation());
+        $line = new Line(new ErrorRegister());
+        $this->assertInstanceOf(
+            CustomsInformation::class, $line->getCustomsInformation()
+        );
+        $line->setCustomsInformationAsNull();
+        $this->assertNull($line->getCustomsInformation(false));
     }
 
     /**
      * Reads all invoices's lines from the Demo SAFT in Test\Ressources
      * and parse then to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -386,34 +408,103 @@ class LineTest extends TestCase
             for ($l = 0; $l < $lineStack->count(); $l++) {
                 /* @var $lineXml \SimpleXMLElement */
                 $lineXml = $lineStack[$l];
-                $line    = new Line();
+                $line    = new Line(new ErrorRegister());
                 $line->parseXmlNode($lineXml);
 
 
-                $xmlRootNode         = new \SimpleXMLElement(
-                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                    'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-                );
+                $xmlRootNode         = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
                 $sourceDocNode       = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-                $MovementOfGoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
-                $movStockNode        = $MovementOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
+                $movementOfGoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
+                $movStockNode        = $movementOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
 
                 $xml = $line->createXmlNode($movStockNode);
-
+                $xml->asXML("d:/todelete/gt.xml");
                 try {
                     $assertXml = $this->xmlIsEqual($lineXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Document '%s' Line '%s' with error '%s'",
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Document '%s' Line '%s' with error '%s'",
                             $movStockXml->{StockMovement::N_DOCUMENTNUMBER},
-                            $lineXml->{Line::N_LINENUMBER}, $assertXml)
+                            $lineXml->{Line::N_LINENUMBER}, $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' Line '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' Line '%s' with error '%s'",
                             $movStockXml->{StockMovement::N_DOCUMENTNUMBER},
-                            $lineXml->{Line::N_LINENUMBER}, $e->getMessage()));
+                            $lineXml->{Line::N_LINENUMBER}, $e->getMessage()
+                        )
+                    );
                 }
+
+                $this->assertEmpty($line->getErrorRegistor()->getOnCreateXmlNode());
+                $this->assertEmpty($line->getErrorRegistor()->getOnSetValue());
+                $this->assertEmpty($line->getErrorRegistor()->getLibXmlError());
             }
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $lineNode = new \SimpleXMLElement(
+            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+        );
+        $line     = new Line(new ErrorRegister());
+        $xml      = $line->createXmlNode($lineNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($line->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($line->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $lineNode = new \SimpleXMLElement(
+            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+        );
+        $line     = new Line(new ErrorRegister());
+        $line->setCreditAmount(-9.09);
+        $line->setDebitAmount(-4.49);
+        $line->setDescription("");
+        $line->setLineNumber(-1);
+        $line->setProductCode("");
+        $line->setProductDescription("");
+        $line->setQuantity(-4.59);
+        $line->setSettlementAmount(-7.99);
+        $line->setTaxExemptionReason("");
+        $line->setUnitOfMeasure("");
+        $line->setUnitPrice(-2.99);
+
+        $xml = $line->createXmlNode($lineNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($line->getErrorRegistor()->getLibXmlError());
     }
 }

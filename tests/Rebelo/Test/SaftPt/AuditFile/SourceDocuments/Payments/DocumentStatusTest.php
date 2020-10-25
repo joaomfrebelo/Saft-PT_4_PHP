@@ -33,7 +33,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourcePayment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 
 /**
@@ -47,63 +47,111 @@ class DocumentStatusTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(DocumentStatus::class);
         $this->assertTrue(true);
     }
 
-    public function testInstance()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstance(): void
     {
-        $status = new DocumentStatus();
+        $status = new DocumentStatus(new ErrorRegister());
         $this->assertInstanceOf(DocumentStatus::class, $status);
         $this->assertNull($status->getReason());
+        $this->assertFalse($status->issetPaymentStatus());
+        $this->assertFalse($status->issetPaymentStatusDate());
+        $this->assertFalse($status->issetSourceID());
+        $this->assertFalse($status->issetSourcePayment());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetPaymentStatus(): void
+    {
+        $status    = new DocumentStatus(new ErrorRegister());
         $payStatus = new PaymentStatus(PaymentStatus::N);
         $status->setPaymentStatus($payStatus);
         $this->assertSame($payStatus->get(), $status->getPaymentStatus()->get());
+        $this->assertTrue($status->issetPaymentStatus());
+    }
 
-        $date = new RDate();
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetPaymentStatusDate(): void
+    {
+        $status = new DocumentStatus(new ErrorRegister());
+        $date   = new RDate();
         $status->setPaymentStatusDate($date);
         $this->assertSame(
             $date->format(RDate::DATE_T_TIME),
-            $status->getPaymentStatusDate()->format(RDate::DATE_T_TIME));
+            $status->getPaymentStatusDate()->format(RDate::DATE_T_TIME)
+        );
+        $this->assertTrue($status->issetPaymentStatusDate());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetReason(): void
+    {
+        $status = new DocumentStatus(new ErrorRegister());
         $reason = "Test reason";
-        $status->setReason($reason);
+        $this->assertTrue($status->setReason($reason));
         $this->assertSame($reason, $status->getReason());
-        $status->setReason(null);
+        $this->assertTrue($status->setReason(null));
         $this->assertNull($status->getReason());
-        $status->setReason(\str_pad("A", 99, "9"));
+        $this->assertTrue($status->setReason(\str_pad("A", 99, "9")));
         $this->assertSame(50, \strlen($status->getReason()));
 
-        try {
-            $status->setReason("");
-            $this->fail("Set reason to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $status->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($status->setReason(""));
+        $this->assertSame("", $status->getReason());
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnSetValue());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetSourceID(): void
+    {
+        $status   = new DocumentStatus(new ErrorRegister());
         $sourceID = "Source ID teste";
-        $status->setSourceID($sourceID);
+        $this->assertTrue($status->setSourceID($sourceID));
+        $this->assertTrue($status->issetSourceID());
         $this->assertSame($sourceID, $status->getSourceID());
-        $status->setSourceID(\str_pad("A", 99, "9"));
+        $this->assertTrue($status->setSourceID(\str_pad("A", 99, "9")));
         $this->assertSame(30, \strlen($status->getSourceID()));
 
-        try {
-            $status->setSourceID("");
-            $this->fail("Set sourceID to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $status->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($status->setSourceID(""));
+        $this->assertSame("", $status->getSourceID());
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnSetValue());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetSourcePayment(): void
+    {
+        $status    = new DocumentStatus(new ErrorRegister());
         $sourcePay = new SourcePayment(SourcePayment::M);
         $status->setSourcePayment($sourcePay);
+        $this->assertTrue($status->issetSourcePayment());
         $this->assertSame($sourcePay->get(), $status->getSourcePayment()->get());
     }
 
@@ -111,8 +159,10 @@ class DocumentStatusTest extends TestCase
      * Reads all Payments's lines from the Demo SAFT in Test\Ressources
      * and parse then to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -136,15 +186,11 @@ class DocumentStatusTest extends TestCase
             for ($l = 0; $l < $statusStack->count(); $l++) {
                 /* @var $lineXml \SimpleXMLElement */
                 $lineXml = $statusStack[$l];
-                $status  = new DocumentStatus();
+                $status  = new DocumentStatus(new ErrorRegister());
                 $status->parseXmlNode($lineXml);
 
 
-                $xmlRootNode   = new \SimpleXMLElement(
-                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                    'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-                );
+                $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
                 $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
                 $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
                 $payNode       = $paymentsNode->addChild(Payment::N_PAYMENT);
@@ -153,25 +199,40 @@ class DocumentStatusTest extends TestCase
 
                 try {
                     $assertXml = $this->xmlIsEqual($lineXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Payment '%s' with error '%s'",
-                            $paymentXml->{Payment::N_PAYMENTREFNO}, $assertXml)
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Payment '%s' with error '%s'",
+                            $paymentXml->{Payment::N_PAYMENTREFNO}, $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $paymentXml->{Payment::N_PAYMENTREFNO},
-                            $e->getMessage()));
+                            $e->getMessage()
+                        )
+                    );
                 }
             }
         }
+
+        /* @phpstan-ignore-next-line */
+        $this->assertEmpty($status->getErrorRegistor()->getLibXmlError());
+        /* @phpstan-ignore-next-line */
+        $this->assertEmpty($status->getErrorRegistor()->getOnCreateXmlNode());
+        /* @phpstan-ignore-next-line */
+        $this->assertEmpty($status->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     * 
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXmlNull()
+    public function testCreateParseXmlNull(): void
     {
-        $status    = new DocumentStatus();
+        $status    = new DocumentStatus(new ErrorRegister());
         $payStatus = new PaymentStatus(PaymentStatus::N);
         $status->setPaymentStatus($payStatus);
         $date      = new RDate();
@@ -182,18 +243,14 @@ class DocumentStatusTest extends TestCase
         $sourcePay = new SourcePayment(SourcePayment::M);
         $status->setSourcePayment($sourcePay);
 
-        $xmlRootNode   = new \SimpleXMLElement(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-        );
+        $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
         $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
         $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
         $payNode       = $paymentsNode->addChild(Payment::N_PAYMENT);
 
         $xml = $status->createXmlNode($payNode);
 
-        $parsed = new DocumentStatus();
+        $parsed = new DocumentStatus(new ErrorRegister());
         $parsed->parseXmlNode($xml);
 
         $this->assertNull($parsed->getReason());
@@ -216,5 +273,62 @@ class DocumentStatusTest extends TestCase
             $status->getSourcePayment()->get(),
             $parsed->getSourcePayment()->get()
         );
+
+        $this->assertEmpty($status->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($status->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($status->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $statusNode = new \SimpleXMLElement(
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        );
+        $status     = new DocumentStatus(new ErrorRegister());
+        $xml        = $status->createXmlNode($statusNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($status->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($status->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $statustNode = new \SimpleXMLElement(
+            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        );
+        $status      = new DocumentStatus(new ErrorRegister());
+        $status->setReason("");
+        $status->setSourceID("");
+
+        $xml = $status->createXmlNode($statustNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($status->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($status->getErrorRegistor()->getLibXmlError());
     }
 }

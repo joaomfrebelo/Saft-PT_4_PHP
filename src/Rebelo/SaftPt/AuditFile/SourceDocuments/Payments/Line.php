@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
 
 /**
@@ -52,14 +53,14 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
 
     /**
      * SourceDocumentID, must have at least one element
-     * <xs:element name="SourceDocumentID" maxOccurs="unbounded">
+     * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded">
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID[]
      * @since 1.0.0
      */
     private array $sourceDocumentID = array();
 
     /**
-     * <xs:element name="Tax" type="PaymentTax" minOccurs="0"/>
+     * &lt;xs:element name="Tax" type="PaymentTax" minOccurs="0"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax|null
      * @since 1.0.0
      */
@@ -92,16 +93,20 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
      *           &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      *  </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get SourceDocumentID stack<br>
-     * <xs:element name="SourceDocumentID" maxOccurs="unbounded">
+     * If there is a need to make more than one reference, this structure can
+     * be generated as many times as necessary. In case of integrated accounting and invoicing program,
+     * the numbering structure of the source field shall be used.<br>
+     * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded"&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID[]
      * @since 1.0.0
      */
@@ -112,79 +117,44 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
     }
 
     /**
-     * Add SourceDocumentID to the stack<br>
-     * <xs:element name="SourceDocumentID" maxOccurs="unbounded">
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID $sourceDocumentID
-     * @return int
+     * Add SourceDocumentID to the stack<br
+     * If there is a need to make more than one reference, this structure can
+     * be generated as many times as necessary. In case of integrated accounting and invoicing program,
+     * the numbering structure of the source field shall be used.<br>
+     * When this method is invoked a new instance of SourceDocumentID is
+     * created, add to the stack then returned to be populated
+     * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded"&gt;
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID
      * @since 1.0.0
      */
-    public function addToSourceDocumentID(SourceDocumentID $sourceDocumentID): int
+    public function addSourceDocumentID(): SourceDocumentID
     {
-        if (\count($this->sourceDocumentID) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->sourceDocumentID);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->sourceDocumentID[$index] = $sourceDocumentID;
+        $sourceDocumentID         = new SourceDocumentID($this->getErrorRegistor());
+        $this->sourceDocumentID[] = $sourceDocumentID;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " SourceDocumentID add to index ".\strval($index));
-        return $index;
-    }
-
-    /**
-     * isset sourceDocumentID<br>
-     * <xs:element name="SourceDocumentID" maxOccurs="unbounded">
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetSourceDocumentID(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->sourceDocumentID[$index]);
-    }
-
-    /**
-     * unset sourceDocumentID<br>
-     * <xs:element name="SourceDocumentID" maxOccurs="unbounded">
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetSourceDocumentID(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->sourceDocumentID[$index]);
+            __METHOD__." SourceDocumentID add to index "
+        );
+        return $sourceDocumentID;
     }
 
     /**
      * Get Tax<br>
-     * <xs:element name="Tax" type="PaymentTax" minOccurs="0"/>
+     * On the receipts of the VAT cash regime a line should be mentioned for
+     * each different VAT rate on the correspondent invoice.
+     * This complex type element shall also be generated for any other type
+     * of receipts containing taxes described in field 4.4.4.14.6.1. - TaxType<br>
+     * &lt;xs:element name="Tax" type="PaymentTax" minOccurs="0"/&gt;     *
+     * @param bool $create If true a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax|null
      * @since 1.0.0
      */
-    public function getTax(): ?Tax
+    public function getTax(bool $create = true): ?Tax
     {
+        if ($create && $this->tax === null) {
+            $this->tax = new Tax($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->tax;
-    }
-
-    /**
-     * Set Tax<br>
-     * <xs:element name="Tax" type="PaymentTax" minOccurs="0"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax|null $tax
-     * @return void
-     * @since 1.0.0
-     */
-    public function setTax(?Tax $tax): void
-    {
-        $this->tax = $tax;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->tax === null ? "null" : "Tax"));
     }
 
     /**
@@ -199,17 +169,19 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                Payment::N_PAYMENT, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                Payment::N_PAYMENT, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
+
         $lineNode = parent::createXmlNode($node);
 
         if (\count($this->getSourceDocumentID()) === 0) {
-            throw new AuditFileException("SourceDocumentID stack can not be empty, "
-                ."must have at least one element");
+            $this->getErrorRegistor()->addOnCreateXmlNode("SourceDocumentID_without_elements");
         }
 
         foreach ($this->getSourceDocumentID() as $sourceDocumentID) {
@@ -218,25 +190,32 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         }
 
         if ($this->getSettlementAmount() !== null) {
-            $lineNode->addChild(static::N_SETTLEMENTAMOUNT,
-                \strval($this->getSettlementAmount()));
+            $lineNode->addChild(
+                static::N_SETTLEMENTAMOUNT,
+                \strval($this->getSettlementAmount())
+            );
         }
 
         $this->createXmlNodeDebitCreditNode($lineNode);
 
-        if ($this->getTax() !== null) {
+        if ($this->getTax(false) !== null) {
             $this->getTax()->createXmlNode($lineNode);
         }
 
         if ($this->getTaxExemptionReason() !== null) {
-            $lineNode->addChild(static::N_TAXEXEMPTIONREASON,
-                $this->getTaxExemptionReason());
+            $lineNode->addChild(
+                static::N_TAXEXEMPTIONREASON,
+                $this->getTaxExemptionReason()
+            );
         }
 
         if ($this->getTaxExemptionCode() !== null) {
-            $lineNode->addChild(static::N_TAXEXEMPTIONCODE,
-                $this->getTaxExemptionCode()->get());
+            $lineNode->addChild(
+                static::N_TAXEXEMPTIONCODE,
+                $this->getTaxExemptionCode()->get()
+            );
         }
+
         return $lineNode;
     }
 
@@ -259,9 +238,9 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         }
 
         for ($n = 0; $n < $sourceCount; $n++) {
-            $source = new SourceDocumentID();
-            $source->parseXmlNode($node->{static::N_SOURCEDOCUMENTID}[$n]);
-            $this->addToSourceDocumentID($source);
+            $this->addSourceDocumentID()->parseXmlNode(
+                $node->{static::N_SOURCEDOCUMENTID}[$n]
+            );
         }
 
         if ($node->{static::N_SETTLEMENTAMOUNT}->count() > 0) {
@@ -269,9 +248,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         }
 
         if ($node->{static::N_TAX}->count() > 0) {
-            $tax = new Tax();
-            $tax->parseXmlNode($node->{static::N_TAX});
-            $this->setTax($tax);
+            $this->getTax()->parseXmlNode($node->{static::N_TAX});
         }
 
         if ($node->{static::N_TAXEXEMPTIONREASON}->count() > 0) {

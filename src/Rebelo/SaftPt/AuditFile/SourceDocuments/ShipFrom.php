@@ -27,12 +27,13 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
 
 /**
- * ShipTo
- *
+ * ShipFrom<br>
+ * Information about the place and date of the shipping of the goods sold to the customer.
  * @author João Rebelo
  * @since 1.0.0
  */
@@ -45,7 +46,8 @@ class ShipFrom extends AShippingPoint
     const N_SHIPFROM = "ShipFrom";
 
     /**
-     * ShipFrom
+     * ShipFrom<br>
+     * Information about the place and date of the shipping of the goods sold to the customer.
      * <pre>
      * &lt;:element name="ShipFrom" type="ShippingPointStructure"/&gt;
      * &lt;xs:complexType name="ShippingPointStructure"&gt;
@@ -60,11 +62,12 @@ class ShipFrom extends AShippingPoint
      *   &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
@@ -79,7 +82,7 @@ class ShipFrom extends AShippingPoint
         if ($node->getName() !== Invoice::N_INVOICE &&
             $node->getName() !== StockMovement::N_STOCKMOVEMENT) {
             $msg = \sprintf(
-                "Node name should be '%s' or but is '%s", Invoice::N_INVOICE,
+                "Node name should be '%s' or but is '%s",
                 StockMovement::N_STOCKMOVEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))

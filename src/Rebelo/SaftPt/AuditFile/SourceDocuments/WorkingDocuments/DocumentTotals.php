@@ -27,10 +27,11 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 
 /**
- * Description of DocumentTotals
+ * WorkDocument DocumentTotals
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -53,11 +54,12 @@ class DocumentTotals extends ADocumentTotals
      *       &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
@@ -72,7 +74,8 @@ class DocumentTotals extends ADocumentTotals
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== WorkDocument::N_WORKDOCUMENT) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
                 WorkDocument::N_WORKDOCUMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))

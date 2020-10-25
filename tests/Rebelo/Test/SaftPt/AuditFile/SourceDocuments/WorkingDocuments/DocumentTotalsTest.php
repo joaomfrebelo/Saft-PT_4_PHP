@@ -31,9 +31,8 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode;
 
 /**
  * Line
@@ -47,9 +46,10 @@ class DocumentTotalsTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(DocumentTotals::class);
@@ -57,50 +57,79 @@ class DocumentTotalsTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $doctotals = new DocumentTotals();
+        $doctotals = new DocumentTotals(new ErrorRegister());
         $this->assertInstanceOf(DocumentTotals::class, $doctotals);
-        $this->assertNull($doctotals->getCurrency());
+        $this->assertNull($doctotals->getCurrency(false));
 
+        $this->assertFalse($doctotals->issetGrossTotal());
+        $this->assertFalse($doctotals->issetNetTotal());
+        $this->assertFalse($doctotals->issetTaxPayable());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testTaxPayable(): void
+    {
+        $doctotals  = new DocumentTotals(new ErrorRegister());
         $taxPayable = 9.49;
-        $doctotals->setTaxPayable($taxPayable);
+        $this->assertTrue($doctotals->setTaxPayable($taxPayable));
         $this->assertSame($taxPayable, $doctotals->getTaxPayable());
-        try {
-            $doctotals->setTaxPayable(-0.01);
-            $this->fail("Set TaxPayable to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($doctotals->issetTaxPayable());
 
-        $netTotal = 9.49;
-        $doctotals->setNetTotal($netTotal);
+        $wrong = -0.01;
+        $this->assertFalse($doctotals->setTaxPayable($wrong));
+        $this->assertSame($wrong, $doctotals->getTaxPayable());
+        $this->assertNotEmpty($doctotals->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNetTotal(): void
+    {
+        $doctotals = new DocumentTotals(new ErrorRegister());
+        $netTotal  = 9.49;
+        $this->assertTrue($doctotals->setNetTotal($netTotal));
         $this->assertSame($netTotal, $doctotals->getNetTotal());
-        try {
-            $doctotals->setNetTotal(-0.01);
-            $this->fail("Set NetTotal to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($doctotals->issetNetTotal());
+        $wrong     = -0.01;
+        $this->assertFalse($doctotals->setNetTotal($wrong));
+        $this->assertSame($wrong, $doctotals->getNetTotal());
+        $this->assertNotEmpty($doctotals->getErrorRegistor()->getOnSetValue());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGrossTotal(): void
+    {
+        $doctotals  = new DocumentTotals(new ErrorRegister());
         $grossTotal = 9.49;
-        $doctotals->setGrossTotal($grossTotal);
+        $this->assertTrue($doctotals->setGrossTotal($grossTotal));
         $this->assertSame($grossTotal, $doctotals->getGrossTotal());
-        try {
-            $doctotals->setGrossTotal(-0.01);
-            $this->fail("Set GrossTotal to a negative number should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($doctotals->issetGrossTotal());
+        $wrong      = -0.01;
+        $this->assertFalse($doctotals->setGrossTotal(-0.01));
+        $this->assertSame($wrong, $doctotals->getGrossTotal());
+        $this->assertNotEmpty($doctotals->getErrorRegistor()->getOnSetValue());
+    }
 
-        $currency = new Currency();
-        $currency->setCurrencyCode(new CurrencyCode(CurrencyCode::ISO_GBP));
-        $doctotals->setCurrency($currency);
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCurrency(): void
+    {
+        $doctotals = new DocumentTotals(new ErrorRegister());
         $this->assertInstanceOf(Currency::class, $doctotals->getCurrency());
     }
 
@@ -108,8 +137,11 @@ class DocumentTotalsTest extends TestCase
      * Reads all DocumentTotals from the Demo SAFT in Test\Ressources
      * and parse then to DocumentTotals class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -133,7 +165,7 @@ class DocumentTotalsTest extends TestCase
             for ($l = 0; $l < $totalsStack->count(); $l++) {
                 /* @var $totalsXml \SimpleXMLElement */
                 $totalsXml = $totalsStack[$l];
-                $docTotals = new DocumentTotals();
+                $docTotals = new DocumentTotals(new ErrorRegister());
                 $docTotals->parseXmlNode($totalsXml);
 
                 $xmlRootNode      = new \SimpleXMLElement(
@@ -149,17 +181,85 @@ class DocumentTotalsTest extends TestCase
 
                 try {
                     $assertXml = $this->xmlIsEqual($totalsXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Document '%s' with error '%s'",
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
-                            $assertXml)
+                            $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
-                            $e->getMessage()));
+                            $e->getMessage()
+                        )
+                    );
                 }
             }
+
+            /* @phpstan-ignore-next-line */
+            $this->assertEmpty($docTotals->getErrorRegistor()->getLibXmlError());
+            /* @phpstan-ignore-next-line */
+            $this->assertEmpty($docTotals->getErrorRegistor()->getOnCreateXmlNode());
+            /* @phpstan-ignore-next-line */
+            $this->assertEmpty($docTotals->getErrorRegistor()->getOnSetValue());
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $docTotalsNode = new \SimpleXMLElement(
+            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+        );
+        $docTotals     = new DocumentTotals(new ErrorRegister());
+        $xml           = $docTotals->createXmlNode($docTotalsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($docTotals->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docTotals->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $docTotalsNode = new \SimpleXMLElement(
+            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+        );
+        $docTotals     = new DocumentTotals(new ErrorRegister());
+        $docTotals->setGrossTotal(-1.0);
+        $docTotals->setNetTotal(-2.0);
+        $docTotals->setTaxPayable(-0.5);
+
+        $xml = $docTotals->createXmlNode($docTotalsNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($docTotals->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docTotals->getErrorRegistor()->getLibXmlError());
     }
 }

@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * DocumentTotals
@@ -78,17 +79,18 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
      *   &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $eErrorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $eErrorRegister)
     {
-        parent::__construct();
+        parent::__construct($eErrorRegister);
     }
 
     /**
-     * Get settlement
+     * Get settlement<br>
+     * Agreements regarding payment discounts.
      * <pre>
-     * <!-- O conteudo desta estrutura Settlement representa o somatorio dos descontos reflectidos no elemento SettlementAmount das linhas do recibo. Trata-se de um raciocinio diverso da tabela 4.1 SalesInvoices -->
      *  &lt;xs:element name="Settlement" minOccurs="0"&gt;
      *      &lt;xs:complexType&gt;
      *          &lt;xs:sequence&gt;
@@ -103,17 +105,20 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
     public function getSettlementAmount(): ?float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->settlementAmount === null ? "null" :
-                        \strval($this->settlementAmount)));
+                    \strval($this->settlementAmount)
+                )
+            );
         return $this->settlementAmount;
     }
 
     /**
-     * Set settlement
-     *
+     * Set settlement<br>
+     * Agreements regarding payment discounts.
      * <pre>
-     * <!-- O conteudo desta estrutura Settlement representa o somatorio dos descontos reflectidos no elemento SettlementAmount das linhas do recibo. Trata-se de um raciocinio diverso da tabela 4.1 SalesInvoices -->
      *  &lt;xs:element name="Settlement" minOccurs="0"&gt;
      *      &lt;xs:complexType&gt;
      *          &lt;xs:sequence&gt;
@@ -124,22 +129,30 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
      * </pre>
      * @param float|null $settlementAmount
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setSettlementAmount(?float $settlementAmount): void
+    public function setSettlementAmount(?float $settlementAmount): bool
     {
         if ($settlementAmount !== null && $settlementAmount < 0) {
-            $msg = "Settlement Amount can not be negative";
+            $msg    = "Settlement Amount can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("SettlementAmount_not_valid");
+        } else {
+            $return = true;
         }
         $this->settlementAmount = $settlementAmount;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->settlementAmount === null ? "null" :
-                        \strval($this->settlementAmount)));
+                    \strval($this->settlementAmount)
+                )
+            );
+        return $return;
     }
 
     /**
@@ -154,8 +167,10 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                Payment::N_PAYMENT, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                Payment::N_PAYMENT, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -164,8 +179,10 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
 
         if ($this->getSettlementAmount() !== null) {
             $docTotallsNode->addChild(static::N_SETTLEMENT)
-                ->addChild(static::N_SETTLEMENTAMOUNT,
-                    $this->floatFormat($this->getSettlementAmount()));
+                ->addChild(
+                    static::N_SETTLEMENTAMOUNT,
+                    $this->floatFormat($this->getSettlementAmount())
+                );
         }
 
         $this->createCurrencyNode($docTotallsNode);

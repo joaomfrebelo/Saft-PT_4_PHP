@@ -28,38 +28,44 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
  * WorkStatus
- *
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments N()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments A()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments F()
  * @author João Rebelo
  * @since 1.0.0
  */
 class WorkStatus extends \Rebelo\Enum\AEnum
 {
     /**
-     * N para Normal
+     * “N” - Normal
      * @since 1.0.0
      */
     const N = "N";
 
     /**
-     * A para Anulado
+     * “A” - Cancelled document
      * @since 1.0.0
      */
     const A = "A";
 
     /**
-     * F para faturado
+     * “F” - Billed document, even if partially,
+     * when for the same document there is also on table 4.1. – SalesInvoices,
+     * the corresponding invoice or simplified invoice.
      * @since 1.0.0
      */
     const F = "F";
 
     /**
-     * &lt;!-- Estado do documento WorkingDocuments --&gt;
+     * WorkStatus<br>
+     * The field must be filled in with:<br>
+     * “N” - Normal;<br>
+     * “A” - Cancelled document;<br>
+     * “F” - Billed document, even if partially,
+     * when for the same document there is also on table 4.1. – SalesInvoices,
+     * the corresponding invoice or simplified invoice.
+     * <pre>
      * &lt;xs:element name="WorkStatus"&gt;
-     *  &lt;xs:annotation&gt;
-     *      &lt;xs:documentation&gt;N para Normal, A para Anulado, F para faturado (quando para este
-     *          documento tambem existe na tabela 4.1. o correspondente do tipo fatura ou fatura
-     *          simplificada) &lt;/xs:documentation&gt;
-     *  &lt;/xs:annotation&gt;
      *  &lt;xs:simpleType&gt;
      *      &lt;xs:restriction base="xs:string"&gt;
      *          &lt;xs:enumeration value="N"/&gt;
@@ -67,11 +73,22 @@ class WorkStatus extends \Rebelo\Enum\AEnum
      *          &lt;xs:enumeration value="F"/&gt;
      *      &lt;/xs:restriction&gt;
      *  &lt;/xs:simpleType&gt;
+     * </pre>
      * @param string $value
      * @since 1.0.0
      */
     public function __construct(string $value)
     {
-        return parent::__construct($value);
+        parent::__construct($value);
+    }
+
+    /**
+     * Get enum value
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

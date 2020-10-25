@@ -1374,6 +1374,7 @@
                     <UnitPrice>1884.45</UnitPrice>
                     <TaxPointDate>2017-09-16</TaxPointDate>
                     <References>
+						<Reference>FT 1/2</Reference><!-- This line wass add, because i think this is noot possible -->
                         <Reason>2016-01-01 / 2016-03-31</Reason>
                     </References>
                     <Description>1% sobre volume de negócios do 1 trimestre 2016</Description>
@@ -1423,6 +1424,7 @@
                     <UnitPrice>39.19</UnitPrice>
                     <TaxPointDate>2017-09-16</TaxPointDate>
                     <References>
+						<Reference>FT 1/2</Reference><!-- This line wass add, because i think this is noot possible -->
                         <Reason>2016-04-01 / 2016-06-30</Reason>
                     </References>
                     <Description>0.5% sobre volume de negócios do 2 trimestre 2016</Description>
@@ -1472,6 +1474,7 @@
                     <UnitPrice>58.79</UnitPrice>
                     <TaxPointDate>2017-09-16</TaxPointDate>
                     <References>
+						<Reference>FT 1/2</Reference><!-- This line wass add, because i think this is noot possible -->
                         <Reason>2016-07-01 a 2016-09-30</Reason>
                     </References>
                     <Description>0.3% sobre volume de negócios do 3 trimestre 2016</Description>
@@ -2537,7 +2540,10 @@
         <WorkingDocuments>
             <NumberOfEntries>4</NumberOfEntries>
             <TotalDebit>0.00</TotalDebit>
+			<TotalCredit>1655.85</TotalCredit>
+			<!-- Wrong values from AT 
             <TotalCredit>1475.85</TotalCredit>
+			-->
             <WorkDocument>
                 <!--Fatura de consignação-->
                 <DocumentNumber>CGF C1/1</DocumentNumber>

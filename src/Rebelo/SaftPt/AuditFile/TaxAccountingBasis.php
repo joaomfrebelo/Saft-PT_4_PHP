@@ -27,72 +27,82 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 /**
- * TaxAccountingBasis<bR>
- * <code>
- * <xs:element name="TaxAccountingBasis">
- *     <xs:annotation>
- *         <xs:documentation>C para Contabilidade, E para Faturacao emitida por terceiros, F para
- *             Faturacao, I para Contabilidade integrada com a faturacao, P para Faturacao parcial,
- *             R para Recibos (a), S para Autofaturacao, T para Documentos de transporte (a). (a)
- *             Deve ser indicado este tipo, se o programa apenas este emitir este tipo de
- *             documento. Caso contrario, devera ser utilizado o tipo C, F ou I
- *         </xs:documentation>
- *     </xs:annotation>
- *     <xs:simpleType>
- *         <xs:restriction base="xs:string">
- *             <xs:enumeration value="C"/>
- *             <xs:enumeration value="E"/>
- *             <xs:enumeration value="F"/>
- *             <xs:enumeration value="I"/>
- *             <xs:enumeration value="P"/>
- *             <xs:enumeration value="R"/>
- *             <xs:enumeration value="S"/>
- *             <xs:enumeration value="T"/>
- *         </xs:restriction>
- *     </xs:simpleType>
- * <code>
+ * TaxAccountingBasis<br>
+ * Shall be filled in with the type of program, indicating the applicable data
+ * (including the transport documents, conference documents and issued receipts, if any):<br>
+ * “C” - Accounting;<br>
+ * “E” - Invoices issued by third parties;<br>
+ * “F” - Invoicing;<br>
+ * “I” - Invoicing and accounting integrated data;<br>
+ * “P” - Invoicing partial data.<br>
+ * “R” - Receipts (a);<br>
+ * “S” - Self-billing;<br>
+ * “T” - Transport documents (a).<br>
+ * (a) Type of program should be indicated, in case only this type of
+ * documents are issued. If not, fill in with type “C”, “F” or “I”.
+ * <pre>
+ * &lt;xs:element name="TaxAccountingBasis">
+ *     &lt;xs:simpleType>
+ *         &lt;xs:restriction base="xs:string">
+ *             &lt;xs:enumeration value="C"/&gt;
+ *             &lt;xs:enumeration value="E"/&gt;
+ *             &lt;xs:enumeration value="F"/&gt;
+ *             &lt;xs:enumeration value="I"/&gt;
+ *             &lt;xs:enumeration value="P"/&gt;
+ *             &lt;xs:enumeration value="R"/&gt;
+ *             &lt;xs:enumeration value="S"/&gt;
+ *             &lt;xs:enumeration value="T"/&gt;
+ *         &lt;/xs:restriction&gt;
+ *     &lt;/xs:simpleType&gt;
+ * <pre>
  * @since 1.0.0
  * @author João Rebelo
  */
 class TaxAccountingBasis extends \Rebelo\Enum\AEnum
 {
     /**
-     * <xs:enumeration value="C"/><br>
+     * “C” - Accounting<br>
+     * &lt;xs:enumeration value="C"/&gt;<br>
      * C para Contabilidade
      * @since 1.0.0
      */
     const CONTABILIDADE = "C";
 
     /**
-     * <xs:enumeration value="E"/><br>
+     * “E” - Invoices issued by third parties;<br>
+     * &lt;xs:enumeration value="E"/&gt;<br>
      * E para Faturacao emitida por terceiros
      * @since 1.0.0
      */
     const FACT_POR_TERC = "E";
 
     /**
-     * <xs:enumeration value="F"/><br>
+     * “F” - Invoicing;<br>
+     * &lt;xs:enumeration value="F"/&gt;<br>
      * F para Faturacao
      * @since 1.0.0
      */
     const FACTURACAO = "F";
 
     /**
-     * <xs:enumeration value="I"/><br>
+     * “I” - Invoicing and accounting integrated data;<br>
+     * &lt;xs:enumeration value="I"/&gt;<br>
      * I para Contabilidade integrada com a faturacao
      * @since 1.0.0
      */
     const CONTAB_FACTURACAO = "I";
 
     /**
-     * <xs:enumeration value="P"/><br>
+     * “P” - Invoicing partial data.<br>
+     * &lt;xs:enumeration value="P"/&gt;<br>
      * P para Faturacao parcial
      * @since 1.0.0
      */
     const FACT_PARCIAL = "P";
 
     /**
-     * <xs:enumeration value="R"/><br>
+     * “R” - Receipts (a);<br>
+     * &lt;xs:enumeration value="R"/&gt;<br>
      * R para Recibos<br>
      * Deve ser indicado este tipo, se o programa apenas este emitir este tipo de
      * documento. Caso contrario, devera ser utilizado o tipo C, F ou I
@@ -101,14 +111,38 @@ class TaxAccountingBasis extends \Rebelo\Enum\AEnum
     const RECEIBOS = "R";
 
     /**
-     * <xs:enumeration value="S"/><br>
+     * “S” - Self-billing;<br>
+     * &lt;xs:enumeration value="S"/&gt;<br>
      * S para Autofaturacao
      * @since 1.0.0
      */
     const AUTOFATURACAO = "S";
 
     /**
-     * <xs:enumeration value="T"/><br>
+     * “T” - Transport documents (a).<br>
+     * (a) Type of program should be indicated, in case only this type of
+     * documents are issued. If not, fill in with type “C”, “F” or “I”.<br>
+     * &lt;xs:enumeration value="T"/&gt;<br>
+     * T para Transporte
+     * @since 1.0.0
+     */
+    const TRANSPORTE = "S";
+
+    /**
+     * <br>
+     * Shall be filled in with the type of program, indicating the applicable data
+     * (including the transport documents, conference documents and issued receipts, if any):<br>
+     * “C” - Accounting;<br>
+     * “E” - Invoices issued by third parties;<br>
+     * “F” - Invoicing;<br>
+     * “I” - Invoicing and accounting integrated data;<br>
+     * “P” - Invoicing partial data.<br>
+     * “R” - Receipts (a);<br>
+     * “S” - Self-billing;<br>
+     * “T” - Transport documents (a).<br>
+     * (a) Type of program should be indicated, in case only this type of
+     * documents are issued. If not, fill in with type “C”, “F” or “I”.
+     * &lt;xs:enumeration value="T"/&gt;<br>
      * T para Documentos de transporte<br>
      * Deve ser indicado este tipo, se o programa apenas este emitir este tipo de
      * documento. Caso contrario, devera ser utilizado o tipo C, F ou I
@@ -119,5 +153,15 @@ class TaxAccountingBasis extends \Rebelo\Enum\AEnum
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

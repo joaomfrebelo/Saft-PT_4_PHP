@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpdox xmlns="http://xml.phpdox.net/config" silent="false">
+    <!--  @silent: true | false to enable or disable visual output of progress -->
+
+    <!-- Additional bootstrap files to load for additional parsers, enrichers and/or engines -->
+    <!-- Place as many require nodes as you feel like in this container -->
+    <!-- syntax: <require file="/path/to/file.php" /> -->
+    <bootstrap/>
+
+    <!-- A phpDox project to process, you can have multiple projects in one config file -->
+    <project name="Rebelo\SaftPT_4_PHP" source="${basedir}/src" workdir="${basedir}/docs/build/phpdox/xml">
+        <!--  @name    - The name of the project -->
+        <!--  @source  - The source directory of the application to process -->
+        <!--  @workdir - The directory to store the xml data files in -->
+
+        <!--  A phpDox config file can define additional variables (properties) per project -->
+        <!--  <property name="some.name" value="the.value" /> -->
+
+        <!--  Values can make use of previously defined properties -->
+        <!--  The following are defined by default:
+
+               ${basedir}                Directory the loaded config file is in
+
+               ${phpDox.home}            Directory of the phpDox installation
+               ${phpDox.file}            The current config file
+               ${phpDox.version}         phpDox' version number
+
+               ${phpDox.project.name}    The value of project/@name if set, otherwise 'unnamed'
+               ${phpDox.project.source}  The value of project/@source if set, otherwise '${basedir}/src'
+               ${phpDox.project.workdir} The value of project/@workdir if set, otherwise '${basedir}/build/phpdox/xml'
+
+               ${phpDox.php.version}     The PHP Version of the interpreter in use
+        -->
+        <collector publiconly="false" backend="parser" encoding="auto">
+            <include mask="*.php"/>
+            <exclude mask=""/>
+            <inheritance resolve="true"></inheritance>
+        </collector>
+        <generator output="${basedir}/docs">
+            <enrich base="${basedir}/docs/build">
+                <source type="phploc">
+                    <file name="../../logs/phploc.xml" />
+                </source>
+                <!-- PHPUnit Coverage XML --> 
+                <source type="phpunit">
+                    <file name="../../docs/coverage/index.xml" />
+                </source>
+            </enrich>          
+            <build engine="html" enabled="true" output="html">
+                <template dir="${phpDox.home}/templates/html"/>
+                <file extension="xhtml"/>
+            </build>
+        </generator>
+    </project>
+</phpdox>

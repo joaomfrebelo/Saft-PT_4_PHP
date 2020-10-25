@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -43,9 +44,10 @@ class TaxTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Tax::class);
@@ -53,12 +55,16 @@ class TaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $tax = new Tax();
+        $tax = new Tax(new ErrorRegister());
         $this->assertInstanceOf(Tax::class, $tax);
+        $this->assertFalse($tax->issetTaxCode());
+        $this->assertFalse($tax->issetTaxCountryRegion());
+        $this->assertFalse($tax->issetTaxType());
         $this->assertNull($tax->getTaxAmount());
         $this->assertNull($tax->getTaxPercentage());
 
@@ -83,53 +89,98 @@ class TaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGet()
+    public function testSetGetTaxType(): void
     {
-        $tax  = new Tax();
+        $tax  = new Tax(new ErrorRegister());
         $type = TaxType::IVA;
         $tax->setTaxType(new TaxType($type));
         $this->assertSame($type, $tax->getTaxType()->get());
+        $this->assertTrue($tax->issetTaxType());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetTaxCode(): void
+    {
+        $tax  = new Tax(new ErrorRegister());
         $code = TaxCode::NOR;
         $tax->setTaxCode(new TaxCode($code));
         $this->assertSame($code, $tax->getTaxCode()->get());
+        $this->assertTrue($tax->issetTaxCode());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetTaxCountryRegion(): void
+    {
+        $tax     = new Tax(new ErrorRegister());
         $country = TaxCountryRegion::ISO_PT;
         $tax->setTaxCountryRegion(new TaxCountryRegion($country));
         $this->assertSame($country, $tax->getTaxCountryRegion()->get());
+        $this->assertTrue($tax->issetTaxCountryRegion());
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetTaxPercentageAndAmount(): void
+    {
+        $tax     = new Tax(new ErrorRegister());
         $percent = 23.00;
-        $tax->setTaxPercentage($percent);
+        $this->assertTrue($tax->setTaxPercentage($percent));
         $this->assertSame($percent, $tax->getTaxPercentage());
-        $tax->setTaxPercentage(null);
+        $this->assertTrue($tax->setTaxPercentage(null));
         $this->assertNull($tax->getTaxPercentage());
 
         $amount = 4.59;
-        $tax->setTaxAmount($amount);
+        $this->assertTrue($tax->setTaxAmount($amount));
         $this->assertSame($amount, $tax->getTaxAmount());
-        $tax->setTaxAmount(null);
+        $this->assertTrue($tax->setTaxAmount(null));
         $this->assertNull($tax->getTaxAmount());
 
         $tax->setTaxPercentage($percent);
-        try {
-            $tax->setTaxAmount($amount);
-            $this->fail("Setting TaxAmount with TaxPercent setted should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $tax->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($tax->setTaxAmount($amount));
+        $this->assertSame($amount, $tax->getTaxAmount());
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
+
 
         $tax->setTaxPercentage(null);
         $tax->setTaxAmount($amount);
-        try {
-            $tax->setTaxPercentage($percent);
-            $this->fail("Setting TaxPercentage with TaxAmount setted should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $tax->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($tax->setTaxPercentage($percent));
+        $this->assertSame($percent, $tax->getTaxPercentage());
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
+
+        $tax->setTaxPercentage(null);
+        $tax->setTaxAmount(null);
+        $negPer = -1.0;
+        $tax->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($tax->setTaxPercentage($negPer));
+        $this->assertSame($negPer, $tax->getTaxPercentage());
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
+        $larPer = 110.0;
+        $tax->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($tax->setTaxPercentage($larPer));
+        $this->assertSame($larPer, $tax->getTaxPercentage());
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
+
+        $tax->setTaxPercentage(null);
+        $tax->setTaxAmount(null);
+        $negAm = -1.0;
+        $tax->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($tax->setTaxAmount($negAm));
+        $this->assertSame($negPer, $tax->getTaxAmount());
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
     }
 
     /**
@@ -138,7 +189,7 @@ class TaxTest extends TestCase
      */
     public function createTax(): Tax
     {
-        $tax = new Tax();
+        $tax = new Tax(new ErrorRegister());
         $tax->setTaxCode(new TaxCode(TaxCode::NOR));
         $tax->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::ISO_PT));
         $tax->setTaxType(new TaxType(TaxType::IVA));
@@ -147,16 +198,19 @@ class TaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeWrongName()
+    public function testCreateXmlNodeWrongName(): void
     {
-        $tax  = new Tax();
+        $tax  = new Tax(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $tax->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -165,16 +219,19 @@ class TaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testParseXmlNodeWrongName()
+    public function testParseXmlNodeWrongName(): void
     {
-        $psn  = new Tax();
+        $psn  = new Tax(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $psn->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -183,9 +240,10 @@ class TaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
         $tax  = $this->createTax();
         $node = new \SimpleXMLElement(
@@ -223,9 +281,10 @@ class TaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeAmount()
+    public function testCreateXmlNodeAmount(): void
     {
         $tax     = $this->createTax();
         $node    = new \SimpleXMLElement(
@@ -260,38 +319,56 @@ class TaxTest extends TestCase
             (float) $node->{Tax::N_TAX}->{Tax::N_TAXAMOUNT}
         );
 
-        $this->assertSame(0,
-            $node->{Tax::N_TAX}->{Tax::N_TAXPERCENTAGE}->count());
+        $this->assertSame(
+            0, $node->{Tax::N_TAX}->{Tax::N_TAXPERCENTAGE}->count()
+        );
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXml()
+    public function testeParseXml(): void
     {
         $tax  = $this->createTax();
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $tax->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new Tax();
+        $parsed = new Tax(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($tax->getTaxAmount(), $parsed->getTaxAmount());
         $this->assertSame($tax->getTaxPercentage(), $parsed->getTaxPercentage());
-        $this->assertSame($tax->getTaxCode()->get(),
-            $parsed->getTaxCode()->get());
-        $this->assertSame($tax->getTaxCountryRegion()->get(),
-            $parsed->getTaxCountryRegion()->get());
-        $this->assertSame($tax->getTaxType()->get(),
-            $parsed->getTaxType()->get());
+
+        $this->assertSame(
+            $tax->getTaxCode()->get(), $parsed->getTaxCode()->get()
+        );
+
+        $this->assertSame(
+            $tax->getTaxCountryRegion()->get(),
+            $parsed->getTaxCountryRegion()->get()
+        );
+
+        $this->assertSame(
+            $tax->getTaxType()->get(), $parsed->getTaxType()->get()
+        );
+
+        $this->assertEmpty($tax->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($tax->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($tax->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXmlAmount()
+    public function testeParseXmlAmount(): void
     {
         $tax  = $this->createTax();
         $tax->setTaxPercentage(null);
@@ -300,17 +377,85 @@ class TaxTest extends TestCase
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $tax->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new Tax();
+        $parsed = new Tax(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame($tax->getTaxAmount(), $parsed->getTaxAmount());
         $this->assertSame($tax->getTaxPercentage(), $parsed->getTaxPercentage());
-        $this->assertSame($tax->getTaxCode()->get(),
-            $parsed->getTaxCode()->get());
-        $this->assertSame($tax->getTaxCountryRegion()->get(),
-            $parsed->getTaxCountryRegion()->get());
-        $this->assertSame($tax->getTaxType()->get(),
-            $parsed->getTaxType()->get());
+
+        $this->assertSame(
+            $tax->getTaxCode()->get(), $parsed->getTaxCode()->get()
+        );
+
+        $this->assertSame(
+            $tax->getTaxCountryRegion()->get(),
+            $parsed->getTaxCountryRegion()->get()
+        );
+
+        $this->assertSame(
+            $tax->getTaxType()->get(), $parsed->getTaxType()->get()
+        );
+
+        $this->assertEmpty($tax->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($tax->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($tax->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $taxNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $tax     = new Tax(new ErrorRegister());
+        $xml     = $tax->createXmlNode($taxNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($tax->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($tax->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $taxNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $tax     = new Tax(new ErrorRegister());
+        $tax->setTaxAmount(-1.0);
+        $tax->setTaxPercentage(-1.0);
+
+        $xml = $tax->createXmlNode($taxNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($tax->getErrorRegistor()->getLibXmlError());
     }
 }

@@ -31,7 +31,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 
 /**
@@ -43,47 +43,55 @@ class PaymentMethodTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(PaymentMethod::class);
         $this->assertTrue(true);
     }
 
-    public function testInstanceSetGet()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceSetGet(): void
     {
-        $payMeth = new PaymentMethod();
+        $payMeth = new PaymentMethod(new ErrorRegister());
         $this->assertInstanceOf(PaymentMethod::class, $payMeth);
         $this->assertNull($payMeth->getPaymentMechanism());
+
         try {
             $payMeth->getPaymentAmount();
-            $this->fail("Get PaymentAmout without be setted should throw "
-                ."\Error");
+            $this->fail(
+                "Get PaymentAmout without be setted should throw "
+                ."\Error"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
         }
+
         try {
             $payMeth->getPaymentDate();
-            $this->fail("Get PaymentDate without be setted should throw "
-                ."\Error");
+            $this->fail(
+                "Get PaymentDate without be setted should throw "
+                ."\Error"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
             );
         }
-        try {
-            $payMeth->setPaymentAmount(-1.9);
-            $this->fail("A negative PaymentAmounte should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(
-                AuditFileException::class, $e
-            );
-        }
+
+        $wrong = -1.9;
+        $payMeth->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($payMeth->setPaymentAmount($wrong));
+        $this->assertSame($wrong, $payMeth->getPaymentAmount());
+        $this->assertNotEmpty($payMeth->getErrorRegistor()->getOnSetValue());
 
         $mechanism = new PaymentMechanism(PaymentMechanism::PR);
         $payMeth->setPaymentMechanism($mechanism);
@@ -92,7 +100,7 @@ class PaymentMethodTest extends TestCase
         $this->assertNull($payMeth->getPaymentMechanism());
 
         $amount = 499.59;
-        $payMeth->setPaymentAmount($amount);
+        $this->assertTrue($payMeth->setPaymentAmount($amount));
         $this->assertSame($amount, $payMeth->getPaymentAmount());
 
         $date = new RDate();
@@ -106,7 +114,7 @@ class PaymentMethodTest extends TestCase
      */
     public function createPaymentMethod(): PaymentMethod
     {
-        $payMeth = new PaymentMethod();
+        $payMeth = new PaymentMethod(new ErrorRegister());
         $payMeth->setPaymentMechanism(
             new PaymentMechanism(PaymentMechanism::PR)
         );
@@ -115,14 +123,20 @@ class PaymentMethodTest extends TestCase
         return $payMeth;
     }
 
-    public function testCreateXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWrongName(): void
     {
-        $payMeth = new PaymentMethod();
+        $payMeth = new PaymentMethod(new ErrorRegister());
         $node    = new \SimpleXMLElement("<root></root>");
         try {
             $payMeth->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -130,14 +144,20 @@ class PaymentMethodTest extends TestCase
         }
     }
 
-    public function testParseXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNodeWrongName(): void
     {
-        $payMeth = new PaymentMethod();
+        $payMeth = new PaymentMethod(new ErrorRegister());
         $node    = new \SimpleXMLElement("<root></root>");
         try {
             $payMeth->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -145,7 +165,11 @@ class PaymentMethodTest extends TestCase
         }
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode(): void
     {
         $payMeth = $this->createPaymentMethod();
         $node    = new \SimpleXMLElement(
@@ -169,9 +193,17 @@ class PaymentMethodTest extends TestCase
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
             (string) $payMethNode->{PaymentMethod::N_PAYMENTDATE}
         );
+
+        $this->assertEmpty($payMeth->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testCreateXmlNode2()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode2(): void
     {
         $payMeth = $this->createPaymentMethod();
         $payMeth->setPaymentMechanism(null);
@@ -183,50 +215,139 @@ class PaymentMethodTest extends TestCase
         $payMethNode = $payMeth->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $payMethNode);
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{PaymentMethod::N_PAYMENTMETHOD}->{PaymentMethod::N_PAYMENTMECHANISM}->count()
         );
+
+        $this->assertEmpty($payMeth->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testeParseXml()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testeParseXml(): void
     {
         $payMeth = $this->createPaymentMethod();
         $node    = new \SimpleXMLElement(
             "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml     = $payMeth->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new PaymentMethod();
+        $parsed = new PaymentMethod(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
-        $this->assertSame($payMeth->getPaymentMechanism()->get(),
-            $parsed->getPaymentMechanism()->get());
-        $this->assertSame($payMeth->getPaymentAmount(),
-            $parsed->getPaymentAmount());
+        $this->assertSame(
+            $payMeth->getPaymentMechanism()->get(),
+            $parsed->getPaymentMechanism()->get()
+        );
+
+        $this->assertSame(
+            $payMeth->getPaymentAmount(), $parsed->getPaymentAmount()
+        );
+
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
             $parsed->getPaymentDate()->format(RDate::SQL_DATE)
         );
+
+        $this->assertEmpty($payMeth->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testeParseXml2()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testeParseXml2(): void
     {
         $payMeth = $this->createPaymentMethod();
         $payMeth->setPaymentMechanism(null);
         $node    = new \SimpleXMLElement(
-            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml     = $payMeth->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new PaymentMethod();
+        $parsed = new PaymentMethod(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertNull($parsed->getPaymentMechanism());
-        $this->assertSame($payMeth->getPaymentAmount(),
-            $parsed->getPaymentAmount());
+
+        $this->assertSame(
+            $payMeth->getPaymentAmount(), $parsed->getPaymentAmount()
+        );
+
         $this->assertSame(
             $payMeth->getPaymentDate()->format(RDate::SQL_DATE),
             $parsed->getPaymentDate()->format(RDate::SQL_DATE)
         );
+
+        $this->assertEmpty($payMeth->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payMeth->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $payNode = new \SimpleXMLElement(
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        );
+        $pay     = new PaymentMethod(new ErrorRegister());
+        $xml     = $pay->createXmlNode($payNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($pay->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($pay->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($pay->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $payNode = new \SimpleXMLElement(
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        );
+        $pay     = new PaymentMethod(new ErrorRegister());
+        $pay->setPaymentAmount(-9.99);
+
+        $xml = $pay->createXmlNode($payNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($pay->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($pay->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($pay->getErrorRegistor()->getLibXmlError());
     }
 }

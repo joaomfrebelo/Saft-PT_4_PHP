@@ -47,57 +47,62 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus N()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus S()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus A()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus R()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus F()
  * @author João Rebelo
  * @since 1.0.0
  */
 class InvoiceStatus extends \Rebelo\Enum\AEnum
 {
     /**
-     * N para Normal<br>
-     *  <xs:enumeration value="N"/>
+     * “N” - Normal<br>
+     *  &lt;xs:enumeration value="N"/&gt;
      * @since 1.0.0
      */
     const N = "N";
 
     /**
      * S para Autofaturacao<br>
-     * <xs:enumeration value="S"/>
+     * &lt;xs:enumeration value="S"/&gt;
      * @since 1.0.0
      */
     const S = "S";
 
     /**
-     * A para Documento anulado<br>
-     * <xs:enumeration value="A"/>
+     * “A” - Cancelled document<br>
+     * &lt;xs:enumeration value="A"/&gt;
      * @since 1.0.0
      */
     const A = "A";
 
     /**
-     * R para Documento de resumo doutros documentos
-     * criados noutras aplicacoes e gerado nesta aplicacao<br>
-     * <xs:enumeration value="R"/>
+     * “R” - Summary document for other documents created in other applications
+     * and generated in this application<br>
+     * &lt;xs:enumeration value="R"/&gt;
      * @since 1.0.0
      */
     const R = "R";
 
     /**
-     * F para Documento faturado<br>
-     * <xs:enumeration value="F"/>
+     * “F” - Invoiced document<br>
+     * &lt;xs:enumeration value="F"/&gt;
      * @since 1.0.0
      */
     const F = "F";
 
     /**
-     * InvoiceStatus
+     * InvoiceStatus<br>
+     * The field must be filled in with:<br>
+     * “N” - Normal;<br>
+     * “A” - Cancelled document;<br>
+     * “R” - Summary document for other documents created in other applications
+     * and generated in this application;
+     * “F” - Invoiced document.<br>
      * <pre>
-     *  <!-- Estado do documento SalesInvoices -->
      *  &lt;xs:element name="InvoiceStatus"&gt;
-     *      &lt;xs:annotation&gt;
-     *          &lt;xs:documentation&gt;N para Normal, S para Autofaturacao, A para Documento anulado, R para
-     *              Documento de resumo doutros documentos criados noutras aplicacoes e gerado nesta
-     *              aplicacao, F para Documento faturado &lt;/xs:documentation&gt;
-     *      &lt;/xs:annotation&gt;
      *      &lt;xs:simpleType&gt;
      *          &lt;xs:restriction base="xs:string"&gt;
      *              &lt;xs:enumeration value="N"/&gt;
@@ -114,5 +119,15 @@ class InvoiceStatus extends \Rebelo\Enum\AEnum
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get enum value
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

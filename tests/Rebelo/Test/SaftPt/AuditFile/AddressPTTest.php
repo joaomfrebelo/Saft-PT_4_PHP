@@ -28,8 +28,7 @@ namespace Rebelo\Test\SaftPt\AuditFile;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AddressPT;
-use Rebelo\SaftPt\AuditFile\PostalCodePT;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Class AddressPT
@@ -39,80 +38,141 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
 class AddressPTTest extends TestCase
 {
 
-    public function testReflection()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())->testReflection(\Rebelo\SaftPt\AuditFile\AddressPT::class);
         $this->assertTrue(true);
     }
 
-    public function testSetGet()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstance(): void
     {
-        $addrPT = new AddressPT();
+        $addrPT = new AddressPT(new ErrorRegister());
+        $this->assertInstanceOf(AddressPT::class, $addrPT);
+
+        $this->assertFalse($addrPT->issetCity());
+        $this->assertFalse($addrPT->issetPostalCode());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetBuildingNumber(): void
+    {
+        $addrPT = new AddressPT(new ErrorRegister());
         $this->assertInstanceOf(AddressPT::class, $addrPT);
 
         $buildNum = "Lote 999";
         $this->assertNull($addrPT->getBuildingNumber());
-        $addrPT->setBuildingNumber($buildNum);
-        $this->assertEquals($buildNum, $addrPT->getBuildingNumber());
-        $addrPT->setBuildingNumber(null);
-        $this->assertNull($addrPT->getBuildingNumber());
-        $addrPT->setBuildingNumber(\str_pad("_", 11, "_"));
-        $this->assertEquals(10, \strlen($addrPT->getBuildingNumber()));
-        try {
-            $addrPT->setBuildingNumber("");
-            $this->fail("setBuildingNumber should throw AuditFileException whene empty");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
+        $this->assertTrue($addrPT->setBuildingNumber($buildNum));
+        $this->assertEquals($buildNum, $addrPT->getBuildingNumber());
+
+        $this->assertTrue($addrPT->setBuildingNumber(null));
+        $this->assertNull($addrPT->getBuildingNumber());
+
+        $this->assertTrue($addrPT->setBuildingNumber(\str_pad("_", 11, "_")));
+        $this->assertEquals(10, \strlen($addrPT->getBuildingNumber()));
+
+        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($addrPT->setBuildingNumber(""));
+        $this->assertSame("", $addrPT->getBuildingNumber());
+        $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetStreetName(): void
+    {
+        $addrPT  = new AddressPT(new ErrorRegister());
         $strName = "the street name";
         $this->assertNull($addrPT->getStreetName());
-        $addrPT->setStreetName($strName);
+        $this->assertTrue($addrPT->setStreetName($strName));
         $this->assertEquals($strName, $addrPT->getStreetName());
-        $addrPT->setStreetName(null);
+        $this->assertTrue($addrPT->setStreetName(null));
         $this->assertNull($addrPT->getStreetName());
         $addrPT->setStreetName(\str_pad("_", 209, "_"));
         $this->assertEquals(200, \strlen($addrPT->getStreetName()));
-        try {
-            $addrPT->setStreetName("");
-            $this->fail("setStreetName should throw AuditFileException whene empty");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
+        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($addrPT->setStreetName(""));
+        $this->assertSame("", $addrPT->getStreetName());
+        $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetAddressDetail(): void
+    {
+        $addrPT     = new AddressPT(new ErrorRegister());
         $addrDetail = "the address detail";
         $this->assertNull($addrPT->getAddressDetail());
-        $addrPT->setAddressDetail($addrDetail);
+        $this->assertTrue($addrPT->setAddressDetail($addrDetail));
         $this->assertEquals($addrDetail, $addrPT->getAddressDetail());
-        $addrPT->setAddressDetail(null);
+        $this->assertTrue($addrPT->setAddressDetail(null));
         $this->assertNull($addrPT->getAddressDetail());
         $addrPT->setAddressDetail(\str_pad("_", 212, "_"));
         $this->assertEquals(210, \strlen($addrPT->getAddressDetail()));
-        try {
-            $addrPT->setAddressDetail("");
-            $this->fail("setAddressDetail should throw AuditFileException whene empty");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
+        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($addrPT->setAddressDetail(""));
+        $this->assertSame("", $addrPT->getAddressDetail());
+        $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetCity(): void
+    {
+        $addrPT = new AddressPT(new ErrorRegister());
         try {
             $addrPT->getCity();
             $this->fail("getCity should throw Error whene not initialized");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
+
         $city = "the city";
-        $addrPT->setCity($city);
+        $this->assertTrue($addrPT->setCity($city));
         $this->assertEquals($city, $addrPT->getCity());
+        $this->assertTrue($addrPT->issetCity());
         $addrPT->setCity(\str_pad("_", 59, "_"));
         $this->assertEquals(50, \strlen($addrPT->getCity()));
+
+        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($addrPT->setCity(""));
+        $this->assertSame("", $addrPT->getCity());
+        $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
+
         try {
-            $addrPT->setCity(null);
+            $addrPT->setCity(null);/** @phpstan-ignore-line */
             $this->fail("setCity should throw Erro whene setted to null");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
+    }
 
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetRegion(): void
+    {
+        $addrPT = new AddressPT(new ErrorRegister());
         $region = "the region";
         $this->assertNull($addrPT->getRegion());
         $addrPT->setRegion($region);
@@ -121,62 +181,94 @@ class AddressPTTest extends TestCase
         $this->assertNull($addrPT->getRegion());
         $addrPT->setRegion(\str_pad("_", 212, "_"));
         $this->assertEquals(50, \strlen($addrPT->getRegion()));
-        try {
-            $addrPT->setRegion("");
-            $this->fail("setRegion should throw AuditFileException whene empty");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($addrPT->setRegion(""));
+        $this->assertSame("", $addrPT->getRegion());
+        $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
 
-        $this->assertEquals(\Rebelo\SaftPt\AuditFile\Country::ISO_PT,
-            $addrPT->getCountry()->get());
+        $this->assertEquals(
+            \Rebelo\SaftPt\AuditFile\Country::ISO_PT,
+            $addrPT->getCountry()->get()
+        );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetPostalCode(): void
+    {
+        $addrPT = new AddressPT(new ErrorRegister());
 
         try {
             $addrPT->getPostalCode();
-            $this->fail("getPostalCode should throw Error whene not initialized");
+            $this->fail("GetPostalCode should throw Error when setted to null");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
-        $posCode = new \Rebelo\SaftPt\AuditFile\PostalCodePT("1999-999");
-        $addrPT->setPostalCode($posCode);
-        $this->assertEquals($posCode->getPostalCode(),
-            $addrPT->getPostalCode()->getPostalCode());
+
+        $postalCode = "1999-999";
+        $this->assertTrue($addrPT->setPostalCode($postalCode));
+        $this->assertTrue($addrPT->issetPostalCode());
+        $this->assertEquals($postalCode, $addrPT->getPostalCode());
         try {
-            $addrPT->setPostalCode(null);
-            $this->fail("setPostalCode should throw Erro whene setted to null");
+            $addrPT->setPostalCode(null);/** @phpstan-ignore-line */
+            $this->fail("setPostalCode should throw TypeError when setted to null");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode(): void
     {
         $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
-        $address  = new AddressPT();
+        $address  = new AddressPT(new ErrorRegister());
         $address->setBuildingNumber("999");
         $address->setStreetName("Street test");
         $address->setCity("Sintra");
-        $address->setPostalCode(new PostalCodePT("1999-999"));
+        $address->setPostalCode("1999-999");
         $address->setRegion("Lisbon");
 
-        $this->assertInstanceOf(\SimpleXMLElement::class,
-            $address->createXmlNode($addrNode));
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class,
+            $address->createXmlNode($addrNode)
+        );
 
-        $a = $address->getBuildingNumber();
-        $b = $addrNode->{AddressPT::N_BUILDINGNUMBER};
-        $this->assertEquals($address->getBuildingNumber(),
-            $addrNode->{AddressPT::N_BUILDINGNUMBER});
-        $this->assertEquals($address->getStreetName(),
-            $addrNode->{AddressPT::N_STREETNAME});
-        $this->assertEquals($address->getStreetName()." ".$address->getBuildingNumber(),
-            $addrNode->{AddressPT::N_ADDRESSDETAIL});
+        $this->assertEquals(
+            $address->getBuildingNumber(),
+            $addrNode->{AddressPT::N_BUILDINGNUMBER}
+        );
+
+        $this->assertEquals(
+            $address->getStreetName(), $addrNode->{AddressPT::N_STREETNAME}
+        );
+
+        $this->assertEquals(
+            $address->getStreetName()." ".$address->getBuildingNumber(),
+            $addrNode->{AddressPT::N_ADDRESSDETAIL}
+        );
+
         $this->assertEquals($address->getCity(), $addrNode->{AddressPT::N_CITY});
-        $this->assertEquals($address->getCountry()->get(),
-            $addrNode->{AddressPT::N_COUNTRY});
-        $this->assertEquals($address->getPostalCode()->getPostalCode(),
-            $addrNode->{AddressPT::N_POSTALCODE});
-        $this->assertEquals($address->getRegion(),
-            $addrNode->{AddressPT::N_REGION});
+
+        $this->assertEquals(
+            $address->getCountry()->get(), $addrNode->{AddressPT::N_COUNTRY}
+        );
+
+        $this->assertEquals(
+            $address->getPostalCode(), $addrNode->{AddressPT::N_POSTALCODE}
+        );
+
+        $this->assertEquals(
+            $address->getRegion(), $addrNode->{AddressPT::N_REGION}
+        );
+
+        $this->assertEmpty($address->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($address->getErrorRegistor()->getOnSetValue());
 
         $address->setBuildingNumber(null);
         $address->setStreetName(null);
@@ -184,56 +276,153 @@ class AddressPTTest extends TestCase
         $address->setRegion(null);
 
         $node = new \SimpleXMLElement("<AddressPT></AddressPT>");
-        $this->assertInstanceOf(\SimpleXMLElement::class,
-            $address->createXmlNode($node));
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class,
+            $address->createXmlNode($node)
+        );
 
         $this->assertEquals(0, $node->{AddressPT::N_BUILDINGNUMBER}->count());
+
         $this->assertEquals(0, $node->{AddressPT::N_STREETNAME}->count());
+
         $this->assertEquals(0, $node->{AddressPT::N_REGION}->count());
-        $this->assertEquals($address->getAddressDetail(),
-            $node->{AddressPT::N_ADDRESSDETAIL});
+
+        $this->assertEquals(
+            $address->getAddressDetail(), $node->{AddressPT::N_ADDRESSDETAIL}
+        );
+
         $this->assertEquals($address->getCity(), $node->{AddressPT::N_CITY});
-        $this->assertEquals($address->getCountry()->get(),
-            $node->{AddressPT::N_COUNTRY});
-        $this->assertEquals($address->getPostalCode()->getPostalCode(),
-            $node->{AddressPT::N_POSTALCODE});
+
+        $this->assertEquals(
+            $address->getCountry()->get(), $node->{AddressPT::N_COUNTRY}
+        );
+
+        $this->assertEquals(
+            $address->getPostalCode(), $node->{AddressPT::N_POSTALCODE}
+        );
+
+        $this->assertEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($address->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($address->getErrorRegistor()->getLibXmlError());
+
+        $this->assertEmpty($address->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($address->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testParseXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNode(): void
     {
         $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
-        $address  = new AddressPT();
+        $address  = new AddressPT(new ErrorRegister());
         $address->setBuildingNumber("999");
         $address->setStreetName("Street test");
         $address->setCity("Sintra");
-        $address->setPostalCode(new PostalCodePT("1999-999"));
+        $address->setPostalCode("1999-999");
         $address->setRegion("Lisbon");
 
         $xml = $address->createXmlNode($addrNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
 
-        $parsed = new AddressPT();
+        $parsed = new AddressPT(new ErrorRegister());
+
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
-        $this->assertEquals($address->getBuildingNumber(),
-            $parsed->getBuildingNumber());
+
+        $this->assertEquals(
+            $address->getBuildingNumber(),
+            $parsed->getBuildingNumber()
+        );
         $this->assertEquals($address->getStreetName(), $parsed->getStreetName());
         $this->assertEquals($address->getCity(), $parsed->getCity());
-        $this->assertEquals($address->getCountry()->get(),
-            $parsed->getCountry()->get());
+        $this->assertEquals(
+            $address->getCountry()->get(),
+            $parsed->getCountry()->get()
+        );
         $this->assertEquals($address->getPostalCode(), $parsed->getPostalCode());
         $this->assertEquals($address->getRegion(), $parsed->getRegion());
-        $this->assertEquals($address->getStreetName()." ".$address->getBuildingNumber(),
-            $parsed->getAddressDetail());
+        $this->assertEquals(
+            $address->getStreetName()." ".$address->getBuildingNumber(),
+            $parsed->getAddressDetail()
+        );
+
+        $this->assertEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($address->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($address->getErrorRegistor()->getLibXmlError());
     }
 
-    public function testClone()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testClone(): void
     {
-        $addr    = new AddressPT();
+        $addr    = new AddressPT(new ErrorRegister());
         $addrPc  = "1999-000";
-        $addr->setPostalCode(new PostalCodePT($addrPc));
+        $addr->setPostalCode($addrPc);
         $clone   = clone $addr;
         $clonePc = "1100-999";
-        $clone->setPostalCode(new PostalCodePT($clonePc));
-        $this->assertEquals($addr->getPostalCode()->getPostalCode(), $addrPc);
-        $this->assertEquals($clone->getPostalCode()->getPostalCode(), $clonePc);
+        $clone->setPostalCode($clonePc);
+        $this->assertEquals($addr->getPostalCode(), $addrPc);
+        $this->assertEquals($clone->getPostalCode(), $clonePc);
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
+        $address  = new AddressPT(new ErrorRegister());
+        $xml      = $address->createXmlNode($addrNode)->asXML();
+
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($address->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($address->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
+        $address  = new AddressPT(new ErrorRegister());
+        $address->setAddressDetail("");
+        $address->setBuildingNumber("");
+        $address->setPostalCode("1999");
+        $address->setRegion("");
+        $address->setStreetName("");
+
+        $xml = $address->createXmlNode($addrNode)->asXML();
+
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($address->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($address->getErrorRegistor()->getLibXmlError());
     }
 }

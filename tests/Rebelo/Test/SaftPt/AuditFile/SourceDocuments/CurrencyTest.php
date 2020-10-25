@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Class CurrencyTest
@@ -41,23 +41,30 @@ class CurrencyTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Currency::class);
         $this->assertTrue(true);
     }
 
-    public function testInstanceGetSet()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceGetSet(): void
     {
-        $currency = new Currency();
+        $currency = new Currency(new ErrorRegister());
         $this->assertInstanceOf(Currency::class, $currency);
         try {
             $currency->getCurrencyCode();
-            $this->fail("Get CurrencyCode without be setted should throw "
-                ."\Error");
+            $this->fail(
+                "Get CurrencyCode without be setted should throw "
+                ."\Error"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
@@ -66,8 +73,10 @@ class CurrencyTest extends TestCase
 
         try {
             $currency->getCurrencyAmount();
-            $this->fail("Get Ammout without be setted should throw "
-                ."\Error");
+            $this->fail(
+                "Get Ammout without be setted should throw "
+                ."\Error"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
@@ -76,8 +85,10 @@ class CurrencyTest extends TestCase
 
         try {
             $currency->getExchangeRate();
-            $this->fail("Get ExchangeRate without be setted should throw "
-                ."\Error");
+            $this->fail(
+                "Get ExchangeRate without be setted should throw "
+                ."\Error"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Error::class, $e
@@ -89,43 +100,39 @@ class CurrencyTest extends TestCase
         $this->assertSame($code, $currency->getCurrencyCode()->get());
 
         $amount = 459.95;
-        $currency->setCurrencyAmount($amount);
+        $this->assertTrue($currency->setCurrencyAmount($amount));
         $this->assertSame($amount, $currency->getCurrencyAmount());
 
-        try {
-            $currency->setCurrencyAmount(-1.9);
-            $this->fail("A negative CurrencyAmount should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(
-                AuditFileException::class, $e
-            );
-        }
-        $this->assertSame($amount, $currency->getCurrencyAmount());
+        $wrong = -1.9;
+        $currency->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($currency->setCurrencyAmount($wrong));
+        $this->assertSame($wrong, $currency->getCurrencyAmount());
+        $this->assertNotEmpty($currency->getErrorRegistor()->getOnSetValue());
 
         $rate = 1.59;
-        $currency->setExchangeRate($rate);
+        $this->assertTrue($currency->setExchangeRate($rate));
         $this->assertSame($rate, $currency->getExchangeRate());
-        try {
-            $currency->setExchangeRate(-1.9);
-            $this->fail("A negative ExchangeRate should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(
-                AuditFileException::class, $e
-            );
-        }
-        $this->assertSame($rate, $currency->getExchangeRate());
+
+        $currency->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($currency->setExchangeRate($wrong));
+        $this->assertSame($wrong, $currency->getExchangeRate());
+        $this->assertNotEmpty($currency->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testCreateXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWrongName(): void
     {
-        $currency = new Currency();
+        $currency = new Currency(new ErrorRegister());
         $node     = new \SimpleXMLElement("<root></root>");
         try {
             $currency->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -133,14 +140,20 @@ class CurrencyTest extends TestCase
         }
     }
 
-    public function testParseXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNodeWrongName(): void
     {
-        $currency = new Currency();
+        $currency = new Currency(new ErrorRegister());
         $node     = new \SimpleXMLElement("<root></root>");
         try {
             $currency->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -148,16 +161,24 @@ class CurrencyTest extends TestCase
         }
     }
 
+    /**
+     *
+     * @return Currency
+     */
     public function createCurrency(): Currency
     {
-        $currency = new Currency();
+        $currency = new Currency(new ErrorRegister());
         $currency->setCurrencyCode(new CurrencyCode(CurrencyCode::ISO_GBP));
         $currency->setCurrencyAmount(259.99);
         $currency->setExchangeRate(0.99);
         return $currency;
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode(): void
     {
         $currency = $this->createCurrency();
         $node     = new \SimpleXMLElement(
@@ -188,25 +209,99 @@ class CurrencyTest extends TestCase
             (float) $node->{Currency::N_CURRENCY}
             ->{Currency::N_EXCHANGERATE}
         );
+
+        $this->assertEmpty($currency->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($currency->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($currency->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testeParseXml()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testeParseXml(): void
     {
         $currency = $this->createCurrency();
         $node     = new \SimpleXMLElement(
             "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
         );
         $xml      = $currency->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new Currency();
+        $parsed = new Currency(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
-        $this->assertSame($currency->getCurrencyCode()->get(),
-            $parsed->getCurrencyCode()->get());
-        $this->assertSame($currency->getCurrencyAmount(),
-            $parsed->getCurrencyAmount());
+        $this->assertSame(
+            $currency->getCurrencyCode()->get(),
+            $parsed->getCurrencyCode()->get()
+        );
+
+        $this->assertSame(
+            $currency->getCurrencyAmount(), $parsed->getCurrencyAmount()
+        );
+
         $this->assertSame(
             $currency->getExchangeRate(), $parsed->getExchangeRate()
         );
+
+        $this->assertEmpty($currency->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($currency->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($currency->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $currencyNode = new \SimpleXMLElement(
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        );
+        $currency     = new Currency(new ErrorRegister());
+        $xml          = $currency->createXmlNode($currencyNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($currency->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($currency->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($currency->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $currencyNode = new \SimpleXMLElement(
+            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        );
+        $currency     = new Currency(new ErrorRegister());
+        $currency->setCurrencyAmount(-1.0);
+        $currency->setExchangeRate(-1.0);
+
+        $xml = $currency->createXmlNode($currencyNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($currency->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($currency->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($currency->getErrorRegistor()->getLibXmlError());
     }
 }

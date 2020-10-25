@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  *
@@ -84,6 +85,13 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * TransactionID
+     * <p>
+     * The key must be built in such a way that it is unique and the only one that
+     *  corresponds to the number of the accounting document,
+     *  which is used to detect the physical document in the archive.
+     *  So it shall result from linking together, separated by spaces,
+     *  the following elements: TransactionDate, JournalID and DocArchivalNumber.
+     * </p>
      * <pre>
      * &lt;xs:element name="TransactionID" type="SAFPTTransactionID"/&gt;
      * &lt;xs:simpleType name="SAFPTTransactionID"&gt;
@@ -93,30 +101,30 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *       &lt;xs:maxLength value="70"/&gt;
      *   &lt;/xs:restriction&gt;
      *  &lt;/xs:simpleType&gt;
-     * <p>
-     * The key must be built in such a way that it is unique and the only one that
-     *  corresponds to the number of the accounting document,
-     *  which is used to detect the physical document in the archive.
-     *  So it shall result from linking together, separated by spaces,
-     *  the following elements: TransactionDate, JournalID and DocArchivalNumber.
-     * </p>
+     * </pre>
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get transaction date
      * @return \Rebelo\Date\Date
+     * @throws \Error
      * @since 1.0.0
      */
     public function getDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->date->format(RDate::SQL_DATE)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->date->format(RDate::SQL_DATE)
+                )
+            );
         return $this->date;
     }
 
@@ -130,14 +138,19 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->date = $date;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->date->format(RDate::SQL_DATE)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->date->format(RDate::SQL_DATE)
+                )
+            );
     }
 
     /**
      * Set Journal ID
      * Regexp [^ ]{1,30}
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getJournalID(): string
@@ -151,21 +164,25 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Set Journal ID
      * Regexp [^ ]{1,30}
      * @param string $journalID
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setJournalID(string $journalID): void
+    public function setJournalID(string $journalID): bool
     {
         if (\preg_match("/^[^ ]{1,30}$/", $journalID) !== 1) {
-            $msg = "JournalID must respect regexp '^[^ ]{1,30}$'";
+            $msg    = "JournalID must respect regexp '^[^ ]{1,30}$'";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("JournalID_not_valid");
+        } else {
+            $return = true;
         }
         $this->journalID = $journalID;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->journalID));
+        return $return;
     }
 
     /**
@@ -185,22 +202,30 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Set DocArchivalNumber<br>
      * [^ ]{1,20}
      * @param string $docArchivalNumber
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setDocArchivalNumber(string $docArchivalNumber): void
+    public function setDocArchivalNumber(string $docArchivalNumber): bool
     {
         if (\preg_match("/^[^ ]{1,20}$/", $docArchivalNumber) !== 1) {
-            $msg = "DocArchivalNumber must respect regexp '^[^ ]{1,20}$'";
+            $msg    = "DocArchivalNumber must respect regexp '^[^ ]{1,20}$'";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("DocArchivalNumber_not_valid");
+        } else {
+            $return = true;
         }
         $this->docArchivalNumber = $docArchivalNumber;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->docArchivalNumber));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->docArchivalNumber
+                )
+            );
+        return $return;
     }
 
     /**
@@ -214,11 +239,16 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        $tran = \sprintf(
-            "%s %s %s", $this->getDate()->format(RDate::SQL_DATE),
-            $this->getJournalID(), $this->getDocArchivalNumber()
-        );
-        return $node->addChild(static::N_TRANSACTIONID, $tran);
+        if (isset($this->date) && isset($this->docArchivalNumber) && isset($this->journalID)) {
+            $tran = \sprintf(
+                "%s %s %s", $this->getDate()->format(RDate::SQL_DATE),
+                $this->getJournalID(), $this->getDocArchivalNumber()
+            );
+            return $node->addChild(static::N_TRANSACTIONID, $tran);
+        }
+
+        $this->getErrorRegistor()->addOnCreateXmlNode("TransactionID_not_valid");
+        return $node->addChild(static::N_TRANSACTIONID);
     }
 
     /**
@@ -234,8 +264,10 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_TRANSACTIONID) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                static::N_TRANSACTIONID, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_TRANSACTIONID, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

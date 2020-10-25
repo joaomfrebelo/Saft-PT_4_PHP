@@ -28,18 +28,16 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{
     SourceDocuments,
     ShipFrom,
     ShipTo
 };
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\{
-    Line,
     MovementType,
     StockMovement,
     DocumentStatus,
-    DocumentTotals,
     MovementOfGoods
 };
 
@@ -55,9 +53,10 @@ class StockMovementTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(StockMovement::class);
@@ -65,330 +64,348 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $this->assertInstanceOf(StockMovement::class, $stkMov);
         $this->assertNull($stkMov->getPeriod());
-        $this->assertNull($stkMov->getTransactionID());
+        $this->assertNull($stkMov->getTransactionID(false));
         $this->assertNull($stkMov->getEacCode());
         $this->assertNull($stkMov->getMovementComments());
-        $this->assertNull($stkMov->getShipTo());
-        $this->assertNull($stkMov->getShipFrom());
+        $this->assertNull($stkMov->getShipTo(false));
+        $this->assertNull($stkMov->getShipFrom(false));
         $this->assertNull($stkMov->getMovementEndTime());
         $this->assertNull($stkMov->getAtDocCodeID());
         $this->assertSame(0, \count($stkMov->getLine()));
+
+        $this->assertFalse($stkMov->issetAtcud());
+        $this->assertFalse($stkMov->issetCustomerID());
+        $this->assertFalse($stkMov->issetDocumentNumber());
+        $this->assertFalse($stkMov->issetDocumentStatus());
+        $this->assertFalse($stkMov->issetDocumentTotals());
+        $this->assertFalse($stkMov->issetHash());
+        $this->assertFalse($stkMov->issetHashControl());
+        $this->assertFalse($stkMov->issetMovementDate());
+        $this->assertFalse($stkMov->issetMovementType());
+        $this->assertFalse($stkMov->issetSourceID());
+        $this->assertFalse($stkMov->issetSupplierID());
+        $this->assertFalse($stkMov->issetSystemEntryDate());
+        $this->assertFalse($stkMov->issetMovementStartTime());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentNumber()
+    public function testDocumentNumber(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $docNum = "GT GT/999";
-        $stkMov->setDocumentNumber($docNum);
+        $this->assertTrue($stkMov->setDocumentNumber($docNum));
+        $this->assertTrue($stkMov->issetDocumentNumber());
         $this->assertSame($docNum, $stkMov->getDocumentNumber());
-        try {
-            $stkMov->setDocumentNumber("ORCA /1");
-            $this->fail("Set a wrong DocumentNumber should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "ORCA /1";
+        $this->assertFalse($stkMov->setDocumentNumber($wrong));
+        $this->assertSame($wrong, $stkMov->getDocumentNumber());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentStatus()
+    public function testDocumentStatus(): void
     {
-        $stkMov = new StockMovement();
-        $status = new DocumentStatus();
-        $stkMov->setDocumentStatus($status);
+        $stkMov = new StockMovement(new ErrorRegister());
         $this->assertInstanceOf(
             DocumentStatus::class, $stkMov->getDocumentStatus()
         );
+        $this->assertTrue($stkMov->issetDocumentStatus());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testAtcud()
+    public function testAtcud(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $atcud  = "999";
-        $stkMov->setAtcud($atcud);
+        $this->assertTrue($stkMov->setAtcud($atcud));
+        $this->assertTrue($stkMov->issetAtcud());
         $this->assertSame($atcud, $stkMov->getAtcud());
-        try {
-            $stkMov->setAtcud(str_pad($atcud, 120, "A"));
-            $this->fail("Set a wrong ATCUD should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($atcud, 120, "A");
+        $this->assertFalse($stkMov->setAtcud($wrong));
+        $this->assertSame($wrong, $stkMov->getAtcud());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHash()
+    public function testHash(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $hash   = \md5("hash");
-        $stkMov->setHash($hash);
+        $this->assertTrue($stkMov->setHash($hash));
+        $this->assertTrue($stkMov->issetHash());
         $this->assertSame($hash, $stkMov->getHash());
-        try {
-            $stkMov->setHash(str_pad($hash, 200, "A"));
-            $this->fail("Set a Hash length to big should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($hash, 200, "A");
+        $this->assertFalse($stkMov->setHash($wrong));
+        $this->assertSame($wrong, $stkMov->getHash());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHashControl()
+    public function testHashControl(): void
     {
-        $stkMov  = new StockMovement();
+        $stkMov  = new StockMovement(new ErrorRegister());
         $control = "1";
-        $stkMov->setHashControl($control);
+        $this->assertTrue($stkMov->setHashControl($control));
+        $this->assertTrue($stkMov->issetHashControl());
         $this->assertSame($control, $stkMov->getHashControl());
-        try {
-            $stkMov->setHashControl(\str_pad("Z1", 71, "9"));
-            $this->fail("Set a wrong HashControl should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad("Z1", 71, "9");
+        $this->assertFalse($stkMov->setHashControl($wrong));
+        $this->assertSame($wrong, $stkMov->getHashControl());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testPeriod()
+    public function testPeriod(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $period = 9;
-        $stkMov->setPeriod($period);
+        $this->assertTrue($stkMov->setPeriod($period));
         $this->assertSame($period, $stkMov->getPeriod());
-        try {
-            $stkMov->setPeriod(0);
-            $this->fail("Set periodo to less than 1 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $stkMov->setPeriod(13);
-            $this->fail("Set periodo to greater than 12 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        $stkMov->setPeriod(null);
+
+        $wrong = 0;
+        $this->assertFalse($stkMov->setPeriod($wrong));
+        $this->assertSame($wrong, $stkMov->getPeriod());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = 13;
+        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($stkMov->setPeriod($wrong2));
+        $this->assertSame($wrong2, $stkMov->getPeriod());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $this->assertTrue($stkMov->setPeriod(null));
         $this->assertNull($stkMov->getPeriod());
+        $this->assertEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementDate()
+    public function testMovementDate(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $date   = new RDate();
         $stkMov->setMovementDate($date);
         $this->assertSame($date, $stkMov->getMovementDate());
+        $this->assertTrue($stkMov->issetMovementDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementType()
+    public function testMovementType(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $type   = MovementType::GT;
         $stkMov->setMovementType(new MovementType($type));
         $this->assertSame($type, $stkMov->getMovementType()->get());
+        $this->assertTrue($stkMov->issetMovementType());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSourceID()
+    public function testSourceID(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $source = "Rebelo";
-        $stkMov->setSourceID($source);
+        $this->assertTrue($stkMov->setSourceID($source));
         $this->assertSame($source, $stkMov->getSourceID());
-        $stkMov->setSourceID(\str_pad($source, 50, "9"));
+        $this->assertTrue($stkMov->issetSourceID());
+        $this->assertTrue($stkMov->setSourceID(\str_pad($source, 50, "9")));
         $this->assertSame(30, \strlen($stkMov->getSourceID()));
+
+        $this->assertFalse($stkMov->setSourceID(""));
+        $this->assertSame("", $stkMov->getSourceID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testEACCode()
+    public function testEACCode(): void
     {
-        $stkMov  = new StockMovement();
+        $stkMov  = new StockMovement(new ErrorRegister());
         $eaccode = "49499";
-        $stkMov->setEacCode($eaccode);
+        $this->assertTrue($stkMov->setEacCode($eaccode));
         $this->assertSame($eaccode, $stkMov->getEacCode());
         $stkMov->setEacCode(null);
         $this->assertNull($stkMov->getEacCode());
-        try {
-            $stkMov->setEacCode("9999");
-            $this->fail("Set a wrong eaccode should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $stkMov->setEacCode("999999");
-            $this->fail("Set a wrong eaccode should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "9999";
+        $this->assertFalse($stkMov->setEacCode($wrong));
+        $this->assertSame($wrong, $stkMov->getEacCode());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = "999999";
+        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($stkMov->setEacCode($wrong2));
+        $this->assertSame($wrong2, $stkMov->getEacCode());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSystemEntryDate()
+    public function testSystemEntryDate(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $date   = new RDate();
         $stkMov->setSystemEntryDate($date);
         $this->assertSame($date, $stkMov->getSystemEntryDate());
+        $this->assertTrue($stkMov->issetSystemEntryDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTransactionId()
+    public function testTransactionId(): void
     {
-        $stkMov      = new StockMovement();
-        $transaction = new \Rebelo\SaftPt\AuditFile\TransactionID();
+        $stkMov      = new StockMovement(new ErrorRegister());
+        $transaction = $stkMov->getTransactionID();
         $transaction->setDate(new RDate());
         $transaction->setDocArchivalNumber("A");
         $transaction->setJournalID("9");
-        $stkMov->setTransactionID($transaction);
         $this->assertSame($transaction, $stkMov->getTransactionID());
-        $stkMov->setTransactionID(null);
-        $this->assertNull($stkMov->getTransactionID());
+        $stkMov->setTransactionIDAsNull();
+        $this->assertNull($stkMov->getTransactionID(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCustomerId()
+    public function testCustomerId(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $id     = "A999";
-        $stkMov->setCustomerID($id);
+        $this->assertTrue($stkMov->setCustomerID($id));
+        $this->assertTrue($stkMov->issetCustomerID());
         $this->assertSame($id, $stkMov->getCustomerID());
-        try {
-            $stkMov->setCustomerID(\str_pad($id, 31, "999999"));
-            $this->fail("Set a wrong customerid should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
-        try {
-            $stkMov->setSupplierID("999999");
-            $this->fail("Set SupplierID with customerid setted should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong = \str_pad($id, 31, "999999");
+        $this->assertFalse($stkMov->setCustomerID($wrong));
+        $this->assertSame($wrong, $stkMov->getCustomerID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($stkMov->setSupplierID($wrong));
+        $this->assertSame($wrong, $stkMov->getSupplierID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSupplierId()
+    public function testSupplierId(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $id     = "A999";
-        $stkMov->setSupplierID($id);
+        $this->assertTrue($stkMov->setSupplierID($id));
+        $this->assertTrue($stkMov->issetSupplierID());
         $this->assertSame($id, $stkMov->getSupplierID());
-        try {
-            $stkMov->setSupplierID(\str_pad($id, 31, "999999"));
-            $this->fail("Set a wrong SupplierID should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
-        try {
-            $stkMov->setCustomerID("999999");
-            $this->fail("Set CustometID with SupplierID setted should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong = \str_pad($id, 31, "999999");
+        $this->assertFalse($stkMov->setSupplierID($wrong));
+        $this->assertSame($wrong, $stkMov->getSupplierID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($stkMov->setCustomerID($wrong));
+        $this->assertSame($wrong, $stkMov->getCustomerID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementComments()
+    public function testMovementComments(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $com    = "Movement comment";
-        $stkMov->setMovementComments($com);
+        $this->assertTrue($stkMov->setMovementComments($com));
         $this->assertSame($com, $stkMov->getMovementComments());
-        $stkMov->setMovementComments(\str_pad($com, 99, "9"));
-        $this->assertSame(60, \strlen($stkMov->getMovementComments()));
-        try {
-            $stkMov->setMovementComments("");
-            $this->fail("Set MovementComments to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        $stkMov->setMovementComments(null);
+
+        $this->assertFalse($stkMov->setMovementComments(""));
+        $this->assertSame("", $stkMov->getMovementComments());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $this->assertTrue($stkMov->setMovementComments(null));
         $this->assertNull($stkMov->getMovementComments());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testShipTo()
+    public function testShipTo(): void
     {
-        $stkMov = new StockMovement();
-        $shipTo = new ShipTo();
-        $stkMov->setShipTo($shipTo);
+        $stkMov = new StockMovement(new ErrorRegister());
+        $stkMov->getShipTo();
         $this->assertInstanceOf(ShipTo::class, $stkMov->getShipTo());
-        $stkMov->setShipTo(null);
-        $this->assertNull($stkMov->getShipTo());
+        $stkMov->setShipToAsNull();
+        $this->assertNull($stkMov->getShipTo(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testShipFrom()
+    public function testShipFrom(): void
     {
-        $stkMov   = new StockMovement();
-        $shipFrom = new ShipFrom();
-        $stkMov->setShipFrom($shipFrom);
+        $stkMov = new StockMovement(new ErrorRegister());
+        $stkMov->getShipFrom();
         $this->assertInstanceOf(ShipFrom::class, $stkMov->getShipFrom());
-        $stkMov->setShipFrom(null);
-        $this->assertNull($stkMov->getShipFrom());
+        $stkMov->setShipFromAsNull();
+        $this->assertNull($stkMov->getShipFrom(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementEndTime()
+    public function testMovementEndTime(): void
     {
-        $stkMov  = new StockMovement();
+        $stkMov  = new StockMovement(new ErrorRegister());
         $endTime = new RDate();
         $stkMov->setMovementEndTime($endTime);
         $this->assertSame($endTime, $stkMov->getMovementEndTime());
@@ -397,76 +414,69 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementStartTime()
+    public function testMovementStartTime(): void
     {
-        $stkMov    = new StockMovement();
+        $stkMov    = new StockMovement(new ErrorRegister());
         $startTime = new RDate();
         $stkMov->setMovementStartTime($startTime);
         $this->assertSame($startTime, $stkMov->getMovementStartTime());
+        $this->assertTrue($stkMov->issetMovementStartTime());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testATDocCodeID()
+    public function testATDocCodeID(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $code   = "ATCODE";
         $stkMov->setAtDocCodeID($code);
         $this->assertSame($code, $stkMov->getAtDocCodeID());
-        try {
-            $stkMov->setAtDocCodeID("");
-            $this->fail("Set ATDocCodeID to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $stkMov->setAtDocCodeID(\str_pad("A", 201, "A"));
-            $this->fail("Set ATDocCodeID with a length greater then 200 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad("A", 201, "A");
+        $this->assertFalse($stkMov->setAtDocCodeID($wrong));
+        $this->assertSame($wrong, $stkMov->getAtDocCodeID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
+        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($stkMov->setAtDocCodeID(""));
+        $this->assertSame("", $stkMov->getAtDocCodeID());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+
         $stkMov->setAtDocCodeID(null);
         $this->assertNull($stkMov->getAtDocCodeID());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testLine()
+    public function testLine(): void
     {
-        $stkMov = new StockMovement();
+        $stkMov = new StockMovement(new ErrorRegister());
         $nMax   = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $line  = new Line();
-            $line->setLineNumber($n + 1);
-            $index = $stkMov->addToLine($line);
-            $this->assertSame($n, $index);
+            $stkMov->addLine();
             $this->assertSame(
                 $n + 1, $stkMov->getLine()[$n]->getLineNumber()
             );
         }
 
         $this->assertSame($nMax, \count($stkMov->getLine()));
-
-        $unset = 2;
-        $stkMov->unsetLine($unset);
-        $this->assertFalse($stkMov->issetLine($unset));
-        $this->assertSame($nMax - 1, \count($stkMov->getLine()));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentTotals()
+    public function testDocumentTotals(): void
     {
-        $stkMov = new StockMovement();
-        $totals = new DocumentTotals();
-        $stkMov->setDocumentTotals($totals);
+        $stkMov = new StockMovement(new ErrorRegister());
+        $totals = $stkMov->getDocumentTotals();
         $this->assertSame($totals, $stkMov->getDocumentTotals());
     }
 
@@ -474,8 +484,10 @@ class StockMovementTest extends TestCase
      * Reads all StockMovement from the Demo SAFT in Test\Ressources
      * and parse then to StockMovement class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -491,14 +503,10 @@ class StockMovementTest extends TestCase
         for ($n = 0; $n < $stkMovStack->count(); $n++) {
             /* @var $stkMovXml \SimpleXMLElement */
             $stkMovXml = $stkMovStack[$n];
-            $stkMov    = new StockMovement();
+            $stkMov    = new StockMovement(new ErrorRegister());
             $stkMov->parseXmlNode($stkMovXml);
 
-            $xmlRootNode         = new \SimpleXMLElement(
-                '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-            );
+            $xmlRootNode         = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
             $sourceDocNode       = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
             $movementodgoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
 
@@ -506,16 +514,85 @@ class StockMovementTest extends TestCase
 
             try {
                 $assertXml = $this->xmlIsEqual($stkMovXml, $xml);
-                $this->assertTrue($assertXml,
-                    \sprintf("Fail on Document '%s' with error '%s'",
+                $this->assertTrue(
+                    $assertXml,
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
                         $stkMovXml->{StockMovement::N_DOCUMENTNUMBER},
-                        $assertXml)
+                        $assertXml
+                    )
                 );
             } catch (\Exception | \Error $e) {
-                $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                $this->fail(
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
                         $stkMovXml->{StockMovement::N_DOCUMENTNUMBER},
-                        $e->getMessage()));
+                        $e->getMessage()
+                    )
+                );
             }
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $stkMovNode = new \SimpleXMLElement(
+            "<".MovementOfGoods::N_MOVEMENTOFGOODS."></".MovementOfGoods::N_MOVEMENTOFGOODS.">"
+        );
+        $stkMov     = new StockMovement(new ErrorRegister());
+        $xml        = $stkMov->createXmlNode($stkMovNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($stkMov->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $stkMovNode = new \SimpleXMLElement(
+            "<".MovementOfGoods::N_MOVEMENTOFGOODS."></".MovementOfGoods::N_MOVEMENTOFGOODS.">"
+        );
+        $stkMov     = new StockMovement(new ErrorRegister());
+        $stkMov->setAtDocCodeID("");
+        $stkMov->setAtcud("");
+        $stkMov->setCustomerID("");
+        $stkMov->setDocumentNumber("");
+        $stkMov->setEacCode("");
+        $stkMov->setHash("");
+        $stkMov->setHashControl("");
+        $stkMov->setMovementComments("");
+        $stkMov->setPeriod(0);
+        $stkMov->setSourceID("");
+        $stkMov->setSupplierID("");
+
+        $xml = $stkMov->createXmlNode($stkMovNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($stkMov->getErrorRegistor()->getLibXmlError());
     }
 }

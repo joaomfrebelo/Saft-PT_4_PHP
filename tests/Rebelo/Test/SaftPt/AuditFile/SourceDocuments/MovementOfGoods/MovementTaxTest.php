@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode;
@@ -43,56 +44,101 @@ class MovementTaxTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(MovementTax::class);
         $this->assertTrue(true);
     }
 
-    public function testInstance()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstance(): void
     {
-        $movTax = new MovementTax();
+        $movTax = new MovementTax(new ErrorRegister());
         $this->assertInstanceOf(MovementTax::class, $movTax);
-
-        $type = MovementTaxType::IVA;
-        $movTax->setTaxType(new MovementTaxType($type));
-        $this->assertSame($type, $movTax->getTaxType()->get());
-
-        $code = MovementTaxCode::NOR;
-        $movTax->setTaxCode(new MovementTaxCode($code));
-        $this->assertSame($code, $movTax->getTaxCode()->get());
-
-        $country = TaxCountryRegion::ISO_PT;
-        $movTax->setTaxCountryRegion(new TaxCountryRegion($country));
-        $this->assertSame($country, $movTax->getTaxCountryRegion()->get());
-
-        $percentage = 23.00;
-        $movTax->setTaxPercentage($percentage);
-        $this->assertSame($percentage, $movTax->getTaxPercentage());
-
-        try {
-            $movTax->setTaxPercentage(-0.04);
-            $this->fail("Set TaxPercentage to a negative number must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertFalse($movTax->issetTaxCode());
+        $this->assertFalse($movTax->issetTaxCountryRegion());
+        $this->assertFalse($movTax->issetTaxPercentage());
+        $this->assertFalse($movTax->issetTaxType());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeWrongName()
+    public function testSetGetTaxType(): void
     {
-        $ci   = new MovementTax();
+        $movTax = new MovementTax(new ErrorRegister());
+        $type   = MovementTaxType::IVA;
+        $movTax->setTaxType(new MovementTaxType($type));
+        $this->assertSame($type, $movTax->getTaxType()->get());
+        $this->assertTrue($movTax->issetTaxType());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetTaxCode(): void
+    {
+        $movTax = new MovementTax(new ErrorRegister());
+        $code   = MovementTaxCode::NOR;
+        $movTax->setTaxCode(new MovementTaxCode($code));
+        $this->assertSame($code, $movTax->getTaxCode()->get());
+        $this->assertTrue($movTax->issetTaxCode());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetTaxCountryRegion(): void
+    {
+        $movTax  = new MovementTax(new ErrorRegister());
+        $country = TaxCountryRegion::ISO_PT;
+        $movTax->setTaxCountryRegion(new TaxCountryRegion($country));
+        $this->assertSame($country, $movTax->getTaxCountryRegion()->get());
+        $this->assertTrue($movTax->issetTaxCountryRegion());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetTaxPercentage(): void
+    {
+        $movTax     = new MovementTax(new ErrorRegister());
+        $percentage = 23.00;
+        $movTax->setTaxPercentage($percentage);
+        $this->assertSame($percentage, $movTax->getTaxPercentage());
+        $this->assertTrue($movTax->issetTaxPercentage());
+
+        $wrong = -0.04;
+        $this->assertFalse($movTax->setTaxPercentage(-0.04));
+        $this->assertSame($wrong, $movTax->getTaxPercentage());
+        $this->assertNotEmpty($movTax->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWrongName(): void
+    {
+        $ci   = new MovementTax(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $ci->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -101,16 +147,19 @@ class MovementTaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testParseXmlNodeWrongName()
+    public function testParseXmlNodeWrongName(): void
     {
-        $ci   = new MovementTax();
+        $ci   = new MovementTax(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $ci->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -124,7 +173,7 @@ class MovementTaxTest extends TestCase
      */
     public function createMovementTax(): MovementTax
     {
-        $movTax = new MovementTax();
+        $movTax = new MovementTax(new ErrorRegister());
         $type   = MovementTaxType::IVA;
         $movTax->setTaxType(new MovementTaxType($type));
 
@@ -141,9 +190,10 @@ class MovementTaxTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
         $movTax = $this->createMovementTax();
         $node   = new \SimpleXMLElement(
@@ -180,5 +230,57 @@ class MovementTaxTest extends TestCase
             (string) $node->{MovementTax::N_TAX}
             ->{MovementTax::N_TAXTYPE}
         );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $movTaxNode = new \SimpleXMLElement(
+            "<".Line::N_LINE."></".Line::N_LINE.">"
+        );
+        $movTax     = new MovementTax(new ErrorRegister());
+        $xml        = $movTax->createXmlNode($movTaxNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($movTax->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($movTax->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($movTax->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $movTaxNode = new \SimpleXMLElement(
+            "<".Line::N_LINE."></".Line::N_LINE.">"
+        );
+        $movTax     = new MovementTax(new ErrorRegister());
+        $movTax->setTaxPercentage(-0.01);
+
+        $xml = $movTax->createXmlNode($movTaxNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($movTax->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($movTax->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($movTax->getErrorRegistor()->getLibXmlError());
     }
 }

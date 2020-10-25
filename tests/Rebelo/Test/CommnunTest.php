@@ -36,14 +36,32 @@ use PHPUnit\Framework\TestCase;
 class CommnunTest extends TestCase
 {
 
-    public function testReflection(string $class)
+    /**
+     *
+     * @param class-string $class
+     * @return void
+     */
+    public function testReflection(string $class): void
     {
         $refClas  = new \ReflectionClass($class);
         $classDoc = $refClas->getDocComment();
 
-        $this->assertEquals(1, \preg_match("/@since(.*)/", $classDoc),
-            sprintf("Class '%s' doesn't have the @since tag",
-                $refClas->getName()));
+        if ($classDoc === false) {
+            $this->fail(
+                \sprintf(
+                    "Class '%s' doesn't have documentation",
+                    $refClas->getName()
+                )
+            );
+            return;
+        }
+
+        $this->assertEquals(
+            1, \preg_match("/@since(.*)/", $classDoc),
+            \sprintf(
+                "Class '%s' doesn't have the @since tag", $refClas->getName()
+            )
+        );
 
         $this->testConstant($refClas, $class);
 
@@ -54,33 +72,46 @@ class CommnunTest extends TestCase
         $this->testStrict($refClas);
     }
 
-    public function testConstant(\ReflectionClass $refClas, string $class)
+    public function testConstant(\ReflectionClass $refClas, string $class): void
     {
         foreach ($refClas->getConstants() as $constName => $constValue) {
             $refConst = new \ReflectionClassConstant($class, $constName);
             $consDoc  = $refConst->getDocComment();
-            if ($consDoc == false) {
-                $this->fail(sprintf("Constant '%s' of class '%s' doen't have doc comment",
-                        $constName, $class));
+            if ($consDoc === false) {
+                $this->fail(
+                    \sprintf(
+                        "Constant '%s' of class '%s' doen't have doc comment",
+                        $constName, $class
+                    )
+                );
+                return;
             }
-            $this->assertEquals(1, \preg_match("/@since(.*)/", $consDoc),
-                sprintf("Constant '%s' with value '%s' doesn't have the @since tag",
-                    $constName, $constValue));
+            $this->assertEquals(
+                1, \preg_match("/@since(.*)/", $consDoc),
+                sprintf(
+                    "Constant '%s' with value '%s' doesn't have the @since tag",
+                    $constName, $constValue
+                )
+            );
         }
     }
 
-    public function testProperties(\ReflectionClass $refClas)
+    public function testProperties(\ReflectionClass $refClas): void
     {
         /* @var $prop \ReflectionProperty */
         foreach ($refClas->getProperties() as $prop) {
 
-            $this->assertTrue($prop->hasType(),
-                sprintf("propertie '%s' doesn't have a type defined",
-                    $prop->getName()));
+            $this->assertTrue(
+                $prop->hasType(),
+                sprintf(
+                    "propertie '%s' doesn't have a type defined",
+                    $prop->getName()
+                )
+            );
         }
     }
 
-    public function testMethods(\ReflectionClass $refClas)
+    public function testMethods(\ReflectionClass $refClas): void
     {
         /* @var $meth \ReflectionMethod */
         foreach ($refClas->getMethods() as $meth) {
@@ -95,70 +126,104 @@ class CommnunTest extends TestCase
 
             if ($doc === false) {
                 $this->fail(
-                    sprintf("The method '%s' of class '%s' does not have documentation",
+                    \sprintf(
+                        "The method '%s' of class '%s' does not have documentation",
                         $meth->getName(), $refClas->getName()
-                ));
+                    )
+                );
+                return;
             }
 
             // Verify if has return type
-            $this->assertTrue($meth->hasReturnType(),
-                sprintf("method '%s' doesn't have a return type defined",
-                    $meth->getName()));
+            $this->assertTrue(
+                $meth->hasReturnType(),
+                sprintf(
+                    "method '%s' doesn't have a return type defined",
+                    $meth->getName()
+                )
+            );
 
             //verify return type
             $returnMatch     = null;
-            $this->assertEquals(1,
+            $this->assertEquals(
+                1,
                 \preg_match("/@return(.*)/", $doc, $returnMatch),
-                sprintf("Method '%s' doesn't have return type documentation",
-                    $meth->getName()));
+                sprintf(
+                    "Method '%s' doesn't have return type documentation",
+                    $meth->getName()
+                )
+            );
             $returnMatchPart = \explode(" ", $returnMatch[0]);
 
             if ($meth->getReturnType()->getName() === "array") {
                 if ($meth->getReturnType()->allowsNull()) {
-                    $regexp = "/(\[\]\|null)$/";
+                    $regexp = "/(array<|null)|(\[\]\|null)$/";
                 } else {
-                    $regexp = "/(\[\])$/";
+                    $regexp = "/(array<)|(\[\])$/";
                 }
-                $this->assertEquals(1,
+                $this->assertEquals(
+                    1,
                     \preg_match($regexp, $returnMatchPart[1]),
-                    sprintf("Method '%s' return type doesn't have same type in documentation",
-                        $meth->getName()));
+                    sprintf(
+                        "Method '%s' return type doesn't have same type in documentation",
+                        $meth->getName()
+                    )
+                );
             } else {
 
                 $returnType = $meth->getReturnType()->getName().( $meth->getReturnType()->allowsNull()
                         ? "|null" : "");
 
-                $this->assertTrue($returnMatchPart[1] === $returnType || $returnMatchPart[1]
+                $this->assertTrue(
+                    $returnMatchPart[1] === $returnType || $returnMatchPart[1]
                     === "\\".$returnType,
-                    sprintf("Method '%s' return type doesn't have same type in documentation",
-                        $meth->getName()));
+                    sprintf(
+                        "Method '%s' return type doesn't have same type in documentation",
+                        $meth->getName()
+                    )
+                );
             }
             //Verify if has the @since tag
-            $this->assertEquals(1, \preg_match("/@since(.*)/", $doc),
-                sprintf("Method '%s' doesn't have the @since tag",
-                    $meth->getName()));
+            $this->assertEquals(
+                1, \preg_match("/@since(.*)/", $doc),
+                sprintf(
+                    "Method '%s' doesn't have the @since tag",
+                    $meth->getName()
+                )
+            );
 
             /* @var $param \ReflectionParameter */
             foreach ($meth->getParameters() as $param) {
                 //Verify if parameters have type
-                $this->assertTrue($param->hasType(),
-                    sprintf("parameter '%s' of method '%s' doesn't have a type defined",
-                        $param->getName(), $meth->getName()));
+                $this->assertTrue(
+                    $param->hasType(),
+                    sprintf(
+                        "parameter '%s' of method '%s' doesn't have a type defined",
+                        $param->getName(), $meth->getName()
+                    )
+                );
 
                 $paramMatch     = null;
                 $paramPattern   = "/@param(.*)\\$".$param->getName()."/";
-                $this->assertEquals(1,
+                $this->assertEquals(
+                    1,
                     \preg_match($paramPattern, $doc, $paramMatch),
-                    sprintf("parameter '%s' of method '%s' doesn't have documentation",
-                        $param->getName(), $meth->getName()));
+                    sprintf(
+                        "parameter '%s' of method '%s' doesn't have documentation",
+                        $param->getName(), $meth->getName()
+                    )
+                );
                 $paramMatchPart = \explode(" ", $paramMatch[0]);
 
                 if ($param->getType()->getName() === "array") {
                     $parmType = "/\[\]/";
-                    $this->assertEquals(1,
+                    $this->assertEquals(
+                        1,
                         \preg_match($parmType, $paramMatchPart[1]),
-                        sprintf("parameter '%s' of method '%s' doesn't have the indication of array in documentation",
-                            $param->getName(), $meth->getName())
+                        sprintf(
+                            "parameter '%s' of method '%s' doesn't have the indication of array in documentation",
+                            $param->getName(), $meth->getName()
+                        )
                     );
                 } else {
 
@@ -166,24 +231,38 @@ class CommnunTest extends TestCase
                             ? "|null" : "");
 
 
-                    $this->assertTrue($paramMatchPart[1] === $parmType || $paramMatchPart[1]
+                    $this->assertTrue(
+                        $paramMatchPart[1] === $parmType || $paramMatchPart[1]
                         === "\\".$parmType,
-                        sprintf("parameter '%s' of method '%s' doesn't have same type in documentation",
-                            $param->getName(), $meth->getName()));
+                        sprintf(
+                            "parameter '%s' of method '%s' doesn't have same type in documentation",
+                            $param->getName(), $meth->getName()
+                        )
+                    );
                 }
             }
         }
     }
 
-    public function testStrict(\ReflectionClass $refClas)
+    public function testStrict(\ReflectionClass $refClas): void
     {
         $path             = $refClas->getFileName();
-        $strFile          = file_get_contents($path);
+        if ($path === false) {
+            throw new \Exception("Can not get class file path");
+        }
+
+        $strFile = \file_get_contents($path);
+        if ($strFile === false) {
+            throw new \Exception("Can not get class file contents");
+        }
+
         $patternEquals    = "/ == /";
         $patternNotEquals = "/ != /";
+
         if (preg_match($patternEquals, $strFile) !== 0) {
             $this->fail("The 'strict' test fail, please switch the '==' for '==='");
         }
+
         if (preg_match($patternNotEquals, $strFile) !== 0) {
             $this->fail("The 'strict' test fail, please switch the '!=' for '!=='");
         }

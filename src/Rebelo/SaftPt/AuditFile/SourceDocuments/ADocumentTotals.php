@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Description of ADocumentTotals
@@ -66,45 +67,48 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_CURRENCY = "Currency";
 
     /**
-     * <xs:element ref="TaxPayable"/><br>
+     * &lt;xs:element ref="TaxPayable"/&gt;<br>
      * @var float $taxPayable
      * @since 1.0.0
      */
     private float $taxPayable;
 
     /**
-     * <xs:element ref="NetTotal"/><br>
+     * &lt;xs:element ref="NetTotal"/&gt;<br>
      * @var float $netTotal
      * @since 1.0.0
      */
     private float $netTotal;
 
     /**
-     * <xs:element ref="GrossTotal"/><br>
+     * &lt;xs:element ref="GrossTotal"/&gt;<br>
      * @var float $grossTotal
      * @since 1.0.0
      */
     private float $grossTotal;
 
     /**
-     * <xs:element name="Currency" type="Currency" minOccurs="0"/><br>
+     * &lt;xs:element name="Currency" type="Currency" minOccurs="0"/&gt;<br>
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null $currency
      * @since 1.0.0
      */
     private ?Currency $currency = null;
 
     /**
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Gets as taxPayable<br>
-     * <xs:element ref="TaxPayable"/>
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="TaxPayable"/&gt;
      * @return float
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxPayable(): float
@@ -115,30 +119,49 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new taxPayable<br>
-     * <xs:element ref="TaxPayable"/>
-     * @param float $taxPayable
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set TaxPayable
+     * @return bool
      * @since 1.0.0
      */
-    public function setTaxPayable(float $taxPayable): void
+    public function issetTaxPayable(): bool
+    {
+        return isset($this->taxPayable);
+    }
+
+    /**
+     * Sets a new taxPayable<br>
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="TaxPayable"/&gt;
+     * @param float $taxPayable
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setTaxPayable(float $taxPayable): bool
     {
         if ($taxPayable < 0.0) {
-            $msg = "Tax Payable can not be negative";
+            $msg    = "Tax Payable can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("TaxPayable_not_valid");
+        } else {
+            $return = true;
         }
         $this->taxPayable = $taxPayable;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxPayable));
+        return $return;
     }
 
     /**
      * Gets as netTotal<br>
-     * <xs:element ref="NetTotal"/>
+     * [Total of the document without taxes]<br>
+     * This field shall not include the amounts regarding the taxes existing
+     * in table 2.5. - TaxTable.
+     * When not valued in the database, shall be filled in with "0.00".
+     * &lt;xs:element ref="NetTotal"/&gt;
      * @return float
+     * @throws \Error
      * @since 1.0.0
      */
     public function getNetTotal(): float
@@ -149,30 +172,46 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new netTotal<br>
-     * <xs:element ref="NetTotal"/>
-     * @param float $netTotal
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set NetTotal<br>
+     * @return bool
      * @since 1.0.0
      */
-    public function setNetTotal(float $netTotal): void
+    public function issetNetTotal(): bool
+    {
+        return isset($this->netTotal);
+    }
+
+    /**
+     * Sets a new netTotal<br>
+     * &lt;xs:element ref="NetTotal"/&gt;
+     * @param float $netTotal
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setNetTotal(float $netTotal): bool
     {
         if ($netTotal < 0.0) {
-            $msg = "Net Total can not be negative";
+            $msg    = "Net Total can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("NetTotal_not_valid");
+        } else {
+            $return = true;
         }
         $this->netTotal = $netTotal;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->netTotal));
+        return $return;
     }
 
     /**
      * Gets as grossTotal<br>
-     * <xs:element ref="GrossTotal"/>
+     * [Total of the Documents with taxes]<br>
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="GrossTotal"/&gt;
      * @return float
+     * @throws \Error
      * @since 1.0.0
      */
     public function getGrossTotal(): float
@@ -183,53 +222,70 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
+     * Get if is set GrossTotal<br>
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetGrossTotal(): bool
+    {
+        return isset($this->grossTotal);
+    }
+
+    /**
      * Sets a new grossTotal<br>
-     * <xs:element ref="GrossTotal"/>
+     * [Total of the Documents with taxes]<br>
+     * When not valued in the database, shall be filled in with "0.00".<br>
+     * &lt;xs:element ref="GrossTotal"/&gt;
      * @param float $grossTotal
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setGrossTotal(float $grossTotal): void
+    public function setGrossTotal(float $grossTotal): bool
     {
         if ($grossTotal < 0.0) {
-            $msg = "Gross Total can not be negative";
+            $msg    = "Gross Total can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("GrossTotal_not_valid");
+        } else {
+            $return = true;
         }
         $this->grossTotal = $grossTotal;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->grossTotal));
+        return $return;
     }
 
     /**
      * Gets as currency<br>
-     * <xs:element name="Currency" type="Currency" minOccurs="0"/>
+     * It shall not be generated if the document is issued in euros.<br>
+     * If $create is true and a intance wasn't created a new instance
+     * will be created when you get this method.
+     * &lt;xs:element name="Currency" type="Currency" minOccurs="0"/&gt;
+     * @param bool $create If true a instance of Currency will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null
      * @since 1.0.0
      */
-    public function getCurrency(): ?Currency
+    public function getCurrency(bool $create = true): ?Currency
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->currency === null ? "null" : $this->currency->getCurrencyCode()->get()));
+        if ($create && $this->currency === null) {
+            $this->currency = new Currency($this->getErrorRegistor());
+        }
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
         return $this->currency;
     }
 
     /**
-     * Sets a new currency<br>
-     * <xs:element name="Currency" type="Currency" minOccurs="0"/>
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null $currency
+     * Set Currency as null
      * @return void
      * @since 1.0.0
      */
-    public function setCurrency(?Currency $currency): void
+    public function setCurrencyAsNull(): void
     {
-        $this->currency = $currency;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->currency === null ? "null" : $this->currency->getCurrencyCode()->get()));
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as null");
+        $this->currency = null;
     }
 
     /**
@@ -245,17 +301,36 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $docTotalNode = $node->addChild(static::N_DOCUMENTTOTALS);
 
-        $docTotalNode->addChild(
-            static::N_TAXPAYABLE, $this->floatFormat($this->getTaxPayable())
-        );
-        $docTotalNode->addChild(
-            static::N_NETTOTAL, $this->floatFormat($this->getNetTotal())
-        );
-        // GrossTotal is allways with 2 decimals, and the GrossTotal value to the
-        // digital sign hash must be with 2 decimals too
-        $docTotalNode->addChild(
-            static::N_GROSSTOTAL, $this->floatFormat($this->getGrossTotal(), 2)
-        );
+        if (isset($this->taxPayable)) {
+            $docTotalNode->addChild(
+                static::N_TAXPAYABLE, $this->floatFormat($this->getTaxPayable())
+            );
+        } else {
+            $docTotalNode->addChild(static::N_TAXPAYABLE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxPayable_not_valid");
+        }
+
+        if (isset($this->netTotal)) {
+            $docTotalNode->addChild(
+                static::N_NETTOTAL, $this->floatFormat($this->getNetTotal())
+            );
+        } else {
+            $docTotalNode->addChild(static::N_NETTOTAL);
+            $this->getErrorRegistor()->addOnCreateXmlNode("NetTotal_not_valid");
+        }
+
+
+        if (isset($this->grossTotal)) {
+            // GrossTotal is allways with 2 decimals, and the GrossTotal value to the
+            // digital signature hash must be with 2 decimals too
+            $docTotalNode->addChild(
+                static::N_GROSSTOTAL,
+                $this->floatFormat($this->getGrossTotal(), 2)
+            );
+        } else {
+            $docTotalNode->addChild(static::N_GROSSTOTAL);
+            $this->getErrorRegistor()->addOnCreateXmlNode("GrossTotal_not_valid");
+        }
 
         // In the Payment the Currency is in diferent order,
         // must be created in the Payments\DocumentTotals
@@ -277,7 +352,8 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENTTOTALS) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
                 static::N_DOCUMENTTOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -285,11 +361,13 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
             throw new AuditFileException($msg);
         }
 
-        if ($this->getCurrency() !== null) {
+        if ($this->getCurrency(false) !== null) {
             $this->getCurrency()->createXmlNode($node);
         } else {
-            \Logger::getLogger(\get_class($this))->trace(__METHOD__
-                ." No Currency defined to create XMML node");
+            \Logger::getLogger(\get_class($this))->trace(
+                __METHOD__
+                ." No Currency defined to create XMML node"
+            );
         }
     }
 
@@ -306,8 +384,10 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENTTOTALS) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_DOCUMENTTOTALS, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_DOCUMENTTOTALS, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -317,7 +397,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         $this->setNetTotal((float) $node->{static::N_NETTOTAL});
         $this->setGrossTotal((float) $node->{static::N_GROSSTOTAL});
         if ($node->{static::N_CURRENCY}->count() > 0) {
-            $currency = new Currency();
+            $currency = $this->getCurrency();
             $currency->setCurrencyAmount(
                 (float) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYAMOUNT}
             );
@@ -329,7 +409,6 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
                     (string) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYCODE}
                 )
             );
-            $this->setCurrency($currency);
         }
     }
 }

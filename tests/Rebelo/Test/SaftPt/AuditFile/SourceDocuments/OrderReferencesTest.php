@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
 use Rebelo\Date\Date as RDate;
@@ -41,18 +41,23 @@ class OrderReferencesTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(OrderReferences::class);
         $this->assertTrue(true);
     }
 
-    public function testInstanceAndSetGet()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstanceAndSetGet(): void
     {
-        $orderRef = new OrderReferences();
+        $orderRef = new OrderReferences(new ErrorRegister());
         $this->assertInstanceOf(OrderReferences::class, $orderRef);
 
         $this->assertNull($orderRef->getOriginatingON());
@@ -61,7 +66,7 @@ class OrderReferencesTest extends TestCase
         $origin = "Origin document";
         $date   = new RDate();
 
-        $orderRef->setOriginatingON($origin);
+        $this->assertTrue($orderRef->setOriginatingON($origin));
         $orderRef->setOrderDate($date);
 
         $this->assertSame($origin, $orderRef->getOriginatingON());
@@ -74,23 +79,26 @@ class OrderReferencesTest extends TestCase
      */
     public function createOrderReferences(): OrderReferences
     {
-        $orderRef = new OrderReferences();
+        $orderRef = new OrderReferences(new ErrorRegister());
         $orderRef->setOrderDate(new RDate());
         $orderRef->setOriginatingON("Order ref");
         return $orderRef;
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeWrongName()
+    public function testCreateXmlNodeWrongName(): void
     {
-        $orderRef = new OrderReferences();
+        $orderRef = new OrderReferences(new ErrorRegister());
         $node     = new \SimpleXMLElement("<root></root>");
         try {
             $orderRef->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -99,16 +107,19 @@ class OrderReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testParseXmlNodeWrongName()
+    public function testParseXmlNodeWrongName(): void
     {
-        $orderRef = new OrderReferences();
+        $orderRef = new OrderReferences(new ErrorRegister());
         $node     = new \SimpleXMLElement("<root></root>");
         try {
             $orderRef->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -117,9 +128,10 @@ class OrderReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
         $orderRef = $this->createOrderReferences();
         $node     = new \SimpleXMLElement(
@@ -149,11 +161,12 @@ class OrderReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeNull()
+    public function testCreateXmlNodeNull(): void
     {
-        $orderRef = new OrderReferences();
+        $orderRef = new OrderReferences(new ErrorRegister());
         $node     = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
@@ -165,29 +178,36 @@ class OrderReferencesTest extends TestCase
             OrderReferences::N_ORDERREFERENCES, $orderRefNode->getName()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{OrderReferences::N_ORDERREFERENCES}
             ->{OrderReferences::N_ORIGINATINGON}->count()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{OrderReferences::N_ORDERREFERENCES}
             ->{OrderReferences::N_ORDERDATE}->count()
         );
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXml()
+    public function testeParseXml(): void
     {
         $orderRefTax = $this->createOrderReferences();
         $node        = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new OrderReferences();
+        $parsed = new OrderReferences(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
@@ -200,20 +220,77 @@ class OrderReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXmlNull()
+    public function testeParseXmlNull(): void
     {
-        $orderRefTax = new OrderReferences();
+        $orderRefTax = new OrderReferences(new ErrorRegister());
         $node        = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new OrderReferences();
+        $parsed = new OrderReferences(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertNull($parsed->getOriginatingON());
         $this->assertNull($parsed->getOrderDate());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $orderNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $order     = new OrderReferences(new ErrorRegister());
+        $xml       = $order->createXmlNode($orderNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($order->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($order->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($order->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $orderNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $order     = new OrderReferences(new ErrorRegister());
+        $order->setOriginatingON("");
+
+        $xml = $order->createXmlNode($orderNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($order->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($order->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($order->getErrorRegistor()->getLibXmlError());
     }
 }

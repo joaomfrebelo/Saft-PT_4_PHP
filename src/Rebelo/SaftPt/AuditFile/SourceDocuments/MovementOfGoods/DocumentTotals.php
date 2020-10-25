@@ -27,10 +27,11 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 
 /**
- * Description of DocumentTotals
+ * StockMovement DocumentTotals
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -39,7 +40,7 @@ class DocumentTotals extends ADocumentTotals
 {
 
     /**
-     *
+     * StockMovement DocumentTotals
      * <pre>
      *  &lt;xs:element name="DocumentTotals"&gt;
      *       &lt;xs:complexType&gt;
@@ -53,11 +54,12 @@ class DocumentTotals extends ADocumentTotals
      *       &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
@@ -72,13 +74,15 @@ class DocumentTotals extends ADocumentTotals
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== StockMovement::N_STOCKMOVEMENT) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
                 StockMovement::N_STOCKMOVEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
+
         return parent::createXmlNode($node);
     }
 }

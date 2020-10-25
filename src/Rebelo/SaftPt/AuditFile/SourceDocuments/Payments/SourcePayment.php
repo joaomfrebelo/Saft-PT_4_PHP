@@ -27,27 +27,28 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 /**
- * SourcePayment
- *
+ * SourcePayment<br>
+ * “P” – Receipt created in the application;<br>
+ * “I” – Receipt integrated and produced in a different application;<br>
+ * “M” – Recovered or manually issued receipt.<br>
+ * <pre>
  * &lt;xs:simpleType name="SAFTPTSourcePayment"&gt;
- *  &lt;xs:annotation&gt;
- *      &lt;xs:documentation&gt;P para documento produzido na aplicacao, I para documento integrado e
- *          produzido noutra aplicacao, M para documento proveniente de recuperacao ou de
- *          emissao manual &lt;/xs:documentation&gt;
- *  &lt;/xs:annotation&gt;
  *  &lt;xs:restriction base="xs:string"&gt;
  *      &lt;xs:enumeration value="P"/&gt;
  *      &lt;xs:enumeration value="I"/&gt;
  *      &lt;xs:enumeration value="M"/&gt;
  *  &lt;/xs:restriction&gt;
- *
+ * </pre>
  * @author João Rebelo
  */
 class SourcePayment extends \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling
 {
 
     /**
-     *
+     * To be filled in with:<br>
+     * “P” – Receipt created in the application;<br>
+     * “I” – Receipt integrated and produced in a different application;<br>
+     * “M” – Recovered or manually issued receipt.<br>
      * @param string $value
      */
     public function __construct(string $value)

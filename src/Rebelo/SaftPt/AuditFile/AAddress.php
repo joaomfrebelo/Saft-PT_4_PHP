@@ -32,8 +32,8 @@ use Rebelo\SaftPt\AuditFile\AddressPT;
 /**
  * AAddress<br>
  * Abstract class for:<br>
- * <xs:complexType name="AddressStructure"><br>
- * <xs:complexType name="AddressStructurePT"><br>
+ * &lt;xs:complexType name="AddressStructure"><br>
+ * &lt;xs:complexType name="AddressStructurePT"><br>
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -83,61 +83,66 @@ abstract class AAddress extends AAuditFile
     const N_COUNTRY = "Country";
 
     /**
-     * <xs:element ref="BuildingNumber" minOccurs="0"/>
-     * <xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/>
+     * &lt;xs:element ref="BuildingNumber" minOccurs="0"/&gt;
+     * &lt;xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private ?string $buildingNumber = null;
+    protected ?string $buildingNumber = null;
 
     /**
-     * <xs:element ref="StreetName" minOccurs="0"/>
-     * <xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * &lt;xs:element ref="StreetName" minOccurs="0"/&gt;
+     * &lt;xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private ?string $streetName = null;
+    protected ?string $streetName = null;
 
     /**
-     * <xs:element ref="AddressDetail"/>
-     * <xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/>
+     * &lt;xs:element ref="AddressDetail"/&gt;
+     * &lt;xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private ?string $addressDetail = null;
+    protected ?string $addressDetail = null;
 
     /**
-     * <xs:element ref="City"/>
-     * <xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element ref="City"/&gt;
+     * &lt;xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private string $city;
+    protected string $city;
 
     /**
-     * <xs:element ref="Region" minOccurs="0"/>
-     * <xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element ref="Region" minOccurs="0"/&gt;
+     * &lt;xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @var string
      * @since 1.0.0
      */
-    private ?string $region = null;
+    protected ?string $region = null;
 
     /**
-     * <xs:element ref="Country"/>
+     * &lt;xs:element ref="Country"/&gt;
      * @var Country
      * @since 1.0.0
      */
     protected Country $country;
 
-    function __construct()
+    /**
+     *
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     * @since 1.0.0
+     */
+    function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     *
-     * <xs:element ref="BuildingNumber" minOccurs="0"/>
-     * <xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/>
+     * Get BuildingNumber<br>     *
+     * &lt;xs:element ref="BuildingNumber" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/&gt;
      *
      * @return string|null
      * @since 1.0.0
@@ -145,43 +150,59 @@ abstract class AAddress extends AAuditFile
     public function getBuildingNumber(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->buildingNumber === null ? "null" : $this->buildingNumber));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->buildingNumber === null ? "null" : $this->buildingNumber
+                )
+            );
         return $this->buildingNumber;
     }
 
     /**
-     * <xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * Get StreetName<br>
+     * &lt;xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getStreetName(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->streetName === null ? "null" : $this->streetName));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->streetName === null ? "null" : $this->streetName
+                )
+            );
         return $this->streetName;
     }
 
     /**
-     *
-     * <xs:element ref="AddressDetail"/>
-     * <xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/>
+     * Get AddressDetail<br>
+     * Shall include street name, building number and floor, if applicable.<br>
+     * &lt;xs:element ref="AddressDetail"/&gt;<br>
+     * &lt;xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getAddressDetail(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->addressDetail === null ? "null" : $this->addressDetail));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->addressDetail === null ? "null" : $this->addressDetail
+                )
+            );
         return $this->addressDetail;
     }
 
     /**
-     * <xs:element ref="City"/>
-     * <xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * GetCity<br>
+     * &lt;xs:element ref="City"/&gt;<br>
+     * &lt;xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getCity(): string
@@ -192,114 +213,181 @@ abstract class AAddress extends AAuditFile
     }
 
     /**
-     *
-     * <xs:element ref="Region" minOccurs="0"/>
-     * <xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * Get if is set City
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetCity(): bool
+    {
+        return isset($this->city);
+    }
+
+    /**
+     * Get Region<br>
+     * &lt;xs:element ref="Region" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getRegion(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->region === null ? "null" : $this->region));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->region === null ? "null" : $this->region
+                )
+            );
         return $this->region;
     }
 
     /**
-     *
-     * <xs:element ref="BuildingNumber" minOccurs="0"/>
-     * <xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/>
+     * Set BuildingNumber
+     * &lt;xs:element ref="BuildingNumber" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/&gt;
      *
      * @param string|null $buildingNumber
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setBuildingNumber(?string $buildingNumber): void
+    public function setBuildingNumber(?string $buildingNumber): bool
     {
-        if ($buildingNumber !== null) {
-            $this->buildingNumber = static::valTextMandMaxCar($buildingNumber,
-                    10, __METHOD__);
-        } else {
+        try {
+            $this->buildingNumber = $buildingNumber === null ?
+                null : static::valTextMandMaxCar($buildingNumber, 10, __METHOD__);
+            $return               = true;
+        } catch (AuditFileException $e) {
             $this->buildingNumber = $buildingNumber;
+            $this->getErrorRegistor()->addOnSetValue("BuildingNumber_not_valid");
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $return               = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->buildingNumber === null ? "null" : $this->buildingNumber));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->buildingNumber === null ? "null" : $this->buildingNumber
+                )
+            );
+        return $return;
     }
 
     /**
-     * <xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * Set StreetName<br>
+     * &lt;xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/&gt;<br>
      * @param string|null $streetName
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setStreetName(?string $streetName): void
+    public function setStreetName(?string $streetName): bool
     {
-        if ($streetName === null) {
+        try {
+            $this->streetName = $streetName === null ?
+                null : static::valTextMandMaxCar($streetName, 200, __METHOD__);
+            $return           = true;
+        } catch (AuditFileException $e) {
             $this->streetName = $streetName;
-        } else {
-            $this->streetName = static::valTextMandMaxCar($streetName, 200,
-                    __METHOD__);
+            $this->getErrorRegistor()->addOnSetValue("StreetName_not_valid");
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $return           = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->streetName === null ? "null" : $this->streetName));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->streetName === null ? "null" : $this->streetName
+                )
+            );
+        return $return;
     }
 
     /**
-     *
-     * <xs:element ref="AddressDetail"/>
-     * <xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/>
+     * Set AddressDetail<br>
+     * &lt;xs:element ref="AddressDetail"/&gt;<br>
+     * &lt;xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/&gt;<br>
      * @param string|null $addressDetail
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setAddressDetail(?string $addressDetail): void
+    public function setAddressDetail(?string $addressDetail): bool
     {
-        if ($addressDetail !== null) {
-            $this->addressDetail = static::valTextMandMaxCar($addressDetail,
-                    210, __METHOD__);
-        } else {
+        try {
+            $this->addressDetail = $addressDetail === null ?
+                null : static::valTextMandMaxCar($addressDetail, 210, __METHOD__);
+            $return              = true;
+        } catch (AuditFileException $e) {
             $this->addressDetail = $addressDetail;
+            $this->getErrorRegistor()->addOnSetValue("AddressDetail_not_valid");
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $return              = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->addressDetail === null ? "null" : $this->addressDetail));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->addressDetail === null ? "null" : $this->addressDetail
+                )
+            );
+        return $return;
     }
 
     /**
-     * <xs:element ref="City"/>
-     * <xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * Set City<br>
+     * &lt;xs:element ref="City"/&gt;<br>
+     * &lt;xs:element name="City" type="SAFPTtextTypeMandatoryMax50Car"/&gt;<br>
      * @param string $city
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setCity(string $city): void
+    public function setCity(string $city): bool
     {
-        $this->city = static::valTextMandMaxCar($city, 50, __METHOD__);
+        try {
+            $this->city = static::valTextMandMaxCar($city, 50, __METHOD__);
+            $return     = true;
+        } catch (AuditFileException $e) {
+            $this->city = $city;
+            $this->getErrorRegistor()->addOnSetValue("City_not_valid");
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $return     = false;
+        }
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->city));
+        return $return;
     }
 
     /**
-     *
-     * <xs:element ref="Region" minOccurs="0"/>
-     * <xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * Set Region
+     * &lt;xs:element ref="Region" minOccurs="0"/&gt;
+     * &lt;xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @param string|null $region
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setRegion(?string $region): void
+    public function setRegion(?string $region): bool
     {
-        if ($region !== null) {
-            $this->region = static::valTextMandMaxCar($region, 50, __METHOD__);
-        } else {
+        try {
+            $this->region = $region === null ?
+                null : static::valTextMandMaxCar($region, 50, __METHOD__);
+            $return       = true;
+        } catch (AuditFileException $e) {
             $this->region = $region;
+            $this->getErrorRegistor()->addOnSetValue("Region_not_valid");
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $return       = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->region === null ? "null" : $this->region));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->region === null ? "null" : $this->region
+                )
+            );
+        return $return;
     }
 
     /**
@@ -322,26 +410,41 @@ abstract class AAddress extends AAuditFile
             $node->addChild(static::N_STREETNAME, $this->getStreetName());
             $addr = $this->getStreetName();
             if ($this->getBuildingNumber() !== null) {
-                $node->addChild(static::N_BUILDINGNUMBER,
-                    $this->getBuildingNumber());
+                $node->addChild(
+                    static::N_BUILDINGNUMBER,
+                    $this->getBuildingNumber()
+                );
                 $addr .= " ".$this->getBuildingNumber();
             }
             $node->addChild(static::N_ADDRESSDETAIL, $addr);
         } else {
-            throw new AuditFileException("The address structot doesn't have Address Detail and street name");
+            $node->addChild(static::N_ADDRESSDETAIL);
+            $this->getErrorRegistor()->addOnCreateXmlNode("AddressDetail_not_valid");
         }
-        $node->addChild(static::N_CITY, $this->getCity());
-        if ($this instanceof Address || $this instanceof SupplierAddress) {
-            $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
-        } elseif ($this instanceof AddressPT) {
-            $node->addChild(static::N_POSTALCODE,
-                $this->getPostalCode()->getPostalCode());
+
+        if (isset($this->city)) {
+            $node->addChild(static::N_CITY, $this->getCity());
         } else {
-            $msg = "unknow address class instande to get the postal code";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $node->addChild(static::N_CITY);
+            $this->getErrorRegistor()->addOnCreateXmlNode("City_not_valid");
         }
+
+        try {
+            if ($this instanceof Address || $this instanceof SupplierAddress) {
+                $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
+            } elseif ($this instanceof AddressPT) {
+                $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
+            } else {
+                $msg = "unknow address class instande to get the postal code";
+                throw new AuditFileException($msg);
+            }
+        } catch (\Exception | \Error $e) {
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $node->addChild(static::N_POSTALCODE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("PostalCode_not_valid");
+        }
+
         if ($this->getRegion() !== null) {
             $node->addChild(static::N_REGION, $this->getRegion());
         }

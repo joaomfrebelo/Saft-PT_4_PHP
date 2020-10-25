@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Address;
 use Rebelo\Date\Date as RDate;
@@ -57,16 +58,16 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_ADDRESS = "Address";
 
     /**
-     * <xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/><br>
-     * <xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/>
+     * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
+     * &lt;xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/&gt;
      * @var string[]
      * @since 1.0.0
      */
     private array $deliveryID = array();
 
     /**
-     * <xs:element ref="DeliveryDate" minOccurs="0"/><br>
-     * <xs:element name="DeliveryDate" type="SAFdateType"/>
+     * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -80,7 +81,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private array $warehouse = array();
 
     /**
-     * <xs:element ref="Address" minOccurs="0"/>
+     * &lt;xs:element ref="Address" minOccurs="0"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\Address
      * @since 1.0.0
      */
@@ -100,102 +101,95 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *   &lt;/xs:sequence&gt;
      *  &lt;/xs:complexType&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get DeliveryID stack<br>
-     * <xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/>
+     * The license plate number of the carrier vehicle or the means
+     * of shipping used shall be indicated, e.g. express mail, etc.
+     * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @return string[]
      * @since 1.0.0
      */
     public function getDeliveryID(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted with '%s' elements in stack",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted with '%s' elements in stack",
                     \count($this->deliveryID)
-        ));
+                )
+            );
         return $this->deliveryID;
     }
 
     /**
      * Add DeliveryID to the stack<br>
-     * <xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/><br>
-     * <xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/>
+     * The license plate number of the carrier vehicle or the means
+     * of shipping used shall be indicated, e.g. express mail, etc.
+     * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
+     * &lt;xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/&gt;
      * @param string $deliveryID
-     * @return int
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function addToDeliveryID(string $deliveryID): int
+    public function addDeliveryID(string $deliveryID): bool
     {
-        if (\count($this->deliveryID) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->deliveryID);
-            $index = $keys[\count($keys) - 1] + 1;
+        try {
+            $val    = $this->valTextMandMaxCar(
+                $deliveryID, 255, __METHOD__
+            );
+            $return = true;
+        } catch (AuditFileException $e) {
+            $val    = $deliveryID;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("DeliveryID_not_valid");
+            $return = false;
         }
-        $this->deliveryID[$index] = $this->valTextMandMaxCar(
-            $deliveryID, 255, __METHOD__
-        );
+        $this->deliveryID[] = $val;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " DeliveryID add to index ".\strval($index));
-        return $index;
-    }
-
-    /**
-     * isset deliveryID
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetDeliveryID(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->deliveryID[$index]);
-    }
-
-    /**
-     * unset deliveryID
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetDeliveryID(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->deliveryID[$index]);
+            __METHOD__." DeliveryID add to index "
+        );
+        return $return;
     }
 
     /**
      * Get deliveryDate<br>
-     * <xs:element ref="DeliveryDate" minOccurs="0"/><br>
-     * <xs:element name="DeliveryDate" type="SAFdateType"/>
+     * For the insurance companies sector, this field shall
+     * be filled in with the date of beginning of the risk coverage period.
+     * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
      * @return \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     public function getDeliveryDate(): ?RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
                     $this->deliveryDate === null ?
                         "null" :
                         $this->deliveryDate->format(RDate::SQL_DATE)
-        ));
+                )
+            );
         return $this->deliveryDate;
     }
 
     /**
-     * Get deliveryDate<br>
-     * <xs:element ref="DeliveryDate" minOccurs="0"/><br>
-     * <xs:element name="DeliveryDate" type="SAFdateType"/>
+     * Get deliveryDate<br><br>
+     * For the insurance companies sector, this field shall
+     * be filled in with the date of beginning of the risk coverage period.
+     * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
      * @param \Rebelo\Date\Date|null $deliveryDate
      * @return void
      * @since 1.0.0
@@ -204,9 +198,13 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->deliveryDate = $deliveryDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
                     $this->deliveryDate === null ? "null" :
-                        $this->deliveryDate->format(RDate::SQL_DATE)));
+                    $this->deliveryDate->format(RDate::SQL_DATE)
+                )
+            );
     }
 
     /**
@@ -217,82 +215,59 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getWarehouse(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted with '%s' elements in stack",
+            ->info(
+                \sprintf(
+                    __METHOD__." getted with '%s' elements in stack",
                     \count($this->warehouse)
-        ));
+                )
+            );
         return $this->warehouse;
     }
 
     /**
-     * Add Warehouse to stack
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse $warehouse
-     * @return int
+     * Create a new instance of Warehouse and add to stack than will be
+     * returned to be populated<br>
+     * Every time that you invoke this method a new instance will be created
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse
      * @since 1.0.0
      */
-    public function addToWarehouse(Warehouse $warehouse): int
+    public function addWarehouse(): Warehouse
     {
-        if (\count($this->warehouse) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->warehouse);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->warehouse[$index] = $warehouse;
+        $warehouse         = new Warehouse($this->getErrorRegistor());
+        $this->warehouse[] = $warehouse;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " Warehouse add to index ".\strval($index));
-        return $index;
+            __METHOD__." Warehouse add to index "
+        );
+        return $warehouse;
     }
 
     /**
-     * isset warehouse
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetWarehouse(int $index): bool
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->warehouse[$index]);
-    }
-
-    /**
-     * unset warehouse
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetWarehouse(int $index): void
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->warehouse[$index]);
-    }
-
-    /**
-     * Add Address<br>
-     * <xs:element ref="Address" minOccurs="0"/>
+     * Get Address<br>
+     * If the Address instance is not created and $create is true a new instance will be created
+     * &lt;xs:element ref="Address" minOccurs="0"/&gt;
+     * @param bool $create If true a new instance will be created if wasn't before
      * @return \Rebelo\SaftPt\AuditFile\Address|null
      * @since 1.0.0
      */
-    public function getAddress(): ?Address
+    public function getAddress(bool $create = true): ?Address
     {
+        if (isset($this->address) === false && $create) {
+            $this->address = new Address($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
         return $this->address;
     }
 
     /**
-     *
-     * @param \Rebelo\SaftPt\AuditFile\Address|null $address
+     * Set Address to null
      * @return void
      * @since 1.0.0
      */
-    public function setAddress(?Address $address): void
+    public function setAddressToNull(): void
     {
-        $this->address = $address;
+        $this->address = null;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted to ");
+            ->debug(__METHOD__." setted to null");
     }
 
     /**
@@ -335,7 +310,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
             }
         }
 
-        if ($this->getAddress() !== null) {
+        if ($this->getAddress(false) !== null) {
             $addNode = $node->addChild(static::N_ADDRESS);
             $this->getAddress()->createXmlNode($addNode);
         }
@@ -363,17 +338,27 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $dom         = new \DOMDocument();
-        $dom->loadXML($node->asXML());
+        $nodeXml = $node->asXML();
+        if ($nodeXml === false) {
+            $msg = \sprintf("Error generating xml of node");
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            throw new AuditFileException($msg);
+        }
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($nodeXml);
         $shipNode    = $dom->childNodes[0];
         $lastWhNode  = null;
         $lastWhIndex = null;
+        $n           = 0;
+        $stack       = array();
         foreach ($shipNode->childNodes as $domNode) {
             try {
                 /* @var $domNode \DOMNode */
                 switch ($domNode->nodeName) {
                     case static::N_DELIVERYID:
-                        $this->addToDeliveryID($domNode->nodeValue);
+                        $this->addDeliveryID($domNode->nodeValue);
                         break;
                     case static::N_DELIVERYDATE:
                         $this->setDeliveryDate(
@@ -381,32 +366,37 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
                         );
                         break;
                     case static::N_ADDRESS:
-                        $address     = new Address();
-                        $address->parseXmlNode($node->{static::N_ADDRESS});
-                        $this->setAddress($address);
+                        $this->getAddress()->parseXmlNode($node->{static::N_ADDRESS});
                         break;
                     case Warehouse::N_WAREHOUSEID:
-                        $warehouse   = new Warehouse();
+                        $warehouse   = $this->addWarehouse();
                         $warehouse->setWarehouseID($domNode->nodeValue);
+                        $stack[$n]   = $warehouse;
                         $lastWhNode  = Warehouse::N_WAREHOUSEID;
-                        $lastWhIndex = $this->addToWarehouse($warehouse);
+                        $lastWhIndex = $n;
+                        $n++;
                         break;
                     case Warehouse::N_LOCATIONID:
                         if ($lastWhNode === Warehouse::N_LOCATIONID ||
                             $lastWhNode === null) {
-                            $warehouse   = new Warehouse();
+                            $warehouse   = $this->addWarehouse();
                             $warehouse->setLocationID($domNode->nodeValue);
-                            $lastWhIndex = $this->addToWarehouse($warehouse);
+                            $stack[$n]   = $warehouse;
+                            $lastWhNode  = Warehouse::N_LOCATIONID;
+                            $lastWhIndex = $n;
+                            $n++;
                         } else {
-                            $this->getWarehouse()[$lastWhIndex]->setLocationID(
+                            $stack[$lastWhIndex]->setLocationID(
                                 $domNode->nodeValue
                             );
                         }
                         $lastWhNode = Warehouse::N_LOCATIONID;
                         break;
+                    case "#text":
+                        continue 2;
                     default :
                         $msg        = \sprintf(
-                            "Unknow node name '%'", $domNode->nodeName
+                            "Unknow node name '%s'", $domNode->nodeName
                         );
                         \Logger::getLogger(\get_class($this))
                             ->error(\sprintf(__METHOD__." '%s'", $msg));

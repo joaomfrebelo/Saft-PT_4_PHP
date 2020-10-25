@@ -29,6 +29,7 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
 /**
@@ -40,9 +41,10 @@ class ProductSerialNumberTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(ProductSerialNumber::class);
@@ -50,11 +52,12 @@ class ProductSerialNumberTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstanceGetSet()
+    public function testInstanceGetSet(): void
     {
-        $psn = new ProductSerialNumber();
+        $psn = new ProductSerialNumber(new ErrorRegister());
         $this->assertInstanceOf(ProductSerialNumber::class, $psn);
 
         $this->assertTrue(\is_array($psn->getSerialNumber()));
@@ -62,8 +65,7 @@ class ProductSerialNumberTest extends TestCase
 
         $nMax = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $psn->addToSerialNumber(\strval($n));
-            $this->assertTrue($psn->issetSerialNumber($n));
+            $this->assertTrue($psn->addSerialNumber(\strval($n)));
         }
 
         $this->assertSame($nMax, \count($psn->getSerialNumber()));
@@ -73,22 +75,14 @@ class ProductSerialNumberTest extends TestCase
             $this->assertSame(\strval($n), $stack[$n]);
         }
 
-        $unset = 2;
-        $psn->unsetSerialNumber($unset);
-        $this->assertFalse($psn->issetSerialNumber($unset));
-        $this->assertSame($nMax - 1, \count($psn->getSerialNumber()));
-
-        $index = $psn->addToSerialNumber(\str_pad("A", 120, "9"));
-        $pad   = $psn->getSerialNumber()[$index];
+        $this->assertTrue($psn->addSerialNumber(\str_pad("A", 120, "9")));
+        $pad = $psn->getSerialNumber()[$n];
         $this->assertSame(100, \strlen($pad));
 
-        try {
-            $psn->addToSerialNumber("");
-            $this->fail("Add a empty Serial Number to the stack "
-                ."sould throw \Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $psn->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($psn->addSerialNumber(""));
+        $this->assertSame("", $psn->getSerialNumber()[++$n]);
+        $this->assertNotEmpty($psn->getErrorRegistor()->getOnSetValue());
     }
 
     /**
@@ -97,26 +91,28 @@ class ProductSerialNumberTest extends TestCase
      */
     public function createProductSerialNumber(): ProductSerialNumber
     {
-        $psn  = new ProductSerialNumber();
+        $psn  = new ProductSerialNumber(new ErrorRegister());
         $nMax = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $psn->addToSerialNumber(\strval($n));
-            $this->assertTrue($psn->issetSerialNumber($n));
+            $psn->addSerialNumber(\strval($n));
         }
         return $psn;
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeWrongName()
+    public function testCreateXmlNodeWrongName(): void
     {
-        $psn  = new ProductSerialNumber();
+        $psn  = new ProductSerialNumber(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $psn->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -125,16 +121,19 @@ class ProductSerialNumberTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testParseXmlNodeWrongName()
+    public function testParseXmlNodeWrongName(): void
     {
-        $psn  = new ProductSerialNumber();
+        $psn  = new ProductSerialNumber(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $psn->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -143,9 +142,10 @@ class ProductSerialNumberTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
         $psr  = $this->createProductSerialNumber();
         $node = new \SimpleXMLElement(
@@ -169,11 +169,12 @@ class ProductSerialNumberTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeEmpty()
+    public function testCreateXmlNodeEmpty(): void
     {
-        $psr  = new ProductSerialNumber();
+        $psr  = new ProductSerialNumber(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
@@ -181,11 +182,13 @@ class ProductSerialNumberTest extends TestCase
         $psrlNode = $psr->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $psrlNode);
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $node->{ProductSerialNumber::N_PRODUCTSERIALNUMBER}->count()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{ProductSerialNumber::N_PRODUCTSERIALNUMBER}
                 ->{ProductSerialNumber::N_SERIALNUMBER}
                 ->count()
@@ -193,17 +196,22 @@ class ProductSerialNumberTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXml()
+    public function testeParseXml(): void
     {
         $psr  = $this->createProductSerialNumber();
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $psr->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new ProductSerialNumber();
+        $parsed = new ProductSerialNumber(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         for ($n = 0; $n < \count($psr->getSerialNumber()); $n++) {
@@ -214,21 +222,78 @@ class ProductSerialNumberTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXmlEmpty()
+    public function testeParseXmlEmpty(): void
     {
-        $psr  = new ProductSerialNumber();
+        $psr  = new ProductSerialNumber(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $psr->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new ProductSerialNumber();
+        $parsed = new ProductSerialNumber(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
             $psr->getSerialNumber(), $parsed->getSerialNumber()
         );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $psnNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $psn     = new ProductSerialNumber(new ErrorRegister());
+        $xml     = $psn->createXmlNode($psnNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($psn->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($psn->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($psn->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $psnNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $psn     = new ProductSerialNumber(new ErrorRegister());
+        $psn->addSerialNumber("");
+
+        $xml = $psn->createXmlNode($psnNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($psn->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($psn->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($psn->getErrorRegistor()->getLibXmlError());
     }
 }

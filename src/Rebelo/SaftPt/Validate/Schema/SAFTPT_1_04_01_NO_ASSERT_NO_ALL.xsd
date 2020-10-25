@@ -187,20 +187,6 @@
                             <xs:element name="GroupingCode" type="SAFPTGLAccountID" minOccurs="0"/>
                             <xs:element name="TaxonomyCode" type="SAFTaxonomyCode" minOccurs="0"/>
                         </xs:sequence>
-                        <xs:assert
-                            test="
-                                if ((ns:GroupingCategory != 'GM' and not(ns:TaxonomyCode)) or (ns:GroupingCategory eq 'GM' and ns:TaxonomyCode)) then
-                                    true()
-                                else
-                                    false()"
-                        />
-                        <xs:assert
-                            test="
-                            if ((ns:GroupingCategory eq 'GR' and not(ns:GroupingCode)) or (ns:GroupingCategory eq 'AR' and not(ns:GroupingCode)) or (ns:GroupingCategory eq 'GA' and ns:GroupingCode) or (ns:GroupingCategory eq 'AA' and ns:GroupingCode) or (ns:GroupingCategory eq 'GM' and ns:GroupingCode) or (ns:GroupingCategory eq 'AM' and ns:GroupingCode)) then
-                            true()
-                            else
-                            false()"
-                        />
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
@@ -311,8 +297,8 @@
                                         </xs:choice>
                                         <xs:element name="Lines">
                                             <xs:complexType>
-                                                <xs:all>
-                                                    <xs:element name="DebitLine" maxOccurs="unbounded">
+                                                <xs:choice maxOccurs="unbounded">
+                                                    <xs:element name="DebitLine">
                                                         <xs:complexType>
                                                             <xs:sequence>
                                                                 <xs:element ref="RecordID"/>
@@ -326,8 +312,7 @@
                                                             </xs:sequence>
                                                         </xs:complexType>
                                                     </xs:element>
-                                                    <xs:element name="CreditLine"
-                                                                maxOccurs="unbounded">
+                                                    <xs:element name="CreditLine">
                                                         <xs:complexType>
                                                             <xs:sequence>
                                                                 <xs:element ref="RecordID"/>
@@ -341,7 +326,7 @@
                                                             </xs:sequence>
                                                         </xs:complexType>
                                                     </xs:element>
-                                                </xs:all>
+                                                </xs:choice>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
@@ -428,37 +413,6 @@
                                                     <xs:element name="CustomsInformation"
                                                                 type="CustomsInformation" minOccurs="0"/>
                                                 </xs:sequence>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
-                                                            false()
-                                                        else
-                                                            true()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxBase and ns:UnitPrice != 0)) then
-                                                            false()
-                                                        else
-                                                            true()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxBase and ns:DebitAmount != 0) or (ns:TaxBase and ns:CreditAmount != 0)) then
-                                                            false()
-                                                        else
-                                                            true()"
-                                                />
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="DocumentTotals">
@@ -556,19 +510,6 @@
                                                     <xs:element name="CustomsInformation"
                                                                 type="CustomsInformation" minOccurs="0"/>
                                                 </xs:sequence>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
-                                                            false()
-                                                        else
-                                                            true()"
-                                                />
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="DocumentTotals">
@@ -651,37 +592,6 @@
                                                     <xs:element name="CustomsInformation"
                                                                 type="CustomsInformation" minOccurs="0"/>
                                                 </xs:sequence>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
-                                                            false()
-                                                        else
-                                                            true()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxBase and ns:UnitPrice != 0)) then
-                                                            false()
-                                                        else
-                                                            true()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxBase and ns:DebitAmount != 0) or (ns:TaxBase and ns:CreditAmount != 0)) then
-                                                            false()
-                                                        else
-                                                            true()"
-                                                />
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="DocumentTotals">
@@ -759,31 +669,6 @@
                                                     <xs:element ref="TaxExemptionReason" minOccurs="0"/>
                                                     <xs:element ref="TaxExemptionCode" minOccurs="0"/>
                                                 </xs:sequence>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage != 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
-                                                            true()
-                                                        else
-                                                            false()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
-                                                            false()
-                                                        else
-                                                            true()"/>
-                                                <xs:assert
-                                                    test="
-                                                        if (../ns:PaymentType eq 'RC' and not(ns:Tax)) then
-                                                            false()
-                                                        else
-                                                            true()"
-                                                />
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="DocumentTotals">
@@ -808,13 +693,6 @@
                                         <xs:element name="WithholdingTax" type="WithholdingTax"
                                                     minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
-                                    <xs:assert
-                                        test="
-                                            if ((ns:Line/ns:Tax/ns:TaxType and ns:PaymentType eq 'RC') or (ns:PaymentType eq 'RG')) then
-                                                true()
-                                            else
-                                                false()"
-                                    />
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>

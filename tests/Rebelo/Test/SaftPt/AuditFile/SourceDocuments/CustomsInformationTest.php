@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
@@ -40,9 +41,10 @@ class CustomsInformationTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(CustomsInformation::class);
@@ -50,11 +52,12 @@ class CustomsInformationTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstanceSetGet()
+    public function testInstanceSetGet(): void
     {
-        $ci = new CustomsInformation();
+        $ci = new CustomsInformation(new ErrorRegister());
         $this->assertInstanceOf(CustomsInformation::class, $ci);
         $this->assertTrue(\is_array($ci->getArcNo()));
         $this->assertSame(0, \count($ci->getArcNo()));
@@ -62,63 +65,61 @@ class CustomsInformationTest extends TestCase
 
         $nMax = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $index = $ci->addToARCNo(\strval($n));
+            $this->assertTrue($ci->addARCNo(\strval($n)));
             $this->assertSame(
                 \strval($n), $ci->getArcNo()[$n]
             );
-            $this->assertSame($n, $index);
-            $this->assertTrue($ci->issetARCNo($n));
         }
+
         $amount = 49.59;
-        $ci->setIecAmount($amount);
+        $this->assertTrue($ci->setIecAmount($amount));
         $this->assertSame($amount, $ci->getIecAmount());
 
-        $unset = 2;
-        $ci->unsetARCNo($unset);
-        $this->assertFalse($ci->issetARCNo($unset));
 
-        $pad = $ci->addToARCNo(\str_pad("A", 99, "A"));
-        $this->assertSame(21, \strlen($ci->getArcNo()[$pad]));
+        $this->assertTrue($ci->addARCNo(\str_pad("A", 99, "A")));
+        $this->assertSame(21, \strlen($ci->getArcNo()[$n]));
 
-        try {
-            $ci->addToARCNo("");
-            $this->fail("Add a ARCNo empty string to the stack should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $ci->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($ci->addARCNo(""));
+        $this->assertSame("", $ci->getArcNo()[++$n]);
+        $this->assertNotEmpty($ci->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $ci->setIecAmount(-0.01);
-            $this->fail("Set a negative IEC Amount should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong = -0.01;
+        $ci->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($ci->setIecAmount($wrong));
+        $this->assertSame($wrong, $ci->getIecAmount());
+        $this->assertNotEmpty($ci->getErrorRegistor()->getOnSetValue());
     }
 
+    /**
+     *
+     * @return CustomsInformation
+     */
     public function createCustomsInformation(): CustomsInformation
     {
-        $ci   = new CustomsInformation();
+        $ci   = new CustomsInformation(new ErrorRegister());
         $nMax = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $ci->addToARCNo(\strval($n));
+            $ci->addARCNo(\strval($n));
         }
         $ci->setIecAmount(49.95);
         return $ci;
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeWrongName()
+    public function testCreateXmlNodeWrongName(): void
     {
-        $ci   = new CustomsInformation();
+        $ci   = new CustomsInformation(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $ci->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Create a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -127,16 +128,19 @@ class CustomsInformationTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testParseXmlNodeWrongName()
+    public function testParseXmlNodeWrongName(): void
     {
-        $ci   = new CustomsInformation();
+        $ci   = new CustomsInformation(new ErrorRegister());
         $node = new \SimpleXMLElement("<root></root>");
         try {
             $ci->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
@@ -145,9 +149,10 @@ class CustomsInformationTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNode()
+    public function testCreateXmlNode(): void
     {
         $ci   = $this->createCustomsInformation();
         $node = new \SimpleXMLElement(
@@ -174,14 +179,19 @@ class CustomsInformationTest extends TestCase
             (float) $node->{CustomsInformation::N_CUSTOMSINFORMATION}
             ->{CustomsInformation::N_IECAMOUNT}
         );
+
+        $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateXmlNodeNull()
+    public function testCreateXmlNodeNull(): void
     {
-        $ci   = new CustomsInformation();
+        $ci   = new CustomsInformation(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
@@ -193,29 +203,40 @@ class CustomsInformationTest extends TestCase
             CustomsInformation::N_CUSTOMSINFORMATION, $ciNode->getName()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{CustomsInformation::N_CUSTOMSINFORMATION}
             ->{CustomsInformation::N_ARCNO}->count()
         );
 
-        $this->assertSame(0,
+        $this->assertSame(
+            0,
             $node->{CustomsInformation::N_CUSTOMSINFORMATION}
             ->{CustomsInformation::N_IECAMOUNT}->count()
         );
+
+        $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXml()
+    public function testeParseXml(): void
     {
         $ci   = $this->createCustomsInformation();
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $ci->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new CustomsInformation();
+        $parsed = new CustomsInformation(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         for ($n = 0; $n < \count($ci->getArcNo()); $n++) {
@@ -225,20 +246,29 @@ class CustomsInformationTest extends TestCase
         }
 
         $this->assertSame($ci->getIecAmount(), $parsed->getIecAmount());
+
+        $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXmlEmpty()
+    public function testeParseXmlEmpty(): void
     {
-        $ci   = new CustomsInformation();
+        $ci   = new CustomsInformation(new ErrorRegister());
         $node = new \SimpleXMLElement(
             "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
         );
         $xml  = $ci->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed = new CustomsInformation();
+        $parsed = new CustomsInformation(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
@@ -248,5 +278,62 @@ class CustomsInformationTest extends TestCase
         $this->assertSame(
             $ci->getIecAmount(), $parsed->getIecAmount()
         );
+
+        $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $ciNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $ci     = new CustomsInformation(new ErrorRegister());
+        $xml    = $ci->createXmlNode($ciNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($ci->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($ci->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $ciNode = new \SimpleXMLElement(
+            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        );
+        $ci     = new CustomsInformation(new ErrorRegister());
+        $ci->addARCNo("");
+        $ci->setIecAmount(-1.0);
+
+        $xml = $ci->createXmlNode($ciNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($ci->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($ci->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
     }
 }

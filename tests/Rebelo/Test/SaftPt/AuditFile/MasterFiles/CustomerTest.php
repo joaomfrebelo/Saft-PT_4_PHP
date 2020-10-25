@@ -30,8 +30,8 @@ use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Customer;
 use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use Rebelo\SaftPt\AuditFile\Address;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Country;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Class CustomerTest
@@ -41,24 +41,28 @@ use Rebelo\SaftPt\AuditFile\Country;
 class CustomerTest extends TestCase
 {
 
+    use \Rebelo\Test\TXmlTest;
+
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(
                 \Rebelo\SaftPt\AuditFile\MasterFiles\Customer::class
-        );
+            );
         $this->assertTrue(true);
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
         $this->assertInstanceOf(Customer::class, $customer);
         $this->assertNull($customer->getContact());
         $this->assertNull($customer->getEmail());
@@ -66,14 +70,21 @@ class CustomerTest extends TestCase
         $this->assertNull($customer->getTelephone());
         $this->assertNull($customer->getWebsite());
         $this->assertEquals(array(), $customer->getShipToAddress());
+
+        $this->assertFalse($customer->issetAccountID());
+        $this->assertFalse($customer->issetBillingAddress());
+        $this->assertFalse($customer->issetCompanyName());
+        $this->assertFalse($customer->issetCustomerID());
+        $this->assertFalse($customer->issetCustomerTaxID());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSestGetCustomerID()
+    public function testSestGetCustomerID(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         try {
             $customer->getCustomerID();
@@ -82,27 +93,30 @@ class CustomerTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $customerId = "Contumer 1209";
-        $customer->setCustomerID($customerId);
+        $this->assertTrue($customer->setCustomerID($customerId));
         $this->assertEquals($customerId, $customer->getCustomerID());
+
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setCustomerID(""));
+        $this->assertSame("", $customer->getCustomerID());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
         try {
-            $customer->setCustomerID("");
-            $this->fail("set customer id with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $customer->setCustomerID(null);
+            $customer->setCustomerID(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
+
+        $this->assertTrue($customer->issetCustomerID());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSestGetAccountID()
+    public function testSestGetAccountID(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         try {
             $customer->getAccountID();
@@ -111,35 +125,38 @@ class CustomerTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $accountId = "AccountID999";
-        $customer->setAccountID($accountId);
+        $this->assertTrue($customer->setAccountID($accountId));
         $this->assertEquals($accountId, $customer->getAccountID());
-        $customer->setAccountID("Desconhecido");
-        $this->assertEquals("Desconhecido", $customer->getAccountID());
+        $this->assertTrue($customer->setAccountID(Customer::DESCONHECIDO));
+        $this->assertEquals(Customer::DESCONHECIDO, $customer->getAccountID());
+
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setAccountID(""));
+        $this->assertSame("", $customer->getAccountID());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
+        $wrong = str_pad("A", 32, "A");
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setAccountID($wrong));
+        $this->assertSame($wrong, $customer->getAccountID());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
         try {
-            $customer->setAccountID("");
-            $this->fail("set account id with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $customer->setAccountID(str_pad("A", 32, "A"));
-            $this->fail("set account id with length greater then 30 should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $customer->setAccountID(null);
+            $customer->setAccountID(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
+
+        $this->assertTrue($customer->issetAccountID());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSestGetCustomerTaxID()
+    public function testSestGetCustomerTaxID(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         try {
             $customer->getCustomerTaxID();
@@ -148,33 +165,36 @@ class CustomerTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $customerTaxId = "CustomerTaxID999";
-        $customer->setCustomerTaxID($customerTaxId);
+        $this->assertTrue($customer->setCustomerTaxID($customerTaxId));
         $this->assertEquals($customerTaxId, $customer->getCustomerTaxID());
+
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setCustomerTaxID(""));
+        $this->assertSame("", $customer->getCustomerTaxID());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
+        $wrong = str_pad("A", 32, "A");
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setCustomerTaxID($wrong));
+        $this->assertSame($wrong, $customer->getCustomerTaxID());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
         try {
-            $customer->setCustomerTaxID("");
-            $this->fail("set customer tax id with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $customer->setCustomerTaxID(str_pad("A", 32, "A"));
-            $this->fail("set customer tax id with length greater then 30 should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $customer->setCustomerTaxID(null);
+            $customer->setCustomerTaxID(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
+
+        $this->assertTrue($customer->issetCustomerTaxID());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCompanyName()
+    public function testCompanyName(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         try {
             $customer->getCompanyName();
@@ -183,157 +203,144 @@ class CustomerTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $name = "CompanyName FACTURACAO";
-        $customer->setCompanyName($name);
+        $this->assertTrue($customer->setCompanyName($name));
         $this->assertEquals($name, $customer->getCompanyName());
-        $customer->setCompanyName(\str_pad("_", 109, "_"));
+        $this->assertTrue($customer->setCompanyName(\str_pad("_", 109, "_")));
         $this->assertEquals(100, \strlen($customer->getCompanyName()));
+
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setCompanyName(""));
+        $this->assertSame("", $customer->getCompanyName());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
         try {
-            $customer->setCompanyName("");
-            $this->fail("set company name id with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $customer->setCompanyName(null);
+            $customer->setCompanyName(null);/** @phpstan-ignore-line */
         } catch (\Exception | \TypeError $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
+
+        $this->assertTrue($customer->issetCompanyName());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testContact()
+    public function testContact(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         $this->assertNull($customer->getContact());
 
         $name = "Contact name test";
-        $customer->setContact($name);
+        $this->assertTrue($customer->setContact($name));
         $this->assertEquals($name, $customer->getContact());
-        $customer->setContact(\str_pad("_", 51, "_"));
+        $this->assertTrue($customer->setContact(\str_pad("_", 51, "_")));
         $this->assertEquals(50, \strlen($customer->getContact()));
-        try {
-            $customer->setContact("");
-            $this->fail("set contact name with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setContact(""));
+        $this->assertSame("", $customer->getContact());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+
         $customer->setContact(null);
         $this->assertNull($customer->getContact());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testBillingAddress()
+    public function testBillingAddress(): void
     {
-        $customer = new Customer();
-
-        try {
-            $customer->getBillingAddress();
-            $this->fail("Get BillingAddress without initialize should throw error");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Error::class, $e);
-        }
-
-        $address = new Address();
-        $customer->setBillingAddress($address);
+        $customer = new Customer(new ErrorRegister());
         $this->assertInstanceOf(Address::class, $customer->getBillingAddress());
 
-        try {
-            $customer->setBillingAddress(null);
-            $this->fail("Set BillingAddress to null should throw TypeError");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\TypeError::class, $e);
-        }
+        $this->assertTrue($customer->issetBillingAddress());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testShipToAddress()
+    public function testShipToAddress(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         $this->assertEquals(array(), $customer->getShipToAddress());
 
-        $address = new Address();
-        $this->assertEquals(0, $customer->addToShipToAddress($address));
-        $this->assertEquals(1, $customer->addToShipToAddress($address));
-        $this->assertEquals(2, $customer->addToShipToAddress($address));
-        $this->assertTrue($customer->issetShipToAddress(0));
-        $this->assertTrue($customer->issetShipToAddress(1));
-        $this->assertTrue($customer->issetShipToAddress(2));
-        $customer->unsetShipToAddress(1);
-        $this->assertEquals(3, $customer->addToShipToAddress($address));
-        $this->assertFalse($customer->issetShipToAddress(1));
-        $this->assertTrue($customer->issetShipToAddress(0));
-        $this->assertTrue($customer->issetShipToAddress(2));
-        $this->assertTrue($customer->issetShipToAddress(3));
+        $this->assertInstanceOf(
+            Address::class, $customer->addShipToAddress()
+        );
+        $this->assertInstanceOf(
+            Address::class, $customer->addShipToAddress()
+        );
+        $this->assertInstanceOf(
+            Address::class, $customer->addShipToAddress()
+        );
+
+        $this->assertCount(3, $customer->getShipToAddress());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTelephone()
+    public function testTelephone(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         $this->assertNull($customer->getTelephone());
 
         $telephone = "Telephone test";
-        $customer->setTelephone($telephone);
+        $this->assertTrue($customer->setTelephone($telephone));
         $this->assertEquals($telephone, $customer->getTelephone());
 
-        $customer->setTelephone(\str_pad("_", 300, "_"));
+        $this->assertTrue($customer->setTelephone(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($customer->getTelephone()));
 
-        try {
-            $customer->setTelephone("");
-            $this->fail("set Telephone with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setTelephone(""));
+        $this->assertSame("", $customer->getTelephone());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $customer->setTelephone(null);
         $this->assertNull($customer->getTelephone());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testFax()
+    public function testFax(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         $this->assertNull($customer->getFax());
 
         $fax = "Fax test";
-        $customer->setFax($fax);
+        $this->assertTrue($customer->setFax($fax));
         $this->assertEquals($fax, $customer->getFax());
 
-        $customer->setFax(\str_pad("_", 300, "_"));
+        $this->assertTrue($customer->setFax(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($customer->getFax()));
 
-        try {
-            $customer->setFax("");
-            $this->fail("set fax with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setFax(""));
+        $this->assertSame("", $customer->getFax());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $customer->setFax(null);
         $this->assertNull($customer->getFax());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testEmail()
+    public function testEmail(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         $this->assertNull($customer->getEmail());
 
@@ -341,37 +348,34 @@ class CustomerTest extends TestCase
         $customer->setEmail($email);
         $this->assertEquals($email, $customer->getEmail());
 
-        try {
-            $customer->setEmail(\str_pad($email, 255, "a", STR_PAD_LEFT));
-            $this->fail("set Email with length > 254 should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong = \str_pad($email, 255, "a", STR_PAD_LEFT);
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setEmail($wrong));
+        $this->assertSame($wrong, $customer->getEmail());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $customer->setEmail("isNotEmail");
-            $this->fail("set Email with wrong string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong2 = "isNotEmail";
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setEmail($wrong2));
+        $this->assertSame($wrong2, $customer->getEmail());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $customer->setEmail("");
-            $this->fail("set Email with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setEmail(""));
+        $this->assertSame("", $customer->getEmail());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $customer->setEmail(null);
         $this->assertNull($customer->getEmail());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testWebsite()
+    public function testWebsite(): void
     {
-        $customer = new Customer();
+        $customer = new Customer(new ErrorRegister());
 
         $this->assertNull($customer->getWebsite());
 
@@ -379,19 +383,16 @@ class CustomerTest extends TestCase
         $customer->setWebsite($website);
         $this->assertEquals($website, $customer->getWebsite());
 
-        try {
-            $customer->setWebsite(\str_pad($website, 61, "a", STR_PAD_RIGHT));
-            $this->fail("set Website with length > 60 should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong = \str_pad($website, 61, "a", STR_PAD_RIGHT);
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setWebsite($wrong));
+        $this->assertSame($wrong, $customer->getWebsite());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $customer->setWebsite("");
-            $this->fail("set Website with empty string should throw AuditFileException");
-        } catch (\Exception | \TypeError $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $customer->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($customer->setWebsite(""));
+        $this->assertSame("", $customer->getWebsite());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $customer->setWebsite(null);
         $this->assertNull($customer->getWebsite());
@@ -403,24 +404,26 @@ class CustomerTest extends TestCase
      */
     public function createCustomer(): Customer
     {
-        $address = new Address();
+        $customer = new Customer(new ErrorRegister());
+        $address  = $customer->getBillingAddress();
         $address->setAddressDetail("Billing Street test 999");
         $address->setCity("Sintra");
         $address->setPostalCode("1999-999");
         $address->setRegion("Lisbon");
         $address->setCountry(new Country(Country::ISO_BR));
 
-        $shToAdd = clone $address;
+        $shToAdd = $customer->addShipToAddress();
         $shToAdd->setAddressDetail("Ship to address test");
+        $shToAdd->setCity("Sintra");
+        $shToAdd->setPostalCode("1999-999");
+        $shToAdd->setRegion("Lisbon");
+        $shToAdd->setCountry(new Country(Country::ISO_BR));
 
-        $customer = new Customer();
         $customer->setCustomerID("ID999999990");
         $customer->setAccountID("Account id test");
         $customer->setCustomerTaxID("599999990");
         $customer->setCompanyName("Customer name test");
         $customer->setContact("Customer contact neme");
-        $customer->setBillingAddress($address);
-        $customer->addToShipToAddress($shToAdd);
         $customer->setTelephone("+351 987654321");
         $customer->setFax("123456789");
         $customer->setEmail("email@emil.pt");
@@ -433,17 +436,20 @@ class CustomerTest extends TestCase
      * Set the properties that can have nulll to null
      * @param Customer $customer
      */
-    public function setNullsCustomer(Customer $customer)
+    public function setNullsCustomer(Customer $customer): void
     {
         $customer->setContact(null);
-        $customer->unsetShipToAddress(0);
         $customer->setTelephone(null);
         $customer->setFax(null);
         $customer->setEmail(null);
         $customer->setWebsite(null);
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNode(): void
     {
         $node = new \SimpleXMLElement(
             "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
@@ -451,69 +457,104 @@ class CustomerTest extends TestCase
 
         $customer = $this->createCustomer();
 
-        $this->assertInstanceOf(\SimpleXMLElement::class,
-            $customer->createXmlNode($node));
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, $customer->createXmlNode($node)
+        );
+
         $customerNode = $node->{Customer::N_CUSTOMER};
-        $this->assertEquals($customer->getCustomerID(),
+
+        $this->assertEquals(
+            $customer->getCustomerID(),
             (string) $customerNode->{Customer::N_CUSTOMERID}
         );
-        $this->assertEquals($customer->getAccountID(),
+
+        $this->assertEquals(
+            $customer->getAccountID(),
             (string) $customerNode->{Customer::N_ACCOUNTID}
         );
-        $this->assertEquals($customer->getCustomerTaxID(),
+
+        $this->assertEquals(
+            $customer->getCustomerTaxID(),
             (int) $customerNode->{Customer::N_CUSTOMERTAXID}
         );
-        $this->assertEquals($customer->getCompanyName(),
+
+        $this->assertEquals(
+            $customer->getCompanyName(),
             (string) $customerNode->{Customer::N_COMPANYNAME}
         );
-        $this->assertEquals($customer->getContact(),
+
+        $this->assertEquals(
+            $customer->getContact(),
             (string) $customerNode->{Customer::N_CONTACT}
         );
-        $this->assertEquals($customer->getBillingAddress()->getAddressDetail(),
+
+        $this->assertEquals(
+            $customer->getBillingAddress()->getAddressDetail(),
             (string) $customerNode
-            ->{Customer::N_BILLINGADDRESS}
-            ->{Address::N_ADDRESSDETAIL}
+            ->{Customer::N_BILLINGADDRESS}->{Address::N_ADDRESSDETAIL}
         );
 
         $shToAddr = $customer->getShipToAddress();
-        $this->assertEquals($shToAddr[0]->getAddressDetail(),
+        $this->assertEquals(
+            $shToAddr[0]->getAddressDetail(),
             (string) $customerNode
-            ->{Customer::N_SHIPTOADDRESS}
-            ->{Address::N_ADDRESSDETAIL}
+            ->{Customer::N_SHIPTOADDRESS}->{Address::N_ADDRESSDETAIL}
         );
 
-        $this->assertEquals($customer->getTelephone(),
+        $this->assertEquals(
+            $customer->getTelephone(),
             (string) $customerNode->{Customer::N_TELEPHONE}
         );
-        $this->assertEquals($customer->getFax(),
-            (string) $customerNode->{Customer::N_FAX}
+
+        $this->assertEquals(
+            $customer->getFax(), (string) $customerNode->{Customer::N_FAX}
         );
-        $this->assertEquals($customer->getEmail(),
-            (string) $customerNode->{Customer::N_EMAIL}
+
+        $this->assertEquals(
+            $customer->getEmail(), (string) $customerNode->{Customer::N_EMAIL}
         );
-        $this->assertEquals($customer->getWebsite(),
+
+        $this->assertEquals(
+            $customer->getWebsite(),
             (string) $customerNode->{Customer::N_WEBSITE}
         );
+
+        $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $this->setNullsCustomer($customer);
 
         unset($node);
-        $nodeNull         = new \SimpleXMLElement(
+        $nodeNull = new \SimpleXMLElement(
             "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
         );
+
         $customer->createXmlNode($nodeNull);
+
         $customerNodeNull = $nodeNull->{Customer::N_CUSTOMER};
+
         $this->assertEquals(0, $customerNodeNull->{Customer::N_CONTACT}->count());
-        $this->assertEquals(0,
-            $customerNodeNull->{Customer::N_SHIPTOADDRESS}->count());
-        $this->assertEquals(0,
-            $customerNodeNull->{Customer::N_TELEPHONE}->count());
+        $this->assertEquals(
+            1, $customerNodeNull->{Customer::N_SHIPTOADDRESS}->count()
+        );
+        $this->assertEquals(
+            0, $customerNodeNull->{Customer::N_TELEPHONE}->count()
+        );
         $this->assertEquals(0, $customerNodeNull->{Customer::N_FAX}->count());
         $this->assertEquals(0, $customerNodeNull->{Customer::N_EMAIL}->count());
         $this->assertEquals(0, $customerNodeNull->{Customer::N_WEBSITE}->count());
+
+        $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testParseXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNode(): void
     {
         $node = new \SimpleXMLElement(
             "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
@@ -522,52 +563,131 @@ class CustomerTest extends TestCase
         $customer = $this->createCustomer();
 
         $xml = $customer->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
 
-        $parsed      = new Customer();
+        $parsed      = new Customer(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals($customer->getCustomerID(), $parsed->getCustomerID());
         $this->assertEquals($customer->getAccountID(), $parsed->getAccountID());
-        $this->assertEquals($customer->getCompanyName(),
-            $parsed->getCompanyName());
+        $this->assertEquals(
+            $customer->getCompanyName(), $parsed->getCompanyName()
+        );
         $this->assertEquals($customer->getContact(), $parsed->getContact());
-        $this->assertEquals($customer->getBillingAddress()->getAddressDetail(),
-            $parsed->getBillingAddress()->getAddressDetail());
+        $this->assertEquals(
+            $customer->getBillingAddress()->getAddressDetail(),
+            $parsed->getBillingAddress()->getAddressDetail()
+        );
         $cusShToAddr = $customer->getShipToAddress();
         $parShTAddr  = $parsed->getShipToAddress();
-        $this->assertEquals($cusShToAddr[0]->getAddressDetail(),
-            $parShTAddr[0]->getAddressDetail());
+        $this->assertEquals(
+            $cusShToAddr[0]->getAddressDetail(),
+            $parShTAddr[0]->getAddressDetail()
+        );
         $this->assertEquals($customer->getTelephone(), $parsed->getTelephone());
         $this->assertEquals($customer->getFax(), $parsed->getFax());
         $this->assertEquals($customer->getEmail(), $parsed->getEmail());
         $this->assertEquals($customer->getWebsite(), $parsed->getWebsite());
 
+        $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
+
         $shToAddrStack = $customer->getShipToAddress();
         $shToAddr      = clone $shToAddrStack[0];
-        unset($parsed);
-        $this->setNullsCustomer($customer);
-        $parsedNull    = new Customer();
-        $parsedNull->parseXmlNode(new \SimpleXMLElement(
-                $customer->createXmlNode($node)->asXML()
-        ));
 
-        $customer->addToShipToAddress($shToAddr);
-        $customer->addToShipToAddress(clone $shToAddr);
-        $parseDobleShToAddr = new Customer();
-        $parseDobleShToAddr->parseXmlNode(new \SimpleXMLElement(
-                $customer->createXmlNode($node)->asXML()
-        ));
-        $this->assertEquals(2, \count($parseDobleShToAddr->getShipToAddress()));
+        unset($parsed);
+
+        $this->setNullsCustomer($customer);
+        $parsedNull = new Customer(new ErrorRegister());
+
+        $xmlNull = $customer->createXmlNode($node)->asXML();
+        if ($xmlNull === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $parsedNull->parseXmlNode(new \SimpleXMLElement($xmlNull));
+
+        $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testCreateXmlNodeWrongName()
+    /**
+     * Reads all Customers from the Demo SAFT in Test\Ressources
+     * and parse then to Customer class, after that generate a xml from the
+     * Line class and test if the xml strings are equal
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateParseXml(): void
     {
-        $customer = new Customer();
-        $node     = new \SimpleXMLElement("<root></root>"
+        $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
+
+        $customerStack = $saftDemoXml
+            ->{MasterFiles::N_MASTERFILES}
+            ->{Customer::N_CUSTOMER};
+
+        if ($customerStack->count() === 0) {
+            $this->fail("No Customers in XML");
+        }
+
+        for ($i = 0; $i < $customerStack->count(); $i++) {
+            /* @var $customerXml \SimpleXMLElement */
+            $customerXml = $customerStack[$i];
+
+            $customer = new Customer(new ErrorRegister());
+            $customer->parseXmlNode($customerXml);
+
+
+            $xmlRootNode     = (new \Rebelo\SaftPt\AuditFile\AuditFile)->createRootElement();
+            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTERFILES);
+
+            $xml = $customer->createXmlNode($masterFilesNode);
+
+            try {
+                $assertXml = $this->xmlIsEqual($customerXml, $xml);
+                $this->assertTrue(
+                    $assertXml,
+                    \sprintf(
+                        "Fail on Customer '%s' with error '%s'",
+                        $customerXml->{Customer::N_CUSTOMERID}, $assertXml
+                    )
+                );
+            } catch (\Exception | \Error $e) {
+                $this->fail(
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
+                        $customerXml->{Customer::N_CUSTOMERID}, $e->getMessage()
+                    )
+                );
+            }
+
+            $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
+            $this->assertEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+            $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
+        }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWrongName(): void
+    {
+        $customer = new Customer(new ErrorRegister());
+        $node     = new \SimpleXMLElement(
+            "<root></root>"
         );
         try {
             $customer->createXmlNode($node);
-            $this->fail("Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Creat a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -575,19 +695,86 @@ class CustomerTest extends TestCase
         }
     }
 
-    public function testParseXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNodeWrongName(): void
     {
-        $customer = new Customer();
-        $node     = new \SimpleXMLElement("<root></root>"
+        $customer = new Customer(new ErrorRegister());
+        $node     = new \SimpleXMLElement(
+            "<root></root>"
         );
         try {
             $customer->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
             );
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $customerNode = new \SimpleXMLElement(
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+        );
+        $customer     = new Customer(new ErrorRegister());
+        $xml          = $customer->createXmlNode($customerNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $custNode = new \SimpleXMLElement(
+            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+        );
+        $customer = new Customer(new ErrorRegister());
+        $customer->setAccountID("");
+        $customer->setCompanyName("");
+        $customer->setContact("");
+        $customer->setCustomerID("");
+        $customer->setCustomerTaxID("");
+        $customer->setEmail("----");
+        $customer->setTelephone("");
+        $customer->setFax("");
+        $customer->setWebsite("");
+
+        $xml = $customer->createXmlNode($custNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
     }
 }

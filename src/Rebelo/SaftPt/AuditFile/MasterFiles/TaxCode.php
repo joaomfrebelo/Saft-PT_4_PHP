@@ -29,9 +29,18 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
- * TaxCode
+ * TaxCode<br>
+ * In case field 2.5.1.1. – TaxType = IVA, the field must be filled in with:<br>
+ * “RED” – Reduced tax rate;<br>
+ * “INT” – Intermediate tax rate;<br>
+ * “NOR” – Normal tax rate;<br>
+ * “ISE” – Exempted;<br>
+ * “OUT” – Others, applicable to the special VAT regimes.<br>
+ * In case field 2.5.1.1. – TaxType = IS, it shall be filled in with:<br>
+ * The correspondent code of the Stamp Duty’s table;<br>
+ * In case it is not subject to tax it shall be filled in with “NS”.
+ * In receipts issued without tax discriminated it shall be filled in with “NA”.
  * <pre>
- * <!-- Tipo de Imposto da tabela de impostos-->
  *  &lt;xs:simpleType name="TaxTableEntryTaxCode"&gt;
  *      &lt;xs:restriction base="xs:string"&gt;
  *          &lt;xs:minLength value="1"/&gt;
@@ -40,55 +49,71 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *      &lt;/xs:restriction&gt;
  *  &lt;/xs:simpleType&gt;
  * </pre>
+ * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode RED()
+ * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode INT()
+ * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode NOR()
+ * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode ISE()
+ * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode OUT()
  * @since 1.0.0
  * @author João Rebelo
  */
 class TaxCode extends \Rebelo\Enum\AEnum
 {
     /**
-     *
+     * “RED” – Reduced tax rate
      * @since 1.0.0
      */
     const RED = "RED";
 
     /**
-     *
+     * “INT” – Intermediate tax rate
      * @since 1.0.0
      */
     const INT = "INT";
 
     /**
-     *
+     * “NOR” – Normal tax rate
      * @since 1.0.0
      */
     const NOR = "NOR";
 
     /**
-     *
+     * “ISE” – Exempted
      * @since 1.0.0
      */
     const ISE = "ISE";
 
     /**
-     *
+     * “OUT” – Others, applicable to the special VAT regimes
      * @since 1.0.0
      */
     const OUT = "OUT";
 
     /**
-     *
+     * In case it is not subject to tax it shall be filled in with “NS”
      * @since 1.0.0
      */
     const NS = "NS";
 
     /**
-     *
+     * In receipts issued without tax discriminated it shall be filled in with “NA”
      * @since 1.0.0
      */
     const NA = "NA";
 
     /**
-     *
+     * TaxCode<br>
+     * In case field 2.5.1.1. – TaxType = IVA, the field must be filled in with:<br>
+     * “RED” – Reduced tax rate;<br>
+     * “INT” – Intermediate tax rate;<br>
+     * “NOR” – Normal tax rate;<br>
+     * “ISE” – Exempted;<br>
+     * “OUT” – Others, applicable to the special VAT regimes.<br>
+     * In case field 2.5.1.1. – TaxType = IS, it shall be filled in with:<br>
+     * The correspondent code of the Stamp Duty’s table;<br>
+     * “ISE” – Exempted.<br>
+     * In case it is not subject to tax it shall be filled in with “NS”.
+     * In receipts issued without tax discriminated it shall be filled in with “NA”.
      * @param string $value
      * @since 1.0.0
      */
@@ -111,5 +136,14 @@ class TaxCode extends \Rebelo\Enum\AEnum
             }
             $this->value = $value;
         }
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

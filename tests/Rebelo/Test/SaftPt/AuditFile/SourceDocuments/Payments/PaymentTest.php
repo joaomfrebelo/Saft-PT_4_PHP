@@ -27,8 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
@@ -36,9 +35,7 @@ use Rebelo\SaftPt\AuditFile\TransactionID;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax;
 
 /**
  * Class LineTest
@@ -51,9 +48,10 @@ class PaymentTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Payment::class);
@@ -61,323 +59,316 @@ class PaymentTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
         $this->assertInstanceOf(Payment::class, $payment);
         $this->assertNull($payment->getPeriod());
-        $this->assertNull($payment->getTransactionID());
+        $this->assertNull($payment->getTransactionID(false));
         $this->assertNull($payment->getDescription());
         $this->assertNull($payment->getSystemID());
         $this->assertSame(0, \count($payment->getPaymentMethod()));
         $this->assertSame(0, \count($payment->getWithholdingTax()));
+
+        $this->assertFalse($payment->issetATCUD());
+        $this->assertFalse($payment->issetCustomerID());
+        $this->assertFalse($payment->issetDocumentTotals());
+        $this->assertFalse($payment->issetPaymentRefNo());
+        $this->assertFalse($payment->issetPaymentType());
+        $this->assertFalse($payment->issetSourceID());
+        $this->assertFalse($payment->issetSystemEntryDate());
+        $this->assertFalse($payment->issetTransactionDate());
     }
 
-    public function testSetGetPaymentRefNo()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetPaymentRefNo(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
         $refNo   = "FT FT/1";
-        $payment->setPaymentRefNo($refNo);
+        $this->assertTrue($payment->setPaymentRefNo($refNo));
         $this->assertSame($refNo, $payment->getPaymentRefNo());
-        try {
-            $payment->setPaymentRefNo("");
-            $this->fail("Set PaymentRefNo to a empty string must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $payment->setPaymentRefNo(\str_pad($refNo, 61, "1", STR_PAD_RIGHT));
-            $this->fail("Set PaymentRefNo to a string length higer than 60 must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $payment->setPaymentRefNo("FTFT/1");
-            $this->fail("Set PaymentRefNo must respect the regexp or throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($payment->issetPaymentRefNo());
+
+        $wrong = "ORCA /1";
+        $this->assertFalse($payment->setPaymentRefNo($wrong));
+        $this->assertSame($wrong, $payment->getPaymentRefNo());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = "FTFT/1";
+        $payment->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($payment->setPaymentRefNo($wrong2));
+        $this->assertSame($wrong2, $payment->getPaymentRefNo());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+
+        $wrong3 = \str_pad($refNo, 61, "1", STR_PAD_RIGHT);
+        $payment->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($payment->setPaymentRefNo($wrong3));
+        $this->assertSame($wrong3, $payment->getPaymentRefNo());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+
+        $payment->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($payment->setPaymentRefNo(""));
+        $this->assertSame("", $payment->getPaymentRefNo());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testSetGetAtcud()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetAtcud(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
         $atcud   = "ATCUD";
-        $payment->setATCUD($atcud);
+        $this->assertTrue($payment->setATCUD($atcud));
         $this->assertSame($atcud, $payment->getATCUD());
-        try {
-            $payment->setATCUD("");
-            $this->fail("Set ATCUD to a empty string must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $payment->setATCUD(\str_pad($atcud, 101, "A"));
-            $this->fail("Set ATCUD to a string length higer than 60 must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertTrue($payment->issetATCUD());
+
+        $wrong = \str_pad($atcud, 101, "A");
+        $this->assertFalse($payment->setATCUD($wrong));
+        $this->assertSame($wrong, $payment->getATCUD());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+
+        $payment->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($payment->setATCUD(""));
+        $this->assertSame("", $payment->getATCUD());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetPeriod()
+    public function testSetGetPeriod(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
         $period  = 9;
-        $payment->setPeriod($period);
+        $this->assertTrue($payment->setPeriod($period));
         $this->assertSame($period, $payment->getPeriod());
-        try {
-            $payment->setPeriod(0);
-            $this->fail("Set Period to a number less than 1 must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $payment->setPeriod(13);
-            $this->fail("Set Period to a number higer than 12 must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        $this->assertSame($period, $payment->getPeriod());
-        $payment->setPeriod(null);
+
+        $wrong = 0;
+        $this->assertFalse($payment->setPeriod($wrong));
+        $this->assertSame($wrong, $payment->getPeriod());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = 13;
+        $payment->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($payment->setPeriod($wrong2));
+        $this->assertSame($wrong2, $payment->getPeriod());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+
+        $this->assertTrue($payment->setPeriod(null));
         $this->assertNull($payment->getPeriod());
         $payment->setPeriod($period);
         $this->assertSame($period, $payment->getPeriod());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetTransactionID()
+    public function testSetGetTransactionID(): void
     {
-        $payment = new Payment();
-        $trans   = new TransactionID();
-        $payment->setTransactionID($trans);
-        $this->assertInstanceOf(TransactionID::class,
-            $payment->getTransactionID());
-        $payment->setTransactionID(null);
-        $this->assertNull($payment->getTransactionID());
-    }
-
-    /**
-     *
-     */
-    public function testSetGetTransactionDate()
-    {
-        $payment = new Payment();
-        $date    = new RDate();
-        $payment->setTransactionDate($date, false);
-        $this->assertSame($date, $payment->getTransactionDate());
-        $this->assertNull($payment->getPeriod());
-        $payment->setTransactionDate($date);
-        $this->assertSame(
-            $date->format(RDate::MONTH_SHORT), \strval($payment->getPeriod())
+        $payment = new Payment(new ErrorRegister());
+        $this->assertInstanceOf(
+            TransactionID::class, $payment->getTransactionID()
         );
+        $payment->setTransactionIDAsNull();
+        $this->assertNull($payment->getTransactionID(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetPaymentType()
+    public function testSetGetTransactionDate(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
+        $date    = new RDate();
+        $payment->setTransactionDate($date);
+        $this->assertSame($date, $payment->getTransactionDate());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetPaymentType(): void
+    {
+        $payment = new Payment(new ErrorRegister());
         $type    = new PaymentType(PaymentType::RC);
         $payment->setPaymentType($type);
         $this->assertSame($type->get(), $payment->getPaymentType()->get());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetDescription()
+    public function testSetGetDescription(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
         $desc    = "Descriptin of payment";
-        $payment->setDescription($desc);
+        $this->assertTrue($payment->setDescription($desc));
         $this->assertSame($desc, $payment->getDescription());
 
-        $payment->setDescription(\str_pad($desc, 299, "A"));
+        $this->assertTrue($payment->setDescription(\str_pad($desc, 299, "A")));
         $this->assertSame(200, \strlen($payment->getDescription()));
 
-        try {
-            $payment->setDescription("");
-            $this->fail("Set descriptin with a empty string must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertFalse($payment->setDescription(""));
+        $this->assertSame("", $payment->getDescription());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
-        $payment->setDescription(null);
+        $this->assertTrue($payment->setDescription(null));
         $this->assertNull($payment->getDescription());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetSystmeId()
+    public function testSetGetSystmeId(): void
     {
-        $payment  = new Payment();
+        $payment  = new Payment(new ErrorRegister());
         $systemID = "System ID";
-        $payment->setSystemID($systemID);
+        $this->assertTrue($payment->setSystemID($systemID));
         $this->assertSame($systemID, $payment->getSystemID());
 
-        $payment->setSystemID(\str_pad($systemID, 99, "A"));
+        $this->assertTrue($payment->setSystemID(\str_pad($systemID, 99, "A")));
         $this->assertSame(60, \strlen($payment->getSystemID()));
 
-        try {
-            $payment->setSystemID("");
-            $this->fail("Set System ID with a empty string must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $this->assertFalse($payment->setSystemID(""));
+        $this->assertSame("", $payment->getSystemID());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
         $payment->setSystemID(null);
         $this->assertNull($payment->getSystemID());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGetDocumentStatus()
+    public function testSetGetDocumentStatus(): void
     {
-        $payment = new Payment();
-        $status  = new DocumentStatus();
-        $payment->setDocumentStatus($status);
-        $this->assertInstanceOf(DocumentStatus::class,
-            $payment->getDocumentStatus());
-    }
-
-    /**
-     *
-     */
-    public function testPymentMethod()
-    {
-        $payment = new Payment();
-        $nMax    = 9;
-        for ($n = 0; $n < $nMax; $n++) {
-            $method = new PaymentMethod();
-            $method->setPaymentAmount($n + 0.99);
-            $index  = $payment->addToPaymentMethod($method);
-            $this->assertSame($index, $n);
-            $this->assertSame(
-                $n + 0.99,
-                $payment->getPaymentMethod()[$index]->getPaymentAmount()
-            );
-        }
-        $unset = 2;
-        $payment->unsetPaymentMethod($unset);
-        $this->assertSame($nMax - 1, \count($payment->getPaymentMethod()));
-        $this->assertFalse($payment->issetPaymentMethod($unset));
-    }
-
-    /**
-     *
-     */
-    public function testSetGetSourceId()
-    {
-        $payment  = new Payment();
-        $sourceID = "Source ID";
-        $payment->setSourceID($sourceID);
-        $this->assertSame($sourceID, $payment->getSourceID());
-
-        $payment->setSourceID(\str_pad($sourceID, 99, "A"));
-        $this->assertSame(30, \strlen($payment->getSourceID()));
-
-        try {
-            $payment->setSourceID("");
-            $this->fail("Set Source ID with a empty string must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-    }
-
-    /**
-     *
-     */
-    public function testSetGetSystemEntryDate()
-    {
-        $payment = new Payment();
-        $date    = new RDate();
-        $payment->setSystemEntryDate($date);
-        $this->assertSame($date, $payment->getSystemEntryDate());
-    }
-
-    /**
-     *
-     */
-    public function testLine()
-    {
-        $payment = new Payment();
-        $nMax    = 9;
-        for ($n = 1; $n < $nMax; $n++) {
-            $line  = new Line();
-            $line->setLineNumber($n);
-            $index = $payment->addToLine($line);
-            $this->assertSame($index, $n - 1);
-            $this->assertSame($n, $payment->getLine()[$index]->getLineNumber()
-            );
-        }
-        $unset = 2;
-        $payment->unsetLine($unset);
-        $this->assertSame($nMax - 2, \count($payment->getLine()));
-        $this->assertFalse($payment->issetPaymentMethod($unset));
-    }
-
-    /**
-     *
-     */
-    public function testSetGetDocumentTotals()
-    {
-        $payment = new Payment();
-        $totals  = new DocumentTotals();
-        $payment->setDocumentTotals($totals);
+        $payment = new Payment(new ErrorRegister());
         $this->assertInstanceOf(
-            DocumentTotals::class, $payment->getDocumentTotals()
+            DocumentStatus::class, $payment->getDocumentStatus()
         );
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testWithholdingTax()
+    public function testPymentMethod(): void
     {
-        $payment = new Payment();
+        $payment = new Payment(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $tax   = new WithholdingTax();
-            $tax->setWithholdingTaxAmount($n + 0.99);
-            $index = $payment->addToWithholdingTax($tax);
-            $this->assertSame($index, $n);
+            $method = $payment->addPaymentMethod();
+            $method->setPaymentAmount($n + 0.99);
             $this->assertSame(
-                $n + 0.99,
-                $payment->getWithholdingTax()[$index]->getWithholdingTaxAmount()
+                $n + 0.99, $payment->getPaymentMethod()[$n]->getPaymentAmount()
             );
         }
-        $unset = 2;
-        $payment->unsetWithholdingTax($unset);
-        $this->assertSame($nMax - 1, \count($payment->getWithholdingTax()));
-        $this->assertFalse($payment->issetWithholdingTax($unset));
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetSourceId(): void
+    {
+        $payment  = new Payment(new ErrorRegister());
+        $sourceID = "Source ID";
+        $this->assertTrue($payment->setSourceID($sourceID));
+        $this->assertSame($sourceID, $payment->getSourceID());
+        $this->assertTrue($payment->issetSourceID());
+
+        $this->assertTrue($payment->setSourceID(\str_pad($sourceID, 99, "A")));
+        $this->assertSame(30, \strlen($payment->getSourceID()));
+
+        $this->assertFalse($payment->setSourceID(""));
+        $this->assertSame("", $payment->getSourceID());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetSystemEntryDate(): void
+    {
+        $payment = new Payment(new ErrorRegister());
+        $date    = new RDate();
+        $payment->setSystemEntryDate($date);
+        $this->assertSame($date, $payment->getSystemEntryDate());
+        $this->assertTrue($payment->issetSystemEntryDate());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testLine(): void
+    {
+        $payment = new Payment(new ErrorRegister());
+        $nMax    = 9;
+        for ($n = 1; $n < $nMax; $n++) {
+            $payment->addLine();
+            $this->assertSame(
+                $n, $payment->getLine()[$n - 1]->getLineNumber()
+            );
+        }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSetGetDocumentTotals(): void
+    {
+        $payment = new Payment(new ErrorRegister());
+        $this->assertInstanceOf(
+            DocumentTotals::class, $payment->getDocumentTotals()
+        );
+        $this->assertTrue($payment->issetDocumentTotals());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testWithholdingTax(): void
+    {
+        $payment = new Payment(new ErrorRegister());
+        $nMax    = 9;
+        for ($n = 0; $n < $nMax; $n++) {
+            $tax = $payment->addWithholdingTax();
+            $tax->setWithholdingTaxAmount($n + 0.99);
+            $this->assertSame(
+                $n + 0.99,
+                $payment->getWithholdingTax()[$n]->getWithholdingTaxAmount()
+            );
+        }
     }
 
     /**
      * Reads all Payments  from the Demo SAFT in Test\Ressources
      * and parse then to Payment class, after that generate a xml from the
      * Payment class and test if the xml strings are equal
+     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -393,14 +384,10 @@ class PaymentTest extends TestCase
         for ($i = 0; $i < $paymentsStack->count(); $i++) {
             /* @var $paymentXml \SimpleXMLElement */
             $paymentXml = $paymentsStack[$i];
-            $payment    = new Payment();
+            $payment    = new Payment(new ErrorRegister());
             $payment->parseXmlNode($paymentXml);
 
-            $xmlRootNode   = new \SimpleXMLElement(
-                '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-            );
+            $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
             $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
             $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
 
@@ -411,14 +398,95 @@ class PaymentTest extends TestCase
 
                 $this->assertTrue(
                     $assertXml,
-                    \sprintf("Fail on Payment index '%s' with mwssage '%s'",
-                        $i + 1, $assertXml)
+                    \sprintf(
+                        "Fail on Payment index '%s' with mwssage '%s'",
+                        $i + 1, $assertXml
+                    )
                 );
             } catch (\Exception | \Error $e) {
                 $this->fail(
-                    \sprintf("Fail on Payment index '%s' with mwssage '%s'",
-                        $i + 1, $e->getMessage()));
+                    \sprintf(
+                        "Fail on Payment index '%s' with mwssage '%s'",
+                        $i + 1, $e->getMessage()
+                    )
+                );
             }
+
+            $this->assertEmpty($payment->getErrorRegistor()->getLibXmlError());
+            $this->assertEmpty($payment->getErrorRegistor()->getOnCreateXmlNode());
+            $this->assertEmpty($payment->getErrorRegistor()->getOnSetValue());
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $paymentNode = new \SimpleXMLElement(
+            "<".Payments::N_PAYMENTS."></".Payments::N_PAYMENTS.">"
+        );
+        $payment     = new Payment(new ErrorRegister());
+        $xml         = $payment->createXmlNode($paymentNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($payment->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($payment->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $paymentNode = new \SimpleXMLElement(
+            "<".Payments::N_PAYMENTS."></".Payments::N_PAYMENTS.">"
+        );
+        $payment     = new Payment(new ErrorRegister());
+        $payment->setATCUD("");
+        $payment->setCustomerID("");
+        $payment->setDescription("");
+        $payment->setPaymentRefNo("");
+        $payment->setPeriod(-1);
+        $payment->setSourceID("");
+        $payment->setSystemID("");
+
+        $xml = $payment->createXmlNode($paymentNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($payment->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDocTotalcal(): void
+    {
+        $payment = new Payment(new ErrorRegister());
+        $payment->setDocTotalcal(new \Rebelo\SaftPt\Validate\DocTotalCalc());
+        $this->assertInstanceOf(
+            \Rebelo\SaftPt\Validate\DocTotalCalc::class,
+            $payment->getDocTotalcal()
+        );
     }
 }

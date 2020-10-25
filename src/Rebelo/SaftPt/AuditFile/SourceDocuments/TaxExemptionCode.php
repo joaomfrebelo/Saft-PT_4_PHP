@@ -27,7 +27,32 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 /**
- * TaxExemptionCode
+ * TaxExemptionCode<br>
+ *  It shall be filled in with the code of the reason for exemption or non-settlement,
+ * which is included in the "Manual de Integração de Software – Comunicação das Faturas à AT"
+ * [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].
+ * The filling is required when fields 4.1.4.19.15.4. - TaxPercentage
+ * or 4.1.4.19.15.5. - TaxAmount are equal to zero.
+ * This field shall also be filled in, for the cases not to subject to the
+ * taxes mentioned in table 2.5. - TaxTable.
+ *
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M01()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M03()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M04()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M05()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M06()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M07()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M08()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M09()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M10()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M11()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M12()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M13()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M14()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M15()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M16()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M20()
+ *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M99()
  *
  * @author João Rebelo
  */
@@ -181,13 +206,29 @@ class TaxExemptionCode extends \Rebelo\Enum\AEnum
     const M99 = "M99";
 
     /**
-     * Mensção: <br>
-     * Norma:
+     * It shall be filled in with the code of the reason for exemption or non-settlement,
+     * which is included in the "Manual de Integração de Software – Comunicação das Faturas à AT"
+     * [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].
+     * The filling is required when fields 4.1.4.19.15.4. - TaxPercentage
+     * or 4.1.4.19.15.5. - TaxAmount are equal to zero.
+     * This field shall also be filled in, for the cases not to subject to the
+     * taxes mentioned in table 2.5. - TaxTable.
      *
      * @param string $value
+     * @since 1.0.0
      */
     public function __construct(string $value)
     {
-        return parent::__construct($value);
+        parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

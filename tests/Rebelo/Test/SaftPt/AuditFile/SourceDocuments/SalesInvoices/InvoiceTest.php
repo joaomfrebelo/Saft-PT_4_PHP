@@ -28,20 +28,16 @@ namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{
     SourceDocuments,
     ShipFrom,
-    ShipTo,
-    WithholdingTax,
-    WithholdingTaxType
+    ShipTo
 };
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\{
-    Line,
     Invoice,
     InvoiceType,
     DocumentStatus,
-    DocumentTotals,
     SpecialRegimes,
     SalesInvoices
 };
@@ -58,9 +54,10 @@ class InvoiceTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(Invoice::class);
@@ -68,287 +65,315 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $this->assertInstanceOf(Invoice::class, $invoice);
         $this->assertNull($invoice->getPeriod());
-        $this->assertNull($invoice->getTransactionID());
+        $this->assertNull($invoice->getTransactionID(false));
         $this->assertNull($invoice->getEacCode());
-        $this->assertNull($invoice->getShipTo());
-        $this->assertNull($invoice->getShipFrom());
+        $this->assertNull($invoice->getShipTo(false));
+        $this->assertNull($invoice->getShipFrom(false));
         $this->assertNull($invoice->getMovementEndTime());
         $this->assertNull($invoice->getMovementStartTime());
+        $this->assertNull($invoice->getDocTotalcal());
         $this->assertSame(0, \count($invoice->getLine()));
         $this->assertSame(0, \count($invoice->getWithholdingTax()));
+
+        $this->assertFalse($invoice->issetAtcud());
+        $this->assertFalse($invoice->issetCustomerID());
+        $this->assertFalse($invoice->issetDocumentStatus());
+        $this->assertFalse($invoice->issetDocumentTotals());
+        $this->assertFalse($invoice->issetHash());
+        $this->assertFalse($invoice->issetHashControl());
+        $this->assertFalse($invoice->issetInvoiceDate());
+        $this->assertFalse($invoice->issetInvoiceNo());
+        $this->assertFalse($invoice->issetInvoiceType());
+        $this->assertFalse($invoice->issetSourceID());
+        $this->assertFalse($invoice->issetSpecialRegimes());
+        $this->assertFalse($invoice->issetSystemEntryDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentNumber()
+    public function testDocumentNumber(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $docNum  = "FT FT/999";
-        $invoice->setInvoiceNo($docNum);
+        $this->assertTrue($invoice->setInvoiceNo($docNum));
+        $this->assertTrue($invoice->issetInvoiceNo());
         $this->assertSame($docNum, $invoice->getInvoiceNo());
-        try {
-            $invoice->setInvoiceNo("ORCA /1");
-            $this->fail("Set a wrong DocumentNumber should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "ORCA /1";
+        $this->assertFalse($invoice->setInvoiceNo($wrong));
+        $this->assertSame($wrong, $invoice->getInvoiceNo());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
+
+        $invoice->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($invoice->setInvoiceNo(""));
+        $this->assertSame("", $invoice->getInvoiceNo());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentStatus()
+    public function testDocumentStatus(): void
     {
-        $invoice = new Invoice();
-        $status  = new DocumentStatus();
-        $invoice->setDocumentStatus($status);
+        $invoice = new Invoice(new ErrorRegister());
         $this->assertInstanceOf(
             DocumentStatus::class, $invoice->getDocumentStatus()
         );
+        $this->assertTrue($invoice->issetDocumentStatus());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testAtcud()
+    public function testAtcud(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $atcud   = "999";
         $invoice->setAtcud($atcud);
+        $this->assertTrue($invoice->issetAtcud());
         $this->assertSame($atcud, $invoice->getAtcud());
-        try {
-            $invoice->setAtcud(str_pad($atcud, 120, "A"));
-            $this->fail("Set a wrong ATCUD should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($atcud, 120, "A");
+        $this->assertFalse($invoice->setAtcud($wrong));
+        $this->assertSame($wrong, $invoice->getAtcud());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHash()
+    public function testHash(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $hash    = \md5("hash");
-        $invoice->setHash($hash);
+        $this->assertTrue($invoice->setHash($hash));
+        $this->assertTrue($invoice->issetHash());
         $this->assertSame($hash, $invoice->getHash());
-        try {
-            $invoice->setHash(str_pad($hash, 200, "A"));
-            $this->fail("Set a Hash length to big should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($hash, 200, "A");
+        $this->assertFalse($invoice->setHash($wrong));
+        $this->assertSame($wrong, $invoice->getHash());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testHashControl()
+    public function testHashControl(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $control = "1";
-        $invoice->setHashControl($control);
+        $this->assertTrue($invoice->setHashControl($control));
+        $this->assertTrue($invoice->issetHashControl());
         $this->assertSame($control, $invoice->getHashControl());
-        try {
-            $invoice->setHashControl(\str_pad("Z1", 71, "9"));
-            $this->fail("Set a wrong HashControl should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad("Z1", 71, "9");
+        $this->assertFalse($invoice->setHashControl($wrong));
+        $this->assertSame($wrong, $invoice->getHashControl());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testPeriod()
+    public function testPeriod(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $period  = 9;
-        $invoice->setPeriod($period);
+        $this->assertTrue($invoice->setPeriod($period));
         $this->assertSame($period, $invoice->getPeriod());
-        try {
-            $invoice->setPeriod(0);
-            $this->fail("Set periodo to less than 1 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $invoice->setPeriod(13);
-            $this->fail("Set periodo to greater than 12 should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        $invoice->setPeriod(null);
+
+        $wrong = 0;
+        $this->assertFalse($invoice->setPeriod($wrong));
+        $this->assertSame($wrong, $invoice->getPeriod());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = 13;
+        $invoice->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($invoice->setPeriod($wrong2));
+        $this->assertSame($wrong2, $invoice->getPeriod());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
+
+        $this->assertTrue($invoice->setPeriod(null));
         $this->assertNull($invoice->getPeriod());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInvoiceDate()
+    public function testInvoiceDate(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $date    = new RDate();
         $invoice->setInvoiceDate($date);
         $this->assertSame($date, $invoice->getInvoiceDate());
+        $this->assertTrue($invoice->issetInvoiceDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInvoiceType()
+    public function testInvoiceType(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $type    = InvoiceType::FT;
         $invoice->setInvoiceType(new InvoiceType($type));
         $this->assertSame($type, $invoice->getInvoiceType()->get());
+        $this->assertTrue($invoice->issetInvoiceType());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSpecialRegimes()
+    public function testSpecialRegimes(): void
     {
-        $sepReg  = new SpecialRegimes();
-        $invoice = new Invoice();
-        $invoice->setSpecialRegimes($sepReg);
+        $invoice = new Invoice(new ErrorRegister());
         $this->assertInstanceOf(
             SpecialRegimes::class, $invoice->getSpecialRegimes()
         );
+        $this->assertTrue($invoice->issetSpecialRegimes());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSourceID()
+    public function testSourceID(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $source  = "Rebelo";
-        $invoice->setSourceID($source);
+        $this->assertTrue($invoice->setSourceID($source));
+        $this->assertTrue($invoice->issetSourceID());
         $this->assertSame($source, $invoice->getSourceID());
-        $invoice->setSourceID(\str_pad($source, 50, "9"));
+        $this->assertTrue($invoice->setSourceID(\str_pad($source, 50, "9")));
         $this->assertSame(30, \strlen($invoice->getSourceID()));
+
+        $this->assertFalse($invoice->setInvoiceNo(""));
+        $this->assertSame("", $invoice->getInvoiceNo());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testEACCode()
+    public function testEACCode(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $eaccode = "49499";
-        $invoice->setEacCode($eaccode);
+        $this->assertTrue($invoice->setEacCode($eaccode));
         $this->assertSame($eaccode, $invoice->getEacCode());
-        $invoice->setEacCode(null);
+        $this->assertTrue($invoice->setEacCode(null));
         $this->assertNull($invoice->getEacCode());
-        try {
-            $invoice->setEacCode("9999");
-            $this->fail("Set a wrong eaccode should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $invoice->setEacCode("999999");
-            $this->fail("Set a wrong eaccode should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = "9999";
+        $this->assertFalse($invoice->setEacCode($wrong));
+        $this->assertSame($wrong, $invoice->getEacCode());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
+
+        $wrong2 = "999999";
+        $invoice->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($invoice->setEacCode($wrong2));
+        $this->assertSame($wrong2, $invoice->getEacCode());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSystemEntryDate()
+    public function testSystemEntryDate(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $date    = new RDate();
         $invoice->setSystemEntryDate($date);
         $this->assertSame($date, $invoice->getSystemEntryDate());
+        $this->assertTrue($invoice->issetSystemEntryDate());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testTransactionId()
+    public function testTransactionId(): void
     {
-        $invoice     = new Invoice();
-        $transaction = new \Rebelo\SaftPt\AuditFile\TransactionID();
+        $invoice     = new Invoice(new ErrorRegister());
+        $transaction = $invoice->getTransactionID();
         $transaction->setDate(new RDate());
         $transaction->setDocArchivalNumber("A");
         $transaction->setJournalID("9");
-        $invoice->setTransactionID($transaction);
         $this->assertSame($transaction, $invoice->getTransactionID());
-        $invoice->setTransactionID(null);
-        $this->assertNull($invoice->getTransactionID());
+        $invoice->setTransactionIDAsNull();
+        $this->assertNull($invoice->getTransactionID(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCustomerId()
+    public function testCustomerId(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $id      = "A999";
         $invoice->setCustomerID($id);
+        $this->assertTrue($invoice->issetCustomerID());
         $this->assertSame($id, $invoice->getCustomerID());
-        try {
-            $invoice->setCustomerID(\str_pad($id, 31, "999999"));
-            $this->fail("Set a wrong customerid should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+
+        $wrong = \str_pad($id, 31, "999999");
+        $this->assertFalse($invoice->setCustomerID($wrong));
+        $this->assertSame($wrong, $invoice->getCustomerID());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testShipTo()
+    public function testShipTo(): void
     {
-        $invoice = new Invoice();
-        $shipTo  = new ShipTo();
-        $invoice->setShipTo($shipTo);
+        $invoice = new Invoice(new ErrorRegister());
         $this->assertInstanceOf(ShipTo::class, $invoice->getShipTo());
-        $invoice->setShipTo(null);
-        $this->assertNull($invoice->getShipTo());
+        $invoice->setShipToAsNull();
+        $this->assertNull($invoice->getShipTo(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testShipFrom()
+    public function testShipFrom(): void
     {
-        $invoice  = new Invoice();
-        $shipFrom = new ShipFrom();
-        $invoice->setShipFrom($shipFrom);
+        $invoice = new Invoice(new ErrorRegister());
         $this->assertInstanceOf(ShipFrom::class, $invoice->getShipFrom());
-        $invoice->setShipFrom(null);
-        $this->assertNull($invoice->getShipFrom());
+        $invoice->setShipFromAsNull();
+        $this->assertNull($invoice->getShipFrom(false));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementEndTime()
+    public function testMovementEndTime(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $endTime = new RDate();
         $invoice->setMovementEndTime($endTime);
         $this->assertSame($endTime, $invoice->getMovementEndTime());
@@ -357,11 +382,12 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testMovementStartTime()
+    public function testMovementStartTime(): void
     {
-        $invoice   = new Invoice();
+        $invoice   = new Invoice(new ErrorRegister());
         $startTime = new RDate();
         $invoice->setMovementStartTime($startTime);
         $this->assertSame($startTime, $invoice->getMovementStartTime());
@@ -370,70 +396,64 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testLine()
+    public function testLine(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $line  = new Line();
-            $line->setLineNumber($n + 1);
-            $index = $invoice->addToLine($line);
-            $this->assertSame($n, $index);
+            $invoice->addLine();
             $this->assertSame(
                 $n + 1, $invoice->getLine()[$n]->getLineNumber()
             );
         }
 
         $this->assertSame($nMax, \count($invoice->getLine()));
-
-        $unset = 2;
-        $invoice->unsetLine($unset);
-        $this->assertFalse($invoice->issetLine($unset));
-        $this->assertSame($nMax - 1, \count($invoice->getLine()));
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testDocumentTotals()
+    public function testDocumentTotals(): void
     {
-        $invoice = new Invoice();
-        $totals  = new DocumentTotals();
-        $invoice->setDocumentTotals($totals);
+        $invoice = new Invoice(new ErrorRegister());
+        $totals  = $invoice->getDocumentTotals();
         $this->assertSame($totals, $invoice->getDocumentTotals());
+        $this->assertTrue($invoice->issetDocumentTotals());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testWithholdingTax()
+    public function testWithholdingTax(): void
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
-            $tax   = new WithholdingTax();
+            $tax = $invoice->addWithholdingTax();
             $tax->setWithholdingTaxAmount($n + 0.99);
-            $index = $invoice->addToWithholdingTax($tax);
-            $this->assertSame($index, $n);
             $this->assertSame(
                 $n + 0.99,
-                $invoice->getWithholdingTax()[$index]->getWithholdingTaxAmount()
+                $invoice->getWithholdingTax()[$n]->getWithholdingTaxAmount()
             );
         }
-        $unset = 2;
-        $invoice->unsetWithholdingTax($unset);
-        $this->assertSame($nMax - 1, \count($invoice->getWithholdingTax()));
-        $this->assertFalse($invoice->issetWithholdingTax($unset));
+
+        $this->assertSame($nMax, \count($invoice->getWithholdingTax()));
     }
 
     /**
      * Reads all Invoice from the Demo SAFT in Test\Ressources
      * and parse then to Invoice class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -449,29 +469,109 @@ class InvoiceTest extends TestCase
         for ($n = 0; $n < $invoiceStack->count(); $n++) {
             /* @var $invoiceXml \SimpleXMLElement */
             $invoiceXml = $invoiceStack[$n];
-            $invoice    = new Invoice();
+            $invoice    = new Invoice(new ErrorRegister());
             $invoice->parseXmlNode($invoiceXml);
 
-            $xmlRootNode   = new \SimpleXMLElement(
-                '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
-                'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
-            );
+            $xmlRootNode   = (new \Rebelo\SaftPt\AuditFile\AuditFile())->createRootElement();
             $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
             $invoiceNode   = $sourceDocNode->addChild(SalesInvoices::N_SALESINVOICES);
 
             $xml = $invoice->createXmlNode($invoiceNode);
-
+            $xml->asXML("d:/todelete/invoice.xml");
             try {
                 $assertXml = $this->xmlIsEqual($invoiceXml, $xml);
-                $this->assertTrue($assertXml,
-                    \sprintf("Fail on Document '%s' with error '%s'",
-                        $invoiceXml->{Invoice::N_INVOICENO}, $assertXml)
+                $this->assertTrue(
+                    $assertXml,
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
+                        $invoiceXml->{Invoice::N_INVOICENO}, $assertXml
+                    )
                 );
             } catch (\Exception | \Error $e) {
-                $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
-                        $invoiceXml->{Invoice::N_INVOICENO}, $e->getMessage()));
+                $this->fail(
+                    \sprintf(
+                        "Fail on Document '%s' with error '%s'",
+                        $invoiceXml->{Invoice::N_INVOICENO}, $e->getMessage()
+                    )
+                );
             }
+
+            $this->assertEmpty($invoice->getErrorRegistor()->getLibXmlError());
+            $this->assertEmpty($invoice->getErrorRegistor()->getOnCreateXmlNode());
+            $this->assertEmpty($invoice->getErrorRegistor()->getOnSetValue());
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $invoiceNode = new \SimpleXMLElement(
+            "<".SalesInvoices::N_SALESINVOICES."></".SalesInvoices::N_SALESINVOICES.">"
+        );
+        $invoice     = new Invoice(new ErrorRegister());
+        $xml         = $invoice->createXmlNode($invoiceNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($invoice->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($invoice->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $invoiceNode = new \SimpleXMLElement(
+            "<".SalesInvoices::N_SALESINVOICES."></".SalesInvoices::N_SALESINVOICES.">"
+        );
+        $invoice     = new Invoice(new ErrorRegister());
+        $invoice->setAtcud("");
+        $invoice->setCustomerID("");
+        $invoice->setEacCode("");
+        $invoice->setHash("");
+        $invoice->setHashControl("");
+        $invoice->setInvoiceNo("");
+        $invoice->setPeriod(0);
+        $invoice->setSourceID("");
+
+        $xml = $invoice->createXmlNode($invoiceNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($invoice->getErrorRegistor()->getLibXmlError());
+    }
+
+   /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDocTotalcal(): void
+    {
+        $invoice = new Invoice(new ErrorRegister());
+        $invoice->setDocTotalcal(new \Rebelo\SaftPt\Validate\DocTotalCalc());
+        $this->assertInstanceOf(
+            \Rebelo\SaftPt\Validate\DocTotalCalc::class,
+            $invoice->getDocTotalcal()
+        );
     }
 }

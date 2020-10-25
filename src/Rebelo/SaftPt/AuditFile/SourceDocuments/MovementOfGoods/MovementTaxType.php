@@ -27,8 +27,12 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
- * MovementTaxType
- *
+ * MovementTaxType<br>
+ * This field shall be filled in with:<br>
+ * “IVA” – Value Added Tax;<br>
+ * “NS” – Not subject to VAT.<br>
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType IVA()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType NS()
  * @author João Rebelo
  * @since 1.0.0
  */
@@ -47,7 +51,10 @@ class MovementTaxType extends \Rebelo\Enum\AEnum
     const NS = "NS";
 
     /**
-     *  <!-- Tipo de Imposto da Tabela MovementOfGoods-->
+     * MovementTaxType<br>
+     * This field shall be filled in with:<br>
+     * “IVA” – Value Added Tax;<br>
+     * “NS” – Not subject to VAT.<br>
      * <pre>
      *   &lt;xs:simpleType name="SAFTPTMovementTaxType"&gt;
      *       &lt;xs:restriction base="xs:string"&gt;
@@ -71,6 +78,6 @@ class MovementTaxType extends \Rebelo\Enum\AEnum
      */
     public function get(): string
     {
-        return parent::get();
+        return (string) parent::get();
     }
 }

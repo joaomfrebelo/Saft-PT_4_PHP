@@ -27,10 +27,22 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
+ * Product<br>
+ * This table shall present the catalogue of products and types of services
+ * used in the invoicing system, which have been operated, and also the records,
+ * which are implicit in the operations and do not exist in the table of
+ * products/services of the application.
+ * If, for instance, there is an invoice with a line of freights that does
+ * not exist in the articles’ file of the application, this file shall be
+ * exported and represented as a product in the SAF-T (PT).
+ * This table shall also show taxes, tax rates, eco taxes, parafiscal charges
+ * mentioned in the invoice and contributing or not to the taxable basis
+ * for VAT or Stamp Duty - except VAT and Stamp duty, which shall be showed
+ * in 2.5. – TaxTable (Table of taxes).
  * <pre>
- * <!--    Estrutura de produto (AuditFile.MasterFiles.Product)-->
  *  &lt;xs:element name="Product"&gt;
  *      &lt;xs:complexType&gt;
  *          &lt;xs:sequence&gt;
@@ -44,7 +56,6 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *      &lt;/xs:complexType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * Class Product
  * @since 1.0.0
  */
 class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
@@ -93,14 +104,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     *     &lt;xs:element name="ProductType"&gt;
-     *      &lt;xs:annotation&gt;
-     *          &lt;xs:documentation&gt;Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
-     *              debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
-     *              Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
-     *              parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
-     *              impostos (TaxTable)e Impostos Especiais de Consumo &lt;/xs:documentation&gt;
-     *      &lt;/xs:annotation&gt;
+     *     &lt;xs:element name="ProductType"&gt;     *
      *      &lt;xs:simpleType&gt;
      *          &lt;xs:restriction base="xs:string"&gt;
      *              &lt;xs:enumeration value="P"/&gt;
@@ -113,20 +117,23 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *  &lt;/xs:element&gt;
      * </pre>
      *
-     * Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
-     * debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos  debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
-     * Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
-     * parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
-     * impostos (TaxTable)e Impostos Especiais de Consumo
-     * @var string $productType
+     * The field shall be filled in with:<br>
+     * “P” - Products;<br>
+     * “S” - Services;<br>
+     * “O” - Others (e.g. charged freights, advance payments received or sale of assets);<br>
+     * “E” - Excise duties - (e.g. IABA, ISP, IT);<br>
+     * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
+     * which shall appear in table 2.5. – TaxTable and Excise Duties which
+     * shall be filled in with the "E" code.
+     * @var \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType $productType
      * @since 1.0.0
      */
     private ProductType $productType;
 
     /**
      * <pre>
-     * <xs:element ref="ProductCode"/>
-     * <xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="ProductCode"/&gt;
+     * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
      * @var string $productCode
      * @since 1.0.0
@@ -135,8 +142,8 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     * <xs:element ref="ProductGroup" minOccurs="0"/>
-     * <xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
+     * &lt;xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * </pre>
      * @var string|null $productGroup
      * @since 1.0.0
@@ -162,8 +169,8 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     * <xs:element ref="ProductNumberCode"/>
-     * <xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="ProductNumberCode"/&gt;
+     * &lt;xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
      * @var string $productNumberCode
      * @since 1.0.0
@@ -172,7 +179,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     * <xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/>
+     * &lt;xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/&gt;
      * </pre>
      *
      * @var \Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails|null $customsDetails
@@ -181,9 +188,19 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private ?CustomsDetails $customsDetails = null;
 
     /**
-     *
+     * Product<br>
+     * This table shall present the catalogue of products and types of services
+     * used in the invoicing system, which have been operated, and also the records,
+     * which are implicit in the operations and do not exist in the table of
+     * products/services of the application.
+     * If, for instance, there is an invoice with a line of freights that does
+     * not exist in the articles’ file of the application, this file shall be
+     * exported and represented as a product in the SAF-T (PT).
+     * This table shall also show taxes, tax rates, eco taxes, parafiscal charges
+     * mentioned in the invoice and contributing or not to the taxable basis
+     * for VAT or Stamp Duty - except VAT and Stamp duty, which shall be showed
+     * in 2.5. – TaxTable (Table of taxes).
      * <pre>
-     * <!--    Estrutura de produto (AuditFile.MasterFiles.Product)-->
      *  &lt;xs:element name="Product"&gt;
      *      &lt;xs:complexType&gt;
      *          &lt;xs:sequence&gt;
@@ -197,22 +214,27 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *      &lt;/xs:complexType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Gets as productType
      * <br>
-     * Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
-     * debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos  debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
-     * Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
-     * parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
-     * impostos (TaxTable)e Impostos Especiais de Consumo
+     * The field shall be filled in with:<br>
+     * “P” - Products;<br>
+     * “S” - Services;<br>
+     * “O” - Others (e.g. charged freights, advance payments received or sale of assets);<br>
+     * “E” - Excise duties - (e.g. IABA, ISP, IT);<br>
+     * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
+     * which shall appear in table 2.5. – TaxTable and Excise Duties which
+     * shall be filled in with the "E" code.
      * @return \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType
+     * @throws \Error
      * @since 1.0.0
      */
     public function getProductType(): ProductType
@@ -223,13 +245,26 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
+     * Get if is set ProductType
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetProductType(): bool
+    {
+        return isset($this->productType);
+    }
+
+    /**
      * Sets a new productType
      * <br>
-     * Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
-     * debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos  debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
-     * Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
-     * parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
-     * impostos (TaxTable)e Impostos Especiais de Consumo
+     * The field shall be filled in with:<br>
+     * “P” - Products;<br>
+     * “S” - Services;<br>
+     * “O” - Others (e.g. charged freights, advance payments received or sale of assets);<br>
+     * “E” - Excise duties - (e.g. IABA, ISP, IT);<br>
+     * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
+     * which shall appear in table 2.5. – TaxTable and Excise Duties which
+     * shall be filled in with the "E" code.
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType $productType
      * @return void
      * @since 1.0.0
@@ -238,18 +273,23 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->productType = $productType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->productType->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->productType->get()
+                )
+            );
     }
 
     /**
-     * Gets as productCode
-     *
+     * Gets ProductCode<br>
+     * The unique code in the list of products
      * <pre>
-     * <xs:element ref="ProductCode"/>
-     * <xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="ProductCode"/&gt;
+     * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getProductCode(): string
@@ -260,33 +300,54 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets productCode
-     *
+     * Get if is set ProductCode
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetProductCode(): bool
+    {
+        return isset($this->productCode);
+    }
+
+    /**
+     * Sets Product Code<br>
+     * The unique code in the list of products
      * <pre>
-     * <xs:element ref="ProductCode"/>
-     * <xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="ProductCode"/&gt;
+     * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
-     *
      * @param string $productCode
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setProductCode(string $productCode): void
+    public function setProductCode(string $productCode): bool
     {
-        $this->productCode = static::valTextMandMaxCar($productCode, 60,
-                __METHOD__);
+        try {
+            $this->productCode = static::valTextMandMaxCar(
+                $productCode, 60, __METHOD__
+            );
+            $return            = true;
+        } catch (AuditFileException $e) {
+            $this->productCode = $productCode;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
+            $return            = false;
+        }
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productCode));
+        return $return;
     }
 
     /**
      * Gets productGroup
      * <pre>
-     * <xs:element ref="ProductGroup" minOccurs="0"/>
-     * <xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
+     * &lt;xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * </pre>
      * @return string|null
+     * @throws \Error
      * @since 1.0.0
      */
     public function getProductGroup(): ?string
@@ -299,34 +360,47 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * Sets a new productGroup
      * <pre>
-     * <xs:element ref="ProductGroup" minOccurs="0"/>
-     * <xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
+     * &lt;xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * </pre>
      * @param string|null $productGroup
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setProductGroup(?string $productGroup): void
+    public function setProductGroup(?string $productGroup): bool
     {
-        if ($productGroup === null) {
-            $this->productGroup = null;
-        } else {
-            $this->productGroup = static::valTextMandMaxCar($productGroup, 50,
-                    __METHOD__);
+        try {
+            $this->productGroup = $productGroup === null ?
+                null : static::valTextMandMaxCar($productGroup, 50, __METHOD__);
+            $return             = true;
+        } catch (AuditFileException $e) {
+            $this->productGroup = $productGroup;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductGroup_not_valid");
+            $return             = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->productGroup === null ? "null" : $this->productGroup));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->productGroup === null ? "null" : $this->productGroup
+                )
+            );
+        return $return;
     }
 
     /**
-     * Gets as productDescription
+     * Gets as productDescription<br>
+     * It shall correspond to the usual name of the goods or services provided,
+     * specifying the elements necessary to determine the applicable tax rate.
      * <pre>
-     * <xs:minLength value="2"/>
-     * <xs:maxLength value="200"/>
+     * &lt;xs:minLength value="2"/&gt;
+     * &lt;xs:maxLength value="200"/&gt;
      * </pre>
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getProductDescription(): string
@@ -337,38 +411,68 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new productDescription     *
-     * <pre>
-     * <xs:minLength value="2"/>
-     * <xs:maxLength value="200"/>
-     * </pre>
-     * @param string $productDescription
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set ProductDescription
+     * @return bool
      * @since 1.0.0
      */
-    public function setProductDescription(string $productDescription): void
+    public function issetProductDescription(): bool
     {
-        if (\strlen($productDescription) < 2) {
-            $msg = "Product description must have at leats 2 chars";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        $this->productDescription = static::valTextMandMaxCar($productDescription,
-                200, __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->productDescription));
+        return isset($this->productDescription);
     }
 
     /**
-     * Gets as productNumberCode
+     * Sets a new productDescription<br>     *
+     * It shall correspond to the usual name of the goods or services provided,
+     * specifying the elements necessary to determine the applicable tax rate.
      * <pre>
-     * <xs:element ref="ProductNumberCode"/>
-     * <xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:minLength value="2"/&gt;
+     * &lt;xs:maxLength value="200"/&gt;
+     * </pre>
+     * @param string $productDescription
+     * @return bool true if the value is valid
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
+    public function setProductDescription(string $productDescription): bool
+    {
+        try {
+            if (\strlen($productDescription) < 2) {
+                $msg = "Product description must have at leats 2 chars";
+                \Logger::getLogger(\get_class($this))
+                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                throw new AuditFileException($msg);
+            }
+            $this->productDescription = static::valTextMandMaxCar(
+                $productDescription, 200, __METHOD__
+            );
+            $return                   = true;
+        } catch (AuditFileException $e) {
+            $this->productDescription = $productDescription;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductDescription_not_valid");
+            $return                   = false;
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->productDescription
+                )
+            );
+        return $return;
+    }
+
+    /**
+     * Gets as productNumberCode<br>
+     * The product’s EAN Code (bar code) shall be used.
+     * If the EAN Code does not exist, fill in with the content of field 2.4.2. – ProductCode.
+     * <pre>
+     * &lt;xs:element ref="ProductNumberCode"/&gt;
+     * &lt;xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getProductNumberCode(): string
@@ -379,56 +483,78 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new productNumberCode
-     * <pre>
-     * <xs:element ref="ProductNumberCode"/>
-     * <xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/>
-     * </pre>
-     * @param string $productNumberCode
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set ProductNumberCode
+     * @return bool
      * @since 1.0.0
      */
-    public function setProductNumberCode(string $productNumberCode): void
+    public function issetProductNumberCode(): bool
     {
-        $this->productNumberCode = static::valTextMandMaxCar($productNumberCode,
-                60, __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->productDescription));
+        return isset($this->productNumberCode);
     }
 
     /**
-     * Gets as customsDetails
+     * Sets ProductNumberCode<br>
+     * The product’s EAN Code (bar code) shall be used.
+     * If the EAN Code does not exist, fill in with the content of field 2.4.2. – ProductCode.
      * <pre>
-     * <xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/>
+     * &lt;xs:element ref="ProductNumberCode"/&gt;
+     * &lt;xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
-     * @return \Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails|null
+     * @param string $productNumberCode
+     * @return bool true if the value is valid
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function getCustomsDetails(): ?CustomsDetails
+    public function setProductNumberCode(string $productNumberCode): bool
     {
+        try {
+            $this->productNumberCode = static::valTextMandMaxCar(
+                $productNumberCode, 60, __METHOD__
+            );
+            $return                  = true;
+        } catch (AuditFileException $e) {
+            $this->productNumberCode = $productNumberCode;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("ProductNumberCode_not_valid");
+            $return                  = false;
+        }
+        \Logger::getLogger(\get_class($this))->debug(
+            \sprintf(__METHOD__." setted to '%s'", $this->productNumberCode)
+        );
+        return $return;
+    }
+
+    /**
+     * Gets CustomsDetails<br>
+     * When you getCustomsDetails for the first time the instance will be created
+     * <pre>
+     * &lt;xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/&gt;
+     * </pre>
+     * @return \Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails
+     * @since 1.0.0
+     */
+    public function getCustomsDetails(): CustomsDetails
+    {
+        if (isset($this->customsDetails) === false) {
+            $this->customsDetails = new CustomsDetails($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->info(\sprintf(__METHOD__));
         return $this->customsDetails;
     }
 
     /**
-     * Sets a new customsDetails
-     * <pre>
-     * <xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/>
-     * </pre>
-     * @param \Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails|null $customsDetails
-     * @return void
+     * Get if is set CustomsDetails
+     * @return bool
      * @since 1.0.0
      */
-    public function setCustomsDetails(?CustomsDetails $customsDetails): void
+    public function issetCustomsDetails(): bool
     {
-        $this->customsDetails = $customsDetails;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." setted ");
+        return isset($this->customsDetails);
     }
 
     /**
-     *
+     * Create Xml node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
@@ -439,27 +565,59 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== MasterFiles::N_MASTERFILES) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                MasterFiles::N_MASTERFILES, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                MasterFiles::N_MASTERFILES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $prodNode = $node->addChild(static::N_PRODUCT);
-        $prodNode->addChild(static::N_PRODUCTTYPE,
-            $this->getProductType()->get());
-        $prodNode->addChild(static::N_PRODUCTCODE, $this->getProductCode());
+
+        if (isset($this->productType)) {
+            $prodNode->addChild(
+                static::N_PRODUCTTYPE, $this->getProductType()->get()
+            );
+        } else {
+            $node->addChild(static::N_PRODUCTTYPE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("ProductType_not_valid");
+        }
+
+        if (isset($this->productCode)) {
+            $prodNode->addChild(static::N_PRODUCTCODE, $this->getProductCode());
+        } else {
+            $prodNode->addChild(static::N_PRODUCTCODE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("ProductCode_not_valid");
+        }
+
         if ($this->getProductGroup() !== null) {
             $prodNode->addChild(static::N_PRODUCTGROUP, $this->getProductGroup());
         }
-        $prodNode->addChild(static::N_PRODUCTDESCRIPTION,
-            $this->getProductDescription());
-        $prodNode->addChild(static::N_PRODUCTNUMBERCODE,
-            $this->getProductNumberCode());
+
+        if (isset($this->productDescription)) {
+            $prodNode->addChild(
+                static::N_PRODUCTDESCRIPTION, $this->getProductDescription()
+            );
+        } else {
+            $prodNode->addChild(static::N_PRODUCTDESCRIPTION);
+            $this->getErrorRegistor()->addOnCreateXmlNode("ProductDescription_not_valid");
+        }
+
+        if (isset($this->productNumberCode)) {
+            $prodNode->addChild(
+                static::N_PRODUCTNUMBERCODE, $this->getProductNumberCode()
+            );
+        } else {
+            $prodNode->addChild(static::N_PRODUCTNUMBERCODE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("ProductNumberCode_not_valid");
+        }
+
         if ($this->getCustomsDetails() !== null) {
             $this->getCustomsDetails()->createXmlNode($prodNode);
         }
+
         return $prodNode;
     }
 
@@ -475,27 +633,30 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_PRODUCT) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_PRODUCT, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_PRODUCT, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
+
         $this->setProductType(new ProductType((string) $node->{static::N_PRODUCTTYPE}));
         $this->setProductCode((string) $node->{static::N_PRODUCTCODE});
+
         if ($node->{static::N_PRODUCTGROUP}->count() > 0) {
             $this->setProductGroup((string) $node->{static::N_PRODUCTGROUP});
         } else {
             $this->setProductGroup(null);
         }
+
         $this->setProductDescription((string) $node->{static::N_PRODUCTDESCRIPTION});
+
         $this->setProductNumberCode((string) $node->{static::N_PRODUCTNUMBERCODE});
+
         if ($node->{static::N_CUSTOMSDETAILS}->count() > 0) {
-            $cusDet = new CustomsDetails();
-            $cusDet->parseXmlNode($node->{static::N_CUSTOMSDETAILS});
-            $this->setCustomsDetails($cusDet);
-        } else {
-            $this->setCustomsDetails(null);
+            $this->getCustomsDetails()->parseXmlNode($node->{static::N_CUSTOMSDETAILS});
         }
     }
 }

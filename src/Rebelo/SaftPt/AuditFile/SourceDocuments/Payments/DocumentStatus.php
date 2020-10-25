@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 
 /**
@@ -86,7 +87,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_SOURCEPAYMENT = "SourcePayment";
 
     /**
-     * <xs:element ref="PaymentStatus"/>
+     * &lt;xs:element ref="PaymentStatus"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus
      * @since 1.0.0
      */
@@ -94,10 +95,10 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     * <xs:element ref="PaymentStatusDate"/>
-     * <xs:simpleType name="SAFdateTimeType">
-     *   <xs:restriction base="xs:dateTime"/>
-     *  </xs:simpleType>
+     * &lt;xs:element ref="PaymentStatusDate"/&gt;
+     * &lt;xs:simpleType name="SAFdateTimeType">
+     *   &lt;xs:restriction base="xs:dateTime"/&gt;
+     *  &lt;/xs:simpleType/&gt;
      * </pre>
      * @var \Rebelo\Date\Date
      * @since 1.0.0
@@ -106,7 +107,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * Reason<br>
-     * <xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @var string|null
      * @since 1.0.0
      */
@@ -114,7 +115,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * SourceID
-     * <xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/>
+     * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * @var string
      * @since 1.0.0
      */
@@ -156,30 +157,52 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *  &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get PaymentStatus<br>
-     * <xs:element ref="PaymentStatus"/>
+     * To fill in with:<br>
+     * “N” – Normal receipt in force;<br>
+     * “A” – Cancelled receipt.<br>
+     * &lt;xs:element ref="PaymentStatus"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus
+     * @throws \Error
      * @since 1.0.0
      */
     public function getPaymentStatus(): PaymentStatus
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->paymentStatus->get()));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->paymentStatus->get()
+                )
+            );
         return $this->paymentStatus;
     }
 
     /**
-     * Set PaymentStatus<br>
-     * <xs:element ref="PaymentStatus"/>
+     * Get if is set PaymentStatus
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetPaymentStatus(): bool
+    {
+        return isset($this->paymentStatus);
+    }
+
+    /**
+     * Set PaymentStatus<br><br>
+     * To fill in with:<br>
+     * “N” – Normal receipt in force;<br>
+     * “A” – Cancelled receipt.<br>
+     * &lt;xs:element ref="PaymentStatus"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus $paymentStatus
      * @return void
      * @since 1.0.0
@@ -188,36 +211,59 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->paymentStatus = $paymentStatus;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->paymentStatus->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->paymentStatus->get()
+                )
+            );
     }
 
     /**
-     * Get PaymentStatusDate
+     * Get PaymentStatusDate<br>
+     * Date of the last record of the receipt status to the second.
+     * Date and time type: “YYYY-MM-DDThh:mm:ss”.
      * <pre>
-     * <xs:element ref="PaymentStatusDate"/>
-     * <xs:simpleType name="SAFdateTimeType">
-     *   <xs:restriction base="xs:dateTime"/>
-     *  </xs:simpleType>
+     * &lt;xs:element ref="PaymentStatusDate"/&gt;
+     * &lt;xs:simpleType name="SAFdateTimeType">
+     *   &lt;xs:restriction base="xs:dateTime"/&gt;
+     *  &lt;/xs:simpleType/&gt;
      * </pre>
      * @return \Rebelo\Date\Date
+     * @throws \Error
      * @since 1.0.0
      */
     public function getPaymentStatusDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->paymentStatusDate->format(RDate::DATE_T_TIME)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->paymentStatusDate->format(RDate::DATE_T_TIME)
+                )
+            );
         return $this->paymentStatusDate;
     }
 
     /**
-     * Set PaymentStatusDate
+     * Get if is set PaymentStatusDate
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetPaymentStatusDate(): bool
+    {
+        return isset($this->paymentStatusDate);
+    }
+
+    /**
+     * Set PaymentStatusDate<br>
+     * Date of the last record of the receipt status to the second.
+     * Date and time type: “YYYY-MM-DDThh:mm:ss”.
      * <pre>
-     * <xs:element ref="PaymentStatusDate"/>
-     * <xs:simpleType name="SAFdateTimeType">
-     *   <xs:restriction base="xs:dateTime"/>
-     *  </xs:simpleType>
+     * &lt;xs:element ref="PaymentStatusDate"/&gt;
+     * &lt;xs:simpleType name="SAFdateTimeType">
+     *   &lt;xs:restriction base="xs:dateTime"/&gt;
+     *  &lt;/xs:simpleType/&gt;
      * </pre>
      * @param \Rebelo\Date\Date $paymentStatusDate
      * @return void
@@ -227,45 +273,72 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->paymentStatusDate = $paymentStatusDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->paymentStatusDate->format(RDate::DATE_T_TIME)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->paymentStatusDate->format(RDate::DATE_T_TIME)
+                )
+            );
     }
 
     /**
-     * Get reason
-     * <xs:element ref="Reason" minOccurs="0"/><br>
-     * <xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * Get reason<br>
+     * Reason for changing the receipt status.<br>
+     * &lt;xs:element ref="Reason" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getReason(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->reason === null ? "null" : $this->reason));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->reason === null ? "null" : $this->reason
+                )
+            );
         return $this->reason;
     }
 
     /**
      * Set reason<br>
-     * <xs:element ref="Reason" minOccurs="0"/><br>
-     * <xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/>
+     * Reason for changing the receipt status.<br>
+     * &lt;xs:element ref="Reason" minOccurs="0"/&gt;<br>
+     * &lt;xs:element name="Reason" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @param string|null $reason
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setReason(?string $reason): void
+    public function setReason(?string $reason): bool
     {
-        $this->reason = $reason === null ? null :
-            $this->valTextMandMaxCar($reason, 50, __METHOD__);
+        try {
+            $this->reason = $reason === null ? null :
+                $this->valTextMandMaxCar($reason, 50, __METHOD__);
+            $return       = true;
+        } catch (AUditFileException $e) {
+            $this->reason = $reason;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $return       = false;
+            $this->getErrorRegistor()->addOnSetValue("Reason_not_valid");
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->reason === null ? "null" : $this->reason));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->reason === null ? "null" : $this->reason
+                )
+            );
+        return $return;
     }
 
     /**
-     * <xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/>
+     * Get SourceID<br>
+     * User responsible for the current receipt status.<br>
+     * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getSourceID(): string
@@ -276,28 +349,48 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * <xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/>
-     * @param string $sourceID
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set SourceID
+     * @return bool
      * @since 1.0.0
      */
-    public function setSourceID(string $sourceID): void
+    public function issetSourceID(): bool
     {
-        $this->sourceID = $this->valTextMandMaxCar($sourceID, 30, __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->sourceID));
+        return isset($this->sourceID);
     }
 
     /**
-     * Get SourcePayment
+     * Set SourceID<br>
+     * User responsible for the current receipt status.<br>
+     * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     * @param string $sourceID
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setSourceID(string $sourceID): bool
+    {
+        try {
+            $this->sourceID = $this->valTextMandMaxCar($sourceID, 30, __METHOD__);
+            $return         = true;
+        } catch (AuditFileException $e) {
+            $this->sourceID = $sourceID;
+            $return         = false;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("Reason_not_valid");
+        }
+        \Logger::getLogger(\get_class($this))
+            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->sourceID));
+        return $return;
+    }
+
+    /**
+     * Get SourcePayment<br>
+     * To be filled in with:<br>
+     * “P” – Receipt created in the application;<br>
+     * “I” – Receipt integrated and produced in a different application;<br>
+     * “M” – Recovered or manually issued receipt.<br>
      * <pre>
-     * &lt;xs:simpleType name="SAFTPTSourcePayment"&gt;
-     *   &lt;xs:annotation&gt;
-     *       &lt;xs:documentation&gt;P para documento produzido na aplicacao, I para documento integrado e
-     *           produzido noutra aplicacao, M para documento proveniente de recuperacao ou de
-     *           emissao manual &lt;/xs:documentation&gt;
-     *   &lt;/xs:annotation&gt;
+     * &lt;xs:simpleType name="SAFTPTSourcePayment"&gt;     *
      *   &lt;xs:restriction base="xs:string"&gt;
      *       &lt;xs:enumeration value="P"/&gt;
      *       &lt;xs:enumeration value="I"/&gt;
@@ -306,25 +399,39 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;/xs:simpleType&gt;
      * </pre>
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourcePayment
+     * @throws \Error
      * @since 1.0.0
      */
     public function getSourcePayment(): SourcePayment
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->sourcePayment->get()));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->sourcePayment->get()
+                )
+            );
         return $this->sourcePayment;
     }
 
     /**
-     * Set SourcePayment
+     * Get if is set SourcePayment
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetSourcePayment(): bool
+    {
+        return isset($this->sourcePayment);
+    }
+
+    /**
+     * Set SourcePayment<br>
+     * To be filled in with:<br>
+     * “P” – Receipt created in the application;<br>
+     * “I” – Receipt integrated and produced in a different application;<br>
+     * “M” – Recovered or manually issued receipt.<br>
      * <pre>
      * &lt;xs:simpleType name="SAFTPTSourcePayment"&gt;
-     *   &lt;xs:annotation&gt;
-     *       &lt;xs:documentation&gt;P para documento produzido na aplicacao, I para documento integrado e
-     *           produzido noutra aplicacao, M para documento proveniente de recuperacao ou de
-     *           emissao manual &lt;/xs:documentation&gt;
-     *   &lt;/xs:annotation&gt;
      *   &lt;xs:restriction base="xs:string"&gt;
      *       &lt;xs:enumeration value="P"/&gt;
      *       &lt;xs:enumeration value="I"/&gt;
@@ -340,8 +447,12 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->sourcePayment = $sourcePayment;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->sourcePayment->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->sourcePayment->get()
+                )
+            );
     }
 
     /**
@@ -356,7 +467,8 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
                 Payment::N_PAYMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -366,14 +478,24 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $docStatusNode = $node->addChild(static::N_DOCUMENTSTATUS);
 
-        $docStatusNode->addChild(
-            static::N_PAYMENTSTATUS, $this->getPaymentStatus()->get()
-        );
+        if (isset($this->paymentStatus)) {
+            $docStatusNode->addChild(
+                static::N_PAYMENTSTATUS, $this->getPaymentStatus()->get()
+            );
+        } else {
+            $docStatusNode->addChild(static::N_PAYMENTSTATUS);
+            $this->getErrorRegistor()->addOnCreateXmlNode("PaymentStatus_not_valid");
+        }
 
-        $docStatusNode->addChild(
-            static::N_PAYMENTSTATUSDATE,
-            $this->getPaymentStatusDate()->format(RDate::DATE_T_TIME)
-        );
+        if (isset($this->paymentStatusDate)) {
+            $docStatusNode->addChild(
+                static::N_PAYMENTSTATUSDATE,
+                $this->getPaymentStatusDate()->format(RDate::DATE_T_TIME)
+            );
+        } else {
+            $docStatusNode->addChild(static::N_PAYMENTSTATUSDATE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("PaymentStatusDate_not_valid");
+        }
 
         if ($this->getReason() !== null) {
             $docStatusNode->addChild(
@@ -381,13 +503,23 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
             );
         }
 
-        $docStatusNode->addChild(
-            static::N_SOURCEID, $this->getSourceID()
-        );
+        if (isset($this->sourceID)) {
+            $docStatusNode->addChild(
+                static::N_SOURCEID, $this->getSourceID()
+            );
+        } else {
+            $docStatusNode->addChild(static::N_SOURCEID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
+        }
 
-        $docStatusNode->addChild(
-            static::N_SOURCEPAYMENT, $this->getSourcePayment()->get()
-        );
+        if (isset($this->sourcePayment)) {
+            $docStatusNode->addChild(
+                static::N_SOURCEPAYMENT, $this->getSourcePayment()->get()
+            );
+        } else {
+            $docStatusNode->addChild(static::N_SOURCEPAYMENT);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SourcePayment_not_valid");
+        }
 
         return $docStatusNode;
     }
@@ -404,14 +536,17 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENTSTATUS) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_DOCUMENTSTATUS, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_DOCUMENTSTATUS, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $payStatus = new PaymentStatus((string) $node->{static::N_PAYMENTSTATUS});
+
         $this->setPaymentStatus($payStatus);
 
         $this->setPaymentStatusDate(
@@ -427,7 +562,8 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $this->setSourceID((string) $node->{static::N_SOURCEID});
 
-        $sourcePay = new SourcePayment((string) $node->{static::N_SOURCEPAYMENT});
-        $this->setSourcePayment($sourcePay);
+        $this->setSourcePayment(
+            new SourcePayment((string) $node->{static::N_SOURCEPAYMENT})
+        );
     }
 }

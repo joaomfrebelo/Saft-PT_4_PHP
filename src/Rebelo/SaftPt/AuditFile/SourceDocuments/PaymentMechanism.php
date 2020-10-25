@@ -27,21 +27,24 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 /**
- * PaymentMechanism
- *
- *
+ * PaymentMechanism<br>
+ * The field shall be filled in with:<br>
+ * “CC” - Credit card;<br>
+ * “CD” - Debit card;<br>
+ * “CH” - Bank cheque;<br>
+ * “CI” – International Letter of Credit;<br>
+ * “CO” - Gift cheque or gift card<br>
+ * “CS” - Balance compensation in current account;<br>
+ * “DE” - Electronic Money, for example, on fidelity or points cards;<br>
+ * “LC” - Commercial Bill;<br>
+ * “MB” - Payment references for ATM;<br>
+ * “NU” – Cash;<br>
+ * “OU” – Other means not mentioned;<br>
+ * “PR” – Exchange of goods;<br>
+ * “TB” – Banking transfer or authorized direct debit;<br>
+ * “TR” - Non-wage compensation titles regardless of their support
+ * [paper or digital format], for instance, meal or education vouchers, etc.<br>
  * &lt;xs:element name="PaymentMechanism"&gt;
- *    &lt;xs:annotation&gt;
- *        &lt;xs:documentation&gt; Restricao:CC para Cartao credito, CD para Cartao debito, CH para
- *            Cheque bancario, CI para credito documentario internacional, CO para Cheque ou
- *            cartao oferta, CS para Compensacao de saldos em conta corrente, DE para Dinheiro
- *            eletronico, por exemplo em cartoes de fidelidade ou de pontos, LC para Letra
- *            comercial, MB para Referencias de pagamento para Multibanco, NU para Numerario, OU
- *            para Outros meios aqui nao assinalados, PR para Permuta de bens, TB para
- *            Transferencia bancaria ou debito direto autorizado, TR para titulos de compensacao
- *            extrassalarial independentemente do seu suporte, por exemplo, titulos de refeicao,
- *            educacao, etc. &lt;/xs:documentation&gt;
- *    &lt;/xs:annotation&gt;
  *    &lt;xs:simpleType&gt;
  *        &lt;xs:restriction base="xs:string"&gt;
  *            &lt;xs:enumeration value="CC"/&gt;
@@ -61,20 +64,37 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
  *        &lt;/xs:restriction&gt;
  *    &lt;/xs:simpleType&gt;
  * &lt;/xs:element&gt;
+ *
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CD()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CH()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CI()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CO()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CS()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism DE()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism LC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism MB()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism NU()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism OU()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism PR()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism TB()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism TR()
+ *
+ *
  * @author João Rebelo
  * @since 1.0.0
  */
 class PaymentMechanism extends \Rebelo\Enum\AEnum
 {
     /**
-     * CC para Cartao credito<br>
+     * “CC” - Credit card;<br>
      * &lt;xs:enumeration value="CC"/&gt;
      * @since 1.0.0
      */
     const CC = "CC";
 
     /**
-     * CD para Cartao debito<br>
+     * “CD” - Debit card;<br>
      * &lt;xs:enumeration value="CD"/&gt;
      *
      * @since 1.0.0
@@ -82,105 +102,109 @@ class PaymentMechanism extends \Rebelo\Enum\AEnum
     const CD = "CD";
 
     /**
-     * CH para Cheque bancario<br>
+     * “CH” - Bank cheque<br>
      * &lt;xs:enumeration value="CH"/&gt;
      * @since 1.0.0
      */
     const CH = "CH";
 
     /**
-     * CI para credito documentario internacional<br>
+     * “CI” – International Letter of Credit<br>
      * &lt;xs:enumeration value="CI"/&gt;
      * @since 1.0.0
      */
     const CI = "CI";
 
     /**
-     * CO para Cheque ou cartao oferta<br>
+     * “CO” - Gift cheque or gift card<br>
      * &lt;xs:enumeration value="CO"/&gt;
      * @since 1.0.0
      */
     const CO = "CO";
 
     /**
-     * CS para Compensacao de saldos em conta corrente<br>
+     * “CS” - Balance compensation in current account<br>
      * &lt;xs:enumeration value="CS"/&gt;
      * @since 1.0.0
      */
     const CS = "CS";
 
     /**
-     * DE para Dinheiro eletronico,
-     * por exemplo em cartoes de fidelidade ou de pontos<br>
+     * “DE” - Electronic Money, for example, on fidelity or points cards<br>
      * &lt;xs:enumeration value="DE"/&gt;
      * @since 1.0.0
      */
     const DE = "DE";
 
     /**
-     * LC para Letra comercial<br>
+     * “LC” - Commercial Bill;<<br>
      * &lt;xs:enumeration value="LC"/&gt;
      * @since 1.0.0
      */
     const LC = "LC";
 
     /**
-     * MB para Referencias de pagamento para Multibanco<br>
+     * “MB” - Payment references for ATM;<br>
      * &lt;xs:enumeration value="MB"/&gt;
      * @since 1.0.0
      */
     const MB = "MB";
 
     /**
-     * NU para Numerario<br>
+     * NU “NU” – Cash;<br>
      * &lt;xs:enumeration value="NU"/&gt;
      * @since 1.0.0
      */
     const NU = "NU";
 
     /**
-     * OU para Outros meios aqui nao assinalados<br>
+     * “OU” – Other means not mentioned<br>
      * &lt;xs:enumeration value="OU"/&gt;
      * @since 1.0.0
      */
     const OU = "OU";
 
     /**
-     * PR para Permuta de bens<br>
+     * “PR” – Exchange of goods<br>
      * &lt;xs:enumeration value="PR"/&gt;
      * @since 1.0.0
      */
     const PR = "PR";
 
     /**
-     * TB para Transferencia bancaria ou debito direto autorizado<br>
+     * “TB” – Banking transfer or authorized direct debit<br>
      * &lt;xs:enumeration value="TB"/&gt;
      * @since 1.0.0
      */
     const TB = "TB";
 
     /**
-     * TR para titulos de compensacao extrassalarial
-     * independentemente do seu suporte<br>
+     * “TR” - Non-wage compensation titles regardless of their support
+     * [paper or digital format], for instance, meal or education vouchers, etc.<br>
      * &lt;xs:enumeration value="TR"/&gt;
      * @since 1.0.0
      */
     const TR = "TR";
 
     /**
-     *
+     * PaymentMechanism<br>
+     * The field shall be filled in with:<br>
+     * “CC” - Credit card;<br>
+     * “CD” - Debit card;<br>
+     * “CH” - Bank cheque;<br>
+     * “CI” – International Letter of Credit;<br>
+     * “CO” - Gift cheque or gift card<br>
+     * “CS” - Balance compensation in current account;<br>
+     * “DE” - Electronic Money, for example, on fidelity or points cards;<br>
+     * “LC” - Commercial Bill;<br>
+     * “MB” - Payment references for ATM;<br>
+     * “NU” – Cash;<br>
+     * “OU” – Other means not mentioned;<br>
+     * “PR” – Exchange of goods;<br>
+     * “TB” – Banking transfer or authorized direct debit;<br>
+     * “TR” - Non-wage compensation titles regardless of their support
+     * [paper or digital format], for instance, meal or education vouchers, etc.<br>
      * &lt;xs:element name="PaymentMechanism"&gt;
-     *    &lt;xs:annotation&gt;
-     *        &lt;xs:documentation&gt; Restricao:CC para Cartao credito, CD para Cartao debito, CH para
-     *            Cheque bancario, CI para credito documentario internacional, CO para Cheque ou
-     *            cartao oferta, CS para Compensacao de saldos em conta corrente, DE para Dinheiro
-     *            eletronico, por exemplo em cartoes de fidelidade ou de pontos, LC para Letra
-     *            comercial, MB para Referencias de pagamento para Multibanco, NU para Numerario, OU
-     *            para Outros meios aqui nao assinalados, PR para Permuta de bens, TB para
-     *            Transferencia bancaria ou debito direto autorizado, TR para titulos de compensacao
-     *            extrassalarial independentemente do seu suporte, por exemplo, titulos de refeicao,
-     *            educacao, etc. &lt;/xs:documentation&gt;
-     *    &lt;/xs:annotation&gt;
      *    &lt;xs:simpleType&gt;
      *        &lt;xs:restriction base="xs:string"&gt;
      *            &lt;xs:enumeration value="CC"/&gt;
@@ -202,11 +226,20 @@ class PaymentMechanism extends \Rebelo\Enum\AEnum
      * &lt;/xs:element&gt;
      *
      * @param string $value
-     * @return \Rebelo\Enum\type
      * @since 1.0.0
      */
     public function __construct(string $value)
     {
-        return parent::__construct($value);
+       parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

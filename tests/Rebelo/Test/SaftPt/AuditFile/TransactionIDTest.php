@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\TransactionID;
 use Rebelo\Date\Date as RDate;
 
@@ -40,9 +40,10 @@ class TransactionIDTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(TransactionID::class);
@@ -50,63 +51,67 @@ class TransactionIDTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstanceSetsAndGets()
+    public function testInstanceSetsAndGets(): void
     {
-        $transactioID = new TransactionID();
+        $transactioID = new TransactionID(new ErrorRegister());
         $this->assertInstanceOf(TransactionID::class, $transactioID);
         $transDate    = RDate::parse(RDate::SQL_DATE, "2019-10-05");
         $transactioID->setDate($transDate);
         $this->assertSame($transDate, $transactioID->getDate());
 
         $journal = "AAA999";
-        $transactioID->setJournalID($journal);
+        $this->assertTrue($transactioID->setJournalID($journal));
         $this->assertSame($journal, $transactioID->getJournalID());
 
         $doc = "CCC999";
-        $transactioID->setDocArchivalNumber($doc);
+        $this->assertTrue($transactioID->setDocArchivalNumber($doc));
         $this->assertSame($doc, $transactioID->getDocArchivalNumber());
     }
 
-    public function testExceptions()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testExceptions(): void
     {
-        $transactioID = new TransactionID();
+        $transactioID = new TransactionID(new ErrorRegister());
 
-        try {
-            $transactioID->setJournalID("");
-            $this->fail("Set JournalID to a string that nor respect the regexp must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $transactioID->setJournalID(\str_pad("A", 31, "A"));
-            $this->fail("Set JournalID to a string that nor respect the regexp must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($transactioID->setJournalID(""));
+        $this->assertSame("", $transactioID->getJournalID());
+        $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
 
-        try {
-            $transactioID->setDocArchivalNumber("");
-            $this->fail("Set DocArchivalNumber to a string that nor respect the regexp must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-        try {
-            $transactioID->setDocArchivalNumber(\str_pad("A", 31, "A"));
-            $this->fail("Set DocArchivalNumber to a string that nor respect the regexp must throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
+        $wrong = \str_pad("A", 31, "A");
+        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($transactioID->setJournalID($wrong));
+        $this->assertSame($wrong, $transactioID->getJournalID());
+        $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
+
+        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($transactioID->setDocArchivalNumber(""));
+        $this->assertSame("", $transactioID->getDocArchivalNumber());
+        $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
+
+        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($transactioID->setDocArchivalNumber($wrong));
+        $this->assertSame($wrong, $transactioID->getDocArchivalNumber());
+        $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
     }
+    /**
+     * @author João Rebelo
+     * @test
+     */
 
-    public function testCreateAndParseXML()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateAndParseXML(): void
     {
-        $transactioID = new TransactionID();
+        $transactioID = new TransactionID(new ErrorRegister());
         $transDate    = RDate::parse(RDate::SQL_DATE, "2019-10-05");
         $transactioID->setDate($transDate);
         $journal      = "AAA999";
@@ -128,7 +133,7 @@ class TransactionIDTest extends TestCase
             (string) $tranNode
         );
 
-        $parsed = new TransactionID();
+        $parsed = new TransactionID(new ErrorRegister());
         $parsed->parseXmlNode($tranNode);
 
         $this->assertSame(
@@ -138,5 +143,62 @@ class TransactionIDTest extends TestCase
 
         $this->assertSame($journal, $parsed->getJournalID());
         $this->assertSame($doc, $parsed->getDocArchivalNumber());
+
+        $this->assertEmpty($transactioID->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($transactioID->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($transactioID->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $customerNode  = new \SimpleXMLElement(
+            "<root></root>"
+        );
+        $transactionID = new TransactionID(new ErrorRegister());
+        $xml           = $transactionID->createXmlNode($customerNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($transactionID->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($transactionID->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($transactionID->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $supplierNode = new \SimpleXMLElement(
+            "<root></root>"
+        );
+        $transactioID = new TransactionID(new ErrorRegister());
+        $transactioID->setDocArchivalNumber("");
+        $transactioID->setJournalID("");
+
+        $xml = $transactioID->createXmlNode($supplierNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to get as xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($transactioID->getErrorRegistor()->getLibXmlError());
     }
 }

@@ -27,57 +27,68 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 /**
- * Description of MovementStatus
- *
+ * MovementStatus<br>
+ * The field must be filled in with:<br>
+ * “N” - Normal;<br>
+ * “T” - On behalf of third parties;<br>
+ * “A” - Cancelled document;<br>
+ * “F” – Billed document, even if partially, when for the same document there is
+ * also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice;<br>
+ * “R” - Summary document for other documents created in other applications and
+ * generated in this application.<br>
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus N()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus T()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus A()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus F()
  * @author João Rebelo
  * @since 1.0.0
  */
 class MovementStatus extends \Rebelo\Enum\AEnum
 {
     /**
-     * N para Normal
+     * “N” - Normal
      * @since 1.0.0
      */
     const N = "N";
 
     /**
-     * T para Por conta de terceiros
+     * “T” - On behalf of third parties
      * @since 1.0.0
      */
     const T = "T";
 
     /**
-     * A para Documento anulado
+     * “A” - Cancelled document
      * @since 1.0.0
      */
     const A = "A";
 
     /**
-     * F para Documento faturado, quando para este documento tambem
-     * existe na tabela 4.1. para Documentos comerciais a clientes
-     * (SalesInvoices) o correspondente do tipo fatura ou fatura simplificada
+     * “F” – Billed document, even if partially, when for the same document there is
+     * also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice
      * @since 1.0.0
      */
     const F = "F";
 
     /**
-     * R para Documento de resumo doutros documentos
-     * criados noutras aplicacoes e gerado nesta aplicacao
+     * “R” - Summary document for other documents created in other applications and
+     * generated in this application
      * @since 1.0.0
      */
     const R = "R";
 
     /**
-     * MovementStatus
+     * MovementStatus<br>
+     * The field must be filled in with:<br>
+     * “N” - Normal;<br>
+     * “T” - On behalf of third parties;<br>
+     * “A” - Cancelled document;<br>
+     * “F” – Billed document, even if partially, when for the same document there is
+     * also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice;<br>
+     * “R” - Summary document for other documents created in other applications and
+     * generated in this application.<br>
      * <pre>
      * &lt;xs:element name="MovementStatus"&gt;
-     *   &lt;xs:annotation&gt;
-     *       &lt;xs:documentation&gt;N para Normal, T para Por conta de terceiros, A para Documento
-     *           anulado, F para Documento faturado, quando para este documento tambem existe na
-     *           tabela 4.1. para Documentos comerciais a clientes (SalesInvoices) o correspondente
-     *           do tipo fatura ou fatura simplificada, R para Documento de resumo doutros documentos
-     *           criados noutras aplicacoes e gerado nesta aplicacao &lt;/xs:documentation&gt;
-     *   &lt;/xs:annotation&gt;
      *   &lt;xs:simpleType&gt;
      *       &lt;xs:restriction base="xs:string"&gt;
      *           &lt;xs:enumeration value="N"/&gt;
@@ -94,6 +105,16 @@ class MovementStatus extends \Rebelo\Enum\AEnum
      */
     public function __construct(string $value)
     {
-        return parent::__construct($value);
+        parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

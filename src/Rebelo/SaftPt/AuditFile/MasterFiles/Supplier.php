@@ -28,8 +28,12 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SupplierAddress;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
+ * 2.3. – Supplier<br>
+ * This table shall contain all the records operated during the tax
+ * period in the relevant database.
  * <pre>
  *     &lt;xs:element name="Supplier"&gt;
  *       &lt;xs:complexType&gt;
@@ -55,7 +59,7 @@ use Rebelo\SaftPt\AuditFile\SupplierAddress;
  * Class Supplier
  * @since 1.0.0
  */
-class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Supplier extends ACustomerSupplier
 {
     /**
      * Node name
@@ -73,31 +77,7 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_ACCOUNTID = "AccountID";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
     const N_SUPPLIERTAXID = "SupplierTaxID";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_COMPANYNAME = "CompanyName";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_CONTACT = "Contact";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_BILLINGADDRESS = "BillingAddress";
 
     /**
      * Node name
@@ -106,121 +86,37 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_SHIPTOADDRESS = "ShipFromAddress";
 
     /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_TELEPHONE = "Telephone";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_FAX = "Fax";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_EMAIL = "Email";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_WEBSITE = "Website";
-
-    /**
-     * Node name
-     * @since 1.0.0
-     */
-    const N_SELFBILLINGINDICATOR = "SelfBillingIndicator";
-
-    /**
-     * <xs:element ref="SupplierID"/>
+     * &lt;xs:element ref="SupplierID"/&gt;
      * @var string $supplierID
      * @since 1.0.0
      */
     private string $supplierID;
 
     /**
-     * <xs:element ref="AccountID"/>
-     * @var string $accountID
-     * @since 1.0.0
-     */
-    private string $accountID;
-
-    /**
-     * <xs:element ref="SupplierTaxID"/>
+     * &lt;xs:element ref="SupplierTaxID"/&gt;
      * @var string $supplierTaxID
      * @since 1.0.0
      */
     private string $supplierTaxID;
 
     /**
-     * <xs:element ref="CompanyName"/>
-     * @var string $companyName
-     * @since 1.0.0
-     */
-    private string $companyName;
-
-    /**
-     * <xs:element ref="Contact" minOccurs="0"/>
-     * @var string|null $contact
-     * @since 1.0.0
-     */
-    private ?string $contact = null;
-
-    /**
-     * <xs:element ref="BillingAddress"/>
+     * &lt;xs:element ref="BillingAddress"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SupplierAddress $billingAddress
      * @since 1.0.0
      */
     private SupplierAddress $billingAddress;
 
     /**
-     * <xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SupplierAddress[] $shipFromAddress
      * @since 1.0.0
      */
     private array $shipFromAddress = array();
 
     /**
-     * <xs:element ref="Telephone" minOccurs="0"/>
-     * @var string|null $telephone
-     * @since 1.0.0
-     */
-    private ?string $telephone = null;
-
-    /**
-     * <xs:element ref="Fax" minOccurs="0"/>
-     * @var string|null $fax
-     * @since 1.0.0
-     */
-    private ?string $fax = null;
-
-    /**
-     * <xs:element ref="Email" minOccurs="0"/>
-     * @var string|null $email
-     * @since 1.0.0
-     */
-    private ?string $email = null;
-
-    /**
-     * <xs:element ref="Website" minOccurs="0"/>
-     * @var string|null $website
-     * @since 1.0.0
-     */
-    private ?string $website = null;
-
-    /**
-     * <xs:element ref="SelfBillingIndicator"/>
-     * @var bool $selfBillingIndicator
-     * @since 1.0.0
-     */
-    private bool $selfBillingIndicator;
-
-    /**
-     *
+     * 2.3. – Supplier<br>
+     * This table shall contain all the records operated during the tax
+     * period in the relevant database.
      * <pre>
      *     &lt;xs:element name="Supplier"&gt;
      *       &lt;xs:complexType&gt;
@@ -241,19 +137,23 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *       &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Gets as supplierID<br>
-     * <xs:element ref="SupplierID"/><br>
-     * <xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/>
+     * In the list of suppliers cannot exist more than one record
+     * with the same SupplierID.<br>
+     * &lt;xs:element ref="SupplierID"/&gt;<br>
+     * &lt;xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      *
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getSupplierID(): string
@@ -264,97 +164,55 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
+     * Get if is set SupplierID
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetSupplierID(): bool
+    {
+        return isset($this->supplierID);
+    }
+
+    /**
      * Sets a new supplierID<br>
-     * <xs:element ref="SupplierID"/><br>
-     * <xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/>
+     * In the list of suppliers cannot exist more than one record
+     * with the same SupplierID.<br>
+     * &lt;xs:element ref="SupplierID"/&gt;<br>
+     * &lt;xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      *
      * @param string $supplierID
-     * @return void
-     * @throws AuditFileException
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setSupplierID(string $supplierID): void
+    public function setSupplierID(string $supplierID): bool
     {
-        $this->supplierID = static::valTextMandMaxCar($supplierID, 30,
-                __METHOD__);
+        try {
+            $this->supplierID = static::valTextMandMaxCar(
+                $supplierID, 30,
+                __METHOD__
+            );
+            $return           = true;
+        } catch (AuditFileException $e) {
+            $this->supplierID = $supplierID;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("SupplierID_not_valid");
+            $return           = false;
+        }
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->supplierID));
-    }
 
-    /**
-     * Gets as accountID<br>
-     * <br>
-     * <xs:element ref="AccountID"/><br>
-     * <pre>
-     * <xs:element name="AccountID">
-     *      <xs:simpleType>
-     *          <xs:restriction base="xs:string">
-     *              <xs:pattern value="(([^^]*)|Desconhecido)"/>
-     *              <xs:minLength value="1"/>
-     *              <xs:maxLength value="30"/>
-     *          </xs:restriction>
-     *      </xs:simpleType>
-     *  </xs:element>
-     * </pre>
-     *
-     * @return string
-     * @since 1.0.0
-     */
-    public function getAccountID(): string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->accountID));
-        return $this->accountID;
-    }
-
-    /**
-     * Sets a new accountID<br>
-     * <xs:element ref="AccountID"/><br>
-     * <pre>
-     * <xs:element name="AccountID">
-     *      <xs:simpleType>
-     *          <xs:restriction base="xs:string">
-     *              <xs:pattern value="(([^^]*)|Desconhecido)"/>
-     *              <xs:minLength value="1"/>
-     *              <xs:maxLength value="30"/>
-     *          </xs:restriction>
-     *      </xs:simpleType>
-     *  </xs:element>
-     * </pre>
-     *
-     * @param string $accountID
-     * @return void
-     * @since 1.0.0
-     */
-    public function setAccountID(string $accountID): void
-    {
-        $msg    = null;
-        $length = \strlen($accountID);
-        if ($length < 1 || $length > 30) {
-            $msg = sprintf("AccountID length must be between 1 and 30 but have '%s'",
-                $length);
-        }
-
-        $regexp = "/(([^^]*)|Desconhecido)/";
-        if (\preg_match($regexp, $accountID) !== 1) {
-            $msg = sprintf("AccountID does not respect the regexp '%s'", $regexp);
-        }
-        if ($msg !== null) {
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        $this->accountID = $accountID;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->accountID));
+        return $return;
     }
 
     /**
      * Gets as supplierTaxID<br>
-     * <xs:element ref="SupplierTaxID"/><br>
-     * <xs:element name="SupplierTaxID" type="SAFPTtextTypeMandatoryMax30Car"/>
+     * It must be indicated without the prefix of the country.<br>
+     * &lt;xs:element ref="SupplierTaxID"/&gt;<br>
+     * &lt;xs:element name="SupplierTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      *
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getSupplierTaxID(): string
@@ -365,179 +223,97 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new supplierTaxID<br>
-     * <xs:element ref="SupplierTaxID"/><br>
-     * <xs:element name="SupplierTaxID" type="SAFPTtextTypeMandatoryMax30Car"/>
-     *
-     * @param string $supplierTaxID
-     * @return void
+     * Get if is set SupplierTaxID
+     * @return bool
      * @since 1.0.0
      */
-    public function setSupplierTaxID(string $supplierTaxID): void
+    public function issetSupplierTaxID(): bool
+    {
+        return isset($this->supplierTaxID);
+    }
+
+    /**
+     * Sets a new supplierTaxID<br>
+     * It must be indicated without the prefix of the country.<br>
+     * &lt;xs:element name="SupplierTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
+     * @param string $supplierTaxID
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setSupplierTaxID(string $supplierTaxID): bool
     {
         $msg    = null;
         $length = \strlen($supplierTaxID);
         if ($length < 1 || $length > 30) {
-            $msg = sprintf("SupplierTaxID length must be between 1 and 30 but have '%s'",
-                $length);
+            $msg    = sprintf(
+                "SupplierTaxID length must be between 1 and 30 but have '%s'",
+                $length
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("SupplierTaxID_not_valid");
+        } else {
+            $return = true;
         }
         $this->supplierTaxID = $supplierTaxID;
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->supplierTaxID));
-    }
-
-    /**
-     * Gets as companyName<br>
-     * <xs:element ref="CompanyName"/><br>
-     * <xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/>
-     *
-     * @return string
-     * @since 1.0.0
-     */
-    public function getCompanyName(): string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->companyName));
-        return $this->companyName;
-    }
-
-    /**
-     * Sets a new companyName<br>
-     * <xs:element ref="CompanyName"/><br>
-     * <xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/>
-     *
-     * @param string $companyName
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setCompanyName(string $companyName): void
-    {
-        $this->companyName = static::valTextMandMaxCar($companyName, 100,
-                __METHOD__);
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyName));
-    }
-
-    /**
-     * Gets as contact<br>
-     * <xs:element ref="Contact" minOccurs="0"/><br>
-     * <xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getContact(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->contact === null ? "null" : $this->contact));
-        return $this->contact;
-    }
-
-    /**
-     * Sets a new contact<br>
-     * <xs:element ref="Contact" minOccurs="0"/><br>
-     * <xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/>
-     *
-     * @param string|null $contact
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setContact(?string $contact): void
-    {
-
-        if ($contact === null) {
-            $this->contact = null;
-        } else {
-            $this->contact = static::valTextMandMaxCar($contact, 50, __METHOD__);
-            \Logger::getLogger(\get_class($this))
-                ->debug(\sprintf(__METHOD__." setted to '%s'",
-                        $this->contact === null ? "null" : $this->contact));
-        }
+        return $return;
     }
 
     /**
      * Gets as billingAddress<br>
-     * <xs:element ref="BillingAddress"/><br>
-     * <xs:element name="BillingAddress" type="AddressStructure"/>
+     * Head office address or the fixed /permanent establishment address,
+     * located on Portuguese territory.<br>
+     * The Address instance will be create once you get this method<br>
+     * &lt;xs:element ref="BillingAddress"/&gt;<br>
+     * &lt;xs:element name="BillingAddress" type="AddressStructure"/&gt;
      *
      * @return \Rebelo\SaftPt\AuditFile\SupplierAddress
+     * @throws \Error
      * @since 1.0.0
      */
     public function getBillingAddress(): SupplierAddress
     {
+        if (isset($this->billingAddress) === false) {
+            $this->billingAddress = new SupplierAddress($this->getErrorRegistor());
+        }
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->billingAddress;
     }
 
     /**
-     * Sets a new billingAddress<br>
-     * <xs:element ref="BillingAddress"/><br>
-     * <xs:element name="BillingAddress" type="SupplierAddressStructure"/>
-     *
-     * @param \Rebelo\SaftPt\AuditFile\SupplierAddress $billingAddress
-     * @return void
-     * @since 1.0.0
-     */
-    public function setBillingAddress(SupplierAddress $billingAddress): void
-    {
-        $this->billingAddress = $billingAddress;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-    }
-
-    /**
-     * Adds as shipFromAddress<br>
-     * <xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/><br>
-     * <xs:element name="ShipFromAddress" type="SupplierAddressStructure"/>
-     *
-     * @param \Rebelo\SaftPt\AuditFile\SupplierAddress $shipFromAddress
-     * @return int The stack index
-     * @since 1.0.0
-     */
-    public function addToShipFromAddress(SupplierAddress $shipFromAddress): int
-    {
-        if (\count($this->shipFromAddress) === 0) {
-            $index = 0;
-        } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->shipFromAddress);
-            $index = $keys[\count($keys) - 1] + 1;
-        }
-        $this->shipFromAddress[$index] = $shipFromAddress;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, "ShipFromAddress add to index ".\strval($index));
-        return $index;
-    }
-
-    /**
-     * isset shipFromAddress
-     *
-     * @param int $index
+     * Get if is set BillingAddress
      * @return bool
      * @since 1.0.0
      */
-    public function issetShipFromAddress(int $index): bool
+    public function issetBillingAddress(): bool
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return isset($this->shipFromAddress[$index]);
+        return isset($this->billingAddress);
     }
 
     /**
-     * unset shipFromAddress
+     * Adds ShipFromAddress<br>
+     * This method every time that is invoked will return a new Instance
+     * of 'Address' that shal must be populated with the correct values.<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary.<br>
+     * &lt;xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
+     * &lt;xs:element name="ShipFromAddress" type="SupplierAddressStructure"/&gt;
      *
-     * @param int $index
-     * @return void
+     * @return \Rebelo\SaftPt\AuditFile\SupplierAddress The new SupplierAddress instance that was add and must be populated
      * @since 1.0.0
      */
-    public function unsetShipFromAddress(int $index): void
+    public function addShipFromAddress(): SupplierAddress
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        unset($this->shipFromAddress[$index]);
+        $shipFromAddress         = new SupplierAddress($this->getErrorRegistor());
+        $this->shipFromAddress[] = $shipFromAddress;
+        \Logger::getLogger(\get_class($this))->debug(
+            __METHOD__."ShipFromAddress add to stack "
+        );
+        return $shipFromAddress;
     }
 
     /**
@@ -553,224 +329,6 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Gets as telephone<br>
-     * <xs:element ref="Telephone" minOccurs="0"/><br>
-     * <xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getTelephone(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->telephone === null ? "null" : $this->telephone));
-        return $this->telephone;
-    }
-
-    /**
-     * Sets a new telephone<br>
-     * <xs:element ref="Telephone" minOccurs="0"/><br>
-     * <xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @param string|null $telephone
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setTelephone(?string $telephone): void
-    {
-        if ($telephone === null) {
-            $this->telephone = null;
-        } else {
-            $this->telephone = static::valTextMandMaxCar($telephone, 20,
-                    __METHOD__);
-        }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->telephone === null ? "null" : $this->telephone));
-    }
-
-    /**
-     * Gets as fax<br>
-     * <xs:element ref="Fax" minOccurs="0"/><br>
-     * <xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getFax(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->fax === null ? "null" : $this->fax));
-        return $this->fax;
-    }
-
-    /**
-     * Sets a new fax<br>
-     * <xs:element ref="Fax" minOccurs="0"/><br>
-     * <xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/>
-     * @param string|null $fax
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setFax(?string $fax): void
-    {
-        if ($fax === null) {
-            $this->fax = null;
-        } else {
-            $this->fax = static::valTextMandMaxCar($fax, 20, __METHOD__);
-        }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->fax === null ? "null" : $this->fax));
-    }
-
-    /**
-     * Gets as email<br>
-     * <xs:element ref="Email" minOccurs="0"/><br>
-     * <xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getEmail(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->email === null ? "null" : $this->email));
-        return $this->email;
-    }
-
-    /**
-     * Sets a new email<br>
-     * <xs:element ref="Email" minOccurs="0"/><br>
-     * <xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/>
-     *
-     * @param string|null $email
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setEmail(?string $email): void
-    {
-        if ($email === null) {
-            $this->email = $email;
-        } else {
-            if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
-                \strlen($email) > 254) {
-                $msg = $email." is not a valide email";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
-                throw new AuditFileException($msg);
-            } else {
-                $this->email = $email;
-            }
-        }
-        $this->email = $email;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->email === null ? "null" : $this->email));
-    }
-
-    /**
-     * Gets as website<br>
-     * <xs:element ref="Website" minOccurs="0"/><br>
-     * <xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/>
-     *
-     * @return string|null
-     * @since 1.0.0
-     */
-    public function getWebsite(): ?string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->website === null ? "null" : $this->website));
-        return $this->website;
-    }
-
-    /**
-     * Sets a new website<br>
-     * <xs:element ref="Website" minOccurs="0"/><br>
-     * <xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/>
-     *
-     * @param string|null $website
-     * @return void
-     * @throws AuditFileException
-     * @since 1.0.0
-     */
-    public function setWebsite(?string $website): void
-    {
-        if ($website === null) {
-            $this->website = $website;
-        } else {
-            if (\filter_var($website, FILTER_VALIDATE_URL) === false ||
-                \strlen($website) > 60) {
-                $msg = "The URL is not valide";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
-                throw new AuditFileException($msg);
-            }
-            $this->website = $website;
-        }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->website === null ? "null" : $this->website));
-    }
-
-    /**
-     * Gets as selfBillingIndicator
-     * <pre>
-     * <xs:element ref="SelfBillingIndicator"/>
-     * <!-- Indicador de Autofaturacao -->
-     *   <xs:element name="SelfBillingIndicator">
-     *       <xs:simpleType>
-     *           <xs:restriction base="xs:integer">
-     *               <xs:minInclusive value="0"/>
-     *               <xs:maxInclusive value="1"/>
-     *           </xs:restriction>
-     *       </xs:simpleType>
-     *   </xs:element>
-     * </pre>
-     * @return bool
-     * @since 1.0.0
-     */
-    public function getSelfBillingIndicator(): bool
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->website ? "true" : "false"));
-        return $this->selfBillingIndicator;
-    }
-
-    /**
-     * Sets a new selfBillingIndicator
-     * <pre>
-     * &lt;xs:element ref="SelfBillingIndicator"/&gt;
-     * &lt;!-- Indicador de Autofaturacao --&gt;
-     *   &lt;xs:element name="SelfBillingIndicator"&gt;
-     *       &lt;xs:simpleType&gt;
-     *           &lt;xs:restriction base="xs:integer"&gt;
-     *               &lt;xs:minInclusive value="0"/&gt;
-     *               &lt;xs:maxInclusive value="1"/&gt;
-     *           &lt;/xs:restriction&gt;
-     *       &lt;/xs:simpleType&gt;
-     *   &lt;/xs:element&gt;
-     * </pre>
-     *
-     * @param bool $selfBillingIndicator
-     * @return void
-     * @since 1.0.0
-     */
-    public function setSelfBillingIndicator(bool $selfBillingIndicator): void
-    {
-        $this->selfBillingIndicator = $selfBillingIndicator;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->website ? "true" : "false"));
-    }
-
-    /**
      * Create the xml node for Supplier
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
@@ -782,24 +340,61 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== MasterFiles::N_MASTERFILES) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                MasterFiles::N_MASTERFILES, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                MasterFiles::N_MASTERFILES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $supplierNode = $node->addChild(static::N_SUPPLIER);
-        $supplierNode->addChild(static::N_SUPPLIERID, $this->getSupplierID());
-        $supplierNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
-        $supplierNode->addChild(static::N_SUPPLIERTAXID,
-            \strval($this->getSupplierTaxID()));
-        $supplierNode->addChild(static::N_COMPANYNAME, $this->getCompanyName());
+
+        if (isset($this->supplierID)) {
+            $supplierNode->addChild(static::N_SUPPLIERID, $this->getSupplierID());
+        } else {
+            $supplierNode->addChild(static::N_SUPPLIERID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SupplierID_not_valid");
+        }
+
+
+        if (isset($this->accountID)) {
+            $supplierNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
+        } else {
+            $supplierNode->addChild(static::N_ACCOUNTID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("AccountID_not_valid");
+        }
+
+        if (isset($this->supplierTaxID)) {
+            $supplierNode->addChild(
+                static::N_SUPPLIERTAXID, \strval($this->getSupplierTaxID())
+            );
+        } else {
+            $supplierNode->addChild(static::N_SUPPLIERTAXID);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SupplierTaxID_not_valid");
+        }
+
+        if (isset($this->companyName)) {
+            $supplierNode->addChild(
+                static::N_COMPANYNAME, $this->getCompanyName()
+            );
+        } else {
+            $supplierNode->addChild(static::N_COMPANYNAME);
+            $this->getErrorRegistor()->addOnCreateXmlNode("CompanyName_not_valid");
+        }
+
+
         if ($this->getContact() !== null) {
             $supplierNode->addChild(static::N_CONTACT, $this->getContact());
         }
+
         $billAddr = $supplierNode->addChild(static::N_BILLINGADDRESS);
-        $this->getBillingAddress()->createXmlNode($billAddr);
+        if (isset($this->billingAddress)) {
+            $this->getBillingAddress()->createXmlNode($billAddr);
+        } else {
+            $this->getErrorRegistor()->addOnCreateXmlNode("BillingAddress_not_valid");
+        }
 
         foreach ($this->getShipFromAddress() as $shipAddr) {
             /* @var $shipAddr Address */
@@ -817,11 +412,20 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         if ($this->getEmail() !== null) {
             $supplierNode->addChild(static::N_EMAIL, $this->getEmail());
         }
+
         if ($this->getWebsite() !== null) {
             $supplierNode->addChild(static::N_WEBSITE, $this->getWebsite());
         }
-        $supplierNode->addChild(static::N_SELFBILLINGINDICATOR,
-            $this->getSelfBillingIndicator() ? "1" : "0");
+
+        if (isset($this->selfBillingIndicator)) {
+            $supplierNode->addChild(
+                static::N_SELFBILLINGINDICATOR,
+                $this->getSelfBillingIndicator() ? "1" : "0"
+            );
+        } else {
+            $supplierNode->addChild(static::N_SELFBILLINGINDICATOR);
+            $this->getErrorRegistor()->addOnCreateXmlNode("SelfBillingIndicator_not_valid");
+        }
         return $supplierNode;
     }
 
@@ -837,8 +441,10 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_SUPPLIER) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_SUPPLIER, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_SUPPLIER, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -853,19 +459,19 @@ class Supplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         } else {
             $this->setContact(null);
         }
-        $billAddr = new SupplierAddress();
-        $billAddr->parseXmlNode($node->{static::N_BILLINGADDRESS});
-        $this->setBillingAddress($billAddr);
+
+        $this->getBillingAddress()->parseXmlNode($node->{static::N_BILLINGADDRESS});
 
         $count = $node->{static::N_SHIPTOADDRESS}->count();
         for ($i = 0; $i <= $count - 1; $i++) {
-            $shFromAddr = new SupplierAddress();
-            $shFromAddr->parseXmlNode($node->{static::N_SHIPTOADDRESS}[$i]);
-            $this->addToShipFromAddress($shFromAddr);
+            $this->addShipFromAddress()
+                ->parseXmlNode($node->{static::N_SHIPTOADDRESS}[$i]);
         }
 
-        $this->setSelfBillingIndicator(((int) $node->{static::N_SELFBILLINGINDICATOR})
-            === 1 ? true : false );
+        $this->setSelfBillingIndicator(
+            ((int) $node->{static::N_SELFBILLINGINDICATOR}) === 1 ? true : false
+        );
+
         if ($node->{static::N_TELEPHONE}->count() > 0) {
             $this->setTelephone((string) $node->{static::N_TELEPHONE});
         } else {

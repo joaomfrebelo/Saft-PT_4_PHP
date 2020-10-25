@@ -26,11 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
 /**
- * References
+ * References<br>
+ * References to invoices on the correspondent correcting documents.
+ * If there is a need to make more than one reference,
+ * this structure can be generated as many times as necessary
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -38,121 +42,174 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
     /**
-     * <xs:complexType name="References">
+     * &lt;xs:complexType name="References">
      * Node name
      * @since 1.0.0
      */
     const N_REFERENCES = "References";
 
     /**
-     * <xs:element ref="Reference" minOccurs="0"/>
+     * &lt;xs:element ref="Reference" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_REFERENCE = "Reference";
 
     /**
-     * <xs:element ref="Reason" minOccurs="0"/>
+     * &lt;xs:element ref="Reason" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
     const N_REASON = "Reason";
 
     /**
-     * <xs:element ref = "Reference" minOccurs = "0"/><br>
-     * <xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref = "Reference" minOccurs = "0"/&gt;<br>
+     * &lt;xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/&gt;
      * @var string|null
      */
     private ?string $reference = null;
 
     /**
-     * <xs:element ref = "Reason" minOccurs = "0"/><br>
-     * <xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/>
+     * &lt;xs:element ref = "Reason" minOccurs = "0"/&gt;<br>
+     * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @var string|null
      */
     private ?string $reason = null;
 
     /**
-     * <!-- Estrutura de referencias a outros documentos em documentos retificativos de faturas--><br>
+     * References<br>
+     * References to invoices on the correspondent correcting documents.
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary
+     * <pre>
      *   &lt;xs:complexType name="References"&gt;
      *       &lt;xs:sequence&gt;
      *           &lt;xs:element ref="Reference" minOccurs="0"/&gt;
      *           &lt;xs:element ref="Reason" minOccurs="0"/&gt;
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
+     * </pre>
+     * @param ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     * <xs:element ref = "Reference" minOccurs = "0"/><br>
-     * <xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/>
-     *
+     * Get Reference<br>
+     * Reference to the invoice or simplified invoice, using its unique
+     * identification if existing in the respective systems.
+     * The numbering structure of the field of origin shall be used.<br>
+     * &lt;xs:element ref = "Reference" minOccurs = "0"/&gt;<br>
+     * &lt;xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/&gt;     *
      * @return string|null
      * @since 1.0.0
      */
     public function getReference(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->reference === null ? "null" : $this->reference));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->reference === null ? "null" : $this->reference
+                )
+            );
         return $this->reference;
     }
 
     /**
-     * <xs:element ref = "Reference" minOccurs = "0"/><br>
-     * <xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/>
+     * Set Reference<br>
+     * Reference to the invoice or simplified invoice, using its unique
+     * identification if existing in the respective systems.
+     * The numbering structure of the field of origin shall be used.<br>
+     * &lt;xs:element ref = "Reference" minOccurs = "0"/&gt;<br>
+     * &lt;xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/&gt;
      *
      * @param string|null $reference
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setReference(?string $reference): void
+    public function setReference(?string $reference): bool
     {
-        $this->reference = $reference === null ? null :
-            $this->valTextMandMaxCar($reference, 60, __METHOD__);
+        try {
+            $this->reference = $reference === null ? null :
+                $this->valTextMandMaxCar($reference, 60, __METHOD__);
+            $return          = true;
+        } catch (AuditFileException $e) {
+            $this->reference = $reference;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("Reference_not_valid");
+            $return          = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->reference === null ? "null" : $this->reference));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->reference === null ? "null" : $this->reference
+                )
+            );
+        return $return;
     }
 
     /**
-     * <xs:element ref = "Reason" minOccurs = "0"/><br>
-     * <xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/>
+     * Get Reason<br>
+     * Reason for issuing the document<br>
+     * &lt;xs:element ref = "Reason" minOccurs = "0"/&gt;<br>
+     * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @return string|null
      * @since 1.0.0
      */
     public function getReason(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->reason === null ? "null" : $this->reason));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->reason === null ? "null" : $this->reason
+                )
+            );
         return $this->reason;
     }
 
     /**
-     * <xs:element ref = "Reason" minOccurs = "0"/><br>
-     * <xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/>
+     * Set Reason<br>
+     * Reason for issuing the document<br>
+     * &lt;xs:element ref = "Reason" minOccurs = "0"/&gt;<br>
+     * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @param string|null $reason
-     * @return void
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function setReason(?string $reason): void
+    public function setReason(?string $reason): bool
     {
-        $this->reason = $reason === null ? null :
-            $this->valTextMandMaxCar($reason, 50, __METHOD__);
+        try {
+            $this->reason = $reason === null ? null :
+                $this->valTextMandMaxCar($reason, 50, __METHOD__);
+            $return       = true;
+        } catch (AuditFileException $e) {
+            $this->reason = $reason;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("Reference_not_valid");
+            $return       = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->reason === null ? "null" : $this->reason));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->reason === null ? "null" : $this->reason
+                )
+            );
+        return $return;
     }
 
     /**
-     *
+     * Create Xml node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
@@ -163,8 +220,10 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                A2Line::N_LINE, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                A2Line::N_LINE, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -195,8 +254,10 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_REFERENCES) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                static::N_REFERENCES, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_REFERENCES, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

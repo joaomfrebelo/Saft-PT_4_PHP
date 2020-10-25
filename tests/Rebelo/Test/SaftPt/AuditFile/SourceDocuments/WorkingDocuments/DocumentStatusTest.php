@@ -31,7 +31,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus;
@@ -48,9 +48,10 @@ class DocumentStatusTest extends TestCase
     use \Rebelo\Test\TXmlTest;
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(DocumentStatus::class);
@@ -58,54 +59,104 @@ class DocumentStatusTest extends TestCase
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $docStatus = new DocumentStatus();
+        $docStatus = new DocumentStatus(new ErrorRegister());
         $this->assertInstanceOf(DocumentStatus::class, $docStatus);
         $this->assertNull($docStatus->getReason());
 
-        $status = WorkStatus::N;
+        $this->assertFalse($docStatus->issetSourceBilling());
+        $this->assertFalse($docStatus->issetSourceID());
+        $this->assertFalse($docStatus->issetWorkStatus());
+        $this->assertFalse($docStatus->issetWorkStatusDate());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testWorkStatus(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $status    = WorkStatus::N;
         $docStatus->setWorkStatus(new WorkStatus($status));
         $this->assertSame($status, $docStatus->getWorkStatus()->get());
+        $this->assertTrue($docStatus->issetWorkStatus());
+    }
 
-        $date = new RDate();
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testWorkStatusDate(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $date      = new RDate();
         $docStatus->setWorkStatusDate($date);
         $this->assertSame($date, $docStatus->getWorkStatusDate());
+        $this->assertTrue($docStatus->issetWorkStatusDate());
+    }
 
-        $reason = "Reason of status";
-        $docStatus->setReason($reason);
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testReason(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $reason    = "Reason of status";
+        $this->assertTrue($docStatus->setReason($reason));
         $this->assertSame($reason, $docStatus->getReason());
-        $docStatus->setReason(null);
+        $this->assertTrue($docStatus->setReason(null));
         $this->assertNull($docStatus->getReason());
-        $docStatus->setReason(str_pad($reason, 50, "A"));
+        $this->assertTrue($docStatus->setReason(str_pad($reason, 50, "A")));
         $this->assertSame(50, \strlen($docStatus->getReason()));
+    }
 
-        $sourceId = "operator";
-        $docStatus->setSourceID($sourceId);
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSourceID(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $sourceId  = "operator";
+        $this->assertTrue($docStatus->setSourceID($sourceId));
         $this->assertSame($sourceId, $docStatus->getSourceID());
-        $docStatus->setSourceID(str_pad($sourceId, 50, "A"));
+        $this->assertTrue($docStatus->issetSourceID());
+        $this->assertTrue($docStatus->setSourceID(str_pad($sourceId, 50, "A")));
         $this->assertSame(30, \strlen($docStatus->getSourceID()));
-        try {
-            $docStatus->setSourceID("");
-            $this->fail("Set SourceID to an empty string should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
 
-        $srcBill = SourceBilling::M;
+        $this->assertFalse($docStatus->setSourceID(""));
+        $this->assertSame("", $docStatus->getSourceID());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSourceBilling(): void
+    {
+        $docStatus = new DocumentStatus(new ErrorRegister());
+        $srcBill   = SourceBilling::M;
         $docStatus->setSourceBilling(new SourceBilling($srcBill));
         $this->assertSame($srcBill, $docStatus->getSourceBilling()->get());
+        $this->assertTrue($docStatus->issetSourceBilling());
     }
 
     /**
      * Reads all workstaus from the Demo SAFT in Test\Ressources
      * and parse then to workstatus class, after that generate a xml from the
-     * Line class and test if the xml strings are equal
+     * workstatus class and test if the xml strings are equal
+     *
+     * @author João Rebelo
+     * @test
      */
-    public function testCreateParseXml()
+    public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
@@ -129,7 +180,7 @@ class DocumentStatusTest extends TestCase
             for ($l = 0; $l < $statusStack->count(); $l++) {
                 /* @var $statusXml \SimpleXMLElement */
                 $statusXml = $statusStack[$l];
-                $docStatus = new DocumentStatus();
+                $docStatus = new DocumentStatus(new ErrorRegister());
                 $docStatus->parseXmlNode($statusXml);
 
                 $xmlRootNode      = new \SimpleXMLElement(
@@ -145,17 +196,84 @@ class DocumentStatusTest extends TestCase
 
                 try {
                     $assertXml = $this->xmlIsEqual($statusXml, $xml);
-                    $this->assertTrue($assertXml,
-                        \sprintf("Fail on Document '%s' with error '%s'",
+                    $this->assertTrue(
+                        $assertXml,
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
-                            $assertXml)
+                            $assertXml
+                        )
                     );
                 } catch (\Exception | \Error $e) {
-                    $this->fail(\sprintf("Fail on Document '%s' with error '%s'",
+                    $this->fail(
+                        \sprintf(
+                            "Fail on Document '%s' with error '%s'",
                             $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
-                            $e->getMessage()));
+                            $e->getMessage()
+                        )
+                    );
                 }
             }
+
+            /* @phpstan-ignore-next-line */
+            $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
+            /* @phpstan-ignore-next-line */
+            $this->assertEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+            /* @phpstan-ignore-next-line */
+            $this->assertEmpty($docStatus->getErrorRegistor()->getOnSetValue());
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $docStatusNode = new \SimpleXMLElement(
+            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+        );
+        $docStatus     = new DocumentStatus(new ErrorRegister());
+        $xml           = $docStatus->createXmlNode($docStatusNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $docStatusNode = new \SimpleXMLElement(
+            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+        );
+        $docStatus     = new DocumentStatus(new ErrorRegister());
+        $docStatus->setReason("");
+        $docStatus->setSourceID("");
+
+        $xml = $docStatus->createXmlNode($docStatusNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($docStatus->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
     }
 }

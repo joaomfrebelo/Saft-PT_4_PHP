@@ -34,12 +34,12 @@ require_once __DIR__.DIRECTORY_SEPARATOR.'ProductTest.php';
 
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Customer;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Supplier;
 use Rebelo\SaftPt\AuditFile\MasterFiles\Product;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry;
-use Rebelo\SaftPt\AuditFile\ExportType;
 
 /**
  * Class MasterFilesTest
@@ -49,16 +49,26 @@ use Rebelo\SaftPt\AuditFile\ExportType;
 class MasterFilesTest extends TestCase
 {
 
-    public function testReflection()
+    use \Rebelo\Test\TXmlTest;
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
             ->testReflection(MasterFiles::class);
         $this->assertTrue(true);
     }
 
-    public function testInstance()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testInstance(): void
     {
-        $master = new MasterFiles();
+        $master = new MasterFiles(new ErrorRegister());
         $this->assertInstanceOf(MasterFiles::class, $master);
         $this->assertEquals(array(), $master->getCustomer());
         $this->assertEquals(array(), $master->getProduct());
@@ -74,317 +84,129 @@ class MasterFilesTest extends TestCase
         }
     }
 
-    public function testCustomerSatck()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCustomerSatck(): void
     {
-        $custTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\CustomerTest();
-        $customer = $custTest->createCustomer();
-        if (($customer instanceof Customer) === false) {
-            $this->fail("Was not possible to create the Customer instance");
-        }
-
-        $master = new MasterFiles();
+        $master = new MasterFiles(new ErrorRegister());
 
         $nCount = 5;
         for ($n = 0; $n < $nCount; $n++) {
-            $nCustomer = clone $customer;
-            $nCustomer->setCustomerID(\strval($n));
-            $this->assertEquals($n, $master->addToCustomer($nCustomer));
-            $this->assertTrue($master->issetCustomer($n));
+            $customer = $master->addCustomer();
+            $customer->setCustomerID(\strval($n));
             /* @var $stack Customer[] */
-            $stack     = $master->getCustomer();
+            $stack    = $master->getCustomer();
             $this->assertEquals(
                 \strval($n), $stack[$n]->getCustomerID()
             );
         }
-
-        $unset   = 2;
-        $master->unsetCustomer($unset);
-        /* @var $unStack Customer[] */
-        $unStack = $master->getCustomer();
-        $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++) {
-            if ($n === $unset) {
-                $this->assertFalse(\array_key_exists($unset, $unStack));
-                continue;
-            }
-            $this->assertEquals(
-                \strval($n), $unStack[$n]->getCustomerID()
-            );
-        }
     }
 
-    public function testSupplierSatck()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testSupplierSatck(): void
     {
-        $supplierTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\SupplierTest();
-        $supplier     = $supplierTest->createSupplier();
-        if (($supplier instanceof Supplier) === false) {
-            $this->fail("Was not possible to create the Supplier instance");
-        }
-
-        $master = new MasterFiles();
+        $master = new MasterFiles(new ErrorRegister());
 
         $nCount = 5;
         for ($n = 0; $n < $nCount; $n++) {
-            $nSupplier = clone $supplier;
-            $nSupplier->setSupplierID(\strval($n));
-            $this->assertEquals($n, $master->addToSupplier($nSupplier));
-            $this->assertTrue($master->issetSupplier($n));
+            $supplier = $master->addSupplier();
+            $supplier->setSupplierID(\strval($n));
             /* @var $stack Supplier[] */
-            $stack     = $master->getSupplier();
+            $stack    = $master->getSupplier();
             $this->assertEquals(
                 \strval($n), $stack[$n]->getSupplierID()
             );
         }
-
-        $unset   = 2;
-        $master->unsetSupplier($unset);
-        /* @var $unStack Supplier[] */
-        $unStack = $master->getSupplier();
-        $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++) {
-            if ($n === $unset) {
-                $this->assertFalse(\array_key_exists($unset, $unStack));
-                continue;
-            }
-            $this->assertEquals(
-                \strval($n), $unStack[$n]->getSupplierID()
-            );
-        }
     }
 
-    public function testProductSatck()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testProductSatck(): void
     {
-        $productTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\ProductTest();
-        $product     = $productTest->createProduct();
-        if (($product instanceof Product) === false) {
-            $this->fail("Was not possible to create the Product instance");
-        }
-
-        $master = new MasterFiles();
+        $master = new MasterFiles(new ErrorRegister());
 
         $nCount = 5;
         for ($n = 0; $n < $nCount; $n++) {
-            $nProduct = clone $product;
-            $nProduct->setProductNumberCode(\strval($n));
-            $this->assertEquals($n, $master->addToProduct($nProduct));
-            $this->assertTrue($master->issetProduct($n));
+            $product = $master->addProduct();
+            $product->setProductNumberCode(\strval($n));
             /* @var $stack Product[] */
-            $stack    = $master->getProduct();
+            $stack   = $master->getProduct();
             $this->assertEquals(
                 \strval($n), $stack[$n]->getProductNumberCode()
             );
         }
-
-        $unset   = 2;
-        $master->unsetProduct($unset);
-        /* @var $unStack Product[] */
-        $unStack = $master->getProduct();
-        $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++) {
-            if ($n === $unset) {
-                $this->assertFalse(\array_key_exists($unset, $unStack));
-                continue;
-            }
-            $this->assertEquals(
-                \strval($n), $unStack[$n]->getProductNumberCode()
-            );
-        }
     }
 
-    public function testTaxTableEntrySatck()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testTaxTableEntrySatck(): void
     {
-        $taxTableEntryTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\TaxTableEntryTest();
-        $taxTableEntry     = $taxTableEntryTest->createTaxTableEntry();
-        if (($taxTableEntry instanceof TaxTableEntry) === false) {
-            $this->fail("Was not possible to create the TaxTableEntry instance");
-        }
-
-        $master = new MasterFiles();
+        $master = new MasterFiles(new ErrorRegister());
 
         $nCount = 5;
         for ($n = 0; $n < $nCount; $n++) {
-            $nTaxTableEntry = clone $taxTableEntry;
-            $nTaxTableEntry->setTaxPercentage((float) $n);
-            $this->assertEquals($n, $master->addToTaxTableEntry($nTaxTableEntry));
-            $this->assertTrue($master->issetTaxTableEntry($n));
+            $taxTableEntry = $master->addTaxTableEntry();
+            $taxTableEntry->setTaxPercentage((float) $n);
             /* @var $stack TaxTableEntry[] */
-            $stack          = $master->getTaxTableEntry();
+            $stack         = $master->getTaxTableEntry();
             $this->assertEquals(
                 (float) $n, $stack[$n]->getTaxPercentage()
             );
         }
-
-        $unset   = 2;
-        $master->unsetTaxTableEntry($unset);
-        /* @var $unStack TaxTableEntry[] */
-        $unStack = $master->getTaxTableEntry();
-        $this->assertEquals($nCount - 1, \count($unStack));
-        for ($n = 0; $n < $nCount; $n++) {
-            if ($n === $unset) {
-                $this->assertFalse(\array_key_exists($unset, $unStack));
-                continue;
-            }
-            $this->assertEquals(
-                (float) $n, $unStack[$n]->getTaxPercentage()
-            );
-        }
     }
 
-    public function testSetGetExportType()
-    {
-        $typeArray = array(
-            ExportType::C,
-            ExportType::S);
-
-        $master = new MasterFiles();
-        $this->assertEquals(ExportType::C, $master->getExportType()->get());
-
-        array_map(function($type) {
-            $masterConst  = new MasterFiles(new ExportType($type));
-            $this->assertEquals($type, $masterConst->getExportType()->get());
-            $masterSetGet = new MasterFiles();
-            $masterSetGet->setExportType(new ExportType($type));
-            $this->assertEquals($type, $masterSetGet->getExportType()->get());
-        }, $typeArray);
-    }
-
+    /**
+     * Create master file
+     * @param int $nCount
+     * @return MasterFiles
+     */
     public function createMasterFile(int $nCount): MasterFiles
     {
-        $master            = new MasterFiles();
-        $custTest          = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\CustomerTest();
-        $customer          = $custTest->createCustomer();
-        $supplierTest      = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\SupplierTest();
-        $supplier          = $supplierTest->createSupplier();
-        $productTest       = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\ProductTest();
-        $product           = $productTest->createProduct();
-        $taxTableEntryTest = new \Rebelo\Test\SaftPt\AuditFile\MasterFile\TaxTableEntryTest();
-        $taxTableEntry     = $taxTableEntryTest->createTaxTableEntry();
+        $master = new MasterFiles(new ErrorRegister());
 
         for ($n = 0; $n < $nCount; $n++) {
-            $nCustomer = clone $customer;
-            $nCustomer->setCustomerID(\strval($n));
-            $master->addToCustomer($nCustomer);
+            $customer = $master->addCustomer();
+            $customer->setCustomerID(\strval($n));
         }
 
         for ($n = 0; $n < $nCount; $n++) {
-            $nSupplier = clone $supplier;
-            $nSupplier->setSupplierID(\strval($n));
-            $master->addToSupplier($nSupplier);
+            $supplier = $master->addSupplier();
+            $supplier->setSupplierID(\strval($n));
         }
-
 
         for ($n = 0; $n < $nCount; $n++) {
-            $nProduct = clone $product;
-            $nProduct->setProductNumberCode(\strval($n));
-            $master->addToProduct($nProduct);
+            $product = $master->addProduct();
+            $product->setProductNumberCode(\strval($n));
         }
-
 
         for ($n = 0; $n < $nCount; $n++) {
-            $nTaxTableEntry = clone $taxTableEntry;
-            $nTaxTableEntry->setTaxPercentage((float) $n);
-            $master->addToTaxTableEntry($nTaxTableEntry);
+            $taxTableEntry = $master->addTaxTableEntry();
+            $taxTableEntry->setTaxPercentage((float) $n);
         }
+
         return $master;
     }
 
-    public function testCreateXmlNode()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateEmptyXmlNode(): void
     {
-
-        $nCount = 5;
-
-        $master = $this->createMasterFile($nCount);
-
-        $node = new \SimpleXMLElement(
-            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
-        );
-
-        $masterNode = $master->createXmlNode($node);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
-        $this->assertEquals(MasterFiles::N_MASTERFILES, $masterNode->getName());
-
-        $this->assertEquals(
-            $nCount,
-            $node->{MasterFiles::N_MASTERFILES}->{Customer::N_CUSTOMER}->count()
-        );
-        $this->assertEquals(
-            $nCount,
-            $node->{MasterFiles::N_MASTERFILES}->{Supplier::N_SUPPLIER}->count()
-        );
-        $this->assertEquals(
-            $nCount,
-            $node->{MasterFiles::N_MASTERFILES}->{Product::N_PRODUCT}->count()
-        );
-        $this->assertEquals(
-            $nCount,
-            $node->{MasterFiles::N_MASTERFILES}->{MasterFiles::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}->count()
-        );
-
-        for ($n = 0; $n < $nCount; $n++) {
-            $customerNode = $node->{MasterFiles::N_MASTERFILES}->{Customer::N_CUSTOMER}[$n];
-            $this->assertEquals(
-                \strval($n), (string) $customerNode->{Customer::N_CUSTOMERID}
-            );
-        }
-
-        for ($n = 0; $n < $nCount; $n++) {
-            $supplierNode = $node->{MasterFiles::N_MASTERFILES}->{Supplier::N_SUPPLIER}[$n];
-            $this->assertEquals(
-                \strval($n), (string) $supplierNode->{Supplier::N_SUPPLIERID}
-            );
-        }
-
-        for ($n = 0; $n < $nCount; $n++) {
-            $productNode = $node->{MasterFiles::N_MASTERFILES}->{Product::N_PRODUCT}[$n];
-            $this->assertEquals(
-                \strval($n),
-                (string) $productNode->{Product::N_PRODUCTNUMBERCODE}
-            );
-        }
-
-        for ($n = 0; $n < $nCount; $n++) {
-            $taxTableEntryNode = $node->{MasterFiles::N_MASTERFILES}
-                ->{MasterFiles::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}[$n];
-            $this->assertEquals(
-                \strval($n),
-                (string) $taxTableEntryNode->{TaxTableEntry::N_TAXPERCENTAGE}
-            );
-        }
-
-        // Test simple export
-        $simple     = new \SimpleXMLElement(
-            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
-        );
-        $master->setExportType(new ExportType(ExportType::S));
-        $simpleNode = $master->createXmlNode($simple);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $simpleNode);
-        $this->assertEquals(MasterFiles::N_MASTERFILES, $simpleNode->getName());
-
-        $this->assertEquals(
-            0,
-            $simple->{MasterFiles::N_MASTERFILES}->{Customer::N_CUSTOMER}->count()
-        );
-        $this->assertEquals(
-            0,
-            $simple->{MasterFiles::N_MASTERFILES}->{Supplier::N_SUPPLIER}->count()
-        );
-        $this->assertEquals(
-            0,
-            $simple->{MasterFiles::N_MASTERFILES}->{Product::N_PRODUCT}->count()
-        );
-        $this->assertEquals(
-            $nCount,
-            $simple->{MasterFiles::N_MASTERFILES}->{MasterFiles::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}->count()
-        );
-    }
-
-    public function testCreateEmptyXmlNode()
-    {
-        $master     = new MasterFiles();
+        $master     = new MasterFiles(new ErrorRegister());
         $node       = new \SimpleXMLElement(
             "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
-        $master->setExportType(new ExportType(ExportType::S));
+        
         $masterNode = $master->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
         $this->assertEquals(MasterFiles::N_MASTERFILES, $masterNode->getName());
@@ -393,30 +215,43 @@ class MasterFilesTest extends TestCase
             0,
             $node->{MasterFiles::N_MASTERFILES}->{Customer::N_CUSTOMER}->count()
         );
+
         $this->assertEquals(
             0,
             $node->{MasterFiles::N_MASTERFILES}->{Supplier::N_SUPPLIER}->count()
         );
+
         $this->assertEquals(
             0,
             $node->{MasterFiles::N_MASTERFILES}->{Product::N_PRODUCT}->count()
         );
+
         $this->assertEquals(
             0,
             $node->{MasterFiles::N_MASTERFILES}->{MasterFiles::N_TAXTABLE}->count()
         );
+
+        $this->assertEmpty($master->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($master->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($master->getErrorRegistor()->getOnSetValue());
     }
 
-    public function testCreateXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWrongName(): void
     {
-        $master = new MasterFiles();
-        $master->setExportType(new ExportType(ExportType::S));
-        $node   = new \SimpleXMLElement("<root></root>"
+        $master = new MasterFiles(new ErrorRegister());
+        $node   = new \SimpleXMLElement(
+            "<root></root>"
         );
         try {
-            $masterNode = $master->createXmlNode($node);
-            $this->fail("Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $master->createXmlNode($node);
+            $this->fail(
+                "Creat a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -424,15 +259,20 @@ class MasterFilesTest extends TestCase
         }
     }
 
-    public function testParseXmlNodeWrongName()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNodeWrongName(): void
     {
         $master = new MasterFiles();
-        $master->setExportType(new ExportType(ExportType::S));
         $node   = new \SimpleXMLElement("<root></root>");
         try {
-            $masterNode = $master->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
+            $master->parseXmlNode($node);
+            $this->fail(
+                "Parse a xml node on a wrong node should throw "
+                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+            );
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(
                 \Rebelo\SaftPt\AuditFile\AuditFileException::class, $e
@@ -440,70 +280,152 @@ class MasterFilesTest extends TestCase
         }
     }
 
-    public function testParseXmlNode()
-    {
-        $nCount = 5;
-        $master = $this->createMasterFile($nCount);
-        $master->setExportType(new ExportType(ExportType::S));
-        $node   = new \SimpleXMLElement(
-            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
-        );
-        $master->setExportType(new ExportType(ExportType::C));
-        $xml    = $master->createXmlNode($node)->asXML();
-        $parsed = new MasterFiles();
-        $parsed->parseXmlNode(new \SimpleXMLElement($xml));
-        $this->assertEquals($nCount, \count($parsed->getCustomer()));
-        $this->assertEquals($nCount, \count($parsed->getSupplier()));
-        $this->assertEquals($nCount, \count($parsed->getProduct()));
-        $this->assertEquals($nCount, \count($parsed->getTaxTableEntry()));
-
-        /* @var $customerStack Customer[] */
-        $customerStack = $parsed->getCustomer();
-        for ($n = 0; $n < $nCount; $n++) {
-            $this->assertEquals(
-                \strval($n), $customerStack[$n]->getCustomerID()
-            );
-        }
-
-        /* @var $supplierStack Supplier[] */
-        $supplierStack = $parsed->getSupplier();
-        for ($n = 0; $n < $nCount; $n++) {
-            $this->assertEquals(
-                \strval($n), $supplierStack[$n]->getSupplierID()
-            );
-        }
-
-        /* @var $productStack Product[] */
-        $productStack = $parsed->getProduct();
-        for ($n = 0; $n < $nCount; $n++) {
-            $this->assertEquals(
-                \strval($n), $productStack[$n]->getProductNumberCode()
-            );
-        }
-
-        /* @var $taxTableEntryStack TaxTableEntry[] */
-        $taxTableEntryStack = $parsed->getTaxTableEntry();
-        for ($n = 0; $n < $nCount; $n++) {
-            $this->assertEquals(
-                (float) $n, $taxTableEntryStack[$n]->getTaxPercentage()
-            );
-        }
-    }
-
-    public function testParseXmlNodeEmpty()
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testParseXmlNodeEmpty(): void
     {
         $master = new MasterFiles();
-        $master->setExportType(new ExportType(ExportType::S));
         $node   = new \SimpleXMLElement(
             "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
 
-        $xml    = $master->createXmlNode($node)->asXML();
-        $parsed = new MasterFiles();
+        $xml = $master->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $parsed = new MasterFiles(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals(0, \count($parsed->getCustomer()));
         $this->assertEquals(0, \count($parsed->getSupplier()));
         $this->assertEquals(0, \count($parsed->getProduct()));
         $this->assertEquals(0, \count($parsed->getTaxTableEntry()));
+
+        $this->assertEmpty($master->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($master->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($master->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * Reads MasterFiles from the Demo SAFT in Test\Ressources
+     * and parse then to MasterFiles class, after that generate a xml from the
+     * class and test if the xml strings are equal
+     */
+    public function testCreateParseXml(): void
+    {
+        $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
+
+        $sourceDocsXml = $saftDemoXml->{MasterFiles::N_MASTERFILES};
+
+        if ($sourceDocsXml->count() === 0) {
+            $this->fail("No MasterFiles in XML");
+        }
+
+        $masterFiles = new MasterFiles();
+        $masterFiles->parseXmlNode($sourceDocsXml);
+
+        $xmlRootNode = (new AuditFile())->createRootElement();
+
+        $auditNode = $xmlRootNode->addChild(
+            \Rebelo\SaftPt\AuditFile\AuditFile::N_AUDITFILE
+        );
+
+        $xml = $masterFiles->createXmlNode($auditNode);
+
+        try {
+            $assertXml = $this->xmlIsEqual($sourceDocsXml, $xml);
+            $this->assertTrue(
+                $assertXml,
+                \sprintf("Fail with error '%s'", $assertXml)
+            );
+        } catch (\Exception | \Error $e) {
+            $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
+        }
+
+        $this->assertEmpty($masterFiles->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($masterFiles->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($masterFiles->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlNodeWithoutSet(): void
+    {
+        $customerNode = new \SimpleXMLElement(
+            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
+        );
+        $master       = new MasterFiles(new ErrorRegister());
+        $xml          = $master->createXmlNode($customerNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+            return;
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($master->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($master->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($master->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetAllProductCode(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $ids    = ["AAA", "BBB", "CCC"];
+
+        foreach ($ids as $id) {
+            $pro = $master->addProduct();
+            $pro->setProductCode($id);
+        }
+        $master->addProduct();
+
+        $this->assertSame($ids, $master->getAllProductCode());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetAllSupplierID(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $ids    = ["AAA", "BBB", "CCC"];
+
+        foreach ($ids as $id) {
+            $supplier = $master->addSupplier();
+            $supplier->setSupplierID($id);
+        }
+        $master->addSupplier();
+
+        $this->assertSame($ids, $master->getAllSupplierID());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetAllCustomerID(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $ids    = ["AAA", "BBB", "CCC"];
+
+        foreach ($ids as $id) {
+            $customer = $master->addCustomer();
+            $customer->setCustomerID($id);
+        }
+        $master->addCustomer();
+
+        $this->assertSame($ids, $master->getAllCustomerID());
     }
 }

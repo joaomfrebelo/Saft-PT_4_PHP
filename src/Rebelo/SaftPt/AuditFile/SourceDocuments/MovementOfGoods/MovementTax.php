@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * MovementTax
@@ -68,21 +69,21 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     const N_TAXPERCENTAGE = "TaxPercentage";
 
     /**
-     * <xs:element name="TaxType" type="SAFTPTMovementTaxType"/>
+     * &lt;xs:element name="TaxType" type="SAFTPTMovementTaxType"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType
      * @since 1.0.0
      */
     private MovementTaxType $taxType;
 
     /**
-     * <xs:element ref="TaxCountryRegion"/>
+     * &lt;xs:element ref="TaxCountryRegion"/&gt;
      * @var \Rebelo\SaftPt\AuditFile\TaxCountryRegion
      * @since 1.0.0
      */
     private TaxCountryRegion $taxCountryRegion;
 
     /**
-     * <xs:element name="TaxCode" type="SAFTPTMovementTaxCode"/>
+     * &lt;xs:element name="TaxCode" type="SAFTPTMovementTaxCode"/&gt;
      *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode
      * @since 1.0.0
@@ -90,8 +91,8 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private MovementTaxCode $taxCode;
 
     /**
-     * <xs:element ref="TaxPercentage"/>
-     * @var type
+     * &lt;xs:element ref="TaxPercentage"/&gt;
+     * @var float
      * @since 1.0.0
      */
     private float $taxPercentage;
@@ -108,15 +109,21 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *    &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
-     * <xs:element name="TaxType" type="SAFTPTMovementTaxType"/>
+     * Get TaxType<br>
+     * This field shall be filled in with:<br>
+     * “IVA” – Value Added Tax;<br>
+     * “NS” – Not subject to VAT.<br>
+     * &lt;xs:element name="TaxType" type="SAFTPTMovementTaxType"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxType(): MovementTaxType
@@ -127,7 +134,21 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * <xs:element name="TaxType" type="SAFTPTMovementTaxType"/>
+     * Get if is set TaxType
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxType(): bool
+    {
+        return isset($this->taxType);
+    }
+
+    /**
+     * Set TaxType<br>
+     * This field shall be filled in with:<br>
+     * “IVA” – Value Added Tax;<br>
+     * “NS” – Not subject to VAT.<br>
+     * &lt;xs:element name="TaxType" type="SAFTPTMovementTaxType"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType $taxType
      * @return void
      * @since 1.0.0
@@ -140,20 +161,45 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * <xs:element ref="TaxCountryRegion"/>
+     * Get TaxCountryRegion<br>
+     * The field shall be filled in according to norm ISO 3166-1-alpha-2.
+     * In the case of the Autonomous Regions of the Azores and Madeira Island it must be filled in with:
+     * “PT-AC” - Fiscal area of the Autonomous Region of the Azores;
+     * “PT-MA” - Fiscal area of the Autonomous Region of the Madeira Island.<br>
+     * &lt;xs:element ref="TaxCountryRegion"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\TaxCountryRegion
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxCountryRegion(): TaxCountryRegion
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->taxCountryRegion->get()));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->taxCountryRegion->get()
+                )
+            );
         return $this->taxCountryRegion;
     }
 
     /**
-     * <xs:element ref="TaxCountryRegion"/>
+     * Get if is set TaxCountryRegion
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxCountryRegion(): bool
+    {
+        return isset($this->taxCountryRegion);
+    }
+
+    /**
+     * Set TaxCountryRegion<br>
+     * The field shall be filled in according to norm ISO 3166-1-alpha-2.
+     * In the case of the Autonomous Regions of the Azores and Madeira Island it must be filled in with:
+     * “PT-AC” - Fiscal area of the Autonomous Region of the Azores;
+     * “PT-MA” - Fiscal area of the Autonomous Region of the Madeira Island.<br>
+     * &lt;xs:element ref="TaxCountryRegion"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\TaxCountryRegion $taxCountryRegion
      * @return void
      * @since 1.0.0
@@ -162,12 +208,25 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxCountryRegion = $taxCountryRegion;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->taxCountryRegion->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->taxCountryRegion->get()
+                )
+            );
     }
 
     /**
-     * <xs:element name="TaxCode" type="SAFTPTMovementTaxCode"/>
+     * Get TaxCode<br>
+     * Tax rate code in the table of taxes.<br>
+     * Shall be filled in with:<br>
+     * “RED” - Reduced tax rate;<br>
+     * “INT” - Intermediate tax rate;<br>
+     * “NOR” - Normal tax rate;<br>
+     * “ISE” - Exempted;<br>
+     * “OUT” - Other, applicable to the special VAT regimes.<br>
+     * In case of not subject to tax, to fill in with “NS”.<br>
+     * &lt;xs:element name="TaxCode" type="SAFTPTMovementTaxCode"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode
      * @since 1.0.0
      */
@@ -179,7 +238,26 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * <xs:element name="TaxCode" type="SAFTPTMovementTaxCode"/>
+     * Get if is set TaxCode
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetTaxCode(): bool
+    {
+        return isset($this->taxCode);
+    }
+
+    /**     *
+     * Set TaxCode<br>
+     * Tax rate code in the table of taxes.<br>
+     * Shall be filled in with:<br>
+     * “RED” - Reduced tax rate;<br>
+     * “INT” - Intermediate tax rate;<br>
+     * “NOR” - Normal tax rate;<br>
+     * “ISE” - Exempted;<br>
+     * “OUT” - Other, applicable to the special VAT regimes.<br>
+     * In case of not subject to tax, to fill in with “NS”.<br>
+     * &lt;xs:element name="TaxCode" type="SAFTPTMovementTaxCode"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode $taxCode
      * @return void
      * @since 1.0.0
@@ -192,37 +270,65 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * <xs:element ref="TaxPercentage"/>
+     * Get TaxPercentage<br>
+     * Percentage of the tax rate corresponding to the tax applicable to the field 4.2.3.21.10. – DebitAmount or to field 4.2.3.21.11. - CreditAmount.
+     * In case of exemption or not subject to tax, fill in with “0” (zero).<br>
+     * &lt;xs:element ref="TaxPercentage"/&gt;
      * @return float
+     * @throws \Error
      * @since 1.0.0
      */
     public function getTaxPercentage(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    \strval($this->taxPercentage)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    \strval($this->taxPercentage)
+                )
+            );
         return $this->taxPercentage;
     }
 
     /**
-     * <xs:element ref="TaxPercentage"/>
-     * @param float $taxPercentage
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set TaxPercentage
+     * @return bool
      * @since 1.0.0
      */
-    public function setTaxPercentage(float $taxPercentage): void
+    public function issetTaxPercentage(): bool
+    {
+        return isset($this->taxPercentage);
+    }
+
+    /**
+     * Set TaxPercentage<br>
+     * Percentage of the tax rate corresponding to the tax applicable to the field 4.2.3.21.10. – DebitAmount or to field 4.2.3.21.11. - CreditAmount.
+     * In case of exemption or not subject to tax, fill in with “0” (zero).<br>
+     * &lt;xs:element ref="TaxPercentage"/&gt;
+     * @param float $taxPercentage
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setTaxPercentage(float $taxPercentage): bool
     {
         if ($taxPercentage < 0.0) {
-            $msg = "TaxPercentage can not be negative";
+            $msg    = "TaxPercentage can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("TaxPercentage_not_valid");
+        } else {
+            $return = true;
         }
         $this->taxPercentage = $taxPercentage;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    \strval($this->taxPercentage)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    \strval($this->taxPercentage)
+                )
+            );
+        return $return;
     }
 
     /**
@@ -248,22 +354,42 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $movTaxNode = $node->addChild(static::N_TAX);
 
-        $movTaxNode->addChild(
-            static::N_TAXTYPE, $this->getTaxType()->get()
-        );
+        if (isset($this->taxType)) {
+            $movTaxNode->addChild(
+                static::N_TAXTYPE, $this->getTaxType()->get()
+            );
+        } else {
+            $movTaxNode->addChild(static::N_TAXTYPE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxType_not_valid");
+        }
 
-        $movTaxNode->addChild(
-            static::N_TAXCOUNTRYREGION, $this->getTaxCountryRegion()->get()
-        );
+        if (isset($this->taxCountryRegion)) {
+            $movTaxNode->addChild(
+                static::N_TAXCOUNTRYREGION, $this->getTaxCountryRegion()->get()
+            );
+        } else {
+            $movTaxNode->addChild(static::N_TAXCOUNTRYREGION);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxCountryRegion_not_valid");
+        }
 
-        $movTaxNode->addChild(
-            static::N_TAXCODE, $this->getTaxCode()->get()
-        );
+        if (isset($this->taxCode)) {
+            $movTaxNode->addChild(
+                static::N_TAXCODE, $this->getTaxCode()->get()
+            );
+        } else {
+            $movTaxNode->addChild(static::N_TAXCODE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxCode_not_valid");
+        }
 
-        $movTaxNode->addChild(
-            static::N_TAXPERCENTAGE,
-            $this->floatFormat($this->getTaxPercentage())
-        );
+        if (isset($this->taxPercentage)) {
+            $movTaxNode->addChild(
+                static::N_TAXPERCENTAGE,
+                $this->floatFormat($this->getTaxPercentage())
+            );
+        } else {
+            $movTaxNode->addChild(static::N_TAXPERCENTAGE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxPercentage_not_valid");
+        }
 
         return $movTaxNode;
     }
@@ -280,7 +406,8 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_TAX) {
-            $msg = \sprintf("Node name should be '%s' but is '%s'",
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s'",
                 static::N_TAX, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -289,6 +416,7 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         $type = new MovementTaxType((string) $node->{static::N_TAXTYPE});
+
         $this->setTaxType($type);
 
         $country = new TaxCountryRegion((string) $node->{static::N_TAXCOUNTRYREGION});

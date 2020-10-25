@@ -26,8 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
+
 /**
- * Workdocument Line
+ * WorkDocument Line
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -36,7 +39,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
 {
 
     /**
-     * Invoice Line<br>
+     * WorkDocument Line<br>
      * <pre>
      * &lt;xs:element name="Line" maxOccurs="unbounded"&gt;
      *  &lt;xs:complexType&gt;
@@ -68,45 +71,15 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
      *          &lt;xs:element name="CustomsInformation"
      *                      type="CustomsInformation" minOccurs="0"/&gt;
      *      &lt;/xs:sequence&gt;
-     *      &lt;xs:assert
-     *          test="
-     *              if (not(ns:Tax/ns:TaxAmount) or ((ns:Tax/ns:TaxAmount !== 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxAmount eq 0 and ns:TaxExemptionReason))) then
-     *                  true()
-     *              else
-     *                  false()"/&gt;
-     *      &lt;xs:assert
-     *          test="
-     *              if (not(ns:Tax/ns:TaxPercentage) or ((ns:Tax/ns:TaxPercentage !== 0 and not(ns:TaxExemptionReason)) or (ns:Tax/ns:TaxPercentage eq 0 and ns:TaxExemptionReason))) then
-     *                  true()
-     *              else
-     *                  false()"/&gt;
-     *      &lt;xs:assert
-     *          test="
-     *              if ((ns:TaxExemptionReason and not(ns:TaxExemptionCode)) or (ns:TaxExemptionCode and not(ns:TaxExemptionReason))) then
-     *                  false()
-     *              else
-     *                  true()"/&gt;
-     *      &lt;xs:assert
-     *          test="
-     *              if ((ns:TaxBase and ns:UnitPrice !== 0)) then
-     *                  false()
-     *              else
-     *                  true()"/&gt;
-     *      &lt;xs:assert
-     *          test="
-     *              if ((ns:TaxBase and ns:DebitAmount !== 0) or (ns:TaxBase and ns:CreditAmount !== 0)) then
-     *                  false()
-     *              else
-     *                  true()"
-     *      /&gt;
      *  &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
@@ -119,8 +92,10 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorki
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         if ($node->getName() !== WorkDocument::N_WORKDOCUMENT) {
-            $msg = \sprintf("Node name should be '%s' but is '%s",
-                WorkDocument::N_WORKDOCUMENT, $node->getName());
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s",
+                WorkDocument::N_WORKDOCUMENT, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

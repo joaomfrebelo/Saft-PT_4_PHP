@@ -28,112 +28,130 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
  * Description of WorkType
- *
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments CM()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments CC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments FC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments FO()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments NE()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments OU()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments OR()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments PF()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments DC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments RP()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments RE()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments CS()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments LD()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments RA()
  * @author João Rebelo
  * @since 1.0.0
  */
 class WorkType extends \Rebelo\Enum\AEnum
 {
     /**
-     * Node name
+     * “CM” – Table checks;
      * @since 1.0.0
      */
     const CM = "CM";
 
     /**
-     * Node name
+     * “CC” – Consignment credit note;
      * @since 1.0.0
      */
     const CC = "CC";
 
     /**
-     * Node name
+     * “FC” – Consignment invoice according to art. 38 of the Portuguese VAT Code;
      * @since 1.0.0
      */
     const FC = "FC";
 
     /**
-     * Node name
+     * “FO” – Worksheets [to record the service rendered or the work performed];
      * @since 1.0.0
      */
     const FO = "FO";
 
     /**
-     * Node name
+     * “NE” – Purchase order;
      * @since 1.0.0
      */
     const NE = "NE";
 
     /**
-     * Node name
+     * “OU” – Others [not specified in the remaining WorkTypes];
      * @since 1.0.0
      */
     const OU = "OU";
 
     /**
-     * Node name
+     * “OR” – Budgets;
      * @since 1.0.0
      */
     const OR = "OR";
 
     /**
-     * Type
+     * “PF” – Pro forma invoice;
      * @since 1.0.0
      */
     const PF = "PF";
 
     /**
-     * Type
+     * “DC” - Issued documents likely to be presented to the customer for the
+     * purpose of checking goods or provision of services (for data until 2017-06-30).
      * @since 1.0.0
      */
     const DC = "DC";
 
     /**
-     * Type
+     * “RP” – Premium or Premium receipt;
      * @since 1.0.0
      */
     const N_RP = "RP";
 
     /**
-     * Type
+     * “RE” - Return insurance or receipt of return insurance;
      * @since 1.0.0
      */
     const RE = "RE";
 
     /**
-     * Type
+     * “CS” - Imputation to co-insurance companies;
      * @since 1.0.0
      */
     const CS = "CS";
 
     /**
-     * Type
+     * rance company
      * @since 1.0.0
      */
     const LD = "LD";
 
     /**
-     * Type
+     * “RA” - Accepted reinsurance.
      * @since 1.0.0
      */
     const RA = "RA";
 
     /**
+     * WorkType<br>
+     * The field shall be filled in with:<br>
+     * “CM” – Table checks;<br>
+     * “CC” – Consignment credit note;<br>
+     * “FC” – Consignment invoice according to art. 38 of the Portuguese VAT Code;<br>
+     * “FO” – Worksheets [to record the service rendered or the work performed];<br>
+     * “NE” – Purchase order;<br>
+     * “OU” – Others [not specified in the remaining WorkTypes];<br>
+     * “OR” – Budgets;<br>
+     * “PF” – Pro forma invoice;<br>
+     * “DC” - Issued documents likely to be presented to the customer for the purpose of checking goods or provision of services (for data until 2017-06-30).<br>
+     * For the insurance sector as to the types of documents identified below must also exist in table 4.1. - SalesInvoices the corresponding invoice or invoice amending document, can also be filled with:<br>
+     * “RP” – Premium or Premium receipt;<br>
+     * “RE” - Return insurance or receipt of return insurance;<br>
+     * “CS” - Imputation to co-insurance companies;<br>
+     * “LD” - Imputation to a leader co-insurance company;<br>
+     * “RA” - Accepted reinsurance.<br>
+     *
      * &lt;xs:element name="WorkType"&gt;
-     *   &lt;xs:annotation&gt;
-     *       &lt;xs:documentation&gt; Restricao: DC para documentos emitidos ate 2017-06-30, CM para
-     *           consulta de mesa, CC para credito de consignacao, FC para fatura de consignacao nos
-     *           termos do art.38 do CIVA, FO para folha de obra, NE para nota de encomenda, OU para
-     *           outros documentos suscetiveis de apresentacao ao cliente para conferencia de
-     *           mercadorias ou de prestacao de servicos que nao se encontrem aqui devidamente
-     *           identificados (ou seus equivalentes), OR para orcamento, PF para fatura pro-forma.
-     *           Para o setor Segurador quando para os tipos de documentos a seguir identificados
-     *           tambem deva existir na tabela 4.1 - Documentos comerciais a clientes (SalesInvoices)
-     *           a correspondente fatura ou documento rectificativo de fatura, ainda pode ser
-     *           preenchido com RP para premio ou recibo de premio, RE para estorno ou recibo de
-     *           estorno, CS para imputacao a co-seguradoras, LD para imputacao a co-seguradora
-     *           lider, RA para resseguro aceite. &lt;/xs:documentation&gt;
-     *   &lt;/xs:annotation&gt;
      *   &lt;xs:simpleType&gt;
      *       &lt;xs:restriction base="xs:string"&gt;
      *           &lt;xs:enumeration value="CM"/&gt;
@@ -155,10 +173,21 @@ class WorkType extends \Rebelo\Enum\AEnum
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
+     * @param string $value
      * @since 1.0.0
      */
     public function __construct(string $value)
     {
-        return parent::__construct($value);
+        parent::__construct($value);
+    }
+
+    /**
+     * Get enum value
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

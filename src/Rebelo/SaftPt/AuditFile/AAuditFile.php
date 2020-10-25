@@ -26,6 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use Rebelo\SaftPt\AuditFile\i18n\AI18n;
+use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
+
 /**
  * Abstract of AAuditFile
  *
@@ -35,46 +38,58 @@ namespace Rebelo\SaftPt\AuditFile;
 abstract class AAuditFile
 {
     /**
-     * The type of saft xml exported<br>
-     * Simplified or Complete
-     * @param \Rebelo\SaftPt\AuditFile\ExportType|null $exportType
+     * Unknown word
      * @since 1.0.0
      */
-    private ExportType $exportType;
+    const DESCONHECIDO = "Desconhecido";
+
+    /**
+     * Unknown word
+     * @since 1.0.0
+     */
+    const CONSUMIDOR_FINAL_TAX_ID = "999999990";
+
+    /**
+     * Final Consumer, Consumidor final
+     * @since 1.0.0
+     */
+    const CONSUMIDOR_FINAL = "Consumidor final";
 
     /**
      *
+     * @var \Rebelo\SaftPt\AuditFile\i18n\AI18n
      * @since 1.0.0
      */
-    public function __construct()
+    protected static AI18n $i18n;
+
+    /**
+     * Error Register, to register global validation and errors
+     * @var \Rebelo\SaftPt\AuditFile\ErrorRegister
+     * @since 1.0.0
+     */
+    protected ErrorRegister $errorRegister;
+
+    /**
+     * To registe particular validation and errors of documents or tables,
+     * the key must be the field name
+     * @var string[]
+     */
+    protected array $error = array();
+
+    /**
+     * To regist particular warnings of documents or tables
+     * @var string[]
+     */
+    protected array $warning = array();
+
+    /**
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     * @since 1.0.0
+     */
+    public function __construct(ErrorRegister $errorRegister)
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-    }
-
-    /**
-     * Get the exported type setted
-     * @return \Rebelo\SaftPt\AuditFile\ExportType
-     * @since 1.0.0
-     */
-    public function getExportType(): ExportType
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->exportType->get()));
-        return $this->exportType;
-    }
-
-    /**
-     * Set the exported type
-     * @param \Rebelo\SaftPt\AuditFile\ExportType $exportType
-     * @return void
-     * @since 1.0.0
-     */
-    public function setExportType(ExportType $exportType): void
-    {
-        $this->exportType = $exportType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->exportType->get()));
+        $this->errorRegister = $errorRegister;
     }
 
     /**
@@ -111,8 +126,12 @@ abstract class AAuditFile
                 }
             } catch (\Error $e) {
                 \Logger::getLogger(\get_class($this))
-                    ->debug(\sprintf(__METHOD__." cloning error '%s'",
-                            $e->getMessage()));
+                    ->debug(
+                        \sprintf(
+                            __METHOD__." cloning error '%s'",
+                            $e->getMessage()
+                        )
+                    );
             }
         }
     }
@@ -143,7 +162,7 @@ abstract class AAuditFile
             throw new AuditFileException($msg);
         }
         $subString = \substr(\trim($string), 0, $length);
-        if (strlen($subString) === 0 || is_bool($subString)) {
+        if (strlen($subString) === 0) {
             $msg = "string can not be empty";
             \Logger::getLogger(__CLASS__)
                 ->error(\sprintf($method." '%s'", $msg));
@@ -181,12 +200,12 @@ abstract class AAuditFile
     public static function validateMod11auxFunction(string $nif): bool
     {
         if (\strlen($nif) < 9) {
-            $nif = str_pad($nif, 9, 0, STR_PAD_LEFT);
+            $nif = \str_pad($nif, 9, "0", STR_PAD_LEFT);
         }
         $checkerVal = 0;
         $c          = array();
-        for ($i = strlen($nif) - 1; $i >= 0; $i--) {
-            $c[] = $nif{$i};
+        for ($i = \strlen($nif) - 1; $i >= 0; $i--) {
+            $c[] = \intval(\substr($nif, $i, 1));
         }
 
         foreach ($c as $k => $v) {
@@ -213,18 +232,237 @@ abstract class AAuditFile
      *
      * @param float $float The float to be format
      * @param int $decimals Number of decimals
-     * @param string $dec_point The decimal separator
-     * @param string $thousands_sep the thousends separator
+     * @param string $decPoint The decimal separator
+     * @param string $thousandsSep the thousends separator
      * @return string
      * @since 1.0.0
      */
     public function floatFormat(float $float, int $decimals = 6,
-                                string $dec_point = ".",
-                                string $thousands_sep = ""): string
+                                string $decPoint = ".",
+                                string $thousandsSep = ""): string
     {
 //        if (IS_UNIT_TEST) {
 //            return \strval($float);
 //        }
-        return \number_format($float, $decimals, $dec_point, $thousands_sep);
+        return \number_format($float, $decimals, $decPoint, $thousandsSep);
+    }
+
+    /**
+     * Convert the encoded caracters encoded by SimpleXmlElment
+     * @param string $string
+     * @return string
+     * @since 1.0.0
+     */
+    public static function replaceHexUtf(string &$string): string
+    {
+        $utf    = array(
+            "&#xA1;" => "¡",
+            "&#xA2;" => "¢",
+            "&#xA3;" => "£",
+            "&#xA4;" => "¤",
+            "&#xA5;" => "¥",
+            "&#xA6;" => "¦",
+            "&#xA7;" => "§",
+            "&#xA8;" => "¨",
+            "&#xA9;" => "©",
+            "&#xAA;" => "ª",
+            "&#xAB;" => "«",
+            "&#xAC;" => "¬",
+            "&#xAD;" => "­",
+            "&#xAE;" => "®",
+            "&#xAF;" => "¯",
+            "&#xB0;" => "°",
+            "&#xB1;" => "±",
+            "&#xB2;" => "²",
+            "&#xB3;" => "³",
+            "&#xB4;" => "´",
+            "&#xB5;" => "µ",
+            "&#xB6;" => "¶",
+            "&#xB7;" => "·",
+            "&#xB8;" => "¸",
+            "&#xB9;" => "¹",
+            "&#xBA;" => "º",
+            "&#xBB;" => "»",
+            "&#xBC;" => "¼",
+            "&#xBD;" => "½",
+            "&#xBE;" => "¾",
+            "&#xBF;" => "¿",
+            "&#xC0;" => "À",
+            "&#xC1;" => "Á",
+            "&#xC2;" => "Â",
+            "&#xC3;" => "Ã",
+            "&#xC4;" => "Ä",
+            "&#xC5;" => "Å",
+            "&#xC6;" => "Æ",
+            "&#xC7;" => "Ç",
+            "&#xC8;" => "È",
+            "&#xC9;" => "É",
+            "&#xCA;" => "Ê",
+            "&#xCB;" => "Ë",
+            "&#xCC;" => "Ì",
+            "&#xCD;" => "Í",
+            "&#xCE;" => "Î",
+            "&#xCF;" => "Ï",
+            "&#xD0;" => "Ð",
+            "&#xD1;" => "Ñ",
+            "&#xD2;" => "Ò",
+            "&#xD3;" => "Ó",
+            "&#xD4;" => "Ô",
+            "&#xD5;" => "Õ",
+            "&#xD6;" => "Ö",
+            "&#xD7;" => "×",
+            "&#xD8;" => "Ø",
+            "&#xD9;" => "Ù",
+            "&#xDA;" => "Ú",
+            "&#xDB;" => "Û",
+            "&#xDC;" => "Ü",
+            "&#xDD;" => "Ý",
+            "&#xDE;" => "Þ",
+            "&#xDF;" => "ß",
+            "&#xE0;" => "à",
+            "&#xE1;" => "á",
+            "&#xE2;" => "â",
+            "&#xE3;" => "ã",
+            "&#xE4;" => "ä",
+            "&#xE5;" => "å",
+            "&#xE6;" => "æ",
+            "&#xE7;" => "ç",
+            "&#xE8;" => "è",
+            "&#xE9;" => "é",
+            "&#xEA;" => "ê",
+            "&#xEB;" => "ë",
+            "&#xEC;" => "ì",
+            "&#xED;" => "í",
+            "&#xEE;" => "î",
+            "&#xEF;" => "ï",
+            "&#xF0;" => "ð",
+            "&#xF1;" => "ñ",
+            "&#xF2;" => "ò",
+            "&#xF3;" => "ó",
+            "&#xF4;" => "ô",
+            "&#xF5;" => "õ",
+            "&#xF6;" => "ö",
+            "&#xF7;" => "÷",
+            "&#xF8;" => "ø",
+            "&#xF9;" => "ù",
+            "&#xFA;" => "ú",
+            "&#xFB;" => "û",
+            "&#xFC;" => "ü",
+            "&#xFD;" => "ý",
+            "&#xFE;" => "þ",
+            "&#xFF;" => "ÿ");
+        $string = \str_replace(
+            \array_keys($utf), $utf, $string
+        );
+        return $string;
+    }
+
+    /**
+     * Set the language to translate
+     * @param \Rebelo\SaftPt\AuditFile\i18n\AI18n $i18n
+     * @return void
+     * @since 1.0.0
+     */
+    public static function setI18n(AI18n $i18n): void
+    {
+        static::$i18n = $i18n;
+        \Logger::getLogger(__CLASS__)
+            ->error(
+                \sprintf(" I18n setted to '%s'", \get_class(static::$i18n))
+            );
+    }
+
+    /**
+     * Get i18n class
+     * @return \Rebelo\SaftPt\AuditFile\i18n\AI18n
+     * @since 1.0.0
+     */
+    public static function getI18n(): AI18n
+    {
+        if (isset(static::$i18n) === false) {
+            static::$i18n = new pt_PT();
+        }
+        return static::$i18n;
+    }
+
+    /**
+     * Get the ErrorRegistor instance
+     * @return \Rebelo\SaftPt\AuditFile\ErrorRegister
+     * @since 1.0.0
+     */
+    public function getErrorRegistor(): ErrorRegister
+    {
+        return $this->errorRegister;
+    }
+
+    /**
+     * Get all particular error
+     * @return string[]
+     * @since 1.0.0
+     */
+    public function getError(): array
+    {
+        return $this->error;
+    }
+
+    /**
+     * Get all particular warning
+     * @return string[]
+     * @since 1.0.0
+     */
+    public function getWarning(): array
+    {
+        return $this->warning;
+    }
+
+    /**
+     * Add a particular error
+     * @param string $error
+     * @param string|null $field The field name with error, will be used as array key, if null array key will be numeric
+     * @return void
+     * @since 1.0.0
+     */
+    public function addError(string $error, ?string $field = null): void
+    {
+        if ($field === null) {
+            $this->error[] = $error;
+        } else {
+            $this->error[$field] = $error;
+        }
+    }
+
+    /**
+     * Add a particular warning
+     * @param string $warning
+     * @return void
+     * @since 1.0.0
+     */
+    public function addWarning(string $warning): void
+    {
+        $this->warning[] = $warning;
+    }
+
+    /**
+     * Validate documents number
+     * &lt;xs:simpleType&gt;
+     *       &lt;xs:restriction base="xs:string"&gt;
+     *           &lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&gt;
+     *           &lt;xs:minLength value="1"/&gt;
+     *           &lt;xs:maxLength value="60"/&gt;
+     *       &lt;/xs:restriction&gt;
+     *   &lt;/xs:simpleType&gt;
+     * @param string $docNumber
+     * @return bool
+     * @since 1.0.0
+     */
+    public static function validateDocNumber(string $docNumber): bool
+    {
+        if (\strlen($docNumber) > 60 ||
+            \strlen($docNumber) < 1 ||
+            \preg_match("/[^ ]+ [^\/^ ]+\/[0-9]+/", $docNumber) !== 1
+        ) {
+            return false;
+        }
+        return true;
     }
 }

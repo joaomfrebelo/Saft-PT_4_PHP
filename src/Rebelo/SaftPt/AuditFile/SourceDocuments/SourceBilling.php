@@ -29,8 +29,15 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 use Rebelo\Enum\AEnum;
 
 /**
- * SourceBilling
- *
+ * SourceBilling<br>
+ * To fill in with:<br>
+ * “P” – Document created in the invoicing program;<br>
+ * “I” – Document integrated and produced in a different invoicing program;<br>
+ * “M” – Recovered or manually issued document.<br>
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling P()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling I()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling M()
+ * <pre>
  * &lt;xs:simpleType name="SAFTPTSourceBilling"&gt;
  *  &lt;xs:annotation&gt;
  *      &lt;xs:documentation&gt;P para documento produzido na aplicacao, I para documento integrado e
@@ -42,35 +49,48 @@ use Rebelo\Enum\AEnum;
  *      &lt;xs:enumeration value="I"/&gt;
  *      &lt;xs:enumeration value="M"/&gt;
  *  &lt;/xs:restriction&gt;
- *
+ * </pre>
  * @author João Rebelo
  */
 class SourceBilling extends AEnum
 {
     /**
-     * P -> para documento produzido na aplicacao<br>
-     * <xs:enumeration value="P"/>
+     * “P” – Document created in the invoicing program;<br>
+     * &lt;xs:enumeration value="P"/&gt;
      */
     const P = "P";
 
     /**
-     * I -> para documento integrado e produzido noutra aplicacao<br>
-     * <xs:enumeration value="I"/>
+     * I -> “I” – Document integrated and produced in a different invoicing program;<br>
+     * &lt;xs:enumeration value="I"/&gt;
      */
     const I = "I";
 
     /**
-     * M -> para documento proveniente de recuperacao ou de emissao manual<br>
-     * <xs:enumeration value="M"/>
+     * “M” – Recovered or manually issued document.<br>
+     * &lt;xs:enumeration value="M"/&gt;
      */
     const M = "M";
 
     /**
-     *
+     * To fill in with:<br>
+     * “P” – Document created in the invoicing program;<br>
+     * “I” – Document integrated and produced in a different invoicing program;<br>
+     * “M” – Recovered or manually issued document.<br>
      * @param string $value
      */
     public function __construct(string $value)
     {
         parent::__construct($value);
+    }
+
+    /**
+     * Get the value as string
+     * @return string
+     * @since 1.0.0
+     */
+    public function get(): string
+    {
+        return (string) parent::get();
     }
 }

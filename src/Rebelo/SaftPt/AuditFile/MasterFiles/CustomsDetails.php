@@ -27,17 +27,17 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Class representing CustomsDetailsType
  * <pre>
- *   <!-- Estrutura de caraterizacao aduaneira de produtos-->
- *   <xs:complexType name="CustomsDetails">
- *       <xs:sequence>
- *           <xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/>
- *           <xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/>
- *       </xs:sequence>
- *   </xs:complexType>
+ *   &lt;xs:complexType name="CustomsDetails">
+ *       &lt;xs:sequence>
+ *           &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
+ *           &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/&gt;
+ *       &lt;/xs:sequence&gt;
+ *   &lt;/xs:complexType&gt;
  * </pre>
  * XSD Type: CustomsDetails
  * @since 1.0.0
@@ -45,33 +45,33 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
 class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
 {
     /**
-     * <xs:complexType name="CustomsDetails">
+     * &lt;xs:complexType name="CustomsDetails">
      * @since 1.0.0
      */
     const N_CUSTOMSDETAILS = "CustomsDetails";
 
     /**
-     * <xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/>
+     * &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @since 1.0.0
      */
     const N_CNCODE = "CNCode";
 
     /**
-     * <xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded">
+     * &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded">
      * @since 1.0.0
      */
     const N_UNNUMBER = "UNNumber";
 
     /**
      * <pre>
-     * <xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/>
-     * <xs:element name="CNCode" type="SAFPTCNCode"/>
-     * <xs:simpleType name="SAFPTCNCode">
-     * <xs:restriction base="xs:string">
-     * <xs:pattern value="[0-9]{8}"/>
-     * <xs:length value="8"/>
-     * </xs:restriction>
-     * </xs:simpleType>
+     * &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * &lt;xs:element name="CNCode" type="SAFPTCNCode"/&gt;
+     * &lt;xs:simpleType name="SAFPTCNCode">
+     * &lt;xs:restriction base="xs:string">
+     * &lt;xs:pattern value="[0-9]{8}"/&gt;
+     * &lt;xs:length value="8"/&gt;
+     * &lt;/xs:restriction&gt;
+     * &lt;/xs:simpleType&gt;
      * </pre>
      * @var string[] $cNCode
      * @since 1.0.0
@@ -81,14 +81,14 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * <!-- Numero ONU para substancias perigosas -->
      * <pre>
-     * <xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/>
-     * <xs:element name="UNNumber" type="SAFPTUNNumber"/>
-     * <xs:simpleType name="SAFPTUNNumber">
-     *       <xs:restriction base="xs:string">
-     *           <xs:pattern value="[0-9]{4}"/>
-     *           <xs:length value="4"/>
-     *       </xs:restriction>
-     *   </xs:simpleType>
+     * &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * &lt;xs:element name="UNNumber" type="SAFPTUNNumber"/&gt;
+     * &lt;xs:simpleType name="SAFPTUNNumber">
+     *       &lt;xs:restriction base="xs:string">
+     *           &lt;xs:pattern value="[0-9]{4}"/&gt;
+     *           &lt;xs:length value="4"/&gt;
+     *       &lt;/xs:restriction&gt;
+     *   &lt;/xs:simpleType&gt;
      * </pre>
      * @var string[] $uNNumber
      * @since 1.0.0
@@ -96,82 +96,71 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private array $uNNumber = array();
 
     /**
-     * Adds as cNCode
-     *
-     * <pre>
-     * <xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/>
-     * <xs:element name="CNCode" type="SAFPTCNCode"/>
-     * <xs:simpleType name="SAFPTCNCode">
-     * <xs:restriction base="xs:string">
-     * <xs:pattern value="[0-9]{8}"/>
-     * <xs:length value="8"/>
-     * </xs:restriction>
-     * </xs:simpleType>
-     * </pre>
-     * @param string $cNCode
-     * @return int
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * CustomsDetails
+     * @param ErrorRegister $errorRegister     *
      * @since 1.0.0
      */
-    public function addToCNCode(string $cNCode): int
+    public function __construct(ErrorRegister $errorRegister)
+    {
+        parent::__construct($errorRegister);
+    }
+
+    /**
+     * Adds CNCode<br>
+     * Fill in with the European Union Combined Nomenclature code.
+     * there is a need to make more than one reference,
+     * this field can be generated as many times as necessary.
+     *
+     * <pre>
+     * &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * &lt;xs:element name="CNCode" type="SAFPTCNCode"/&gt;
+     * &lt;xs:simpleType name="SAFPTCNCode">
+     * &lt;xs:restriction base="xs:string">
+     * &lt;xs:pattern value="[0-9]{8}"/&gt;
+     * &lt;xs:length value="8"/&gt;
+     * &lt;/xs:restriction&gt;
+     * &lt;/xs:simpleType>
+     * </pre>
+     * @param string $cNCode
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function addCNCode(string $cNCode): bool
     {
         $regexp = "/^([0-9]{8})$/";
         if (\preg_match($regexp, $cNCode) !== 1) {
-            $msg = sprintf("CNcode doesn't match regexp '%s'", $regexp);
+            $msg    = sprintf("CNcode doesn't match regexp '%s'", $regexp);
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        if (\count($this->cNCode) === 0) {
-            $index = 0;
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("CNCode_not_valid");
         } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->cNCode);
-            $index = $keys[\count($keys) - 1] + 1;
+            $return = true;
         }
-        $this->cNCode[$index] = $cNCode;
+
+        $this->cNCode[] = $cNCode;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " CNcode add to index ".\strval($index));
+            sprintf(__METHOD__." CNcode '%s' add", $cNCode)
+        );
 
-        return $index;
+        return $return;
     }
 
     /**
-     * isset cNCode
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetCNCode(int $index): bool
-    {
-        return isset($this->cNCode[$index]);
-    }
-
-    /**
-     * unset cNCode
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetCNCode(int $index): void
-    {
-        unset($this->cNCode[$index]);
-    }
-
-    /**
-     * Gets as cNCode
+     * Gets CNCode<br>
+     * Fill in with the European Union Combined Nomenclature code.
+     * there is a need to make more than one reference,
+     * this field can be generated as many times as necessary.
      *
      * <pre>
-     * <xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/>
-     * <xs:element name="CNCode" type="SAFPTCNCode"/>
-     * <xs:simpleType name="SAFPTCNCode">
-     * <xs:restriction base="xs:string">
-     * <xs:pattern value="[0-9]{8}"/>
-     * <xs:length value="8"/>
-     * </xs:restriction>
-     * </xs:simpleType>
+     * &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * &lt;xs:element name="CNCode" type="SAFPTCNCode"/&gt;
+     * &lt;xs:simpleType name="SAFPTCNCode">
+     * &lt;xs:restriction base="xs:string">
+     * &lt;xs:pattern value="[0-9]{8}"/&gt;
+     * &lt;xs:length value="8"/&gt;
+     * &lt;/xs:restriction&gt;
+     * &lt;/xs:simpleType&gt;
      * </pre>
      * @return string[]
      * @since 1.0.0
@@ -182,96 +171,60 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Sets a new cNCode
-     *
-     * @param string[] $cNCode
-     * @return void
-     * @since 1.0.0
-     */
-    public function setCNCode(array $cNCode): void
-    {
-        foreach ($cNCode as $code) {
-            $this->addToCNCode($code);
-        }
-    }
-
-    /**
-     * Adds as uNNumber
-     * <!-- Numero ONU para substancias perigosas -->
+     * Adds UNNumber<br>
+     * Fill in with the UN [United Nations] number for dangerous products.
+     * If there is a need to make more than one reference,
+     * this field can be generated as many times as necessary.
      * <pre>
-     * <xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/>
-     * <xs:element name="UNNumber" type="SAFPTUNNumber"/>
-     * <xs:simpleType name="SAFPTUNNumber">
-     *       <xs:restriction base="xs:string">
-     *           <xs:pattern value="[0-9]{4}"/>
-     *           <xs:length value="4"/>
-     *       </xs:restriction>
-     *   </xs:simpleType>
+     * &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * &lt;xs:element name="UNNumber" type="SAFPTUNNumber"/&gt;
+     * &lt;xs:simpleType name="SAFPTUNNumber">
+     *       &lt;xs:restriction base="xs:string">
+     *           &lt;xs:pattern value="[0-9]{4}"/&gt;
+     *           &lt;xs:length value="4"/&gt;
+     *       &lt;/xs:restriction&gt;
+     *   &lt;/xs:simpleType&gt;
      * </pre>
      * @param string $uNNumber
-     * @return int
+     * @return bool true if the value is valid
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
-    public function addToUNNumber(string $uNNumber): int
+    public function addUNNumber(string $uNNumber): bool
     {
         $regexp = "/^([0-9]{4})$/";
         if (\preg_match($regexp, $uNNumber) !== 1) {
-            $msg = sprintf("UN Number doesn't match regexp '%s'", $regexp);
+            $msg    = sprintf("UN Number doesn't match regexp '%s'", $regexp);
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            throw new AuditFileException($msg);
-        }
-        if (\count($this->uNNumber) === 0) {
-            $index = 0;
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("UNNumber_not_valid");
         } else {
-            // The index if obtaining this way because you can unset a key
-            $keys  = \array_keys($this->uNNumber);
-            $index = $keys[\count($keys) - 1] + 1;
+            $return = true;
         }
-        $this->uNNumber[$index] = $uNNumber;
+
+        $this->uNNumber[] = $uNNumber;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__, " UN number add to index ".\strval($index));
+            \sprintf(__METHOD__." UN number add '%s'", $uNNumber)
+        );
 
-        return $index;
+        return $return;
     }
 
     /**
-     * isset uNNumber
-     *
-     * @param int $index
-     * @return bool
-     * @since 1.0.0
-     */
-    public function issetUNNumber(int $index): bool
-    {
-        return isset($this->uNNumber[$index]);
-    }
-
-    /**
-     * unset uNNumber
-     *
-     * @param int $index
-     * @return void
-     * @since 1.0.0
-     */
-    public function unsetUNNumber(int $index): void
-    {
-        unset($this->uNNumber[$index]);
-    }
-
-    /**
-     * Gets as uNNumber
-     * <!-- Numero ONU para substancias perigosas -->
+     * Gets as uNNumber<br>
+     * Fill in with the UN [United Nations] number for dangerous products.
+     * If there is a need to make more than one reference,
+     * this field can be generated as many times as necessary.
      * <pre>
-     * <xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/>
-     * <xs:element name="UNNumber" type="SAFPTUNNumber"/>
-     * <xs:simpleType name="SAFPTUNNumber">
-     *       <xs:restriction base="xs:string">
-     *           <xs:pattern value="[0-9]{4}"/>
-     *           <xs:length value="4"/>
-     *       </xs:restriction>
-     *   </xs:simpleType>
+     * &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded"/&gt;
+     * &lt;xs:element name="UNNumber" type="SAFPTUNNumber"/&gt;
+     * &lt;xs:simpleType name="SAFPTUNNumber">
+     *       &lt;xs:restriction base="xs:string">
+     *           &lt;xs:pattern value="[0-9]{4}"/&gt;
+     *           &lt;xs:length value="4"/&gt;
+     *       &lt;/xs:restriction&gt;
+     *   &lt;/xs:simpleType&gt;
      * </pre>
      * @return string[]
      * @since 1.0.0
@@ -279,20 +232,6 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getUNNumber(): array
     {
         return $this->uNNumber;
-    }
-
-    /**
-     * Sets a new uNNumber
-     *
-     * @param string[] $uNNumber
-     * @return void
-     * @since 1.0.0
-     */
-    public function setUNNumber(array $uNNumber): void
-    {
-        foreach ($uNNumber as $number) {
-            $this->addToUNNumber($number);
-        }
     }
 
     /**
@@ -305,8 +244,9 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         if (\count($this->cNCode) === 0 && \count($this->uNNumber) === 0) {
-            \Logger::getLogger(\get_class($this))->debug(__METHOD__,
-                " No details to create node");
+            \Logger::getLogger(\get_class($this))->debug(
+                __METHOD__." No details to create node"
+            );
             return $node;
         }
 
@@ -326,14 +266,15 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @since 1.0.0
+     * @since 1.0.
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_CUSTOMSDETAILS) {
-            $msg = sprintf("Node name should be '%s' and not '%s'",
+            $msg = sprintf(
+                "Node name should be '%s' and not '%s'",
                 static::N_CUSTOMSDETAILS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -344,12 +285,12 @@ class CustomsDetails extends \Rebelo\SaftPt\AuditFile\AAuditFile
         $countCnCode = $node->{static::N_CNCODE}->count();
         for ($y = 0; $y < $countCnCode; $y++) {
             $cnNode = $node->{static::N_CNCODE}[$y];
-            $this->addToCNCode((string) $cnNode);
+            $this->addCNCode((string) $cnNode);
         }
         $countUNNumber = $node->{static::N_UNNUMBER}->count();
         for ($z = 0; $z < $countUNNumber; $z++) {
             $unNum = $node->{static::N_UNNUMBER}[$z];
-            $this->addToUNNumber((string) $unNum);
+            $this->addUNNumber((string) $unNum);
         }
     }
 }

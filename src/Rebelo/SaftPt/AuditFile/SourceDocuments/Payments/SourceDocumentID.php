@@ -28,9 +28,14 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
- * SourceDocumentID
+ * SourceDocumentID<br>
+ * If there is a need to make more than one reference,
+ * this structure can be generated as many times as necessary.
+ * In case of integrated accounting and invoicing program,
+ * the numbering structure of the source field shall be used.
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -63,8 +68,8 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     * <xs:element ref="OriginatingON"/>
-     * <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="OriginatingON"/&gt;
+     * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
      * @var string
      * @since 1.0.0
@@ -72,7 +77,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     private string $originatingON;
 
     /**
-     * <xs:element ref="InvoiceDate"/>
+     * &lt;xs:element ref="InvoiceDate"/&gt;
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -80,8 +85,8 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * <pre>
-     * <xs:element ref="Description" minOccurs="0"/>
-     * <xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * &lt;xs:element ref="Description" minOccurs="0"/&gt;
+     * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * </pre>
      * @var string|null
      * @since 1.0.0
@@ -90,6 +95,10 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * SourceDocumentID<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary.
+     * In case of integrated accounting and invoicing program,
+     * the numbering structure of the source field shall be used.
      * <pre>
      * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded"&gt;
      *    &lt;xs:complexType&gt;
@@ -101,20 +110,25 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *    &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct(ErrorRegister $errorRegister)
     {
-        parent::__construct();
+        parent::__construct($errorRegister);
     }
 
     /**
      * Get OriginatingON<br>
+     * Indicate type, series and number of the invoice or document amending the latter,
+     * to be paid. In case the mentioned document is included in the SAF-T (PT)
+     * the number structure of field 4.1.4.1. – InvoiceNo on table 4.1. – SalesInvoices should be used.
      * <pre>
-     * <xs:element ref="OriginatingON"/>
-     * <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
+     * &lt;xs:element ref="OriginatingON"/&gt;
+     * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
      * @return string
+     * @throws \Error
      * @since 1.0.0
      */
     public function getOriginatingON(): string
@@ -125,41 +139,82 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Set OriginatingON<br>
-     * <pre>
-     * <xs:element ref="OriginatingON"/>
-     * <xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/>
-     * </pre>
-     * @param string $originatingON
-     * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * Get if is set ProductNumberCode
+     * @return bool
      * @since 1.0.0
      */
-    public function setOriginatingON(string $originatingON): void
+    public function issetOriginatingON(): bool
     {
-        $this->originatingON = $this->valTextMandMaxCar($originatingON, 60,
-            __METHOD__);
+        return isset($this->originatingON);
+    }
+
+    /**
+     * Set OriginatingON<br><br>
+     * Indicate type, series and number of the invoice or document amending the latter,
+     * to be paid. In case the mentioned document is included in the SAF-T (PT)
+     * the number structure of field 4.1.4.1. – InvoiceNo on table 4.1. – SalesInvoices should be used.
+     * <pre>
+     * &lt;xs:element ref="OriginatingON"/&gt;
+     * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
+     * </pre>
+     * @param string $originatingON
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setOriginatingON(string $originatingON): bool
+    {
+        try {
+            $this->originatingON = $this->valTextMandMaxCar(
+                $originatingON, 60,
+                __METHOD__
+            );
+            $return              = true;
+        } catch (AuditFileException $e) {
+            $this->originatingON = $originatingON;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("OriginatingON_not_valid");
+            $return              = false;
+        }
         \Logger::getLogger(\get_class($this))
             ->debug(\sprintf(__METHOD__." setted to '%s'", $this->originatingON));
+        return $return;
     }
 
     /**
      * Get Invoice Date<br>
-     * <xs:element ref="InvoiceDate"/>
+     * Mention the date on the invoice or any amendment document for payment.
+     * &lt;xs:element ref="InvoiceDate"/&gt;
      * @return \Rebelo\Date\Date
+     * @throws \Error
      * @since 1.0.0
      */
     public function getInvoiceDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->invoiceDate->format(RDate::SQL_DATE)));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->invoiceDate->format(RDate::SQL_DATE)
+                )
+            );
         return $this->invoiceDate;
     }
 
     /**
+     * Get if is set InvoiceDate
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetInvoiceDate(): bool
+    {
+        return isset($this->invoiceDate);
+    }
+
+    /**
      * Set Invoice Date<br>
-     * <xs:element ref="InvoiceDate"/>
+     * Mention the date on the invoice or any amendment document for payment.
+     * &lt;xs:element ref="InvoiceDate"/&gt;
      * @param \Rebelo\Date\Date $invoiceDate
      * @return void
      * @since 1.0.0
@@ -168,15 +223,20 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->invoiceDate = $invoiceDate;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->invoiceDate->format(RDate::SQL_DATE)));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->invoiceDate->format(RDate::SQL_DATE)
+                )
+            );
     }
 
     /**
      * Get description<br>
+     * Description line of the receipt.
      * <pre>
-     * <xs:element ref="Description" minOccurs="0"/>
-     * <xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * &lt;xs:element ref="Description" minOccurs="0"/&gt;
+     * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * </pre>
      * @return string|null
      * @since 1.0.0
@@ -184,28 +244,47 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getDescription(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'",
-                    $this->description === null ? "null" : $this->description));
+            ->info(
+                \sprintf(
+                    __METHOD__." getted '%s'",
+                    $this->description === null ? "null" : $this->description
+                )
+            );
         return $this->description;
     }
 
     /**
      * Set description<br>
+     * Description line of the receipt.
      * <pre>
-     * <xs:element ref="Description" minOccurs="0"/>
-     * <xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/>
+     * &lt;xs:element ref="Description" minOccurs="0"/&gt;
+     * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * </pre>
      * @param string|null $description
-     * @return void
+     * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setDescription(?string $description): void
+    public function setDescription(?string $description): bool
     {
-        $this->description = $description === null ? null :
-            $this->valTextMandMaxCar($description, 200, __METHOD__);
+        try {
+            $this->description = $description === null ? null :
+                $this->valTextMandMaxCar($description, 200, __METHOD__);
+            $return            = true;
+        } catch (AuditFileException $e) {
+            $this->description = $description;
+            \Logger::getLogger(\get_class($this))
+                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("Description_not_valid");
+            $return            = false;
+        }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'",
-                    $this->description === null ? "null" : $this->description));
+            ->debug(
+                \sprintf(
+                    __METHOD__." setted to '%s'",
+                    $this->description === null ? "null" : $this->description
+                )
+            );
+        return $return;
     }
 
     /**
@@ -220,7 +299,8 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== Line::N_LINE) {
-            $msg = \sprintf("Node name should be '%s' but is '%s", Line::N_LINE,
+            $msg = \sprintf(
+                "Node name should be '%s' but is '%s", Line::N_LINE,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -230,18 +310,31 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $sourceIdNode = $node->addChild(static::N_SOURCEDOCUMENTID);
 
-        $sourceIdNode->addChild(
-            static::N_ORIGINATINGON, $this->getOriginatingON()
-        );
-        $sourceIdNode->addChild(
-            static::N_INVOICEDATE,
-            $this->getInvoiceDate()->format(RDate::SQL_DATE)
-        );
+        if (isset($this->originatingON)) {
+            $sourceIdNode->addChild(
+                static::N_ORIGINATINGON, $this->getOriginatingON()
+            );
+        } else {
+            $sourceIdNode->addChild(static::N_ORIGINATINGON);
+            $this->getErrorRegistor()->addOnCreateXmlNode("OriginatingON_not_valid");
+        }
+
+        if (isset($this->invoiceDate)) {
+            $sourceIdNode->addChild(
+                static::N_INVOICEDATE,
+                $this->getInvoiceDate()->format(RDate::SQL_DATE)
+            );
+        } else {
+            $sourceIdNode->addChild(static::N_INVOICEDATE);
+            $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceDate_not_valid");
+        }
+
         if ($this->getDescription() !== null) {
             $sourceIdNode->addChild(
                 static::N_DESCRIPTION, $this->getDescription()
             );
         }
+
         return $sourceIdNode;
     }
 
@@ -257,8 +350,10 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->getName() !== static::N_SOURCEDOCUMENTID) {
-            $msg = sprintf("Node name should be '%s' but is '%s",
-                static::N_SOURCEDOCUMENTID, $node->getName());
+            $msg = sprintf(
+                "Node name should be '%s' but is '%s",
+                static::N_SOURCEDOCUMENTID, $node->getName()
+            );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);

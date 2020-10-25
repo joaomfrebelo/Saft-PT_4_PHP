@@ -61,19 +61,19 @@ class RSimpleXmlElement extends \SimpleXMLElement
 
     /**
      * The type of escape to be used
-     * @var string
+     * @var int
      * @since 1.0.0
      */
-    public static $escapeHtml = self::PARTIAL_ESCAPE_HTML;
+    public static int $escapeHtml = self::PARTIAL_ESCAPE_HTML;
 
     /**
      * Creates a new SimpleXMLElement object
      * <p>Creates a new SimpleXMLElement object.</p>
      * @param string $data <p>A well-formed XML string or the path or URL to an XML document if <code>data_is_url</code> is <b><code>TRUE</code></b>.</p>
      * @param int $options <p>Optionally used to specify additional Libxml parameters.</p> <p><b>Note</b>:</p><p>It may be necessary to pass <b><code>LIBXML_PARSEHUGE</code></b> to be able to process deeply nested XML or very large text nodes.</p>
-     * @param bool $data_is_url <p>By default, <code>data_is_url</code> is <b><code>FALSE</code></b>. Use <b><code>TRUE</code></b> to specify that <code>data</code> is a path or URL to an XML document instead of <code>string</code> data.</p>
+     * @param bool $dataIsUrl <p>By default, <code>data_is_url</code> is <b><code>FALSE</code></b>. Use <b><code>TRUE</code></b> to specify that <code>data</code> is a path or URL to an XML document instead of <code>string</code> data.</p>
      * @param string $ns <p>Namespace prefix or URI.</p>
-     * @param bool $is_prefix <p><b><code>TRUE</code></b> if <code>ns</code> is a prefix, <b><code>FALSE</code></b> if it's a URI; defaults to <b><code>FALSE</code></b>.</p>
+     * @param bool $isPrefix <p><b><code>TRUE</code></b> if <code>ns</code> is a prefix, <b><code>FALSE</code></b> if it's a URI; defaults to <b><code>FALSE</code></b>.</p>
      * @return self <p>Returns a <code>SimpleXMLElement</code> object representing <code>data</code>.</p>
      * @link http://php.net/manual/en/simplexmlelement.construct.php
      * @see simplexml_load_string(), simplexml_load_file(), libxml_use_internal_errors()
@@ -81,10 +81,10 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * @since 1.0.0
      */
     public static function getInstance($data, $options = 0,
-                                       $data_is_url = FALSE, $ns = "",
-                                       $is_prefix = FALSE)
+                                       $dataIsUrl = FALSE,
+                                       $ns = "", $isPrefix = FALSE)
     {
-        return new self($data, $options, $data_is_url, $ns, $is_prefix);
+        return new self($data, $options, $dataIsUrl, $ns, $isPrefix);
     }
 
     /**
@@ -92,14 +92,15 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * <p>Adds a child element to the node and returns a SimpleXMLElement of the child.</p>
      * @param string $name <p>The name of the child element to add.</p>
      * @param string $value <p>If specified, the value of the child element.</p>
-     * @return SimpleXMLElement <p>The <i>addChild</i> method returns a <code>SimpleXMLElement</code> object representing the child added to the XML node.</p>
+     * @param string $ns <p>Namespace (Not implemented)</p>
+     * @return \SimpleXMLElement
      * @link http://php.net/manual/en/simplexmlelement.addchild.php
      * @since 1.0.0
      */
-    public function addChild($name, $value = NULL, $ns = null)
+    public function addChild($name, $value = null, $ns = null)
     {
         if ($ns !== null) {
-            throw new NotImplemented("Name Space not implemented in addChild");
+            throw new NotImplemented("Namespace not implemented in addChild");
         }
         if ($value === null || static::$escapeHtml === static::NO_ESCAPE_HTML) {
             return parent::addChild($name, $value);
