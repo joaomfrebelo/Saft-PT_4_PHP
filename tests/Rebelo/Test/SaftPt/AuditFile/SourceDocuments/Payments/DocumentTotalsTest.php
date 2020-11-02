@@ -197,6 +197,11 @@ class DocumentTotalsTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
+        if($saftDemoXml === false){
+            $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
+            return;
+        }
+
         $paymentsStack = $saftDemoXml
             ->{SourceDocuments::N_SOURCEDOCUMENTS}
             ->{Payments::N_PAYMENTS}

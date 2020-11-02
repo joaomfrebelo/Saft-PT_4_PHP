@@ -40,6 +40,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
  * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus T()
  * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus A()
  * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus F()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus R()
  * @author João Rebelo
  * @since 1.0.0
  */

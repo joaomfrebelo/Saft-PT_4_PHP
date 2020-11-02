@@ -159,6 +159,11 @@ class WorkingDocumentsTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
+        if($saftDemoXml === false){
+            $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
+            return;
+        }
+
         $workingDocsXml = $saftDemoXml
             ->{SourceDocuments::N_SOURCEDOCUMENTS}
             ->{WorkingDocuments::N_WORKINGDOCUMENTS};

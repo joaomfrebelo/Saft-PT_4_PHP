@@ -596,8 +596,7 @@ class CustomerTest extends TestCase
         $this->assertEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $shToAddrStack = $customer->getShipToAddress();
-        $shToAddr      = clone $shToAddrStack[0];
-
+        
         unset($parsed);
 
         $this->setNullsCustomer($customer);
@@ -627,6 +626,11 @@ class CustomerTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
+        if($saftDemoXml === false){
+            $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
+            return;
+        }
+        
         $customerStack = $saftDemoXml
             ->{MasterFiles::N_MASTERFILES}
             ->{Customer::N_CUSTOMER};

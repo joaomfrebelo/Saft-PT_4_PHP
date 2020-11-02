@@ -200,13 +200,16 @@ class pt_PT extends AI18n
         $this->stack["document_line_value_not_quantity_price"]                   = "O doumento '%s' o total da linha '%s' não corresponde ao UnitPrice * Quantity ";
         $this->stack["document_line_product_code_not_exist"]                     = "O documento '%s' na linha '%s' o  ProductCoce '%s' não existe";
         $this->stack["document_line_product_code_not_defined"]                   = "O documento '%s' na linha '%s' não tem o ProductCoce definido";
-        $this->stack["customerID_not_defined_in_document"]                       = "O documento '%s' não tem o CustomerID definido";
+        $this->stack["customerID_not_defined_in_document"]                       = "O documento '%s' não tem o 'CustomerID' definido";
+        $this->stack["supplierID_not_defined_in_document"]                       = "O documento '%s' não tem o 'SupplierID' definido";
         $this->stack["invoicetype_not_defined"]                                  = "A 'Invoice' '%s' não tem o tipo definido";
         $this->stack["workdoctype_not_defined"]                                  = "O 'WorkDocument' '%s' não tem o tipo definido";
+        $this->stack["stock_mov_number_not_defined"]                             = "O 'StockMovement' '%s' não tem o tipo definido";
         $this->stack["customerID_not_exits"]                                     = "O 'CustomerID' '%s' do documento '%s' não existe na tabela de clientes";
         $this->stack["supplierID_not_exits"]                                     = "O 'SupplierID' '%s' do documento '%s' não existe na tabela de fornecedores";
         $this->stack["invoicetno_not_defined"]                                   = "Número de 'Invoice' não definido";
         $this->stack["workdocument_number_not_defined"]                          = "Número de 'WorkDocument' não definido";
+        $this->stack["stock_mov_number_not_defined"]                             = "Número de 'StockMovement' não definido";
         $this->stack["document_no_debit_or_credit"]                              = "O documento '%s' na linha não tem débitos nem créditos definidos";
         $this->stack["document_must_be_debit_but_credit"]                        = "O documento '%s' do tipo '%s' tem de ser a débito mas está a crédito";
         $this->stack["document_must_be_credit_but_debit"]                        = "O documento '%s' do tipo '%s' tem de ser a crédito mas está a débito";
@@ -271,5 +274,10 @@ class pt_PT extends AI18n
         $this->stack["document_line_no_tax_defined"]                             = "O documento '%s' na linha '%s' não tem o campo 'Tax' definido";
         $this->stack["mv_goods_total_qt_should_be_zero"]                         = "O 'TotalQuantityIssued' no 'MovementOfGoods' deve ser zero e é '%s'";
         $this->stack["mv_goods_num_lines_should_be_zero"]                        = "O 'NumberOfMovementLines' no 'MovementOfGoods' deve ser zero e é '%s'";
+        $this->stack["no_shipto_only_in_global_doc_and_must_be_GT"]              = "O documento de transporte '%s' não tem o 'ShipTo' definido, as guias transporte gloabais têm que ser do tipo 'GT' e este documento é do tipo '%s'";
+        $this->stack["stockmov_can_not_be_cancel_after_movement_start"]          = "O documento 'StockMovement' '%s' foi cancelado depois do inicio do tranporte 'MovementStartTime'";
+        $this->stack["customerID_SupplierID_not_defined_in_document"]            = "No documento 'StockMovement' '%s' não está definido nem o 'CustomerID' nem o 'SupplierID'";
+        $this->stack["customerID_and_supplierID_defined_in_document"]            = "No documento 'StockMovement' '%s' estão definido o 'CustomerID' e 'SupplierID' em simultâneo";
+        $this->stack["shipfrom_not_defined_in_stock_mov"]                        = "O documento 'StockMovement' não tem o 'ShipFrom' definido";
     }
 }

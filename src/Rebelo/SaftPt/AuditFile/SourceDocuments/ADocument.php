@@ -33,7 +33,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
 
 /**
- * Description of ADocument
+ * ADocument
  *
  * @author João Rebelo
  * @since 1.0.0

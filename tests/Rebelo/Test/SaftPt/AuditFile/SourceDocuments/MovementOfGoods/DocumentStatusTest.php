@@ -162,6 +162,11 @@ class DocumentStatusTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
+        if($saftDemoXml === false){
+            $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
+            return;
+        }
+
         $stockMovDocStack = $saftDemoXml
             ->{SourceDocuments::N_SOURCEDOCUMENTS}
             ->{MovementOfGoods::N_MOVEMENTOFGOODS}

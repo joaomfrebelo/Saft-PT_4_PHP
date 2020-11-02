@@ -305,7 +305,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDoc(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -384,7 +384,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocWrohgSign(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -455,7 +455,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocWrohgDate(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -533,7 +533,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocWrongCustomerID(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -611,7 +611,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocNoDocStatus(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -683,7 +683,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocNoLines(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -761,7 +761,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocWrongTotals(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -839,7 +839,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testWorkDocDebit(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
         $header      = $auditFile->getHeader();
@@ -1421,7 +1421,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
      * Init variables
      * @return void
      */
-    public function iniSalesInvoiceForLineTest(): void
+    public function iniWorkDocForLineTest(): void
     {
         $this->workingDocuments->setNetTotal(
             new UDecimal(0.0, WorkingDocuments::CALC_PRECISION)
@@ -1507,7 +1507,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     {
         $now = new RDate();
         $this->workingDocuments->setContinuesLines(true);
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1543,7 +1543,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
 
         $now = new RDate();
         $this->workingDocuments->setContinuesLines(false);
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1581,7 +1581,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     {
 
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1623,7 +1623,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     {
 
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1665,7 +1665,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     {
 
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1706,7 +1706,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWithTaxBaseAndUnitPriceGreaterThanZero(): void
     {
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1749,7 +1749,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWithTaxBaseAndCreditAmountGreaterThanZero(): void
     {
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1792,7 +1792,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWrongQtUnitPriceDebitAmount(): void
     {
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1833,7 +1833,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWrongQtUnitPriceCreditAmount(): void
     {
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1874,7 +1874,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLines(): void
     {
         $now = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
 
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1916,7 +1916,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWithAllowDebitAndCreditSameAnulationValue(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         $this->workingDocuments->setAllowDebitAndCredit(true);
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -1965,7 +1965,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWithAllowDebitAndCreditLessAnulationQAndtValue(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         $this->workingDocuments->setAllowDebitAndCredit(true);
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -2014,7 +2014,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
     public function testLinesWithAllowDebitAndCreditLessAnulationQtAndValue(): void
     {
         $now         = new RDate();
-        $this->iniSalesInvoiceForLineTest();
+        $this->iniWorkDocForLineTest();
         $this->workingDocuments->setAllowDebitAndCredit(true);
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();

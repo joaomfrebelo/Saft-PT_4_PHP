@@ -199,11 +199,13 @@ class en_GB extends AI18n
         $this->stack["document_line_product_code_not_defined"]                   = "The document '%s' at line '%s' does not have to the ProductCode defined";
         $this->stack["customerID_not_exits"]                                     = "The 'CustomerID' '%s' of document '%s' does not exists int the customer table";
         $this->stack["supplierID_not_exits"]                                     = "The 'SupplierID' '%s' of document '%s' does not exists int the supplier table";
-        $this->stack["customerID_not_defined_in_document"]                       = "The document '%s' does not have the CustomerID setted";
+        $this->stack["customerID_not_defined_in_document"]                       = "The document '%s' does not have the 'CustomerID' setted";
+        $this->stack["supplierID_not_defined_in_document"]                       = "The document '%s' does not have the 'SupplierID' setted";
         $this->stack["invoicetype_not_defined"]                                  = "The 'Invoice' '%s' does not have the type defined";
         $this->stack["workdoctype_not_defined"]                                  = "The 'WorkDocument' '%s' does not have the type defined";
         $this->stack["invoicetno_not_defined"]                                   = "'Invoice' Number not defined";
         $this->stack["workdoc_number_not_defined"]                               = "'WorkDocument' Number not defined";
+        $this->stack["stock_mov_number_not_defined"]                             = "'StockMovement' Number not defined";
         $this->stack["document_no_debit_or_credit"]                              = "O documento '%s' at line '%s' does not have debit or credit defined";
         $this->stack["document_must_be_debit_but_credit"]                        = "The document '%s' of type '%s' must be debit but is credit";
         $this->stack["document_must_be_credit_but_debit"]                        = "The document '%s' of type '%s' must be credit but is debit";
@@ -268,5 +270,10 @@ class en_GB extends AI18n
         $this->stack["document_line_no_tax_defined"]                             = "The document '%s' at line '%s' does not have the field 'Tax' defined";
         $this->stack["mv_goods_total_qt_should_be_zero"]                         = "The 'TotalQuantityIssued' of 'MovementOfGoods' must be zero but is '%s'";
         $this->stack["mv_goods_num_lines_should_be_zero"]                        = "The 'NumberOfMovementLines' of 'MovementOfGoods' must be zero but is '%s'";
+        $this->stack["no_shipto_only_in_global_doc_and_must_be_GT"]              = "The stock movement document '%s' does not have the 'ShipTo' defined, the global stock movement documents must be of type 'GT' and this document is of type '%s'";
+        $this->stack["stockmov_can_not_be_cancel_after_movement_start"]          = "The document 'StockMovement' '%s' was canceled after the movement start 'MovementStartTime'";
+        $this->stack["customerID_SupplierID_not_defined_in_document"]            = "The document 'StockMovement' '%s' does not have defined the 'CustomerID' or 'SupplierID'";
+        $this->stack["customerID_and_supplierID_defined_in_document"]            = "The document 'StockMovement' '%s' has the 'CustomerID' nad the 'SupplierID' at same time";
+        $this->stack["shipfrom_not_defined_in_stock_mov"]                        = "The document 'StockMovement' does not have the 'ShipFrom' definided";
     }
 }

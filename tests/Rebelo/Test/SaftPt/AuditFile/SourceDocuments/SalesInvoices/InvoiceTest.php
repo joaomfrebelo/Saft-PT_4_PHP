@@ -457,6 +457,11 @@ class InvoiceTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
+        if($saftDemoXml === false){
+            $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
+            return;
+        }
+
         $invoiceStack = $saftDemoXml
             ->{SourceDocuments::N_SOURCEDOCUMENTS}
             ->{SalesInvoices::N_SALESINVOICES}

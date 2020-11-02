@@ -10,6 +10,7 @@
     <rule ref="Zend.NamingConventions.ValidVariableName.NotCamelCaps">
 	<exclude-pattern>tests/Rebelo/Test/SaftPt/Validate/SalesInvoiceTest.php</exclude-pattern>
 	<exclude-pattern>tests/Rebelo/Test/SaftPt/Validate/WorkingDocumentsTest.php</exclude-pattern>
+	<exclude-pattern>tests/Rebelo/Test/SaftPt/Validate/MovementOfGoodsTest.php</exclude-pattern>
     </rule>    
     <rule ref="Zend">
 	<exclude name="Zend.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>

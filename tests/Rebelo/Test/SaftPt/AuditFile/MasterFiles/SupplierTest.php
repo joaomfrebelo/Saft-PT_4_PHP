@@ -662,6 +662,11 @@ class SupplierTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
+        if($saftDemoXml === false){
+            $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
+            return;
+        }
+
         $supplierStack = $saftDemoXml
             ->{MasterFiles::N_MASTERFILES}
             ->{Supplier::N_SUPPLIER};

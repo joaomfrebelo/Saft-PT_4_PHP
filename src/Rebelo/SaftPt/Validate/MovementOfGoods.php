@@ -33,7 +33,6 @@ use Rebelo\Decimal\UDecimal;
 use Rebelo\Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods as SaftMovementOfGoods;
@@ -42,7 +41,6 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType;
 
 /**
@@ -80,8 +78,7 @@ class MovementOfGoods extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         parent::__construct($auditFile, $sign);
         $this->totalQuantityIssued = new UDecimal(
-            0.0,
-            ADocuments::CALC_PRECISION
+            0.0, ADocuments::CALC_PRECISION
         );
         $sourceDoc                 = $auditFile->getSourceDocuments(false);
         if ($sourceDoc !== null) {
@@ -95,7 +92,7 @@ class MovementOfGoods extends ADocuments
     }
 
     /**
-     * Validate the workingdocuments
+     * Validate the StockMovement
      * @return bool
      * @since 1.0.0
      */
@@ -112,7 +109,30 @@ class MovementOfGoods extends ADocuments
                 return $this->isValid;
             }
 
-            $movementOfGoods->setMovOfGoodsTableTotalCalc(new MovOfGoodsTableTotalCalc());
+            $movementOfGoods->setMovOfGoodsTableTotalCalc(
+                new MovOfGoodsTableTotalCalc()
+            );
+
+            $order = $movementOfGoods->getOrder();
+
+            foreach (\array_keys($order) as $type) {
+                foreach (\array_keys($order[$type]) as $serie) {
+                    foreach (\array_keys($order[$type][$serie]) as $no) {
+                        /* @var $stockMovDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
+                        $stockMovDocument = $order[$type][$serie][$no];
+                        if ((string) $type !== $this->lastType || (string) $serie
+                            !== $this->lastSerie) {
+                            $this->lastHash            = "";
+                            $this->lastDocDate         = null;
+                            $this->lastSystemEntryDate = null;
+                        }
+                        $stockMovDocument->setDocTotalcal(new DocTotalCalc());
+                        $this->stockMovement($stockMovDocument);
+                        $this->lastType  = (string) $type;
+                        $this->lastSerie = (string) $serie;
+                    }
+                }
+            }
 
             $this->numberOfLinesAndTotalQuantity();
 
@@ -144,27 +164,6 @@ class MovementOfGoods extends ADocuments
                 }
 
                 return $this->isValid;
-            }
-
-            $order = $movementOfGoods->getOrder();
-
-            foreach (\array_keys($order) as $type) {
-                foreach (\array_keys($order[$type]) as $serie) {
-                    foreach (\array_keys($order[$type][$serie]) as $no) {
-                        /* @var $stockMovDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
-                        $stockMovDocument = $order[$type][$serie][$no];
-                        if ((string) $type !== $this->lastType || (string) $serie
-                            !== $this->lastSerie) {
-                            $this->lastHash            = "";
-                            $this->lastDocDate         = null;
-                            $this->lastSystemEntryDate = null;
-                        }
-                        $stockMovDocument->setDocTotalcal(new DocTotalCalc());
-                        $this->stockMovement($stockMovDocument);
-                        $this->lastType  = (string) $type;
-                        $this->lastSerie = (string) $serie;
-                    }
-                }
             }
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
@@ -199,7 +198,7 @@ class MovementOfGoods extends ADocuments
             $this->grossTotal = new UDecimal(0.0, static::CALC_PRECISION);
 
             if ($stockMovDocument->issetDocumentNumber() === false) {
-                $msg           = AAuditFile::getI18n()->get("workdoc_number_not_defined");
+                $msg           = AAuditFile::getI18n()->get("stock_mov_number_not_defined");
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError($msg);
                 $this->isValid = false;
@@ -209,7 +208,7 @@ class MovementOfGoods extends ADocuments
             if ($stockMovDocument->issetMovementType() === false) {
                 $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "workdoctype_not_defined"
+                        "stock_mov_number_not_defined"
                     ), $stockMovDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -240,8 +239,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError(
-                    $msg,
-                    StockMovement::N_SYSTEMENTRYDATE
+                    $msg, StockMovement::N_SYSTEMENTRYDATE
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -255,6 +253,7 @@ class MovementOfGoods extends ADocuments
             $this->documentStatus($stockMovDocument);
             $this->lines($stockMovDocument);
             $this->totals($stockMovDocument);
+            $this->shipement($stockMovDocument);
         } catch (\Exception | \Error $e) {
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -270,7 +269,7 @@ class MovementOfGoods extends ADocuments
     }
 
     /**
-     * Validate if the NumberOfEntries is equal to the number of StockMovements
+     * Validate if the NumberOfLines and TotalQuantity is equal to the number of StockMovements
      * @return void
      * @since 1.0.0
      */
@@ -280,9 +279,9 @@ class MovementOfGoods extends ADocuments
         $movementOfGoods = $this->auditFile->getSourceDocuments()->getMovementOfGoods();
 
         $testNlines = $this->numberOfMovementLines === $movementOfGoods->getNumberOfMovementLines();
-        $testQt     = $this->totalQuantityIssued->equals(
+        $testQt     = $this->totalQuantityIssued->signedSubtract(
             $movementOfGoods->getTotalQuantityIssued()
-        );
+        )->abs()->valueOf() <= $this->getDeltaTable();
 
         $this->auditFile->getSourceDocuments()->getMovementOfGoods()
             ->getMovOfGoodsTableTotalCalc()->setNumberOfMovementLines(
@@ -356,8 +355,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError(
-                $msg,
-                DocumentStatus::N_MOVEMENTSTATUSDATE
+                $msg, DocumentStatus::N_MOVEMENTSTATUSDATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -390,58 +388,104 @@ class MovementOfGoods extends ADocuments
     protected function customerIdOrSupplierId(StockMovement $stockMovDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        if ($stockMovDocument->getMovementType()->isEqual(MovementType::GD)) {
-            if ($stockMovDocument->issetSupplierID()) {
-                $allSupplier = $this->auditFile->getMasterFiles()->getAllSupplierID();
-                if (\in_array($stockMovDocument->getSupplierID(), $allSupplier) === false) {
 
-                    $msg = \sprintf(
-                        AAuditFile::getI18n()->get("supplierID_not_exits"),
-                        $stockMovDocument->getSupplierID(),
-                        $stockMovDocument->getDocumentNumber()
-                    );
-
-                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $stockMovDocument->addError(
-                        $msg,
-                        StockMovement::N_CUSTOMERID
-                    );
-                    \Logger::getLogger(\get_class($this))->info($msg);
-                    $this->isValid = false;
-                }
-                return;
-            }
-        } else {
-            if ($stockMovDocument->issetCustomerID()) {
-                $allCustomer = $this->auditFile->getMasterFiles()->getAllCustomerID();
-                if (\in_array($stockMovDocument->getCustomerID(), $allCustomer) === false) {
-
-                    $msg = \sprintf(
-                        AAuditFile::getI18n()->get("customerID_not_exits"),
-                        $stockMovDocument->getCustomerID(),
-                        $stockMovDocument->getDocumentNumber()
-                    );
-
-                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $stockMovDocument->addError(
-                        $msg,
-                        StockMovement::N_CUSTOMERID
-                    );
-                    \Logger::getLogger(\get_class($this))->info($msg);
-                    $this->isValid = false;
-                }
-                return;
-            }
+        if ($stockMovDocument->issetCustomerID() && $stockMovDocument->issetSupplierID()) {
+            $msg           = \sprintf(
+                AAuditFile::getI18n()->get("customerID_and_supplierID_defined_in_document"),
+                $stockMovDocument->getDocumentNumber()
+            );
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $stockMovDocument->addError($msg, StockMovement::N_CUSTOMERID);
+            $this->isValid = false;
+            return;
         }
 
-        $msg           = \sprintf(
-            AAuditFile::getI18n()->get("customerID_not_defined_in_document"),
-            $stockMovDocument->getDocumentNumber()
-        );
-        $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-        $stockMovDocument->addError($msg, StockMovement::N_CUSTOMERID);
-        \Logger::getLogger(\get_class($this))->info($msg);
-        $this->isValid = false;
+        switch ($stockMovDocument->getMovementType()->get()) {
+            case MovementType::GC:
+            case MovementType::GR:
+                if ($stockMovDocument->issetCustomerID() === false) {
+                    $msg           = \sprintf(
+                        AAuditFile::getI18n()->get("customerID_not_defined_in_document"),
+                        $stockMovDocument->getDocumentNumber()
+                    );
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                    $stockMovDocument->addError(
+                        $msg,
+                        StockMovement::N_CUSTOMERID
+                    );
+                    $this->isValid = false;
+                    return;
+                }
+                break;
+            case MovementType::GD:
+                if ($stockMovDocument->issetSupplierID() === false) {
+                    $msg           = \sprintf(
+                        AAuditFile::getI18n()->get("supplierID_not_defined_in_document"),
+                        $stockMovDocument->getDocumentNumber()
+                    );
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                    $stockMovDocument->addError(
+                        $msg, StockMovement::N_SUPPLIERID
+                    );
+                    $this->isValid = false;
+                    return;
+                }
+            default :
+                if ($stockMovDocument->issetCustomerID() === false &&
+                    $stockMovDocument->issetSupplierID() === false) {
+                    $msg           = \sprintf(
+                        AAuditFile::getI18n()->get("customerID_SupplierID_not_defined_in_document"),
+                        $stockMovDocument->getDocumentNumber()
+                    );
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    $stockMovDocument->addError(
+                        $msg,
+                        StockMovement::N_CUSTOMERID
+                    );
+                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                    $this->isValid = false;
+                    return;
+                }
+        }
+
+        if ($stockMovDocument->issetSupplierID()) {
+            $allSupplier = $this->auditFile->getMasterFiles()->getAllSupplierID();
+            if (\in_array($stockMovDocument->getSupplierID(), $allSupplier) === false) {
+
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("supplierID_not_exits"),
+                    $stockMovDocument->getSupplierID(),
+                    $stockMovDocument->getDocumentNumber()
+                );
+
+                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                $stockMovDocument->addError(
+                    $msg, StockMovement::N_CUSTOMERID
+                );
+                \Logger::getLogger(\get_class($this))->info($msg);
+                $this->isValid = false;
+            }
+        } else {
+            $allCustomer = $this->auditFile->getMasterFiles()->getAllCustomerID();
+            if (\in_array($stockMovDocument->getCustomerID(), $allCustomer) === false) {
+
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("customerID_not_exits"),
+                    $stockMovDocument->getCustomerID(),
+                    $stockMovDocument->getDocumentNumber()
+                );
+
+                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                $stockMovDocument->addError(
+                    $msg, StockMovement::N_CUSTOMERID
+                );
+                \Logger::getLogger(\get_class($this))->info($msg);
+                $this->isValid = false;
+            }
+        }
     }
 
     /**
@@ -472,18 +516,6 @@ class MovementOfGoods extends ADocuments
         //$hasDebit and $hasCredit is to check if the document as both debit and credit lines
         $hasDebit    = false;
         $hasCredit   = false;
-
-        // For the case that line anulation are use,
-        // validate if the anulation is bigger or not
-
-        /* @var $anulaDebitValue \Rebelo\Decimal\UDecimal[] */
-        $anulaDebitValue  = array();
-        /* @var $anulaCreditValue \Rebelo\Decimal\UDecimal[] */
-        $anulaCreditValue = array();
-        /* @var $anulaDebitQt \Rebelo\Decimal\UDecimal[] */
-        $anulaDebitQt     = array();
-        /* @var $anulaCreditQt \Rebelo\Decimal\UDecimal[] */
-        $anulaCreditQt    = array();
 
         foreach ($stockMovDocument->getLine() as $line) {
             /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line */
@@ -576,8 +608,7 @@ class MovementOfGoods extends ADocuments
 
             if ($line->getTax(false) !== null) {
                 $lineTax = $line->getTax();
-                if ($lineTax->getTaxPercentage() !== null &&
-                    $lineTax->getTaxPercentage() !== 0.0) {
+                if ($lineTax->issetTaxPercentage()) {
 
                     $lineFactor = $lineTax->getTaxPercentage() / 100;
 
@@ -618,7 +649,7 @@ class MovementOfGoods extends ADocuments
                     $line->getLineNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $stockMovDocument->addError(
+                $line->addError(
                     $msg,
                     $line->getCreditAmount() === null ?
                         Line::N_DEBITAMOUNT : Line::N_CREDITAMOUNT
@@ -629,11 +660,11 @@ class MovementOfGoods extends ADocuments
 
             $docStat = $stockMovDocument->getDocumentStatus()->getMovementStatus();
 
-            if($docStat->isNotEqual(MovementStatus::A)){
+            if ($docStat->isNotEqual(MovementStatus::A)) {
                 $this->totalQuantityIssued->plusThis($line->getQuantity());
             }
-            $this->numberOfMovementLines++;
-            
+
+
             if ($line->getCreditAmount() !== null) {
                 $credit = new UDecimal(
                     $line->getCreditAmount(), static::CALC_PRECISION
@@ -644,7 +675,7 @@ class MovementOfGoods extends ADocuments
             }
 
             if ($line->getDebitAmount() !== null) {
-                $debit = new UDecimal(
+                $debit    = new UDecimal(
                     $line->getDebitAmount(), static::CALC_PRECISION
                 );
                 $this->docDebit->plusThis($debit);
@@ -664,10 +695,12 @@ class MovementOfGoods extends ADocuments
             }
 
             $this->producCode($line, $stockMovDocument);
-
-            if ($line->getTax(false)) {
+ 
+            $this->numberOfMovementLines++;
+            
+            if ($line->getTax(false) !== null) {               
                 $this->tax($line, $stockMovDocument);
-            } else {
+            } elseif ($uniQt->equals(0.0) === false) {
                 $msg           = \sprintf(
                     AAuditFile::getI18n()->get("tax_must_be_defined"),
                     $stockMovDocument->getDocumentNumber(),
@@ -929,7 +962,7 @@ class MovementOfGoods extends ADocuments
             $this->isValid = false;
         }
 
-        // valiedate if exists in tax table
+        // validate if exists in tax table
         foreach ($this->auditFile->getMasterFiles()->getTaxTableEntry() as $taxEntry) {
             /* @var $taxEntry \Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry */
             if ($taxEntry->issetTaxType() === false ||
@@ -1150,6 +1183,7 @@ class MovementOfGoods extends ADocuments
      * Verify the Start and en time of movement
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @since 1.0.0
      */
     public function movementStartAndEndTime(StockMovement $stockMovDocument): void
     {
@@ -1265,6 +1299,229 @@ class MovementOfGoods extends ADocuments
             );
             $msgStack[] = $msg;
             $stockMovDocument->addError($msg, StockMovement::N_SYSTEMENTRYDATE);
+        }
+
+        foreach ($msgStack as $msg) {
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $this->isValid = false;
+        }
+    }
+
+    /**
+     * Validate shipement data
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMov
+     * @return void
+     * @since 1.0.0
+     */
+    protected function shipement(StockMovement $stockMov): void
+    {
+        $shipFrom   = $stockMov->getShipFrom(false);
+        $shipTo     = $stockMov->getShipTo(false);
+        $movEndTime = $stockMov->getMovementEndTime();
+        $msgStack   = [];
+
+        if ($shipFrom === null &&
+            $stockMov->getDocumentStatus()->getMovementStatus()->isEqual(MovementStatus::R)) {
+            return;
+        }
+
+        if ($shipFrom === null) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("shipfrom_not_defined_in_stock_mov"),
+                $stockMov->getDocumentNumber()
+            );
+
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $this->isValid = false;
+            return;
+        }
+
+        if ($shipTo === null && $stockMov->getMovementType()->isNotEqual(MovementType::GT)) {
+            $msg           = \sprintf(
+                AAuditFile::getI18n()->get("no_shipto_only_in_global_doc_and_must_be_GT"),
+                $stockMov->getDocumentNumber(),
+                $stockMov->getMovementType()->get()
+            );
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $this->isValid = false;
+            return;
+        }
+
+        if ($shipTo !== null &&
+            $stockMov->getDocumentStatus()->getMovementStatus()->isNotEqual(MovementStatus::R)) {
+            if ($shipFrom->getDeliveryDate() !== null &&
+                $shipTo->getDeliveryDate() !== null) {
+                if ($shipFrom->getDeliveryDate()->isLater($shipTo->getDeliveryDate())) {
+                    $msg        = \sprintf(
+                        AAuditFile::getI18n()->get("shipfrom_delivery_date_later_shipto_delivery_date"),
+                        $stockMov->getDocumentNumber()
+                    );
+                    $msgStack[] = $msg;
+                    $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+                }
+            }
+        }
+
+        if ($stockMov->issetMovementStartTime() === false) {
+            $msg           = \sprintf(
+                AAuditFile::getI18n()
+                    ->get("document_to_be_stockMovement_must_heve_start_time"),
+                $stockMov->getDocumentNumber()
+            );
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $stockMov->addError($msg, StockMovement::N_MOVEMENTSTARTTIME);
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $this->isValid = false;
+            return;
+        }
+
+        $movStartTime = $stockMov->getMovementStartTime();
+
+        if ($movStartTime->isEarlier($stockMov->getMovementDate())) {
+            $msg        = \sprintf(
+                AAuditFile::getI18n()->get("start_movement_can_not_be earliar_doc_date"),
+                $stockMov->getDocumentNumber()
+            );
+            $msgStack[] = $msg;
+            $stockMov->addError($msg, StockMovement::N_MOVEMENTSTARTTIME);
+        }
+
+        if ($stockMov->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::P)) {
+            if ($stockMov->issetSystemEntryDate() &&
+                $movStartTime->isEarlier($stockMov->getSystemEntryDate())) {
+
+                $msg = \sprintf(
+                    AAuditFile::getI18n()
+                        ->get("start_movement_can_not_be earliar_system_entry_date"),
+                    $stockMov->getDocumentNumber()
+                );
+
+                $msgStack[] = $msg;
+                $stockMov->addError($msg, StockMovement::N_MOVEMENTSTARTTIME);
+            }
+        }
+
+        if ($movEndTime !== null && $movEndTime->isEarlier($movStartTime)) {
+            $msg        = \sprintf(
+                AAuditFile::getI18n()
+                    ->get("end_movement_can_not_be earliar_start_movement"),
+                $stockMov->getDocumentNumber()
+            );
+            $msgStack[] = $msg;
+            $stockMov->addError($msg, StockMovement::N_MOVEMENTENDTIME);
+        }
+
+
+        $shipFromAddr = $shipFrom->getAddress(false);
+        if ($shipFromAddr === null ||
+            ($shipFromAddr->getStreetName() === null ||
+            $shipFromAddr->getStreetName() === "") && (
+            $shipFromAddr->getAddressDetail() === null ||
+            $shipFromAddr->getAddressDetail() === "")) {
+
+            $msg        = \sprintf(
+                AAuditFile::getI18n()
+                    ->get("document_to_be_stockMovement_must_have_shipfrom"),
+                $stockMov->getDocumentNumber()
+            );
+            $msgStack[] = $msg;
+            $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+        } else {
+
+            if ($shipFromAddr->issetCity() === false ||
+                $shipFromAddr->getCity() === "") {
+
+                $msg        = \sprintf(
+                    AAuditFile::getI18n()
+                        ->get("shipement_address_from_must_heve_city"),
+                    $stockMov->getDocumentNumber()
+                );
+                $msgStack[] = $msg;
+                $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            }
+
+            if ($shipFromAddr->issetCountry() === false) {
+
+                $msg        = \sprintf(
+                    AAuditFile::getI18n()
+                        ->get("shipement_address_from_must_heve_country"),
+                    $stockMov->getDocumentNumber()
+                );
+                $msgStack[] = $msg;
+                $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            }
+        }
+
+        if ($shipTo !== null) {
+            if ($shipTo->getAddress(false) === null) {
+                $msg        = \sprintf(
+                    AAuditFile::getI18n()
+                        ->get("document_to_be_stockMovement_must_heve_shipto"),
+                    $stockMov->getDocumentNumber()
+                );
+                $msgStack[] = $msg;
+                $stockMov->addError($msg, StockMovement::N_SHIPTO);
+            } else {
+                $shipToAddr = $shipTo->getAddress(false);
+                if (($shipToAddr->getStreetName() === null ||
+                    $shipToAddr->getStreetName() === "") &&
+                    ($shipToAddr->getAddressDetail() === null ||
+                    $shipToAddr->getAddressDetail() === "")) {
+
+                    $msg        = \sprintf(
+                        AAuditFile::getI18n()
+                            ->get("document_to_be_stockMovement_must_heve_shipto"),
+                        $stockMov->getDocumentNumber()
+                    );
+                    $msgStack[] = $msg;
+                    $stockMov->addError($msg, StockMovement::N_SHIPTO);
+                } else {
+
+                    if ($shipToAddr->issetCity() === false || $shipTo->getAddress()->getCity()
+                        === "") {
+                        $msg        = \sprintf(
+                            AAuditFile::getI18n()->get("shipement_address_to_must_heve_city"),
+                            $stockMov->getDocumentNumber()
+                        );
+                        $msgStack[] = $msg;
+                        $stockMov->addError($msg, StockMovement::N_SHIPTO);
+                    }
+
+                    if ($shipToAddr->issetCountry() === false) {
+                        $msg        = \sprintf(
+                            AAuditFile::getI18n()
+                                ->get("shipement_address_to_must_heve_country"),
+                            $stockMov->getDocumentNumber()
+                        );
+                        $msgStack[] = $msg;
+                        $stockMov->addError($msg, StockMovement::N_SHIPTO);
+                    }
+                }
+            }
+        }
+
+        if ($stockMov->getDocumentStatus()->getMovementStatus()->isEqual(MovementStatus::A)) {
+            $cancelDate = clone $stockMov->getDocumentStatus()->getMovementStatusDate();
+            $startMov   = clone $stockMov->getMovementStartTime();
+
+            $cancelDate->setSeconds(0);
+            $startMov->setSeconds(0);
+
+            if ($cancelDate->isLater($startMov)) {
+                $msg        = \sprintf(
+                    AAuditFile::getI18n()->get("stockmov_can_not_be_cancel_after_movement_start"),
+                    $stockMov->getDocumentNumber()
+                );
+                $msgStack[] = $msg;
+                $stockMov->getDocumentStatus()->addError(
+                    $msg, DocumentStatus::N_MOVEMENTSTATUSDATE
+                );
+            }
         }
 
         foreach ($msgStack as $msg) {
