@@ -171,9 +171,11 @@ class en_GB extends AI18n
         $this->stack["NumberOfMovementLines_not_valid"]                          = "'NumberOfMovementLines' is not valid";
         $this->stack["TotalQuantityIssued_not_valid"]                            = "'TotalQuantityIssued' is not valid";
         $this->stack["duplicated_invoice"]                                       = "Duplicated entry for 'Invoice' '%s'";
+        $this->stack["duplicated_payment"]                                       = "Duplicated entry for 'Payment' '%s'";
         $this->stack["duplicated_stock_mov"]                                     = "Duplicated entry for 'StockMovement' '%s'";
         $this->stack["duplicated_workdoc"]                                       = "duplicated entry for 'WorkDocument' '%s'";
         $this->stack["invoice_at_index_no_number"]                               = "The 'Invoice' at index '%s' does not have document number";
+        $this->stack["payment_at_index_no_number"]                               = "The 'Payment' at index '%s' does not have document number";
         $this->stack["stock_move_at_index_no_number"]                            = "The 'StockMovement' at index '%s' does not have document number";
         $this->stack["workdoc_at_index_no_number"]                               = "The 'WorkDocument' at index '%s' does not have document number";
         $this->stack["wrong_number_of_invoices"]                                 = "The number of 'Invoice' is wrong, is expected '%s' but only exists 's%";
@@ -202,8 +204,10 @@ class en_GB extends AI18n
         $this->stack["customerID_not_defined_in_document"]                       = "The document '%s' does not have the 'CustomerID' setted";
         $this->stack["supplierID_not_defined_in_document"]                       = "The document '%s' does not have the 'SupplierID' setted";
         $this->stack["invoicetype_not_defined"]                                  = "The 'Invoice' '%s' does not have the type defined";
+        $this->stack["paymenttype_not_defined"]                                  = "The 'Payment' '%s' does not have the type defined";
         $this->stack["workdoctype_not_defined"]                                  = "The 'WorkDocument' '%s' does not have the type defined";
         $this->stack["invoicetno_not_defined"]                                   = "'Invoice' Number not defined";
+        $this->stack["paymentno_not_defined"]                                    = "'Payment' Number not defined";
         $this->stack["workdoc_number_not_defined"]                               = "'WorkDocument' Number not defined";
         $this->stack["stock_mov_number_not_defined"]                             = "'StockMovement' Number not defined";
         $this->stack["document_no_debit_or_credit"]                              = "O documento '%s' at line '%s' does not have debit or credit defined";
@@ -223,6 +227,7 @@ class en_GB extends AI18n
         $this->stack["workingdocuments_total_debit_should_be_zero"]              = "The total debit of 'WorkingDocuments' should be zero but is '%s'";
         $this->stack["order_reference_document_not_incicated"]                   = "The document '%s' at line '%s' does not make reference to the document of origin";
         $this->stack["order_reference_document_number_not_valid"]                = "The number of the document of order reference in document '%s' line '%s' is not valid";
+        $this->stack["originatingon_document_number_not_valid"]                  = "The number of the originating in document '%s' line '%s' is not valid";
         $this->stack["order_reference_date_not_incicated"]                       = "The document '%s' at line '%s' does not have the date of the reference document";
         $this->stack["order_reference_date_later"]                               = "In document '%s' at line '%s' the date of the refernce origin can not be later that the date of this document";
         $this->stack["only_NC_and_ND_can_have_references"]                       = "The document '%s' is of type '%s' but only 'NC' and 'ND' can have 'References'";
@@ -275,5 +280,26 @@ class en_GB extends AI18n
         $this->stack["customerID_SupplierID_not_defined_in_document"]            = "The document 'StockMovement' '%s' does not have defined the 'CustomerID' or 'SupplierID'";
         $this->stack["customerID_and_supplierID_defined_in_document"]            = "The document 'StockMovement' '%s' has the 'CustomerID' nad the 'SupplierID' at same time";
         $this->stack["shipfrom_not_defined_in_stock_mov"]                        = "The document 'StockMovement' does not have the 'ShipFrom' definided";
+        $this->stack["payment_cash_vat_without_tax"]                             = "The cash VAT schema '%s' in line '%s' does not has the TAX defined";
+        $this->stack["payment_without_any_source_doc_id"]                        = "'Payment' '%s' in line '%s' does not have any 'SourceDocumentID' defined";
+        $this->stack["originatingon_document_not_defined"]                       = "The 'Payment' '%s' does not have the 'OriginatingON' defined at line '%s'";
+        $this->stack["payment_must_be_credit_document"]                          = "The 'Payment' '%s' has the debit value greater than credit";
+        $this->stack["withholdingtax_greater_than_half_gross"]                   = "The document '%s' has the 'WithholdingTax' greater than half of the gross total";
+        $this->stack["withholdingtax_greater_than_gross"]                        = "The document '%s' has the 'WithholdingTax' greater than the gross total";
+        $this->stack["withholding_without_amout"]                                = "The document '%s' does not have the 'WithholdingTaxAmout'";
+        $this->stack["paymentmethod_sum_not_equal_to_gross_less_tax"]            = "The document '%s' the sum of all 'PaymentMethod' less the 'WithholdingTax' is not equals to the gross total";
+        $this->stack["paymentmethod_withou_payment_date"]                        = "The document '%s' does not have the 'PaymentDate' in 'PaymentMethod'";
+        $this->stack["payment_withou_payment_method"]                            = "The document '%s' does not have 'PaymentMethod'";
+        $this->stack["doc_systementrydate_earlier_previous_doc"]                 = "The document '%s' has the 'SystemEntryDate' earlier the previous document";
+        $this->stack["doc_date_eaarlier_previous_doc"]                           = "The document '%s' has the date earlier the previous document";
+        $this->stack["originatingon_document_repeated"]                          = "The document '%s' at line '%s' has the 'OriginatingOn' has reference to the same document";
+        $this->stack["payment_settlement_sum_diff"]                              = "The settlement sum in document '%s' is wrong";
+        $this->stack["wrong_total_credit_of_payments"]                           = "The 'TotalCredit' in 'Payments' is wrong";
+        $this->stack["wrong_total_debit_of_payments"]                            = "The 'TotalDebit' in 'Payments' is wrong";
+        $this->stack["wrong_number_of_payments"]                                 = "The 'NumberOfEntries' in 'Payments' is wrong";
+        $this->stack["payments_total_debit_should_be_zero"]                      = "Payments total debit should be zero";
+        $this->stack["payments_total_credit_should_be_zero"]                     = "Payments total credit should be zero";
+        $this->stack["fr_withou_payment_method"]                                 = "The 'Invoice' '%s' of type 'Fatura-Recibo' without 'Payment'";
+        $this->stack["paymentmethod_sum_greater_than_gross_lass_withholtax"] = "The sum of 'Payment' in document '%s' is greater than the gross total less the 'WithholdingTaxAmount'";
     }
 }

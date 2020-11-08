@@ -239,6 +239,16 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
+     * Get if is set paymentAmount
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetPaymentAmount(): bool
+    {
+        return isset($this->paymentAmount);
+    }
+    
+    /**
      * Gets PaymentDate<br>
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;
      * @return \Rebelo\Date\Date
@@ -276,6 +286,16 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
             );
     }
 
+    /**
+     * Get if is set paymentDate
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetPaymentDate(): bool
+    {
+        return isset($this->paymentDate);
+    }
+    
     /**
      * Create the XML node
      * @param \SimpleXMLElement $node

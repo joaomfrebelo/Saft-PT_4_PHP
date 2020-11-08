@@ -887,6 +887,16 @@ class Payment extends AAuditFile
     }
 
     /**
+     * Get if is set DocumentStatus
+     * @return bool
+     * @since 1.0.0
+     */
+    public function issetDocumentStatus(): bool
+    {
+        return isset($this->documentStatus);
+    }
+    
+    /**
      * Adds to paymentMethod stack<br>
      * Indicate the payment method. In case of mixed payments, the amounts
      * should be mentioned by payment type and date.

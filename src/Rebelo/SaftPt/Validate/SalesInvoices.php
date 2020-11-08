@@ -43,6 +43,8 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax;
 
 /**
  * Validate SalesInvoices table.<br>
@@ -139,15 +141,16 @@ class SalesInvoices extends ADocuments
                     foreach (\array_keys($order[$type][$serie]) as $no) {
                         /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
                         $invoice = $order[$type][$serie][$no];
-                        if ((string)$type !== $this->lastType || (string)$serie !== $this->lastSerie) {
+                        if ((string) $type !== $this->lastType || (string) $serie
+                            !== $this->lastSerie) {
                             $this->lastHash            = "";
                             $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
                         }
                         $invoice->setDocTotalcal(new DocTotalCalc());
                         $this->invoice($invoice);
-                        $this->lastType = (string)$type;
-                        $this->lastSerie = (string)$serie;
+                        $this->lastType  = (string) $type;
+                        $this->lastSerie = (string) $serie;
                     }
                 }
             }
@@ -240,6 +243,8 @@ class SalesInvoices extends ADocuments
             $this->lines($invoice);
             $this->totals($invoice);
             $this->shipement($invoice);
+            $this->payment($invoice);
+            $this->withholdingTax($invoice);
         } catch (\Exception | \Error $e) {
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -1690,6 +1695,160 @@ class SalesInvoices extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
+        }
+    }
+    
+    /**
+     * Validate the Payment
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     * @return void
+     * @since 1.0.0
+     */
+    protected function payment(Invoice $invoice): void
+    {
+        if (\count($invoice->getDocumentTotals()->getPayment()) === 0) {
+            if ($invoice->getInvoiceType()->isEqual(InvoiceType::FR)) {
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("fr_withou_payment_method"),
+                    $invoice->getInvoiceNo()
+                );
+                $this->auditFile->getErrorRegistor()->addWarning($msg);
+                $invoice->addWarning($msg);
+                \Logger::getLogger(\get_class($this))->info($msg);
+            }
+            return;
+        }
+
+        $totalPayMeth = new UDecimal(0.0, static::CALC_PRECISION);
+
+        /* @var $payMet \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod */
+        foreach ($invoice->getDocumentTotals()->getPayment() as $payMet) {
+            if ($payMet->issetPaymentAmount()) {
+                $totalPayMeth->plusThis($payMet->getPaymentAmount());
+            } else {
+                $msg           = \sprintf(
+                    AAuditFile::getI18n()->get(
+                        "paymentmethod_withou_payment_amout"
+                    ), $invoice->getInvoiceNo()
+                );
+                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                $payMet->addError($msg);
+                \Logger::getLogger(\get_class($this))->info($msg);
+                $this->isValid = false;
+                return;
+            }
+
+            if ($payMet->issetPaymentDate() === false) {
+                $msg           = \sprintf(
+                    AAuditFile::getI18n()->get(
+                        "paymentmethod_withou_payment_date"
+                    ), $invoice->getInvoiceNo()
+                );
+                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                $payMet->addError($msg);
+                \Logger::getLogger(\get_class($this))->info($msg);
+                $this->isValid = false;
+                return;
+            }
+        }
+
+        if ($invoice->issetDocumentTotals()) {
+            if ($invoice->getDocumentTotals()->issetGrossTotal()) {
+                $gross          = $invoice->getDocumentTotals()->getGrossTotal();
+                $diff           = $totalPayMeth->signedSubtract($gross);
+                $sumWithholding = new UDecimal(0.0, static::CALC_PRECISION);
+                foreach ($invoice->getWithholdingTax() as $withholding) {
+                    /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
+                    if ($withholding->issetWithholdingTaxAmount()) {
+                        $sumWithholding->plusThis($withholding->getWithholdingTaxAmount());
+                    }
+                }
+
+                $diff->plusThis($sumWithholding);
+
+                if ($invoice->getInvoiceType()->isEqual(InvoiceType::FR) &&
+                    $diff->abs()->isGreater($this->getDeltaTotalDoc())) {
+                    $msg           = \sprintf(
+                        AAuditFile::getI18n()->get(
+                            "paymentmethod_sum_not_equal_to_gross_less_tax"
+                        ), $invoice->getInvoiceNo()
+                    );
+                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                    $invoice->addError($msg);
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    $this->isValid = false;
+                    return;
+                }
+
+                if ($totalPayMeth->isGreater($gross - $sumWithholding->valueOf())) {
+                    $msg           = \sprintf(
+                        AAuditFile::getI18n()->get(
+                            "paymentmethod_sum_greater_than_gross_lass_withholtax"
+                        ), $invoice->getInvoiceNo()
+                    );
+                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                    $invoice->addError($msg);
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    $this->isValid = false;
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * Validate the withholdingTax
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     * @return void
+     * @since 1.0.0
+     */
+    protected function withholdingTax(Invoice $invoice): void
+    {
+        $totalTax = new UDecimal(0.0, static::CALC_PRECISION);
+        foreach ($invoice->getWithholdingTax() as $withholding) {
+            /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
+            if ($withholding->issetWithholdingTaxAmount() === false) {
+                $msg           = \sprintf(
+                    AAuditFile::getI18n()->get(
+                        "withholding_without_amout"
+                    ), $invoice->getInvoiceNo()
+                );
+                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                $invoice->addError($msg, WithholdingTax::N_WITHHOLDINGTAX);
+                \Logger::getLogger(\get_class($this))->info($msg);
+                $this->isValid = false;
+                return;
+            }
+            $totalTax->plusThis($withholding->getWithholdingTaxAmount());
+        }
+
+        if ($invoice->issetDocumentTotals()) {
+            if ($invoice->getDocumentTotals()->issetGrossTotal()) {
+                $gross = $invoice->getDocumentTotals()->getGrossTotal();
+                if ($totalTax->isGreater($gross) || $totalTax->isEquals($gross)) {
+                    $msg           = \sprintf(
+                        AAuditFile::getI18n()->get(
+                            "withholdingtax_greater_than_gross"
+                        ), $invoice->getInvoiceNo()
+                    );
+                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                    $invoice->addError($msg, WithholdingTax::N_WITHHOLDINGTAX);
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    $this->isValid = false;
+                    return;
+                }
+                if ($totalTax->isGreater($gross / 2)) {
+                    $msg = \sprintf(
+                        AAuditFile::getI18n()->get(
+                            "withholdingtax_greater_than_half_gross"
+                        ), $invoice->getInvoiceNo()
+                    );
+                    $this->auditFile->getErrorRegistor()->addWarning($msg);
+                    $invoice->addWarning($msg);
+                    \Logger::getLogger(\get_class($this))->info($msg);
+                    return;
+                }
+            }
         }
     }
 }

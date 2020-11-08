@@ -174,9 +174,11 @@ class pt_PT extends AI18n
         $this->stack["NumberOfMovementLines_not_valid"]                          = "'NumberOfMovementLines' não é válido";
         $this->stack["TotalQuantityIssued_not_valid"]                            = "'TotalQuantityIssued' não é válido";
         $this->stack["duplicated_invoice"]                                       = "Entrada duplicada para a 'Invoice' '%s'";
+        $this->stack["duplicated_payment"]                                       = "Entrada duplicada para o 'Payment' '%s'";
         $this->stack["duplicated_stock_mov"]                                     = "Entrada duplicada para o 'StockMovement' '%s'";
         $this->stack["duplicated_workdoc"]                                       = "Entrada duplicada para o 'WorkDocument' '%s'";
         $this->stack["invoice_at_index_no_number"]                               = "A 'Invoice' no indice '%s' não tem o número de documento";
+        $this->stack["payment_at_index_no_number"]                               = "O 'Payment' no indice '%s' não tem o número de documento";
         $this->stack["workdoc_at_index_no_number"]                               = "O 'WorkDocument' no indice '%s' não tem o número de documento";
         $this->stack["stock_move_at_index_no_number"]                            = "O 'StockMovement' no indice '%s' não tem o número de documento";
         $this->stack["wrong_number_of_invoices"]                                 = "O número de 'Invoice' está errado, é esperado '%s' mas apenas existem 's%";
@@ -203,11 +205,13 @@ class pt_PT extends AI18n
         $this->stack["customerID_not_defined_in_document"]                       = "O documento '%s' não tem o 'CustomerID' definido";
         $this->stack["supplierID_not_defined_in_document"]                       = "O documento '%s' não tem o 'SupplierID' definido";
         $this->stack["invoicetype_not_defined"]                                  = "A 'Invoice' '%s' não tem o tipo definido";
+        $this->stack["paymenttype_not_defined"]                                  = "O 'Payment' '%s' não tem o tipo definido";
         $this->stack["workdoctype_not_defined"]                                  = "O 'WorkDocument' '%s' não tem o tipo definido";
         $this->stack["stock_mov_number_not_defined"]                             = "O 'StockMovement' '%s' não tem o tipo definido";
         $this->stack["customerID_not_exits"]                                     = "O 'CustomerID' '%s' do documento '%s' não existe na tabela de clientes";
         $this->stack["supplierID_not_exits"]                                     = "O 'SupplierID' '%s' do documento '%s' não existe na tabela de fornecedores";
         $this->stack["invoicetno_not_defined"]                                   = "Número de 'Invoice' não definido";
+        $this->stack["paymentno_not_defined"]                                    = "Número de 'Payment' não definido";
         $this->stack["workdocument_number_not_defined"]                          = "Número de 'WorkDocument' não definido";
         $this->stack["stock_mov_number_not_defined"]                             = "Número de 'StockMovement' não definido";
         $this->stack["document_no_debit_or_credit"]                              = "O documento '%s' na linha não tem débitos nem créditos definidos";
@@ -227,6 +231,7 @@ class pt_PT extends AI18n
         $this->stack["workingdocuments_total_debit_should_be_zero"]              = "O total de debito do 'WorkingDocuments' deveria ser zero mas é de '%s'";
         $this->stack["order_reference_document_not_incicated"]                   = "O documento '%s' na linha '%s' não faz referência ao número de documento que lhe deu origem";
         $this->stack["order_reference_document_number_not_valid"]                = "O Numero do documento de referência de origem no documento '%s' na linha '%s' não é válido";
+        $this->stack["originatingon_document_number_not_valid"]                  = "O Numero do documento no documento '%s' na linha '%s' não é válido";
         $this->stack["order_reference_date_not_incicated"]                       = "No documento '%s' na linha '%s' não tem a data do documento de origem";
         $this->stack["order_reference_date_later"]                               = "No documento '%s' na linha '%s' a data do documento de origem não pode ser posteriro à data deste documento";
         $this->stack["only_NC_and_ND_can_have_references"]                       = "O documento '%s' é do tipo '%s' mas só 'NC' e 'ND' é que podem ter 'References'";
@@ -279,5 +284,26 @@ class pt_PT extends AI18n
         $this->stack["customerID_SupplierID_not_defined_in_document"]            = "No documento 'StockMovement' '%s' não está definido nem o 'CustomerID' nem o 'SupplierID'";
         $this->stack["customerID_and_supplierID_defined_in_document"]            = "No documento 'StockMovement' '%s' estão definido o 'CustomerID' e 'SupplierID' em simultâneo";
         $this->stack["shipfrom_not_defined_in_stock_mov"]                        = "O documento 'StockMovement' não tem o 'ShipFrom' definido";
+        $this->stack["payment_cash_vat_without_tax"]                             = "O recibo de IVA regime de caixa '%s' na linha '%s' não tem os impostos definidos";
+        $this->stack["payment_without_any_source_doc_id"]                        = "O 'Payment' '%s' na linha '%s' não tem nenhum 'SourceDocumentID' definido";
+        $this->stack["originatingon_document_not_defined"]                       = "O 'Payment' '%s' não tem o 'OriginatingON' definido na linha '%s'";
+        $this->stack["payment_must_be_credit_document"]                          = "O 'Payment' '%s' tem o valor a débito superior ao crédito";
+        $this->stack["withholdingtax_greater_than_half_gross"]                   = "O documento '%s' tem o 'WithholdingTax' maior que metade do valor total do documento";
+        $this->stack["withholdingtax_greater_than_gross"]                        = "O documento '%s' tem o 'WithholdingTax' maior que o valor total do documento";
+        $this->stack["withholding_without_amout"]                                = "O documento '%s' não tem o 'WithholdingTaxAmout'";
+        $this->stack["paymentmethod_sum_not_equal_to_gross_less_tax"]            = "O documento '%s' a soma de todos 'PaymentMethod' subtarido do 'WithholdingTax' não é igual ao total do documento";
+        $this->stack["paymentmethod_withou_payment_date"]                        = "O documento '%s' não tem o 'PaymentDate' no 'PaymentMethod'";
+        $this->stack["payment_withou_payment_method"]                            = "O documento '%s' não tem o 'PaymentMethod'";
+        $this->stack["doc_systementrydate_earlier_previous_doc"]                 = "o documento '%s' tem o 'SystemEntryDate' anterior ao documento anterior";
+        $this->stack["doc_date_eaarlier_previous_doc"]                           = "O documeto '%s' tem a data anterior ao documento anterior";
+        $this->stack["originatingon_document_repeated"]                          = "O documento '%s' na lina '%s' tem 'OriginatingOn' a refernciar o mesmo documento";
+        $this->stack["payment_settlement_sum_diff"]                              = "A soma dos descontos no documento '%s' está errada";
+        $this->stack["wrong_total_credit_of_payments"]                           = "O 'TotalCredit' no 'Payments' está errado";
+        $this->stack["wrong_total_debit_of_payments"]                            = "O 'TotalDebit' no 'Payments' está errado";
+        $this->stack["wrong_number_of_payments"]                                 = "O 'NumberOfEntries' no 'Payments' está errado";
+        $this->stack["payments_total_debit_should_be_zero"]                      = "O total de débitos em pagamentos deveria ser zero";
+        $this->stack["payments_total_credit_should_be_zero"]                     = "O total de créditos em pagamentos deveria ser zero";
+        $this->stack["fr_withou_payment_method"]                                 = "A 'Invoice' '%s' do tipo 'Fatura-Recibo' não tem 'Payment'";
+        $this->stack["paymentmethod_sum_greater_than_gross_lass_withholtax"]     = "A soma de 'Payment' no documento '%s' é maior que o total do documentos subtraido do 'WithholdingTaxAmount'";
     }
 }

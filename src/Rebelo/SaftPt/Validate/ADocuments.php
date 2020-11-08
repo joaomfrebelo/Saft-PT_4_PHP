@@ -159,15 +159,17 @@ class ADocuments extends AValidate
     /**
      *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile
-     * @param \Rebelo\SaftPt\Sign\Sign $sign
+     * @param \Rebelo\SaftPt\Sign\Sign|null $sign
      * @since 1.0.0
      */
-    public function __construct(AuditFile $auditFile, Sign $sign)
+    public function __construct(AuditFile $auditFile, Sign $sign = null)
     {
         parent::__construct($auditFile);
         $this->debit  = new UDecimal(0.0, static::CALC_PRECISION);
         $this->credit = new UDecimal(0.0, static::CALC_PRECISION);
-        $this->sign   = $sign;
+        if ($sign !== null) {
+            $this->sign = $sign;
+        }
     }
 
     /**

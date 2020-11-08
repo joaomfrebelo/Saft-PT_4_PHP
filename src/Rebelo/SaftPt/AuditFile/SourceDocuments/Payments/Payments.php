@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
@@ -94,6 +95,13 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
     private array $payment = array();
 
     /**
+     * $array[type][serie][number] = $payment
+     * \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment[]
+     * @var array
+     */
+    protected array $order = array();
+
+    /**
      * Payments<br>
      * 4.4 – Payments
      * Receipts issued after the entry into force of this structure
@@ -132,8 +140,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    \strval($this->numberOfEntries)
+                    __METHOD__." getted '%s'", \strval($this->numberOfEntries)
                 )
             );
         return $this->numberOfEntries;
@@ -193,8 +200,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    \strval($this->totalDebit)
+                    __METHOD__." getted '%s'", \strval($this->totalDebit)
                 )
             );
         return $this->totalDebit;
@@ -233,8 +239,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
-                    \strval($this->totalDebit)
+                    __METHOD__." setted to '%s'", \strval($this->totalDebit)
                 )
             );
         return $return;
@@ -253,8 +258,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    \strval($this->totalCredit)
+                    __METHOD__." getted '%s'", \strval($this->totalCredit)
                 )
             );
         return $this->totalCredit;
@@ -291,8 +295,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
-                    \strval($this->totalCredit)
+                    __METHOD__." setted to '%s'", \strval($this->totalCredit)
                 )
             );
         return $return;
@@ -307,6 +310,9 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
      */
     public function addPayment(): Payment
     {
+        // Every time that a payment is add the order is reseted and is
+        // contructed when called
+        $this->order     = array();
         $payment         = new Payment($this->getErrorRegistor());
         $this->payment[] = $payment;
         \Logger::getLogger(\get_class($this))->debug(
@@ -328,6 +334,68 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         return $this->payment;
     }
 
+    /**
+     * Get payment order by type/serie/number<br>
+     * Ex: $stack[type][serie][InvoiceNo] = Payment<br>
+     * If a error exist, th error is add to ValidationErrors stack
+     * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment>>>
+     * @since 1.0.0
+     */
+    public function getOrder(): array
+    {
+        if (\count($this->order) > 0) {
+            return $this->order;
+        }
+
+        foreach ($this->getPayment() as $k => $payment) {
+            /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+            if ($payment->issetPaymentRefNo() === false) {
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("payment_at_index_no_number"), $k
+                );
+                $this->getErrorRegistor()->addValidationErrors($msg);
+                $payment->addError($msg, Payment::N_PAYMENTREFNO);
+                \Logger::getLogger(\get_class($this))->error($msg);
+                continue;
+            }
+
+            list($type, $serie, $no) = \explode(
+                " ",
+                \str_replace("/", " ", $payment->getPaymentRefNo())
+            );
+
+            $type = \strval($type);
+            $serie = \strval($serie);
+            
+            if (\array_key_exists($type, $this->order)) {
+                if (\array_key_exists($serie, $this->order[$type])) {
+                    if (\array_key_exists(\intval($no), $this->order[$type][$serie])) {
+                        $msg = \sprintf(
+                            AAuditFile::getI18n()->get("duplicated_payment"),
+                            $payment->getPaymentRefNo()
+                        );
+                        $this->getErrorRegistor()->addValidationErrors($msg);
+                        $payment->addError($msg, Payment::N_PAYMENT);
+                        \Logger::getLogger(\get_class($this))->error($msg);
+                    }
+                }
+            }
+            $this->order[$type][$serie][\intval($no)] = $payment;
+        }
+
+        $cloneOrder = $this->order;
+
+        foreach (\array_keys($cloneOrder) as $type) {
+            foreach (\array_keys($cloneOrder[$type]) as $serie) {
+                ksort($this->order[$type][$serie], SORT_NUMERIC);
+            }
+            ksort($this->order[$type], SORT_STRING);
+        }
+        ksort($this->order, SORT_STRING);
+
+        return $this->order;
+    }
+    
     /**
      *
      * @param \SimpleXMLElement $node
@@ -399,8 +467,8 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
 
         if ($node->getName() !== static::N_PAYMENTS) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s",
-                static::N_PAYMENTS, $node->getName()
+                "Node name should be '%s' but is '%s", static::N_PAYMENTS,
+                $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));

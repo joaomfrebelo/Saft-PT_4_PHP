@@ -39,6 +39,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
 use Rebelo\Decimal\UDecimal;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
 use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
 use Rebelo\SaftPt\AuditFile\AuditFile;
@@ -75,8 +76,8 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testTotalDebit(): void
     {
-        $debit = 909.99;
-        $auditFile     = $this->salesInvoice->getAuditFile();
+        $debit     = 909.99;
+        $auditFile = $this->salesInvoice->getAuditFile();
         $auditFile->getSourceDocuments()->getSalesInvoices()
             ->setTotalDebit($debit);
 
@@ -98,8 +99,8 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testTotalDebitGreaterDeltaZero(): void
     {
-        $debit = 909.99;
-        $auditFile     = $this->salesInvoice->getAuditFile();
+        $debit     = 909.99;
+        $auditFile = $this->salesInvoice->getAuditFile();
         $auditFile->getSourceDocuments()->getSalesInvoices()
             ->setTotalDebit($debit);
 
@@ -121,8 +122,8 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testTotalDebitLowerDeltaZero(): void
     {
-        $debit = 909.99;
-        $auditFile     = $this->salesInvoice->getAuditFile();
+        $debit     = 909.99;
+        $auditFile = $this->salesInvoice->getAuditFile();
         $auditFile->getSourceDocuments()->getSalesInvoices()
             ->setTotalDebit($debit);
 
@@ -143,8 +144,8 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testTotalCredit(): void
     {
-        $credit        = 909.99;
-        $auditFile     = $this->salesInvoice->getAuditFile();
+        $credit    = 909.99;
+        $auditFile = $this->salesInvoice->getAuditFile();
         $auditFile->getSourceDocuments()->getSalesInvoices()
             ->setTotalCredit($credit);
 
@@ -166,8 +167,8 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testTotalCreditGreaterDeltaZero(): void
     {
-        $credit        = 909.99;
-        $auditFile     = $this->salesInvoice->getAuditFile();
+        $credit    = 909.99;
+        $auditFile = $this->salesInvoice->getAuditFile();
         $auditFile->getSourceDocuments()->getSalesInvoices()
             ->setTotalCredit($credit);
 
@@ -189,8 +190,8 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testTotalCreditLowerDeltaZero(): void
     {
-        $credit = 909.99;
-        $auditFile     = $this->salesInvoice->getAuditFile();
+        $credit    = 909.99;
+        $auditFile = $this->salesInvoice->getAuditFile();
         $auditFile->getSourceDocuments()->getSalesInvoices()
             ->setTotalCredit($credit);
 
@@ -225,7 +226,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = new AuditFile();
         $auditFile->parseXmlNode($xml);
 
-        $sign     = new \Rebelo\SaftPt\Sign\Sign();
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
         $sign->setPrivateKeyFilePath(PRIVATE_KEY_PATH);
         $sign->setPublicKeyFilePath(PUBLIC_KEY_PATH);
 
@@ -828,7 +829,6 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($invoice->getDocumentTotals()->getError());
     }
-
 
     /**
      * @author João Rebelo
@@ -2001,7 +2001,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      */
     public function testLinesWithAllowDebitAndCreditSameAnulationValue(): void
     {
-        $now = new RDate();
+        $now           = new RDate();
         $this->iniSalesInvoiceForLineTest();
         $this->salesInvoice->setAllowDebitAndCredit(true);
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
@@ -2385,7 +2385,6 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $this->assertFalse($this->salesInvoice->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
-
 
     /**
      * @author João Rebelo
@@ -4326,7 +4325,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $docStatus = $invoice->getDocumentStatus();
         $docStatus->setSourceBilling(SourceBilling::P());
 
-            $sign = new \Rebelo\SaftPt\Sign\Sign();
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
         $sign->setPublicKey($pubKey);
         $sign->setPrivateKey($priKey);
 
@@ -5602,7 +5601,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $invoice->setInvoiceType(InvoiceType::FT());
 
         $docStatus = $invoice->getDocumentStatus();
-            $docStatus->setSourceBilling(SourceBilling::P());
+        $docStatus->setSourceBilling(SourceBilling::P());
 
         $this->salesInvoice->invoiceDateAndSystemEntryDate($invoice);
 
@@ -5767,14 +5766,777 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $invoice->setInvoiceType(InvoiceType::FT());
 
         $docStatus = $invoice->getDocumentStatus();
-                $docStatus->setSourceBilling(SourceBilling::P());
+        $docStatus->setSourceBilling(SourceBilling::P());
 
-            $this->salesInvoice->setLastDocDate((clone $now)->addDays(-1));
+        $this->salesInvoice->setLastDocDate((clone $now)->addDays(-1));
         $this->salesInvoice->setLastSystemEntryDate((clone $now)->addSeconds(-1));
         $this->salesInvoice->invoiceDateAndSystemEntryDate($invoice);
 
         $this->assertTrue($this->salesInvoice->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testWithholdingTax(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $withholdingTax = $invoice->addWithholdingTax();
+        $withholdingTax->setWithholdingTaxAmount(10.0);
+
+        $this->salesInvoice->withholdingTax($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testMultipleWithholdingTax(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        for ($n = 0; $n <= 0; $n++) {
+            $withholdingTax = $invoice->addWithholdingTax();
+            $withholdingTax->setWithholdingTaxAmount(10.0);
+        }
+
+        $this->salesInvoice->withholdingTax($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testWithholdingTaxWithoutAmount(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        //$withholdingTax = 
+        $invoice->addWithholdingTax();
+        //$withholdingTax->setWithholdingTaxAmount(10.0);
+
+        $this->salesInvoice->withholdingTax($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testWithholdingTaxGreaterThanGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+
+        $withholdingTax = $invoice->addWithholdingTax();
+        $withholdingTax->setWithholdingTaxAmount($gross + 0.10);
+
+        $this->salesInvoice->withholdingTax($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testMultipleWithholdingTaxGreaterThanGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $nMax = 2;
+        for ($n = 1; $n <= $nMax; $n++) {
+            $withholdingTax = $invoice->addWithholdingTax();
+            $withholdingTax->setWithholdingTaxAmount(($gross / $nMax) + 0.1);
+        }
+
+        $this->salesInvoice->withholdingTax($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testWithholdingTaxGreaterThanHalfGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $withholdingTax = $invoice->addWithholdingTax();
+        $withholdingTax->setWithholdingTaxAmount(($gross / 2) + 0.1);
+
+        $this->salesInvoice->withholdingTax($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+        $this->assertNotEmpty($invoice->getWarning());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethod(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross);
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodWithWithholdingTax(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $withholdingTax = $invoice->addWithholdingTax();
+        $withholdingTax->setWithholdingTaxAmount(10.0);
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross - $withholdingTax->getWithholdingTaxAmount());
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testWithoutPaymentMethodNotFR(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+        $this->assertEmpty($invoice->getWarning());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testWithoutPaymentMethodFR(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FR FT/2");
+        $invoice->setInvoiceType(InvoiceType::FR());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+        $this->assertNotEmpty($invoice->getWarning());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testMultiplePaymentMethod(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $nMax = 2;
+        for ($n = 1; $n <= $nMax; $n++) {
+            $payMeth = $totals->addPayment();
+            $payMeth->setPaymentAmount($gross / $nMax);
+            $payMeth->setPaymentDate(clone $now);
+            $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        }
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodWithoutAmout(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        //$payMeth->setPaymentAmount($gross);
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($payMeth->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodWithoutDate(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross);
+        //$payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($payMeth->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodDiffGrossOnFR(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FR());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross - 1.00);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross);
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodGrossDiffPayMethWithholdingTaxOnFR(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FR FT/2");
+        $invoice->setInvoiceType(InvoiceType::FR());
+
+        $withholdingTax = $invoice->addWithholdingTax();
+        $withholdingTax->setWithholdingTaxAmount(10.0);
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross);
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodLessThanGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross - 10);
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testMultiplePaymentMethodLessThanGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $nMax = 2;
+        for ($n = 1; $n <= $nMax; $n++) {
+            $payMeth = $totals->addPayment();
+            $payMeth->setPaymentAmount(($gross / $nMax) * 0.9);
+            $payMeth->setPaymentDate(clone $now);
+            $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        }
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testPaymentMethodGreaterThanGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross + 10);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $payMeth = $totals->addPayment();
+        $payMeth->setPaymentAmount($gross - 10);
+        $payMeth->setPaymentDate(clone $now);
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testMultiplePaymentMethodGreaterThanGross(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $now       = new RDate();
+
+        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/2");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $gross      = 123.00;
+        $net        = 100.00;
+        $taxPayable = 23.00;
+
+        $totals = $invoice->getDocumentTotals();
+        $totals->setGrossTotal($gross + 10);
+        $totals->setNetTotal($net);
+        $totals->setTaxPayable($taxPayable);
+
+        $nMax = 2;
+        for ($n = 1; $n <= $nMax; $n++) {
+            $payMeth = $totals->addPayment();
+            $payMeth->setPaymentAmount(($gross / $nMax) * 1.1);
+            $payMeth->setPaymentDate(clone $now);
+            $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        }
+
+        $this->salesInvoice->payment($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
     }
 }

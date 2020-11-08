@@ -262,4 +262,105 @@ class PaymentsTest extends TestCase
             $payments->getDocTableTotalCalc()
         );
     }
+    
+     /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetOrder(): void
+    {
+        $payments = new Payments(new ErrorRegister());
+        $payNo      = array(
+            "RC RC/1",
+            "PA PA/4",
+            "RC RC/5",
+            "RC RC/2",
+            "RC RC/9",
+            "RC RC/4",
+            "RC RC/3",
+            "RC RC/10",
+            "PA PA/3",
+            "PA PA/2",
+            "PA PA/1",
+            "RC B/3",
+            "RC B/1",
+            "RC B/2",
+        );
+        foreach ($payNo as $no) {
+            $payments->addPayment()->setPaymentRefNo($no);
+        }
+
+        $order = $payments->getOrder();
+        $this->assertSame(array("PA", "RC"), \array_keys($order));
+        $this->assertSame(array("PA"), \array_keys($order["PA"]));
+        $this->assertSame(array("B", "RC"), \array_keys($order["RC"]));
+        $this->assertSame(
+            array(1, 2, 3, 4, 5, 9, 10), \array_keys($order["RC"]["RC"])
+        );
+        $this->assertSame(array(1, 2, 3), \array_keys($order["RC"]["B"]));
+        $this->assertSame(array(1, 2, 3, 4), \array_keys($order["PA"]["PA"]));
+
+        foreach ($order as $type => $serieStack) {
+            foreach ($serieStack as $serie => $noSatck) {
+                foreach ($noSatck as $no => $invoice) {
+                    /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+                    $this->assertSame(
+                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        $invoice->getPaymentRefNo()
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testDuplicateNumber(): void
+    {
+        $payments = new Payments(new ErrorRegister());
+        $payNo      = array(
+            "RC RC/1",
+            "PA PA/4",
+            "RC RC/1",
+            "RC RC/2",
+            "RC RC/9",
+            "RC RC/4",
+            "RC RC/3",
+            "RC RC/10",
+            "PA PA/3",
+            "PA PA/2",
+            "PA PA/1",
+            "RC B/3",
+            "RC B/1",
+            "RC B/2",
+        );
+        foreach ($payNo as $no) {
+            $payments->addPayment()->setPaymentRefNo($no);
+        }
+
+        $payments->getOrder();
+        $this->assertNotEmpty($payments->getErrorRegistor()->getValidationErrors());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testNoNumber(): void
+    {
+        $payments = new Payments(new ErrorRegister());
+        $payNo      = array(
+            "RC RC/1",
+            "RC B/2"
+        );
+        foreach ($payNo as $no) {
+            $payments->addPayment()->setPaymentRefNo($no);
+        }
+        $payments->addPayment();
+        $payments->getOrder();
+        $this->assertNotEmpty($payments->getErrorRegistor()->getValidationErrors());
+    }
+    
 }

@@ -73,14 +73,27 @@ abstract class AAuditFile
      * To registe particular validation and errors of documents or tables,
      * the key must be the field name
      * @var string[]
+     * @since 1.0.0
      */
     protected array $error = array();
 
     /**
      * To regist particular warnings of documents or tables
      * @var string[]
+     * @since 1.0.0
      */
     protected array $warning = array();
+
+    /**
+     * Invoke the isset to the propertie name
+     * @param string $name The propertie name to check
+     * @return bool
+     * @since 1.0.0
+     */
+    public function __isset(string $name) : bool
+    {
+        return isset($this->{$name});
+    }
 
     /**
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
@@ -128,8 +141,7 @@ abstract class AAuditFile
                 \Logger::getLogger(\get_class($this))
                     ->debug(
                         \sprintf(
-                            __METHOD__." cloning error '%s'",
-                            $e->getMessage()
+                            __METHOD__." cloning error '%s'", $e->getMessage()
                         )
                     );
             }

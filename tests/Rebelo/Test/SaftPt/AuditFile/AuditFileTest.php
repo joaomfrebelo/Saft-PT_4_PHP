@@ -64,7 +64,7 @@ class AuditFileTest extends TestCase
     {
         $auditFile = new AuditFile();
         $this->assertInstanceOf(AuditFile::class, $auditFile);
-       
+
         $this->assertInstanceOf(
             Header::class, $auditFile->getHeader()
         );
@@ -111,8 +111,7 @@ class AuditFileTest extends TestCase
         try {
             $assertXml = $this->xmlIsEqual($saftDemoXml, $xml);
             $this->assertTrue(
-                $assertXml,
-                \sprintf("Fail with error '%s'", $assertXml)
+                $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
         } catch (\Exception | \Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
@@ -165,8 +164,7 @@ class AuditFileTest extends TestCase
             );
 
             $this->assertTrue(
-                $assertXml,
-                \sprintf("Fail with error '%s'", $assertXml)
+                $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
         } catch (\Exception | \Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
@@ -258,8 +256,7 @@ class AuditFileTest extends TestCase
             );
 
             $this->assertTrue(
-                $assertXml,
-                \sprintf("Fail with error '%s'", $assertXml)
+                $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
 
             $this->assertFalse(
@@ -331,5 +328,26 @@ class AuditFileTest extends TestCase
                 unlink($auditXmlFile);
             }
         }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testIssetMagikMethod(): void
+    {
+        $auditFile = new AuditFile();
+        $this->assertFalse($auditFile->issetHeader());
+        // The propertie name
+        $header    = "header";
+        $this->assertSame(
+            isset($auditFile->{$header}), $auditFile->issetHeader()
+        );
+        
+        $auditFile->getHeader();
+        $this->assertTrue($auditFile->issetHeader());
+        $this->assertSame(
+            isset($auditFile->{$header}), $auditFile->issetHeader()
+        );
     }
 }

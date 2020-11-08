@@ -27,28 +27,28 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\Validate;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\Validate\SalesInvoices;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line;
+use Rebelo\SaftPt\Validate\Payments;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line;
 use Rebelo\Decimal\UDecimal;
 use Rebelo\Date\Date as RDate;
 
 /**
- * Class ASalesInvoiceTeste
+ * Class APaymentsBaseTeste
  *
  * @author João Rebelo
  */
-abstract class ASalesInvoiceBase extends TestCase
+abstract class APaymentsBase extends TestCase
 {
     /**
      * The SalesInvoice to be possible to access to protected methods
-     * @var \Rebelo\SaftPt\Validate\SalesInvoices
+     * @var \Rebelo\SaftPt\Validate\Payments
      */
-    protected SalesInvoices $salesInvoice;
+    protected Payments $payments;
 
-    public function salesInvoicesFactory(): void
+    public function paymentsFactory(): void
     {
-        $this->salesInvoice = new class extends SalesInvoices {
+        $this->payments = new class extends Payments {
 
             public function __construct()
             {
@@ -73,12 +73,9 @@ abstract class ASalesInvoiceBase extends TestCase
                 }
 
                 parent::__construct(
-                    new \Rebelo\SaftPt\AuditFile\AuditFile(),
-                    new \Rebelo\SaftPt\Sign\Sign(
-                        $private, $public
-                    )
+                    new \Rebelo\SaftPt\AuditFile\AuditFile()
                 );
-                $this->auditFile->getSourceDocuments()->getSalesInvoices()
+                $this->auditFile->getSourceDocuments()->getPayments()
                     ->setDocTableTotalCalc(
                         new \Rebelo\SaftPt\Validate\DocTableTotalCalc()
                     );
@@ -164,17 +161,6 @@ abstract class ASalesInvoiceBase extends TestCase
                 $this->grossTotal = $grossTotal;
             }
 
-            /**
-             * The last hash of document that has been the signature validated
-             * in the same document serie
-             * @var string
-             * @since 1.0.0
-             */
-            public function setLastHash(string $hash): void
-            {
-                $this->lastHash = $hash;
-            }
-
             public function setLastDocDate(RDate $date): void
             {
                 $this->lastDocDate = $date;
@@ -195,59 +181,44 @@ abstract class ASalesInvoiceBase extends TestCase
                 parent::numberOfEntries();
             }
 
-            public function documentStatus(Invoice $invoice): void
+            public function documentStatus(Payment $payment): void
             {
-                parent::documentStatus($invoice);
+                parent::documentStatus($payment);
             }
 
-            public function customerId(Invoice $invoice): void
+            public function customerId(Payment $payment): void
             {
-                parent::customerId($invoice);
+                parent::customerId($payment);
             }
 
-            public function lines(Invoice $invoice): void
+            public function lines(Payment $payment): void
             {
-                parent::lines($invoice);
+                parent::lines($payment);
             }
 
-            public function refernces(Line $line, Invoice $invoice): void
+            public function sourceDocumentID(Line $line, Payment $payment): void
             {
-                parent::refernces($line, $invoice);
+                parent::sourceDocumentID($line, $payment);
             }
 
-            public function producCode(Line $line, Invoice $invoice): void
+            public function tax(Line $line, Payment $payment): void
             {
-                parent::producCode($line, $invoice);
+                parent::tax($line, $payment);
             }
 
-            public function tax(Line $line, Invoice $invoice): void
+            public function totals(Payment $payment): void
             {
-                parent::tax($line, $invoice);
+                parent::totals($payment);
             }
 
-            public function totals(Invoice $invoice): void
+            public function paymentDateAndSystemEntryDate(Payment $payment): void
             {
-                parent::totals($invoice);
+                parent::paymentDateAndSystemEntryDate($payment);
             }
 
-            public function sign(Invoice $invoice): void
+            public function payment(Payment $payment): void
             {
-                parent::sign($invoice);
-            }
-
-            public function shipement(Invoice $invoice): void
-            {
-                parent::shipement($invoice);
-            }
-
-            public function invoiceDateAndSystemEntryDate(Invoice $invoice): void
-            {
-                parent::invoiceDateAndSystemEntryDate($invoice);
-            }
-
-            public function invoice(Invoice $invoice): void
-            {
-                parent::invoice($invoice);
+                parent::payment($payment);
             }
 
             public function totalDebit(): void
@@ -260,15 +231,16 @@ abstract class ASalesInvoiceBase extends TestCase
                 parent::totalCredit();
             }
             
-            public function payment(Invoice $invoice) : void
+            public function paymentMethod(Payment $payment) : void
             {
-                parent::payment($invoice);
+                parent::paymentMethod($payment);
             }
             
-            public function withholdingTax(Invoice $invoice) :void
+            public function withholdingTax(Payment $payment) :void
             {
-                parent::withholdingTax($invoice);
+                parent::withholdingTax($payment);
             }
+            
         };
     }
 }
