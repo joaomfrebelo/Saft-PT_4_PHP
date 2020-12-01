@@ -162,7 +162,6 @@ class WarehouseTest extends TestCase
         $xml = $warehouse->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new Warehouse(new ErrorRegister());
@@ -183,7 +182,6 @@ class WarehouseTest extends TestCase
         $xmlNull  = $warehouse->createXmlNode($nodeNull)->asXML();
         if ($xmlNull === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsedNull = new Warehouse(new ErrorRegister());
@@ -210,7 +208,6 @@ class WarehouseTest extends TestCase
         $xml           = $warehouse->createXmlNode($warehouseNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -238,7 +235,6 @@ class WarehouseTest extends TestCase
         $xml = $warehouse->createXmlNode($warehouseNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
