@@ -284,7 +284,6 @@ class SourceDocumentIDTest extends TestCase
         $xml = $source->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new SourceDocumentID(new ErrorRegister());
@@ -324,7 +323,6 @@ class SourceDocumentIDTest extends TestCase
         $xml    = $source->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new SourceDocumentID(new ErrorRegister());
@@ -362,7 +360,6 @@ class SourceDocumentIDTest extends TestCase
         $xml        = $source->createXmlNode($sourceNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -390,7 +387,6 @@ class SourceDocumentIDTest extends TestCase
         $xml = $source->createXmlNode($sourceNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

@@ -66,7 +66,7 @@ class PaymentMethodTest extends TestCase
         try {
             $payMeth->getPaymentAmount();
             $this->fail(
-                "Get PaymentAmout without be setted should throw "
+                "Get PaymentAmout without be set should throw "
                 ."\Error"
             );
         } catch (\Exception | \Error $e) {
@@ -78,7 +78,7 @@ class PaymentMethodTest extends TestCase
         try {
             $payMeth->getPaymentDate();
             $this->fail(
-                "Get PaymentDate without be setted should throw "
+                "Get PaymentDate without be set should throw "
                 ."\Error"
             );
         } catch (\Exception | \Error $e) {
@@ -238,7 +238,6 @@ class PaymentMethodTest extends TestCase
         $xml     = $payMeth->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new PaymentMethod(new ErrorRegister());
@@ -277,7 +276,6 @@ class PaymentMethodTest extends TestCase
         $xml     = $payMeth->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new PaymentMethod(new ErrorRegister());
@@ -312,7 +310,6 @@ class PaymentMethodTest extends TestCase
         $xml     = $pay->createXmlNode($payNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -339,7 +336,6 @@ class PaymentMethodTest extends TestCase
         $xml = $pay->createXmlNode($payNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

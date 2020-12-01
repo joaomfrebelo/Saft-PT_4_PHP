@@ -150,7 +150,7 @@ class AddressTest extends TestCase
         $this->assertEquals(50, \strlen($address->getCity()));
         try {
             $address->setCity(null);/** @phpstan-ignore-line */
-            $this->fail("setCity should throw Erro whene setted to null");
+            $this->fail("setCity should throw Erro whene set to null");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
@@ -197,7 +197,7 @@ class AddressTest extends TestCase
         $this->assertEquals($coIso, $address->getCountry()->get());
         try {
             $address->setCountry(null);/** @phpstan-ignore-line */
-            $this->fail("setCountry should throw Error whene setted to null");
+            $this->fail("setCountry should throw Error whene set to null");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
@@ -329,7 +329,6 @@ class AddressTest extends TestCase
         $xml = $address->createXmlNode($addrNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $parsed = new Address(new ErrorRegister());
@@ -383,7 +382,6 @@ class AddressTest extends TestCase
         $xml      = $address->createXmlNode($addrNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -412,7 +410,6 @@ class AddressTest extends TestCase
         $xml = $address->createXmlNode($addrNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(

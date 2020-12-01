@@ -266,7 +266,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->buildingNumber === null ? "null" : $this->buildingNumber
                 )
             );
@@ -296,7 +296,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->streetName === null ? "null" : $this->streetName
                 )
             );
@@ -327,7 +327,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->addressDetail === null ? "null" : $this->addressDetail
                 )
             );
@@ -355,7 +355,7 @@ abstract class AAddress extends AAuditFile
             $return     = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->city));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->city));
         return $return;
     }
 
@@ -383,7 +383,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->region === null ? "null" : $this->region
                 )
             );

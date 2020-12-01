@@ -172,7 +172,7 @@ class SalesInvoices extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocu
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->numberOfEntries
                 )
             );
@@ -227,7 +227,7 @@ class SalesInvoices extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocu
         }
         $this->totalDebit = $totalDebit;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->totalDebit));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->totalDebit));
         return $return;
     }
 
@@ -279,7 +279,7 @@ class SalesInvoices extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocu
         }
         $this->totalCredit = $totalCredit;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->totalCredit));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->totalCredit));
         return $return;
     }
 

@@ -148,7 +148,7 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->reference === null ? "null" : $this->reference
                 )
             );
@@ -201,7 +201,7 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->reason === null ? "null" : $this->reason
                 )
             );

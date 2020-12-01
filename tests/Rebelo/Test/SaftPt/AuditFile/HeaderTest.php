@@ -948,7 +948,6 @@ class HeaderTest extends TestCase
         $xml    = $header->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $parsed = new Header(new ErrorRegister());
@@ -1038,7 +1037,6 @@ class HeaderTest extends TestCase
         $xmlToParse = $header->createXmlNode($node)->asXML();
         if ($xmlToParse === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $parsedNull->parseXmlNode(
@@ -1078,7 +1076,6 @@ class HeaderTest extends TestCase
         $xml    = $header->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -1120,7 +1117,6 @@ class HeaderTest extends TestCase
         $xml = $header->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(

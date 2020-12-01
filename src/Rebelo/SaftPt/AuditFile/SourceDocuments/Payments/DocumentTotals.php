@@ -147,7 +147,7 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->settlementAmount === null ? "null" :
                     \strval($this->settlementAmount)
                 )

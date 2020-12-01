@@ -59,7 +59,6 @@ abstract class APaymentsBase extends TestCase
                             "Private key '%s' not not loaded", PRIVATE_KEY_PATH
                         )
                     );
-                    return;
                 }
 
                 $public = \file_get_contents(PUBLIC_KEY_PATH);
@@ -69,7 +68,6 @@ abstract class APaymentsBase extends TestCase
                             "Public key '%s' not not loaded", PUBLIC_KEY_PATH
                         )
                     );
-                    return;
                 }
 
                 parent::__construct(

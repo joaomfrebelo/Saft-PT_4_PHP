@@ -187,7 +187,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->numberOfEntries)
                 )
             );
@@ -251,7 +251,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->totalDebit)
                 )
             );
@@ -315,7 +315,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->totalCredit)
                 )
             );

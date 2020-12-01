@@ -143,7 +143,6 @@ class MovementOfGoodsTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $movStkDocsXml = $saftDemoXml
@@ -189,7 +188,6 @@ class MovementOfGoodsTest extends TestCase
         $xml            = $movOfGoods->createXmlNode($movOfGoodsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -217,7 +215,6 @@ class MovementOfGoodsTest extends TestCase
         $xml = $movOfGoods->createXmlNode($movOfGoodsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

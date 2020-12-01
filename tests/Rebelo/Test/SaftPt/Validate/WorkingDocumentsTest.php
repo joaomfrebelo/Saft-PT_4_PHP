@@ -44,11 +44,11 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 
 /**
- * Class SalesInvoiceTest
+ * Class WorkingDocumentsTest
  *
  * @author João Rebelo
  */
-class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocumentsBase
+class WorkingDocumentsTest extends AWorkingDocumentsBase
 {
 
     protected function setUp(): void
@@ -219,7 +219,6 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $xml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($xml === false) {
             $this->fail(\sprintf("Failling load file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $auditFile = new AuditFile();
@@ -373,6 +372,89 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $this->assertEmpty($workingDocs->getError());
         $this->assertEmpty($workDoc->getError());
     }
+    
+    /**
+     * @author João Rebelo
+     * @depends testDocumentStatus
+     * @depends testCustomerId
+     * @depends testLines
+     * @return void
+     */
+    public function testWorkDocTypeOutDate(): void
+    {
+        $now         = new RDate();
+        $this->iniWorkDocForLineTest();
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile   = $this->workingDocuments->getAuditFile();
+        $header      = $auditFile->getHeader();
+        $header->setDateCreated(clone $now);
+        $header->setStartDate($now->addDays(-1));
+        $header->setEndDate($now->addDays(1));
+        /* @var $workingDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
+        $workingDocs = $auditFile->getSourceDocuments()->getWorkingDocuments();
+        $workDoc     = $workingDocs->addWorkDocument();
+        $workDoc->setDocTotalcal(new DocTotalCalc());
+        $workDoc->setWorkDate(clone $now);
+        $workDoc->setDocumentNumber("FO FO/1");
+        $workDoc->setWorkType(WorkType::DC());
+        $workDoc->setAtcud("0");
+        $workDoc->setCustomerID("CODE_A");
+        $workDoc->setHashControl("1");
+        $workDoc->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $workDoc->setSourceID("Rebelo");
+        $workDoc->setSystemEntryDate(clone $now);
+        $this->iniWorkDocLinesForLinesTest($workDoc);
+
+        $docStatus = $workDoc->getDocumentStatus();
+        $docStatus->setWorkStatus(WorkStatus::N());
+        $docStatus->setWorkStatusDate(clone $now);
+        $docStatus->setSourceBilling(SourceBilling::P());
+        $docStatus->setSourceID("Rebelo");
+
+        $taxPayable = new UDecimal(0.0, WorkingDocuments::CALC_PRECISION);
+        $netValue   = new UDecimal(0.0, WorkingDocuments::CALC_PRECISION);
+
+        foreach ($workDoc->getLine() as $line) {
+            /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line */
+            $netValue->plusThis($line->getCreditAmount());
+            $taxPerc = $line->getTax()->getTaxPercentage();
+            $taxPayable->plusThis($taxPerc / 100 * $line->getCreditAmount());
+        }
+
+        $docTotals = $workDoc->getDocumentTotals();
+        $docTotals->setNetTotal($netValue->valueOf());
+        $docTotals->setTaxPayable($taxPayable->valueOf());
+        $docTotals->setGrossTotal($netValue->plus($taxPayable)->valueOf());
+
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
+        $sign->setPrivateKeyFilePath(PRIVATE_KEY_PATH);
+        $sign->setPublicKeyFilePath(PUBLIC_KEY_PATH);
+
+        $hash = $sign->createSignature(
+            $workDoc->getWorkDate(), $workDoc->getSystemEntryDate(),
+            $workDoc->getDocumentNumber(), $docTotals->getGrossTotal()
+        );
+
+        $workDoc->setHash($hash);
+
+        $customer = $auditFile->getMasterFiles()->addCustomer();
+        $customer->setAccountID(AuditFile::DESCONHECIDO);
+        $customer->setCompanyName("Rebelo SAFT");
+        $customer->setCustomerID($workDoc->getCustomerID());
+        $customer->setCustomerTaxID("999999990");
+        $customer->setSelfBillingIndicator(false);
+
+        $this->workingDocuments->workDocument($workDoc);
+
+        $this->assertFalse($this->workingDocuments->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($workingDocs->getError());
+        $this->assertNotEmpty($workDoc->getError());
+    }
+    
+    
+    
+    
 
     /**
      * @author João Rebelo
@@ -2803,7 +2885,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $line->setTaxExemptionCode(TaxExemptionCode::M99());
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(TaxCode::ISE());
         $tax->setTaxType(TaxType::IVA());
@@ -2837,7 +2919,7 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $line->setTaxExemptionReason("reason");
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(TaxCode::ISE());
         $tax->setTaxType(TaxType::IVA());
@@ -3705,19 +3787,74 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
      * @test
      * @return void
      */
+    public function testSignNoHashSkip(): void
+    {
+
+        $auditFile = $this->workingDocuments->getAuditFile();
+
+        /* @var $workingDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments */
+        $workingDocs = $auditFile->getSourceDocuments()->getWorkingDocuments();
+        $workDoc     = $workingDocs->addWorkDocument();
+        $workDoc->setWorkDate(new RDate());
+        $workDoc->setDocumentNumber("FO FO/1");
+        $workDoc->setWorkType(WorkType::FO());
+
+        $docStatus = $workDoc->getDocumentStatus();
+        $docStatus->setSourceBilling(SourceBilling::P());
+
+        $this->workingDocuments->setSignValidation(false);
+        $this->workingDocuments->sign($workDoc);
+
+        $this->assertFalse($this->workingDocuments->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($workDoc->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testSignSkip(): void
+    {
+
+        $auditFile = $this->workingDocuments->getAuditFile();
+
+        /* @var $workingDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments */
+        $workingDocs = $auditFile->getSourceDocuments()->getWorkingDocuments();
+        $workDoc     = $workingDocs->addWorkDocument();
+        $workDoc->setWorkDate(new RDate());
+        $workDoc->setDocumentNumber("FO FO/1");
+        $workDoc->setWorkType(WorkType::FO());
+        $workDoc->setHash("AAA");
+
+        $docStatus = $workDoc->getDocumentStatus();
+        $docStatus->setSourceBilling(SourceBilling::P());
+
+        $this->workingDocuments->setSignValidation(false);
+        $this->workingDocuments->sign($workDoc);
+
+        $this->assertTrue($this->workingDocuments->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($workDoc->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
     public function testSignPreviousHashEmpty(): void
     {
 
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -3764,13 +3901,11 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -3816,13 +3951,11 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -3870,13 +4003,11 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -3924,13 +4055,11 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile   = $this->workingDocuments->getAuditFile();
@@ -3978,14 +4107,13 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
+
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile = $this->workingDocuments->getAuditFile();
         $now       = new RDate();
@@ -4358,5 +4486,104 @@ class WorkingDocumentsTest extends \Rebelo\Test\SaftPt\Validate\AWorkingDocument
         $this->assertTrue($this->workingDocuments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($workDoc->getError());
+    }
+    
+    /**
+     * @author João Rebelo
+     * @return array
+     */
+    public function outOfDateWorkTypesInDateProvieder(): array
+    {
+        $inDateStack  = [
+            RDate::parse(RDate::SQL_DATE, "2017-06-30"), // Last valid day
+            RDate::parse(RDate::SQL_DATE, "2015-10-05")
+        ];
+        $outDateTypes = [
+            WorkType::DC()
+        ];
+
+        $stack = [];
+        foreach ($inDateStack as $date) {
+            foreach ($outDateTypes as $type) {
+                $stack[] = [$date, $type];
+            }
+        }
+        return $stack;
+    }
+
+    /**
+     * 
+     * @param RDate $date
+     * @param WorkType $type@author João Rebelo
+     * @test
+     * @dataProvider outOfDateWorkTypesInDateProvieder
+     * @return void
+     */
+    public function testOutOfDateWorkTypesInDate(RDate $date, WorkType $type): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile        = $this->workingDocuments->getAuditFile();
+        /* @var $workDoc \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
+        $workingDocuments = $auditFile->getSourceDocuments()->getWorkingDocuments();
+        $workDoc          = $workingDocuments->addWorkDocument();
+        $workDoc->setWorkDate($date);
+        $workDoc->setDocumentNumber("FO FO/1");
+        $workDoc->setWorkType($type);
+
+        $this->workingDocuments->outOfDateInvoiceTypes($workDoc);
+
+        $this->assertTrue($this->workingDocuments->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($workDoc->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @return array
+     */
+    public function outOfDateWorkTypesOutDateProvieder(): array
+    {
+        $inDateStack  = [
+            RDate::parse(RDate::SQL_DATE, "2017-07-01"), // First invalid day
+            RDate::parse(RDate::SQL_DATE, "2017-10-05")
+        ];
+        $outDateTypes = [
+            WorkType::DC()
+        ];
+
+        $stack = [];
+        foreach ($inDateStack as $date) {
+            foreach ($outDateTypes as $type) {
+                $stack[] = [$date, $type];
+            }
+        }
+        return $stack;
+    }
+
+    /**
+     * 
+     * @param RDate $date
+     * @param WorkType $type
+     * @author João Rebelo
+     * @test
+     * @dataProvider outOfDateWorkTypesOutDateProvieder
+     * @return void
+     */
+    public function testOutOfDateWorkTypesOutDate(RDate $date, WorkType $type): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile        = $this->workingDocuments->getAuditFile();
+        /* @var $workDoc \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
+        $workingDocuments = $auditFile->getSourceDocuments()->getWorkingDocuments();
+        $workDoc          = $workingDocuments->addWorkDocument();
+        $workDoc->setWorkDate($date);
+        $workDoc->setDocumentNumber("FO FO/1");
+        $workDoc->setWorkType($type);
+
+        $this->workingDocuments->outOfDateInvoiceTypes($workDoc);
+
+        $this->assertFalse($this->workingDocuments->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($workDoc->getError());
     }
 }

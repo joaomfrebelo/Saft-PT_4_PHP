@@ -215,7 +215,7 @@ class Customer extends ACustomerSupplier
             $return           = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->customerID));
         return $return;
     }
 
@@ -280,7 +280,7 @@ class Customer extends ACustomerSupplier
         }
         $this->customerTaxID = $customerTaxID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerTaxID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->customerTaxID));
         return $return;
     }
 

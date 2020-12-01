@@ -390,7 +390,6 @@ class LineTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $movStockStack = $saftDemoXml
@@ -423,7 +422,7 @@ class LineTest extends TestCase
                 $movStockNode        = $movementOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
 
                 $xml = $line->createXmlNode($movStockNode);
-                $xml->asXML("d:/todelete/gt.xml");
+
                 try {
                     $assertXml = $this->xmlIsEqual($lineXml, $xml);
                     $this->assertTrue(
@@ -464,7 +463,6 @@ class LineTest extends TestCase
         $xml      = $line->createXmlNode($lineNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -501,7 +499,6 @@ class LineTest extends TestCase
         $xml = $line->createXmlNode($lineNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

@@ -297,7 +297,6 @@ class SettlementTest extends TestCase
         $xml   = $settl->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new Settlement(new ErrorRegister());
@@ -336,7 +335,6 @@ class SettlementTest extends TestCase
         $xml   = $settl->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new Settlement(new ErrorRegister());
@@ -365,7 +363,6 @@ class SettlementTest extends TestCase
         $xml            = $settlement->createXmlNode($settlementNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -394,7 +391,6 @@ class SettlementTest extends TestCase
         $xml = $settlement->createXmlNode($settlementNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

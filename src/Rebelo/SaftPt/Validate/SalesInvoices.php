@@ -45,6 +45,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax;
+use Rebelo\Date\Date as RDate;
 
 /**
  * Validate SalesInvoices table.<br>
@@ -89,6 +90,7 @@ class SalesInvoices extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $progreBar = null;
         try {
             $salesInvoices = $this->auditFile->getSourceDocuments()
                 ->getSalesInvoices(false);
@@ -136,9 +138,29 @@ class SalesInvoices extends ADocuments
 
             $order = $salesInvoices->getOrder();
 
+            if ($this->getStyle() !== null) {
+                $nDoc      = \count($salesInvoices->getInvoice());
+                /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
+                $section   = null;
+                $progreBar = $this->getStyle()->addProgressBar($section);
+                $section->writeln("");
+                $section->writeln(
+                    \sprintf(
+                        AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
+                        "Invoice"
+                    )
+                );
+                $progreBar->start($nDoc);
+            }
+
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
+
+                        if ($progreBar !== null) {
+                            $progreBar->advance();
+                        }
+
                         /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
                         $invoice = $order[$type][$serie][$no];
                         if ((string) $type !== $this->lastType || (string) $serie
@@ -155,10 +177,18 @@ class SalesInvoices extends ADocuments
                 }
             }
 
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
+
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
+
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
 
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -168,7 +198,7 @@ class SalesInvoices extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-                );
+            );
         }
         return $this->isValid;
     }
@@ -245,6 +275,7 @@ class SalesInvoices extends ADocuments
             $this->shipement($invoice);
             $this->payment($invoice);
             $this->withholdingTax($invoice);
+            $this->outOfDateInvoiceTypes($invoice);
         } catch (\Exception | \Error $e) {
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -253,7 +284,7 @@ class SalesInvoices extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-                );
+            );
             $invoice->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -305,10 +336,10 @@ class SalesInvoices extends ADocuments
             ->setTotalDebit($this->debit->valueOf());
 
         $diff = $this->debit->signedSubtract(
-            new Decimal(
-                $salesInvoices->getTotalDebit(), static::CALC_PRECISION
-            )
-        )->abs()->valueOf();
+                new Decimal(
+                    $salesInvoices->getTotalDebit(), static::CALC_PRECISION
+                )
+            )->abs()->valueOf();
 
         if ($diff > $this->deltaTotalDoc) {
             $msg           = \sprintf(
@@ -336,10 +367,10 @@ class SalesInvoices extends ADocuments
         $salesInvoices->getDocTableTotalCalc()->setTotalDebit($this->credit->valueOf());
 
         $diff = $this->credit->signedSubtract(
-            new Decimal(
-                $salesInvoices->getTotalCredit(), static::CALC_PRECISION
-            )
-        )->abs()->valueOf();
+                new Decimal(
+                    $salesInvoices->getTotalCredit(), static::CALC_PRECISION
+                )
+            )->abs()->valueOf();
 
         if ($diff > $this->deltaTotalDoc) {
             $msg           = \sprintf(
@@ -408,7 +439,7 @@ class SalesInvoices extends ADocuments
     }
 
     /**
-     * validate if the customerID of the Invoice if is setted and if exits in
+     * validate if the customerID of the Invoice if is set and if exits in
      * the customer table
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
@@ -1054,9 +1085,9 @@ class SalesInvoices extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($line->issetProductCode()) {
             if (\in_array(
-                $line->getProductCode(),
-                $this->auditFile->getMasterFiles()->getAllProductCode()
-            ) === false
+                    $line->getProductCode(),
+                    $this->auditFile->getMasterFiles()->getAllProductCode()
+                ) === false
             ) {
 
                 $msg = \sprintf(
@@ -1370,6 +1401,7 @@ class SalesInvoices extends ADocuments
     protected function sign(Invoice $invoice): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+
         if ($invoice->issetHash() === false) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_hash"),
@@ -1379,6 +1411,11 @@ class SalesInvoices extends ADocuments
             $invoice->addError($msg, Invoice::N_HASH);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
+            return;
+        }
+
+        if ($this->getSignValidation() === false) {
+            \Logger::getLogger(\get_class($this))->info("Skip sign test as ValidationConfig");
             return;
         }
 
@@ -1697,7 +1734,7 @@ class SalesInvoices extends ADocuments
             $this->isValid = false;
         }
     }
-    
+
     /**
      * Validate the Payment
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
@@ -1849,6 +1886,44 @@ class SalesInvoices extends ADocuments
                     return;
                 }
             }
+        }
+    }
+
+    /**
+     * Validate if exists invoice types out of date
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice Invoice $invoice
+     * @return void
+     * @since 1.0.0
+     */
+    protected function outOfDateInvoiceTypes(Invoice $invoice) : void
+    {
+        if ($invoice->issetInvoiceType() === false || $invoice->issetInvoiceDate() === false) {
+            return;
+        }
+
+        $type     = $invoice->getInvoiceType()->get();
+        $lastDay  = RDate::parse(RDate::SQL_DATE, "2012-12-31");
+        $outDateTypes = [
+            InvoiceType::VD,
+            InvoiceType::TV,
+            InvoiceType::TD,
+            InvoiceType::AA,
+            InvoiceType::DA
+        ];
+
+        if (\in_array($type, $outDateTypes) === false) {
+            return;
+        }
+
+        if ($invoice->getInvoiceDate()->isLater($lastDay)) {
+            $msg = \sprintf(
+                AuditFile::getI18n()->get("document_type_last_date_later"),
+                $type, "2012-12-31", $invoice->getInvoiceNo()
+            );
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $invoice->addError($msg);
+            \Logger::getLogger(\get_class($this))->error($msg);
+            $this->isValid = false;
         }
     }
 }

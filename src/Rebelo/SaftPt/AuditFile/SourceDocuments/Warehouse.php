@@ -127,7 +127,7 @@ class Warehouse extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->warehouseID === null ? "null" : $this->warehouseID
                 )
             );
@@ -179,7 +179,7 @@ class Warehouse extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->locationID === null ? "null" : $this->locationID
                 )
             );

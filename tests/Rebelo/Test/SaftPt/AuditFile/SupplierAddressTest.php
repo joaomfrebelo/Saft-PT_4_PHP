@@ -199,7 +199,7 @@ class SupplierAddressTest extends TestCase
 
         try {
             $address->setCountry(null);/** @phpstan-ignore-line */
-            $this->fail("setCountry should throw Error whene setted to null");
+            $this->fail("setCountry should throw Error whene set to null");
         } catch (\Exception | \Error $e) {
             $this->assertInstanceOf(\TypeError::class, $e);
         }
@@ -340,7 +340,6 @@ class SupplierAddressTest extends TestCase
         $xml = $address->createXmlNode($addrNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $parsed = new SupplierAddress(new ErrorRegister());
@@ -391,7 +390,6 @@ class SupplierAddressTest extends TestCase
         $xml      = $address->createXmlNode($addrNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -420,7 +418,6 @@ class SupplierAddressTest extends TestCase
         $xml = $address->createXmlNode($addrNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(

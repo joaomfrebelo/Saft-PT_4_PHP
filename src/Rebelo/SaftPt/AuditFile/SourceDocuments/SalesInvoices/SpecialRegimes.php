@@ -182,7 +182,7 @@ class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->selfBillingIndicator ? "true" : "false"
                 )
             );
@@ -204,7 +204,7 @@ class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->cashVATSchemeIndicator ? "true" : "false"
                 )
             );
@@ -225,7 +225,7 @@ class SpecialRegimes extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->thirdPartiesBillingIndicator ? "true" : "false"
                 )
             );

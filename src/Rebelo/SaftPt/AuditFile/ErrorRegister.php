@@ -168,7 +168,11 @@ class ErrorRegister
      */
     public function addLibXmlError(string $error): void
     {
-        $this->libXmlError[] = $error;
+        $clean = \str_replace(["\n", "\r"], "", $error);
+        if(\in_array($clean, $this->libXmlError)){
+            return;
+        }
+        $this->libXmlError[] = $clean;
     }
 
     /**

@@ -110,7 +110,6 @@ class SourceDocumentsTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $sourceDocsXml = $saftDemoXml

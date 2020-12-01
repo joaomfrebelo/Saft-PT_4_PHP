@@ -177,7 +177,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return              = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->originatingON));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->originatingON));
         return $return;
     }
 
@@ -225,7 +225,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->invoiceDate->format(RDate::SQL_DATE)
                 )
             );
@@ -280,7 +280,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->description === null ? "null" : $this->description
                 )
             );

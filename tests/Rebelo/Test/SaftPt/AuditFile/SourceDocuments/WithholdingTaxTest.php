@@ -289,7 +289,6 @@ class WithholdingTaxTest extends TestCase
         $xml            = $withholdingTax->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new WithholdingTax(new ErrorRegister());
@@ -328,7 +327,6 @@ class WithholdingTaxTest extends TestCase
         $xml            = $withholdingTax->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new WithholdingTax(new ErrorRegister());
@@ -359,7 +357,6 @@ class WithholdingTaxTest extends TestCase
         $xml                = $withholdingTax->createXmlNode($withholdingTaxNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -387,7 +384,6 @@ class WithholdingTaxTest extends TestCase
         $xml = $withholdingtax->createXmlNode($withholdingtaxNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

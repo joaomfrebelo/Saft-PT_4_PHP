@@ -114,7 +114,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function setSalesInvoicesAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
         $this->salesInvoices = null;
     }
 
@@ -144,7 +144,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function setMovementOfGoodsAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
         $this->movementOfGoods = null;
     }
 
@@ -174,7 +174,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function setWorkingDocumentsAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
         $this->workingDocuments = null;
     }
 
@@ -205,7 +205,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function setPaymentsAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as mull");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
         $this->payments = null;
     }
 

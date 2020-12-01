@@ -168,7 +168,6 @@ class DocumentStatusTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $paymentsStack = $saftDemoXml
@@ -297,7 +296,6 @@ class DocumentStatusTest extends TestCase
         $xml        = $status->createXmlNode($statusNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -325,7 +323,6 @@ class DocumentStatusTest extends TestCase
         $xml = $status->createXmlNode($statustNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

@@ -147,7 +147,6 @@ class DocumentTotalsTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $workdocStack = $saftDemoXml
@@ -227,7 +226,6 @@ class DocumentTotalsTest extends TestCase
         $xml           = $docTotals->createXmlNode($docTotalsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -256,7 +254,6 @@ class DocumentTotalsTest extends TestCase
         $xml = $docTotals->createXmlNode($docTotalsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

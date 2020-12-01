@@ -331,7 +331,6 @@ class DocumentTotalsTest extends TestCase
         $xml    = $docTot->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentTotals(new ErrorRegister());
@@ -520,7 +519,6 @@ class DocumentTotalsTest extends TestCase
         $xml    = $docTot->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentTotals(new ErrorRegister());
@@ -566,7 +564,6 @@ class DocumentTotalsTest extends TestCase
         $xml  = $docTot->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentTotals(new ErrorRegister());
@@ -604,7 +601,6 @@ class DocumentTotalsTest extends TestCase
         $xml  = $docTot->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentTotals(new ErrorRegister());
@@ -644,7 +640,6 @@ class DocumentTotalsTest extends TestCase
         $xml  = $docTot->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentTotals(new ErrorRegister());
@@ -686,7 +681,6 @@ class DocumentTotalsTest extends TestCase
         $xml  = $docTot->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentTotals(new ErrorRegister());
@@ -712,7 +706,6 @@ class DocumentTotalsTest extends TestCase
         $xml        = $docTot->createXmlNode($docTotNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -741,7 +734,6 @@ class DocumentTotalsTest extends TestCase
         $xml = $docTot->createXmlNode($docTotNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

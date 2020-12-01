@@ -157,7 +157,7 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxType = $taxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxType->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->get()));
     }
 
     /**
@@ -210,7 +210,7 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxCountryRegion->get()
                 )
             );
@@ -266,7 +266,7 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxCode = $taxCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxCode->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->get()));
     }
 
     /**
@@ -324,7 +324,7 @@ class MovementTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->taxPercentage)
                 )
             );

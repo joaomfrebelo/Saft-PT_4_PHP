@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+require_once 'RSimpleXmlElement.php'; // In console app does't load from composer autoloader
+
 use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
+use Rebelo\SaftPt\Validate\ValidationConfig;
 
 /**
  * Class representing AuditFile
@@ -47,7 +50,8 @@ class AuditFile extends AAuditFile
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments|null $sourceDocuments
      * @since 1.0.0
      */
-    protected ?SourceDocuments $sourceDocuments = null;
+    protected ?SourceDocuments $sourceDocuments           = null;
+    public static ?string $log4phpConfigFilePath = null;
 
     /**
      * &lt;xs:element name="AuditFile">
@@ -56,6 +60,10 @@ class AuditFile extends AAuditFile
      */
     public function __construct(?ErrorRegister $errorRegister = null)
     {
+        if (static::$log4phpConfigFilePath !== null) {
+            \Logger::configure(static::$log4phpConfigFilePath);
+        }
+
         if ($errorRegister === null) {
             $errorRegister = new ErrorRegister();
         }
@@ -163,8 +171,8 @@ class AuditFile extends AAuditFile
     {
         if ($node->getName() !== static::N_AUDITFILE) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s",
-                static::N_AUDITFILE, $node->getName()
+                "Node name should be '%s' but is '%s", static::N_AUDITFILE,
+                $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -214,8 +222,8 @@ class AuditFile extends AAuditFile
     {
         if ($node->getName() !== static::N_AUDITFILE) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s",
-                static::N_AUDITFILE, $node->getName()
+                "Node name should be '%s' but is '%s", static::N_AUDITFILE,
+                $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -257,23 +265,40 @@ class AuditFile extends AAuditFile
      * possible to catch the exception or error that a \Exception or \Error will
      * be throw. To know if there are errors access to the ErrorRegister instance
      * of the AuditFile instance. Some validation to check for errors are done
-     * on the setter methods, when get the AuditFile as a xml string, other validation
-     * is done, the xml string structure is validated, but other validations
-     * can be done using the validation classes, however that validations
-     * in very big AuditFiles could have a time consume very hight, is
-     * recomended to use in test envoirment, in producion envoirment
+     * on the setter methods, when get the AuditFile as a xml string, no validation
+     * is done, validations can be done using the validation classes, however that validations
+     * in very big AuditFiles could have a time consume very height, is
+     * recommended to use in test environment, in production environment
      * should be evaluated if is necessary.
+     * The string is returned in the encoding "UTF-8" (the encoding of simplexml), but the 
+     * file must be export with encoding Windows-1252
+     * 
      * @return string
      * @since 1.0.0
      */
     public function toXmlString(): string
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $xml      = $this->createXmlNode($this->createRootElement())->asXML();
+        $xml = $this->createXmlNode($this->createRootElement())->asXML();
         $this->replaceHexUtf($xml);
-        $validate = new \Rebelo\SaftPt\Validate\XmlStructure($this);
-        $validate->validate($xml);
         return $xml;
+    }
+
+    /**
+     * Return the toXmlString method but the xml string converted to "Windows-1252"
+     * @return string
+     * @since 1.0.0
+     */
+    public function toXmlStringWindows1252(): string
+    {
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $xml = \mb_convert_encoding(
+            $this->toXmlString(), "Windows-1252", "UTF-8"
+        );
+        return \str_replace(
+            '<?xml version="1.0"?>',
+            '<?xml version="1.0" encoding="Windows-1252"?>', $xml
+        );
     }
 
     /**
@@ -299,8 +324,8 @@ class AuditFile extends AAuditFile
     public function toFile(string $path): int
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $bytes = file_put_contents(
-            $path, $this->toXmlString(), LOCK_EX
+        $bytes = \file_put_contents(
+            $path, $this->toXmlStringWindows1252(), LOCK_EX
         );
         if ($bytes === false) {
             throw new AuditFileException(
@@ -308,5 +333,214 @@ class AuditFile extends AAuditFile
             );
         }
         return $bytes;
+    }
+
+    /**
+     * Load and parse a SAFT-PT file, afeter load and before parsing the will 
+     * be done a validation against the XSD, you can check if has any error 
+     * in the ErrorRegistor of the AuditFile instance, and you can make 
+     * the data validation using the validateData method
+     * @param string $path
+     * @return \Rebelo\SaftPt\AuditFile\AuditFile
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @since 1.0.0
+     */
+    public static function loadFile(string $path): AuditFile
+    {
+        if (static::$log4phpConfigFilePath !== null) {
+            \Logger::configure(static::$log4phpConfigFilePath);
+        }
+        \Logger::getLogger(AuditFile::class)->debug(__METHOD__);
+        $audit  = new AuditFile();
+        $xmlStr = \file_get_contents($path);
+        if ($xmlStr === false) {
+            $msg = \sprintf("failing open file '%s'", $path);
+            \Logger::getLogger(AuditFile::class)->error($msg);
+            throw new AuditFileException($msg);
+        }
+
+        $detOrder  = \array_merge(
+            ["UTF-8", "Windows-1252"], \mb_list_encodings()
+        );
+        $encodeing = \mb_detect_encoding($xmlStr, $detOrder);
+        $xmlEnc    = ($encodeing === false || $encodeing === "UTF-8") ?
+            $xmlStr : \mb_convert_encoding($xmlStr, "UTF-8", $encodeing);
+        unset($xmlStr);
+
+        $xmlEncClean = \str_replace(
+            '<?xml version="1.0" encoding="Windows-1252"?>',
+            '<?xml version="1.0"?>', $xmlEnc
+        );
+        unset($xmlEnc);
+
+        $valXmlXsd = new \Rebelo\SaftPt\Validate\XmlStructure($audit);
+        $valXmlXsd->validate($xmlEncClean);
+        $xml       = \simplexml_load_string($xmlEncClean);
+        unset($xmlEncClean);
+        if ($xml === false) {
+            $msg = \sprintf(
+                "Simplexml_load_string failing read string loaded from file '%s'",
+                $path
+            );
+            \Logger::getLogger(AuditFile::class)->error($msg);
+            throw new AuditFileException($msg);
+        }
+        $audit->parseXmlNode($xml);
+        return $audit;
+    }
+
+    /**
+     * Validate the SAFT-PT audit file. 
+     * @param string|null $pubKeyPath
+     * @param \Rebelo\SaftPt\Validate\ValidationConfig|null $config
+     * @return bool True if no errors (can have warnings)
+     * @since 1.0.0
+     */
+    public function validate(?string $pubKeyPath = null,
+                             ?ValidationConfig $config = null): bool
+    {
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
+
+        if ($pubKeyPath !== null) {
+            $sign->setPublicKeyFilePath($pubKeyPath);
+        }
+
+        if ($config === null) {
+            $config = new ValidationConfig();
+            $config->setSignValidation($pubKeyPath !== null);
+        }
+
+        if ($config->getSignValidation() && $pubKeyPath === null) {
+            $msg = "To validate signatures must indicate public key file path";
+            \Logger::getLogger(\get_class($this))->error($msg);
+            throw new AuditFileException($msg);
+        }
+
+        $throw  = [];
+        $logger = \Logger::getLogger(\get_class($this));
+        $pool   = \Spatie\Async\Pool::create();
+        
+        // TODO test async in a machine with pcntl and posix, special if in 
+        // console app the progress bar over each other or not
+
+        if ($config->getSchemaValidate()) {
+            $pool->add(
+                function()
+                {
+                                \Logger::getLogger(\get_class($this))->info("Start validating Scheme");
+                                $validate = new \Rebelo\SaftPt\Validate\XmlStructure($this);
+                                $xml      = $this->toXmlString();
+                                $validate->validate($xml);
+                }
+            )->catch(
+                function($exception) use (&$throw, $logger)
+                {
+                                /* @var $exception \Exception */
+                                $logger->debug($exception);
+                                $throw[] = $exception->getMessage();
+                }
+            );
+        }
+        
+        // Validate Invoices
+        $pool->add(
+            function() use ($sign, $config)
+            {
+                        \Logger::getLogger(\get_class($this))->info("Start validating SalesInvoices");
+                        $siVal = new \Rebelo\SaftPt\Validate\SalesInvoices($this, $sign);
+                        $siVal->setConfiguration($config);
+                        $siVal->validate();
+            }
+        )->catch(
+            function($exception) use (&$throw, $logger)
+            {
+                        /* @var $exception \Exception */
+                        $logger->debug($exception);
+                        $throw[] = $exception->getMessage();
+            }
+        );
+
+        // Validate MovementOfGoods
+        $pool->add(
+            function() use ($sign, $config)
+            {
+                        \Logger::getLogger(\get_class($this))->info("Start validating MovementOfGoods");
+                        $mvVal = new \Rebelo\SaftPt\Validate\MovementOfGoods($this, $sign);
+                        $mvVal->setConfiguration($config);
+                        $mvVal->validate();
+            }
+        )->catch(
+            function ($exception) use (&$throw, $logger)
+            {
+                        /* @var $exception \Exception */
+                        $logger->debug($exception);
+                        $throw[] = $exception->getMessage();
+            }
+        );
+
+        // Validate WorkingDocuments
+        $pool->add(
+            function() use ($sign, $config)
+            {
+                        \Logger::getLogger(\get_class($this))->info("Start validating WorkingDocument");
+                        $worVal = new \Rebelo\SaftPt\Validate\WorkingDocuments($this, $sign);
+                        $worVal->setConfiguration($config);
+                        $worVal->validate();
+            }
+        )->catch(
+            function ($exception) use (&$throw, $logger)
+            {
+                        /* @var $exception \Exception */
+                        $logger->debug($exception);
+                        $throw[] = $exception->getMessage();
+            }
+        );
+
+        // Validate Payments
+        $pool->add(
+            function() use ($config)
+            {
+                        \Logger::getLogger(\get_class($this))->info("Start validating Payments");
+                        $payVal = new \Rebelo\SaftPt\Validate\Payments($this);
+                        $payVal->setConfiguration($config);
+                        $payVal->validate();
+            }
+        )->catch(
+            function ($exception) use (&$throw, $logger)
+            {
+                        /* @var $exception \Exception */
+                        $logger->debug($exception);
+                        $throw[] = $exception->getMessage();
+            }
+        );
+
+        // Validate OtherValidations
+        $pool->add(
+            function() use ($config)
+            {
+                        \Logger::getLogger(\get_class($this))->info("Start other validations");
+                        $other = new \Rebelo\SaftPt\Validate\OtherValidations($this);
+                        $other->setConfiguration($config);
+                        $other->validate();
+            }
+        )->catch(
+            function ($exception) use (&$throw, $logger)
+            {
+                        /* @var $exception \Exception */
+                        $logger->debug($exception);
+                        $throw[] = $exception->getMessage();
+            }
+        );
+        
+        \Logger::getLogger(\get_class($this))->debug("End of data validation");
+
+        $pool->wait();
+
+        if (\count($throw) > 0) {
+            throw new AuditFileException(\join("; ", $throw));
+        }
+
+        return !$this->getErrorRegistor()->hasErrors();
     }
 }

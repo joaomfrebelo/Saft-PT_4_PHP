@@ -180,7 +180,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->invoiceStatus->get()
                 )
             );
@@ -230,7 +230,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->invoiceStatusDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -279,7 +279,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->reason === null ? "null" : $this->reason
                 )
             );
@@ -335,7 +335,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return         = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->sourceID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->sourceID));
         return $return;
     }
 
@@ -381,7 +381,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->sourceBilling->get()
                 )
             );

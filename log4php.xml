@@ -1,0 +1,7 @@
+<configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="nullAppender" class="LoggerAppenderNull" />
+    <root>
+	<level value="off"/>
+        <appender_ref ref="nullAppender" />
+    </root>
+</configuration>

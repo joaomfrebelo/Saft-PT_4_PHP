@@ -128,7 +128,7 @@ class en_GB extends AI18n
         $this->stack["CreditAmount_not_valid"]                                   = "'CreditAmount' is not valid";
         $this->stack["TaxExemptionReason_not_valid"]                             = "'TaxExemptionReason' is not valid";
         $this->stack["SettlementAmount_not_valid"]                               = "'SettlementAmount' is not valid";
-        $this->stack["Debit_and_Credit_setted_at_same_time"]                     = "'Debit' and 'Credit' setted at same time";
+        $this->stack["Debit_and_Credit_setted_at_same_time"]                     = "'Debit' and 'Credit' set at same time";
         $this->stack["No_Debit_or_Credit_setted"]                                = "No 'Debit' or 'Credit' setted";
         $this->stack["SourceID_not_valid"]                                       = "'SourceID' is not valid";
         $this->stack["WorkStatus_not_valid"]                                     = "'WorkStatus' is not valid";
@@ -164,7 +164,7 @@ class en_GB extends AI18n
         $this->stack["TaxType_not_valid"]                                        = "'TaxType' is not valid";
         $this->stack["TaxCountryRegion_not_valid"]                               = "'TaxCountryRegion' is not valid";
         $this->stack["TaxCode_not_valid"]                                        = "'TaxCode' is not valid";
-        $this->stack["CustomerID_and_SupplierID_at_same_time"]                   = "'CustomerID' and 'SupplierID' setted at same time";
+        $this->stack["CustomerID_and_SupplierID_at_same_time"]                   = "'CustomerID' and 'SupplierID' set at same time";
         $this->stack["CustomerID_and_SupplierID_not_setted"]                     = "'CustomerID' and 'SupplierID' not setted";
         $this->stack["AtDocCodeID_not_valid"]                                    = "'AtDocCodeID' is not valid";
         $this->stack["StockMovement_without_lines"]                              = "'StockMovement' without lines";
@@ -300,6 +300,22 @@ class en_GB extends AI18n
         $this->stack["payments_total_debit_should_be_zero"]                      = "Payments total debit should be zero";
         $this->stack["payments_total_credit_should_be_zero"]                     = "Payments total credit should be zero";
         $this->stack["fr_withou_payment_method"]                                 = "The 'Invoice' '%s' of type 'Fatura-Recibo' without 'Payment'";
-        $this->stack["paymentmethod_sum_greater_than_gross_lass_withholtax"] = "The sum of 'Payment' in document '%s' is greater than the gross total less the 'WithholdingTaxAmount'";
+        $this->stack["paymentmethod_sum_greater_than_gross_lass_withholtax"]     = "The sum of 'Payment' in document '%s' is greater than the gross total less the 'WithholdingTaxAmount'";
+        $this->stack["validating_n_doc_of"]                                      = "Validating %s documents of type '%s'";
+        $this->stack["validation_no_error"]                                      = "Validation without errors";
+        $this->stack["has_n_warnings"]                                           = "Wrings: %s ";
+        $this->stack["has_n_xml_structure_erros"]                                = "XML structure errors: %s ";
+        $this->stack["has_n_errors_on_set_value"]                                = "Errors on set fields values; %s ";
+        $this->stack["has_n_errors_on_create_xml_node"]                          = "Errors on creating the XML nodes %s ";
+        $this->stack["has_n_errors_on_data_validation"]                          = "Data validation errors: %s ";
+        $this->stack["validating_file"]                                          = "Validating file '%s'";
+        $this->stack["memory"]                                                   = "Memory";
+        $this->stack["saft_file"]                                                = "SAFT-PT file";
+        $this->stack["exec_time"]                                                = "Time";
+        $this->stack["other_validation_n_doc"]                                   = "Other validations on '%s' document(s)";
+        $this->stack["doc_code_with_more_one_type"]                              = "The internal code '%s' has more than one type of document, '%s' e '%s'";
+        $this->stack["mov_of_goods_product_is_of_type"]                          = "At line '%s' of document '%s' (StockMovement) the product '%s' is of type '%s'";
+        $this->stack["mov_of_goods_product_do_not_have_type"]                    = "At line '%s' of document '%s' (StockMovement) the product '%s' do not have the type defined";
+        $this->stack["document_type_last_date_later"]                            = "The type of document '%s' is only valid till '%s' but the document '%s' is later";
     }
 }

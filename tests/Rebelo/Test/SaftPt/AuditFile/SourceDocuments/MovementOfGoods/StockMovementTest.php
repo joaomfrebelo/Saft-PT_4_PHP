@@ -493,7 +493,6 @@ class StockMovementTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $stkMovStack = $saftDemoXml
@@ -552,7 +551,6 @@ class StockMovementTest extends TestCase
         $xml        = $stkMov->createXmlNode($stkMovNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -589,7 +587,6 @@ class StockMovementTest extends TestCase
         $xml = $stkMov->createXmlNode($stkMovNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

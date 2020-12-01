@@ -51,3 +51,8 @@ spl_autoload_register(
 );
 
 define("IS_UNIT_TEST", true);
+
+/**
+ * The tests resources directory
+ */
+define("SAFT4PHP_TEST_RESSOURCES_DIR", __DIR__.DIRECTORY_SEPARATOR."Ressources");

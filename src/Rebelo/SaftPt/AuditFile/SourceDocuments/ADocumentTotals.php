@@ -149,7 +149,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->taxPayable = $taxPayable;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxPayable));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxPayable));
         return $return;
     }
 
@@ -201,7 +201,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->netTotal = $netTotal;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->netTotal));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->netTotal));
         return $return;
     }
 
@@ -254,7 +254,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->grossTotal = $grossTotal;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->grossTotal));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->grossTotal));
         return $return;
     }
 
@@ -284,7 +284,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function setCurrencyAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted as null");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as null");
         $this->currency = null;
     }
 

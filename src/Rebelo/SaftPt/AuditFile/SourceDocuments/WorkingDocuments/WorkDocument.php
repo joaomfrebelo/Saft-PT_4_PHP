@@ -172,7 +172,7 @@ class WorkDocument extends ADocument
         }
         $this->documentNumber = $documentNumber;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->documentNumber));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->documentNumber));
         return $return;
     }
 
@@ -256,7 +256,7 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->workDate->format(RDate::SQL_DATE)
                 )
             );
@@ -335,7 +335,7 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->workType->get()
+                    __METHOD__." set to '%s'", $this->workType->get()
                 )
             );
     }

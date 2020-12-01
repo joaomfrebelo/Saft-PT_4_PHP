@@ -109,7 +109,7 @@ class SupplierAddress extends AAddress
             $return           = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->postalCode));
         return $return;
     }
 
@@ -126,7 +126,7 @@ class SupplierAddress extends AAddress
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->suplierCountry->get()
                 )
             );

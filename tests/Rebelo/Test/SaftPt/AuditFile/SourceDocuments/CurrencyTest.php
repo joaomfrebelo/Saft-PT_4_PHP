@@ -62,7 +62,7 @@ class CurrencyTest extends TestCase
         try {
             $currency->getCurrencyCode();
             $this->fail(
-                "Get CurrencyCode without be setted should throw "
+                "Get CurrencyCode without be set should throw "
                 ."\Error"
             );
         } catch (\Exception | \Error $e) {
@@ -74,7 +74,7 @@ class CurrencyTest extends TestCase
         try {
             $currency->getCurrencyAmount();
             $this->fail(
-                "Get Ammout without be setted should throw "
+                "Get Ammout without be set should throw "
                 ."\Error"
             );
         } catch (\Exception | \Error $e) {
@@ -86,7 +86,7 @@ class CurrencyTest extends TestCase
         try {
             $currency->getExchangeRate();
             $this->fail(
-                "Get ExchangeRate without be setted should throw "
+                "Get ExchangeRate without be set should throw "
                 ."\Error"
             );
         } catch (\Exception | \Error $e) {
@@ -228,7 +228,6 @@ class CurrencyTest extends TestCase
         $xml      = $currency->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new Currency(new ErrorRegister());
@@ -265,7 +264,6 @@ class CurrencyTest extends TestCase
         $xml          = $currency->createXmlNode($currencyNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -293,7 +291,6 @@ class CurrencyTest extends TestCase
         $xml = $currency->createXmlNode($currencyNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

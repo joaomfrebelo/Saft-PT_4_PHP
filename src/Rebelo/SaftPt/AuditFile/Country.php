@@ -28,7 +28,7 @@ namespace Rebelo\SaftPt\AuditFile;
 
 /**
  * Country
- *
+ * @method \Rebelo\SaftPt\AuditFile\Country DESCONHECIDO()
  * @author João Rebelo
  */
 class Country extends ACountry

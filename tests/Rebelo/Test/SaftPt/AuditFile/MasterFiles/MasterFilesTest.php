@@ -74,6 +74,7 @@ class MasterFilesTest extends TestCase
         $this->assertEquals(array(), $master->getProduct());
         $this->assertEquals(array(), $master->getSupplier());
         $this->assertEquals(array(), $master->getTaxTableEntry());
+        $this->assertFalse($master->isFinalConsumerAdd());
         try {
             $master->getGeneralLedgerAccounts();
             $this->fail("getGeneralLedgerAccounts should throw \Rebelo\SaftPt\AuditFile\NotImplemented");
@@ -202,11 +203,11 @@ class MasterFilesTest extends TestCase
      */
     public function testCreateEmptyXmlNode(): void
     {
-        $master     = new MasterFiles(new ErrorRegister());
-        $node       = new \SimpleXMLElement(
+        $master = new MasterFiles(new ErrorRegister());
+        $node   = new \SimpleXMLElement(
             "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
         );
-        
+
         $masterNode = $master->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
         $this->assertEquals(MasterFiles::N_MASTERFILES, $masterNode->getName());
@@ -294,7 +295,6 @@ class MasterFilesTest extends TestCase
         $xml = $master->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new MasterFiles(new ErrorRegister());
@@ -318,9 +318,8 @@ class MasterFilesTest extends TestCase
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $sourceDocsXml = $saftDemoXml->{MasterFiles::N_MASTERFILES};
@@ -343,8 +342,7 @@ class MasterFilesTest extends TestCase
         try {
             $assertXml = $this->xmlIsEqual($sourceDocsXml, $xml);
             $this->assertTrue(
-                $assertXml,
-                \sprintf("Fail with error '%s'", $assertXml)
+                $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
         } catch (\Exception | \Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
@@ -368,7 +366,6 @@ class MasterFilesTest extends TestCase
         $xml          = $master->createXmlNode($customerNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -387,7 +384,7 @@ class MasterFilesTest extends TestCase
     public function testGetAllProductCode(): void
     {
         $master = new MasterFiles(new ErrorRegister());
-        $ids    = ["AAA", "BBB", "CCC"];
+        $ids    = [0 => "AAA", 1 => "BBB", 2 => "CCC"];
 
         foreach ($ids as $id) {
             $pro = $master->addProduct();
@@ -432,5 +429,63 @@ class MasterFilesTest extends TestCase
         $master->addCustomer();
 
         $this->assertSame($ids, $master->getAllCustomerID());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testAddCustomerFinalConsumer(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $master->addCustomerFinalConsumer();
+
+        $this->assertTrue($master->isFinalConsumerAdd());
+
+        /* @var $customer \Rebelo\SaftPt\AuditFile\MasterFiles\Customer */
+        $customer = $master->getCustomer()[0];
+
+        $this->assertSame(
+            AuditFile::CONSUMIDOR_FINAL_ID, $customer->getCustomerID()
+        );
+
+        $this->assertSame(
+            AuditFile::DESCONHECIDO, $customer->getAccountID()
+        );
+
+        $this->assertSame(
+            AuditFile::CONSUMIDOR_FINAL_TAX_ID, $customer->getCustomerTaxID()
+        );
+
+        $this->assertSame(
+            AuditFile::CONSUMIDOR_FINAL, $customer->getCompanyName()
+        );
+
+        $this->assertNull($customer->getContact());
+
+        $addr = $customer->getBillingAddress();
+        $this->assertNull($addr->getBuildingNumber());
+        $this->assertNull($addr->getStreetName());
+
+        $this->assertSame(
+            AuditFile::DESCONHECIDO, $addr->getAddressDetail()
+        );
+
+        $this->assertSame(
+            AuditFile::DESCONHECIDO, $addr->getCity()
+        );
+
+        $this->assertSame(
+            AuditFile::DESCONHECIDO, $addr->getPostalCode()
+        );
+
+        $this->assertNull($addr->getRegion());
+
+        $this->assertSame(
+            \Rebelo\SaftPt\AuditFile\Country::DESCONHECIDO,
+            $addr->getCountry()->get()
+        );
+        
+        $this->assertEmpty($customer->getShipToAddress());
     }
 }

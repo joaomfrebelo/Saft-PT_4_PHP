@@ -89,7 +89,6 @@ class SignTest extends TestCase
                     PUBLIC_KEY_PATH
                 )
             );
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
@@ -100,7 +99,6 @@ class SignTest extends TestCase
                     PRIVATE_KEY_PATH
                 )
             );
-            return;
         }
 
         $sign = new \Rebelo\SaftPt\Sign\Sign();
@@ -204,7 +202,6 @@ class SignTest extends TestCase
                     PUBLIC_KEY_PATH
                 )
             );
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
@@ -215,7 +212,6 @@ class SignTest extends TestCase
                     PRIVATE_KEY_PATH
                 )
             );
-            return;
         }
 
 
@@ -255,7 +251,6 @@ class SignTest extends TestCase
                     PUBLIC_KEY_PATH
                 )
             );
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
@@ -266,7 +261,6 @@ class SignTest extends TestCase
                     PRIVATE_KEY_PATH
                 )
             );
-            return;
         }
 
         $sign = new \Rebelo\SaftPt\Sign\Sign($priKey, $pubKey);

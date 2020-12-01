@@ -264,7 +264,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->invoiceNo
+                    __METHOD__." set to '%s'", $this->invoiceNo
                 )
             );
         return $return;
@@ -342,7 +342,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->invoiceDate->format(RDate::SQL_DATE)
                 )
             );
@@ -423,7 +423,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->invoiceType->get()
+                    __METHOD__." set to '%s'", $this->invoiceType->get()
                 )
             );
     }
@@ -570,7 +570,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementEndTime === null ?
                         "null" :
                         $this->movementEndTime->format(RDate::DATE_T_TIME)
@@ -625,7 +625,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementStartTime === null ? "null" :
                         $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )

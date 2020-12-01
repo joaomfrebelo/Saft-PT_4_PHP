@@ -73,7 +73,7 @@ class LibXmlTest extends TestCase
             $this->markTestSkipped(
                 'Only for test the AT xsd and libxml'
             );
-            $this->fail($this->createLibXmlErrorMsg()."\r\n".$e->getMessage());
+            //$this->fail($this->createLibXmlErrorMsg()."\r\n".$e->getMessage());
         }
     }
 
@@ -191,7 +191,7 @@ class LibXmlTest extends TestCase
             $this->markTestSkipped(
                 'Only for test the AT xsd and libxml'
             );
-            $this->fail($this->createLibXmlErrorMsg()."\r\n".$e->getMessage());
+            //$this->fail($this->createLibXmlErrorMsg()."\r\n".$e->getMessage());
         }
     }
 

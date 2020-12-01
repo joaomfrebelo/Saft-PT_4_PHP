@@ -43,13 +43,14 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
 use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\Validate\ValidationConfig;
 
 /**
  * Class SalesInvoiceTest
  *
  * @author João Rebelo
  */
-class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
+class SalesInvoiceTest extends ASalesInvoiceBase
 {
 
     protected function setUp(): void
@@ -220,6 +221,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $xml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($xml === false) {
             $this->fail(\sprintf("Failling load file '%s'", SAFT_DEMO_PATH));
+            /** @phpstan-ignore-next-line */
             return;
         }
 
@@ -373,6 +375,84 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($salesInvoices->getError());
         $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @depends testDocumentStatus
+     * @depends testCustomerId
+     * @depends testLines
+     * @return void
+     */
+    public function testInvoiceOutOfDateType(): void
+    {
+        $now           = new RDate();
+        $this->iniSalesInvoiceForLineTest();
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile     = $this->salesInvoice->getAuditFile();
+        $header        = $auditFile->getHeader();
+        $header->setDateCreated(clone $now);
+        $header->setStartDate($now->addDays(-1));
+        $header->setEndDate($now->addDays(1));
+        /* @var $salesInvoices \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setDocTotalcal(new DocTotalCalc());
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setInvoiceNo("FT FT/1");
+        $invoice->setInvoiceType(InvoiceType::VD());
+        $invoice->setAtcud("0");
+        $invoice->setCustomerID("CODE_A");
+        $invoice->setHashControl("1");
+        $invoice->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $invoice->setSourceID("Rebelo");
+        $invoice->setSystemEntryDate(clone $now);
+        $this->iniInvoiceLinesForLinesTest($invoice);
+
+        $docStatus = $invoice->getDocumentStatus();
+        $docStatus->setInvoiceStatus(InvoiceStatus::N());
+        $docStatus->setInvoiceStatusDate(clone $now);
+        $docStatus->setSourceBilling(SourceBilling::P());
+        $docStatus->setSourceID("Rebelo");
+
+        $taxPayable = new UDecimal(0.0, SalesInvoices::CALC_PRECISION);
+        $netValue   = new UDecimal(0.0, SalesInvoices::CALC_PRECISION);
+
+        foreach ($invoice->getLine() as $line) {
+            /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line */
+            $netValue->plusThis($line->getCreditAmount());
+            $taxPerc = $line->getTax()->getTaxPercentage();
+            $taxPayable->plusThis($taxPerc / 100 * $line->getCreditAmount());
+        }
+
+        $docTotals = $invoice->getDocumentTotals();
+        $docTotals->setNetTotal($netValue->valueOf());
+        $docTotals->setTaxPayable($taxPayable->valueOf());
+        $docTotals->setGrossTotal($netValue->plus($taxPayable)->valueOf());
+
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
+        $sign->setPrivateKeyFilePath(PRIVATE_KEY_PATH);
+        $sign->setPublicKeyFilePath(PUBLIC_KEY_PATH);
+
+        $hash = $sign->createSignature(
+            $invoice->getInvoiceDate(), $invoice->getSystemEntryDate(),
+            $invoice->getInvoiceNo(), $docTotals->getGrossTotal()
+        );
+
+        $invoice->setHash($hash);
+
+        $customer = $auditFile->getMasterFiles()->addCustomer();
+        $customer->setAccountID(AuditFile::DESCONHECIDO);
+        $customer->setCompanyName("Rebelo SAFT");
+        $customer->setCustomerID($invoice->getCustomerID());
+        $customer->setCustomerTaxID("999999990");
+        $customer->setSelfBillingIndicator(false);
+
+        $this->salesInvoice->invoice($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
     }
 
     /**
@@ -3235,7 +3315,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $line->setTaxExemptionCode(TaxExemptionCode::M99());
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(TaxCode::ISE());
         $tax->setTaxType(TaxType::IVA());
@@ -3269,7 +3349,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $line->setTaxExemptionReason("reason");
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(TaxCode::ISE());
         $tax->setTaxType(TaxType::IVA());
@@ -4137,18 +4217,76 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
      * @test
      * @return void
      */
+    public function testSignNoHashSkip(): void
+    {
+
+        $auditFile = $this->salesInvoice->getAuditFile();
+
+        /* @var $salesInvoices \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(new RDate());
+        $invoice->setInvoiceNo("FT FT/1");
+        $invoice->setInvoiceType(InvoiceType::FT());
+
+        $docStatus = $invoice->getDocumentStatus();
+        $docStatus->setSourceBilling(SourceBilling::P());
+
+        $this->salesInvoice->sign($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testSignSkip(): void
+    {
+
+        $auditFile = $this->salesInvoice->getAuditFile();
+
+        /* @var $salesInvoices \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(new RDate());
+        $invoice->setInvoiceNo("FT FT/1");
+        $invoice->setInvoiceType(InvoiceType::FT());
+        $invoice->setHash("AAA");
+
+        $docStatus = $invoice->getDocumentStatus();
+        $docStatus->setSourceBilling(SourceBilling::P());
+
+        $this->salesInvoice->setSignValidation(false);
+        $this->salesInvoice->sign($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
     public function testSignPreviousHashEmpty(): void
     {
 
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
@@ -4196,12 +4334,14 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
@@ -4248,12 +4388,14 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
@@ -4302,12 +4444,14 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
@@ -4356,12 +4500,14 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
@@ -4410,12 +4556,14 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
+            /** @phpstan-ignore-next-line */
             return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
@@ -5866,7 +6014,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -5905,7 +6053,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -5944,7 +6092,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -5985,7 +6133,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6024,7 +6172,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6064,7 +6212,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6107,7 +6255,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6143,7 +6291,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6179,7 +6327,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6222,7 +6370,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6262,7 +6410,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6302,7 +6450,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6342,7 +6490,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6385,7 +6533,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6425,7 +6573,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6468,7 +6616,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6508,7 +6656,7 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         $auditFile = $this->salesInvoice->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(clone $now);
@@ -6534,6 +6682,200 @@ class SalesInvoiceTest extends \Rebelo\Test\SaftPt\Validate\ASalesInvoiceBase
         }
 
         $this->salesInvoice->payment($invoice);
+
+        $this->assertFalse($this->salesInvoice->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testSetConfiguration(): void
+    {
+        $config = new ValidationConfig();
+        $this->salesInvoice->setConfiguration($config);
+
+        $this->assertSame(
+            $config->getAllowDebitAndCredit(),
+            $this->salesInvoice->getAllowDebitAndCredit()
+        );
+
+        $this->assertSame(
+            $config->getContinuesLines(),
+            $this->salesInvoice->getContinuesLines()
+        );
+
+        $this->assertSame(
+            $config->getDeltaCurrency(), $this->salesInvoice->getDeltaCurrency()
+        );
+
+        $this->assertSame(
+            $config->getDeltaLine(), $this->salesInvoice->getDeltaLine()
+        );
+
+        $this->assertSame(
+            $config->getDeltaTable(), $this->salesInvoice->getDeltaTable()
+        );
+
+        $this->assertSame(
+            $config->getDeltaTotalDoc(), $this->salesInvoice->getDeltaTotalDoc()
+        );
+
+        $this->assertSame(
+            $config->getSignValidation(),
+            $this->salesInvoice->getSignValidation()
+        );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testSetConfigurationNoDefaults(): void
+    {
+        $config = new ValidationConfig();
+        $config->setAllowDebitAndCredit(false);
+        $config->setContinuesLines(false);
+        $config->setDeltaCurrency(0.09);
+        $config->setDeltaLine(0.04);
+        $config->setDeltaTable(0.19);
+        $config->setDeltaTotalDoc(0.29);
+        $config->setSignValidation(false);
+
+        $this->salesInvoice->setConfiguration($config);
+
+        $this->assertSame(
+            $config->getAllowDebitAndCredit(),
+            $this->salesInvoice->getAllowDebitAndCredit()
+        );
+
+        $this->assertSame(
+            $config->getContinuesLines(),
+            $this->salesInvoice->getContinuesLines()
+        );
+
+        $this->assertSame(
+            $config->getDeltaCurrency(), $this->salesInvoice->getDeltaCurrency()
+        );
+
+        $this->assertSame(
+            $config->getDeltaLine(), $this->salesInvoice->getDeltaLine()
+        );
+
+        $this->assertSame(
+            $config->getDeltaTable(), $this->salesInvoice->getDeltaTable()
+        );
+
+        $this->assertSame(
+            $config->getDeltaTotalDoc(), $this->salesInvoice->getDeltaTotalDoc()
+        );
+
+        $this->assertSame(
+            $config->getSignValidation(),
+            $this->salesInvoice->getSignValidation()
+        );
+    }
+
+    /**
+     * @author João Rebelo
+     * @return array
+     */
+    public function outOfDateInvoiceTypesInDateProvieder(): array
+    {
+        $inDateStack  = [
+            RDate::parse(RDate::SQL_DATE, "2012-12-31"), // Last valid day
+            RDate::parse(RDate::SQL_DATE, "2012-10-05")
+        ];
+        $outDateTypes = [
+            InvoiceType::VD(),
+            InvoiceType::TV(),
+            InvoiceType::TD(),
+            InvoiceType::AA(),
+            InvoiceType::DA()
+        ];
+
+        $stack = [];
+        foreach ($inDateStack as $date) {
+            foreach ($outDateTypes as $type) {
+                $stack[] = [$date, $type];
+            }
+        }
+        return $stack;
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @dataProvider outOfDateInvoiceTypesInDateProvieder
+     * @return void
+     */
+    public function testOutOfDateInvoiceTypesInDate(RDate $date,
+                                                    InvoiceType $type): void
+    {
+        $auditFile     = $this->salesInvoice->getAuditFile();
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate($date);
+        $invoice->setInvoiceNo("FT FT/1");
+        $invoice->setInvoiceType($type);
+
+        $this->salesInvoice->outOfDateInvoiceTypes($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($invoice->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @return array
+     */
+    public function outOfDateInvoiceTypesOutDateProvieder(): array
+    {
+        $inDateStack  = [
+            RDate::parse(RDate::SQL_DATE, "2013-01-01"), // First invalid day
+            RDate::parse(RDate::SQL_DATE, "2014-10-05")
+        ];
+        $outDateTypes = [
+            InvoiceType::VD(),
+            InvoiceType::TV(),
+            InvoiceType::TD(),
+            InvoiceType::AA(),
+            InvoiceType::DA()
+        ];
+
+        $stack = [];
+        foreach ($inDateStack as $date) {
+            foreach ($outDateTypes as $type) {
+                $stack[] = [$date, $type];
+            }
+        }
+        return $stack;
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @dataProvider outOfDateInvoiceTypesOutDateProvieder
+     * @return void
+     */
+    public function testOutOfDateInvoiceTypesOutDate(RDate $date,
+                                                     InvoiceType $type): void
+    {
+        $auditFile     = $this->salesInvoice->getAuditFile();
+        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate($date);
+        $invoice->setInvoiceNo("FT FT/1");
+        $invoice->setInvoiceType($type);
+
+        $this->salesInvoice->outOfDateInvoiceTypes($invoice);
 
         $this->assertFalse($this->salesInvoice->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());

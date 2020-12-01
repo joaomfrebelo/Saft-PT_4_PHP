@@ -83,6 +83,7 @@ class Payments extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $progreBar = null;
         try {
             $payments = $this->auditFile->getSourceDocuments()
                 ->getPayments(false);
@@ -130,9 +131,29 @@ class Payments extends ADocuments
 
             $order = $payments->getOrder();
 
+            if ($this->getStyle() !== null) {
+                $nDoc = \count($payments->getPayment());
+                /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
+                $section = null;
+                $progreBar  = $this->getStyle()->addProgressBar($section);
+                $section->writeln("");
+                $section->writeln(
+                    \sprintf(
+                        AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
+                        "Payments"
+                    )
+                );
+                $progreBar->start($nDoc);
+            }
+
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
+
+                        if ($progreBar !== null) {
+                            $progreBar->advance();
+                        }
+
                         /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
                         $payment = $order[$type][$serie][$no];
                         if ((string) $type !== $this->lastType || (string) $serie
@@ -149,10 +170,18 @@ class Payments extends ADocuments
                 }
             }
 
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
+
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
+
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
 
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -398,7 +427,7 @@ class Payments extends ADocuments
     }
 
     /**
-     * validate if the customerID of the Payment if is setted and if exits in
+     * validate if the customerID of the Payment if is set and if exits in
      * the customer table
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
@@ -1094,7 +1123,7 @@ class Payments extends ADocuments
             if ($payMet->issetPaymentAmount()) {
                 $totalPayMeth->plusThis($payMet->getPaymentAmount());
             } else {
-                $msg = \sprintf(
+                $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
                         "paymentmethod_withou_payment_amout"
                     ), $payment->getPaymentRefNo()
@@ -1107,7 +1136,7 @@ class Payments extends ADocuments
             }
 
             if ($payMet->issetPaymentDate() === false) {
-                $msg = \sprintf(
+                $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
                         "paymentmethod_withou_payment_date"
                     ), $payment->getPaymentRefNo()
@@ -1133,7 +1162,7 @@ class Payments extends ADocuments
                 }
 
                 if ($diff->abs()->isGreater($this->getDeltaTotalDoc())) {
-                    $msg = \sprintf(
+                    $msg           = \sprintf(
                         AAuditFile::getI18n()->get(
                             "paymentmethod_sum_not_equal_to_gross_less_tax"
                         ), $payment->getPaymentRefNo()
@@ -1154,13 +1183,13 @@ class Payments extends ADocuments
      * @return void
      * @since 1.0.0
      */
-    protected function withholdingTax(Payment $payment) : void
+    protected function withholdingTax(Payment $payment): void
     {
         $totalTax = new UDecimal(0.0, static::CALC_PRECISION);
         foreach ($payment->getWithholdingTax() as $withholding) {
             /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
             if ($withholding->issetWithholdingTaxAmount() === false) {
-                $msg = \sprintf(
+                $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
                         "withholding_without_amout"
                     ), $payment->getPaymentRefNo()
@@ -1178,7 +1207,7 @@ class Payments extends ADocuments
             if ($payment->getDocumentTotals()->issetGrossTotal()) {
                 $gross = $payment->getDocumentTotals()->getGrossTotal();
                 if ($totalTax->isGreater($gross) || $totalTax->isEquals($gross)) {
-                    $msg = \sprintf(
+                    $msg           = \sprintf(
                         AAuditFile::getI18n()->get(
                             "withholdingtax_greater_than_gross"
                         ), $payment->getPaymentRefNo()

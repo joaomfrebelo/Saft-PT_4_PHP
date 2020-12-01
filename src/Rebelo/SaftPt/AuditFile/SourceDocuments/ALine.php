@@ -189,7 +189,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->lineNumber = $lineNumber;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->lineNumber));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->lineNumber));
         return $return;
     }
 
@@ -234,7 +234,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 throw new AuditFileException($msg);
             }
             if ($this->getCreditAmount() !== null && $debitAmount !== null) {
-                $msg = "Debit Amout onlu can be setted if Credit Amount is null";
+                $msg = "Debit Amout onlu can be set if Credit Amount is null";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
@@ -250,7 +250,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->debitAmount === null ? "null" : \strval($this->debitAmount)
                 )
             );
@@ -298,7 +298,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 throw new AuditFileException($msg);
             }
             if ($this->getDebitAmount() !== null && $creditAmount !== null) {
-                $msg = "Credit Amout onlu can be setted if Debit Amount is null";
+                $msg = "Credit Amout onlu can be set if Debit Amount is null";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
@@ -314,7 +314,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->creditAmount === null ? "null" : \strval($this->creditAmount)
                 )
             );
@@ -446,7 +446,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxExemptionCode === null ? "null" :
                     $this->taxExemptionCode->get()
                 )
@@ -500,7 +500,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->settlementAmount === null ? "null" :
                     \strval($this->settlementAmount)
                 )
@@ -552,7 +552,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         if ($this->getDebitAmount() !== null && $this->getCreditAmount() !== null) {
-            $msg = "Debit and Credit amount can not be setted at same time";
+            $msg = "Debit and Credit amount can not be set at same time";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("Debit_and_Credit_setted_at_same_time");

@@ -213,7 +213,6 @@ class SpecialRegimesTest extends TestCase
             $xml    = $speReg->createXmlNode($node)->asXML();
             if ($xml === false) {
                 $this->fail("Fail to generate xml string");
-                return;
             }
 
             $parsed = new SpecialRegimes(new ErrorRegister());

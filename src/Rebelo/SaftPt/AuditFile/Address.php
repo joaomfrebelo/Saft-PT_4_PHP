@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use Rebelo\SaftPt\AuditFile\MasterFiles\Customer;
+
 /**
  * AddressPT<br>
  * Estrutura de Moradas para Portugal<br>
@@ -103,7 +105,7 @@ class Address extends AAddress
             $return           = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCode));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->postalCode));
         return $return;
     }
 
@@ -118,7 +120,7 @@ class Address extends AAddress
     {
         $this->country = $country;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->country->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->country->get()));
     }
 
     /**

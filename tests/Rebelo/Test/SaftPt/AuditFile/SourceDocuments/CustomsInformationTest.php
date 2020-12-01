@@ -233,7 +233,6 @@ class CustomsInformationTest extends TestCase
         $xml  = $ci->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new CustomsInformation(new ErrorRegister());
@@ -265,7 +264,6 @@ class CustomsInformationTest extends TestCase
         $xml  = $ci->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new CustomsInformation(new ErrorRegister());
@@ -297,7 +295,6 @@ class CustomsInformationTest extends TestCase
         $xml    = $ci->createXmlNode($ciNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -325,7 +322,6 @@ class CustomsInformationTest extends TestCase
         $xml = $ci->createXmlNode($ciNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

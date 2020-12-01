@@ -570,7 +570,6 @@ class SupplierTest extends TestCase
         $xml = $supplier->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed      = new Supplier(new ErrorRegister());
@@ -605,7 +604,6 @@ class SupplierTest extends TestCase
         $spXml = $supplier->createXmlNode($node)->asXML();
         if ($spXml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->setNullsSupplier($supplier);
@@ -664,7 +662,6 @@ class SupplierTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $supplierStack = $saftDemoXml
@@ -725,7 +722,6 @@ class SupplierTest extends TestCase
         $xml          = $supplier->createXmlNode($supplierNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -760,7 +756,6 @@ class SupplierTest extends TestCase
         $xml = $supplier->createXmlNode($supplierNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

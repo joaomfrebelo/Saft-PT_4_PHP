@@ -204,7 +204,6 @@ class OrderReferencesTest extends TestCase
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new OrderReferences(new ErrorRegister());
@@ -232,7 +231,6 @@ class OrderReferencesTest extends TestCase
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new OrderReferences(new ErrorRegister());
@@ -255,7 +253,6 @@ class OrderReferencesTest extends TestCase
         $xml       = $order->createXmlNode($orderNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -282,7 +279,6 @@ class OrderReferencesTest extends TestCase
         $xml = $order->createXmlNode($orderNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

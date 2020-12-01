@@ -213,7 +213,6 @@ class ReferencesTest extends TestCase
         $xml  = $ref->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new References(new ErrorRegister());
@@ -244,7 +243,6 @@ class ReferencesTest extends TestCase
         $xml  = $ref->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new References(new ErrorRegister());
@@ -276,7 +274,6 @@ class ReferencesTest extends TestCase
         $xml     = $ref->createXmlNode($refNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -304,7 +301,6 @@ class ReferencesTest extends TestCase
         $xml = $ref->createXmlNode($refNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

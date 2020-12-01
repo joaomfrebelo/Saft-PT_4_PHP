@@ -307,7 +307,6 @@ class DocumentStatusTest extends TestCase
         $xml    = $docSta->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentStatus(new ErrorRegister());
@@ -351,7 +350,6 @@ class DocumentStatusTest extends TestCase
         $xml    = $docSta->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new DocumentStatus(new ErrorRegister());
@@ -436,7 +434,6 @@ class DocumentStatusTest extends TestCase
         $xml        = $status->createXmlNode($statusNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -464,7 +461,6 @@ class DocumentStatusTest extends TestCase
         $xml = $status->createXmlNode($statusNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

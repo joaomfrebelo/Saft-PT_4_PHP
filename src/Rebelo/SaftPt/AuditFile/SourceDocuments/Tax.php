@@ -185,7 +185,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxType = $taxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxType->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->get()));
     }
 
     /**
@@ -238,7 +238,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxCountryRegion->get()
                 )
             );
@@ -299,7 +299,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxCode = $taxCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxCode->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->get()));
     }
 
     /**
@@ -337,7 +337,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setTaxPercentage(?float $taxPercentage): bool
     {
         if ($this->getTaxAmount() !== null && $taxPercentage !== null) {
-            $msg    = "Tax Percentage and Tax Amount can not be setted at the same time";
+            $msg    = "Tax Percentage and Tax Amount can not be set at the same time";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
@@ -352,7 +352,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxPercentage === null ?
                     "null" : \strval($this->taxPercentage)
                 )
@@ -391,7 +391,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setTaxAmount(?float $taxAmount): bool
     {
         if ($this->getTaxPercentage() !== null && $taxAmount !== null) {
-            $msg    = "Tax Percentage and Tax Amount can not be setted at the same time";
+            $msg    = "Tax Percentage and Tax Amount can not be set at the same time";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
@@ -406,7 +406,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxAmount === null ?
                     "null" : \strval($this->taxAmount)
                 )

@@ -415,7 +415,6 @@ class TaxTableEntryTest extends TestCase
         $xml = $entry->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new TaxTableEntry(new ErrorRegister());
@@ -458,7 +457,6 @@ class TaxTableEntryTest extends TestCase
         $xmlAmount    = $entry->createXmlNode($node)->asXML();
         if ($xmlAmount === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsedAmount->parseXmlNode(new \SimpleXMLElement($xmlAmount));
@@ -479,7 +477,6 @@ class TaxTableEntryTest extends TestCase
         $xmlNull    = $entry->createXmlNode($node)->asXML();
         if ($xmlNull === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsedNull->parseXmlNode(new \SimpleXMLElement($xmlNull));
@@ -663,7 +660,6 @@ class TaxTableEntryTest extends TestCase
         $xml          = $entry->createXmlNode($customerNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -692,7 +688,6 @@ class TaxTableEntryTest extends TestCase
         $xml = $entry->createXmlNode($supplierNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

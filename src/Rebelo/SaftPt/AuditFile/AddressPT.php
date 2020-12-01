@@ -113,7 +113,7 @@ class AddressPT extends AAddress
         }
         $this->postalCodePT = $postalCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->postalCodePT));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->postalCodePT));
         return $return;
     }
 

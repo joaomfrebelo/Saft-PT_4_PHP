@@ -69,7 +69,7 @@ class XmlStructure extends AValidate
             $valide = $dom->schemaValidate(Schema::GLOBAL_XSD);
             
             if ($valide === false) {
-                $errorStack = libxml_get_errors();
+                $errorStack = \libxml_get_errors();
                 foreach ($errorStack as $error) {
                     $msg = \sprintf(
                         "'%s' on Line '%s' column '%s'",

@@ -208,7 +208,6 @@ class ProductSerialNumberTest extends TestCase
         $xml  = $psr->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new ProductSerialNumber(new ErrorRegister());
@@ -234,7 +233,6 @@ class ProductSerialNumberTest extends TestCase
         $xml  = $psr->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new ProductSerialNumber(new ErrorRegister());
@@ -258,7 +256,6 @@ class ProductSerialNumberTest extends TestCase
         $xml     = $psn->createXmlNode($psnNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -285,7 +282,6 @@ class ProductSerialNumberTest extends TestCase
         $xml = $psn->createXmlNode($psnNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

@@ -36,6 +36,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments as SaftWorkingDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
@@ -43,6 +44,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
+use Rebelo\Date\Date as RDate;
 
 /**
  * Validate WorkingDocuments table.<br>
@@ -87,6 +89,7 @@ class WorkingDocuments extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $progreBar = null;
         try {
             $workingDocuments = $this->auditFile->getSourceDocuments()
                 ->getWorkingDocuments(false);
@@ -134,9 +137,29 @@ class WorkingDocuments extends ADocuments
 
             $order = $workingDocuments->getOrder();
 
+             if ($this->getStyle() !== null) {
+                $nDoc = \count($workingDocuments->getWorkDocument());
+                /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
+                $section = null;
+                $progreBar  = $this->getStyle()->addProgressBar($section);
+                $section->writeln("");
+                $section->writeln(
+                    \sprintf(
+                        AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
+                        "WorkDocument"
+                    )
+                );
+                $progreBar->start($nDoc);
+             }
+            
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
+                        
+                        if ($progreBar !== null) {
+                            $progreBar->advance();
+                        }
+                        
                         /* @var $workDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
                         $workDocument = $order[$type][$serie][$no];
                         if ((string)$type !== $this->lastType || (string)$serie !== $this->lastSerie) {
@@ -152,11 +175,19 @@ class WorkingDocuments extends ADocuments
                 }
             }
 
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
+            
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
 
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
+            
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
 
@@ -239,6 +270,7 @@ class WorkingDocuments extends ADocuments
             $this->documentStatus($workDocument);
             $this->lines($workDocument);
             $this->totals($workDocument);
+            $this->outOfDateInvoiceTypes($workDocument);
         } catch (\Exception | \Error $e) {
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -406,7 +438,7 @@ class WorkingDocuments extends ADocuments
     }
 
     /**
-     * validate if the customerID of the WorkDocument if is setted and if exits in
+     * validate if the customerID of the WorkDocument if is set and if exits in
      * the customer table
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
@@ -1228,6 +1260,7 @@ class WorkingDocuments extends ADocuments
     protected function sign(WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        
         if ($workDocument->issetHash() === false) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_hash"),
@@ -1240,6 +1273,11 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
+        if($this->getSignValidation() === false){
+            \Logger::getLogger(\get_class($this))->debug("Skip sing test as ValidationConfig");
+            return;
+        }
+        
         if ($workDocument->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::I)) {
             $validate = true;
         } else {
@@ -1354,6 +1392,41 @@ class WorkingDocuments extends ADocuments
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             \Logger::getLogger(\get_class($this))->info($msg);
+            $this->isValid = false;
+        }
+    }
+    
+
+    /**
+     * Validate if exists workdoc types out of date
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     * @return void
+     * @since 1.0.0
+     */
+    protected function outOfDateInvoiceTypes(WorkDocument $workDocument) : void
+    {
+        if ($workDocument->issetWorkType() === false || $workDocument->issetWorkDate() === false) {
+            return;
+        }
+
+        $type     = $workDocument->getWorkType()->get();
+        $lastDay  = RDate::parse(RDate::SQL_DATE, "2017-06-30");
+        $outDateTypes = [
+            WorkType::DC
+        ];
+
+        if (\in_array($type, $outDateTypes) === false) {
+            return;
+        }
+
+        if ($workDocument->getWorkDate()->isLater($lastDay)) {
+            $msg = \sprintf(
+                AuditFile::getI18n()->get("document_type_last_date_later"),
+               $type, "2017-06-30", $workDocument->getDocumentNumber()
+            );
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $workDocument->addError($msg);
+            \Logger::getLogger(\get_class($this))->error($msg);
             $this->isValid = false;
         }
     }

@@ -214,7 +214,6 @@ class LineTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $paymentsStack = $saftDemoXml
@@ -287,7 +286,6 @@ class LineTest extends TestCase
         $xml      = $line->createXmlNode($lineNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -318,7 +316,6 @@ class LineTest extends TestCase
         $xml = $line->createXmlNode($lineNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

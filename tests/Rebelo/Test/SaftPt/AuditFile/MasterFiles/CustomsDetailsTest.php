@@ -187,7 +187,6 @@ class CustomsDetailsTest extends TestCase
         $xml = $customsDetail->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed = new CustomsDetails(new ErrorRegister());
@@ -231,7 +230,6 @@ class CustomsDetailsTest extends TestCase
         $xml          = $details->createXmlNode($customerNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -262,7 +260,6 @@ class CustomsDetailsTest extends TestCase
         $xml = $details->createXmlNode($custNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

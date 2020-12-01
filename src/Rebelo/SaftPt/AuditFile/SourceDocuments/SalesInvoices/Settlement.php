@@ -184,7 +184,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->settlementDiscount === null ? "null" : $this->settlementDiscount
                 )
             );
@@ -236,7 +236,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
                 )
             );
@@ -277,7 +277,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->settlementDate === null ? "null" : $this->settlementDate->format(RDate::SQL_DATE)
                 )
             );
@@ -328,7 +328,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->paymentTerms === null ? "null" : $this->paymentTerms
                 )
             );

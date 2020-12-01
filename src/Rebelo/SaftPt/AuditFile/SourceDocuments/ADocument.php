@@ -271,7 +271,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return      = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->atcud));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->atcud));
         return $return;
     }
 
@@ -329,7 +329,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return     = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->hash));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->hash));
         return $return;
     }
 
@@ -406,7 +406,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->hashControl = $hashControl;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->hashControl));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->hashControl));
         return $return;
     }
 
@@ -469,7 +469,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->period === null ? "null" : \strval($this->period)
                 )
             );
@@ -530,7 +530,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->sourceID
+                    __METHOD__." set to '%s'", $this->sourceID
                 )
             );
         return $return;
@@ -597,7 +597,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->eacCode === null ? "null" : $this->eacCode
                 )
             );
@@ -650,7 +650,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->systemEntryDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -691,7 +691,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setTransactionIDAsNull(): void
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." setted as null");
+            ->info(__METHOD__." set as null");
         $this->transactionID = null;
     }
 
@@ -747,7 +747,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->customerID
+                    __METHOD__." set to '%s'", $this->customerID
                 )
             );
         return $return;

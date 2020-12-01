@@ -162,7 +162,6 @@ class TransactionIDTest extends TestCase
         $xml           = $transactionID->createXmlNode($customerNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -190,7 +189,6 @@ class TransactionIDTest extends TestCase
         $xml = $transactioID->createXmlNode($supplierNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
-            return;
         }
 
         $this->assertInstanceOf(

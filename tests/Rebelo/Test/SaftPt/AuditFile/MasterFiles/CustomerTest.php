@@ -565,7 +565,6 @@ class CustomerTest extends TestCase
         $xml = $customer->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsed      = new Customer(new ErrorRegister());
@@ -605,7 +604,6 @@ class CustomerTest extends TestCase
         $xmlNull = $customer->createXmlNode($node)->asXML();
         if ($xmlNull === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $parsedNull->parseXmlNode(new \SimpleXMLElement($xmlNull));
@@ -628,7 +626,6 @@ class CustomerTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
         
         $customerStack = $saftDemoXml
@@ -735,7 +732,6 @@ class CustomerTest extends TestCase
         $xml          = $customer->createXmlNode($customerNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -770,7 +766,6 @@ class CustomerTest extends TestCase
         $xml = $customer->createXmlNode($custNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

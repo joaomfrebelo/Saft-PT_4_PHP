@@ -42,6 +42,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType;
+use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
 
 /**
  * Validate MovementOfGoods table.<br>
@@ -99,6 +100,7 @@ class MovementOfGoods extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $progreBar = null;
         try {
             $movementOfGoods = $this->auditFile->getSourceDocuments()
                 ->getMovementOfGoods(false);
@@ -115,9 +117,29 @@ class MovementOfGoods extends ADocuments
 
             $order = $movementOfGoods->getOrder();
 
+            if ($this->getStyle() !== null) {
+                $nDoc      = \count($movementOfGoods->getStockMovement());
+                /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
+                $section   = null;
+                $progreBar = $this->getStyle()->addProgressBar($section);
+                $section->writeln("");
+                $section->writeln(
+                    \sprintf(
+                        AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
+                        "StockMovement"
+                    )
+                );
+                $progreBar->start($nDoc);
+            }
+
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
+
+                        if ($progreBar !== null) {
+                            $progreBar->advance();
+                        }
+
                         /* @var $stockMovDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
                         $stockMovDocument = $order[$type][$serie][$no];
                         if ((string) $type !== $this->lastType || (string) $serie
@@ -132,6 +154,10 @@ class MovementOfGoods extends ADocuments
                         $this->lastSerie = (string) $serie;
                     }
                 }
+            }
+
+            if ($progreBar !== null) {
+                $progreBar->finish();
             }
 
             $this->numberOfLinesAndTotalQuantity();
@@ -168,6 +194,10 @@ class MovementOfGoods extends ADocuments
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
 
+            if ($progreBar !== null) {
+                $progreBar->finish();
+            }
+
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
 
@@ -176,7 +206,7 @@ class MovementOfGoods extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-                );
+            );
         }
         return $this->isValid;
     }
@@ -262,7 +292,7 @@ class MovementOfGoods extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-                );
+            );
             $stockMovDocument->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -280,18 +310,18 @@ class MovementOfGoods extends ADocuments
 
         $testNlines = $this->numberOfMovementLines === $movementOfGoods->getNumberOfMovementLines();
         $testQt     = $this->totalQuantityIssued->signedSubtract(
-            $movementOfGoods->getTotalQuantityIssued()
-        )->abs()->valueOf() <= $this->getDeltaTable();
+                $movementOfGoods->getTotalQuantityIssued()
+            )->abs()->valueOf() <= $this->getDeltaTable();
 
         $this->auditFile->getSourceDocuments()->getMovementOfGoods()
             ->getMovOfGoodsTableTotalCalc()->setNumberOfMovementLines(
-                $this->numberOfMovementLines
-            );
+            $this->numberOfMovementLines
+        );
 
         $this->auditFile->getSourceDocuments()->getMovementOfGoods()
             ->getMovOfGoodsTableTotalCalc()->setTotalQuantityIssued(
-                $this->totalQuantityIssued->valueOf()
-            );
+            $this->totalQuantityIssued->valueOf()
+        );
 
         if ($testNlines === false) {
             $msg           = \sprintf(
@@ -379,7 +409,7 @@ class MovementOfGoods extends ADocuments
     }
 
     /**
-     * validate if the customerID or SupplierID of the StockMovement if is setted and if exits in
+     * validate if the customerID or SupplierID of the StockMovement if is set and if exits in
      * the customer table
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
@@ -412,8 +442,7 @@ class MovementOfGoods extends ADocuments
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $stockMovDocument->addError(
-                        $msg,
-                        StockMovement::N_CUSTOMERID
+                        $msg, StockMovement::N_CUSTOMERID
                     );
                     $this->isValid = false;
                     return;
@@ -442,8 +471,7 @@ class MovementOfGoods extends ADocuments
                     );
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $stockMovDocument->addError(
-                        $msg,
-                        StockMovement::N_CUSTOMERID
+                        $msg, StockMovement::N_CUSTOMERID
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $this->isValid = false;
@@ -695,10 +723,10 @@ class MovementOfGoods extends ADocuments
             }
 
             $this->producCode($line, $stockMovDocument);
- 
+
             $this->numberOfMovementLines++;
-            
-            if ($line->getTax(false) !== null) {               
+
+            if ($line->getTax(false) !== null) {
                 $this->tax($line, $stockMovDocument);
             } elseif ($uniQt->equals(0.0) === false) {
                 $msg           = \sprintf(
@@ -802,26 +830,10 @@ class MovementOfGoods extends ADocuments
     protected function producCode(Line $line, StockMovement $stockMovDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        if ($line->issetProductCode()) {
-            if (\in_array(
-                $line->getProductCode(),
-                $this->auditFile->getMasterFiles()->getAllProductCode()
-            ) === false
-            ) {
 
-                $msg = \sprintf(
-                    AAuditFile::getI18n()->get("document_line_product_code_not_exist"),
-                    $stockMovDocument->getDocumentNumber(),
-                    $line->getLineNumber(), $line->getProductCode()
-                );
+        $master = $this->auditFile->getMasterFiles();
 
-                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_PRODUCTCODE);
-                \Logger::getLogger(\get_class($this))->info($msg);
-                $this->isValid = false;
-            }
-        } else {
-
+        if ($line->issetProductCode() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_line_product_code_not_defined"),
                 $stockMovDocument->getDocumentNumber(), $line->getLineNumber()
@@ -831,6 +843,56 @@ class MovementOfGoods extends ADocuments
             $line->addError($msg, Line::N_PRODUCTCODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
+            return;
+        }
+
+        // If productCode is set
+        if (\in_array($line->getProductCode(), $master->getAllProductCode()) === false) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("document_line_product_code_not_exist"),
+                $stockMovDocument->getDocumentNumber(), $line->getLineNumber(),
+                $line->getProductCode()
+            );
+
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $line->addError($msg, Line::N_PRODUCTCODE);
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $this->isValid = false;
+            return;
+        }
+
+        // If productCode is set and exists
+        $product = $master->getProduct()[
+            \array_search($line->getProductCode(), $master->getAllProductCode())
+        ];
+        /* @var $product \Rebelo\SaftPt\AuditFile\MasterFiles\Product */
+        if ($product->issetProductType() === false) {
+            $msg           = \sprintf(
+                AAuditFile::getI18n()->get("mov_of_goods_product_do_not_have_type"),
+                $line->getLineNumber(), $stockMovDocument->getDocumentNumber(),
+                $line->getProductCode()
+            );
+            $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+            $line->addError($msg);
+            \Logger::getLogger(\get_class($this))->info($msg);
+            $this->isValid = false;
+            return;
+        }
+
+        $type         = $product->getProductType()->get();
+        $warningTypes = [
+            ProductType::S,
+            ProductType::O
+        ];
+        if (\in_array($type, $warningTypes)) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("mov_of_goods_product_is_of_type"),
+                $line->getLineNumber(), $stockMovDocument->getDocumentNumber(),
+                $line->getProductCode(), $type
+            );
+            $this->auditFile->getErrorRegistor()->addWarning($msg);
+            $line->addWarning($msg);
+            \Logger::getLogger(\get_class($this))->warn($msg);
         }
     }
 
@@ -1118,6 +1180,7 @@ class MovementOfGoods extends ADocuments
     protected function sign(StockMovement $stockMovDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+
         if ($stockMovDocument->issetHash() === false) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_hash"),
@@ -1127,6 +1190,11 @@ class MovementOfGoods extends ADocuments
             $stockMovDocument->addError($msg, StockMovement::N_HASH);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
+            return;
+        }
+
+        if ($this->getSignValidation() === false) {
+            \Logger::getLogger(\get_class($this))->debug("Skiping test sign as ValidationConfig");
             return;
         }
 

@@ -273,7 +273,7 @@ abstract class A2Line extends ALine
             $return            = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productCode));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productCode));
         return $return;
     }
 
@@ -355,7 +355,7 @@ abstract class A2Line extends ALine
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->productDescription
                 )
             );
@@ -406,7 +406,7 @@ abstract class A2Line extends ALine
         }
         $this->quantity = $quantity;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->quantity));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->quantity));
         return $return;
     }
 
@@ -457,7 +457,7 @@ abstract class A2Line extends ALine
             $return              = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->unitOfMeasure));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->unitOfMeasure));
         return $return;
     }
 
@@ -511,7 +511,7 @@ abstract class A2Line extends ALine
         }
         $this->unitPrice = $unitPrice;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->unitPrice));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->unitPrice));
         return $return;
     }
 
@@ -567,7 +567,7 @@ abstract class A2Line extends ALine
             $return            = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->description));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->description));
         return $return;
     }
 
@@ -607,7 +607,7 @@ abstract class A2Line extends ALine
     {
         $this->productSerialNumber = null;
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." ProductSerialNumberAsNull setted to null");
+            ->info(__METHOD__." ProductSerialNumberAsNull set to null");
     }
 
     /**
@@ -646,7 +646,7 @@ abstract class A2Line extends ALine
     public function setCustomsInformationAsNull(): void
     {
         $this->customsInformation = null;
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." setted to null");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." set to null");
     }
 
     /**

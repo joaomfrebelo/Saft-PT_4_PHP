@@ -85,7 +85,6 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $xml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($xml === false) {
             $this->fail(\sprintf("Failling load file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $auditFile = new AuditFile();
@@ -154,10 +153,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -239,10 +238,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -316,10 +315,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -400,10 +399,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -484,10 +483,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -568,10 +567,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $taxPayable = new UDecimal(0.0, MovementOfGoods::CALC_PRECISION);
@@ -646,10 +645,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         //$this->iniInvoiceLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -730,10 +729,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov);
 
         $docStatus = $stockMov->getDocumentStatus();
@@ -814,15 +813,15 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->iniMovOfGoodsLinesForLinesTest($stockMov, true);
 
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $docStatus = $stockMov->getDocumentStatus();
         $docStatus->setMovementStatus(MovementStatus::N());
         $docStatus->setMovementStatusDate(clone $now);
@@ -897,10 +896,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
         $stockMov->setMovementStartTime(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $status = $stockMov->getDocumentStatus();
         $status->setMovementStatus(MovementStatus::N());
         $status->setMovementStatusDate(clone $now);
@@ -967,10 +966,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setPeriod((int) $now->format(RDate::MONTH_SHORT));
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->movementOfGoods->stockMovement($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -1003,10 +1002,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setPeriod((int) $now->format(RDate::MONTH_SHORT));
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->movementOfGoods->stockMovement($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -1039,10 +1038,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setPeriod((int) $now->format(RDate::MONTH_SHORT));
         $stockMov->setSourceID("Rebelo");
         $stockMov->setSystemEntryDate(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->movementOfGoods->stockMovement($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -1075,10 +1074,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setPeriod((int) $now->format(RDate::MONTH_SHORT));
         $stockMov->setSourceID("Rebelo");
         //$stockMov->setSystemEntryDate(clone $now);
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->movementOfGoods->stockMovement($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -1229,10 +1228,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setMovementDate($now);
         $stockMov->setDocumentNumber("GT GT/1");
         $stockMov->setMovementType(MovementType::GT());
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $docStatus = $stockMov->getDocumentStatus();
         $docStatus->setMovementStatus(MovementStatus::N());
         $docStatus->setMovementStatusDate(clone $now);
@@ -1266,10 +1265,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setMovementDate($now);
         $stockMov->setDocumentNumber("GT GT/1");
         $stockMov->setMovementType(MovementType::GT());
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->movementOfGoods->documentStatus($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -1300,10 +1299,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setMovementDate(RDate::parse(RDate::SQL_DATE, "2020-10-05"));
         $stockMov->setDocumentNumber("GT GT/1");
         $stockMov->setMovementType(MovementType::GT());
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $docStatus = $stockMov->getDocumentStatus();
         $docStatus->setMovementStatus(MovementStatus::N());
         $docStatus->setMovementStatusDate(
@@ -1343,10 +1342,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setMovementDate($now);
         $stockMov->setDocumentNumber("GT GT/1");
         $stockMov->setMovementType(MovementType::GT());
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $docStatus = $stockMov->getDocumentStatus();
         $docStatus->setMovementStatus(MovementStatus::A());
         $docStatus->setMovementStatusDate(clone $now);
@@ -1590,7 +1589,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
             StockMovement::N_CUSTOMERID, \array_key_first($stockMov->getError())
         );
     }
-    
+
     /**
      * @author João Rebelo
      * @test
@@ -1607,10 +1606,10 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setMovementDate(new RDate());
         $stockMov->setDocumentNumber("GD GD/1");
         $stockMov->setMovementType(MovementType::GD());
-        
+
         $this->createShipFrom($stockMov);
         $this->createShipTo($stockMov);
-        
+
         $this->movementOfGoods->customerIdOrSupplierId($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -2298,6 +2297,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $productCode = "COD999";
         $product     = $auditFile->getMasterFiles()->addProduct();
         $product->setProductCode($productCode);
+        $product->setProductType(ProductType::P());
 
         /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
         $movOfGoodsDocs = $auditFile->getSourceDocuments()->getMovementOfGoods();
@@ -2313,7 +2313,127 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
 
         $this->assertTrue($this->movementOfGoods->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($auditFile->getErrorRegistor()->getWarnings());
         $this->assertEmpty($line->getError());
+        $this->assertEmpty($line->getWarning());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testProducTypeNoDefined(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->movementOfGoods->getAuditFile();
+
+        $productCode = "COD999";
+        $product     = $auditFile->getMasterFiles()->addProduct();
+        $product->setProductCode($productCode);
+
+        /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
+        $movOfGoodsDocs = $auditFile->getSourceDocuments()->getMovementOfGoods();
+        $stockMov       = $movOfGoodsDocs->addStockMovement();
+        $stockMov->setMovementDate(new RDate());
+        $stockMov->setDocumentNumber("GT GT/1");
+        $stockMov->setMovementType(MovementType::GT());
+
+        $line = $stockMov->addLine();
+        $line->setProductCode($productCode);
+
+        $this->movementOfGoods->producCode($line, $stockMov);
+
+        $this->assertFalse($this->movementOfGoods->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($auditFile->getErrorRegistor()->getWarnings());
+        $this->assertNotEmpty($line->getError());
+        $this->assertEmpty($line->getWarning());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testProducTypeWarning(): void
+    {
+        $types = [
+            ProductType::S(),
+            ProductType::O()
+        ];
+
+        foreach ($types as $type) {
+            /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+            $auditFile = new AuditFile();
+            $this->movementOfGoods->setAuditFile($auditFile);
+
+            $productCode = "COD999";
+            $product     = $auditFile->getMasterFiles()->addProduct();
+            $product->setProductCode($productCode);
+            $product->setProductType($type);
+
+            /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
+            $movOfGoodsDocs = $auditFile->getSourceDocuments()->getMovementOfGoods();
+            $stockMov       = $movOfGoodsDocs->addStockMovement();
+            $stockMov->setMovementDate(new RDate());
+            $stockMov->setDocumentNumber("GT GT/1");
+            $stockMov->setMovementType(MovementType::GT());
+
+            $line = $stockMov->addLine();
+            $line->setProductCode($productCode);
+
+            $this->movementOfGoods->producCode($line, $stockMov);
+
+            $this->assertTrue($this->movementOfGoods->isValid());
+            $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+            $this->assertNotEmpty($auditFile->getErrorRegistor()->getWarnings());
+            $this->assertEmpty($line->getError());
+            $this->assertNotEmpty($line->getWarning());
+        }
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testProducTypeNotWarning(): void
+    {
+        $types = [
+            ProductType::P(),
+            ProductType::I(),
+            ProductType::E()
+        ];
+
+        foreach ($types as $type) {
+            /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+            $auditFile = new AuditFile();
+            $this->movementOfGoods->setAuditFile($auditFile);
+
+            $productCode = "COD999";
+            $product     = $auditFile->getMasterFiles()->addProduct();
+            $product->setProductCode($productCode);
+            $product->setProductType($type);
+
+            /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
+            $movOfGoodsDocs = $auditFile->getSourceDocuments()->getMovementOfGoods();
+            $stockMov       = $movOfGoodsDocs->addStockMovement();
+            $stockMov->setMovementDate(new RDate());
+            $stockMov->setDocumentNumber("GT GT/1");
+            $stockMov->setMovementType(MovementType::GT());
+
+            $line = $stockMov->addLine();
+            $line->setProductCode($productCode);
+
+            $this->movementOfGoods->producCode($line, $stockMov);
+
+            $this->assertTrue($this->movementOfGoods->isValid());
+            $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+            $this->assertEmpty($auditFile->getErrorRegistor()->getWarnings());
+            $this->assertEmpty($line->getError());
+            $this->assertEmpty($line->getWarning());
+        }
     }
 
     /**
@@ -2540,7 +2660,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $line->setTaxExemptionCode(TaxExemptionCode::M99());
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(MovementTaxCode::ISE());
         $tax->setTaxType(MovementTaxType::IVA());
@@ -2574,7 +2694,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $line->setTaxExemptionReason("reason");
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(MovementTaxCode::ISE());
         $tax->setTaxType(MovementTaxType::IVA());
@@ -3403,19 +3523,73 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
      * @test
      * @return void
      */
+    public function testSignNoHashSkip(): void
+    {
+
+        $auditFile = $this->movementOfGoods->getAuditFile();
+
+        /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
+        $movOfGoodsDocs = $auditFile->getSourceDocuments()->getMovementOfGoods();
+        $stockMov       = $movOfGoodsDocs->addStockMovement();
+        $stockMov->setMovementDate(new RDate());
+        $stockMov->setDocumentNumber("GT GT/1");
+        $stockMov->setMovementType(MovementType::GT());
+
+        $docStatus = $stockMov->getDocumentStatus();
+        $docStatus->setSourceBilling(SourceBilling::P());
+
+        $this->movementOfGoods->setSignValidation(false);
+        $this->movementOfGoods->sign($stockMov);
+
+        $this->assertFalse($this->movementOfGoods->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($stockMov->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testSignSkip(): void
+    {
+        $auditFile = $this->movementOfGoods->getAuditFile();
+
+        /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
+        $movOfGoodsDocs = $auditFile->getSourceDocuments()->getMovementOfGoods();
+        $stockMov       = $movOfGoodsDocs->addStockMovement();
+        $stockMov->setMovementDate(new RDate());
+        $stockMov->setDocumentNumber("GT GT/1");
+        $stockMov->setMovementType(MovementType::GT());
+        $stockMov->setHash("AAA");
+
+        $docStatus = $stockMov->getDocumentStatus();
+        $docStatus->setSourceBilling(SourceBilling::P());
+
+        $this->movementOfGoods->setSignValidation(false);
+        $this->movementOfGoods->sign($stockMov);
+
+        $this->assertTrue($this->movementOfGoods->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($stockMov->getError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
     public function testSignPreviousHashEmpty(): void
     {
 
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $auditFile      = $this->movementOfGoods->getAuditFile();
@@ -3462,13 +3636,11 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $auditFile      = $this->movementOfGoods->getAuditFile();
@@ -3514,13 +3686,11 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile      = $this->movementOfGoods->getAuditFile();
@@ -3568,13 +3738,11 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile      = $this->movementOfGoods->getAuditFile();
@@ -3622,13 +3790,11 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile      = $this->movementOfGoods->getAuditFile();
@@ -3676,13 +3842,11 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $pubKey = \file_get_contents(PUBLIC_KEY_PATH);
         if ($pubKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
 
         $priKey = \file_get_contents(PRIVATE_KEY_PATH);
         if ($priKey === false) {
             $this->fail("Was not possible to get file contents of public key file");
-            return;
         }
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile = $this->movementOfGoods->getAuditFile();
@@ -4204,7 +4368,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         );
         $this->assertEmpty($stockMov->getError());
     }
-    
+
     /**
      * @author João Rebelo
      * @test
@@ -4219,7 +4383,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->setMovementEndTime(
             (clone $stockMov->getMovementDate())->addHours(9)
         );
-        
+
         $stockMov->setMovementType(MovementType::GT());
         $stockMov->getDocumentStatus()->setMovementStatus(MovementStatus::R());
         $this->movementOfGoods->shipement($stockMov);
@@ -4295,9 +4459,6 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         );
         $this->assertNotEmpty($stockMov->getError());
     }
-    
-    
-    
 
     /**
      * @author João Rebelo
@@ -4336,7 +4497,6 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         );
         $this->assertEmpty($stockMov->getError());
     }
-    
 
     /**
      * @author João Rebelo
@@ -4564,12 +4724,12 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         );
         $stockMov->getShipFrom()->addDeliveryID("AA-99-99");
         //$this->createShipFrom($stockMov);
-        $addr = $stockMov->getShipFrom()->getAddress();
+        $addr     = $stockMov->getShipFrom()->getAddress();
         $addr->setAddressDetail("Rua das Escolas Gerais");
         //$addr->setCity("Lisboa");
         $addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
         $addr->setPostalCode("1100-999");
-        
+
         $this->createShipTo($stockMov);
         $stockMov->setMovementType(MovementType::GC());
 
@@ -4589,7 +4749,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
      */
     public function testShipementNoShipFromCountry(): void
     {
-        
+
         $stockMov = $this->createStockMovForTestShip();
         $stockMov->setMovementStartTime(
             clone $stockMov->getMovementDate()
@@ -4599,12 +4759,12 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         );
         $stockMov->getShipFrom()->addDeliveryID("AA-99-99");
         //$this->createShipFrom($stockMov);
-        $addr = $stockMov->getShipFrom()->getAddress();
+        $addr     = $stockMov->getShipFrom()->getAddress();
         $addr->setAddressDetail("Rua das Escolas Gerais");
         $addr->setCity("Lisboa");
         //$addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
         $addr->setPostalCode("1100-999");
-        
+
         $this->createShipTo($stockMov);
         $stockMov->setMovementType(MovementType::GC());
 
@@ -4623,7 +4783,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
      * @return void
      */
     public function testShipementNoShipToAddress(): void
-    {        
+    {
         $stockMov = $this->createStockMovForTestShip();
         $stockMov->setMovementType(MovementType::GR());
         $stockMov->setMovementStartTime(
@@ -4693,12 +4853,12 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->getShipFrom()->addDeliveryID("AA-99-99");
         $this->createShipFrom($stockMov);
         //$this->createShipTo($stockMov);
-        $addr = $stockMov->getShipTo()->getAddress();
+        $addr     = $stockMov->getShipTo()->getAddress();
         $addr->setAddressDetail("Rua das Escolas Gerais");
         //$addr->setCity("Lisboa");
         $addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
         $addr->setPostalCode("1100-999");
-        
+
         $this->movementOfGoods->shipement($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());
@@ -4714,7 +4874,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
      * @return void
      */
     public function testShipementShipToAddressNoCountry(): void
-    {        
+    {
         $stockMov = $this->createStockMovForTestShip();
         $stockMov->setMovementType(MovementType::GC());
         $stockMov->setMovementStartTime(
@@ -4726,12 +4886,12 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $stockMov->getShipFrom()->addDeliveryID("AA-99-99");
         $this->createShipFrom($stockMov);
         //$this->createShipTo($stockMov);
-        $addr = $stockMov->getShipTo()->getAddress();
+        $addr     = $stockMov->getShipTo()->getAddress();
         $addr->setAddressDetail("Rua das Escolas Gerais");
         $addr->setCity("Lisboa");
         //$addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
         $addr->setPostalCode("1100-999");
-        
+
         $this->movementOfGoods->shipement($stockMov);
 
         $this->assertFalse($this->movementOfGoods->isValid());

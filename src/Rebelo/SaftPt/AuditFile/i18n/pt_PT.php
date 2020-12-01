@@ -220,7 +220,7 @@ class pt_PT extends AI18n
         $this->stack["document_has_cancel_lines_that_not_exist"]                 = "O documento '%s' tem linhas de anulação cujo o artigo não existe nas outras linhas";
         $this->stack["document_has_cancel_lines_with_grater_qt"]                 = "O documento '%s' tem linhas de anulação com quantidade superior a soma das quantidades";
         $this->stack["document_has_cancel_lines_with_grater_value"]              = "O documento '%s' tem linhas de anulação com valor superior a soma dos valores";
-        $this->stack["document_correcting_line_without_refernces"]               = "O documento rectificativo '%s' na linha '%s' não faz referência à fatura de rectifica";
+        $this->stack["document_correcting_line_without_refernces"]               = "O documento rectificativo '%s' na linha '%s' não faz referência à fatura que rectifica";
         $this->stack["reference_is_not_doc_valid"]                               = "No documento '%s' linha '%s' a referncia '%s' ao documento que retifica não é um número de documento válido";
         $this->stack["document_correcting_line_without_reason"]                  = "O documento rectificativo '%s' na linha '%s' não faz referência à razão da rectificação";
         $this->stack["no_tax_entry_for_line_document"]                           = "Nenhum imposto na tabela de imposto que corresponda ao imposto da linha '%s' do documento '%s'";
@@ -305,5 +305,22 @@ class pt_PT extends AI18n
         $this->stack["payments_total_credit_should_be_zero"]                     = "O total de créditos em pagamentos deveria ser zero";
         $this->stack["fr_withou_payment_method"]                                 = "A 'Invoice' '%s' do tipo 'Fatura-Recibo' não tem 'Payment'";
         $this->stack["paymentmethod_sum_greater_than_gross_lass_withholtax"]     = "A soma de 'Payment' no documento '%s' é maior que o total do documentos subtraido do 'WithholdingTaxAmount'";
+        $this->stack["validating_n_doc_of"]                                      = "A validar %s documentos do tipo '%s'";
+        $this->stack["validation_no_error"]                                      = "Validação sem erros";
+        $this->stack["has_n_warnings"]                                           = "Avisos: %s ";
+        $this->stack["has_n_xml_structure_erros"]                                = "Erros na estrutura de XML: %s ";
+        $this->stack["has_n_errors_on_set_value"]                                = "Erros ao definir os vlaor dos campos: %s ";
+        $this->stack["has_n_errors_on_create_xml_node"]                          = "Erros ao criar os nós XML: %s ";
+        $this->stack["has_n_errors_on_data_validation"]                          = "Erros na validação de dados: %s ";
+        $this->stack["validating_file"]                                          = "A validar o ficheiro '%s'";
+        $this->stack["memory"]                                                   = "Memória";
+        $this->stack["saft_file"]                                                = "Ficheiro SAFT-PT";
+        $this->stack["exec_time"]                                                = "Tempo";
+        $this->stack["other_validation_n_doc"]                                   = "Outras validações em '%s' documento(s)";
+        $this->stack["doc_code_with_more_one_type"]                              = "O código interno '%s' tem mais que um tipo de documento, '%s' e '%s'";
+        $this->stack["mov_of_goods_product_is_of_type"]                          = "Na linha '%s' do documento '%s' (StockMovement) o produto '%s' é do tipo '%s'";
+        $this->stack["mov_of_goods_product_do_not_have_type"]                    = "Na linha '%s' do documento '%s' (StockMovement) o produto '%s' não tem o tipo definido";
+        $this->stack["document_type_last_date_later"]                            = "O tipo de documento '%s' só é válido até '%s' mas o documento '%s' é posterior";
     }
+    //
 }

@@ -194,7 +194,6 @@ class ShipToTest extends TestCase
         $xml        = $ship->createXmlNode($shipToNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -221,7 +220,6 @@ class ShipToTest extends TestCase
         $xml = $ship->createXmlNode($shipToNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

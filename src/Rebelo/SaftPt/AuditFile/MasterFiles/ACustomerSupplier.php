@@ -243,7 +243,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->accountID = $accountID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->accountID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->accountID));
         return $return;
     }
 
@@ -302,7 +302,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->getErrorRegistor()->addOnSetValue("CompanyName_not_valid");
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyName));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->companyName));
         return $return;
     }
 
@@ -354,7 +354,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->contact === null ? "null" : $this->contact
                 )
             );
@@ -405,7 +405,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->telephone === null ? "null" : $this->telephone
                 )
             );
@@ -455,7 +455,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->fax === null ? "null" : $this->fax
                 )
             );
@@ -511,7 +511,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->email === null ? "null" : $this->email
                 )
             );
@@ -564,7 +564,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->website === null ? "null" : $this->website
                 )
             );
@@ -634,7 +634,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->website ? "true" : "false"
                 )
             );

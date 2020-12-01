@@ -200,7 +200,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->numberOfMovementLines
+                    __METHOD__." set to '%s'", $this->numberOfMovementLines
                 )
             );
         return $return;
@@ -264,7 +264,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->totalQuantityIssued
+                    __METHOD__." set to '%s'", $this->totalQuantityIssued
                 )
             );
         return $return;

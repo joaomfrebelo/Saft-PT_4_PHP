@@ -485,7 +485,7 @@ class Payment extends AAuditFile
         }
         $this->paymentRefNo = $paymentRefNo;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->paymentRefNo));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->paymentRefNo));
         return $return;
     }
 
@@ -541,7 +541,7 @@ class Payment extends AAuditFile
             $return      = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->atcud));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->atcud));
         return $return;
     }
 
@@ -609,7 +609,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->period === null ? "null" : \strval($this->period)
                 )
             );
@@ -661,7 +661,7 @@ class Payment extends AAuditFile
     public function setTransactionIDAsNull(): void
     {
         $this->transactionID = null;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." setted to 'null'");
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__." set to 'null'");
     }
 
     /**
@@ -712,7 +712,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->transactionDate->format(RDate::SQL_DATE)
                 )
             );
@@ -755,7 +755,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->paymentType->get()
                 )
             );
@@ -805,7 +805,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->description === null ? "null" : $this->description
                 )
             );
@@ -862,7 +862,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->systemID === null ? "null" : $this->systemID
                 )
             );
@@ -978,7 +978,7 @@ class Payment extends AAuditFile
             $return         = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->sourceID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->sourceID));
         return $return;
     }
 
@@ -1026,7 +1026,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->systemEntryDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -1080,7 +1080,7 @@ class Payment extends AAuditFile
             $return           = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->customerID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->customerID));
         return $return;
     }
 

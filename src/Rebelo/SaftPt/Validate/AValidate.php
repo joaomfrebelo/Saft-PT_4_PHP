@@ -39,7 +39,7 @@ abstract class AValidate
 {
     /**
      * To be return at the end of validation, within the validation will
-     * be setted to false when not passed
+     * be set to false when not passed
      * @var bool
      */
     protected bool $isValid = true;

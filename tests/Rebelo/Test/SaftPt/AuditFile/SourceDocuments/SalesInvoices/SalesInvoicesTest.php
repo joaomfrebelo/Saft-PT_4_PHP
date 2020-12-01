@@ -163,7 +163,6 @@ class SalesInvoicesTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $salesInvoicesXml = $saftDemoXml
@@ -212,7 +211,6 @@ class SalesInvoicesTest extends TestCase
         $xml             = $salesInvoices->createXmlNode($workingDocsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -241,7 +239,6 @@ class SalesInvoicesTest extends TestCase
         $xml = $salesInvoices->createXmlNode($workingDocsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

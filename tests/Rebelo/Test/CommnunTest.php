@@ -53,7 +53,6 @@ class CommnunTest extends TestCase
                     $refClas->getName()
                 )
             );
-            return;
         }
 
         $this->assertEquals(
@@ -84,7 +83,6 @@ class CommnunTest extends TestCase
                         $constName, $class
                     )
                 );
-                return;
             }
             $this->assertEquals(
                 1, \preg_match("/@since(.*)/", $consDoc),
@@ -131,7 +129,6 @@ class CommnunTest extends TestCase
                         $meth->getName(), $refClas->getName()
                     )
                 );
-                return;
             }
 
             // Verify if has return type
@@ -216,7 +213,7 @@ class CommnunTest extends TestCase
                 $paramMatchPart = \explode(" ", $paramMatch[0]);
 
                 if ($param->getType()->getName() === "array") {
-                    $parmType = "/\[\]/";
+                    $parmType = "/array|\[\]/";
                     $this->assertEquals(
                         1,
                         \preg_match($parmType, $paramMatchPart[1]),

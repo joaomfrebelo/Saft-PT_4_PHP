@@ -180,7 +180,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->numberOfEntries)
                 )
             );
@@ -239,7 +239,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", \strval($this->totalDebit)
+                    __METHOD__." set to '%s'", \strval($this->totalDebit)
                 )
             );
         return $return;
@@ -295,7 +295,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", \strval($this->totalCredit)
+                    __METHOD__." set to '%s'", \strval($this->totalCredit)
                 )
             );
         return $return;

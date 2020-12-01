@@ -31,9 +31,12 @@ use Rebelo\SaftPt\AuditFile\{
     AuditFile,
     Header,
     ErrorRegister,
+    AuditFileException,
     MasterFiles\MasterFiles,
     SourceDocuments\SourceDocuments
 };
+use Rebelo\SaftPt\Validate\ValidationConfig;
+use Rebelo\Date\Date as RDate;
 
 /**
  * Class AuditFileTest
@@ -99,6 +102,7 @@ class AuditFileTest extends TestCase
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($saftDemoXml === false) {
             $this->fail(\sprintf("Fail load xml file '%s'", SAFT_DEMO_PATH));
+            /** @phpstan-ignore-next-line */
             return;
         }
 
@@ -126,10 +130,11 @@ class AuditFileTest extends TestCase
     {
         $auditFile = new AuditFile();
         $xml       = $auditFile->createXmlNode(
-            $auditFile->createRootElement()
-        )->asXML();
+                $auditFile->createRootElement()
+            )->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
+            /** @phpstan-ignore-next-line */
             return;
         }
 
@@ -152,7 +157,6 @@ class AuditFileTest extends TestCase
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($saftDemoXml === false) {
             $this->fail(\sprintf("Fail load xml file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $auditFile = new AuditFile();
@@ -214,7 +218,8 @@ class AuditFileTest extends TestCase
             "The AuditFile ErrorRegistor::OnCreateXmlNode should have errors"
         );
 
-        $this->assertNotEmpty(
+        // Should not have errors because the validate methoed was nor call
+        $this->assertEmpty(
             $auditFile->getErrorRegistor()->getLibXmlError(),
             "The AuditFile ErrorRegistor::getLibXmlError should have errors"
         );
@@ -229,26 +234,39 @@ class AuditFileTest extends TestCase
         $auditXmlFile = tempnam(sys_get_temp_dir(), 'saft');
         if ($auditXmlFile === false) {
             $this->fail("Fail to create temp file");
-            return;
         }
 
         try {
             $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
             if ($saftDemoXml === false) {
                 $this->fail(\sprintf("Fail load xml file '%s'", SAFT_DEMO_PATH));
-                return;
             }
 
             $auditFile = new AuditFile();
             $auditFile->parseXmlNode($saftDemoXml);
             $auditFile->toFile($auditXmlFile);
 
-            $simXmlToCompare = \simplexml_load_file($auditXmlFile);
-            if ($simXmlToCompare === false) {
+            $loadFile = \file_get_contents($auditXmlFile);
+            if ($loadFile === false) {
                 $this->fail(
                     \sprintf("Fail loading temp file  '%s'", $auditXmlFile)
                 );
-                return;
+            }
+
+            $loadXml = \mb_convert_encoding($loadFile, "UTF-8", "Windows-1252");
+            unset($loadFile);
+
+            $strConv = \str_replace(
+                '<?xml version="1.0" encoding="Windows-1252"?>',
+                '<?xml version="1.0"?>', $loadXml
+            );
+            unset($loadXml);
+
+            $simXmlToCompare = \simplexml_load_string($strConv);
+            if ($simXmlToCompare === false) {
+                $this->fail(
+                    \sprintf("Fail converting temp '%s'", $auditXmlFile)
+                );
             }
 
             $assertXml = $this->xmlIsEqual(
@@ -283,21 +301,41 @@ class AuditFileTest extends TestCase
      */
     public function testToFileWithError(): void
     {
+        // Should not have errors because the validate methoed was nor call
         $auditXmlFile = tempnam(sys_get_temp_dir(), 'saft');
         if ($auditXmlFile === false) {
             $this->fail("Fail to create temp file");
-            return;
         }
 
         try {
             $auditFile = new AuditFile();
             $auditFile->toFile($auditXmlFile);
-            $node      = \simplexml_load_file($auditXmlFile);
-            if ($node === false) {
+            $loadFile  = \file_get_contents($auditXmlFile);
+            if ($loadFile === false) {
                 $this->fail(
                     \sprintf("Fail loading temp file  '%s'", $auditXmlFile)
                 );
-                return;
+            }
+
+            $loadXml = \mb_convert_encoding($loadFile, "UTF-8", "Windows-1252");
+            unset($loadFile);
+
+            $strConv = \str_replace(
+                '<?xml version="1.0" encoding="Windows-1252"?>',
+                '<?xml version="1.0"?>', $loadXml
+            );
+            unset($loadXml);
+
+            $node = \simplexml_load_string($strConv);
+            unset($strConv);
+
+            if ($node === false) {
+                $this->fail(
+                    \sprintf(
+                        "Fail creating xml node from temp file  '%s'",
+                        $auditXmlFile
+                    )
+                );
             }
 
             $this->assertSame(AuditFile::N_AUDITFILE, $node->getName());
@@ -312,7 +350,7 @@ class AuditFileTest extends TestCase
                 "The AuditFile ErrorRegistor::OnCreateXmlNode should have errors"
             );
 
-            $this->assertNotEmpty(
+            $this->assertEmpty(
                 $auditFile->getErrorRegistor()->getLibXmlError(),
                 "The AuditFile ErrorRegistor::getLibXmlError should have errors"
             );
@@ -343,11 +381,248 @@ class AuditFileTest extends TestCase
         $this->assertSame(
             isset($auditFile->{$header}), $auditFile->issetHeader()
         );
-        
+
         $auditFile->getHeader();
         $this->assertTrue($auditFile->issetHeader());
         $this->assertSame(
             isset($auditFile->{$header}), $auditFile->issetHeader()
         );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testLoadFile(): void
+    {
+        $audit = AuditFile::loadFile(SAFT_DEMO_PATH);
+        $this->assertFalse($audit->getErrorRegistor()->hasErrors());
+        $this->assertTrue($audit->issetHeader());
+        $this->assertTrue($audit->issetMasterFiles());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidate(): void
+    {
+        $audit = AuditFile::loadFile(SAFT_DEMO_PATH);
+        $this->assertTrue($audit->validate(PUBLIC_KEY_PATH));
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidateWrongScheme(): void
+    {
+        $audit = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
+        $this->assertFalse($audit->validate(PUBLIC_KEY_PATH));
+        $this->assertNotEmpty($audit->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidateWrongSchemeWithConfigSetToNoSchemaValidation(): void
+    {
+        $config = new ValidationConfig();
+        $config->setSchemaValidate(false);
+        $audit  = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
+        $audit->getErrorRegistor()->cleaeAllErrors();
+        $this->assertTrue($audit->validate(PUBLIC_KEY_PATH, $config));
+        $this->assertEmpty($audit->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidateWrongSchemeWithConfigSetToSchemaValidation(): void
+    {
+        $config = new ValidationConfig();
+        $config->setSchemaValidate(true);
+        $audit  = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
+        $audit->getErrorRegistor()->cleaeAllErrors();
+        $this->assertFalse($audit->validate(PUBLIC_KEY_PATH, $config));
+        $this->assertNotEmpty($audit->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidateDataNoPubKeyPathConfigYes(): void
+    {
+        $this->expectException(AuditFileException::class);
+        $audit  = AuditFile::loadFile(SAFT_DEMO_PATH);
+        $config = new ValidationConfig();
+        $config->setSignValidation(true);
+        $this->assertTrue($audit->validate(null, $config));
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidateInvoiceWronSign(): void
+    {
+        $this->expectException(AuditFileException::class);
+        $audit  = AuditFile::loadFile(SAFT_WRONG_INVOICE_SIGNATURE_PATH);
+        $config = new ValidationConfig();
+        $config->setSignValidation(true);
+        $this->assertFalse($audit->validate(null, $config));
+
+        $config->setSignValidation(false);
+        $this->assertTrue($audit->validate(null, $config));
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testValidateMovementOfGoodsWronSign(): void
+    {
+        $this->expectException(AuditFileException::class);
+        $audit  = AuditFile::loadFile(SAFT_WRONG_MOV_GOODS_SIGNATURE_PATH);
+        $config = new ValidationConfig();
+        $config->setSignValidation(true);
+        $this->assertFalse($audit->validate(null, $config));
+
+        $config->setSignValidation(false);
+        $this->assertTrue($audit->validate(null, $config));
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testvalidateWorkingDocumentsWronSign(): void
+    {
+        $this->expectException(AuditFileException::class);
+        $audit  = AuditFile::loadFile(SAFT_WRONG_WORKDOC_SIGNATURE_PATH);
+        $config = new ValidationConfig();
+        $config->setSignValidation(true);
+        $this->assertFalse($audit->validate(null, $config));
+
+        $config->setSignValidation(false);
+        $this->assertTrue($audit->validate(null, $config));
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testvalidateRepeatedInternalCode(): void
+    {
+        $files = [
+            SAFT_REPEATED_INVOICE_INTERNAL_CODE,
+            SAFT_REPEATED_STOCK_MOVEMENT_INTERNAL_CODE,
+            SAFT_REPEATED_WORK_DOCUMENT_INTERNAL_CODE,
+            SAFT_REPEATED_PAYMENT_INTERNAL_CODE
+        ];
+
+        foreach ($files as $path) {
+            $audit = AuditFile::loadFile($path);
+            $this->assertFalse($audit->getErrorRegistor()->hasErrors());
+            $audit->validate();
+            $this->assertTrue($audit->getErrorRegistor()->hasErrors());
+        }
+    }
+
+    /**
+     * 
+     * @param int $period
+     * @param int $fiscalYearStartMonth
+     * @param RDate $docDate
+     * @return void
+     * @author João Rebelo
+     * @test
+     * @dataProvider calperiodProvider
+     */
+    public function testCalperiod(int $period, int $fiscalYearStartMonth,
+                                  RDate $docDate): void
+    {
+        $this->assertSame(
+            /* @phpstan-ignore-next-line */
+            $period, AuditFile::calcPeriod($fiscalYearStartMonth, $docDate)
+        );
+    }
+
+    /**
+     * 
+     * @author João Rebelo
+     * @return array
+     */
+    public function calperiodProvider(): array
+    {
+        return [
+            [1, 1, RDate::parse(RDate::SQL_DATE, "2020-01-01")],
+            [1, 1, RDate::parse(RDate::SQL_DATE, "2020-01-31")],
+            [12, 1, RDate::parse(RDate::SQL_DATE, "2020-12-01")],
+            [12, 1, RDate::parse(RDate::SQL_DATE, "2020-12-31")],
+            [9, 1, RDate::parse(RDate::SQL_DATE, "2020-09-01")],
+            [9, 1, RDate::parse(RDate::SQL_DATE, "2020-09-30")],
+            [1, 10, RDate::parse(RDate::SQL_DATE, "2020-10-01")],
+            [1, 10, RDate::parse(RDate::SQL_DATE, "2020-10-31")],
+            [3, 10, RDate::parse(RDate::SQL_DATE, "2020-12-01")],
+            [3, 10, RDate::parse(RDate::SQL_DATE, "2020-12-31")],
+            [4, 10, RDate::parse(RDate::SQL_DATE, "2020-01-01")],
+            [4, 10, RDate::parse(RDate::SQL_DATE, "2020-01-31")],
+            [2, 12, RDate::parse(RDate::SQL_DATE, "2020-01-01")],
+            [2, 12, RDate::parse(RDate::SQL_DATE, "2020-01-31")],
+            [1, 12, RDate::parse(RDate::SQL_DATE, "2020-12-01")],
+            [1, 12, RDate::parse(RDate::SQL_DATE, "2020-12-31")]
+        ];
+    }
+
+    /**
+     * 
+     * @return void
+     * @author João Rebelo
+     * @test
+     */
+    public function testCalperiodException(): void
+    {
+        try {
+            /* @phpstan-ignore-next-line */
+            AuditFile::calcPeriod(0, new RDate());
+            $this->fail(
+                "Set fiscal year start month less then 1 shoul throw "
+                ." CalcPeriodException"
+            );
+        } catch (\Rebelo\SaftPt\AuditFile\CalcPeriodException $e) {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\CalcPeriodException::class, $e
+            );
+        }
+
+        try {
+            /* @phpstan-ignore-next-line */
+            AuditFile::calcPeriod(-1, new RDate());
+            $this->fail(
+                "Set fiscal year start month less then 1 shoul throw "
+                ." CalcPeriodException"
+            );
+        } catch (\Rebelo\SaftPt\AuditFile\CalcPeriodException $e) {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\CalcPeriodException::class, $e
+            );
+        }
+
+        try {
+            /* @phpstan-ignore-next-line */
+            AuditFile::calcPeriod(13, new RDate());
+            $this->fail(
+                "Set fiscal year start month greater then 12 shoul throw "
+                ." CalcPeriodException"
+            );
+        } catch (\Rebelo\SaftPt\AuditFile\CalcPeriodException $e) {
+            $this->assertInstanceOf(
+                \Rebelo\SaftPt\AuditFile\CalcPeriodException::class, $e
+            );
+        }
     }
 }

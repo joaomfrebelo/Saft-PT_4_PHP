@@ -143,6 +143,14 @@ class MasterFiles extends AAuditFile
     protected array $taxTableEntry = array();
 
     /**
+     * Stores if the final consumer has add to the customer table or not
+     * @var bool
+     * @since 1.0.0
+     */
+    protected bool $isFinalConsumerAdd = false;
+
+
+    /**
      * Master Files<br>
      * Master Files 2.1, 2.2, 2.3, 2.4 and 2.5 are required under the
      * conditions stated in f), g), h) and i) of paragraph 1 of
@@ -327,10 +335,10 @@ class MasterFiles extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->info(__METHOD__);
         if (\count($this->productCode) === 0) {
-            foreach ($this->getProduct() as $product) {
+            foreach ($this->getProduct() as $k => $product) {
                 /* @var $product \Rebelo\SaftPt\AuditFile\MasterFiles\Product */
                 if ($product->issetProductCode()) {
-                    $this->productCode[] = $product->getProductCode();
+                    $this->productCode[$k] = $product->getProductCode();
                 }
             }
         }
@@ -358,6 +366,7 @@ class MasterFiles extends AAuditFile
      */
     public function addProduct(): Product
     {
+        $this->productIDMapToIndex = [];
         $product         = new Product($this->getErrorRegistor());
         $this->product[] = $product;
         \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");
@@ -549,5 +558,46 @@ class MasterFiles extends AAuditFile
                 }
             }
         }
+    }
+    
+    /**
+     * Short hand to add the final consumer to the Consumers table,
+     * Only add if you has document issued to the “Final Consumer”, 
+     * the CustomerID to be issued in the document’s CustomerID is
+     *  \Rebelo\SaftPt\AuditFile\AuditFile::CONSUMIDOR_FINAL_ID
+     * @return void
+     * @since 1.0.0
+     */
+    public function addCustomerFinalConsumer() : void
+    {
+        if($this->isFinalConsumerAdd === true){
+            return;
+        }
+        
+        $customer = $this->addCustomer();
+        $customer->setCustomerID(AuditFile::CONSUMIDOR_FINAL_ID);
+        $customer->setAccountID(AuditFile::DESCONHECIDO);
+        $customer->setCustomerTaxID(AuditFile::CONSUMIDOR_FINAL_TAX_ID);
+        $customer->setCompanyName(AuditFile::CONSUMIDOR_FINAL);
+        $customer->setSelfBillingIndicator(false);
+        
+        $addr = $customer->getBillingAddress();
+        $addr->setAddressDetail(AuditFile::DESCONHECIDO);
+        $addr->setCity(AuditFile::DESCONHECIDO);
+        $addr->setPostalCode(AuditFile::DESCONHECIDO);
+        /** @phpstan-ignore-next-line */
+        $addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::DESCONHECIDO());
+        
+        $this->isFinalConsumerAdd = true;
+    }
+    
+    /**
+     * Get if the final consumer is already add to the Customer table
+     * @return bool
+     * @since 1.0.0
+     */
+    public function isFinalConsumerAdd() : bool
+    {
+        return $this->isFinalConsumerAdd;
     }
 }

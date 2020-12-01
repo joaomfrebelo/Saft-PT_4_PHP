@@ -27,9 +27,9 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 use Rebelo\Decimal\UDecimal;
-use Rebelo\Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\Sign\Sign;
+use Rebelo\SaftPt\Bin\Style;
 
 /**
  * Base class of documents Validation
@@ -45,6 +45,13 @@ class ADocuments extends AValidate
      * @since 1.0.0
      */
     const CALC_PRECISION = 9;
+
+    /**
+     * The output writer, to be use in concolde application
+     * @var \Rebelo\SaftPt\Bin\Style|null
+     * @since 1.0.0
+     */
+    protected ?Style $style = null;
 
     /**
      * The total debit calculated from all docmunts of the table
@@ -149,12 +156,19 @@ class ADocuments extends AValidate
     /**
      * The normal situation is the documents only have credit or debit lines,
      * however there are two situation where is possible to have debit and
-     * credit lines, by default this is setted to not allow, if the saft
+     * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true
      * @var bool
      * @since 1.0.0
      */
     protected bool $allowDebitAndCredit = false;
+
+    /**
+     * Defifine if performes the signatures validation
+     * @var bool
+     * @since 1.0.0
+     */
+    protected bool $signValidation = true;
 
     /**
      *
@@ -228,7 +242,7 @@ class ADocuments extends AValidate
         \Logger::getLogger(\get_class($this))
             ->debug(
                 __METHOD__.
-                \sprintf("DeltaTotalDoc setted to '%s'", $this->deltaTotalDoc)
+                \sprintf("DeltaTotalDoc set to '%s'", $this->deltaTotalDoc)
             );
     }
 
@@ -244,7 +258,7 @@ class ADocuments extends AValidate
         \Logger::getLogger(\get_class($this))
             ->debug(
                 __METHOD__.
-                \sprintf("DeltaCurrency setted to '%s'", $this->deltaCurrency)
+                \sprintf("DeltaCurrency set to '%s'", $this->deltaCurrency)
             );
     }
 
@@ -260,7 +274,7 @@ class ADocuments extends AValidate
         \Logger::getLogger(\get_class($this))
             ->debug(
                 __METHOD__.
-                \sprintf("DeltaTable setted to '%s'", $this->deltaTable)
+                \sprintf("DeltaTable set to '%s'", $this->deltaTable)
             );
     }
 
@@ -276,7 +290,7 @@ class ADocuments extends AValidate
         \Logger::getLogger(\get_class($this))
             ->debug(
                 __METHOD__.
-                \sprintf("DeltaLine setted to '%s'", $this->deltaLine)
+                \sprintf("DeltaLine set to '%s'", $this->deltaLine)
             );
     }
 
@@ -313,7 +327,7 @@ class ADocuments extends AValidate
             ->debug(
                 __METHOD__.
                 \sprintf(
-                    "ContinuesLine setted as '%s'",
+                    "ContinuesLine set as '%s'",
                     $this->continuesLines ? "true" : "false"
                 )
             );
@@ -322,7 +336,7 @@ class ADocuments extends AValidate
     /**
      * The normal situation is the documents only have credit or debit lines,
      * however there are two situation where is possible to have debit and
-     * credit lines, by default this is setted to not allow, if the saft
+     * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true.<br>
      * Point 2.2.6 of Ordinance 8632/2014, of 3th of July
      * @return bool
@@ -344,7 +358,7 @@ class ADocuments extends AValidate
     /**
      * The normal situation is the documents only have credit or debit lines,
      * however there are two situation where is possible to have debit and
-     * credit lines, by default this is setted to not allow, if the saft
+     * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true.<br>
      * Point 2.2.6 of Ordinance 8632/2014, of 3th of July
      * @param bool $allowDebitAndCredit
@@ -358,9 +372,85 @@ class ADocuments extends AValidate
             ->debug(
                 __METHOD__.
                 \sprintf(
-                    "AllowDebitAndCredit setted as '%s'",
+                    "AllowDebitAndCredit set as '%s'",
                     $this->allowDebitAndCredit ? "true" : "false"
                 )
             );
+    }
+
+    /**
+     * If performes signature validation
+     * @param bool $signValidation
+     * @return void
+     * @since 1.0.0
+     */
+    public function setSignValidation(bool $signValidation): void
+    {
+        $this->signValidation = $signValidation;
+        \Logger::getLogger(\get_class($this))
+            ->debug(
+                __METHOD__.
+                \sprintf(
+                    "SignValidation set as '%s'",
+                    $this->signValidation ? "true" : "false"
+                )
+            );
+    }
+
+    /**
+     * If performes signature validation
+     * @return bool
+     * @since 1.0.0
+     */
+    public function getSignValidation(): bool
+    {
+        \Logger::getLogger(\get_class($this))
+            ->info(
+                __METHOD__.
+                \sprintf(
+                    "SignValidation getted as '%s'",
+                    $this->signValidation ? "true" : "false"
+                )
+            );
+        return $this->signValidation;
+    }
+
+    /**
+     * Set the configuration
+     * @param \Rebelo\SaftPt\Validate\ValidationConfig $config
+     * @return void
+     * @since 1.0.0
+     */
+    public function setConfiguration(ValidationConfig $config): void
+    {
+        $this->setAllowDebitAndCredit($config->getAllowDebitAndCredit());
+        $this->setContinuesLines($config->getContinuesLines());
+        $this->setDeltaCurrency($config->getDeltaCurrency());
+        $this->setDeltaLine($config->getDeltaLine());
+        $this->setDeltaTable($config->getDeltaTable());
+        $this->setDeltaTotalDoc($config->getDeltaTotalDoc());
+        $this->setSignValidation($config->getSignValidation());
+        $this->setStyle($config->getStyle());
+    }
+
+    /**
+     * The output writer for console applications
+     * @return \Rebelo\SaftPt\Bin\Style|null
+     * @since 1.0.0
+     */
+    public function getStyle(): ?Style
+    {
+        return $this->style;
+    }
+
+    /**
+     * The output writer for console applications
+     * @param \Rebelo\SaftPt\Bin\Style|null $style
+     * @return void
+     * @since 1.0.0
+     */
+    public function setStyle(?Style $style = null): void
+    {
+        $this->style = $style;
     }
 }

@@ -540,7 +540,7 @@ class Header extends AAuditFile
             $return          = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->companyID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->companyID));
         return $return;
     }
 
@@ -598,7 +598,7 @@ class Header extends AAuditFile
         $this->taxRegistrationNumber = $taxRegistrationNumber;
         \Logger::getLogger(\get_class($this))->debug(
             \sprintf(
-                __METHOD__." setted to '%s'",
+                __METHOD__." set to '%s'",
                 \strval($this->taxRegistrationNumber)
             )
         );
@@ -671,7 +671,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxAccountingBasis->get()
                 )
             );
@@ -730,7 +730,7 @@ class Header extends AAuditFile
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
-                \sprintf(__METHOD__." setted to '%s'", $this->companyName)
+                \sprintf(__METHOD__." set to '%s'", $this->companyName)
             );
         return $return;
     }
@@ -781,7 +781,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->businessName === null ? "null" : $this->businessName
                 )
             );
@@ -986,7 +986,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->startDate->format(\Rebelo\Date\Date::SQL_DATE)
                 )
             );
@@ -1070,7 +1070,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)
                 )
             );
@@ -1148,7 +1148,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->dateCreated->format(\Rebelo\Date\Date::ATOM)
                 )
             );
@@ -1213,7 +1213,7 @@ class Header extends AAuditFile
             $return          = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxEntity));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxEntity));
         return $return;
     }
 
@@ -1278,7 +1278,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->productCompanyTaxID
                 )
             );
@@ -1346,7 +1346,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->softwareCertificateNumber
                 )
             );
@@ -1428,7 +1428,7 @@ class Header extends AAuditFile
         }
         $this->productID = $productID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productID));
         return $return;
     }
 
@@ -1485,7 +1485,7 @@ class Header extends AAuditFile
             $return               = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productVersion));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productVersion));
         return $return;
     }
 
@@ -1536,7 +1536,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->headerComment === null ? "null" : $this->headerComment
                 )
             );
@@ -1588,7 +1588,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->telephone === null ? "null" : $this->telephone
                 )
             );
@@ -1640,7 +1640,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->fax === null ? "null" : $this->fax
                 )
             );
@@ -1696,7 +1696,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->email === null ? "null" : $this->email
                 )
             );
@@ -1748,7 +1748,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->website === null ? "null" : $this->website
                 )
             );

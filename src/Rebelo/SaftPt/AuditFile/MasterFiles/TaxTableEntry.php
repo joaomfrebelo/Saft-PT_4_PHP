@@ -241,7 +241,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxType = $taxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxType->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->get()));
     }
 
     /**
@@ -300,7 +300,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxCountryRegion->get()
                 )
             );
@@ -367,7 +367,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->taxCode = $taxCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->taxCode->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->get()));
     }
 
     /**
@@ -752,7 +752,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         if ($this->getTaxPercentage() !== null && $this->getTaxAmount() !== null) {
             $msg = sprintf(
-                "Only one of both must be setted '%s' or '%s'",
+                "Only one of both must be set '%s' or '%s'",
                 static::N_TAXAMOUNT, static::N_TAXPERCENTAGE
             );
             \Logger::getLogger(\get_class($this))
@@ -815,7 +815,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         if ($node->{static::N_TAXPERCENTAGE}->count() > 0 && $node->{static::N_TAXAMOUNT}->count()
             > 0) {
             $msg = sprintf(
-                "Only one of both must be setted '%s' or '%s'",
+                "Only one of both must be set '%s' or '%s'",
                 static::N_TAXAMOUNT, static::N_TAXPERCENTAGE
             );
             \Logger::getLogger(\get_class($this))
@@ -829,7 +829,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->setTaxAmount((float) $node->{static::N_TAXAMOUNT});
         } else {
             $msg = sprintf(
-                "One of both must be setted '%s' or '%s'",
+                "One of both must be set '%s' or '%s'",
                 static::N_TAXAMOUNT, static::N_TAXPERCENTAGE
             );
             \Logger::getLogger(\get_class($this))

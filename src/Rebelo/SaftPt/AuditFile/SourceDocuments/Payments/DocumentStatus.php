@@ -213,7 +213,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->paymentStatus->get()
                 )
             );
@@ -275,7 +275,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->paymentStatusDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -326,7 +326,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->reason === null ? "null" : $this->reason
                 )
             );
@@ -379,7 +379,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->getErrorRegistor()->addOnSetValue("Reason_not_valid");
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->sourceID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->sourceID));
         return $return;
     }
 
@@ -449,7 +449,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->sourcePayment->get()
                 )
             );

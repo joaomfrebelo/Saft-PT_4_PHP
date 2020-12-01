@@ -320,7 +320,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
         $this->documentNumber = $documentNumber;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->documentNumber));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->documentNumber));
         return $return;
     }
 
@@ -375,7 +375,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     {
         $this->documentStatus = $documentStatus;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", "DocumentStatus"));
+            ->debug(\sprintf(__METHOD__." set to '%s'", "DocumentStatus"));
     }
 
     /**
@@ -426,7 +426,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementDate->format(RDate::SQL_DATE)
                 )
             );
@@ -485,7 +485,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementType->get()
                 )
             );
@@ -606,7 +606,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'", $this->supplierID
+                    __METHOD__." set to '%s'", $this->supplierID
                 )
             );
         return $return;
@@ -657,7 +657,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementComments === null ? "null" : $this->
                         movementComments
                 )
@@ -768,7 +768,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementEndTime === null ?
                         "null" : $this->movementEndTime->format(RDate::DATE_T_TIME)
                 )
@@ -823,7 +823,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
             );
@@ -876,7 +876,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->atDocCodeID === "null" ?
                         "" : $this->
                         atDocCodeID

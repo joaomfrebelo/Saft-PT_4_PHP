@@ -59,7 +59,6 @@ abstract class ASalesInvoiceBase extends TestCase
                             "Private key '%s' not not loaded", PRIVATE_KEY_PATH
                         )
                     );
-                    return;
                 }
 
                 $public = \file_get_contents(PUBLIC_KEY_PATH);
@@ -69,7 +68,6 @@ abstract class ASalesInvoiceBase extends TestCase
                             "Public key '%s' not not loaded", PUBLIC_KEY_PATH
                         )
                     );
-                    return;
                 }
 
                 parent::__construct(
@@ -265,9 +263,14 @@ abstract class ASalesInvoiceBase extends TestCase
                 parent::payment($invoice);
             }
             
-            public function withholdingTax(Invoice $invoice) :void
+            public function withholdingTax(Invoice $invoice) : void
             {
                 parent::withholdingTax($invoice);
+            }
+            
+            public function outOfDateInvoiceTypes(Invoice $invoice) : void
+            {
+                parent::outOfDateInvoiceTypes($invoice);
             }
         };
     }

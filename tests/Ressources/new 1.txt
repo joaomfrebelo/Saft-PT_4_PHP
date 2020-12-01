@@ -1,0 +1,44 @@
+try{
+        
+    } catch (\Exception | \Error $ex) {
+        // Log error
+    }
+	
+	
+	Fazer validações:
+	
+	“DC” – Documentos emitidos que
+sejam suscetiveis de
+apresentação ao cliente para
+conferência de mercadorias ou
+de prestação de serviços (para
+dados até 2017-06-30).
+Para o setor Segurador quando
+para os tipos de documentos a
+seguir identificados também
+deva existir na tabela 4.1 -
+Documentos comerciais a
+clientes (SalesInvoices) a
+correspondente fatura ou
+documento rectificativo de fatura,
+ainda pode ser preenchido com:
+
+-----------------------------------------
+
+“VD” – Venda a dinheiro e
+factura/recibo; (a)
+“TV” – Talão de venda; (a)
+“TD” – Talão de devolução; (a)
+“AA” – Alienação de ativos; (a)
+“DA” – Devolução de ativos. (a)
+(a) Para os dados até 2012-12-31.
+   
+   
+--------------------------------------------
+
+
+Artigos nas guias de transporte
+
+
+
+

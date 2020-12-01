@@ -45,7 +45,6 @@ class SchemaTest extends TestCase
             $this->fail(
                 \sprintf("XSD schema file '%s' not loaded", Schema::GLOBAL_XSD)
             );
-            return;
         }
 
         $this->assertSame(
@@ -60,7 +59,6 @@ class SchemaTest extends TestCase
                     "XSD schema file '%s' not loaded", Schema::PERMISSIVE_XSD
                 )
             );
-            return;
         }
 
         $this->assertSame("1.04_01", (string) $xsdPer->attributes()->{'version'});

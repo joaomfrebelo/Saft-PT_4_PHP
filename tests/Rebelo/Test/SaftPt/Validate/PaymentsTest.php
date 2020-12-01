@@ -219,7 +219,6 @@ class PaymentsTest extends \Rebelo\Test\SaftPt\Validate\APaymentsBase
         $xml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($xml === false) {
             $this->fail(\sprintf("Failling load file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $auditFile = new AuditFile();
@@ -1645,7 +1644,7 @@ class PaymentsTest extends \Rebelo\Test\SaftPt\Validate\APaymentsBase
         $line->setTaxExemptionCode(TaxExemptionCode::M99());
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(TaxCode::ISE());
         $tax->setTaxType(TaxType::IVA());
@@ -1679,7 +1678,7 @@ class PaymentsTest extends \Rebelo\Test\SaftPt\Validate\APaymentsBase
         $line->setTaxExemptionReason("reason");
 
         $tax = $line->getTax();
-        // The percentage is no setted to zero in a ISE for exceprion test
+        // The percentage is no set to zero in a ISE for exceprion test
         $tax->setTaxPercentage(9.00);
         $tax->setTaxCode(TaxCode::ISE());
         $tax->setTaxType(TaxType::IVA());

@@ -275,7 +275,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->productType->get()
                 )
             );
@@ -336,7 +336,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return            = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->productCode));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productCode));
         return $return;
     }
 
@@ -384,7 +384,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->productGroup === null ? "null" : $this->productGroup
                 )
             );
@@ -456,7 +456,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->productDescription
                 )
             );
@@ -520,7 +520,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return                  = false;
         }
         \Logger::getLogger(\get_class($this))->debug(
-            \sprintf(__METHOD__." setted to '%s'", $this->productNumberCode)
+            \sprintf(__METHOD__." set to '%s'", $this->productNumberCode)
         );
         return $return;
     }

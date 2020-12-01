@@ -188,7 +188,7 @@ class CustomsInformation extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->iecAmount === null ? "null" :
                     \strval($this->iecAmount)
                 )

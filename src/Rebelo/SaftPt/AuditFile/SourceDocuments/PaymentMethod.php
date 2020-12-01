@@ -181,7 +181,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->paymentMechanism === null ? "null" : $this->paymentMechanism->get()
                 )
             );
@@ -231,7 +231,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->paymentAmount)
                 )
             );
@@ -280,7 +280,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->paymentDate->format(RDate::SQL_DATE)
                 )
             );

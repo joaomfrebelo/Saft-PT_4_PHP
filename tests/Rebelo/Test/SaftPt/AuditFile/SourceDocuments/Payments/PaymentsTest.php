@@ -158,7 +158,6 @@ class PaymentsTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         /* @var $paymentsXml \SimpleXMLElement */
@@ -208,7 +207,6 @@ class PaymentsTest extends TestCase
         $xml          = $payments->createXmlNode($paymentsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -237,7 +235,6 @@ class PaymentsTest extends TestCase
         $xml = $payments->createXmlNode($paymentsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

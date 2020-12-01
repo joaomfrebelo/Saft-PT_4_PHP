@@ -144,7 +144,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->withholdingTaxType === null ?
                     "null" : $this->withholdingTaxType->get()
                 )
@@ -200,7 +200,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->withholdingTaxDescription === null ?
                     "null" : $this->withholdingTaxDescription
                 )
@@ -262,7 +262,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     \strval($this->withholdingTaxAmount)
                 )
             );

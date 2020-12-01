@@ -163,7 +163,7 @@ abstract class ALineInvoiveAndWorking extends A2Line
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxBase === null ? "null" :
                     \strval($this->taxBase)
                 )
@@ -203,7 +203,7 @@ abstract class ALineInvoiveAndWorking extends A2Line
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->taxPointDate->format(RDate::SQL_DATE)
                 )
             );

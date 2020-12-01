@@ -200,7 +200,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->deliveryDate === null ? "null" :
                     $this->deliveryDate->format(RDate::SQL_DATE)
                 )
@@ -267,7 +267,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         $this->address = null;
         \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." setted to null");
+            ->debug(__METHOD__." set to null");
     }
 
     /**

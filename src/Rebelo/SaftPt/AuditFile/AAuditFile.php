@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile;
 
 use Rebelo\SaftPt\AuditFile\i18n\AI18n;
 use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
+use Rebelo\Date\Date as RDate;
 
 /**
  * Abstract of AAuditFile
@@ -54,6 +55,12 @@ abstract class AAuditFile
      * @since 1.0.0
      */
     const CONSUMIDOR_FINAL = "Consumidor final";
+
+    /**
+     * The ID in consumer table of the final Consumer, Consumidor final
+     * @since 1.0.0
+     */
+    const CONSUMIDOR_FINAL_ID = "CONSUMIDOR_FINAL";
 
     /**
      *
@@ -380,7 +387,7 @@ abstract class AAuditFile
         static::$i18n = $i18n;
         \Logger::getLogger(__CLASS__)
             ->error(
-                \sprintf(" I18n setted to '%s'", \get_class(static::$i18n))
+                \sprintf(" I18n set to '%s'", \get_class(static::$i18n))
             );
     }
 
@@ -477,4 +484,32 @@ abstract class AAuditFile
         }
         return true;
     }
+    
+    /**
+     * Calc the document period based on the fiscal year start month
+     * @param int $fiscalYearStartMonth
+     * @param \Rebelo\Date\Date $docDate
+     * @return int
+     * @throws CalcPeriodException
+     * @since 1.0.0
+     */
+    public function calcPeriod(int $fiscalYearStartMonth, RDate $docDate) : int
+    {
+        if($fiscalYearStartMonth < 1 || $fiscalYearStartMonth > 12){
+            throw new CalcPeriodException("wrong fiscal year start month");
+        }
+        
+        $docMonth = (int)$docDate->format(RDate::MONTH_SHORT);
+        
+        if($fiscalYearStartMonth === 1){
+            return $docMonth;
+        }
+        
+        if($docMonth >= $fiscalYearStartMonth){
+            return ($docMonth - $fiscalYearStartMonth) + 1;
+        }
+        
+        return (13 - $fiscalYearStartMonth) + $docMonth;
+    }
+    
 }

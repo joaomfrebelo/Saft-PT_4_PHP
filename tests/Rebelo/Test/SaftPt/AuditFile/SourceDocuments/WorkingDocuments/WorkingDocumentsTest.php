@@ -161,7 +161,6 @@ class WorkingDocumentsTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $workingDocsXml = $saftDemoXml
@@ -208,7 +207,6 @@ class WorkingDocumentsTest extends TestCase
         $xml             = $workingDocs->createXmlNode($workingDocsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -237,7 +235,6 @@ class WorkingDocumentsTest extends TestCase
         $xml = $workingDocs->createXmlNode($workingDocsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

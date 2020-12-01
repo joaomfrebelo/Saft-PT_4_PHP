@@ -356,7 +356,6 @@ class WorkDocumentTest extends TestCase
 
         if($saftDemoXml === false){
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
-            return;
         }
 
         $workdocStack = $saftDemoXml
@@ -379,7 +378,7 @@ class WorkDocumentTest extends TestCase
             $workingdocsNode = $sourceDocNode->addChild(WorkingDocuments::N_WORKINGDOCUMENTS);
 
             $xml = $workdoc->createXmlNode($workingdocsNode);
-            $xml->asXML("d:/todelete/work.xml");
+            
             try {
                 $assertXml = $this->xmlIsEqual($workdocXml, $xml);
                 $this->assertTrue(
@@ -419,7 +418,6 @@ class WorkDocumentTest extends TestCase
         $xml         = $workDoc->createXmlNode($workDocNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -453,7 +451,6 @@ class WorkDocumentTest extends TestCase
         $xml = $workDoc->createXmlNode($workDocNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

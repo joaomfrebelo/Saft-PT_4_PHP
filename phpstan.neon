@@ -23,4 +23,5 @@ parameters:
 		    message: '#Call to an undefined static method ([\.a-zA-Z0-9\(\) \\:])+#'
 		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
 	excludes_analyse:
-		- tests\bootstrap.php
+		- tests/bootstrap.php
+		- tests/Rebelo/Test/SaftPt/Bin/StyleTest.php

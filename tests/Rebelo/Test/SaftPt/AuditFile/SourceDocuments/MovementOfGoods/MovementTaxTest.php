@@ -245,7 +245,6 @@ class MovementTaxTest extends TestCase
         $xml        = $movTax->createXmlNode($movTaxNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(
@@ -272,7 +271,6 @@ class MovementTaxTest extends TestCase
         $xml = $movTax->createXmlNode($movTaxNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
-            return;
         }
 
         $this->assertInstanceOf(

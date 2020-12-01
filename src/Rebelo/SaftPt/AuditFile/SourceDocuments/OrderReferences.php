@@ -146,7 +146,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->originatingON === null ?
                     "null" : $this->originatingON
                 )
@@ -187,7 +187,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->orderDate === null ?
                     "null" : $this->orderDate->format(RDate::SQL_DATE)
                 )

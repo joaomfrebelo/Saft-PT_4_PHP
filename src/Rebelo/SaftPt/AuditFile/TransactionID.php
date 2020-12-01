@@ -140,7 +140,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->date->format(RDate::SQL_DATE)
                 )
             );
@@ -181,7 +181,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
         $this->journalID = $journalID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." setted to '%s'", $this->journalID));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->journalID));
         return $return;
     }
 
@@ -221,7 +221,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." setted to '%s'",
+                    __METHOD__." set to '%s'",
                     $this->docArchivalNumber
                 )
             );

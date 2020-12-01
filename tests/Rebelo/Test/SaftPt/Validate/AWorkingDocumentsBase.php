@@ -41,7 +41,7 @@ use Rebelo\Date\Date as RDate;
 abstract class AWorkingDocumentsBase extends TestCase
 {
     /**
-     * The SalesWorkDocument to be possible to access to protected methods
+     * The WorkDocument to be possible to access to protected methods
      * @var \Rebelo\SaftPt\Validate\WorkingDocuments
      */
     protected WorkingDocuments $workingDocuments;
@@ -59,7 +59,6 @@ abstract class AWorkingDocumentsBase extends TestCase
                             "Private key '%s' not not loaded", PRIVATE_KEY_PATH
                         )
                     );
-                    return;
                 }
 
                 $public = \file_get_contents(PUBLIC_KEY_PATH);
@@ -69,7 +68,6 @@ abstract class AWorkingDocumentsBase extends TestCase
                             "Public key '%s' not not loaded", PUBLIC_KEY_PATH
                         )
                     );
-                    return;
                 }
 
                 parent::__construct(
@@ -253,6 +251,11 @@ abstract class AWorkingDocumentsBase extends TestCase
             public function totalCredit(): void
             {
                 parent::totalCredit();
+            }
+            
+            public function outOfDateInvoiceTypes(WorkDocument $workDocument) : void
+            {
+                parent::outOfDateInvoiceTypes($workDocument);
             }
         };
     }
