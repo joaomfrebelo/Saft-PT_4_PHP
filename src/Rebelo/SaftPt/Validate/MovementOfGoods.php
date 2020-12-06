@@ -206,7 +206,7 @@ class MovementOfGoods extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-            );
+                );
         }
         return $this->isValid;
     }
@@ -292,7 +292,7 @@ class MovementOfGoods extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-            );
+                );
             $stockMovDocument->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -310,18 +310,18 @@ class MovementOfGoods extends ADocuments
 
         $testNlines = $this->numberOfMovementLines === $movementOfGoods->getNumberOfMovementLines();
         $testQt     = $this->totalQuantityIssued->signedSubtract(
-                $movementOfGoods->getTotalQuantityIssued()
-            )->abs()->valueOf() <= $this->getDeltaTable();
+            $movementOfGoods->getTotalQuantityIssued()
+        )->abs()->valueOf() <= $this->getDeltaTable();
 
         $this->auditFile->getSourceDocuments()->getMovementOfGoods()
             ->getMovOfGoodsTableTotalCalc()->setNumberOfMovementLines(
-            $this->numberOfMovementLines
-        );
+                $this->numberOfMovementLines
+            );
 
         $this->auditFile->getSourceDocuments()->getMovementOfGoods()
             ->getMovOfGoodsTableTotalCalc()->setTotalQuantityIssued(
-            $this->totalQuantityIssued->valueOf()
-        );
+                $this->totalQuantityIssued->valueOf()
+            );
 
         if ($testNlines === false) {
             $msg           = \sprintf(

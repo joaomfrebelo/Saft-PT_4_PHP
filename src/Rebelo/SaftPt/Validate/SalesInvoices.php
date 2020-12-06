@@ -198,7 +198,7 @@ class SalesInvoices extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-            );
+                );
         }
         return $this->isValid;
     }
@@ -284,7 +284,7 @@ class SalesInvoices extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-            );
+                );
             $invoice->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -336,10 +336,10 @@ class SalesInvoices extends ADocuments
             ->setTotalDebit($this->debit->valueOf());
 
         $diff = $this->debit->signedSubtract(
-                new Decimal(
-                    $salesInvoices->getTotalDebit(), static::CALC_PRECISION
-                )
-            )->abs()->valueOf();
+            new Decimal(
+                $salesInvoices->getTotalDebit(), static::CALC_PRECISION
+            )
+        )->abs()->valueOf();
 
         if ($diff > $this->deltaTotalDoc) {
             $msg           = \sprintf(
@@ -367,10 +367,10 @@ class SalesInvoices extends ADocuments
         $salesInvoices->getDocTableTotalCalc()->setTotalDebit($this->credit->valueOf());
 
         $diff = $this->credit->signedSubtract(
-                new Decimal(
-                    $salesInvoices->getTotalCredit(), static::CALC_PRECISION
-                )
-            )->abs()->valueOf();
+            new Decimal(
+                $salesInvoices->getTotalCredit(), static::CALC_PRECISION
+            )
+        )->abs()->valueOf();
 
         if ($diff > $this->deltaTotalDoc) {
             $msg           = \sprintf(
@@ -1085,9 +1085,9 @@ class SalesInvoices extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($line->issetProductCode()) {
             if (\in_array(
-                    $line->getProductCode(),
-                    $this->auditFile->getMasterFiles()->getAllProductCode()
-                ) === false
+                $line->getProductCode(),
+                $this->auditFile->getMasterFiles()->getAllProductCode()
+            ) === false
             ) {
 
                 $msg = \sprintf(
@@ -1891,7 +1891,7 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate if exists invoice types out of date
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice Invoice $invoice
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
      * @since 1.0.0
      */

@@ -294,6 +294,7 @@ class MasterFiles extends AAuditFile
      */
     public function addSupplier(): Supplier
     {
+        $this->supplierID = [];
         $supplier         = new Supplier($this->getErrorRegistor());
         $this->supplier[] = $supplier;
         \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");
@@ -366,7 +367,7 @@ class MasterFiles extends AAuditFile
      */
     public function addProduct(): Product
     {
-        $this->productIDMapToIndex = [];
+        $this->productCode = [];
         $product         = new Product($this->getErrorRegistor());
         $this->product[] = $product;
         \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");

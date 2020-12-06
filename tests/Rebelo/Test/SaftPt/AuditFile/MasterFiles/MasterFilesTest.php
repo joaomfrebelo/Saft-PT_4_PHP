@@ -399,6 +399,33 @@ class MasterFilesTest extends TestCase
      * @author João Rebelo
      * @test
      */
+    public function testGetAllProductCodeAfterAdd(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $ids    = [0 => "AAA", 1 => "BBB", 2 => "CCC"];
+
+        foreach ($ids as $id) {
+            $pro = $master->addProduct();
+            $pro->setProductCode($id);
+        }
+        $master->addProduct();
+
+        $this->assertSame(
+            \count($ids), \count($master->getAllProductCode())
+        );
+
+        $pro = $master->addProduct();
+        $pro->setProductCode("DDD");
+
+        $this->assertSame(
+            \count($ids) + 1, \count($master->getAllProductCode())
+        );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
     public function testGetAllSupplierID(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -417,6 +444,33 @@ class MasterFilesTest extends TestCase
      * @author João Rebelo
      * @test
      */
+    public function testGetAllSupplierIDAftertAdd(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $ids    = ["AAA", "BBB", "CCC"];
+
+        foreach ($ids as $id) {
+            $supplier = $master->addSupplier();
+            $supplier->setSupplierID($id);
+        }
+        $master->addSupplier();
+
+        $this->assertSame(
+            \count($ids), \count($master->getAllSupplierID())
+        );
+
+        $supplier = $master->addSupplier();
+        $supplier->setSupplierID("DDD");
+
+        $this->assertSame(
+            \count($ids) + 1, \count($master->getAllSupplierID())
+        );
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
     public function testGetAllCustomerID(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -429,6 +483,35 @@ class MasterFilesTest extends TestCase
         $master->addCustomer();
 
         $this->assertSame($ids, $master->getAllCustomerID());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testGetAllCustomerIDAfterAdd(): void
+    {
+        $master = new MasterFiles(new ErrorRegister());
+        $ids    = ["AAA", "BBB", "CCC"];
+
+        foreach ($ids as $id) {
+            $customer = $master->addCustomer();
+            $customer->setCustomerID($id);
+        }
+        $master->addCustomer();
+
+        $this->assertSame(
+            \count($ids), \count($master->getAllCustomerID())
+        );
+
+        $customer = $master->addCustomer();
+        $customer->setCustomerID("DDD");
+        
+        $this->assertSame(
+            \count($ids) + 1, \count($master->getAllCustomerID())
+        );
+
+        
     }
 
     /**
@@ -485,7 +568,7 @@ class MasterFilesTest extends TestCase
             \Rebelo\SaftPt\AuditFile\Country::DESCONHECIDO,
             $addr->getCountry()->get()
         );
-        
+
         $this->assertEmpty($customer->getShipToAddress());
     }
 }

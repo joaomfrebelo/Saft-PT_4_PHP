@@ -28,20 +28,20 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
  * Description of WorkType
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments CM()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments CC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments FC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments FO()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments NE()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments OU()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments OR()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments PF()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments DC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments RP()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments RE()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments CS()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments LD()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments RA()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType CM()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType CC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType FC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType FO()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType NE()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType OU()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType OR()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType PF()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType DC()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType RP()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType RE()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType CS()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType LD()
+ * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType RA()
  * @author João Rebelo
  * @since 1.0.0
  */

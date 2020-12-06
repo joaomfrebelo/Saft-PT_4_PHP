@@ -75,8 +75,10 @@ abstract class AOtherValidationsBase extends TestCase
                                                    array &$type,
                                                    ProgressBar $progreBar = null): void
             {
-                parent::checkStockMovementType($stockMovements, $type,
-                    $progreBar);
+                parent::checkStockMovementType(
+                    $stockMovements, $type,
+                    $progreBar
+                );
             }
 
             public function checkWorkDocumentType(array &$workDocs,

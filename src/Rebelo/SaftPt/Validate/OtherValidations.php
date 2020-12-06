@@ -124,7 +124,7 @@ class OtherValidations extends ADocuments
                     \sprintf(
                         __METHOD__." validate error '%s'", $e->getMessage()
                     )
-            );
+                );
         }
         return $this->isValid;
     }

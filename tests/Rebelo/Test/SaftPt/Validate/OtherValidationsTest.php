@@ -517,19 +517,19 @@ class OtherValidationsTest extends \Rebelo\Test\SaftPt\Validate\AOtherValidation
      */
     public function testCheckPaymentTypeDuplicatedInTypes()
     {
-        $Payments = [];
+        $payments = [];
         $type     = ["A" => "FR", "C" => "GT", "D" => "NC"];
 
         $n            = 0;
-        $Payments[$n] = new Payment(new ErrorRegister());
-        $Payments[$n]->setPaymentRefNo("C 2019/".\strval($n));
-        $Payments[$n]->setPaymentType(PaymentType::RG());
+        $payments[$n] = new Payment(new ErrorRegister());
+        $payments[$n]->setPaymentRefNo("C 2019/".\strval($n));
+        $payments[$n]->setPaymentType(PaymentType::RG());
 
-        $Payments[++$n] = new Payment(new ErrorRegister());
-        $Payments[$n]->setPaymentRefNo("RC 2020/".\strval($n));
-        $Payments[$n]->setPaymentType(PaymentType::RC());
+        $payments[++$n] = new Payment(new ErrorRegister());
+        $payments[$n]->setPaymentRefNo("RC 2020/".\strval($n));
+        $payments[$n]->setPaymentType(PaymentType::RC());
 
-        $this->otherValidations->checkPaymentType($Payments, $type);
+        $this->otherValidations->checkPaymentType($payments, $type);
         $audit = $this->otherValidations->getAuditFile();
         /* @var $audit \Rebelo\SaftPt\AuditFile\AuditFile */
         $this->assertTrue($audit->getErrorRegistor()->hasErrors());
@@ -543,19 +543,19 @@ class OtherValidationsTest extends \Rebelo\Test\SaftPt\Validate\AOtherValidation
      */
     public function testCheckPaymentTypeDuplicatedInPayment()
     {
-        $Payments = [];
+        $payments = [];
         $type     = ["FR" => "FR", "C" => "GT", "D" => "NC"];
 
         $n            = 0;
-        $Payments[$n] = new Payment(new ErrorRegister());
-        $Payments[$n]->setPaymentRefNo("E A/".\strval($n));
-        $Payments[$n]->setPaymentType(PaymentType::RG());
+        $payments[$n] = new Payment(new ErrorRegister());
+        $payments[$n]->setPaymentRefNo("E A/".\strval($n));
+        $payments[$n]->setPaymentType(PaymentType::RG());
 
-        $Payments[++$n] = new Payment(new ErrorRegister());
-        $Payments[$n]->setPaymentRefNo("E 2020/".\strval($n));
-        $Payments[$n]->setPaymentType(PaymentType::RC());
+        $payments[++$n] = new Payment(new ErrorRegister());
+        $payments[$n]->setPaymentRefNo("E 2020/".\strval($n));
+        $payments[$n]->setPaymentType(PaymentType::RC());
 
-        $this->otherValidations->checkPaymentType($Payments, $type);
+        $this->otherValidations->checkPaymentType($payments, $type);
         $audit = $this->otherValidations->getAuditFile();
         /* @var $audit \Rebelo\SaftPt\AuditFile\AuditFile */
         $this->assertTrue($audit->getErrorRegistor()->hasErrors());
@@ -584,7 +584,7 @@ class OtherValidationsTest extends \Rebelo\Test\SaftPt\Validate\AOtherValidation
     public function testValidateRepeteadInvoiceInternalCode()
     {
         $audit = \Rebelo\SaftPt\AuditFile\AuditFile::loadFile(
-                SAFT_REPEATED_INVOICE_INTERNAL_CODE
+            SAFT_REPEATED_INVOICE_INTERNAL_CODE
         );
         $this->otherValidations->setAuditFile($audit);
         $this->assertFalse($audit->getErrorRegistor()->hasErrors());
@@ -601,7 +601,7 @@ class OtherValidationsTest extends \Rebelo\Test\SaftPt\Validate\AOtherValidation
     public function testValidateRepeteadStockMovementInternalCode()
     {
         $audit = \Rebelo\SaftPt\AuditFile\AuditFile::loadFile(
-                SAFT_REPEATED_STOCK_MOVEMENT_INTERNAL_CODE
+            SAFT_REPEATED_STOCK_MOVEMENT_INTERNAL_CODE
         );
         $this->otherValidations->setAuditFile($audit);
         $this->assertFalse($audit->getErrorRegistor()->hasErrors());
@@ -618,7 +618,7 @@ class OtherValidationsTest extends \Rebelo\Test\SaftPt\Validate\AOtherValidation
     public function testValidateRepeteadWorkDocumentInternalCode()
     {
         $audit = \Rebelo\SaftPt\AuditFile\AuditFile::loadFile(
-                SAFT_REPEATED_WORK_DOCUMENT_INTERNAL_CODE
+            SAFT_REPEATED_WORK_DOCUMENT_INTERNAL_CODE
         );
         $this->otherValidations->setAuditFile($audit);
         $this->assertFalse($audit->getErrorRegistor()->hasErrors());
@@ -635,7 +635,7 @@ class OtherValidationsTest extends \Rebelo\Test\SaftPt\Validate\AOtherValidation
     public function testValidateRepeteadPaymentInternalCode()
     {
         $audit = \Rebelo\SaftPt\AuditFile\AuditFile::loadFile(
-                SAFT_REPEATED_PAYMENT_INTERNAL_CODE
+            SAFT_REPEATED_PAYMENT_INTERNAL_CODE
         );
         $this->otherValidations->setAuditFile($audit);
         $this->assertFalse($audit->getErrorRegistor()->hasErrors());

@@ -130,8 +130,8 @@ class AuditFileTest extends TestCase
     {
         $auditFile = new AuditFile();
         $xml       = $auditFile->createXmlNode(
-                $auditFile->createRootElement()
-            )->asXML();
+            $auditFile->createRootElement()
+        )->asXML();
         if ($xml === false) {
             $this->fail("Fail to get as xml string");
             /** @phpstan-ignore-next-line */

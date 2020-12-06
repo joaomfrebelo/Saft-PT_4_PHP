@@ -1422,7 +1422,7 @@ class WorkingDocuments extends ADocuments
         if ($workDocument->getWorkDate()->isLater($lastDay)) {
             $msg = \sprintf(
                 AuditFile::getI18n()->get("document_type_last_date_later"),
-               $type, "2017-06-30", $workDocument->getDocumentNumber()
+                $type, "2017-06-30", $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg);
