@@ -190,9 +190,9 @@ class pt_PT extends AI18n
         $this->stack["tax_iva_code_ise_must_have_code_and_reason"]               = "O documento '%s' tem o código de IVA isento mas não indica o código de excepção e/ou a razão";
         $this->stack["does_not_have_document_totals"]                            = "O documento '%s' não tem os totais definidos";
         $this->stack["document_gross_not_equal_tax_plus_net"]                    = "A soma do NetTotal com o TaxPayable do documento '%s' não corresponde ao valor do TotalGross";
-        $this->stack["document_gross_not_equal_calc_gross"]                      = "O GrossTotal do documento '%s' não corresponde ao GrossTotal do documento";
-        $this->stack["document_nettotal_not_equal_calc_nettotal"]                = "O NetTotal do documento '%s' não corresponde ao NetTotal do documento";
-        $this->stack["document_taxpayable_not_equal_calc_taxpayable"]            = "O TaxPayable do documento '%s' não corresponde ao TaxPayable do documento";
+        $this->stack["document_gross_not_equal_calc_gross"]                      = "O GrossTotal calculado '%s' do documento '%s' não corresponde ao GrossTotal  '%s' do documento";
+        $this->stack["document_nettotal_not_equal_calc_nettotal"]                = "O NetTotal calculado '%s' do documento '%s' não corresponde ao NetTotal '%s' do documento";
+        $this->stack["document_taxpayable_not_equal_calc_taxpayable"]            = "O TaxPayable calculado '%s' do documento '%s' não corresponde ao TaxPayable '%s' do documento";
         $this->stack["document_line_no_number"]                                  = "O documento '%s' tem linhas sem numeração";
         $this->stack["document_line_no_continues"]                               = "A numeração das linhas do documento '%s' não é continua ou não inicia na linha nº 1";
         $this->stack["document_line_duplicated"]                                 = "O documento '%s' tem linhas com numeração repetida";
@@ -242,17 +242,17 @@ class pt_PT extends AI18n
         $this->stack["start_movement_can_not_be earliar_doc_date"]               = "A data de inicio de transporte não pode ser inferior à data do documento '%s'";
         $this->stack["start_movement_can_not_be earliar_system_entry_date"]      = "A data/hora de inicio de transporte não pode ser inferior à data do 'SystemEntryDate' do documento '%s'";
         $this->stack["end_movement_can_not_be earliar_start_movement"]           = "A data/hora do fim de transporte não pode ser inferior à do inicio do transporte no documento '%s'";
-        $this->stack["document_to_be_stockMovement_must_have_shipfrom"]          = "O documento '%s' para ser usado como guia de transporte tem que ter morada de origem do envio";
         $this->stack["shipement_address_from_must_heve_city"]                    = "A morada do local de origem do envio não contém a cidade no documento '%s'";
         $this->stack["shipement_address_from_must_heve_country"]                 = "A morada do local de origem envio não contém o país no documento '%s'";
-        $this->stack["document_to_be_stockMovement_must_heve_shipto"]            = "O documento '%s' para ser usado como guia de transporte tem que ter morada de destino";
+        $this->stack["document_to_be_stockMovement_must_have_shipto"]            = "O documento '%s' para ser usado como guia de transporte tem que ter morada de destino 'ShipTo'";
+        $this->stack["document_to_be_stockMovement_must_have_shipfrom"]          = "O documento '%s' para ser usado como guia de transporte tem que ter morada de origem 'ShipFrom'";
         $this->stack["shipement_address_to_must_heve_city"]                      = "A morada do local de destino não contém a cidade no documento '%s'";
         $this->stack["shipement_address_to_must_heve_country"]                   = "A morada do local de destino não contém o país no documento '%s'";
         $this->stack["document_line_have_tax_base_with_unit_price_credit_debit"]
             = "O documento '%s' na linha '%s' tem o 'TaxBase' definido, não pode ter o 'UnitPrice' e os 'CreditAmout'/'DebitAmout' com valores superiores a zero";
         $this->stack["document_status_not_defined"]                              = "O documento '%s' não tem o 'DocumentStatus' definido";
         $this->stack["document_date_not_defined"]                                = "O documento '%s' não tem a data do documento definido";
-        $this->stack["document_status_date_earlier"]                             = "A data do estado do documento no documento '%s' é anteriro à data do documento";
+        $this->stack["document_status_date_earlier"]                             = "A data do estado do documento no documento '%s' é anteriro ao 'SystemEntryDate'";
         $this->stack["document_status_cancel_no_reason"]                         = "O estado do documento '%s' é anulado mas não tem a razão definida";
         $this->stack["tax_must_have_type"]                                       = "O tipo de imposto não está definido no documento '%s' linha '%s'";
         $this->stack["tax_must_have_code"]                                       = "O código de imposto não está definido no documento '%s' linha '%s'";
@@ -298,8 +298,8 @@ class pt_PT extends AI18n
         $this->stack["doc_date_eaarlier_previous_doc"]                           = "O documeto '%s' tem a data anterior ao documento anterior";
         $this->stack["originatingon_document_repeated"]                          = "O documento '%s' na lina '%s' tem 'OriginatingOn' a refernciar o mesmo documento";
         $this->stack["payment_settlement_sum_diff"]                              = "A soma dos descontos no documento '%s' está errada";
-        $this->stack["wrong_total_credit_of_payments"]                           = "O 'TotalCredit' no 'Payments' está errado";
-        $this->stack["wrong_total_debit_of_payments"]                            = "O 'TotalDebit' no 'Payments' está errado";
+        $this->stack["wrong_total_credit_of_payments"]                           = "O 'TotalCredit' '%s' no 'Payments' não corresponde ao calculado de '%s'";
+        $this->stack["wrong_total_debit_of_payments"]                            = "O 'TotalDebit' '%s' no 'Payments' não corresponde ao calculado de '%s'";
         $this->stack["wrong_number_of_payments"]                                 = "O 'NumberOfEntries' no 'Payments' está errado";
         $this->stack["payments_total_debit_should_be_zero"]                      = "O total de débitos em pagamentos deveria ser zero";
         $this->stack["payments_total_credit_should_be_zero"]                     = "O total de créditos em pagamentos deveria ser zero";
@@ -321,6 +321,7 @@ class pt_PT extends AI18n
         $this->stack["mov_of_goods_product_is_of_type"]                          = "Na linha '%s' do documento '%s' (StockMovement) o produto '%s' é do tipo '%s'";
         $this->stack["mov_of_goods_product_do_not_have_type"]                    = "Na linha '%s' do documento '%s' (StockMovement) o produto '%s' não tem o tipo definido";
         $this->stack["document_type_last_date_later"]                            = "O tipo de documento '%s' só é válido até '%s' mas o documento '%s' é posterior";
+        $this->stack["has_n_exception"]                                          = "Erros (Exception) ao executar a validação: %s ";
+        $this->stack["the_document_n_is_missing"]                                = "O documento '%s %s/%s' está em falta, ou tem erro que o tornou impossível analisar";
     }
-    //
 }

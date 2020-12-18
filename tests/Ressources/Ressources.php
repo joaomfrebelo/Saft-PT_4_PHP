@@ -141,3 +141,33 @@ define(
 define(
     "PUBLIC_KEY_PATH", __DIR__.DIRECTORY_SEPARATOR."Public_Key.txt"
 );
+
+define(
+    "SAFT_CREDIT_AND_DEBIT_NC",
+    __DIR__.DIRECTORY_SEPARATOR."saft_CREDIT_AND_DEBIT_NC.xml"
+);
+
+define(
+    "SAFT_DEBIT_NC",
+    __DIR__.DIRECTORY_SEPARATOR."saft_DEBIT_NC.xml"
+);
+
+define(
+    "SAFT_MISSING_PAYMENTS",
+    __DIR__.DIRECTORY_SEPARATOR."saft_MISSING_PAYMENTS.xml"
+);
+
+define(
+    "SAFT_MISSING_STOCK_MOV",
+    __DIR__.DIRECTORY_SEPARATOR."saft_MISSING_STOCK_MOV.xml"
+);
+
+define(
+    "SAFT_MISSING_WORKING_DOC",
+    __DIR__.DIRECTORY_SEPARATOR."saft_MISSING_WORKING_DOC.xml"
+);
+
+define(
+    "SAFT_MISSING_INVOICE",
+    __DIR__.DIRECTORY_SEPARATOR."saft_MISSING_INVOICE.xml"
+);

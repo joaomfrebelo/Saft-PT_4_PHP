@@ -51,6 +51,11 @@ class AuditFile extends AAuditFile
      * @since 1.0.0
      */
     protected ?SourceDocuments $sourceDocuments           = null;
+    
+    /**
+     * The Log file configuration file
+     * @var string|null
+     */
     public static ?string $log4phpConfigFilePath = null;
 
     /**
@@ -367,8 +372,8 @@ class AuditFile extends AAuditFile
             $xmlStr : \mb_convert_encoding($xmlStr, "UTF-8", $encodeing);
         unset($xmlStr);
 
-        $xmlEncClean = \str_replace(
-            '<?xml version="1.0" encoding="Windows-1252"?>',
+        $xmlEncClean = \preg_replace(
+            '/<\?xml.+version.+encoding.+\?>/i',
             '<?xml version="1.0"?>', $xmlEnc
         );
         unset($xmlEnc);

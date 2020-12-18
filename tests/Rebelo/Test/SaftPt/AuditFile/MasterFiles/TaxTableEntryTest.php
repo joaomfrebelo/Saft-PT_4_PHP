@@ -94,7 +94,7 @@ class TaxTableEntryTest extends TestCase
         $this->assertEquals($description, $taxEntTab->getDescription());
         $this->assertTrue($taxEntTab->issetDescription());
 
-        $taxEntTab->getErrorRegistor()->cleaeAllErrors();
+        $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setDescription(""));
         $this->assertSame("", $taxEntTab->getDescription());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());
@@ -227,13 +227,13 @@ class TaxTableEntryTest extends TestCase
 
         // false because Percentage was setted
         $amount = 999.00;
-        $taxEntTab->getErrorRegistor()->cleaeAllErrors();
+        $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxAmount($amount));
         $this->assertSame($amount, $taxEntTab->getTaxAmount());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());
 
         $wrong = -23.00;
-        $taxEntTab->getErrorRegistor()->cleaeAllErrors();
+        $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxPercentage($wrong));
         $this->assertSame($wrong, $taxEntTab->getTaxPercentage());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());
@@ -256,13 +256,13 @@ class TaxTableEntryTest extends TestCase
         $this->assertEquals($amount, $taxEntTab->getTaxAmount());
 
         $percentage = 23.00;
-        $taxEntTab->getErrorRegistor()->cleaeAllErrors();
+        $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxPercentage($percentage));
         $this->assertSame($percentage, $taxEntTab->getTaxPercentage());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());
 
         $wrong = -230.99;
-        $taxEntTab->getErrorRegistor()->cleaeAllErrors();
+        $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxAmount($wrong));
         $this->assertSame($wrong, $taxEntTab->getTaxAmount());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());

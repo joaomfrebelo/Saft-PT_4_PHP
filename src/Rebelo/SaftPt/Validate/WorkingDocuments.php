@@ -162,11 +162,29 @@ class WorkingDocuments extends ADocuments
                         
                         /* @var $workDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
                         $workDocument = $order[$type][$serie][$no];
-                        if ((string)$type !== $this->lastType || (string)$serie !== $this->lastSerie) {
+                        list(, $no) = \explode("/", $workDocument->getDocumentNumber());
+                       if ((string)$type !== $this->lastType || (string)$serie !== $this->lastSerie) {
                             $this->lastHash            = "";
                             $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
-                        }
+                       }else {
+                            $noExpected = $this->lastDocNumber + 1;
+                            if (\intval($no) !== $noExpected) {
+                                do{
+                                $msg = \sprintf(
+                                    AuditFile::getI18n()->get("the_document_n_is_missing"),
+                                    $type, $serie, $noExpected
+                                );
+                                \Logger::getLogger(\get_class($this))->debug($msg);
+                                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                                $this->isValid = false;
+                                $this->lastDocNumber = $noExpected;
+                                $noExpected++;
+                                }while ($no !== \strval($noExpected));
+                            }
+                       }
+                        $this->lastDocNumber = (int) $no;
+                        
                         $workDocument->setDocTotalcal(new DocTotalCalc());
                         $this->workDocument($workDocument);
                         $this->lastType = (string)$type;
@@ -1183,7 +1201,7 @@ class WorkingDocuments extends ADocuments
         if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $workDocument->getDocumentNumber()
+                $this->grossTotal, $workDocument->getDocumentNumber(), $gross->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
@@ -1194,7 +1212,7 @@ class WorkingDocuments extends ADocuments
         if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $workDocument->getDocumentNumber()
+                $this->netTotal, $workDocument->getDocumentNumber(), $net->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NETTOTAL);
@@ -1205,7 +1223,7 @@ class WorkingDocuments extends ADocuments
         if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
-                $workDocument->getDocumentNumber()
+                $this->taxPayable, $workDocument->getDocumentNumber(), $tax->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);

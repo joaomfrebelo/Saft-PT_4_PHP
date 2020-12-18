@@ -109,7 +109,7 @@ class WithholdingTaxTest extends TestCase
             60, \strlen($withHolTax->getWithholdingTaxDescription())
         );
 
-        $withHolTax->getErrorRegistor()->cleaeAllErrors();
+        $withHolTax->getErrorRegistor()->clearAllErrors();
         $withHolTax->setWithholdingTaxDescription("");
         $this->assertSame("", $withHolTax->getWithholdingTaxDescription());
         $this->assertNotEmpty($withHolTax->getErrorRegistor()->getOnSetValue());
@@ -129,7 +129,7 @@ class WithholdingTaxTest extends TestCase
         $this->assertTrue($withHolTax->issetWithholdingTaxAmount());
 
         $wrong = -0.01;
-        $withHolTax->getErrorRegistor()->cleaeAllErrors();
+        $withHolTax->getErrorRegistor()->clearAllErrors();
         $withHolTax->setWithholdingTaxAmount($wrong);
         $this->assertSame($wrong, $withHolTax->getWithholdingTaxAmount());
         $this->assertNotEmpty($withHolTax->getErrorRegistor()->getOnSetValue());

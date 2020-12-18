@@ -88,7 +88,7 @@ class PaymentMethodTest extends TestCase
         }
 
         $wrong = -1.9;
-        $payMeth->getErrorRegistor()->cleaeAllErrors();
+        $payMeth->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($payMeth->setPaymentAmount($wrong));
         $this->assertSame($wrong, $payMeth->getPaymentAmount());
         $this->assertNotEmpty($payMeth->getErrorRegistor()->getOnSetValue());

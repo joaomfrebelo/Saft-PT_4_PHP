@@ -104,7 +104,7 @@ class CurrencyTest extends TestCase
         $this->assertSame($amount, $currency->getCurrencyAmount());
 
         $wrong = -1.9;
-        $currency->getErrorRegistor()->cleaeAllErrors();
+        $currency->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($currency->setCurrencyAmount($wrong));
         $this->assertSame($wrong, $currency->getCurrencyAmount());
         $this->assertNotEmpty($currency->getErrorRegistor()->getOnSetValue());
@@ -113,7 +113,7 @@ class CurrencyTest extends TestCase
         $this->assertTrue($currency->setExchangeRate($rate));
         $this->assertSame($rate, $currency->getExchangeRate());
 
-        $currency->getErrorRegistor()->cleaeAllErrors();
+        $currency->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($currency->setExchangeRate($wrong));
         $this->assertSame($wrong, $currency->getExchangeRate());
         $this->assertNotEmpty($currency->getErrorRegistor()->getOnSetValue());

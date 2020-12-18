@@ -78,7 +78,7 @@ class AddressTest extends TestCase
         $this->assertTrue($address->setBuildingNumber(\str_pad("_", 11, "_")));
         $this->assertEquals(10, \strlen($address->getBuildingNumber()));
 
-        $address->getErrorRegistor()->cleaeAllErrors();
+        $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setBuildingNumber(""));
         $this->assertSame("", $address->getBuildingNumber());
         $this->assertNotEmpty($address->getErrorRegistor()->getOnSetValue());
@@ -100,7 +100,7 @@ class AddressTest extends TestCase
         $this->assertTrue($address->setStreetName(\str_pad("_", 209, "_")));
         $this->assertEquals(200, \strlen($address->getStreetName()));
 
-        $address->getErrorRegistor()->cleaeAllErrors();
+        $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setStreetName(""));
         $this->assertSame("", $address->getStreetName());
         $this->assertNotEmpty($address->getErrorRegistor()->getOnSetValue());
@@ -122,7 +122,7 @@ class AddressTest extends TestCase
         $this->assertTrue($address->setAddressDetail(\str_pad("_", 212, "_")));
         $this->assertEquals(210, \strlen($address->getAddressDetail()));
 
-        $address->getErrorRegistor()->cleaeAllErrors();
+        $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setAddressDetail(""));
         $this->assertSame("", $address->getAddressDetail());
         $this->assertNotEmpty($address->getErrorRegistor()->getOnSetValue());
@@ -172,7 +172,7 @@ class AddressTest extends TestCase
         $this->assertTrue($address->setRegion(\str_pad("_", 212, "_")));
         $this->assertEquals(50, \strlen($address->getRegion()));
 
-        $address->getErrorRegistor()->cleaeAllErrors();
+        $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setRegion(""));
         $this->assertSame("", $address->getRegion());
         $this->assertNotEmpty($address->getErrorRegistor()->getOnSetValue());
@@ -223,7 +223,7 @@ class AddressTest extends TestCase
         $this->assertTrue($address->setPostalCode(\str_pad("_", 212, "_")));
         $this->assertEquals(20, \strlen($address->getPostalCode()));
 
-        $address->getErrorRegistor()->cleaeAllErrors();
+        $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setPostalCode(""));
         $this->assertSame("", $address->getPostalCode());
         $this->assertNotEmpty($address->getErrorRegistor()->getOnSetValue());

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * The MIT License
  *
@@ -86,11 +87,11 @@ class Payments extends ADocuments
         $progreBar = null;
         try {
             $payments = $this->auditFile->getSourceDocuments()
-                ->getPayments(false);
+                    ->getPayments(false);
 
             if ($payments === null) {
                 \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." no sales payments to be vaidated");
+                        ->debug(__METHOD__ . " no sales payments to be vaidated");
                 return $this->isValid;
             }
 
@@ -101,7 +102,7 @@ class Payments extends ADocuments
             if (\count($payments->getPayment()) === 0) {
 
                 if ($payments->getTotalCredit() !== 0.0) {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "payments_total_credit_should_be_zero"
                         ), $payments->getTotalCredit()
@@ -114,7 +115,7 @@ class Payments extends ADocuments
                 }
 
                 if ($payments->getTotalDebit() !== 0.0) {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "payments_total_debit_should_be_zero"
                         ), $payments->getTotalDebit()
@@ -135,7 +136,7 @@ class Payments extends ADocuments
                 $nDoc = \count($payments->getPayment());
                 /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
                 $section = null;
-                $progreBar  = $this->getStyle()->addProgressBar($section);
+                $progreBar = $this->getStyle()->addProgressBar($section);
                 $section->writeln("");
                 $section->writeln(
                     \sprintf(
@@ -156,15 +157,31 @@ class Payments extends ADocuments
 
                         /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
                         $payment = $order[$type][$serie][$no];
-                        if ((string) $type !== $this->lastType || (string) $serie
-                            !== $this->lastSerie) {
-                            $this->lastHash            = "";
-                            $this->lastDocDate         = null;
+                        list(, $no) = \explode("/", $payment->getPaymentRefNo());
+                        if ((string) $type !== $this->lastType || (string) $serie !== $this->lastSerie) {
+                            $this->lastHash = "";
+                            $this->lastDocDate = null;
                             $this->lastSystemEntryDate = null;
+                        } else {
+                            $noExpected = $this->lastDocNumber + 1;
+                            if (\intval($no) !== $noExpected) {
+                                do{
+                                $msg = \sprintf(
+                                    AuditFile::getI18n()->get("the_document_n_is_missing"),
+                                    $type, $serie, $noExpected
+                                );
+                                \Logger::getLogger(\get_class($this))->debug($msg);
+                                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                                $this->isValid = false;
+                                $this->lastDocNumber = $noExpected;
+                                $noExpected++;
+                                }while ($no !== \strval($noExpected));
+                            }
                         }
+                        $this->lastDocNumber = (int) $no;
                         $payment->setDocTotalcal(new DocTotalCalc());
                         $this->payment($payment);
-                        $this->lastType  = (string) $type;
+                        $this->lastType = (string) $type;
                         $this->lastSerie = (string) $serie;
                     }
                 }
@@ -184,14 +201,14 @@ class Payments extends ADocuments
             }
 
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                    ->addExceptionErrors($e->getMessage());
 
             \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
-                    )
-                );
+                    ->debug(
+                        \sprintf(
+                            __METHOD__ . " validate error '%s'", $e->getMessage()
+                        )
+                    );
         }
         return $this->isValid;
     }
@@ -206,14 +223,14 @@ class Payments extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         try {
-            $this->docCredit  = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->docDebit   = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->netTotal   = new UDecimal(0.0, static::CALC_PRECISION);
+            $this->docCredit = new UDecimal(0.0, static::CALC_PRECISION);
+            $this->docDebit = new UDecimal(0.0, static::CALC_PRECISION);
+            $this->netTotal = new UDecimal(0.0, static::CALC_PRECISION);
             $this->taxPayable = new UDecimal(0.0, static::CALC_PRECISION);
             $this->grossTotal = new UDecimal(0.0, static::CALC_PRECISION);
 
             if ($payment->issetPaymentRefNo() === false) {
-                $msg           = AAuditFile::getI18n()->get("invoicetno_not_defined");
+                $msg = AAuditFile::getI18n()->get("invoicetno_not_defined");
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg);
                 $this->isValid = false;
@@ -221,7 +238,7 @@ class Payments extends ADocuments
             }
 
             if ($payment->issetPaymentType() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "paymenttype_not_defined"
                     ), $payment->getPaymentRefNo()
@@ -234,7 +251,7 @@ class Payments extends ADocuments
             }
 
             if ($payment->issetTransactionDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_date_not_defined"
                     ), $payment->getPaymentRefNo()
@@ -247,7 +264,7 @@ class Payments extends ADocuments
             }
 
             if ($payment->issetSystemEntryDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_systementrydate_not_defined"
                     ), $payment->getPaymentRefNo()
@@ -268,13 +285,13 @@ class Payments extends ADocuments
             $this->withholdingTax($payment);
         } catch (\Exception | \Error $e) {
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                    ->addExceptionErrors($e->getMessage());
             \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
-                    )
-                );
+                    ->debug(
+                        \sprintf(
+                            __METHOD__ . " validate error '%s'", $e->getMessage()
+                        )
+                    );
             $payment->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -288,16 +305,16 @@ class Payments extends ADocuments
     protected function numberOfEntries(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $payments               = $this->auditFile->getSourceDocuments()->getPayments();
+        $payments = $this->auditFile->getSourceDocuments()->getPayments();
         $calculatedNumOfEntries = \count($payments->getPayment());
-        $numberOfEntries        = $payments->getNumberOfEntries();
-        $test                   = $numberOfEntries === $calculatedNumOfEntries;
+        $numberOfEntries = $payments->getNumberOfEntries();
+        $test = $numberOfEntries === $calculatedNumOfEntries;
 
         $this->auditFile->getSourceDocuments()->getPayments()
-            ->getDocTableTotalCalc()->setNumberOfEntries($calculatedNumOfEntries);
+                ->getDocTableTotalCalc()->setNumberOfEntries($calculatedNumOfEntries);
 
         if ($test === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_number_of_payments"
                 ), $numberOfEntries, $calculatedNumOfEntries
@@ -318,10 +335,10 @@ class Payments extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $payments = $this->auditFile->getSourceDocuments()
-            ->getPayments();
+                ->getPayments();
 
         $payments->getDocTableTotalCalc()
-            ->setTotalDebit($this->debit->valueOf());
+                ->setTotalDebit($this->debit->valueOf());
 
         $diff = $this->debit->signedSubtract(
             new Decimal(
@@ -330,7 +347,7 @@ class Payments extends ADocuments
         )->abs()->valueOf();
 
         if ($diff > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_total_debit_of_payments"
                 ), $payments->getTotalDebit(), $this->debit->valueOf()
@@ -352,7 +369,7 @@ class Payments extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $payments = $this->auditFile->getSourceDocuments()->getPayments();
 
-        $payments->getDocTableTotalCalc()->setTotalDebit($this->credit->valueOf());
+        $payments->getDocTableTotalCalc()->setTotalCredit($this->credit->valueOf());
 
         $diff = $this->credit->signedSubtract(
             new Decimal(
@@ -361,7 +378,7 @@ class Payments extends ADocuments
         )->abs()->valueOf();
 
         if ($diff > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_total_credit_of_payments"
                 ), $payments->getTotalCredit(), $this->credit->valueOf()
@@ -382,7 +399,7 @@ class Payments extends ADocuments
     protected function documentStatus(Payment $payment): void
     {
         if ($payment->issetDocumentStatus() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_not_defined"
                 ), $payment->getPaymentRefNo()
@@ -398,7 +415,7 @@ class Payments extends ADocuments
         $status = $payment->getDocumentStatus();
 
         if ($status->getPaymentStatusDate()->isEarlier($payment->getTransactionDate())) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_date_earlier"
                 ), $payment->getPaymentRefNo()
@@ -411,9 +428,9 @@ class Payments extends ADocuments
         }
 
         if ($status->getPaymentStatus()->isEqual(PaymentStatus::A) &&
-            $status->getReason() === null) {
+                $status->getReason() === null) {
 
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_cancel_no_reason"
                 ), $payment->getPaymentRefNo()
@@ -451,7 +468,7 @@ class Payments extends ADocuments
                 $this->isValid = false;
             }
         } else {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("customerID_not_defined_in_document"),
                 $payment->getPaymentRefNo()
             );
@@ -472,7 +489,7 @@ class Payments extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if (\count($payment->getLine()) === 0) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
                 $payment->getPaymentRefNo()
             );
@@ -483,21 +500,28 @@ class Payments extends ADocuments
             return;
         }
 
-        $n               = 0;
+        $n = 0;
         /* @var $lineNoStack int[] */
-        $lineNoStack     = array();
-        $lineNoError     = false;
+        $lineNoStack = array();
+        $lineNoError = false;
         //$hasDebit and $hasCredit is to check if the document as both debit and credit lines
-        $hasDebit        = false;
-        $hasCredit       = false;
+        $hasDebit = false;
+        $hasCredit = false;
         $totalSettlement = new UDecimal(0.0, static::CALC_PRECISION);
 
+        $lineSumNetTotal = new Decimal(0.0, static::CALC_PRECISION);
+        $lineSumTaxPayable = new Decimal(0.0, static::CALC_PRECISION);
+
+        /**
+         * @link https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/questoes_frequentes/Pages/faqs-00276.aspx
+         * FAQs: 55-2791, 55-2792
+         */
         foreach ($payment->getLine() as $line) {
             /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line */
             if ($lineNoError === false) {
                 if ($line->issetLineNumber()) {
                     if ($this->getContinuesLines() && $line->getLineNumber() !== ++$n) {
-                        $msg           = \sprintf(
+                        $msg = \sprintf(
                             AAuditFile::getI18n()->get(
                                 "document_line_no_continues"
                             ), $payment->getPaymentRefNo()
@@ -506,9 +530,9 @@ class Payments extends ADocuments
                         $line->addError($msg, Line::N_LINENUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
-                        $lineNoError   = true;
+                        $lineNoError = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
-                        $msg           = \sprintf(
+                        $msg = \sprintf(
                             AAuditFile::getI18n()->get(
                                 "document_line_duplicated"
                             ), $payment->getPaymentRefNo()
@@ -517,11 +541,11 @@ class Payments extends ADocuments
                         $line->addError($msg, Line::N_LINENUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
-                        $lineNoError   = true;
+                        $lineNoError = true;
                     }
                     $lineNoStack[] = $line->getLineNumber();
                 } else {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "document_line_no_number"
                         ), $payment->getPaymentRefNo()
@@ -530,18 +554,18 @@ class Payments extends ADocuments
                     $line->addError($msg, Line::N_LINENUMBER);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
-                    $lineNoError   = true;
+                    $lineNoError = true;
                     continue;
                 }
             }
 
-            $lineValue  = new Decimal(0.0, static::CALC_PRECISION);
-            $lineTaxCal = new UDecimal(0.0, static::CALC_PRECISION);
+            $lineValue = new Decimal(0.0, static::CALC_PRECISION);
+            $lineTaxCal = new Decimal(0.0, static::CALC_PRECISION);
 
             if ($line->getCreditAmount() === null &&
-                $line->getDebitAmount() === null) {
+                    $line->getDebitAmount() === null) {
 
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get("document_no_debit_or_credit"),
                     $payment->getPaymentRefNo(), $line->getLineNumber()
                 );
@@ -553,8 +577,8 @@ class Payments extends ADocuments
             }
 
             $lineAmount = $line->getCreditAmount() === null ?
-                $line->getDebitAmount() * -1.0 :
-                $line->getCreditAmount();
+                    $line->getDebitAmount() * -1.0 :
+                    $line->getCreditAmount();
 
             // Get value for total validation
             $lineValue->plusThis($lineAmount);
@@ -565,20 +589,24 @@ class Payments extends ADocuments
             if ($lineTax !== null) {
 
                 if ($lineTax->getTaxAmount() !== null) {
-                    $lineTaxCal = new UDecimal(
+                    $lineTaxCal = new Decimal(
                         $lineTax->getTaxAmount(), static::CALC_PRECISION
                     );
                 }
 
                 if ($lineTax->getTaxPercentage() !== null &&
-                    $lineTax->getTaxPercentage() !== 0.0) {
+                        $lineTax->getTaxPercentage() !== 0.0) {
 
                     $lineFactor = $lineTax->getTaxPercentage() / 100;
 
-                    $lineTaxCal = new UDecimal(
-                        $lineFactor * \abs($lineAmount + $settlement),
+                    $lineTaxCal = new Decimal(
+                        $lineFactor * (\abs($lineAmount) + $settlement),
                         static::CALC_PRECISION
                     );
+
+                    if ($lineAmount < 0.0) {
+                        $lineTaxCal->multiplyThis(-1);
+                    }
                 }
             }
 
@@ -607,6 +635,7 @@ class Payments extends ADocuments
                 );
                 $this->docDebit->plusThis($debit);
 
+
                 if (\in_array($docStat, $notForTotal) === false) {
                     $this->debit->plusThis($debit);
                 }
@@ -617,19 +646,16 @@ class Payments extends ADocuments
             //The validation if is CashVatScheme is made in tax method
             $this->tax($line, $payment);
 
-            $this->netTotal->plusThis($lineValue->abs());
-
-            $this->taxPayable->plusThis($lineTaxCal);
+            $lineSumNetTotal->plusThis($lineValue);
+            $lineSumTaxPayable->plusThis($lineTaxCal);
 
             if (\count($line->getSourceDocumentID()) > 0) {
                 $this->sourceDocumentID($line, $payment);
             }
         }
 
-        $this->grossTotal = $this->netTotal->plus($this->taxPayable);
-
-        if ($this->docCredit->isLess($this->docDebit)) {
-            $msg           = \sprintf(
+        if ($lineSumNetTotal->isLess(0.0)) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("payment_must_be_credit_document"),
                 $payment->getPaymentRefNo()
             );
@@ -638,6 +664,10 @@ class Payments extends ADocuments
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
+
+        $this->netTotal->plusThis($lineSumNetTotal->abs());
+        $this->taxPayable->plusThis($lineSumTaxPayable->abs());
+        $this->grossTotal = $this->netTotal->plus($this->taxPayable->abs());
 
         $payment->getDocTotalcal()->setGrossTotal($this->grossTotal->valueOf());
         $payment->getDocTotalcal()->setNetTotal($this->netTotal->valueOf());
@@ -653,7 +683,7 @@ class Payments extends ADocuments
             $diff = $totalSettlement->signedSubtract($paySett)->abs();
 
             if ($diff->isGreater(0.0)) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get("payment_settlement_sum_diff"),
                     $payment->getPaymentRefNo()
                 );
@@ -676,7 +706,7 @@ class Payments extends ADocuments
     {
 
         if (\count($line->getSourceDocumentID()) === 0) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("payment_without_any_source_doc_id"),
                 $payment->getPaymentRefNo(), $line->getLineNumber()
             );
@@ -691,7 +721,7 @@ class Payments extends ADocuments
         foreach ($line->getSourceDocumentID() as $source) {
             /* @var $source \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID */
             if ($source->issetOriginatingON() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "originatingon_document_not_defined"
                     ), $payment->getPaymentRefNo(), $line->getLineNumber()
@@ -727,7 +757,7 @@ class Payments extends ADocuments
             }
 
             if ($source->issetInvoiceDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "order_reference_date_not_incicated"
                     ), $payment->getPaymentRefNo(), $line->getLineNumber()
@@ -737,7 +767,7 @@ class Payments extends ADocuments
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             } elseif ($source->getInvoiceDate()->isLater($payment->getTransactionDate())) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get("order_reference_date_later"),
                     $payment->getPaymentRefNo(), $line->getLineNumber()
                 );
@@ -763,7 +793,7 @@ class Payments extends ADocuments
         $lineTax = $line->getTax(false);
 
         if ($lineTax === null && $payment->getPaymentType()->isEqual(PaymentType::RC)) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("payment_cash_vat_without_tax"),
                 $payment->getPaymentRefNo(), $line->getLineNumber()
             );
@@ -779,7 +809,7 @@ class Payments extends ADocuments
         }
 
         if ($lineTax->issetTaxType() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_type"),
                 $payment->getPaymentRefNo(), $line->getLineNumber()
             );
@@ -791,7 +821,7 @@ class Payments extends ADocuments
         }
 
         if ($lineTax->issetTaxCode() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_code"),
                 $payment->getPaymentRefNo(), $line->getLineNumber()
             );
@@ -803,7 +833,7 @@ class Payments extends ADocuments
         }
 
         if ($lineTax->issetTaxCountryRegion() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_region"),
                 $payment->getPaymentRefNo(), $line->getLineNumber()
             );
@@ -816,7 +846,7 @@ class Payments extends ADocuments
 
 
         if ($lineTax->getTaxType()->isEqual(TaxType::IVA) &&
-            $lineTax->getTaxPercentage() === null) {
+                $lineTax->getTaxPercentage() === null) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_iva_must_have_percentage"),
@@ -831,9 +861,9 @@ class Payments extends ADocuments
         }
 
         if ($lineTax->getTaxAmount() === 0.0 ||
-            $lineTax->getTaxPercentage() === 0.0) {
+                $lineTax->getTaxPercentage() === 0.0) {
             if ($line->getTaxExemptionCode() === null ||
-                $line->getTaxExemptionReason() === null) {
+                    $line->getTaxExemptionReason() === null) {
 
                 $msg = \sprintf(
                     AAuditFile:: getI18n()->get("tax_zero_must_have_code_and_reason"),
@@ -850,7 +880,7 @@ class Payments extends ADocuments
 
         if ($lineTax->getTaxCode()->isEqual(TaxCode::ISE)) {
             if ($line->getTaxExemptionCode() === null ||
-                $line->getTaxExemptionReason() === null) {
+                    $line->getTaxExemptionReason() === null) {
 
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get("tax_iva_code_ise_must_have_code_and_reason"),
@@ -867,12 +897,12 @@ class Payments extends ADocuments
 
 
         if ($lineTax->getTaxCode() !== TaxCode::ISE &&
-            $lineTax->getTaxPercentage() !== 0.0 &&
-            ($line->getTaxExemptionCode() !== null ||
-            $line->getTaxExemptionReason() !== null)
+                $lineTax->getTaxPercentage() !== 0.0 &&
+                ($line->getTaxExemptionCode() !== null ||
+                $line->getTaxExemptionReason() !== null)
         ) {
 
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_isent"),
                 $payment->getPaymentRefNo()
             );
@@ -887,16 +917,16 @@ class Payments extends ADocuments
         foreach ($this->auditFile->getMasterFiles()->getTaxTableEntry() as $taxEntry) {
             /* @var $taxEntry \Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry */
             if ($taxEntry->issetTaxType() === false ||
-                $taxEntry->issetTaxCode() === false ||
-                $taxEntry->issetTaxCountryRegion() === false
+                    $taxEntry->issetTaxCode() === false ||
+                    $taxEntry->issetTaxCountryRegion() === false
             ) {
                 continue;
             }
 
             if ($taxEntry->getTaxType()->isNotEqual($lineTax->getTaxType()) ||
-                ($taxEntry->getTaxAmount() !== $lineTax->getTaxAmount() &&
-                $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage()) ||
-                $taxEntry->getTaxCountryRegion()->isNotEqual($lineTax->getTaxCountryRegion())) {
+                    ($taxEntry->getTaxAmount() !== $lineTax->getTaxAmount() &&
+                    $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage()) ||
+                    $taxEntry->getTaxCountryRegion()->isNotEqual($lineTax->getTaxCountryRegion())) {
                 continue;
             }
 
@@ -909,7 +939,7 @@ class Payments extends ADocuments
         }
 
         $this->isValid = false; // No table tax entry
-        $msg           = \sprintf(
+        $msg = \sprintf(
             AAuditFile::getI18n()->get("no_tax_entry_for_line_document"),
             $line->getLineNumber(), $payment->getPaymentRefNo()
         );
@@ -930,7 +960,7 @@ class Payments extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($payment->issetDocumentTotals() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
                 $payment->getPaymentRefNo()
             );
@@ -942,9 +972,9 @@ class Payments extends ADocuments
         }
 
         $totals = $payment->getDocumentTotals();
-        $gross  = new UDecimal($totals->getGrossTotal(), 2);
-        $net    = new UDecimal($totals->getNetTotal(), static::CALC_PRECISION);
-        $tax    = new UDecimal($totals->getTaxPayable(), static::CALC_PRECISION);
+        $gross = new UDecimal($totals->getGrossTotal(), 2);
+        $net = new UDecimal($totals->getNetTotal(), static::CALC_PRECISION);
+        $tax = new UDecimal($totals->getTaxPayable(), static::CALC_PRECISION);
 
         if ($gross->equals($net->plus($tax)) === false) {
             $msg = \sprintf(
@@ -959,9 +989,9 @@ class Payments extends ADocuments
         }
 
         if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $payment->getPaymentRefNo()
+                $this->grossTotal, $payment->getPaymentRefNo(), $gross->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
@@ -970,9 +1000,9 @@ class Payments extends ADocuments
         }
 
         if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $payment->getPaymentRefNo()
+                $this->netTotal, $payment->getPaymentRefNo(), $net->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NETTOTAL);
@@ -981,9 +1011,9 @@ class Payments extends ADocuments
         }
 
         if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
-                $payment->getPaymentRefNo()
+                $this->taxPayable, $payment->getPaymentRefNo(), $tax->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);
@@ -1001,16 +1031,16 @@ class Payments extends ADocuments
             return;
         }
 
-        $currency      = $payment->getDocumentTotals()->getCurrency();
-        $currAmou      = new UDecimal(
+        $currency = $payment->getDocumentTotals()->getCurrency();
+        $currAmou = new UDecimal(
             $currency->getCurrencyAmount(), static::CALC_PRECISION
         );
-        $rate          = new UDecimal(
+        $rate = new UDecimal(
             $currency->getExchangeRate(), static::CALC_PRECISION
         );
         $grossExchange = $currAmou->multiply($rate);
         $payment->getDocTotalcal()->setGrossTotalFromCurrency($grossExchange->valueOf());
-        $calcCambio    = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
+        $calcCambio = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
 
         if ($calcCambio > $this->deltaCurrency) {
             $msg = \sprintf(
@@ -1036,18 +1066,18 @@ class Payments extends ADocuments
      */
     protected function paymentDateAndSystemEntryDate(Payment $payment): void
     {
-        $docDate           = $payment->getTransactionDate();
-        $systemDate        = $payment->getSystemEntryDate();
-        $msgStack          = [];
+        $docDate = $payment->getTransactionDate();
+        $systemDate = $payment->getSystemEntryDate();
+        $msgStack = [];
         $headerDateChecked = false;
         if ($this->auditFile->issetHeader()) {
             $header = $this->auditFile->getHeader();
             if ($header->issetStartDate() && $header->issetEndDate()) {
                 if ($header->getStartDate()->isLater($docDate) ||
-                    $header->getEndDate()->isEarlier($docDate)) {
-                    $msg        = \sprintf(
+                        $header->getEndDate()->isEarlier($docDate)) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()
-                            ->get("doc_date_out_of_range_start_end_header_date"),
+                                    ->get("doc_date_out_of_range_start_end_header_date"),
                         $payment->getPaymentRefNo()
                     );
                     $msgStack[] = $msg;
@@ -1058,9 +1088,9 @@ class Payments extends ADocuments
         }
 
         if ($headerDateChecked === false) {
-            $msg        = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("doc_date_not_cheked_start_end_header_date"),
+                            ->get("doc_date_not_cheked_start_end_header_date"),
                 $payment->getPaymentRefNo()
             );
             $msgStack[] = $msg;
@@ -1068,10 +1098,10 @@ class Payments extends ADocuments
         }
 
         if ($this->lastDocDate !== null &&
-            $this->lastDocDate->isLater($docDate)) {
-            $msg        = \sprintf(
+                $this->lastDocDate->isLater($docDate)) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("doc_date_eaarlier_previous_doc"),
+                            ->get("doc_date_eaarlier_previous_doc"),
                 $payment->getPaymentRefNo()
             );
             $msgStack[] = $msg;
@@ -1079,10 +1109,10 @@ class Payments extends ADocuments
         }
 
         if ($this->lastSystemEntryDate !== null &&
-            $this->lastSystemEntryDate->isLater($systemDate)) {
-            $msg        = \sprintf(
+                $this->lastSystemEntryDate->isLater($systemDate)) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("doc_systementrydate_earlier_previous_doc"),
+                            ->get("doc_systementrydate_earlier_previous_doc"),
                 $payment->getPaymentRefNo()
             );
             $msgStack[] = $msg;
@@ -1123,7 +1153,7 @@ class Payments extends ADocuments
             if ($payMet->issetPaymentAmount()) {
                 $totalPayMeth->plusThis($payMet->getPaymentAmount());
             } else {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "paymentmethod_withou_payment_amout"
                     ), $payment->getPaymentRefNo()
@@ -1136,7 +1166,7 @@ class Payments extends ADocuments
             }
 
             if ($payMet->issetPaymentDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "paymentmethod_withou_payment_date"
                     ), $payment->getPaymentRefNo()
@@ -1152,7 +1182,7 @@ class Payments extends ADocuments
         if ($payment->issetDocumentTotals()) {
             if ($payment->getDocumentTotals()->issetGrossTotal()) {
                 $gross = $payment->getDocumentTotals()->getGrossTotal();
-                $diff  = $totalPayMeth->signedSubtract($gross);
+                $diff = $totalPayMeth->signedSubtract($gross);
 
                 foreach ($payment->getWithholdingTax() as $withholding) {
                     /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
@@ -1162,7 +1192,7 @@ class Payments extends ADocuments
                 }
 
                 if ($diff->abs()->isGreater($this->getDeltaTotalDoc())) {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "paymentmethod_sum_not_equal_to_gross_less_tax"
                         ), $payment->getPaymentRefNo()
@@ -1189,7 +1219,7 @@ class Payments extends ADocuments
         foreach ($payment->getWithholdingTax() as $withholding) {
             /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
             if ($withholding->issetWithholdingTaxAmount() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "withholding_without_amout"
                     ), $payment->getPaymentRefNo()
@@ -1203,11 +1233,15 @@ class Payments extends ADocuments
             $totalTax->plusThis($withholding->getWithholdingTaxAmount());
         }
 
+        if ($totalTax->isEquals(0.0)) {
+            return;
+        }
+
         if ($payment->issetDocumentTotals()) {
             if ($payment->getDocumentTotals()->issetGrossTotal()) {
                 $gross = $payment->getDocumentTotals()->getGrossTotal();
                 if ($totalTax->isGreater($gross) || $totalTax->isEquals($gross)) {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "withholdingtax_greater_than_gross"
                         ), $payment->getPaymentRefNo()
@@ -1232,4 +1266,5 @@ class Payments extends ADocuments
             }
         }
     }
+
 }

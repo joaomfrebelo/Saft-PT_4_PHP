@@ -116,7 +116,7 @@ class DocumentStatusTest extends TestCase
         $this->assertTrue($status->setReason(\str_pad("A", 99, "9")));
         $this->assertSame(50, \strlen($status->getReason()));
 
-        $status->getErrorRegistor()->cleaeAllErrors();
+        $status->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($status->setReason(""));
         $this->assertSame("", $status->getReason());
         $this->assertNotEmpty($status->getErrorRegistor()->getOnSetValue());
@@ -136,7 +136,7 @@ class DocumentStatusTest extends TestCase
         $this->assertTrue($status->setSourceID(\str_pad("A", 99, "9")));
         $this->assertSame(30, \strlen($status->getSourceID()));
 
-        $status->getErrorRegistor()->cleaeAllErrors();
+        $status->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($status->setSourceID(""));
         $this->assertSame("", $status->getSourceID());
         $this->assertNotEmpty($status->getErrorRegistor()->getOnSetValue());

@@ -236,6 +236,99 @@ class PaymentsTest extends \Rebelo\Test\SaftPt\Validate\APaymentsBase
     }
 
     /**
+     * @author João Rebelo@author João Rebelo
+     * @depends testPayment
+     * @depends testNumberOfEntries
+     * @depends testTotalDebit
+     * @depends testTotalCredit
+     * @depends testLines
+     * @test
+     * @return void
+     */
+    public function testValidateNcDebit(): void
+    {
+        $xml = \simplexml_load_file(SAFT_DEBIT_NC);
+        if ($xml === false) {
+            $this->fail(\sprintf("Failling load file '%s'", SAFT_DEBIT_NC));
+        }
+
+        $auditFile = new AuditFile();
+        $auditFile->parseXmlNode($xml);
+
+        $this->payments->setAuditFile($auditFile);
+        $this->payments->setDeltaLine(0.005);
+        $this->payments->setDeltaCurrency(0.005);
+        $this->payments->setDeltaTable(0.005);
+        $this->payments->setDeltaTotalDoc(0.005);
+
+        $valide = $this->payments->validate();
+        $this->assertFalse($valide);
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+    }
+
+    /**
+     * @author João Rebelo@author João Rebelo
+     * @depends testPayment
+     * @depends testNumberOfEntries
+     * @depends testTotalDebit
+     * @depends testTotalCredit
+     * @depends testLines
+     * @test
+     * @return void
+     */
+    public function testValidateNcCreditAndDebit(): void
+    {
+        $xml = \simplexml_load_file(SAFT_CREDIT_AND_DEBIT_NC);
+        if ($xml === false) {
+            $this->fail(\sprintf("Failling load file '%s'", SAFT_CREDIT_AND_DEBIT_NC));
+        }
+
+        $auditFile = new AuditFile();
+        $auditFile->parseXmlNode($xml);
+
+        $this->payments->setAuditFile($auditFile);
+        $this->payments->setDeltaLine(0.005);
+        $this->payments->setDeltaCurrency(0.005);
+        $this->payments->setDeltaTable(0.005);
+        $this->payments->setDeltaTotalDoc(0.005);
+
+        $valide = $this->payments->validate();
+        $this->assertTrue($valide);
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+    }
+
+    /**
+     * @author João Rebelo@author João Rebelo
+     * @depends testPayment
+     * @depends testNumberOfEntries
+     * @depends testTotalDebit
+     * @depends testTotalCredit
+     * @depends testLines
+     * @test
+     * @return void
+     */
+    public function testValidateMissingPayments(): void
+    {
+        $xml = \simplexml_load_file(SAFT_MISSING_PAYMENTS);
+        if ($xml === false) {
+            $this->fail(\sprintf("Failling load file '%s'", SAFT_MISSING_PAYMENTS));
+        }
+
+        $auditFile = new AuditFile();
+        $auditFile->parseXmlNode($xml);
+
+        $this->payments->setAuditFile($auditFile);
+        $this->payments->setDeltaLine(0.005);
+        $this->payments->setDeltaCurrency(0.005);
+        $this->payments->setDeltaTable(0.005);
+        $this->payments->setDeltaTotalDoc(0.005);
+
+        $valide = $this->payments->validate();
+        $this->assertFalse($valide);
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+    }
+
+    /**
      * @author João Rebelo
      * @test
      * @return void

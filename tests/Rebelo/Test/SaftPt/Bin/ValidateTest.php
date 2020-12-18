@@ -287,6 +287,7 @@ class ValidateTest extends TestCase
             \sprintf("--%s=0.005", Validate::OPT_DELTA_LINES),
             \sprintf("--%s=0.009", Validate::OPT_DELTA_TABLE),
             \sprintf("--%s=0.007", Validate::OPT_DELTA_TABLE),
+            \sprintf("--%s=false", Validate::OPT_SHOW_WARNINGS),
             SAFT_DEMO_PATH
             ]
         );
@@ -306,7 +307,7 @@ class ValidateTest extends TestCase
      * @author João Rebelo
      * @test
      */
-    public function testShortLogAndBool(): void
+    public function testShortLogAndBoolAndWarnings(): void
     {
         $logConf = SAFT4PHP_TEST_RESSOURCES_DIR.DIRECTORY_SEPARATOR."log4php.php";
 
@@ -320,6 +321,7 @@ class ValidateTest extends TestCase
             \sprintf("--%s=0.005", Validate::OPT_DELTA_LINES),
             \sprintf("--%s=0.009", Validate::OPT_DELTA_TABLE),
             \sprintf("--%s=0.007", Validate::OPT_DELTA_TABLE),
+            \sprintf("-%s=true", Validate::OPT_SHOW_WARNINGS_SHORT),
             SAFT_DEMO_PATH
             ]
         );

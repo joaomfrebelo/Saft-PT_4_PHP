@@ -150,36 +150,7 @@ class CommnunTest extends TestCase
                     $meth->getName()
                 )
             );
-            $returnMatchPart = \explode(" ", $returnMatch[0]);
-
-            if ($meth->getReturnType()->getName() === "array") {
-                if ($meth->getReturnType()->allowsNull()) {
-                    $regexp = "/(array<|null)|(\[\]\|null)$/";
-                } else {
-                    $regexp = "/(array<)|(\[\])$/";
-                }
-                $this->assertEquals(
-                    1,
-                    \preg_match($regexp, $returnMatchPart[1]),
-                    sprintf(
-                        "Method '%s' return type doesn't have same type in documentation",
-                        $meth->getName()
-                    )
-                );
-            } else {
-
-                $returnType = $meth->getReturnType()->getName().( $meth->getReturnType()->allowsNull()
-                        ? "|null" : "");
-
-                $this->assertTrue(
-                    $returnMatchPart[1] === $returnType || $returnMatchPart[1]
-                    === "\\".$returnType,
-                    sprintf(
-                        "Method '%s' return type doesn't have same type in documentation",
-                        $meth->getName()
-                    )
-                );
-            }
+            
             //Verify if has the @since tag
             $this->assertEquals(
                 1, \preg_match("/@since(.*)/", $doc),

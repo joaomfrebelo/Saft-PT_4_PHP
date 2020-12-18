@@ -74,12 +74,12 @@ class ReferencesTest extends TestCase
         $this->assertTrue($ref->setReason(\str_pad($reason, 70, "A")));
         $this->assertSame(50, \strlen($ref->getReason()));
 
-        $ref->getErrorRegistor()->cleaeAllErrors();
+        $ref->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($ref->setReference(""));
         $this->assertSame("", $ref->getReference());
         $this->assertNotEmpty($ref->getErrorRegistor()->getOnSetValue());
 
-        $ref->getErrorRegistor()->cleaeAllErrors();
+        $ref->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($ref->setReason(""));
         $this->assertSame("", $ref->getReason());
         $this->assertNotEmpty($ref->getErrorRegistor()->getOnSetValue());

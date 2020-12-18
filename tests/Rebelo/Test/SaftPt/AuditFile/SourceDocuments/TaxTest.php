@@ -148,7 +148,7 @@ class TaxTest extends TestCase
 
         $tax->setTaxPercentage($percent);
 
-        $tax->getErrorRegistor()->cleaeAllErrors();
+        $tax->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($tax->setTaxAmount($amount));
         $this->assertSame($amount, $tax->getTaxAmount());
         $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
@@ -156,7 +156,7 @@ class TaxTest extends TestCase
 
         $tax->setTaxPercentage(null);
         $tax->setTaxAmount($amount);
-        $tax->getErrorRegistor()->cleaeAllErrors();
+        $tax->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($tax->setTaxPercentage($percent));
         $this->assertSame($percent, $tax->getTaxPercentage());
         $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
@@ -164,12 +164,12 @@ class TaxTest extends TestCase
         $tax->setTaxPercentage(null);
         $tax->setTaxAmount(null);
         $negPer = -1.0;
-        $tax->getErrorRegistor()->cleaeAllErrors();
+        $tax->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($tax->setTaxPercentage($negPer));
         $this->assertSame($negPer, $tax->getTaxPercentage());
         $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
         $larPer = 110.0;
-        $tax->getErrorRegistor()->cleaeAllErrors();
+        $tax->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($tax->setTaxPercentage($larPer));
         $this->assertSame($larPer, $tax->getTaxPercentage());
         $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());
@@ -177,7 +177,7 @@ class TaxTest extends TestCase
         $tax->setTaxPercentage(null);
         $tax->setTaxAmount(null);
         $negAm = -1.0;
-        $tax->getErrorRegistor()->cleaeAllErrors();
+        $tax->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($tax->setTaxAmount($negAm));
         $this->assertSame($negPer, $tax->getTaxAmount());
         $this->assertNotEmpty($tax->getErrorRegistor()->getOnSetValue());

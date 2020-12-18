@@ -92,6 +92,12 @@ abstract class AValidate
     protected ?RDate $lastSystemEntryDate = null;
 
     /**
+     * The last number of the document of the same serie, to check if the numeration is continues
+     * @var int
+     */
+    protected ?int $lastDocNumber = null;
+
+    /**
      *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile
      * @since 1.0.0

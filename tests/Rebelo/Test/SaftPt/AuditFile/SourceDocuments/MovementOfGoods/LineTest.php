@@ -133,7 +133,7 @@ class LineTest extends TestCase
         $this->assertSame($wrong, $line->getProductCode());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
 
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setProductCode(""));
         $this->assertSame("", $line->getProductCode());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -154,12 +154,12 @@ class LineTest extends TestCase
         $this->assertSame(200, \strlen($line->getProductDescription()));
 
         $wrong = "A";
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setProductDescription($wrong));
         $this->assertSame($wrong, $line->getProductDescription());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
 
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setProductDescription(""));
         $this->assertSame("", $line->getProductDescription());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -178,7 +178,7 @@ class LineTest extends TestCase
         $this->assertTrue($line->issetQuantity());
 
         $wrong = -0.0001;
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setQuantity($wrong));
         $this->assertSame($wrong, $line->getQuantity());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -216,7 +216,7 @@ class LineTest extends TestCase
         $this->assertTrue($line->issetUnitPrice());
 
         $wrong = -0.0001;
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setUnitPrice($wrong));
         $this->assertSame($wrong, $line->getUnitPrice());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -280,7 +280,7 @@ class LineTest extends TestCase
         $line->setCreditAmount(null);
 
         $line->setCreditAmount($cre);
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setDebitAmount($deb));
         $this->assertSame($deb, $line->getDebitAmount());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -289,7 +289,7 @@ class LineTest extends TestCase
         $line->setCreditAmount(null);
 
         $line->setDebitAmount($deb);
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setCreditAmount($cre));
         $this->assertSame($cre, $line->getCreditAmount());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -319,7 +319,7 @@ class LineTest extends TestCase
         $this->assertSame(60, \strlen($line->getTaxExemptionReason()));
 
         $wrong = "AAAAA";
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setTaxExemptionReason($wrong));
         $this->assertSame($wrong, $line->getTaxExemptionReason());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -357,7 +357,7 @@ class LineTest extends TestCase
         $this->assertNull($line->getSettlementAmount());
 
         $wrong = -0.0001;
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setSettlementAmount($wrong));
         $this->assertSame($wrong, $line->getSettlementAmount());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());

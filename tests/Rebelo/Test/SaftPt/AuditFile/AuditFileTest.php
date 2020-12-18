@@ -431,7 +431,7 @@ class AuditFileTest extends TestCase
         $config = new ValidationConfig();
         $config->setSchemaValidate(false);
         $audit  = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
-        $audit->getErrorRegistor()->cleaeAllErrors();
+        $audit->getErrorRegistor()->clearAllErrors();
         $this->assertTrue($audit->validate(PUBLIC_KEY_PATH, $config));
         $this->assertEmpty($audit->getErrorRegistor()->getLibXmlError());
     }
@@ -445,7 +445,7 @@ class AuditFileTest extends TestCase
         $config = new ValidationConfig();
         $config->setSchemaValidate(true);
         $audit  = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
-        $audit->getErrorRegistor()->cleaeAllErrors();
+        $audit->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($audit->validate(PUBLIC_KEY_PATH, $config));
         $this->assertNotEmpty($audit->getErrorRegistor()->getLibXmlError());
     }

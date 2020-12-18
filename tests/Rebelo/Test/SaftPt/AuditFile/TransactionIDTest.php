@@ -79,23 +79,23 @@ class TransactionIDTest extends TestCase
     {
         $transactioID = new TransactionID(new ErrorRegister());
 
-        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $transactioID->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($transactioID->setJournalID(""));
         $this->assertSame("", $transactioID->getJournalID());
         $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
 
         $wrong = \str_pad("A", 31, "A");
-        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $transactioID->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($transactioID->setJournalID($wrong));
         $this->assertSame($wrong, $transactioID->getJournalID());
         $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
 
-        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $transactioID->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($transactioID->setDocArchivalNumber(""));
         $this->assertSame("", $transactioID->getDocArchivalNumber());
         $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());
 
-        $transactioID->getErrorRegistor()->cleaeAllErrors();
+        $transactioID->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($transactioID->setDocArchivalNumber($wrong));
         $this->assertSame($wrong, $transactioID->getDocArchivalNumber());
         $this->assertNotEmpty($transactioID->getErrorRegistor()->getOnSetValue());

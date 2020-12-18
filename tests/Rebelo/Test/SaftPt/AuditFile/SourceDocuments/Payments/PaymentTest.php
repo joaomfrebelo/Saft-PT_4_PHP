@@ -101,18 +101,18 @@ class PaymentTest extends TestCase
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "FTFT/1";
-        $payment->getErrorRegistor()->cleaeAllErrors();
+        $payment->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($payment->setPaymentRefNo($wrong2));
         $this->assertSame($wrong2, $payment->getPaymentRefNo());
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
         $wrong3 = \str_pad($refNo, 61, "1", STR_PAD_RIGHT);
-        $payment->getErrorRegistor()->cleaeAllErrors();
+        $payment->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($payment->setPaymentRefNo($wrong3));
         $this->assertSame($wrong3, $payment->getPaymentRefNo());
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
-        $payment->getErrorRegistor()->cleaeAllErrors();
+        $payment->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($payment->setPaymentRefNo(""));
         $this->assertSame("", $payment->getPaymentRefNo());
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
@@ -135,7 +135,7 @@ class PaymentTest extends TestCase
         $this->assertSame($wrong, $payment->getATCUD());
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
-        $payment->getErrorRegistor()->cleaeAllErrors();
+        $payment->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($payment->setATCUD(""));
         $this->assertSame("", $payment->getATCUD());
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
@@ -158,7 +158,7 @@ class PaymentTest extends TestCase
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = 13;
-        $payment->getErrorRegistor()->cleaeAllErrors();
+        $payment->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($payment->setPeriod($wrong2));
         $this->assertSame($wrong2, $payment->getPeriod());
         $this->assertNotEmpty($payment->getErrorRegistor()->getOnSetValue());

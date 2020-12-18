@@ -1,4 +1,5 @@
 <?php
+
 /*
  * The MIT License
  *
@@ -43,6 +44,7 @@ use Rebelo\SaftPt\Validate\ValidationConfig;
  */
 class Validate extends Command
 {
+
     /**
      * The command name
      * @since 1.0.0
@@ -62,37 +64,49 @@ class Validate extends Command
     public const ARG_SAFT_FILE_PATH = "SAFT_PATH";
 
     /**
-     * Argument name of the public key file path
+     * Option name of the public key file path
      * @since 1.0.0
      */
     public const OPT_PUB_KEY_PATH = "pubkey";
 
     /**
-     * Argument name of the public key file path
+     * Option name of the public key file path
      * @since 1.0.0
      */
     public const OPT_PUB_KEY_PATH_SHORT = "p";
 
     /**
-     * Argument name of the public key file path
+     * Option name of the log configuration file path
      * @since 1.0.0
      */
     public const OPT_LOG4PHP_CONG = "log";
 
     /**
-     * Argument name of the public key file path
+     * Option name of the log configuration file path
      * @since 1.0.0
      */
     public const OPT_LOG4PHP_CONG_SHORT = "l";
 
     /**
-     * Argument name of the public key file path
+     * Option name of show warnings
+     * @since 1.0.0
+     */
+    public const OPT_SHOW_WARNINGS = "warnings";
+
+    /**
+     * Option name of show warnings
+     * @since 1.0.0
+     */
+    public const OPT_SHOW_WARNINGS_SHORT = "w";
+
+    /**
+     * Argument name of the idiome
      * @since 1.0.0
      */
     public const OPT_LANG = "lang";
 
     /**
-     * Argument name of the public key file path
+     * Argument name of the idiome
      * @since 1.0.0
      */
     public const OPT_LANG_SHORT = "g";
@@ -156,6 +170,7 @@ class Validate extends Command
     {
         parent::__construct($name);
     }
+
     /**
      * The name of the command
      * @var string|null
@@ -173,9 +188,9 @@ class Validate extends Command
         $this->setDescription('Validate a SAFT-PT audit file version 1.04');
         $this->setHelp(
             'This command will validate a SAFT-PT version 1.04, '
-            .'if no public key path option is set the document’s signatures ‘hash’ '
-            .'will no be validated. '
-            .'A calculation delta can be set that is accepted as no error.'
+                . 'if no public key path option is set the document’s signatures ‘hash’ '
+                . 'will no be validated. '
+                . 'A calculation delta can be set that is accepted as no error.'
         );
 
         $this->addArgument(
@@ -194,14 +209,21 @@ class Validate extends Command
             static::OPT_LOG4PHP_CONG, static::OPT_LOG4PHP_CONG_SHORT,
             InputOption::VALUE_OPTIONAL,
             "The path of the file with the log4php configuration"
-            ."(see: https://logging.apache.org/log4php/docs/configuration.html ),"
-            ."default log4php.xml", null
+                . "(see: https://logging.apache.org/log4php/docs/configuration.html ),"
+                . "default log4php.xml", null
         );
 
         $this->addOption(
             static::OPT_LANG, static::OPT_LANG_SHORT,
             InputOption::VALUE_OPTIONAL, "The validation output language",
             self::DEFAULT_LANG
+        );
+
+        $this->addOption(
+            static::OPT_SHOW_WARNINGS, static::OPT_SHOW_WARNINGS_SHORT,
+            InputOption::VALUE_OPTIONAL,
+            "Define if show warnings list, the number of warning is always show, defualt true",
+            null
         );
 
         $this->addOption(
@@ -223,7 +245,7 @@ class Validate extends Command
         $this->addOption(
             static::OPT_DELTA_TABLE, null, InputOption::VALUE_OPTIONAL,
             "Delta in document tables (sum of all documents) "
-            ."calculation to be consider valid.", "0.01"
+                . "calculation to be consider valid.", "0.01"
         );
 
         $this->addOption(
@@ -250,15 +272,21 @@ class Validate extends Command
             $this->setLog($io, $input);
             $this->setLang($io, $input);
 
+            $showWarningsOpt = $input->getOption(self::OPT_SHOW_WARNINGS);
+            $showWarnings = $showWarningsOpt === null ? true :
+                    $this->parseBool(
+                        $showWarningsOpt, self::OPT_SHOW_WARNINGS
+                    );
+
             $saft = $input->getArgument(static::ARG_SAFT_FILE_PATH);
             if (\is_string($saft) === false) {
                 throw new \Exception("Saft file path is not set");
             }
 
             $io->writeln(
-                "<info>".\sprintf(
+                "<info>" . \sprintf(
                     AuditFile::getI18n()->get("validating_file"), $saft
-                )."</info>"
+                ) . "</info>"
             );
 
             $pubKey = $this->getPubKeyPath($input);
@@ -282,7 +310,9 @@ class Validate extends Command
                         AuditFile::getI18n()->get("has_n_warnings"), $nWar
                     )
                 );
-                $io->listing($audit->getErrorRegistor()->getWarnings());
+                if($showWarnings){
+                    $io->listing($audit->getErrorRegistor()->getWarnings());
+                }
             }
 
             if ($audit->getErrorRegistor()->hasErrors() === false) {
@@ -335,6 +365,18 @@ class Validate extends Command
                 $io->listing($audit->getErrorRegistor()->getValidationErrors());
             }
 
+            $nException = \count($audit->getErrorRegistor()->getExceptionErrors());
+            if ($nException > 0) {
+                $io->error(
+                    \sprintf(
+                        AuditFile::getI18n()->get("has_n_exception"),
+                        $nException
+                    )
+                );
+                $io->listing($audit->getErrorRegistor()->getExceptionErrors());
+            }
+            
+            
             $this->printStatistic($io, $saft);
 
             return Command::SUCCESS;
@@ -402,7 +444,7 @@ class Validate extends Command
             if (\file_exists($logFile)) {
                 AuditFile::$log4phpConfigFilePath = $logFile;
                 \Logger::configure($logFile);
-                $this->log                        = \Logger::getLogger(\get_class($this));
+                $this->log = \Logger::getLogger(\get_class($this));
                 return;
             } else {
                 $io->writeln(
@@ -416,12 +458,12 @@ class Validate extends Command
 
         $default = __DIR__;
         for ($n = 0; $n <= 3; $n++) {
-            $default .= DIRECTORY_SEPARATOR."..";
+            $default .= DIRECTORY_SEPARATOR . "..";
         }
-        $logFileDef                       = $default.DIRECTORY_SEPARATOR."log4php.xml";
+        $logFileDef = $default . DIRECTORY_SEPARATOR . "log4php.xml";
         AuditFile::$log4phpConfigFilePath = $logFileDef;
         \Logger::configure($logFileDef);
-        $this->log                        = \Logger::getLogger(\get_class($this));
+        $this->log = \Logger::getLogger(\get_class($this));
         return;
     }
 
@@ -469,9 +511,9 @@ class Validate extends Command
         $debcred = $input->getOption(self::OPT_DEBIT_CREDIT);
         $config->setAllowDebitAndCredit(
             $debcred === null ? true :
-                $this->parseBool(
-                    $debcred, self::OPT_DEBIT_CREDIT
-                )
+                        $this->parseBool(
+                            $debcred, self::OPT_DEBIT_CREDIT
+                        )
         );
 
         $config->setDeltaCurrency(
@@ -522,7 +564,7 @@ class Validate extends Command
         }
 
         if (\is_string($value)) {
-            switch (\preg_replace("/^=/", "", $value)) {
+            switch (\preg_replace("/^=/", "", \strtolower($value))) {
                 case "true":
                 case "on":
                 case "yes":
@@ -576,18 +618,19 @@ class Validate extends Command
      * @param string $saft The saft-pt file path
      * @return void
      */
-    protected function printStatistic(Style $io, string $saft) : void
+    protected function printStatistic(Style $io, string $saft): void
     {
         $exectime = \time() - self::$start;
-        $exec     = \sprintf(
+        $exec = \sprintf(
             "%sm %ss", \floor($exectime / 60), $exectime % 60
         );
-        $mem      = \number_format(\memory_get_peak_usage(true), 0, "", " ");
-        $size      = \number_format((float)\filesize($saft), 0, "", " ");
+        $mem = \number_format(\memory_get_peak_usage(true), 0, "", " ");
+        $size = \number_format((float) \filesize($saft), 0, "", " ");
         $io->definitionList(
-            [AuditFile::getI18n()->get("memory").":" => $mem." Bytes"],
-            [AuditFile::getI18n()->get("saft_file").":" => $size." Bytes"],
-            [AuditFile::getI18n()->get("exec_time").":" => $exec]
+            [AuditFile::getI18n()->get("memory") . ":" => $mem . " Bytes"],
+            [AuditFile::getI18n()->get("saft_file") . ":" => $size . " Bytes"],
+            [AuditFile::getI18n()->get("exec_time") . ":" => $exec]
         );
     }
+
 }

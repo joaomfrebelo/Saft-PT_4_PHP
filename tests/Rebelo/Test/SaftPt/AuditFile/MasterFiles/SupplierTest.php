@@ -99,7 +99,7 @@ class SupplierTest extends TestCase
         $this->assertEquals($supplierId, $supplier->getSupplierID());
         $this->assertTrue($supplier->issetSupplierID());
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setSupplierID(""));
         $this->assertSame("", $supplier->getSupplierID());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -133,13 +133,13 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->setAccountID(Supplier::DESCONHECIDO));
         $this->assertEquals(Supplier::DESCONHECIDO, $supplier->getAccountID());
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setAccountID(""));
         $this->assertSame("", $supplier->getAccountID());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
 
         $wrong = str_pad("A", 32, "A");
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setAccountID($wrong));
         $this->assertSame($wrong, $supplier->getAccountID());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -171,13 +171,13 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->issetSupplierTaxID());
         $this->assertEquals($supplierTaxId, $supplier->getSupplierTaxID());
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setSupplierTaxID(""));
         $this->assertSame("", $supplier->getSupplierTaxID());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
 
         $wrong = str_pad("A", 32, "A");
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setSupplierTaxID($wrong));
         $this->assertSame($wrong, $supplier->getSupplierTaxID());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -211,7 +211,7 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->setCompanyName(\str_pad("_", 109, "_")));
         $this->assertEquals(100, \strlen($supplier->getCompanyName()));
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setCompanyName(""));
         $this->assertSame("", $supplier->getCompanyName());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -239,7 +239,7 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->setContact(\str_pad("_", 51, "_")));
         $this->assertEquals(50, \strlen($supplier->getContact()));
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setContact(""));
         $this->assertSame("", $supplier->getContact());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -303,7 +303,7 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->setTelephone(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($supplier->getTelephone()));
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setTelephone(""));
         $this->assertSame("", $supplier->getTelephone());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -329,7 +329,7 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->setFax(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($supplier->getFax()));
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setFax(""));
         $this->assertSame("", $supplier->getFax());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -353,18 +353,18 @@ class SupplierTest extends TestCase
         $this->assertEquals($email, $supplier->getEmail());
 
         $wrong = \str_pad($email, 255, "a", STR_PAD_LEFT);
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setEmail($wrong));
         $this->assertSame($wrong, $supplier->getEmail());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "isNotEmail";
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setEmail($wrong2));
         $this->assertSame($wrong2, $supplier->getEmail());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setEmail(""));
         $this->assertSame("", $supplier->getEmail());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
@@ -388,12 +388,12 @@ class SupplierTest extends TestCase
         $this->assertEquals($website, $supplier->getWebsite());
 
         $wrong = \str_pad($website, 61, "a", STR_PAD_RIGHT);
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setWebsite($wrong));
         $this->assertSame($wrong, $supplier->getWebsite());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());
 
-        $supplier->getErrorRegistor()->cleaeAllErrors();
+        $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setWebsite(""));
         $this->assertSame("", $supplier->getWebsite());
         $this->assertNotEmpty($supplier->getErrorRegistor()->getOnSetValue());

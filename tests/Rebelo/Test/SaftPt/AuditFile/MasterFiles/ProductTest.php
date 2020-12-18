@@ -130,7 +130,7 @@ class ProductTest extends TestCase
         $this->assertEquals(60, \strlen($product->getProductCode()));
         $this->assertTrue($product->issetProductCode());
 
-        $product->getErrorRegistor()->cleaeAllErrors();
+        $product->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($product->setProductCode(""));
         $this->assertSame("", $product->getProductCode());
         $this->assertNotEmpty($product->getErrorRegistor()->getOnSetValue());
@@ -151,7 +151,7 @@ class ProductTest extends TestCase
         $this->assertTrue($product->setProductGroup(str_pad("A", 61, "9")));
         $this->assertEquals(50, \strlen($product->getProductGroup()));
 
-        $product->getErrorRegistor()->cleaeAllErrors();
+        $product->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($product->setProductGroup(""));
         $this->assertSame("", $product->getProductGroup());
         $this->assertNotEmpty($product->getErrorRegistor()->getOnSetValue());
@@ -171,7 +171,7 @@ class ProductTest extends TestCase
         $this->assertTrue($product->setProductDescription(str_pad("A", 201, "9")));
         $this->assertEquals(200, \strlen($product->getProductDescription()));
 
-        $product->getErrorRegistor()->cleaeAllErrors();
+        $product->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($product->setProductDescription("A"));
         $this->assertSame("A", $product->getProductDescription());
         $this->assertNotEmpty($product->getErrorRegistor()->getOnSetValue());
@@ -191,7 +191,7 @@ class ProductTest extends TestCase
         $this->assertTrue($product->setProductNumberCode(str_pad("A", 61, "9")));
         $this->assertEquals(60, \strlen($product->getProductNumberCode()));
 
-        $product->getErrorRegistor()->cleaeAllErrors();
+        $product->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($product->setProductNumberCode(""));
         $this->assertSame("", $product->getProductNumberCode());
         $this->assertNotEmpty($product->getErrorRegistor()->getOnSetValue());

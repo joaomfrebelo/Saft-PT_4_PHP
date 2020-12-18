@@ -162,12 +162,12 @@ class DocumentTotalsTest extends TestCase
         $this->assertSame($wrong, $docTot->getGrossTotal());
         $this->assertNotEmpty($docTot->getErrorRegistor()->getOnSetValue());
 
-        $docTot->getErrorRegistor()->cleaeAllErrors();
+        $docTot->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($docTot->setNetTotal($wrong));
         $this->assertSame($wrong, $docTot->getNetTotal());
         $this->assertNotEmpty($docTot->getErrorRegistor()->getOnSetValue());
 
-        $docTot->getErrorRegistor()->cleaeAllErrors();
+        $docTot->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($docTot->setTaxPayable($wrong));
         $this->assertSame($wrong, $docTot->getTaxPayable());
         $this->assertNotEmpty($docTot->getErrorRegistor()->getOnSetValue());

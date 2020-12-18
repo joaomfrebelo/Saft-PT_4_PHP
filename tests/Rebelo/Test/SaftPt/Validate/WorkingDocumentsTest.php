@@ -240,6 +240,41 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
     }
 
     /**
+     * @author João Rebelo@author João Rebelo
+     * @depends testWorkDoc
+     * @depends testNumberOfEntries
+     * @depends testTotalDebit
+     * @depends testTotalCredit
+     * @depends testReferncesOneReference
+     * @depends testOrderReferencesOneOrderReference
+     * @return void
+     */
+    public function testValidateMissingDoc(): void
+    {
+        $xml = \simplexml_load_file(SAFT_MISSING_WORKING_DOC);
+        if ($xml === false) {
+            $this->fail(\sprintf("Failling load file '%s'", SAFT_MISSING_WORKING_DOC));
+        }
+
+        $auditFile = new AuditFile();
+        $auditFile->parseXmlNode($xml);
+
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
+        $sign->setPrivateKeyFilePath(PRIVATE_KEY_PATH);
+        $sign->setPublicKeyFilePath(PUBLIC_KEY_PATH);
+
+        $this->workingDocuments->setAuditFile($auditFile);
+        $this->workingDocuments->setDeltaLine(0.005);
+        $this->workingDocuments->setDeltaCurrency(0.005);
+        $this->workingDocuments->setDeltaTable(0.005);
+        $this->workingDocuments->setDeltaTotalDoc(0.005);
+
+        $valide = $this->workingDocuments->validate();
+        $this->assertFalse($valide);
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+    }
+
+    /**
      * @author João Rebelo
      * @return void
      */

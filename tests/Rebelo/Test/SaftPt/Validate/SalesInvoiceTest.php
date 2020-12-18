@@ -244,6 +244,43 @@ class SalesInvoiceTest extends ASalesInvoiceBase
     }
 
     /**
+     * @author João Rebelo@author João Rebelo
+     * @depends testInvoice
+     * @depends testNumberOfEntries
+     * @depends testTotalDebit
+     * @depends testTotalCredit
+     * @depends testReferncesOneReference
+     * @depends testOrderReferencesOneOrderReference
+     * @return void
+     */
+    public function testValidateMissingInvoice(): void
+    {
+        $xml = \simplexml_load_file(SAFT_MISSING_INVOICE);
+        if ($xml === false) {
+            $this->fail(\sprintf("Failling load file '%s'", SAFT_MISSING_INVOICE));
+            /** @phpstan-ignore-next-line */
+            return;
+        }
+
+        $auditFile = new AuditFile();
+        $auditFile->parseXmlNode($xml);
+
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
+        $sign->setPrivateKeyFilePath(PRIVATE_KEY_PATH);
+        $sign->setPublicKeyFilePath(PUBLIC_KEY_PATH);
+
+        $this->salesInvoice->setAuditFile($auditFile);
+        $this->salesInvoice->setDeltaLine(0.005);
+        $this->salesInvoice->setDeltaCurrency(0.005);
+        $this->salesInvoice->setDeltaTable(0.005);
+        $this->salesInvoice->setDeltaTotalDoc(0.005);
+
+        $valide = $this->salesInvoice->validate();
+        $this->assertFalse($valide);
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+    }
+
+    /**
      * @author João Rebelo
      * @return void
      */
@@ -1349,6 +1386,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $invoice       = $salesInvoices->addInvoice();
         $now           = new RDate();
         $invoice->setInvoiceDate($now);
+        $invoice->setSystemEntryDate($now);
         $invoice->setInvoiceNo("FT FT/1");
 
         $docStatus = $invoice->getDocumentStatus();
@@ -1399,7 +1437,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
      * @test
      * @return void
      */
-    public function testDocumentStatusStatusDateEalier(): void
+    public function testDocumentStatusStatusDateEalierDocDate(): void
     {
         /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
         $auditFile = $this->salesInvoice->getAuditFile();
@@ -1411,6 +1449,42 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(RDate::parse(RDate::SQL_DATE, "2020-10-05"));
+        $invoice->setSystemEntryDate(RDate::parse(RDate::SQL_DATE, "2020-10-04"));
+        $invoice->setInvoiceNo("FT FT/1");
+
+        $docStatus = $invoice->getDocumentStatus();
+        $docStatus->setInvoiceStatus(new InvoiceStatus(InvoiceStatus::N));
+        $docStatus->setInvoiceStatusDate(
+            RDate::parse(RDate::SQL_DATE, "2020-10-04")
+        );
+        $docStatus->setSourceBilling(new SourceBilling(SourceBilling::P));
+        $docStatus->setSourceID("Rebelo");
+
+        $this->salesInvoice->documentStatus($invoice);
+
+        $this->assertTrue($this->salesInvoice->isValid());
+        $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertEmpty($salesInvoices->getError());        
+    }
+    
+    /**
+     * @author João Rebelo
+     * @test
+     * @return void
+     */
+    public function testDocumentStatusStatusDateEalierSystemEntryDate(): void
+    {
+        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $auditFile = $this->salesInvoice->getAuditFile();
+        $this->assertInstanceOf(
+            \Rebelo\SaftPt\AuditFile\AuditFile::class, $auditFile
+        );
+
+        /* @var $salesInvoices \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices */
+        $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
+        $invoice       = $salesInvoices->addInvoice();
+        $invoice->setInvoiceDate(RDate::parse(RDate::SQL_DATE, "2020-10-05"));
+        $invoice->setSystemEntryDate(RDate::parse(RDate::SQL_DATE, "2020-10-05"));
         $invoice->setInvoiceNo("FT FT/1");
 
         $docStatus = $invoice->getDocumentStatus();
@@ -1431,7 +1505,6 @@ class SalesInvoiceTest extends ASalesInvoiceBase
             \array_key_first($invoice->getError())
         );
     }
-
     /**
      * @author João Rebelo
      * @test
@@ -1449,7 +1522,8 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $now           = new RDate();
-        $invoice->setInvoiceDate($now);
+        $invoice->setInvoiceDate(clone $now);
+        $invoice->setSystemEntryDate(clone $now);
         $invoice->setInvoiceNo("FT FT/1");
 
         $docStatus = $invoice->getDocumentStatus();
@@ -1483,6 +1557,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $salesInvoices = $auditFile->getSourceDocuments()->getSalesInvoices();
         $invoice       = $salesInvoices->addInvoice();
         $invoice->setInvoiceDate(new RDate());
+        $invoice->setSystemEntryDate(new RDate());
         $invoice->setInvoiceNo("FT FT/1");
 
         $docStatus = $invoice->getDocumentStatus();

@@ -188,12 +188,12 @@ class WorkDocumentTest extends TestCase
         $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = 13;
-        $workDocument->getErrorRegistor()->cleaeAllErrors();
+        $workDocument->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($workDocument->setPeriod($wrong2));
         $this->assertSame($wrong2, $workDocument->getPeriod());
         $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
 
-        $workDocument->getErrorRegistor()->cleaeAllErrors();
+        $workDocument->getErrorRegistor()->clearAllErrors();
         $this->assertTrue($workDocument->setPeriod(null));
         $this->assertNull($workDocument->getPeriod());
         $this->assertEmpty($workDocument->getErrorRegistor()->getOnSetValue());
@@ -263,7 +263,7 @@ class WorkDocumentTest extends TestCase
         $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "999999";
-        $workDocument->getErrorRegistor()->cleaeAllErrors();
+        $workDocument->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($workDocument->setEacCode($wrong2));
         $this->assertSame($wrong2, $workDocument->getEacCode());
         $this->assertNotEmpty($workDocument->getErrorRegistor()->getOnSetValue());

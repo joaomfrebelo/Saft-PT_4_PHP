@@ -140,7 +140,7 @@ class ErrorRegister
      * @return void
      * @since 1.0.0
      */
-    public function cleaeAllErrors(): void
+    public function clearAllErrors(): void
     {
         $this->libXmlError      = array();
         $this->onCreateXmlNode  = array();

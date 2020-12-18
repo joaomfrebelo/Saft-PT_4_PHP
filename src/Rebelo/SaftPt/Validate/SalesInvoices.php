@@ -163,12 +163,29 @@ class SalesInvoices extends ADocuments
 
                         /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
                         $invoice = $order[$type][$serie][$no];
+                        list(, $no) = \explode("/", $invoice->getInvoiceNo());
                         if ((string) $type !== $this->lastType || (string) $serie
                             !== $this->lastSerie) {
                             $this->lastHash            = "";
                             $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
+                        }else {
+                            $noExpected = $this->lastDocNumber + 1;
+                            if (\intval($no) !== $noExpected) {
+                                do{
+                                $msg = \sprintf(
+                                    AuditFile::getI18n()->get("the_document_n_is_missing"),
+                                    $type, $serie, $noExpected
+                                );
+                                \Logger::getLogger(\get_class($this))->debug($msg);
+                                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                                $this->isValid = false;
+                                $this->lastDocNumber = $noExpected;
+                                $noExpected++;
+                                }while ($no !== \strval($noExpected));
+                            }
                         }
+                        $this->lastDocNumber = (int) $no;
                         $invoice->setDocTotalcal(new DocTotalCalc());
                         $this->invoice($invoice);
                         $this->lastType  = (string) $type;
@@ -341,7 +358,7 @@ class SalesInvoices extends ADocuments
             )
         )->abs()->valueOf();
 
-        if ($diff > $this->deltaTotalDoc) {
+        if ($diff > $this->deltaTable) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_total_debit_of_invoices"
@@ -372,7 +389,7 @@ class SalesInvoices extends ADocuments
             )
         )->abs()->valueOf();
 
-        if ($diff > $this->deltaTotalDoc) {
+        if ($diff > $this->deltaTable) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_total_credit_of_invoices"
@@ -408,7 +425,7 @@ class SalesInvoices extends ADocuments
 
         $status = $invoice->getDocumentStatus();
 
-        if ($status->getInvoiceStatusDate() < $invoice->getInvoiceDate()) {
+        if ($status->getInvoiceStatusDate() < $invoice->getSystemEntryDate()) {
 
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get(
@@ -1324,7 +1341,7 @@ class SalesInvoices extends ADocuments
         if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $invoice->getInvoiceNo()
+                $this->grossTotal, $invoice->getInvoiceNo(), $gross->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
@@ -1335,7 +1352,7 @@ class SalesInvoices extends ADocuments
         if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $invoice->getInvoiceNo()
+                $this->netTotal, $invoice->getInvoiceNo(), $net->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NETTOTAL);
@@ -1346,7 +1363,7 @@ class SalesInvoices extends ADocuments
         if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
-                $invoice->getInvoiceNo()
+                $this->taxPayable, $invoice->getInvoiceNo(), $tax->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);
@@ -1567,7 +1584,7 @@ class SalesInvoices extends ADocuments
         if ($shipFrom === null || $shipFrom->getAddress(false) === null) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("document_to_be_stockMovement_must_heve_shipfrom"),
+                    ->get("document_to_be_stockMovement_must_have_shipfrom"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
@@ -1615,7 +1632,7 @@ class SalesInvoices extends ADocuments
         if ($shipTo === null || $shipTo->getAddress(false) === null) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("document_to_be_stockMovement_must_heve_shipto"),
+                    ->get("document_to_be_stockMovement_must_have_shipto"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
@@ -1629,7 +1646,7 @@ class SalesInvoices extends ADocuments
 
                 $msg        = \sprintf(
                     AAuditFile::getI18n()
-                        ->get("document_to_be_stockMovement_must_heve_shipto"),
+                        ->get("document_to_be_stockMovement_must_have_shipto"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
@@ -1859,6 +1876,10 @@ class SalesInvoices extends ADocuments
             $totalTax->plusThis($withholding->getWithholdingTaxAmount());
         }
 
+        if($totalTax->isEquals(0.0)){
+            return;
+        }
+        
         if ($invoice->issetDocumentTotals()) {
             if ($invoice->getDocumentTotals()->issetGrossTotal()) {
                 $gross = $invoice->getDocumentTotals()->getGrossTotal();

@@ -82,7 +82,7 @@ class AddressPTTest extends TestCase
         $this->assertTrue($addrPT->setBuildingNumber(\str_pad("_", 11, "_")));
         $this->assertEquals(10, \strlen($addrPT->getBuildingNumber()));
 
-        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setBuildingNumber(""));
         $this->assertSame("", $addrPT->getBuildingNumber());
         $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
@@ -104,7 +104,7 @@ class AddressPTTest extends TestCase
         $addrPT->setStreetName(\str_pad("_", 209, "_"));
         $this->assertEquals(200, \strlen($addrPT->getStreetName()));
 
-        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setStreetName(""));
         $this->assertSame("", $addrPT->getStreetName());
         $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
@@ -126,7 +126,7 @@ class AddressPTTest extends TestCase
         $addrPT->setAddressDetail(\str_pad("_", 212, "_"));
         $this->assertEquals(210, \strlen($addrPT->getAddressDetail()));
 
-        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setAddressDetail(""));
         $this->assertSame("", $addrPT->getAddressDetail());
         $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
@@ -153,7 +153,7 @@ class AddressPTTest extends TestCase
         $addrPT->setCity(\str_pad("_", 59, "_"));
         $this->assertEquals(50, \strlen($addrPT->getCity()));
 
-        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setCity(""));
         $this->assertSame("", $addrPT->getCity());
         $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
@@ -181,7 +181,7 @@ class AddressPTTest extends TestCase
         $this->assertNull($addrPT->getRegion());
         $addrPT->setRegion(\str_pad("_", 212, "_"));
         $this->assertEquals(50, \strlen($addrPT->getRegion()));
-        $addrPT->getErrorRegistor()->cleaeAllErrors();
+        $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setRegion(""));
         $this->assertSame("", $addrPT->getRegion());
         $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());

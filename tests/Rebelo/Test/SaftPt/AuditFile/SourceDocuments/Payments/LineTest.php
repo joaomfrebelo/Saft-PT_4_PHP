@@ -188,7 +188,7 @@ class LineTest extends TestCase
         $line->setCreditAmount(null);
 
         $line->setCreditAmount($cre);
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setDebitAmount($deb));
         $this->assertSame($deb, $line->getDebitAmount());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());
@@ -197,7 +197,7 @@ class LineTest extends TestCase
         $line->setCreditAmount(null);
 
         $line->setDebitAmount($deb);
-        $line->getErrorRegistor()->cleaeAllErrors();
+        $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setCreditAmount($cre));
         $this->assertSame($cre, $line->getCreditAmount());
         $this->assertNotEmpty($line->getErrorRegistor()->getOnSetValue());

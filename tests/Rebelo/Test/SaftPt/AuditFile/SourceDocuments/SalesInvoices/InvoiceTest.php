@@ -114,7 +114,7 @@ class InvoiceTest extends TestCase
         $this->assertSame($wrong, $invoice->getInvoiceNo());
         $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
 
-        $invoice->getErrorRegistor()->cleaeAllErrors();
+        $invoice->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($invoice->setInvoiceNo(""));
         $this->assertSame("", $invoice->getInvoiceNo());
         $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
@@ -204,7 +204,7 @@ class InvoiceTest extends TestCase
         $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = 13;
-        $invoice->getErrorRegistor()->cleaeAllErrors();
+        $invoice->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($invoice->setPeriod($wrong2));
         $this->assertSame($wrong2, $invoice->getPeriod());
         $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
@@ -290,7 +290,7 @@ class InvoiceTest extends TestCase
         $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "999999";
-        $invoice->getErrorRegistor()->cleaeAllErrors();
+        $invoice->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($invoice->setEacCode($wrong2));
         $this->assertSame($wrong2, $invoice->getEacCode());
         $this->assertNotEmpty($invoice->getErrorRegistor()->getOnSetValue());

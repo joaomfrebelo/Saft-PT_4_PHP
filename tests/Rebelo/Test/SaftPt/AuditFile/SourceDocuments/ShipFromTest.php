@@ -78,7 +78,7 @@ class ShipFromTest extends TestCase
         $this->assertTrue($ship->addDeliveryID(\str_pad("A", 300, "A")));
         $this->assertSame(255, \strlen($ship->getDeliveryID()[++$k]));
 
-        $ship->getErrorRegistor()->cleaeAllErrors();
+        $ship->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($ship->addDeliveryID(""));
         $this->assertSame("", $ship->getDeliveryID()[++$k]);
         $this->assertNotEmpty($ship->getErrorRegistor()->getOnSetValue());

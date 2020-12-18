@@ -79,7 +79,7 @@ class ProductSerialNumberTest extends TestCase
         $pad = $psn->getSerialNumber()[$n];
         $this->assertSame(100, \strlen($pad));
 
-        $psn->getErrorRegistor()->cleaeAllErrors();
+        $psn->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($psn->addSerialNumber(""));
         $this->assertSame("", $psn->getSerialNumber()[++$n]);
         $this->assertNotEmpty($psn->getErrorRegistor()->getOnSetValue());

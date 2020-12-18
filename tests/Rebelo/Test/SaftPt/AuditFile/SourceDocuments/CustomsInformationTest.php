@@ -79,13 +79,13 @@ class CustomsInformationTest extends TestCase
         $this->assertTrue($ci->addARCNo(\str_pad("A", 99, "A")));
         $this->assertSame(21, \strlen($ci->getArcNo()[$n]));
 
-        $ci->getErrorRegistor()->cleaeAllErrors();
+        $ci->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($ci->addARCNo(""));
         $this->assertSame("", $ci->getArcNo()[++$n]);
         $this->assertNotEmpty($ci->getErrorRegistor()->getOnSetValue());
 
         $wrong = -0.01;
-        $ci->getErrorRegistor()->cleaeAllErrors();
+        $ci->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($ci->setIecAmount($wrong));
         $this->assertSame($wrong, $ci->getIecAmount());
         $this->assertNotEmpty($ci->getErrorRegistor()->getOnSetValue());

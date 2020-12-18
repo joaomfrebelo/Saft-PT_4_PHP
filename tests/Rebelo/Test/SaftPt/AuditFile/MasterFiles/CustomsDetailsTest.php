@@ -82,14 +82,14 @@ class CustomsDetailsTest extends TestCase
         $this->assertEquals($cnNum2, $custDetail->getCNCode()[1]);
 
         $wrong = "999";
-        $custDetail->getErrorRegistor()->cleaeAllErrors();
+        $custDetail->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($custDetail->addCNCode($wrong));
         $this->assertSame($wrong, $custDetail->getCNCode()[2]);
         $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
 
         //Add CNCode that does not respect regexp
         $wrong2 = "9999999999";
-        $custDetail->getErrorRegistor()->cleaeAllErrors();
+        $custDetail->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($custDetail->addCNCode($wrong2));
         $this->assertSame($wrong2, $custDetail->getCNCode()[3]);
         $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
@@ -113,13 +113,13 @@ class CustomsDetailsTest extends TestCase
         $this->assertEquals($cnNum2, $custDetail->getUNNumber()[1]);
 
         $wrong = "999";
-        $custDetail->getErrorRegistor()->cleaeAllErrors();
+        $custDetail->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($custDetail->addUNNumber($wrong));
         $this->assertSame($wrong, $custDetail->getUNNumber()[2]);
         $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "9999999999";
-        $custDetail->getErrorRegistor()->cleaeAllErrors();
+        $custDetail->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($custDetail->addUNNumber($wrong2));
         $this->assertSame($wrong2, $custDetail->getUNNumber()[3]);
         $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());

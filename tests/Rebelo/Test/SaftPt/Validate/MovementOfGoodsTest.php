@@ -76,8 +76,8 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
     /**
      * @author João Rebelo
      * @test
-     * @-depends testMovOfStock
-     * @-depends testNumberOfLinesAndTotalQuantity
+     * @depends testMovOfStock
+     * @depends testNumberOfLinesAndTotalQuantity
      * @return void
      */
     public function testValidate(): void
@@ -103,6 +103,38 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $valide = $this->movementOfGoods->validate();
         $this->assertTrue($valide);
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     * @depends testMovOfStock
+     * @depends testNumberOfLinesAndTotalQuantity
+     * @return void
+     */
+    public function testValidateMissingStockMov(): void
+    {
+        $xml = \simplexml_load_file(SAFT_MISSING_STOCK_MOV);
+        if ($xml === false) {
+            $this->fail(\sprintf("Failling load file '%s'", SAFT_MISSING_STOCK_MOV));
+        }
+
+        $auditFile = new AuditFile();
+        $auditFile->parseXmlNode($xml);
+
+        $sign = new \Rebelo\SaftPt\Sign\Sign();
+        $sign->setPrivateKeyFilePath(PRIVATE_KEY_PATH);
+        $sign->setPublicKeyFilePath(PUBLIC_KEY_PATH);
+
+        $this->movementOfGoods->setAuditFile($auditFile);
+        $this->movementOfGoods->setDeltaLine(0.005);
+        $this->movementOfGoods->setDeltaCurrency(0.005);
+        $this->movementOfGoods->setDeltaTable(0.005);
+        $this->movementOfGoods->setDeltaTotalDoc(0.005);
+
+        $valide = $this->movementOfGoods->validate();
+        $this->assertFalse($valide);
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
     /**

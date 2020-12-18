@@ -198,12 +198,12 @@ class StockMovementTest extends TestCase
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = 13;
-        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $stkMov->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($stkMov->setPeriod($wrong2));
         $this->assertSame($wrong2, $stkMov->getPeriod());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
 
-        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $stkMov->getErrorRegistor()->clearAllErrors();
         $this->assertTrue($stkMov->setPeriod(null));
         $this->assertNull($stkMov->getPeriod());
         $this->assertEmpty($stkMov->getErrorRegistor()->getOnSetValue());
@@ -273,7 +273,7 @@ class StockMovementTest extends TestCase
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "999999";
-        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $stkMov->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($stkMov->setEacCode($wrong2));
         $this->assertSame($wrong2, $stkMov->getEacCode());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
@@ -325,7 +325,7 @@ class StockMovementTest extends TestCase
         $this->assertSame($wrong, $stkMov->getCustomerID());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
 
-        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $stkMov->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($stkMov->setSupplierID($wrong));
         $this->assertSame($wrong, $stkMov->getSupplierID());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
@@ -348,7 +348,7 @@ class StockMovementTest extends TestCase
         $this->assertSame($wrong, $stkMov->getSupplierID());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
 
-        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $stkMov->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($stkMov->setCustomerID($wrong));
         $this->assertSame($wrong, $stkMov->getCustomerID());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
@@ -442,7 +442,7 @@ class StockMovementTest extends TestCase
         $this->assertSame($wrong, $stkMov->getAtDocCodeID());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());
 
-        $stkMov->getErrorRegistor()->cleaeAllErrors();
+        $stkMov->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($stkMov->setAtDocCodeID(""));
         $this->assertSame("", $stkMov->getAtDocCodeID());
         $this->assertNotEmpty($stkMov->getErrorRegistor()->getOnSetValue());

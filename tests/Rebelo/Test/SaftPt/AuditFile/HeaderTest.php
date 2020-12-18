@@ -108,12 +108,12 @@ class HeaderTest extends TestCase
         $this->assertEquals($companyId, $header->getCompanyID());
         $this->assertTrue($header->issetCompanyID());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setCompanyID(""));
         $this->assertEmpty($header->getCompanyID());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong = "aaaaa";
         $this->assertFalse($header->setCompanyID($wrong));
         $this->assertSame($wrong, $header->getCompanyID());
@@ -147,7 +147,7 @@ class HeaderTest extends TestCase
         $this->assertEquals($taxRegNum, $header->getTaxRegistrationNumber());
         $this->assertTrue($header->issetTaxRegistrationNumber());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong = 111222333;
         $this->assertFalse(
             $header->setTaxRegistrationNumber($wrong)
@@ -215,7 +215,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setCompanyName(\str_pad("_", 109, "_")));
         $this->assertEquals(100, \strlen($header->getCompanyName()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setCompanyName(""));
         $this->assertSame("", $header->getCompanyName());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -243,7 +243,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setBusinessName(\str_pad("_", 109, "_")));
         $this->assertEquals(60, \strlen($header->getBusinessName()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setBusinessName(""));
         $this->assertSame("", $header->getBusinessName());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -283,13 +283,13 @@ class HeaderTest extends TestCase
         $this->assertEquals($year, $header->getFiscalYear());
         $this->assertTrue($header->issetFiscalYear());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong = 1999;
         $this->assertFalse($header->setFiscalYear($wrong));
         $this->assertSame($wrong, $header->getFiscalYear());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong2 = \intval(\Date("Y")) + 2;
         $this->assertFalse($header->setFiscalYear($wrong2));
         $this->assertSame($wrong2, $header->getFiscalYear());
@@ -326,13 +326,13 @@ class HeaderTest extends TestCase
             $date->getTimestamp(), $header->getStartDate()->getTimestamp()
         );
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $date->setDate(1999, 10, 05);
         $this->assertFalse($header->setStartDate($date));
         $this->assertSame("1999-10-05", $date->format(RDate::SQL_DATE));
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $date->setDate(\intval(\Date("Y") + 2), 10, 5);
         $this->assertFalse($header->setStartDate($date));
         $this->assertSame($date, $header->getStartDate());
@@ -369,13 +369,13 @@ class HeaderTest extends TestCase
             $date->getTimestamp(), $header->getEndDate()->getTimestamp()
         );
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $date->setDate(1999, 10, 05);
         $this->assertFalse($header->setEndDate($date));
         $this->assertSame($date, $header->getEndDate());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $date->setDate(\intval(\Date("Y") + 2), 10, 5);
         $this->assertFalse($header->setEndDate($date));
         $this->assertSame($date, $header->getEndDate());
@@ -434,7 +434,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setTaxEntity(\str_pad("_", 109, "_")));
         $this->assertEquals(20, \strlen($header->getTaxEntity()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setTaxEntity(""));
         $this->assertSame("", $header->getTaxEntity());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -470,7 +470,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setProductCompanyTaxID(\str_pad("_", 300, "_")));
         $this->assertEquals(30, \strlen($header->getProductCompanyTaxID()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setProductCompanyTaxID(""));
         $this->assertSame("", $header->getProductCompanyTaxID());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -503,7 +503,7 @@ class HeaderTest extends TestCase
         $this->assertEquals($number, $header->getSoftwareCertificateNumber());
         $this->assertTrue($header->issetSoftwareCertificateNumber());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong = -1;
         $this->assertFalse($header->setSoftwareCertificateNumber($wrong));
         $this->assertSame($wrong, $header->getSoftwareCertificateNumber());
@@ -537,7 +537,7 @@ class HeaderTest extends TestCase
         $this->assertEquals($productId, $header->getProductID());
         $this->assertTrue($header->issetProductID());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setProductID(""));
         $this->assertSame("", $header->getProductID());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -573,7 +573,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setProductVersion(\str_pad("_", 300, "_")));
         $this->assertEquals(30, \strlen($header->getProductVersion()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setProductVersion(""));
         $this->assertSame("", $header->getProductVersion());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -603,7 +603,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setHeaderComment(\str_pad("_", 300, "_")));
         $this->assertEquals(255, \strlen($header->getHeaderComment()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setHeaderComment(""));
         $this->assertSame("", $header->getHeaderComment());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -629,7 +629,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setTelephone(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($header->getTelephone()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setTelephone(""));
         $this->assertSame("", $header->getTelephone());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -655,7 +655,7 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setFax(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($header->getFax()));
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setFax(""));
         $this->assertSame("", $header->getFax());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -678,19 +678,19 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setEmail($email));
         $this->assertEquals($email, $header->getEmail());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong = \str_pad($email, 255, "a", STR_PAD_LEFT);
         $this->assertFalse($header->setEmail($wrong));
         $this->assertSame($wrong, $header->getEmail());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong2 = "isNotEmail";
         $this->assertFalse($header->setEmail($wrong2));
         $this->assertSame($wrong2, $header->getEmail());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setEmail(""));
         $this->assertSame("", $header->getEmail());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
@@ -713,13 +713,13 @@ class HeaderTest extends TestCase
         $this->assertTrue($header->setWebsite($website));
         $this->assertEquals($website, $header->getWebsite());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $wrong = \str_pad($website, 61, "a", STR_PAD_RIGHT);
         $this->assertFalse($header->setWebsite($wrong));
         $this->assertSame($wrong, $header->getWebsite());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
-        $header->getErrorRegistor()->cleaeAllErrors();
+        $header->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($header->setWebsite(""));
         $this->assertSame("", $header->getWebsite());
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());

@@ -96,7 +96,7 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setCustomerID($customerId));
         $this->assertEquals($customerId, $customer->getCustomerID());
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setCustomerID(""));
         $this->assertSame("", $customer->getCustomerID());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -130,13 +130,13 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setAccountID(Customer::DESCONHECIDO));
         $this->assertEquals(Customer::DESCONHECIDO, $customer->getAccountID());
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setAccountID(""));
         $this->assertSame("", $customer->getAccountID());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $wrong = str_pad("A", 32, "A");
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setAccountID($wrong));
         $this->assertSame($wrong, $customer->getAccountID());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -168,13 +168,13 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setCustomerTaxID($customerTaxId));
         $this->assertEquals($customerTaxId, $customer->getCustomerTaxID());
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setCustomerTaxID(""));
         $this->assertSame("", $customer->getCustomerTaxID());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $wrong = str_pad("A", 32, "A");
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setCustomerTaxID($wrong));
         $this->assertSame($wrong, $customer->getCustomerTaxID());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -208,7 +208,7 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setCompanyName(\str_pad("_", 109, "_")));
         $this->assertEquals(100, \strlen($customer->getCompanyName()));
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setCompanyName(""));
         $this->assertSame("", $customer->getCompanyName());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -238,7 +238,7 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setContact(\str_pad("_", 51, "_")));
         $this->assertEquals(50, \strlen($customer->getContact()));
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setContact(""));
         $this->assertSame("", $customer->getContact());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -299,7 +299,7 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setTelephone(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($customer->getTelephone()));
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setTelephone(""));
         $this->assertSame("", $customer->getTelephone());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -325,7 +325,7 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setFax(\str_pad("_", 300, "_")));
         $this->assertEquals(20, \strlen($customer->getFax()));
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setFax(""));
         $this->assertSame("", $customer->getFax());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -349,18 +349,18 @@ class CustomerTest extends TestCase
         $this->assertEquals($email, $customer->getEmail());
 
         $wrong = \str_pad($email, 255, "a", STR_PAD_LEFT);
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setEmail($wrong));
         $this->assertSame($wrong, $customer->getEmail());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "isNotEmail";
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setEmail($wrong2));
         $this->assertSame($wrong2, $customer->getEmail());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setEmail(""));
         $this->assertSame("", $customer->getEmail());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
@@ -384,12 +384,12 @@ class CustomerTest extends TestCase
         $this->assertEquals($website, $customer->getWebsite());
 
         $wrong = \str_pad($website, 61, "a", STR_PAD_RIGHT);
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setWebsite($wrong));
         $this->assertSame($wrong, $customer->getWebsite());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
 
-        $customer->getErrorRegistor()->cleaeAllErrors();
+        $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setWebsite(""));
         $this->assertSame("", $customer->getWebsite());
         $this->assertNotEmpty($customer->getErrorRegistor()->getOnSetValue());
