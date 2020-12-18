@@ -77,7 +77,7 @@ class WarehouseTest extends TestCase
         );
         $this->assertSame(50, \strlen($warehouse->getWarehouseID()));
 
-        $warehouse->getErrorRegistor()->cleaeAllErrors();
+        $warehouse->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($warehouse->setWarehouseID(""));
         $this->assertSame("", $warehouse->getWarehouseID());
         $this->assertNotEmpty($warehouse->getErrorRegistor()->getOnSetValue());
@@ -92,7 +92,7 @@ class WarehouseTest extends TestCase
         );
         $this->assertSame(30, \strlen($warehouse->getLocationID()));
 
-        $warehouse->getErrorRegistor()->cleaeAllErrors();
+        $warehouse->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($warehouse->setLocationID(""));
         $this->assertSame("", $warehouse->getLocationID());
         $this->assertNotEmpty($warehouse->getErrorRegistor()->getOnSetValue());
