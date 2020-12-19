@@ -1,0 +1,896 @@
+<?xml version="1.0"?>
+<source xmlns="http://xml.phpdox.net/token">
+  <file xmlns="http://xml.phpdox.net/src" path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments" file="TaxExemptionCode.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/TaxExemptionCode.php" size="7618" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="c6f5240c315d048c423ac0447893b851145a9a19" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/TaxExemptionCode.php"/>
+  <line no="1">
+    <token name="T_OPEN_TAG">&lt;?php</token>
+  </line>
+  <line no="2">
+    <token name="T_COMMENT">/*</token>
+  </line>
+  <line no="3">
+    <token name="T_COMMENT"> * The MIT License</token>
+  </line>
+  <line no="4">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="5">
+    <token name="T_COMMENT"> * Copyright 2020 Jo&#xE3;o Rebelo.</token>
+  </line>
+  <line no="6">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="7">
+    <token name="T_COMMENT"> * Permission is hereby granted, free of charge, to any person obtaining a copy</token>
+  </line>
+  <line no="8">
+    <token name="T_COMMENT"> * of this software and associated documentation files (the "Software"), to deal</token>
+  </line>
+  <line no="9">
+    <token name="T_COMMENT"> * in the Software without restriction, including without limitation the rights</token>
+  </line>
+  <line no="10">
+    <token name="T_COMMENT"> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</token>
+  </line>
+  <line no="11">
+    <token name="T_COMMENT"> * copies of the Software, and to permit persons to whom the Software is</token>
+  </line>
+  <line no="12">
+    <token name="T_COMMENT"> * furnished to do so, subject to the following conditions:</token>
+  </line>
+  <line no="13">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="14">
+    <token name="T_COMMENT"> * The above copyright notice and this permission notice shall be included in</token>
+  </line>
+  <line no="15">
+    <token name="T_COMMENT"> * all copies or substantial portions of the Software.</token>
+  </line>
+  <line no="16">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="17">
+    <token name="T_COMMENT"> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</token>
+  </line>
+  <line no="18">
+    <token name="T_COMMENT"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</token>
+  </line>
+  <line no="19">
+    <token name="T_COMMENT"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</token>
+  </line>
+  <line no="20">
+    <token name="T_COMMENT"> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</token>
+  </line>
+  <line no="21">
+    <token name="T_COMMENT"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</token>
+  </line>
+  <line no="22">
+    <token name="T_COMMENT"> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</token>
+  </line>
+  <line no="23">
+    <token name="T_COMMENT"> * THE SOFTWARE.</token>
+  </line>
+  <line no="24">
+    <token name="T_COMMENT"> */</token>
+  </line>
+  <line no="25">
+    <token name="T_DECLARE">declare</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_STRING">strict_types</token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_LNUMBER">1</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="26"/>
+  <line no="27">
+    <token name="T_NAMESPACE">namespace</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">Rebelo</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">SaftPt</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">AuditFile</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">SourceDocuments</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="28"/>
+  <line no="29">
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="30">
+    <token name="T_DOC_COMMENT"> * TaxExemptionCode&lt;br&gt;</token>
+  </line>
+  <line no="31">
+    <token name="T_DOC_COMMENT"> *  It shall be filled in with the code of the reason for exemption or non-settlement,</token>
+  </line>
+  <line no="32">
+    <token name="T_DOC_COMMENT"> * which is included in the "Manual de Integra&#xE7;&#xE3;o de Software &#x2013; Comunica&#xE7;&#xE3;o das Faturas &#xE0; AT"</token>
+  </line>
+  <line no="33">
+    <token name="T_DOC_COMMENT"> * [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].</token>
+  </line>
+  <line no="34">
+    <token name="T_DOC_COMMENT"> * The filling is required when fields 4.1.4.19.15.4. - TaxPercentage</token>
+  </line>
+  <line no="35">
+    <token name="T_DOC_COMMENT"> * or 4.1.4.19.15.5. - TaxAmount are equal to zero.</token>
+  </line>
+  <line no="36">
+    <token name="T_DOC_COMMENT"> * This field shall also be filled in, for the cases not to subject to the</token>
+  </line>
+  <line no="37">
+    <token name="T_DOC_COMMENT"> * taxes mentioned in table 2.5. - TaxTable.</token>
+  </line>
+  <line no="38">
+    <token name="T_DOC_COMMENT"> *</token>
+  </line>
+  <line no="39">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M01()</token>
+  </line>
+  <line no="40">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M03()</token>
+  </line>
+  <line no="41">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M04()</token>
+  </line>
+  <line no="42">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M05()</token>
+  </line>
+  <line no="43">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M06()</token>
+  </line>
+  <line no="44">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M07()</token>
+  </line>
+  <line no="45">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M08()</token>
+  </line>
+  <line no="46">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M09()</token>
+  </line>
+  <line no="47">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M10()</token>
+  </line>
+  <line no="48">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M11()</token>
+  </line>
+  <line no="49">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M12()</token>
+  </line>
+  <line no="50">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M13()</token>
+  </line>
+  <line no="51">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M14()</token>
+  </line>
+  <line no="52">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M15()</token>
+  </line>
+  <line no="53">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M16()</token>
+  </line>
+  <line no="54">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M20()</token>
+  </line>
+  <line no="55">
+    <token name="T_DOC_COMMENT"> *  @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M99()</token>
+  </line>
+  <line no="56">
+    <token name="T_DOC_COMMENT"> *</token>
+  </line>
+  <line no="57">
+    <token name="T_DOC_COMMENT"> * @author Jo&#xE3;o Rebelo</token>
+  </line>
+  <line no="58">
+    <token name="T_DOC_COMMENT"> */</token>
+  </line>
+  <line no="59">
+    <token name="T_CLASS">class</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">TaxExemptionCode</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_EXTENDS">extends</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">Rebelo</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">Enum</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">AEnum</token>
+  </line>
+  <line no="60">
+    <token name="T_PHPDOX_OPEN_CURLY">{</token>
+  </line>
+  <line no="61">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="62">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Artigo 16.&#xBA; n.&#xBA; 6 do CIVA(ou similar&lt;br&gt;</token>
+  </line>
+  <line no="63">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 16.&#xBA;  n.&#xBA;  6 al&#xED;neas a) a d) do  CIVA</token>
+  </line>
+  <line no="64">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="65">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="66">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M01</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M01"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="67"/>
+  <line no="68">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="69">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Artigo  6.&#xBA;  do  Decreto-Lei  n.&#xBA;  198/90,  de19  de Junho&lt;br&gt;</token>
+  </line>
+  <line no="70">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo  6.&#xBA;  do  Decreto&#x2010;Lei  n.&#xBA;  198/90,  de  19  de  junho</token>
+  </line>
+  <line no="71">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="72">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="73">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M02</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M02"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="74"/>
+  <line no="75">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="76">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Exigibilidade de caixa&lt;br&gt;</token>
+  </line>
+  <line no="77">
+    <token name="T_DOC_COMMENT">     * Norma: Decreto&#x2010;Lei n.&#xBA; 204/97, de 9 de agosto,</token>
+  </line>
+  <line no="78">
+    <token name="T_DOC_COMMENT">     * Decreto-Lei n.&#xBA; 418/99, de 21 de outubro,</token>
+  </line>
+  <line no="79">
+    <token name="T_DOC_COMMENT">     * Lei n.&#xBA; 15/2009, de 1 de abril</token>
+  </line>
+  <line no="80">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="81">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="82">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M03</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M03"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="83"/>
+  <line no="84">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="85">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Isento Artigo 13.&#xBA; do CIVA(ou similar)&lt;br&gt;</token>
+  </line>
+  <line no="86">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 13.&#xBA; do CIVA</token>
+  </line>
+  <line no="87">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="88">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="89">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="90">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M04</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M04"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="91"/>
+  <line no="92">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="93">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Isento Artigo 14.&#xBA; do CIVA(ou similar)&lt;br&gt;</token>
+  </line>
+  <line no="94">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 14.&#xBA; do CIVA</token>
+  </line>
+  <line no="95">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="96">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="97">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="98">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M05</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M05"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="99"/>
+  <line no="100">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="101">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: sento Artigo 15.&#xBA; do CIVA(ou similar)&lt;br&gt;</token>
+  </line>
+  <line no="102">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 15.&#xBA; do CIVA</token>
+  </line>
+  <line no="103">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="104">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="105">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="106">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M06</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M06"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="107"/>
+  <line no="108">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="109">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Isento Artigo 9.&#xBA; do CIVA(ou similar)&lt;br&gt;</token>
+  </line>
+  <line no="110">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 9.&#xBA; do CIVA</token>
+  </line>
+  <line no="111">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="112">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="113">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="114">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M07</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M07"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="115"/>
+  <line no="116">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="117">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: IVA &#x2013;autoliquida&#xE7;&#xE3;o&lt;br&gt;</token>
+  </line>
+  <line no="118">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 2.&#xBA; n.&#xBA; 1 al&#xED;nea i), j) ou l)do CIVA,</token>
+  </line>
+  <line no="119">
+    <token name="T_DOC_COMMENT">     * Artigo 6.&#xBA; do CIVA, Decreto-Lei n.&#xBA; 21/2007, de 29 de janeiro,</token>
+  </line>
+  <line no="120">
+    <token name="T_DOC_COMMENT">     * Decreto-Lei n.&#xBA; 362/99, de 16 de setembro, Artigo 8.&#xBA; do RITI</token>
+  </line>
+  <line no="121">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="122">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="123">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="124">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M08</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M08"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="125"/>
+  <line no="126">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="127">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: IVA -n&#xE3;o confere direito a dedu&#xE7;&#xE3;o&lt;br&gt;</token>
+  </line>
+  <line no="128">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 60.&#xBA; CIVA, Artigo 72.&#xBA; n.&#xBA; 4 do CIVA</token>
+  </line>
+  <line no="129">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="130">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="131">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="132">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M09</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M09"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="133"/>
+  <line no="134">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="135">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: IVA &#x2013;Regime de isen&#xE7;&#xE3;o&lt;br&gt;</token>
+  </line>
+  <line no="136">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 53.&#xBA;do CIVA</token>
+  </line>
+  <line no="137">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="138">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="139">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="140">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M10</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M10"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="141"/>
+  <line no="142">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="143">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Regime particular do tabaco&lt;br&gt;</token>
+  </line>
+  <line no="144">
+    <token name="T_DOC_COMMENT">     * Norma: Decreto-Lei n.&#xBA; 346/85, de 23 de agosto</token>
+  </line>
+  <line no="145">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="146">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="147">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="148">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M11</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M11"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="149"/>
+  <line no="150">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="151">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Regime  da  margem  de  lucro &#x2013;Ag&#xEA;ncias  de viagens&lt;br&gt;</token>
+  </line>
+  <line no="152">
+    <token name="T_DOC_COMMENT">     * Norma: Decreto-Lei n.&#xBA; 221/85, de 3 de julho</token>
+  </line>
+  <line no="153">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="154">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="155">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="156">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M12</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M12"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="157"/>
+  <line no="158">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="159">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Regime da margem de lucro &#x2013;Bens em segunda m&#xE3;o&lt;br&gt;</token>
+  </line>
+  <line no="160">
+    <token name="T_DOC_COMMENT">     * Norma: Decreto-Lei n.&#xBA; 199/96, de 18 de outubro</token>
+  </line>
+  <line no="161">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="162">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="163">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="164">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M13</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M13"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="165"/>
+  <line no="166">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="167">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Regime da margem de lucro &#x2013;Objetos de arte&lt;br&gt;</token>
+  </line>
+  <line no="168">
+    <token name="T_DOC_COMMENT">     * Norma: Decreto-Lei n.&#xBA; 199/96, de 18 de outubro</token>
+  </line>
+  <line no="169">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="170">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="171">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="172">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M14</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M14"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="173"/>
+  <line no="174">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="175">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Regime   da   margem   de   lucro &#x2013;Objetos   de cole&#xE7;&#xE3;o e antiguidades&lt;br&gt;</token>
+  </line>
+  <line no="176">
+    <token name="T_DOC_COMMENT">     * Norma: Decreto-Lei n.&#xBA; 199/96, de 18 de outubro</token>
+  </line>
+  <line no="177">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="178">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="179">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="180">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M15</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M15"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="181"/>
+  <line no="182">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="183">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: Isento Artigo 14.&#xBA; do RITI (ou similar)&lt;br&gt;</token>
+  </line>
+  <line no="184">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 14.&#xBA; do RITI</token>
+  </line>
+  <line no="185">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="186">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="187">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="188">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M16</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M16"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="189"/>
+  <line no="190">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="191">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: IVA -Regime forfet&#xE1;rio&lt;br&gt;</token>
+  </line>
+  <line no="192">
+    <token name="T_DOC_COMMENT">     * Norma: Artigo 59.&#xBA;-B do CIVA</token>
+  </line>
+  <line no="193">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="194">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="195">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="196">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M20</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M20"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="197"/>
+  <line no="198">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="199">
+    <token name="T_DOC_COMMENT">     * Mens&#xE7;&#xE3;o: N&#xE3;o sujeito; n&#xE3;o tributado (ou similar) &lt;br&gt;</token>
+  </line>
+  <line no="200">
+    <token name="T_DOC_COMMENT">     * Norma: Outras  situa&#xE7;&#xF5;es  de  n&#xE3;o  liquida&#xE7;&#xE3;o  do  imposto</token>
+  </line>
+  <line no="201">
+    <token name="T_DOC_COMMENT">     * (Exemplos: artigo 2.&#xBA;, n.&#xBA; 2 ;</token>
+  </line>
+  <line no="202">
+    <token name="T_DOC_COMMENT">     *  artigo 3.&#xBA;, n.&#xBA;s 4, 6 e 7; artigo 4.&#xBA;, n.&#xBA; 5, todos do CIVA)</token>
+  </line>
+  <line no="203">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="204">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="205">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="206">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">M99</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"M99"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="207"/>
+  <line no="208">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="209">
+    <token name="T_DOC_COMMENT">     * It shall be filled in with the code of the reason for exemption or non-settlement,</token>
+  </line>
+  <line no="210">
+    <token name="T_DOC_COMMENT">     * which is included in the "Manual de Integra&#xE7;&#xE3;o de Software &#x2013; Comunica&#xE7;&#xE3;o das Faturas &#xE0; AT"</token>
+  </line>
+  <line no="211">
+    <token name="T_DOC_COMMENT">     * [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].</token>
+  </line>
+  <line no="212">
+    <token name="T_DOC_COMMENT">     * The filling is required when fields 4.1.4.19.15.4. - TaxPercentage</token>
+  </line>
+  <line no="213">
+    <token name="T_DOC_COMMENT">     * or 4.1.4.19.15.5. - TaxAmount are equal to zero.</token>
+  </line>
+  <line no="214">
+    <token name="T_DOC_COMMENT">     * This field shall also be filled in, for the cases not to subject to the</token>
+  </line>
+  <line no="215">
+    <token name="T_DOC_COMMENT">     * taxes mentioned in table 2.5. - TaxTable.</token>
+  </line>
+  <line no="216">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="217">
+    <token name="T_DOC_COMMENT">     * @param string $value</token>
+  </line>
+  <line no="218">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="219">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="220">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PUBLIC">public</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_FUNCTION">function</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">__construct</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_STRING">string</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_VARIABLE">$value</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+  </line>
+  <line no="221">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PHPDOX_OPEN_CURLY">{</token>
+  </line>
+  <line no="222">
+    <token name="T_WHITESPACE">        </token>
+    <token name="T_STRING">parent</token>
+    <token name="T_DOUBLE_COLON">::</token>
+    <token name="T_STRING">__construct</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_VARIABLE">$value</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="223">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PHPDOX_CLOSE_CURLY">}</token>
+  </line>
+  <line no="224"/>
+  <line no="225">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="226">
+    <token name="T_DOC_COMMENT">     * Get the value as string</token>
+  </line>
+  <line no="227">
+    <token name="T_DOC_COMMENT">     * @return string</token>
+  </line>
+  <line no="228">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="229">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="230">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PUBLIC">public</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_FUNCTION">function</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">get</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+    <token name="T_PHPDOX_COLON">:</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">string</token>
+  </line>
+  <line no="231">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PHPDOX_OPEN_CURLY">{</token>
+  </line>
+  <line no="232">
+    <token name="T_WHITESPACE">        </token>
+    <token name="T_RETURN">return</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING_CAST">(string)</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">parent</token>
+    <token name="T_DOUBLE_COLON">::</token>
+    <token name="T_STRING">get</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="233">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PHPDOX_CLOSE_CURLY">}</token>
+  </line>
+  <line no="234">
+    <token name="T_PHPDOX_CLOSE_CURLY">}</token>
+  </line>
+  <line no="235"/>
+</source>

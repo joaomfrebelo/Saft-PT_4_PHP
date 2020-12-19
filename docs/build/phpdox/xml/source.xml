@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<source xmlns="http://xml.phpdox.net/src">
+  <dir name="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src">
+    <dir name="Rebelo">
+      <dir name="SaftPt">
+        <dir name="AuditFile">
+          <file name="AAddress.php" size="15466" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="e98abc5fd174c05af48a798e99c30161411e22a6" xml="tokens/Rebelo/SaftPt/AuditFile/AAddress.php.xml"/>
+          <file name="AAuditFile.php" size="14712" time="2020-12-19T17:11:03+00:00" unixtime="1608397863" sha1="171d16c2701ec90bfd9208f90590057b5af4c29b" xml="tokens/Rebelo/SaftPt/AuditFile/AAuditFile.php.xml"/>
+          <file name="ACountry.php" size="7724" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="00aa1891321dad6d63aeae5ccfa7539455910479" xml="tokens/Rebelo/SaftPt/AuditFile/ACountry.php.xml"/>
+          <file name="Address.php" size="5899" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="b4bb3fe0b63d4512047ecbfee2143db26ecf7169" xml="tokens/Rebelo/SaftPt/AuditFile/Address.php.xml"/>
+          <file name="AddressPT.php" size="4870" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="eaf3a84068a8dfb602982f9912e0f79f0bd9f502" xml="tokens/Rebelo/SaftPt/AuditFile/AddressPT.php.xml"/>
+          <file name="AuditFile.php" size="20426" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="2df35bdb5bd5e9480fa37c1b564590d850142d61" xml="tokens/Rebelo/SaftPt/AuditFile/AuditFile.php.xml"/>
+          <file name="AuditFileException.php" size="1657" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="3f96d8e05cc185156aaf15752f10ee21dcc9717f" xml="tokens/Rebelo/SaftPt/AuditFile/AuditFileException.php.xml"/>
+          <file name="CalcPeriodException.php" size="1659" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="ea40662e465d334d3f4ef6ade26229db644ee6c6" xml="tokens/Rebelo/SaftPt/AuditFile/CalcPeriodException.php.xml"/>
+          <file name="Country.php" size="1737" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="de616ba251ccce46e8faeaad57e2799739a864e0" xml="tokens/Rebelo/SaftPt/AuditFile/Country.php.xml"/>
+          <file name="CurrencyCode.php" size="6769" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="bc0aba1a1122d39f1b1e2d820086979dd873701b" xml="tokens/Rebelo/SaftPt/AuditFile/CurrencyCode.php.xml"/>
+          <file name="ErrorRegister.php" size="6156" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="f880b205584f3544ab2758756415783085ed0972" xml="tokens/Rebelo/SaftPt/AuditFile/ErrorRegister.php.xml"/>
+          <dir name="GeneralLedgerEntries">
+            <file name="GeneralLedgerEntries.php" size="1575" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="f38eec58ab7ceca0229ad960c641f83f68165df3" xml="tokens/Rebelo/SaftPt/AuditFile/GeneralLedgerEntries/GeneralLedgerEntries.php.xml"/>
+          </dir>
+          <file name="Header.php" size="65746" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="3fad4348fe2ea10e2dea00c1666125a85d5a3b62" xml="tokens/Rebelo/SaftPt/AuditFile/Header.php.xml"/>
+          <dir name="i18n">
+            <file name="AI18n.php" size="1732" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="c664f104014fb60cabacb6f9e4e3ef0ab2a205ef" xml="tokens/Rebelo/SaftPt/AuditFile/i18n/AI18n.php.xml"/>
+            <file name="en_GB.php" size="39177" time="2020-12-19T17:21:39+00:00" unixtime="1608398499" sha1="beab5c4325504ac453f2695509e82fc002545ba7" xml="tokens/Rebelo/SaftPt/AuditFile/i18n/en_GB.php.xml"/>
+            <file name="II18n.php" size="1444" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="e2d178faa1b95fa37785cb5786a5720fe2807ad8" xml="tokens/Rebelo/SaftPt/AuditFile/i18n/II18n.php.xml"/>
+            <file name="pt_PT.php" size="40427" time="2020-12-19T17:21:31+00:00" unixtime="1608398491" sha1="41fe6d9ec18e304e7d89cbf0c45421db969fad74" xml="tokens/Rebelo/SaftPt/AuditFile/i18n/pt_PT.php.xml"/>
+          </dir>
+          <dir name="MasterFiles">
+            <file name="ACustomerSupplier.php" size="19857" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="b99d7e2dcbe52503d0bc4d9f3d98a6a46a086604" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/ACustomerSupplier.php.xml"/>
+            <file name="Customer.php" size="18445" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="66715efedbc6640f333b8a272e8990d6fc56ed28" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/Customer.php.xml"/>
+            <file name="CustomsDetails.php" size="10054" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="6ff825b894b244a7cf67f223890975f429619819" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/CustomsDetails.php.xml"/>
+            <file name="MasterFiles.php" size="22639" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="15ccc8fd42a7f9b491a5295d4a0d6f40e5130592" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/MasterFiles.php.xml"/>
+            <file name="Product.php" size="23132" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="3c0354c5b930b9a33dc2d218aeccec65fe4c340f" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/Product.php.xml"/>
+            <file name="ProductType.php" size="5136" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="bf5caa4cf06aafbbd06a921bda5ab4ea7988057d" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/ProductType.php.xml"/>
+            <file name="Supplier.php" size="17223" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="899b7cbf849c1c34eccc908015d739b3df573652" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/Supplier.php.xml"/>
+            <file name="TaxCode.php" size="5120" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="1f199d291eae7f97c2aba6b0f4702ae6b62e73f7" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/TaxCode.php.xml"/>
+            <file name="TaxTableEntry.php" size="28299" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="020a235f69dfc5c99f691e6ef047a0504b6f3609" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/TaxTableEntry.php.xml"/>
+            <file name="TaxType.php" size="3348" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="92bce46ea3723058d2eb6cc3b8c3e588e086e47b" xml="tokens/Rebelo/SaftPt/AuditFile/MasterFiles/TaxType.php.xml"/>
+          </dir>
+          <file name="NotImplemented.php" size="1502" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="4b52d0a942df78edd4e495d1fe756bb81a31c515" xml="tokens/Rebelo/SaftPt/AuditFile/NotImplemented.php.xml"/>
+          <file name="RSimpleXmlElement.php" size="5576" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="2ec68aca34f12dcff4d93e84544392d06c569ec1" xml="tokens/Rebelo/SaftPt/AuditFile/RSimpleXmlElement.php.xml"/>
+          <dir name="SourceDocuments">
+            <file name="A2Line.php" size="26559" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="b5ed8daa44594a246f2938b734893398b4c6fa70" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/A2Line.php.xml"/>
+            <file name="ADocument.php" size="25891" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="9ca2573e5e4a07debd2fa86ac4ffe1304da9316d" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ADocument.php.xml"/>
+            <file name="ADocumentTotals.php" size="13109" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="076f895c52e0c78196f10b2203418daba2cb092b" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ADocumentTotals.php.xml"/>
+            <file name="ALine.php" size="21579" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="f777a22dca40e8cd194865998ca40e5466b86ef7" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ALine.php.xml"/>
+            <file name="ALineInvoiveAndWorking.php" size="11567" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="04686e6f86ecb02cf66422e7df08bacc204c5c12" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ALineInvoiveAndWorking.php.xml"/>
+            <file name="AShippingPoint.php" size="14467" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="a491544090952c7427a61c0ad10516fb731098cd" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/AShippingPoint.php.xml"/>
+            <file name="ASourceDocuments.php" size="2621" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="d34912685378ae295250972a5d9131a396cdbf39" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ASourceDocuments.php.xml"/>
+            <file name="Currency.php" size="10829" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="7726c602e96567636c6dd2a58e6b48bf67f96005" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Currency.php.xml"/>
+            <file name="CurrencyCode.php" size="18072" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="5637e88f1cbc1539b5bdabdba3d3b7bcf1f943cc" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/CurrencyCode.php.xml"/>
+            <file name="CustomsInformation.php" size="8549" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="7ddf23308ae8ec145c0b97bb33ec6805055a9684" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/CustomsInformation.php.xml"/>
+            <dir name="MovementOfGoods">
+              <file name="DocumentStatus.php" size="17007" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="42ef2e3c211fcfe704d4e394cae6144355b13952" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/DocumentStatus.php.xml"/>
+              <file name="DocumentTotals.php" size="3123" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="b57f6de451f1e1274b241e23dbc94d8ff8fe1967" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/DocumentTotals.php.xml"/>
+              <file name="Line.php" size="5695" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="68d6face68dd1f016b7c34e842ebc451ed6856ce" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/Line.php.xml"/>
+              <file name="MovementOfGoods.php" size="16048" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="353f4a25bf247d072e34740359d9994f76d5ea3c" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementOfGoods.php.xml"/>
+              <file name="MovementStatus.php" size="4289" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="9cef5ae4b93ae7b9ab42dc8b609e8ef5034e85ce" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementStatus.php.xml"/>
+              <file name="MovementTax.php" size="14008" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="10e9e3834e1aa1a56c61b790ea0f4a5762a8cec5" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTax.php.xml"/>
+              <file name="MovementTaxCode.php" size="3845" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="fe7323802a9ff1a628d2488b7f3337e6c23e0f5e" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTaxCode.php.xml"/>
+              <file name="MovementTaxType.php" size="2592" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="27854dc938c497216a3e8159c8127adabf1d634c" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTaxType.php.xml"/>
+              <file name="MovementType.php" size="3757" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="33796fc897fe47a4b915761bbf9ed5aa7bea3f5c" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementType.php.xml"/>
+              <file name="StockMovement.php" size="41102" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="5bff3a10292315b11e396d6fd994576992d03519" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/StockMovement.php.xml"/>
+            </dir>
+            <file name="OrderReferences.php" size="8780" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="9d58f170575543571d1a8c2fea66d99a3cc9514e" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/OrderReferences.php.xml"/>
+            <file name="PaymentMechanism.php" size="8446" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="5ab798e1afc18d8af39e4eddeeb7bb444e7b684d" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/PaymentMechanism.php.xml"/>
+            <file name="PaymentMethod.php" size="13534" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="825a58fab4343666c575a9a7bc5263ea2ffa59cc" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/PaymentMethod.php.xml"/>
+            <dir name="Payments">
+              <file name="DocumentStatus.php" size="17937" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="63eeef35decfda429e4fc20ebf59e4e58447a461" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/DocumentStatus.php.xml"/>
+              <file name="DocumentTotals.php" size="7179" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="da502a17cd67ec99ee947e7b7e1377b9dd3c2596" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/DocumentTotals.php.xml"/>
+              <file name="Line.php" size="9595" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="2df07bd0d6272304793b4b31c1f1e9487bdc466f" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/Line.php.xml"/>
+              <file name="Payment.php" size="48712" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="10b640235fa88957101146f5194565a116c07ca8" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/Payment.php.xml"/>
+              <file name="Payments.php" size="15648" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="436404da773bd45f8a7ff135c520c7356c08de30" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/Payments.php.xml"/>
+              <file name="PaymentStatus.php" size="2837" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="fa912f7144ac6eb806772aeea702d9570726b53f" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/PaymentStatus.php.xml"/>
+              <file name="PaymentType.php" size="2794" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="923ff0d113dd5e6cbcf2261235a5f83fdd9649ea" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/PaymentType.php.xml"/>
+              <file name="SourceDocumentID.php" size="12227" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="be6ceb14cde3e61a31e10f11514c79da2f66d4bb" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/SourceDocumentID.php.xml"/>
+              <file name="SourcePayment.php" size="2206" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="9909d6f5c957f9f178c869212d4e561beef32b6d" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/SourcePayment.php.xml"/>
+            </dir>
+            <file name="ProductSerialNumber.php" size="6120" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="facdf4fe04e82e0677c7e5545482986a1d197cb4" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ProductSerialNumber.php.xml"/>
+            <file name="References.php" size="9321" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="4e0b0edbc699d6c8e2af786e9e643e793391e711" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/References.php.xml"/>
+            <dir name="SalesInvoices">
+              <file name="DocumentStatus.php" size="14685" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="1daf54f8613f7f8dbf3530b3acd34b4b419bee30" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/DocumentStatus.php.xml"/>
+              <file name="DocumentTotals.php" size="8891" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="e56d7c8dd0e6059884a24536a71ccb0d889bcf32" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/DocumentTotals.php.xml"/>
+              <file name="Invoice.php" size="31990" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="6f9706a7c2dc0c980a1a72c98e4b396546a7a384" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/Invoice.php.xml"/>
+              <file name="InvoiceStatus.php" size="4542" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="44ace1f16f84fd26b0e8eb7fc684429e9d2aede8" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/InvoiceStatus.php.xml"/>
+              <file name="InvoiceType.php" size="6438" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="baebbcf68c641145d731e9047a16432571ecc355" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/InvoiceType.php.xml"/>
+              <file name="Line.php" size="4069" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="37307cee57156cc8436be5c801a7b7cb0ac6b2cc" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/Line.php.xml"/>
+              <file name="SalesInvoices.php" size="15735" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="01d33eb90e05f348525d24b461597dbead958cf9" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/SalesInvoices.php.xml"/>
+              <file name="Settlement.php" size="15119" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="9059d6837d0a04196713b32a6e5c071ffc6257bb" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/Settlement.php.xml"/>
+              <file name="SpecialRegimes.php" size="9823" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="ee91e2f43dec929e7c48fc57d2def98f897d7bbe" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/SpecialRegimes.php.xml"/>
+            </dir>
+            <file name="ShipFrom.php" size="4249" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="3abe320a1264fc90b95a2141165cef4c6edb7945" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ShipFrom.php.xml"/>
+            <file name="ShipTo.php" size="4595" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="c72062ed50cf3d7a628e46b00a0e3465455f59d4" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/ShipTo.php.xml"/>
+            <file name="SourceBilling.php" size="3357" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="7b5ce98c65a9382c7af5593fce38f59c449147b3" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SourceBilling.php.xml"/>
+            <file name="SourceDocuments.php" size="10004" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="27391880ff595427574f80418052fedce346f10a" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/SourceDocuments.php.xml"/>
+            <file name="Tax.php" size="17004" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="68145bf2721aac8ec058bd8e73fd3046f3682328" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Tax.php.xml"/>
+            <file name="TaxExemptionCode.php" size="7618" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="c6f5240c315d048c423ac0447893b851145a9a19" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/TaxExemptionCode.php.xml"/>
+            <file name="Warehouse.php" size="8579" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="b8e4f40f49a3693545f0d9b267d7d241b78c480f" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/Warehouse.php.xml"/>
+            <file name="WithholdingTax.php" size="12597" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="63fa9f61fc5aba3415a461ce56ff94bf667bb9b1" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WithholdingTax.php.xml"/>
+            <file name="WithholdingTaxType.php" size="3117" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="b41c8e3ce1fabb69563b339da29cc9a2ccb7e567" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WithholdingTaxType.php.xml"/>
+            <dir name="WorkingDocuments">
+              <file name="DocumentStatus.php" size="15804" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="b74ebeed1e9cdc725f957c33576cff093b336651" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/DocumentStatus.php.xml"/>
+              <file name="DocumentTotals.php" size="3089" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="f40ce2abb09667d2f63d35572b9dd1c0fb2c6fb9" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/DocumentTotals.php.xml"/>
+              <file name="Line.php" size="4241" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="eec3cbcb3b3f5ec4d40edc47572fc18ac0754771" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/Line.php.xml"/>
+              <file name="WorkDocument.php" size="20221" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="1158259b06beb43cda72bc2c693d24471874e6c6" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkDocument.php.xml"/>
+              <file name="WorkingDocuments.php" size="17287" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="df19c1110c2f29a4a172212f78a9f4e8efb3800d" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkingDocuments.php.xml"/>
+              <file name="WorkStatus.php" size="3007" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="b4fa5ea824cfd209f82b19473428010d06b7e205" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkStatus.php.xml"/>
+              <file name="WorkType.php" size="6763" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="656a59b322ee1da911b0f440b3c045722a9fa23b" xml="tokens/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkType.php.xml"/>
+            </dir>
+          </dir>
+          <file name="SupplierAddress.php" size="6270" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="8ec11f06f06e09dfc7650ccf4b7890038a175d9b" xml="tokens/Rebelo/SaftPt/AuditFile/SupplierAddress.php.xml"/>
+          <file name="SupplierCountry.php" size="1632" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="ac54c111177413ed9f98ecf9c27f2f721cc22bb2" xml="tokens/Rebelo/SaftPt/AuditFile/SupplierCountry.php.xml"/>
+          <file name="TaxAccountingBasis.php" size="5654" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="2c54f7a77401bf4edb4e5da39ccb9897212dd3f3" xml="tokens/Rebelo/SaftPt/AuditFile/TaxAccountingBasis.php.xml"/>
+          <file name="TaxCountryRegion.php" size="17295" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="a1c3e6dbd53fd2edc990440099c3aba5dbde448a" xml="tokens/Rebelo/SaftPt/AuditFile/TaxCountryRegion.php.xml"/>
+          <file name="TransactionID.php" size="9093" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="1a09b7669eb7ce5f003af30bb217a97dd3698e43" xml="tokens/Rebelo/SaftPt/AuditFile/TransactionID.php.xml"/>
+        </dir>
+        <dir name="Bin">
+          <file name="Style.php" size="3519" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="6046ba9c710c1a8c3282900aba4332493e38de8b" xml="tokens/Rebelo/SaftPt/Bin/Style.php.xml"/>
+          <file name="Validate.php" size="19408" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="d2bc98d915e9beac43b4b28befa96d26fdd86cb0" xml="tokens/Rebelo/SaftPt/Bin/Validate.php.xml"/>
+        </dir>
+        <dir name="Sign">
+          <file name="Sign.php" size="8385" time="2020-12-19T16:50:29+00:00" unixtime="1608396629" sha1="e6b8d0d16e4154c8abf9b5b169ecd7bcc0937d9b" xml="tokens/Rebelo/SaftPt/Sign/Sign.php.xml"/>
+          <file name="SignException.php" size="1642" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="d479f3ee84e9ba70bc84cf1f4b13350cbf05cc34" xml="tokens/Rebelo/SaftPt/Sign/SignException.php.xml"/>
+        </dir>
+        <dir name="Validate">
+          <file name="ADocuments.php" size="13749" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="3d461e76e324adca130896b57dfd14f9ccae051f" xml="tokens/Rebelo/SaftPt/Validate/ADocuments.php.xml"/>
+          <file name="AValidate.php" size="3145" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="c46e6fb8c7177cdbabb146db6abda663d2df1a06" xml="tokens/Rebelo/SaftPt/Validate/AValidate.php.xml"/>
+          <file name="DocTableTotalCalc.php" size="3218" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="ea25ea416967573527c7b84ec409f553d1070766" xml="tokens/Rebelo/SaftPt/Validate/DocTableTotalCalc.php.xml"/>
+          <file name="DocTotalCalc.php" size="4417" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="cfa191291e69dc59bb68db176628837694cdc6be" xml="tokens/Rebelo/SaftPt/Validate/DocTotalCalc.php.xml"/>
+          <file name="MovementOfGoods.php" size="67340" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="a77d3a16d7589846f133c887991b503603f3f126" xml="tokens/Rebelo/SaftPt/Validate/MovementOfGoods.php.xml"/>
+          <file name="MovOfGoodsTableTotalCalc.php" size="2804" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="058cad0024c90be31e2f2a95780235073b2d9ff8" xml="tokens/Rebelo/SaftPt/Validate/MovOfGoodsTableTotalCalc.php.xml"/>
+          <file name="OtherValidations.php" size="11120" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="7c00fe1ffe6ff731fc6038a597b4a2aeecc45c2b" xml="tokens/Rebelo/SaftPt/Validate/OtherValidations.php.xml"/>
+          <file name="Payments.php" size="51439" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="d1dc8d632fcb0b91429f6659cdf6388f525af316" xml="tokens/Rebelo/SaftPt/Validate/Payments.php.xml"/>
+          <file name="SalesInvoices.php" size="80672" time="2020-12-19T17:20:27+00:00" unixtime="1608398427" sha1="01942be3f4309917ef4f4d275173f15d44018ddc" xml="tokens/Rebelo/SaftPt/Validate/SalesInvoices.php.xml"/>
+          <dir name="Schema">
+            <file name="Schema.php" size="2309" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="7a39cf07349c830af49cef102cfd09da4e62428a" xml="tokens/Rebelo/SaftPt/Validate/Schema/Schema.php.xml"/>
+          </dir>
+          <file name="ValidationConfig.php" size="7412" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="827e8b65c367a1935f1e885772931e8ea6ad676d" xml="tokens/Rebelo/SaftPt/Validate/ValidationConfig.php.xml"/>
+          <file name="WorkingDocuments.php" size="60020" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="c964b6589dcf1cd1e4b19afe0871da381a45e76b" xml="tokens/Rebelo/SaftPt/Validate/WorkingDocuments.php.xml"/>
+          <file name="XmlStructure.php" size="3368" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="5a96dd7ac9cd976924fab38dd814acb23d3ee00a" xml="tokens/Rebelo/SaftPt/Validate/XmlStructure.php.xml"/>
+        </dir>
+      </dir>
+    </dir>
+  </dir>
+</source>

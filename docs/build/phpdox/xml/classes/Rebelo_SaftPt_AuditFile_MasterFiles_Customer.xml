@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="Customer" abstract="false" final="false" start="66" end="513">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles" file="Customer.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles/Customer.php" size="18445" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="66715efedbc6640f333b8a272e8990d6fc56ed28" relative="Rebelo/SaftPt/AuditFile/MasterFiles/Customer.php"/>
+  <docblock>
+    <description compact="2.2. - Customer&lt;br&gt; This table shall contain all the existing records operated during the taxation period in the relevant customers’ file, as well as those which may be implicit in the operations and do not exist in the relevant file.">If, for instance, there is a sale for cash showing only the customer’s
+taxpayer registration number or his name, and not included in the customers
+file of the application, this client’s data shall be exported
+as client in the SAF-T (PT).
+&lt;pre&gt;
+    &amp;lt;xs:element name="Customer"&amp;gt;
+      &amp;lt;xs:complexType&amp;gt;
+          &amp;lt;xs:sequence&amp;gt;
+              &amp;lt;xs:element ref="CustomerID"/&amp;gt;
+              &amp;lt;xs:element ref="AccountID"/&amp;gt;
+              &amp;lt;xs:element ref="CustomerTaxID"/&amp;gt;
+              &amp;lt;xs:element ref="CompanyName"/&amp;gt;
+              &amp;lt;xs:element ref="Contact" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="BillingAddress"/&amp;gt;
+              &amp;lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&amp;gt;
+              &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="SelfBillingIndicator"/&amp;gt;
+          &amp;lt;/xs:sequence&amp;gt;
+      &amp;lt;/xs:complexType&amp;gt;
+  &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;
+
+Class Customer</description>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="ACustomerSupplier"/>
+  <constant type="string" name="N_CUSTOMER" value="&quot;Customer&quot;">
+    <docblock>
+      <description compact="Node name"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="N_CUSTOMERID" value="&quot;CustomerID&quot;">
+    <docblock>
+      <description compact="Node name"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="N_CUSTOMERTAXID" value="&quot;CustomerTaxID&quot;">
+    <docblock>
+      <description compact="Node name"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="N_SHIPTOADDRESS" value="&quot;ShipToAddress&quot;">
+    <docblock>
+      <description compact="Node name"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <member name="customerID" visibility="private" static="false" line="97">
+    <docblock>
+      <description compact="&amp;lt;xs:element ref=&quot;CustomerID&quot;/&amp;gt;"/>
+      <var description="$customerID" type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="customerTaxID" visibility="private" static="false" line="104">
+    <docblock>
+      <description compact="&amp;lt;xs:element ref=&quot;CustomerTaxID&quot;/&amp;gt;"/>
+      <var description="$customerTaxID" type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="billingAddress" visibility="private" static="false" line="111">
+    <docblock>
+      <description compact="&amp;lt;xs:element ref=&quot;BillingAddress&quot;/&amp;gt;"/>
+      <var description="$billingAddress" type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\Address" namespace="\Rebelo\SaftPt\AuditFile" name="Address"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="shipToAddress" default="" type="array" visibility="private" static="false" line="118">
+    <docblock>
+      <description compact="&amp;lt;xs:element ref=&quot;ShipToAddress&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&amp;gt;"/>
+      <var description="$shipToAddress" type="array" of="object">
+        <type full="\Rebelo\SaftPt\AuditFile\Address" namespace="\Rebelo\SaftPt\AuditFile" name="Address"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="152" end="155" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Customer&lt;br&gt; This table shall contain all the existing records operated during the taxation period in the relevant customers’ file, as well as those which may be implicit in the operations and do not exist in the relevant file.">If, for instance, there is a sale for cash showing only the customer’s
+taxpayer registration number or his name, and not included in the customers
+file of the application, this client’s data shall be exported as client
+in the SAF-T (PT).
+&lt;pre&gt;
+    &amp;lt;xs:element name="Customer"&amp;gt;
+      &amp;lt;xs:complexType&amp;gt;
+          &amp;lt;xs:sequence&amp;gt;
+              &amp;lt;xs:element ref="CustomerID"/&amp;gt;
+              &amp;lt;xs:element ref="AccountID"/&amp;gt;
+              &amp;lt;xs:element ref="CustomerTaxID"/&amp;gt;
+              &amp;lt;xs:element ref="CompanyName"/&amp;gt;
+              &amp;lt;xs:element ref="Contact" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="BillingAddress"/&amp;gt;
+              &amp;lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&amp;gt;
+              &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;
+              &amp;lt;xs:element ref="SelfBillingIndicator"/&amp;gt;
+          &amp;lt;/xs:sequence&amp;gt;
+      &amp;lt;/xs:complexType&amp;gt;
+  &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+      <param type="object" variable="$errorRegister">
+        <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="errorRegister" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+    </parameter>
+  </constructor>
+  <method name="getCustomerID" start="171" end="176" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Gets as customerID&lt;br&gt; In the list of clients cannot exist more than one registration with the same CustomerID. In the case of final consumers, a generic client with the designation of “Consumidor final” (Final Consumer) shall be created.">&lt;pre&gt;
+&amp;lt;xs:element ref="CustomerID"/&amp;gt;
+&amp;lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;
+&lt;/pre&gt;</description>
+      <return type="string"/>
+      <throws type="object">
+        <type full="\Error" namespace="" name="Error"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+  <method name="issetCustomerID" start="183" end="186" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get if is set CustomerID"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="setCustomerID" start="202" end="220" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets a new customerID&lt;br&gt; In the list of clients cannot exist more than one registration with the same CustomerID. In the case of final consumers, a generic client with the designation of “Consumidor final” (Final Consumer) shall be created.">&lt;pre&gt;
+&amp;lt;xs:element ref="CustomerID"/&amp;gt;
+&amp;lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;
+&lt;/pre&gt;</description>
+      <param type="string" variable="$customerID"/>
+      <return description="true if the value is valid" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="customerID" byreference="false" type="string"/>
+  </method>
+  <method name="getCustomerTaxID" start="235" end="240" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Gets as customerTaxID&lt;br&gt; It must be indicated without the country’s prefix.">The generic client, corresponding to the
+aforementioned “Consumidor final” (Final consumer)
+shall be identified with the Tax Identification Number “999999990”.&lt;br&gt;
+&amp;lt;xs:element ref="CustomerTaxID"/&amp;gt;&lt;br&gt;
+&amp;lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;</description>
+      <return type="string"/>
+      <throws type="object">
+        <type full="\Error" namespace="" name="Error"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+  <method name="issetCustomerTaxID" start="247" end="250" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get if is set CustomerTaxID"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="setCustomerTaxID" start="265" end="285" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets a new customerTaxID&lt;br&gt; It must be indicated without the country’s prefix.">The generic client, corresponding to the
+aforementioned “Consumidor final” (Final consumer)
+shall be identified with the Tax Identification Number “999999990”.&lt;br&gt;
+&amp;lt;xs:element ref="CustomerTaxID"/&amp;gt;&lt;br&gt;
+&amp;lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;</description>
+      <param type="string" variable="$customerTaxID"/>
+      <return description="true if the value is valid" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="customerTaxID" byreference="false" type="string"/>
+  </method>
+  <method name="getBillingAddress" start="298" end="305" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Gets as billingAddress&lt;br&gt; Head office address or the fixed /permanent establishment address, located on Portuguese territory.&lt;br&gt; The Address instance will be create once you get this method&lt;br&gt; &amp;lt;xs:element ref=&quot;BillingAddress&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;BillingAddress&quot; type=&quot;AddressStructure&quot;/&amp;gt;"/>
+      <return type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\Address" namespace="\Rebelo\SaftPt\AuditFile" name="Address"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Rebelo\SaftPt\AuditFile\Address" namespace="Rebelo\SaftPt\AuditFile" name="Address"/>
+    </return>
+  </method>
+  <method name="issetBillingAddress" start="312" end="315" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get if is set BillingAddress"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="addShipToAddress" start="329" end="337" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Adds as shipToAddress&lt;br&gt; This method every time that is invoked will return a new Instance of 'Address' that shal must be populated with the correct values.&lt;br&gt; If there is a need to make more than one reference, this structure can be generated as many times as necessary.&lt;br&gt; &amp;lt;xs:element ref=&quot;ShipToAddress&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;ShipToAddress&quot; type=&quot;AddressStructure&quot;/&amp;gt;"/>
+      <return description="The new Address instance that was add and must be populated" type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\Address" namespace="\Rebelo\SaftPt\AuditFile" name="Address"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Rebelo\SaftPt\AuditFile\Address" namespace="Rebelo\SaftPt\AuditFile" name="Address"/>
+    </return>
+  </method>
+  <method name="getShipToAddress" start="345" end="349" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Gets as shipToAddress"/>
+      <return type="array" of="object">
+        <type full="\Rebelo\SaftPt\AuditFile\Address" namespace="\Rebelo\SaftPt\AuditFile" name="Address"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="createXmlNode" start="357" end="448" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Create the xml node for Customer"/>
+      <param type="object" variable="$node">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </param>
+      <return type="object">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+    </return>
+    <parameter name="node" byreference="false" type="object">
+      <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+    </parameter>
+  </method>
+  <method name="parseXmlNode" start="457" end="512" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Pasrse the xml node"/>
+      <param type="object" variable="$node">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\void" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="void"/>
+      </return>
+      <throws type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\AuditFileException" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFileException"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="node" byreference="false" type="object">
+      <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+    </parameter>
+  </method>
+  <parent full="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="ACustomerSupplier">
+    <extends full="Rebelo\SaftPt\AuditFile\AAuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AAuditFile"/>
+    <constant type="{unknown}" name="N_ACCOUNTID" value="&quot;AccountID&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_COMPANYNAME" value="&quot;CompanyName&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_CONTACT" value="&quot;Contact&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_BILLINGADDRESS" value="&quot;BillingAddress&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_TELEPHONE" value="&quot;Telephone&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_FAX" value="&quot;Fax&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_EMAIL" value="&quot;Email&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_WEBSITE" value="&quot;Website&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="N_SELFBILLINGINDICATOR" value="&quot;SelfBillingIndicator&quot;">
+      <docblock>
+        <description compact="Node name"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <member name="accountID" visibility="protected" static="false" line="98">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;AccountID&quot;/&amp;gt;"/>
+        <var description="$accountID" type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="companyName" visibility="protected" static="false" line="105">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;CompanyName&quot;/&amp;gt;"/>
+        <var description="$companyName" type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="contact" default="NULL" visibility="protected" static="false" line="112">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;Contact&quot; minOccurs=&quot;0&quot;/&amp;gt;"/>
+        <var description="$contact" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="telephone" default="NULL" visibility="protected" static="false" line="119">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;Telephone&quot; minOccurs=&quot;0&quot;/&amp;gt;"/>
+        <var description="$telephone" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="fax" default="NULL" visibility="protected" static="false" line="126">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;Fax&quot; minOccurs=&quot;0&quot;/&amp;gt;"/>
+        <var description="$fax" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="email" default="NULL" visibility="protected" static="false" line="133">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;Email&quot; minOccurs=&quot;0&quot;/&amp;gt;"/>
+        <var description="$email" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="website" default="NULL" visibility="protected" static="false" line="140">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;Website&quot; minOccurs=&quot;0&quot;/&amp;gt;"/>
+        <var description="$website" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="selfBillingIndicator" visibility="protected" static="false" line="147">
+      <docblock>
+        <description compact="&amp;lt;xs:element ref=&quot;SelfBillingIndicator&quot;/&amp;gt;"/>
+        <var description="$selfBillingIndicator" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <constructor name="__construct" start="154" end="157" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Base class for Customer and supplier"/>
+        <param type="object" variable="$errorRegister">
+          <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+        </param>
+        <since value="1.0.0"/>
+      </docblock>
+      <parameter name="errorRegister" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </parameter>
+    </constructor>
+    <method name="getAccountID" start="182" end="187" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets as accountID&lt;br&gt; The respective current account must be indicated in the general accounting plan, if it is defined. Otherwise the field shall be filled in with the designation “Desconhecido” (Unknown).">&lt;pre&gt;
+&amp;lt;xs:element ref="AccountID"/&amp;gt;
+&amp;lt;xs:element name="AccountID"&amp;gt;
+     &amp;lt;xs:simpleType&amp;gt;
+         &amp;lt;xs:restriction base="xs:string"&amp;gt;
+             &amp;lt;xs:pattern value="(([^^]*)|Desconhecido)"/&amp;gt;
+             &amp;lt;xs:minLength value="1"/&amp;gt;
+             &amp;lt;xs:maxLength value="30"/&amp;gt;
+         &amp;lt;/xs:restriction&amp;gt;
+     &amp;lt;/xs:simpleType&amp;gt;
+ &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+        <return type="string"/>
+        <throws type="object">
+          <type full="\Error" namespace="" name="Error"/>
+        </throws>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+    </method>
+    <method name="issetAccountID" start="194" end="197" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get if is set AccountID"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+    </method>
+    <method name="setAccountID" start="221" end="248" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets AccountID&lt;br&gt; The respective current account must be indicated in the general accounting plan, if it is defined. Otherwise the field shall be filled in with the designation “Desconhecido” (Unknown).">&lt;pre&gt;
+&amp;lt;xs:element ref="AccountID"/&amp;gt;
+&amp;lt;xs:element name="AccountID"&amp;gt;
+     &amp;lt;xs:simpleType&amp;gt;
+         &amp;lt;xs:restriction base="xs:string"&amp;gt;
+             &amp;lt;xs:pattern value="(([^^]*)|Desconhecido)"/&amp;gt;
+             &amp;lt;xs:minLength value="1"/&amp;gt;
+             &amp;lt;xs:maxLength value="30"/&amp;gt;
+         &amp;lt;/xs:restriction&amp;gt;
+     &amp;lt;/xs:simpleType&amp;gt;
+ &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+        <param type="string" variable="$accountID"/>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="accountID" byreference="false" type="string"/>
+    </method>
+    <method name="getCompanyName" start="261" end="266" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets as companyName&lt;br&gt; The generic client/supplier shall be identified with the designation “Consumidor final” (Final Consumer).&lt;br&gt; &amp;lt;xs:element ref=&quot;CompanyName&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;CompanyName&quot; type=&quot;SAFPTtextTypeMandatoryMax100Car&quot;/&amp;gt;"/>
+        <return type="string"/>
+        <throws type="object">
+          <type full="\Error" namespace="" name="Error"/>
+        </throws>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+    </method>
+    <method name="issetCompanyName" start="273" end="276" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get if is set CompanyName"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+    </method>
+    <method name="setCompanyName" start="289" end="307" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets CompanyName&lt;br&gt; The generic client/supplier shall be identified with the designation “Consumidor final” (Final Consumer).&lt;br&gt; &amp;lt;xs:element ref=&quot;CompanyName&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;CompanyName&quot; type=&quot;SAFPTtextTypeMandatoryMax100Car&quot;/&amp;gt;"/>
+        <param type="string" variable="$companyName"/>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="companyName" byreference="false" type="string"/>
+    </method>
+    <method name="getContact" start="318" end="328" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets Contact&lt;br&gt; Name of the contact person in the company&lt;br&gt; &amp;lt;xs:element ref=&quot;Contact&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Contact&quot; type=&quot;SAFPTtextTypeMandatoryMax50Car&quot;/&amp;gt;"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="true"/>
+    </method>
+    <method name="setContact" start="340" end="362" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets Contact&lt;br&gt;&lt;br&gt; Name of the contact person in the company&lt;br&gt; &amp;lt;xs:element ref=&quot;Contact&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Contact&quot; type=&quot;SAFPTtextTypeMandatoryMax50Car&quot;/&amp;gt;"/>
+        <param type="object" variable="$contact">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </param>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="contact" byreference="false" nullable="true" type="string"/>
+    </method>
+    <method name="getTelephone" start="372" end="382" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets as telephone&lt;br&gt; &amp;lt;xs:element ref=&quot;Telephone&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Telephone&quot; type=&quot;SAFPTtextTypeMandatoryMax20Car&quot;/&amp;gt;"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="true"/>
+    </method>
+    <method name="setTelephone" start="392" end="413" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets a new telephone&lt;br&gt; &amp;lt;xs:element ref=&quot;Telephone&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Telephone&quot; type=&quot;SAFPTtextTypeMandatoryMax20Car&quot;/&amp;gt;"/>
+        <param type="object" variable="$telephone">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </param>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="telephone" byreference="false" nullable="true" type="string"/>
+    </method>
+    <method name="getFax" start="422" end="432" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets fax&lt;br&gt; &amp;lt;xs:element ref=&quot;Fax&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Fax&quot; type=&quot;SAFPTtextTypeMandatoryMax20Car&quot;/&amp;gt;"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="true"/>
+    </method>
+    <method name="setFax" start="442" end="463" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets fax&lt;br&gt; &amp;lt;xs:element ref=&quot;Fax&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Fax&quot; type=&quot;SAFPTtextTypeMandatoryMax20Car&quot;/&amp;gt;"/>
+        <param type="object" variable="$fax">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </param>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="fax" byreference="false" nullable="true" type="string"/>
+    </method>
+    <method name="getEmail" start="473" end="483" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets as email&lt;br&gt; &amp;lt;xs:element ref=&quot;Email&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Email&quot; type=&quot;SAFPTtextTypeMandatoryMax254Car&quot;/&amp;gt;"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="true"/>
+    </method>
+    <method name="setEmail" start="494" end="519" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets a new email&lt;br&gt; &amp;lt;xs:element ref=&quot;Email&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Email&quot; type=&quot;SAFPTtextTypeMandatoryMax254Car&quot;/&amp;gt;"/>
+        <param type="object" variable="$email">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </param>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="email" byreference="false" nullable="true" type="string"/>
+    </method>
+    <method name="getWebsite" start="529" end="539" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets as website&lt;br&gt; &amp;lt;xs:element ref=&quot;Website&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Website&quot; type=&quot;SAFPTtextTypeMandatoryMax60Car&quot;/&amp;gt;"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="true"/>
+    </method>
+    <method name="setWebsite" start="551" end="572" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets a new website&lt;br&gt; &amp;lt;xs:element ref=&quot;Website&quot; minOccurs=&quot;0&quot;/&amp;gt;&lt;br&gt; &amp;lt;xs:element name=&quot;Website&quot; type=&quot;SAFPTtextTypeMandatoryMax60Car&quot;/&amp;gt;"/>
+        <param type="object" variable="$website">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="string|null"/>
+        </param>
+        <return description="true if the value is valid" type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <throws type="object">
+          <type full="Rebelo\SaftPt\AuditFile\AuditFileException" namespace="Rebelo\SaftPt\AuditFile" name="AuditFileException"/>
+        </throws>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="website" byreference="false" nullable="true" type="string"/>
+    </method>
+    <method name="getSelfBillingIndicator" start="596" end="606" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Gets as selfBillingIndicator&lt;br&gt; Indicator of the existence of a self-billing agreement between the customer and the supplier.">The field shall be filled in with “1” if there is an agreement and
+with “0” (zero) if there is not one.
+&lt;pre&gt;
+&amp;lt;xs:element ref="SelfBillingIndicator"/&amp;gt;
+&lt;!-- Indicador de Autofaturacao --&gt;
+  &amp;lt;xs:element name="SelfBillingIndicator"&amp;gt;
+      &amp;lt;xs:simpleType&amp;gt;
+          &amp;lt;xs:restriction base="xs:integer"&amp;gt;
+              &amp;lt;xs:minInclusive value="0"/&amp;gt;
+              &amp;lt;xs:maxInclusive value="1"/&amp;gt;
+          &amp;lt;/xs:restriction&amp;gt;
+      &amp;lt;/xs:simpleType&amp;gt;
+  &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </return>
+        <throws type="object">
+          <type full="\Error" namespace="" name="Error"/>
+        </throws>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+    </method>
+    <method name="setSelfBillingIndicator" start="631" end="641" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Sets a new selfBillingIndicator&lt;br&gt; Indicator of the existence of a self-billing agreement between the customer and the supplier.">The field shall be filled in with “1” if there is an agreement and
+with “0” (zero) if there is not one.
+&lt;pre&gt;
+&amp;lt;xs:element ref="SelfBillingIndicator"/&amp;gt;
+&lt;!-- Indicador de Autofaturacao --&gt;
+  &amp;lt;xs:element name="SelfBillingIndicator"&amp;gt;
+      &amp;lt;xs:simpleType&amp;gt;
+          &amp;lt;xs:restriction base="xs:integer"&amp;gt;
+              &amp;lt;xs:minInclusive value="0"/&amp;gt;
+              &amp;lt;xs:maxInclusive value="1"/&amp;gt;
+          &amp;lt;/xs:restriction&amp;gt;
+      &amp;lt;/xs:simpleType&amp;gt;
+  &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+        <param type="object" variable="$selfBillingIndicator">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\bool" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="bool"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\MasterFiles\void" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="selfBillingIndicator" byreference="false" type="bool"/>
+    </method>
+  </parent>
+  <parent full="Rebelo\SaftPt\AuditFile\AAuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AAuditFile">
+    <constant type="{unknown}" name="DESCONHECIDO" value="&quot;Desconhecido&quot;">
+      <docblock>
+        <description compact="Unknown word"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="CONSUMIDOR_FINAL_TAX_ID" value="&quot;999999990&quot;">
+      <docblock>
+        <description compact="Unknown word"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="CONSUMIDOR_FINAL" value="&quot;Consumidor final&quot;">
+      <docblock>
+        <description compact="Final Consumer, Consumidor final"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="CONSUMIDOR_FINAL_ID" value="&quot;CONSUMIDOR_FINAL&quot;">
+      <docblock>
+        <description compact="The ID in consumer table of the final Consumer, Consumidor final"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <member name="i18n" visibility="protected" static="true" line="70">
+      <docblock>
+        <description/>
+        <var type="object">
+          <type full="\Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="\Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="errorRegister" visibility="protected" static="false" line="77">
+      <docblock>
+        <description compact="Error Register, to register global validation and errors"/>
+        <var type="object">
+          <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="error" default="" type="array" visibility="protected" static="false" line="85">
+      <docblock>
+        <description compact="To registe particular validation and errors of documents or tables, the key must be the field name"/>
+        <var type="array" of="object">
+          <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="warning" default="" type="array" visibility="protected" static="false" line="92">
+      <docblock>
+        <description compact="To regist particular warnings of documents or tables"/>
+        <var type="array" of="object">
+          <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <method name="__isset" start="100" end="103" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Invoke the isset to the propertie name"/>
+        <param description="The propertie name to check" type="string" variable="$name"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="name" byreference="false" type="string"/>
+    </method>
+    <constructor name="__construct" start="109" end="113" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description/>
+        <param type="object" variable="$errorRegister">
+          <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+        </param>
+        <since value="1.0.0"/>
+      </docblock>
+      <parameter name="errorRegister" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </parameter>
+    </constructor>
+    <method name="createXmlNode" start="121" end="121" abstract="true" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Create the xml node for the object"/>
+        <param type="object" variable="$node">
+          <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+        </param>
+        <return type="object">
+          <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="object" nullable="false">
+        <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </return>
+      <parameter name="node" byreference="false" type="object">
+        <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </parameter>
+    </method>
+    <method name="parseXmlNode" start="129" end="129" abstract="true" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Create the xml node for the object"/>
+        <param type="object" variable="$node">
+          <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="node" byreference="false" type="object">
+        <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </parameter>
+    </method>
+    <method name="__clone" start="135" end="156" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Force to clone all object properties"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </method>
+    <method name="valTextMandMaxCar" start="170" end="191" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string"/>
+        <param type="string" variable="$string"/>
+        <param type="int" variable="$length"/>
+        <param type="string" variable="$method"/>
+        <param description="If truncate is set to &lt;code&gt;false&lt;/code&gt; and the string is bigger will throw AuditFileException" type="object" variable="$trucate">
+          <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+        </param>
+        <return type="string"/>
+        <throws type="object">
+          <type full="Rebelo\SaftPt\AuditFile\AuditFileException" namespace="Rebelo\SaftPt\AuditFile" name="AuditFileException"/>
+        </throws>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+      <parameter name="string" byreference="false" type="string"/>
+      <parameter name="length" byreference="false" type="int"/>
+      <parameter name="method" byreference="false" type="string"/>
+      <parameter name="trucate" byreference="false" type="boolean" default="true"/>
+    </method>
+    <method name="valPortugueseVatNumber" start="199" end="208" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Validate Portuguese VAT Number"/>
+        <param type="int" variable="$nif"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="nif" byreference="false" type="int"/>
+    </method>
+    <method name="validateMod11auxFunction" start="219" end="247" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0"/>
+        <param type="string" variable="$nif"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="nif" byreference="false" type="string"/>
+    </method>
+    <method name="floatFormat" start="259" end="267" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Format a float with grouped thousands"/>
+        <param description="The float to be format" type="float" variable="$float"/>
+        <param description="Number of decimals" type="int" variable="$decimals"/>
+        <param description="The decimal separator" type="string" variable="$decPoint"/>
+        <param description="the thousends separator" type="string" variable="$thousandsSep"/>
+        <return type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+      <parameter name="float" byreference="false" type="float"/>
+      <parameter name="decimals" byreference="false" type="integer" default="6"/>
+      <parameter name="decPoint" byreference="false" type="string" default="&quot;.&quot;"/>
+      <parameter name="thousandsSep" byreference="false" type="string" default="&quot;&quot;"/>
+      <inline>
+        <comment value="if (IS_UNIT_TEST) {" line="263"/>
+        <comment value="return \strval($float);" line="264"/>
+        <comment value="}" line="265"/>
+      </inline>
+    </method>
+    <method name="replaceHexUtf" start="275" end="377" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Convert the encoded caracters encoded by SimpleXmlElment"/>
+        <param type="string" variable="$string"/>
+        <return type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+      <parameter name="string" byreference="true" type="string"/>
+    </method>
+    <method name="setI18n" start="385" end="392" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Set the language to translate"/>
+        <param type="object" variable="$i18n">
+          <type full="\Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="\Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="i18n" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+      </parameter>
+    </method>
+    <method name="getI18n" start="399" end="405" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Get i18n class"/>
+        <return type="object">
+          <type full="\Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="\Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="object" nullable="false">
+        <type full="Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+      </return>
+    </method>
+    <method name="getErrorRegistor" start="412" end="415" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get the ErrorRegistor instance"/>
+        <return type="object">
+          <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="object" nullable="false">
+        <type full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </return>
+    </method>
+    <method name="getError" start="422" end="425" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get all particular error"/>
+        <return type="array" of="object">
+          <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="array" nullable="false"/>
+    </method>
+    <method name="getWarning" start="432" end="435" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get all particular warning"/>
+        <return type="array" of="object">
+          <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="array" nullable="false"/>
+    </method>
+    <method name="addError" start="444" end="451" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Add a particular error"/>
+        <param type="string" variable="$error"/>
+        <param description="The field name with error, will be used as array key, if null array key will be numeric" type="object" variable="$field">
+          <type full="Rebelo\SaftPt\AuditFile\string|null" namespace="Rebelo\SaftPt\AuditFile" name="string|null"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="error" byreference="false" type="string"/>
+      <parameter name="field" byreference="false" nullable="true" type="string" default="NULL"/>
+    </method>
+    <method name="addWarning" start="459" end="462" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Add a particular warning"/>
+        <param type="string" variable="$warning"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="warning" byreference="false" type="string"/>
+    </method>
+    <method name="validateDocNumber" start="477" end="486" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;           &amp;lt;xs:pattern value=&quot;[^ ]+ [^/^ ]+/[0-9]+&quot;/&amp;gt;           &amp;lt;xs:minLength value=&quot;1&quot;/&amp;gt;           &amp;lt;xs:maxLength value=&quot;60&quot;/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;"/>
+        <param type="string" variable="$docNumber"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+      <parameter name="docNumber" byreference="false" type="string"/>
+    </method>
+    <method name="calcPeriod" start="496" end="513" abstract="false" final="false" static="true" visibility="public">
+      <docblock>
+        <description compact="Calc the document period based on the fiscal year start month"/>
+        <param type="int" variable="$fiscalYearStartMonth"/>
+        <param type="object" variable="$docDate">
+          <type full="\Rebelo\Date\Date" namespace="\Rebelo\Date" name="Date"/>
+        </param>
+        <return type="int"/>
+        <throws type="object">
+          <type full="Rebelo\SaftPt\AuditFile\CalcPeriodException" namespace="Rebelo\SaftPt\AuditFile" name="CalcPeriodException"/>
+        </throws>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="int" nullable="false"/>
+      <parameter name="fiscalYearStartMonth" byreference="false" type="int"/>
+      <parameter name="docDate" byreference="false" type="object">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </parameter>
+    </method>
+  </parent>
+</class>

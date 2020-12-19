@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkStatus" abstract="false" final="false" start="37" end="94">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments" file="WorkStatus.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkStatus.php" size="3007" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="b4fa5ea824cfd209f82b19473428010d06b7e205" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkStatus.php"/>
+  <docblock>
+    <description compact="WorkStatus"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments N()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments A()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments F()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="N" value="&quot;N&quot;">
+    <docblock>
+      <description compact="“N” - Normal"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="A" value="&quot;A&quot;">
+    <docblock>
+      <description compact="“A” - Cancelled document"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="F" value="&quot;F&quot;">
+    <docblock>
+      <description compact="“F” - Billed document, even if partially, when for the same document there is also on table 4.1. – SalesInvoices, the corresponding invoice or simplified invoice."/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="80" end="83" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="WorkStatus&lt;br&gt; The field must be filled in with:&lt;br&gt; “N” - Normal;&lt;br&gt; “A” - Cancelled document;&lt;br&gt; “F” - Billed document, even if partially, when for the same document there is also on table 4.1. – SalesInvoices, the corresponding invoice or simplified invoice.">&lt;pre&gt;
+&amp;lt;xs:element name="WorkStatus"&amp;gt;
+ &amp;lt;xs:simpleType&amp;gt;
+     &amp;lt;xs:restriction base="xs:string"&amp;gt;
+         &amp;lt;xs:enumeration value="N"/&amp;gt;
+         &amp;lt;xs:enumeration value="A"/&amp;gt;
+         &amp;lt;xs:enumeration value="F"/&amp;gt;
+     &amp;lt;/xs:restriction&amp;gt;
+ &amp;lt;/xs:simpleType&amp;gt;
+&lt;/pre&gt;</description>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="90" end="93" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

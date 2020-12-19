@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Bin\Validate" namespace="Rebelo\SaftPt\Bin" name="Validate" abstract="false" final="false" start="45" end="636">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Bin" file="Validate.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Bin/Validate.php" size="19408" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="d2bc98d915e9beac43b4b28befa96d26fdd86cb0" relative="Rebelo/SaftPt/Bin/Validate.php"/>
+  <docblock>
+    <description compact="The saft validation command"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Symfony\Component\Console\Command\Command" namespace="Symfony\Component\Console\Command" name="Command" unresolved="true"/>
+  <constant type="string" name="COMMAND_NAME" value="&quot;validate&quot;">
+    <docblock>
+      <description compact="The command name"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="DEFAULT_LANG" value="&quot;en_GB&quot;">
+    <docblock>
+      <description compact="The default laguage pack to be used"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ARG_SAFT_FILE_PATH" value="&quot;SAFT_PATH&quot;">
+    <docblock>
+      <description compact="Argument name of the saft file path"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_PUB_KEY_PATH" value="&quot;pubkey&quot;">
+    <docblock>
+      <description compact="Option name of the public key file path"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_PUB_KEY_PATH_SHORT" value="&quot;p&quot;">
+    <docblock>
+      <description compact="Option name of the public key file path"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_LOG4PHP_CONG" value="&quot;log&quot;">
+    <docblock>
+      <description compact="Option name of the log configuration file path"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_LOG4PHP_CONG_SHORT" value="&quot;l&quot;">
+    <docblock>
+      <description compact="Option name of the log configuration file path"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_SHOW_WARNINGS" value="&quot;warnings&quot;">
+    <docblock>
+      <description compact="Option name of show warnings"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_SHOW_WARNINGS_SHORT" value="&quot;w&quot;">
+    <docblock>
+      <description compact="Option name of show warnings"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_LANG" value="&quot;lang&quot;">
+    <docblock>
+      <description compact="Argument name of the idiome"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_LANG_SHORT" value="&quot;g&quot;">
+    <docblock>
+      <description compact="Argument name of the idiome"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_DEBIT_CREDIT" value="&quot;debcre&quot;">
+    <docblock>
+      <description compact="Argument name of the configuration option if accepts Debit and Credit lines in the same document"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_DELTA_CURRENCY" value="&quot;dc&quot;">
+    <docblock>
+      <description compact="Argument name of the configuration option of the delta in currency calculation to be consider valid"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_DELTA_LINES" value="&quot;dl&quot;">
+    <docblock>
+      <description compact="Argument name of the configuration option of the delta in lines calculation to be consider valid"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_DELTA_TABLE" value="&quot;dt&quot;">
+    <docblock>
+      <description compact="Argument name of the configuration option of the delta in tables (sum of all documents) calculation to be consider valid"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OPT_DELTA_TOTAL_DOC" value="&quot;ddt&quot;">
+    <docblock>
+      <description compact="Argument name of the configuration option of the delta in document totals calculation to be consider valid"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <member name="log" visibility="protected" static="false" line="156">
+    <docblock>
+      <description/>
+      <var type="object">
+        <type full="\Logger" namespace="" name="Logger"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="start" visibility="public" static="true" line="162">
+    <docblock>
+      <description compact="App start time"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="169" end="172" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param type="mixed" variable="$name"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="name" byreference="false" type="object" default="NULL">
+      <type full="Rebelo\SaftPt\Bin\mixed" namespace="Rebelo\SaftPt\Bin" name="mixed"/>
+    </parameter>
+  </constructor>
+  <member name="defaultName" default="" type="{unknown}" constant="self::COMMAND_NAME" visibility="protected" static="true" line="179">
+    <docblock>
+      <description compact="The name of the command"/>
+      <var type="object">
+        <type full="Rebelo\SaftPt\Bin\string|null" namespace="Rebelo\SaftPt\Bin" name="string|null"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <method name="configure" start="186" end="256" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="The command configuration"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Bin\void" namespace="Rebelo\SaftPt\Bin" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+  </method>
+  <method name="execute" start="265" end="388" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Execute the command"/>
+      <param type="object" variable="$input">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </param>
+      <param type="object" variable="$output">
+        <type full="\Symfony\Component\Console\Output\OutputInterface" namespace="\Symfony\Component\Console\Output" name="OutputInterface"/>
+      </param>
+      <return type="int"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="int" nullable="false"/>
+    <parameter name="input" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </parameter>
+    <parameter name="output" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Output\OutputInterface" namespace="Symfony\Component\Console\Output" name="OutputInterface"/>
+    </parameter>
+    <inline>
+      <comment value="@phpstan-ignore-next-line" line="267"/>
+    </inline>
+  </method>
+  <method name="setLang" start="397" end="426" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Set the language pack"/>
+      <param type="object" variable="$io">
+        <type full="\Symfony\Component\Console\Style\SymfonyStyle" namespace="\Symfony\Component\Console\Style" name="SymfonyStyle"/>
+      </param>
+      <param type="object" variable="$input">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Bin\void" namespace="Rebelo\SaftPt\Bin" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="io" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Style\SymfonyStyle" namespace="Symfony\Component\Console\Style" name="SymfonyStyle"/>
+    </parameter>
+    <parameter name="input" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </parameter>
+  </method>
+  <method name="setLog" start="435" end="468" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Set the log"/>
+      <param type="object" variable="$io">
+        <type full="\Symfony\Component\Console\Style\SymfonyStyle" namespace="\Symfony\Component\Console\Style" name="SymfonyStyle"/>
+      </param>
+      <param type="object" variable="$input">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Bin\void" namespace="Rebelo\SaftPt\Bin" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="io" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Style\SymfonyStyle" namespace="Symfony\Component\Console\Style" name="SymfonyStyle"/>
+    </parameter>
+    <parameter name="input" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </parameter>
+  </method>
+  <method name="getPubKeyPath" start="477" end="499" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Get the Pub key file path option"/>
+      <param type="object" variable="$input">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Bin\string|null" namespace="Rebelo\SaftPt\Bin" name="string|null"/>
+      </return>
+      <throws type="object">
+        <type full="\Exception" namespace="" name="Exception"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="true"/>
+    <parameter name="input" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </parameter>
+  </method>
+  <method name="getValidationConfig" start="507" end="546" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the validation config set by the input options"/>
+      <param type="object" variable="$input">
+        <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\ValidationConfig" namespace="Rebelo\SaftPt\Validate" name="ValidationConfig"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Rebelo\SaftPt\Validate\ValidationConfig" namespace="Rebelo\SaftPt\Validate" name="ValidationConfig"/>
+    </return>
+    <parameter name="input" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </parameter>
+  </method>
+  <method name="parseBool" start="556" end="586" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param type="mixed" variable="$value"/>
+      <param type="string" variable="$name"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Bin\bool" namespace="Rebelo\SaftPt\Bin" name="bool"/>
+      </return>
+      <throws type="object">
+        <type full="\Exception" namespace="" name="Exception"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="value" byreference="false" type="{unknown}"/>
+    <parameter name="name" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="parseFloat" start="596" end="613" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param type="mixed" variable="$value"/>
+      <param type="string" variable="$name"/>
+      <return type="float"/>
+      <throws type="object">
+        <type full="\Exception" namespace="" name="Exception"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="false"/>
+    <parameter name="value" byreference="false" type="{unknown}"/>
+    <parameter name="name" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="printStatistic" start="621" end="634" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Prints the app running statistic"/>
+      <param type="object" variable="$io">
+        <type full="\Rebelo\SaftPt\Bin\Style" namespace="\Rebelo\SaftPt\Bin" name="Style"/>
+      </param>
+      <param description="The saft-pt file path" type="string" variable="$saft"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Bin\void" namespace="Rebelo\SaftPt\Bin" name="void"/>
+      </return>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="io" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\Bin\Style" namespace="Rebelo\SaftPt\Bin" name="Style"/>
+    </parameter>
+    <parameter name="saft" byreference="false" type="string"/>
+  </method>
+</class>

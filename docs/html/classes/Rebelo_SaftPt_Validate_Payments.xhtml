@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\Validate\Payments</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_Validate">Rebelo\SaftPt\Validate</a>
+          </li>
+          <li class="separator">Payments</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/Validate/Payments.php.xhtml#line54">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\Validate\</small>Payments</h1>
+        <h4>Validate Payments table.&lt;br&gt; This class will validate the values of Payments and dates</h4>
+        <p/>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Payments
+                extends <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments.xhtml">ADocuments</a>
+            {<br/><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments.xhtml">ADocuments</a></li><li>const <a href="#CALC_PRECISION">CALC_PRECISION</a> = 9;</li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\Validate\ADocuments">ADocuments</span></li><li>protected <span title="\Rebelo\SaftPt\Bin\Style|null">Style|null</span> <a href="#members">$style</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$debit</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$credit</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$docDebit</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$docCredit</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$taxPayable</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$netTotal</a>;
+                        </li><li>protected <span title="\Rebelo\Decimal\UDecimal">UDecimal</span> <a href="#members">$grossTotal</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\Sign\Sign">Sign</span> <a href="#members">$sign</a>;
+                        </li><li>protected float <a href="#members">$deltaTotalDoc</a>;
+                        </li><li>protected float <a href="#members">$deltaLine</a>;
+                        </li><li>protected float <a href="#members">$deltaCurrency</a>;
+                        </li><li>protected float <a href="#members">$deltaTable</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\Validate\bool">bool</span> <a href="#members">$continuesLines</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\Validate\bool">bool</span> <a href="#members">$allowDebitAndCredit</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\Validate\bool">bool</span> <a href="#members">$signValidation</a>;
+                        </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\Validate\AValidate">AValidate</span></li><li>protected <span title="Rebelo\SaftPt\Validate\bool">bool</span> <a href="#members">$isValid</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\AuditFile;">AuditFile;</span> <a href="#members">$auditFile</a>;
+                        </li><li>protected  <a href="#members">$lastType</a>;
+                        </li><li>protected  <a href="#members">$lastSerie</a>;
+                        </li><li>protected string <a href="#members">$lastHash</a>;
+                        </li><li>protected <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$lastDocDate</a>;
+                        </li><li>protected <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$lastSystemEntryDate</a>;
+                        </li><li>protected  <a href="#members">$lastDocNumber</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/__construct.xhtml">__construct</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/validate.xhtml">validate</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/payment.xhtml">payment</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/numberOfEntries.xhtml">numberOfEntries</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/totalDebit.xhtml">totalDebit</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/totalCredit.xhtml">totalCredit</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/documentStatus.xhtml">documentStatus</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/customerId.xhtml">customerId</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/lines.xhtml">lines</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/sourceDocumentID.xhtml">sourceDocumentID</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/tax.xhtml">tax</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/totals.xhtml">totals</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/paymentDateAndSystemEntryDate.xhtml">paymentDateAndSystemEntryDate</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/paymentMethod.xhtml">paymentMethod</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/withholdingTax.xhtml">withholdingTax</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\Validate\ADocuments">ADocuments</span></li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/__construct.xhtml">__construct</a>()
+                        </li><li>public float <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaTotalDoc.xhtml">getDeltaTotalDoc</a>()
+                        </li><li>public float <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaCurrency.xhtml">getDeltaCurrency</a>()
+                        </li><li>public float <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaTable.xhtml">getDeltaTable</a>()
+                        </li><li>public float <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaLine.xhtml">getDeltaLine</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaTotalDoc.xhtml">setDeltaTotalDoc</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaCurrency.xhtml">setDeltaCurrency</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaTable.xhtml">setDeltaTable</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaLine.xhtml">setDeltaLine</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getContinuesLines.xhtml">getContinuesLines</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setContinuesLines.xhtml">setContinuesLines</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getAllowDebitAndCredit.xhtml">getAllowDebitAndCredit</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setAllowDebitAndCredit.xhtml">setAllowDebitAndCredit</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setSignValidation.xhtml">setSignValidation</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getSignValidation.xhtml">getSignValidation</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setConfiguration.xhtml">setConfiguration</a>()
+                        </li><li>public Style|null <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getStyle.xhtml">getStyle</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setStyle.xhtml">setStyle</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\Validate\AValidate">AValidate</span></li><li>public void <a title="Rebelo\SaftPt\Validate\AValidate" href="../classes/Rebelo_SaftPt_Validate_AValidate/__construct.xhtml">__construct</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments.xhtml">Rebelo\SaftPt\Validate\ADocuments</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="CALC_PRECISION">CALC_PRECISION</td>
+              <td>9</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="allowDebitAndCredit"><strong>$allowDebitAndCredit</strong>
+                —
+                <a title="Rebelo\SaftPt\Validate\bool" href="../classes/Rebelo_SaftPt_Validate_bool.xhtml">Rebelo\SaftPt\Validate\bool</a><br/><span class="indent">The normal situation is the documents only have credit or debit lines, however there are two situation where is possible to have debit and credit lines, by default this is set to not allow, if the saft that are being test have that situations set this to true</span></li>
+            <li id="auditFile"><strong>$auditFile</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\AuditFile;" href="../classes/_Rebelo_SaftPt_AuditFile_AuditFile;.xhtml">\Rebelo\SaftPt\AuditFile\AuditFile;</a></li>
+            <li id="continuesLines"><strong>$continuesLines</strong>
+                —
+                <a title="Rebelo\SaftPt\Validate\bool" href="../classes/Rebelo_SaftPt_Validate_bool.xhtml">Rebelo\SaftPt\Validate\bool</a><br/><span class="indent">Set if the lines number are to be verified continues or not. If you set to true all lines numbers have to be continues and starting from 1, else only check if ther are repeated line numbers.&lt;br&gt; The AT ordinance is not very clear how should be done, only says that the lines are to be exported in the same order as in the document and non fiscal lines aren't to be exported. So there are two situation if you have some non fiscal lines and you are exporting with the ordr and same number line or database document will miss the numbers of non fiscal lines, if you export with the continues numeration, the numeration in the saft will be not equal to the line numebr in the database.</span></li>
+            <li id="credit"><strong>$credit</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The total credit calculated from all documents of the table</span></li>
+            <li id="debit"><strong>$debit</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The total debit calculated from all docmunts of the table</span></li>
+            <li id="deltaCurrency"><strong>$deltaCurrency</strong>
+                —
+                float<br/><span class="indent">The delta that can be consider valid for total documents currency</span></li>
+            <li id="deltaLine"><strong>$deltaLine</strong>
+                —
+                float<br/><span class="indent">The delta that can be consider valid for the product of UnitPRice and Quantity</span></li>
+            <li id="deltaTable"><strong>$deltaTable</strong>
+                —
+                float<br/><span class="indent">The delta that can be consider valid for total tables</span></li>
+            <li id="deltaTotalDoc"><strong>$deltaTotalDoc</strong>
+                —
+                float<br/><span class="indent">The delta that can be consider valid for total documents calculation</span></li>
+            <li id="docCredit"><strong>$docCredit</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The total credit calculated of the current document</span></li>
+            <li id="docDebit"><strong>$docDebit</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The total debit calculated of the current document</span></li>
+            <li id="grossTotal"><strong>$grossTotal</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The gross total calculated of the current document</span></li>
+            <li id="isValid"><strong>$isValid</strong>
+                —
+                <a title="Rebelo\SaftPt\Validate\bool" href="../classes/Rebelo_SaftPt_Validate_bool.xhtml">Rebelo\SaftPt\Validate\bool</a><br/><span class="indent">To be return at the end of validation, within the validation will be set to false when not passed</span></li>
+            <li id="lastDocDate"><strong>$lastDocDate</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">The SystemEntryDate of the last document of the same serie, if is the first of the serie will be null</span></li>
+            <li id="lastDocNumber"><strong>$lastDocNumber</strong>
+                —
+                int<br/><span class="indent">The last number of the document of the same serie, to check if the numeration is continues</span></li>
+            <li id="lastHash"><strong>$lastHash</strong>
+                —
+                string<br/><span class="indent">The last hash of document that has been the signature validated in the same document serie</span></li>
+            <li id="lastSerie"><strong>$lastSerie</strong>
+                —
+                string<br/><span class="indent">The last serie of document that has been the signature validated</span></li>
+            <li id="lastSystemEntryDate"><strong>$lastSystemEntryDate</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">The SystemEntryDate of the last document of the same serie, if is the first of the serie will be null</span></li>
+            <li id="lastType"><strong>$lastType</strong>
+                —
+                string<br/><span class="indent">The last type of document that has been the signature validated</span></li>
+            <li id="netTotal"><strong>$netTotal</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The net total calculated of the current document</span></li>
+            <li id="sign"><strong>$sign</strong>
+                —
+                <a title="\Rebelo\SaftPt\Sign\Sign" href="../classes/_Rebelo_SaftPt_Sign_Sign.xhtml">\Rebelo\SaftPt\Sign\Sign</a><br/><span class="indent">The Sign instance with the public key defined</span></li>
+            <li id="signValidation"><strong>$signValidation</strong>
+                —
+                <a title="Rebelo\SaftPt\Validate\bool" href="../classes/Rebelo_SaftPt_Validate_bool.xhtml">Rebelo\SaftPt\Validate\bool</a><br/><span class="indent">Defifine if performes the signatures validation</span></li>
+            <li id="style"><strong>$style</strong>
+                —
+                <a title="\Rebelo\SaftPt\Bin\Style|null" href="../classes/_Rebelo_SaftPt_Bin_Style|null.xhtml">\Rebelo\SaftPt\Bin\Style|null</a><br/><span class="indent">The output writer, to be use in concolde application</span></li>
+            <li id="taxPayable"><strong>$taxPayable</strong>
+                —
+                <a title="\Rebelo\Decimal\UDecimal" href="../classes/_Rebelo_Decimal_UDecimal.xhtml">\Rebelo\Decimal\UDecimal</a><br/><span class="indent">The total tax calculated of the current document</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>protected</h4>
+          <ul>
+            <li id="customerId"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/customerId.xhtml">customerId()</a>
+                — validate if the customerID of the Payment if is set and if exits in the customer table</li>
+            <li id="documentStatus"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/documentStatus.xhtml">documentStatus()</a>
+                — Validate the Document Status</li>
+            <li id="lines"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/lines.xhtml">lines()</a>
+                — validate each line of the Payment</li>
+            <li id="numberOfEntries"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/numberOfEntries.xhtml">numberOfEntries()</a>
+                — Validate if the NumberOfEntries is equal to the number of payments</li>
+            <li id="payment"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/payment.xhtml">payment()</a>
+                — Validate Payment</li>
+            <li id="paymentDateAndSystemEntryDate"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/paymentDateAndSystemEntryDate.xhtml">paymentDateAndSystemEntryDate()</a>
+                — Validate the Payment date nad SystemEntrydate</li>
+            <li id="paymentMethod"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/paymentMethod.xhtml">paymentMethod()</a>
+                — Validate the PaymentMethods</li>
+            <li id="tax"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/tax.xhtml">tax()</a>
+                — Validate the line Tax</li>
+            <li id="totalCredit"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/totalCredit.xhtml">totalCredit()</a>
+                — Validate Payments TotalCredit</li>
+            <li id="totalDebit"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/totalDebit.xhtml">totalDebit()</a>
+                — Validate Payments TotalDebit</li>
+            <li id="totals"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/totals.xhtml">totals()</a>
+                — Validate the document total, only can be invoked after validate lines (Because total controls are getted from that validation)</li>
+            <li id="withholdingTax"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/withholdingTax.xhtml">withholdingTax()</a>
+                — Validate the withholdingTax</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/__construct.xhtml">__construct()</a>
+                — Validate Payments table.&lt;br&gt; This class will validate the values of Payments and dates</li>
+            <li id="sourceDocumentID"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/sourceDocumentID.xhtml">sourceDocumentID()</a>
+                — Validate the SourceDocumentID</li>
+            <li id="validate"><a title="Rebelo\SaftPt\Validate\Payments" href="../classes/Rebelo_SaftPt_Validate_Payments/validate.xhtml">validate()</a>
+                — Validate the payments</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments.xhtml">Rebelo\SaftPt\Validate\ADocuments</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="getAllowDebitAndCredit"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getAllowDebitAndCredit.xhtml">getAllowDebitAndCredit()</a>
+                — The normal situation is the documents only have credit or debit lines, however there are two situation where is possible to have debit and credit lines, by default this is set to not allow, if the saft that are being test have that situations set this to true.&lt;br&gt; Point 2.2.6 of Ordinance 8632/2014, of 3th of July</li>
+            <li id="getContinuesLines"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getContinuesLines.xhtml">getContinuesLines()</a>
+                — Check if the line numbers are to be check as continues or only if there are repeated line numbers</li>
+            <li id="getDeltaCurrency"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaCurrency.xhtml">getDeltaCurrency()</a>
+                — The delta that can be consider valid for total documents currency</li>
+            <li id="getDeltaLine"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaLine.xhtml">getDeltaLine()</a>
+                — The delta that can be consider valid for UnitPrice * Quantity</li>
+            <li id="getDeltaTable"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaTable.xhtml">getDeltaTable()</a>
+                — The delta that can be consider valid for total tables</li>
+            <li id="getDeltaTotalDoc"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getDeltaTotalDoc.xhtml">getDeltaTotalDoc()</a>
+                — The delta that can be consider valid for total documents calculation</li>
+            <li id="getSignValidation"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getSignValidation.xhtml">getSignValidation()</a>
+                — If performes signature validation</li>
+            <li id="getStyle"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/getStyle.xhtml">getStyle()</a>
+                — The output writer for console applications</li>
+            <li id="setAllowDebitAndCredit"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setAllowDebitAndCredit.xhtml">setAllowDebitAndCredit()</a>
+                — The normal situation is the documents only have credit or debit lines, however there are two situation where is possible to have debit and credit lines, by default this is set to not allow, if the saft that are being test have that situations set this to true.&lt;br&gt; Point 2.2.6 of Ordinance 8632/2014, of 3th of July</li>
+            <li id="setConfiguration"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setConfiguration.xhtml">setConfiguration()</a>
+                — Set the configuration</li>
+            <li id="setContinuesLines"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setContinuesLines.xhtml">setContinuesLines()</a>
+                — Check if the line numbers are to be check as continues or only if there are repeated line numbers</li>
+            <li id="setDeltaCurrency"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaCurrency.xhtml">setDeltaCurrency()</a>
+                — The delta that can be consider valid for total documents currency</li>
+            <li id="setDeltaLine"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaLine.xhtml">setDeltaLine()</a>
+                — The delta that can be consider valid for Quantity * UnitPrice</li>
+            <li id="setDeltaTable"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaTable.xhtml">setDeltaTable()</a>
+                — The delta that can be consider valid for total tables</li>
+            <li id="setDeltaTotalDoc"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setDeltaTotalDoc.xhtml">setDeltaTotalDoc()</a>
+                — The delta that can be consider valid for total documents calculation</li>
+            <li id="setSignValidation"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setSignValidation.xhtml">setSignValidation()</a>
+                — If performes signature validation</li>
+            <li id="setStyle"><a title="Rebelo\SaftPt\Validate\ADocuments" href="../classes/Rebelo_SaftPt_Validate_ADocuments/setStyle.xhtml">setStyle()</a>
+                — The output writer for console applications</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

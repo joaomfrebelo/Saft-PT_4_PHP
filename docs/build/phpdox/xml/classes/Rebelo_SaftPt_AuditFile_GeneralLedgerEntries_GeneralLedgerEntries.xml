@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries" namespace="Rebelo\SaftPt\AuditFile\GeneralLedgerEntries" name="GeneralLedgerEntries" abstract="false" final="false" start="35" end="47">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/GeneralLedgerEntries" file="GeneralLedgerEntries.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/GeneralLedgerEntries/GeneralLedgerEntries.php" size="1575" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="f38eec58ab7ceca0229ad960c641f83f68165df3" relative="Rebelo/SaftPt/AuditFile/GeneralLedgerEntries/GeneralLedgerEntries.php"/>
+  <docblock>
+    <description compact="Description of GeneralLedgerEntries"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <constructor name="__construct" start="43" end="46" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <throws type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\NotImplemented" namespace="\Rebelo\SaftPt\AuditFile" name="NotImplemented"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+  </constructor>
+</class>

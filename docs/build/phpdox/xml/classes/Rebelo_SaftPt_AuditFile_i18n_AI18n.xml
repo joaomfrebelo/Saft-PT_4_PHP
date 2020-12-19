@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="AI18n" abstract="true" final="false" start="35" end="57">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/i18n" file="AI18n.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/i18n/AI18n.php" size="1732" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="c664f104014fb60cabacb6f9e4e3ef0ab2a205ef" relative="Rebelo/SaftPt/AuditFile/i18n/AI18n.php"/>
+  <docblock>
+    <description compact="Description of AI18n"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <implements full="Rebelo\SaftPt\AuditFile\i18n\II18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="II18n"/>
+  <member name="stack" default="" type="array" visibility="public" static="false" line="42">
+    <docblock>
+      <description/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\i18n\string" namespace="Rebelo\SaftPt\AuditFile\i18n" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <method name="get" start="50" end="56" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the translation"/>
+      <param type="string" variable="$string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+    <parameter name="string" byreference="false" type="string"/>
+  </method>
+  <interface full="Rebelo\SaftPt\AuditFile\i18n\II18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="II18n">
+    <method name="get" start="43" end="43" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get the translation"/>
+        <param type="string" variable="$string"/>
+        <return type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+      <parameter name="string" byreference="false" type="string"/>
+    </method>
+  </interface>
+  <extenders>
+    <extender full="Rebelo\SaftPt\AuditFile\i18n\en_GB" namespace="Rebelo\SaftPt\AuditFile\i18n" name="en_GB"/>
+    <extender full="Rebelo\SaftPt\AuditFile\i18n\pt_PT" namespace="Rebelo\SaftPt\AuditFile\i18n" name="pt_PT"/>
+  </extenders>
+</class>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Bin\Style" namespace="Rebelo\SaftPt\Bin" name="Style" abstract="false" final="false" start="42" end="109">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Bin" file="Style.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Bin/Style.php" size="3519" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="6046ba9c710c1a8c3282900aba4332493e38de8b" relative="Rebelo/SaftPt/Bin/Style.php"/>
+  <docblock>
+    <description compact="This class extends SynfonyStyle adding a method to facilitate the use of multiple ProgressBar"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Symfony\Component\Console\Style\SymfonyStyle" namespace="Symfony\Component\Console\Style" name="SymfonyStyle" unresolved="true"/>
+  <member name="in" visibility="protected" static="false" line="49">
+    <docblock>
+      <description/>
+      <var type="object">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="out" visibility="protected" static="false" line="56">
+    <docblock>
+      <description/>
+      <var type="object">
+        <type full="\Symfony\Component\Console\Output\ConsoleOutput" namespace="\Symfony\Component\Console\Output" name="ConsoleOutput"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="65" end="70" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="This class extends SynfonyStyle adding a method to facilitate the use of multiple ProgressBar"/>
+      <param type="object" variable="$input">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </param>
+      <param type="object" variable="$output">
+        <type full="\Symfony\Component\Console\Output\ConsoleOutput" namespace="\Symfony\Component\Console\Output" name="ConsoleOutput"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="input" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </parameter>
+    <parameter name="output" byreference="false" type="object">
+      <type full="Symfony\Component\Console\Output\ConsoleOutput" namespace="Symfony\Component\Console\Output" name="ConsoleOutput"/>
+    </parameter>
+  </constructor>
+  <method name="addProgressBar" start="80" end="88" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add a Progess bar to a OutputSection. The section argument is passed as refrence to be possible to pass the Output console or to get it into.">This method is to be possible the use of multiple ProgessBar</description>
+      <param type="object" variable="$section">
+        <type full="\Symfony\Component\Console\Output\ConsoleSectionOutput|null" namespace="\Symfony\Component\Console\Output" name="ConsoleSectionOutput|null"/>
+      </param>
+      <return type="object">
+        <type full="\Symfony\Component\Console\Helper\ProgressBar" namespace="\Symfony\Component\Console\Helper" name="ProgressBar"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="true">
+      <type full="Symfony\Component\Console\Helper\ProgressBar" namespace="Symfony\Component\Console\Helper" name="ProgressBar"/>
+    </return>
+    <parameter name="section" byreference="true" nullable="true" type="object" default="NULL">
+      <type full="Symfony\Component\Console\Output\ConsoleSectionOutput" namespace="Symfony\Component\Console\Output" name="ConsoleSectionOutput"/>
+    </parameter>
+  </method>
+  <method name="getInput" start="95" end="98" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the Console Input"/>
+      <return type="object">
+        <type full="\Symfony\Component\Console\Input\InputInterface" namespace="\Symfony\Component\Console\Input" name="InputInterface"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Symfony\Component\Console\Input\InputInterface" namespace="Symfony\Component\Console\Input" name="InputInterface"/>
+    </return>
+  </method>
+  <method name="getOutput" start="105" end="108" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the ConsoleOutput"/>
+      <return type="object">
+        <type full="\Symfony\Component\Console\Output\ConsoleOutput" namespace="\Symfony\Component\Console\Output" name="ConsoleOutput"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Symfony\Component\Console\Output\ConsoleOutput" namespace="Symfony\Component\Console\Output" name="ConsoleOutput"/>
+    </return>
+  </method>
+</class>

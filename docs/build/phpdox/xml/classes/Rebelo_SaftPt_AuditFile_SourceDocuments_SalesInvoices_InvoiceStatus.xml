@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="InvoiceStatus" abstract="false" final="false" start="58" end="133">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices" file="InvoiceStatus.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/InvoiceStatus.php" size="4542" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="44ace1f16f84fd26b0e8eb7fc684429e9d2aede8" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/InvoiceStatus.php"/>
+  <docblock>
+    <description compact="InvoiceStatus &lt;pre&gt;  &lt;!-- Estado do documento SalesInvoices --&gt;  &amp;lt;xs:element name=&quot;InvoiceStatus&quot;&amp;gt;      &amp;lt;xs:annotation&amp;gt;          &amp;lt;xs:documentation&amp;gt;N para Normal, S para Autofaturacao, A para Documento anulado, R para              Documento de resumo doutros documentos criados noutras aplicacoes e gerado nesta              aplicacao, F para Documento faturado &amp;lt;/xs:documentation&amp;gt;      &amp;lt;/xs:annotation&amp;gt;      &amp;lt;xs:simpleType&amp;gt;          &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;              &amp;lt;xs:enumeration value=&quot;N&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;S&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;A&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;R&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;F&quot;/&amp;gt;          &amp;lt;/xs:restriction&amp;gt;      &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus N()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus S()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus A()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus R()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus F()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="N" value="&quot;N&quot;">
+    <docblock>
+      <description compact="“N” - Normal&lt;br&gt;  &amp;lt;xs:enumeration value=&quot;N&quot;/&amp;gt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="S" value="&quot;S&quot;">
+    <docblock>
+      <description compact="S para Autofaturacao&lt;br&gt; &amp;lt;xs:enumeration value=&quot;S&quot;/&amp;gt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="A" value="&quot;A&quot;">
+    <docblock>
+      <description compact="“A” - Cancelled document&lt;br&gt; &amp;lt;xs:enumeration value=&quot;A&quot;/&amp;gt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="R" value="&quot;R&quot;">
+    <docblock>
+      <description compact="“R” - Summary document for other documents created in other applications and generated in this application&lt;br&gt; &amp;lt;xs:enumeration value=&quot;R&quot;/&amp;gt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="F" value="&quot;F&quot;">
+    <docblock>
+      <description compact="“F” - Invoiced document&lt;br&gt; &amp;lt;xs:enumeration value=&quot;F&quot;/&amp;gt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="119" end="122" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="InvoiceStatus&lt;br&gt; The field must be filled in with:&lt;br&gt; “N” - Normal;&lt;br&gt; “A” - Cancelled document;&lt;br&gt; “R” - Summary document for other documents created in other applications and generated in this application; “F” - Invoiced document.&lt;br&gt; &lt;pre&gt;  &amp;lt;xs:element name=&quot;InvoiceStatus&quot;&amp;gt;      &amp;lt;xs:simpleType&amp;gt;          &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;              &amp;lt;xs:enumeration value=&quot;N&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;S&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;A&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;R&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;F&quot;/&amp;gt;          &amp;lt;/xs:restriction&amp;gt;      &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="129" end="132" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

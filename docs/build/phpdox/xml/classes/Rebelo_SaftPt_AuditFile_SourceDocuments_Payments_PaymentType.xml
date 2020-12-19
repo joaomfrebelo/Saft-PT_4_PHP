@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="PaymentType" abstract="false" final="false" start="40" end="86">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments" file="PaymentType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/PaymentType.php" size="2794" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="923ff0d113dd5e6cbcf2261235a5f83fdd9649ea" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/PaymentType.php"/>
+  <docblock>
+    <description compact="PaymentType&lt;br&gt; To fill in with:&lt;br&gt; “RC” – Receipt issued according to the Cash VAT regime (including advance payments in this regime);&lt;br&gt; “RG” – Other issued receipts.&lt;br&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RC()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RG()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="RC" value="&quot;RC&quot;">
+    <docblock>
+      <description compact="RC para Recibo emitido no ambito do regime de IVA de Caixa (incluindo os relativos a adiantamentos desse regime)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RG" value="&quot;RG&quot;">
+    <docblock>
+      <description compact="RG para Outros recibos"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="72" end="75" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="PaymentType&lt;br&gt; To fill in with:&lt;br&gt; “RC” – Receipt issued according to the Cash VAT regime (including advance payments in this regime);&lt;br&gt; “RG” – Other issued receipts.&lt;br&gt; &lt;pre&gt; &amp;lt;xs:simpleType name=&quot;SAFTPTPaymentType&quot;&amp;gt;   &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;       &amp;lt;xs:enumeration value=&quot;RC&quot;/&amp;gt;       &amp;lt;xs:enumeration value=&quot;RG&quot;/&amp;gt;   &amp;lt;/xs:restriction&amp;gt; &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;"/>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="82" end="85" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

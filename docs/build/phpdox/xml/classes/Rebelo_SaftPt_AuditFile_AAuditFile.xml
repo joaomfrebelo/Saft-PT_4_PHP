@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\AAuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AAuditFile" abstract="true" final="false" start="39" end="515">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile" file="AAuditFile.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/AAuditFile.php" size="14712" time="2020-12-19T17:11:03+00:00" unixtime="1608397863" sha1="171d16c2701ec90bfd9208f90590057b5af4c29b" relative="Rebelo/SaftPt/AuditFile/AAuditFile.php"/>
+  <docblock>
+    <description compact="Abstract of AAuditFile"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <constant type="{unknown}" name="DESCONHECIDO" value="&quot;Desconhecido&quot;">
+    <docblock>
+      <description compact="Unknown word"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="{unknown}" name="CONSUMIDOR_FINAL_TAX_ID" value="&quot;999999990&quot;">
+    <docblock>
+      <description compact="Unknown word"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="{unknown}" name="CONSUMIDOR_FINAL" value="&quot;Consumidor final&quot;">
+    <docblock>
+      <description compact="Final Consumer, Consumidor final"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="{unknown}" name="CONSUMIDOR_FINAL_ID" value="&quot;CONSUMIDOR_FINAL&quot;">
+    <docblock>
+      <description compact="The ID in consumer table of the final Consumer, Consumidor final"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <member name="i18n" visibility="protected" static="true" line="70">
+    <docblock>
+      <description/>
+      <var type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="\Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="errorRegister" visibility="protected" static="false" line="77">
+    <docblock>
+      <description compact="Error Register, to register global validation and errors"/>
+      <var type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="error" default="" type="array" visibility="protected" static="false" line="85">
+    <docblock>
+      <description compact="To registe particular validation and errors of documents or tables, the key must be the field name"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="warning" default="" type="array" visibility="protected" static="false" line="92">
+    <docblock>
+      <description compact="To regist particular warnings of documents or tables"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <method name="__isset" start="100" end="103" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Invoke the isset to the propertie name"/>
+      <param description="The propertie name to check" type="string" variable="$name"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="name" byreference="false" type="string"/>
+  </method>
+  <constructor name="__construct" start="109" end="113" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param type="object" variable="$errorRegister">
+        <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="errorRegister" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+    </parameter>
+  </constructor>
+  <method name="createXmlNode" start="121" end="121" abstract="true" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Create the xml node for the object"/>
+      <param type="object" variable="$node">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </param>
+      <return type="object">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+    </return>
+    <parameter name="node" byreference="false" type="object">
+      <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+    </parameter>
+  </method>
+  <method name="parseXmlNode" start="129" end="129" abstract="true" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Create the xml node for the object"/>
+      <param type="object" variable="$node">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="node" byreference="false" type="object">
+      <type full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+    </parameter>
+  </method>
+  <method name="__clone" start="135" end="156" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Force to clone all object properties"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </method>
+  <method name="valTextMandMaxCar" start="170" end="191" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string"/>
+      <param type="string" variable="$string"/>
+      <param type="int" variable="$length"/>
+      <param type="string" variable="$method"/>
+      <param description="If truncate is set to &lt;code&gt;false&lt;/code&gt; and the string is bigger will throw AuditFileException" type="object" variable="$trucate">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </param>
+      <return type="string"/>
+      <throws type="object">
+        <type full="Rebelo\SaftPt\AuditFile\AuditFileException" namespace="Rebelo\SaftPt\AuditFile" name="AuditFileException"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+    <parameter name="string" byreference="false" type="string"/>
+    <parameter name="length" byreference="false" type="int"/>
+    <parameter name="method" byreference="false" type="string"/>
+    <parameter name="trucate" byreference="false" type="boolean" default="true"/>
+  </method>
+  <method name="valPortugueseVatNumber" start="199" end="208" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Validate Portuguese VAT Number"/>
+      <param type="int" variable="$nif"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="nif" byreference="false" type="int"/>
+  </method>
+  <method name="validateMod11auxFunction" start="219" end="247" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0"/>
+      <param type="string" variable="$nif"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="nif" byreference="false" type="string"/>
+  </method>
+  <method name="floatFormat" start="259" end="267" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Format a float with grouped thousands"/>
+      <param description="The float to be format" type="float" variable="$float"/>
+      <param description="Number of decimals" type="int" variable="$decimals"/>
+      <param description="The decimal separator" type="string" variable="$decPoint"/>
+      <param description="the thousends separator" type="string" variable="$thousandsSep"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+    <parameter name="float" byreference="false" type="float"/>
+    <parameter name="decimals" byreference="false" type="integer" default="6"/>
+    <parameter name="decPoint" byreference="false" type="string" default="&quot;.&quot;"/>
+    <parameter name="thousandsSep" byreference="false" type="string" default="&quot;&quot;"/>
+    <inline>
+      <comment value="if (IS_UNIT_TEST) {" line="263"/>
+      <comment value="return \strval($float);" line="264"/>
+      <comment value="}" line="265"/>
+    </inline>
+  </method>
+  <method name="replaceHexUtf" start="275" end="377" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Convert the encoded caracters encoded by SimpleXmlElment"/>
+      <param type="string" variable="$string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+    <parameter name="string" byreference="true" type="string"/>
+  </method>
+  <method name="setI18n" start="385" end="392" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Set the language to translate"/>
+      <param type="object" variable="$i18n">
+        <type full="\Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="\Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="i18n" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+    </parameter>
+  </method>
+  <method name="getI18n" start="399" end="405" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Get i18n class"/>
+      <return type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="\Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Rebelo\SaftPt\AuditFile\i18n\AI18n" namespace="Rebelo\SaftPt\AuditFile\i18n" name="AI18n"/>
+    </return>
+  </method>
+  <method name="getErrorRegistor" start="412" end="415" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the ErrorRegistor instance"/>
+      <return type="object">
+        <type full="\Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="\Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="false">
+      <type full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister"/>
+    </return>
+  </method>
+  <method name="getError" start="422" end="425" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get all particular error"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="getWarning" start="432" end="435" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get all particular warning"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addError" start="444" end="451" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add a particular error"/>
+      <param type="string" variable="$error"/>
+      <param description="The field name with error, will be used as array key, if null array key will be numeric" type="object" variable="$field">
+        <type full="Rebelo\SaftPt\AuditFile\string|null" namespace="Rebelo\SaftPt\AuditFile" name="string|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="error" byreference="false" type="string"/>
+    <parameter name="field" byreference="false" nullable="true" type="string" default="NULL"/>
+  </method>
+  <method name="addWarning" start="459" end="462" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add a particular warning"/>
+      <param type="string" variable="$warning"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="warning" byreference="false" type="string"/>
+  </method>
+  <method name="validateDocNumber" start="477" end="486" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;           &amp;lt;xs:pattern value=&quot;[^ ]+ [^/^ ]+/[0-9]+&quot;/&amp;gt;           &amp;lt;xs:minLength value=&quot;1&quot;/&amp;gt;           &amp;lt;xs:maxLength value=&quot;60&quot;/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;"/>
+      <param type="string" variable="$docNumber"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="docNumber" byreference="false" type="string"/>
+  </method>
+  <method name="calcPeriod" start="496" end="513" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Calc the document period based on the fiscal year start month"/>
+      <param type="int" variable="$fiscalYearStartMonth"/>
+      <param type="object" variable="$docDate">
+        <type full="\Rebelo\Date\Date" namespace="\Rebelo\Date" name="Date"/>
+      </param>
+      <return type="int"/>
+      <throws type="object">
+        <type full="Rebelo\SaftPt\AuditFile\CalcPeriodException" namespace="Rebelo\SaftPt\AuditFile" name="CalcPeriodException"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="int" nullable="false"/>
+    <parameter name="fiscalYearStartMonth" byreference="false" type="int"/>
+    <parameter name="docDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+  </method>
+  <extenders>
+    <extender full="Rebelo\SaftPt\AuditFile\AAddress" namespace="Rebelo\SaftPt\AuditFile" name="AAddress"/>
+    <extender full="Rebelo\SaftPt\AuditFile\Address" namespace="Rebelo\SaftPt\AuditFile" name="Address"/>
+    <extender full="Rebelo\SaftPt\AuditFile\AddressPT" namespace="Rebelo\SaftPt\AuditFile" name="AddressPT"/>
+    <extender full="Rebelo\SaftPt\AuditFile\AuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+    <extender full="Rebelo\SaftPt\AuditFile\Header" namespace="Rebelo\SaftPt\AuditFile" name="Header"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="ACustomerSupplier"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="Customer"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="CustomsDetails"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="MasterFiles"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\Product" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="Product"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\Supplier" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="Supplier"/>
+    <extender full="Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="TaxTableEntry"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="A2Line"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ADocument"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ADocumentTotals"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ALine"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiveAndWorking" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ALineInvoiveAndWorking"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\AShippingPoint" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="AShippingPoint"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ASourceDocuments"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Currency" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="Currency"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="CustomsInformation"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="DocumentStatus"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="DocumentTotals"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="Line"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="MovementOfGoods"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTax" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="MovementTax"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="StockMovement"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="OrderReferences"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="PaymentMethod"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="DocumentStatus"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="DocumentTotals"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="Line"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="Payment"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="Payments"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="SourceDocumentID"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ProductSerialNumber"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\References" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="References"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="DocumentStatus"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="DocumentTotals"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="Invoice"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="Line"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="SalesInvoices"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="Settlement"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="SpecialRegimes"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ShipFrom"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="ShipTo"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="SourceDocuments"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Tax" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="Tax"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="Warehouse"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="WithholdingTax"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="DocumentStatus"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="DocumentTotals"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkingDocuments"/>
+    <extender full="Rebelo\SaftPt\AuditFile\SupplierAddress" namespace="Rebelo\SaftPt\AuditFile" name="SupplierAddress"/>
+    <extender full="Rebelo\SaftPt\AuditFile\TransactionID" namespace="Rebelo\SaftPt\AuditFile" name="TransactionID"/>
+  </extenders>
+</class>

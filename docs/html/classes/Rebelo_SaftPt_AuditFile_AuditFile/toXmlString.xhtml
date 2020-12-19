@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\AuditFile::toXmlString</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml#Rebelo_SaftPt_AuditFile">Rebelo\SaftPt\AuditFile</a>
+          </li>
+          <li class="separator">
+            <a title="Rebelo\SaftPt\AuditFile\AuditFile" href="../../classes/Rebelo_SaftPt_AuditFile_AuditFile.xhtml">AuditFile</a>
+          </li>
+          <li class="separator">toXmlString</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#return">Return</a>
+          </li>
+          <li>
+            <a href="../../source/Rebelo/SaftPt/AuditFile/AuditFile.php.xhtml#line284">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Rebelo\SaftPt\AuditFile\AuditFile::</small>toXmlString</h1>
+        <h4>Get the saft as a xml string.&lt;br&gt; By the Portuguese Tax law, the ERP must generate the saft even if has errors, because of that rule when there are errors instead of throws an exception the error is registed in the ErrorRegister instance of the AuditFile instance, only in severe condition where is not possible to catch the exception or error that a \Exception or \Error will be throw. To know if there are errors access to the ErrorRegister instance of the AuditFile instance. Some validation to check for errors are done on the setter methods, when get the AuditFile as a xml string, no validation is done, validations can be done using the validation classes, however that validations in very big AuditFiles could have a time consume very height, is recommended to use in test environment, in production environment should be evaluated if is necessary.</h4>
+        <p>The string is returned in the encoding "UTF-8" (the encoding of simplexml), but the
+file must be export with encoding Windows-1252</p>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function toXmlString()
+            </code>
+        </div>
+        <h2 id="return">Returns</h2>
+        <dl class="styled">
+          <dt>string</dt>
+          <dd/>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

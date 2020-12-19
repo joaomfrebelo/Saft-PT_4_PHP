@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\ErrorRegister</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile">Rebelo\SaftPt\AuditFile</a>
+          </li>
+          <li class="separator">ErrorRegister</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/ErrorRegister.php.xhtml#line37">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\</small>ErrorRegister</h1>
+        <h4>File where is registed the error when create the xml node and export as xml.</h4>
+        <p>This is because by teh Portuguese tax law the SAFT-PT file must exported even if as error.<br/>So the best option is when the SAFT-PT file is exported if has errors dond't throw a<br/>error but generate the file and show the errors to the user.</p>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class ErrorRegister
+            {<br/><ul class="none"><li>// members</li><li>protected array <a href="#members">$onCreateXmlNode</a> =
+                        ;
+                    </li><li>protected array <a href="#members">$libXmlError</a> =
+                        ;
+                    </li><li>protected array <a href="#members">$onSetValue</a> =
+                        ;
+                    </li><li>protected array <a href="#members">$exceptionErrors</a> =
+                        ;
+                    </li><li>protected array <a href="#members">$validationErrors</a> =
+                        ;
+                    </li><li>protected array <a href="#members">$warning</a> =
+                        ;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/__construct.xhtml">__construct</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getOnCreateXmlNode.xhtml">getOnCreateXmlNode</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addOnCreateXmlNode.xhtml">addOnCreateXmlNode</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getOnSetValue.xhtml">getOnSetValue</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addOnSetValue.xhtml">addOnSetValue</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/clearAllErrors.xhtml">clearAllErrors</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getLibXmlError.xhtml">getLibXmlError</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addLibXmlError.xhtml">addLibXmlError</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getExceptionErrors.xhtml">getExceptionErrors</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addExceptionErrors.xhtml">addExceptionErrors</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getValidationErrors.xhtml">getValidationErrors</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addValidationErrors.xhtml">addValidationErrors</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getWarnings.xhtml">getWarnings</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addWarning.xhtml">addWarning</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/hasErrors.xhtml">hasErrors</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="exceptionErrors"><strong>$exceptionErrors</strong>
+                —
+                array<br/><span class="indent">Exception errors</span></li>
+            <li id="libXmlError"><strong>$libXmlError</strong>
+                —
+                array<br/><span class="indent">Errors of teh test performed by libxml</span></li>
+            <li id="onCreateXmlNode"><strong>$onCreateXmlNode</strong>
+                —
+                array<br/><span class="indent">Errors on create xml node</span></li>
+            <li id="onSetValue"><strong>$onSetValue</strong>
+                —
+                array<br/><span class="indent">Errors when the value is setted</span></li>
+            <li id="validationErrors"><strong>$validationErrors</strong>
+                —
+                array<br/><span class="indent">Exception errors</span></li>
+            <li id="warning"><strong>$warning</strong>
+                —
+                array</li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct">
+              <a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/__construct.xhtml">__construct()</a>
+            </li>
+            <li id="addExceptionErrors"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addExceptionErrors.xhtml">addExceptionErrors()</a>
+                — Add error to stack</li>
+            <li id="addLibXmlError"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addLibXmlError.xhtml">addLibXmlError()</a>
+                — Add error to stack</li>
+            <li id="addOnCreateXmlNode"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addOnCreateXmlNode.xhtml">addOnCreateXmlNode()</a>
+                — Add error to stack</li>
+            <li id="addOnSetValue"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addOnSetValue.xhtml">addOnSetValue()</a>
+                — Add error to track</li>
+            <li id="addValidationErrors"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addValidationErrors.xhtml">addValidationErrors()</a>
+                — Add error to stack</li>
+            <li id="addWarning"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/addWarning.xhtml">addWarning()</a>
+                — Add warning</li>
+            <li id="clearAllErrors"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/clearAllErrors.xhtml">clearAllErrors()</a>
+                — Clear all errors</li>
+            <li id="getExceptionErrors"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getExceptionErrors.xhtml">getExceptionErrors()</a>
+                — Get</li>
+            <li id="getLibXmlError"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getLibXmlError.xhtml">getLibXmlError()</a>
+                — Get</li>
+            <li id="getOnCreateXmlNode"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getOnCreateXmlNode.xhtml">getOnCreateXmlNode()</a>
+                — Get the onCreateXmlNode values error statck</li>
+            <li id="getOnSetValue"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getOnSetValue.xhtml">getOnSetValue()</a>
+                — Get on set values errors stack</li>
+            <li id="getValidationErrors"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getValidationErrors.xhtml">getValidationErrors()</a>
+                — Get</li>
+            <li id="getWarnings"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/getWarnings.xhtml">getWarnings()</a>
+                — Get</li>
+            <li id="hasErrors"><a title="Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/Rebelo_SaftPt_AuditFile_ErrorRegister/hasErrors.xhtml">hasErrors()</a>
+                — Check if has errors</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

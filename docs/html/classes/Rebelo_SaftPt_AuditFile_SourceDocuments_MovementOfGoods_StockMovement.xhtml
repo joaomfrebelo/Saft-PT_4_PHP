@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods">Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods</a>
+          </li>
+          <li class="separator">StockMovement</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/StockMovement.php.xhtml#line42">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\</small>StockMovement</h1>
+        <h4>StockMovement</h4>
+        <p/>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class StockMovement
+                extends <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument.xhtml">ADocument</a>
+            {<br/><ul class="none"><li>// constants</li><li>const N_STOCKMOVEMENT = "StockMovement";</li><li>const N_DOCUMENTNUMBER = "DocumentNumber";</li><li>const N_MOVEMENTDATE = "MovementDate";</li><li>const N_MOVEMENTTYPE = "MovementType";</li><li>const N_SUPPLIERID = "SupplierID";</li><li>const N_MOVEMENTCOMMENTS = "MovementComments";</li><li>const N_SHIPTO = "ShipTo";</li><li>const N_SHIPFROM = "ShipFrom";</li><li>const N_MOVEMENTENDTIME = "MovementEndTime";</li><li>const N_MOVEMENTSTARTTIME = "MovementStartTime";</li><li>const N_ATDOCCODEID = "ATDocCodeID";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument.xhtml">ADocument</a></li><li>const <a href="#N_ATCUD">N_ATCUD</a> = "ATCUD";</li><li>const <a href="#N_HASH">N_HASH</a> = "Hash";</li><li>const <a href="#N_HASHCONTROL">N_HASHCONTROL</a> = "HashControl";</li><li>const <a href="#N_PERIOD">N_PERIOD</a> = "Period";</li><li>const <a href="#N_SOURCEID">N_SOURCEID</a> = "SourceID";</li><li>const <a href="#N_EACCODE">N_EACCODE</a> = "EACCode";</li><li>const <a href="#N_SYSTEMENTRYDATE">N_SYSTEMENTRYDATE</a> = "SystemEntryDate";</li><li>const <a href="#N_TRANSACTIONID">N_TRANSACTIONID</a> = "TransactionID";</li><li>const <a href="#N_CUSTOMERID">N_CUSTOMERID</a> = "CustomerID";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">AAuditFile</a></li><li>const <a href="#DESCONHECIDO">DESCONHECIDO</a> = "Desconhecido";</li><li>const <a href="#CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</a> = "999999990";</li><li>const <a href="#CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</a> = "Consumidor final";</li><li>const <a href="#CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</a> = "CONSUMIDOR_FINAL";</li></ul><ul class="none"><li>// members</li><li>private  <a href="#members">$documentNumber</a>;
+                    </li><li>private <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus">DocumentStatus</span> <a href="#members">$documentStatus</a>;
+                    </li><li>private <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$movementDate</a>;
+                    </li><li>private <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType">MovementType</span> <a href="#members">$movementType</a>;
+                    </li><li>private  <a href="#members">$supplierID</a>;
+                    </li><li>private <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\string|null">string|null</span> <a href="#members">$movementComments</a> =
+                        NULL;
+                    </li><li>private <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null">ShipTo|null</span> <a href="#members">$shipTo</a> =
+                        NULL;
+                    </li><li>private <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null">ShipFrom|null</span> <a href="#members">$shipFrom</a> =
+                        NULL;
+                    </li><li>private <span title="\Rebelo\Date\Date|null">Date|null</span> <a href="#members">$movementEndTime</a> =
+                        NULL;
+                    </li><li>private <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$movementStartTime</a>;
+                    </li><li>private <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\string|null">string|null</span> <a href="#members">$atDocCodeID</a> =
+                        NULL;
+                    </li><li>private array <a href="#members">$line</a> =
+                        ;
+                    </li><li>private <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals">DocumentTotals</span> <a href="#members">$documentTotals</a>;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument">ADocument</span></li><li>protected <span title="\Rebelo\SaftPt\Validate\DocTotalCalc">DocTotalCalc</span> <a href="#members">$docTotalcal</a>;
+                        </li><li>protected  <a href="#members">$atcud</a>;
+                        </li><li>protected  <a href="#members">$hash</a>;
+                        </li><li>protected  <a href="#members">$hashControl</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\int|null">int|null</span> <a href="#members">$period</a>;
+                        </li><li>protected  <a href="#members">$sourceID</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\string|null">string|null</span> <a href="#members">$eacCode</a>;
+                        </li><li>protected <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$systemEntryDate</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\TransactionID|null">TransactionID|null</span> <a href="#members">$transactionID</a>;
+                        </li><li>protected  <a href="#members">$customerID</a>;
+                        </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>protected static <span title="\Rebelo\SaftPt\AuditFile\i18n\AI18n">AI18n</span> <a href="#members">$i18n</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\ErrorRegister">ErrorRegister</span> <a href="#members">$errorRegister</a>;
+                        </li><li>protected array <a href="#members">$error</a>;
+                        </li><li>protected array <a href="#members">$warning</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/__construct.xhtml">__construct</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getDocumentNumber.xhtml">getDocumentNumber</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setDocumentNumber.xhtml">setDocumentNumber</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetDocumentNumber.xhtml">issetDocumentNumber</a>()
+                    </li><li>public <span title="DocumentStatus">DocumentStatus</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getDocumentStatus.xhtml">getDocumentStatus</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetDocumentStatus.xhtml">issetDocumentStatus</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setDocumentStatus.xhtml">setDocumentStatus</a>()
+                    </li><li>public <span title="Date">Date</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementDate.xhtml">getMovementDate</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetMovementDate.xhtml">issetMovementDate</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementDate.xhtml">setMovementDate</a>()
+                    </li><li>public <span title="MovementType">MovementType</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementType.xhtml">getMovementType</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetMovementType.xhtml">issetMovementType</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementType.xhtml">setMovementType</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setCustomerID.xhtml">setCustomerID</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getSupplierID.xhtml">getSupplierID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetSupplierID.xhtml">issetSupplierID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setSupplierID.xhtml">setSupplierID</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementComments.xhtml">getMovementComments</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementComments.xhtml">setMovementComments</a>()
+                    </li><li>public ?<span title="ShipTo">ShipTo</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getShipTo.xhtml">getShipTo</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setShipToAsNull.xhtml">setShipToAsNull</a>()
+                    </li><li>public ?<span title="ShipFrom">ShipFrom</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getShipFrom.xhtml">getShipFrom</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setShipFromAsNull.xhtml">setShipFromAsNull</a>()
+                    </li><li>public ?<span title="Date">Date</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementEndTime.xhtml">getMovementEndTime</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementEndTime.xhtml">setMovementEndTime</a>()
+                    </li><li>public <span title="Date">Date</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementStartTime.xhtml">getMovementStartTime</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetMovementStartTime.xhtml">issetMovementStartTime</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementStartTime.xhtml">setMovementStartTime</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getAtDocCodeID.xhtml">getAtDocCodeID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setAtDocCodeID.xhtml">setAtDocCodeID</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getLine.xhtml">getLine</a>()
+                    </li><li>public <span title="Line">Line</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/addLine.xhtml">addLine</a>()
+                    </li><li>public <span title="DocumentTotals">DocumentTotals</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getDocumentTotals.xhtml">getDocumentTotals</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetDocumentTotals.xhtml">issetDocumentTotals</a>()
+                    </li><li>public <span title="SimpleXMLElement">SimpleXMLElement</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/createXmlNode.xhtml">createXmlNode</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/parseXmlNode.xhtml">parseXmlNode</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument">ADocument</span></li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/__construct.xhtml">__construct</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getAtcud.xhtml">getAtcud</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetAtcud.xhtml">issetAtcud</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setAtcud.xhtml">setAtcud</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getHash.xhtml">getHash</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetHash.xhtml">issetHash</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setHash.xhtml">setHash</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getHashControl.xhtml">getHashControl</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetHashControl.xhtml">issetHashControl</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setHashControl.xhtml">setHashControl</a>()
+                        </li><li>public int|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getPeriod.xhtml">getPeriod</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setPeriod.xhtml">setPeriod</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getSourceID.xhtml">getSourceID</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetSourceID.xhtml">issetSourceID</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setSourceID.xhtml">setSourceID</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getEacCode.xhtml">getEacCode</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setEacCode.xhtml">setEacCode</a>()
+                        </li><li>public Date <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getSystemEntryDate.xhtml">getSystemEntryDate</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetSystemEntryDate.xhtml">issetSystemEntryDate</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setSystemEntryDate.xhtml">setSystemEntryDate</a>()
+                        </li><li>public TransactionID|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getTransactionID.xhtml">getTransactionID</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setTransactionIDAsNull.xhtml">setTransactionIDAsNull</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getCustomerID.xhtml">getCustomerID</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetCustomerID.xhtml">issetCustomerID</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setCustomerID.xhtml">setCustomerID</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li><li>public DocTotalCalc|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getDocTotalcal.xhtml">getDocTotalcal</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setDocTotalcal.xhtml">setDocTotalcal</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>public bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__construct.xhtml">__construct</a>()
+                        </li><li>public abstract SimpleXMLElement <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode</a>()
+                        </li><li>public abstract void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf</a>()
+                        </li><li>public static void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n</a>()
+                        </li><li>public static AI18n <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n</a>()
+                        </li><li>public ErrorRegister <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber</a>()
+                        </li><li>public static int <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="N_STOCKMOVEMENT">N_STOCKMOVEMENT</td>
+              <td>"StockMovement"</td>
+            </tr>
+            <tr>
+              <td id="N_DOCUMENTNUMBER">N_DOCUMENTNUMBER</td>
+              <td>"DocumentNumber"</td>
+            </tr>
+            <tr>
+              <td id="N_MOVEMENTDATE">N_MOVEMENTDATE</td>
+              <td>"MovementDate"</td>
+            </tr>
+            <tr>
+              <td id="N_MOVEMENTTYPE">N_MOVEMENTTYPE</td>
+              <td>"MovementType"</td>
+            </tr>
+            <tr>
+              <td id="N_SUPPLIERID">N_SUPPLIERID</td>
+              <td>"SupplierID"</td>
+            </tr>
+            <tr>
+              <td id="N_MOVEMENTCOMMENTS">N_MOVEMENTCOMMENTS</td>
+              <td>"MovementComments"</td>
+            </tr>
+            <tr>
+              <td id="N_SHIPTO">N_SHIPTO</td>
+              <td>"ShipTo"</td>
+            </tr>
+            <tr>
+              <td id="N_SHIPFROM">N_SHIPFROM</td>
+              <td>"ShipFrom"</td>
+            </tr>
+            <tr>
+              <td id="N_MOVEMENTENDTIME">N_MOVEMENTENDTIME</td>
+              <td>"MovementEndTime"</td>
+            </tr>
+            <tr>
+              <td id="N_MOVEMENTSTARTTIME">N_MOVEMENTSTARTTIME</td>
+              <td>"MovementStartTime"</td>
+            </tr>
+            <tr>
+              <td id="N_ATDOCCODEID">N_ATDOCCODEID</td>
+              <td>"ATDocCodeID"</td>
+            </tr>
+            <tr>
+              <td id="N_ATCUD">N_ATCUD</td>
+              <td>"ATCUD"</td>
+            </tr>
+            <tr>
+              <td id="N_HASH">N_HASH</td>
+              <td>"Hash"</td>
+            </tr>
+            <tr>
+              <td id="N_HASHCONTROL">N_HASHCONTROL</td>
+              <td>"HashControl"</td>
+            </tr>
+            <tr>
+              <td id="N_PERIOD">N_PERIOD</td>
+              <td>"Period"</td>
+            </tr>
+            <tr>
+              <td id="N_SOURCEID">N_SOURCEID</td>
+              <td>"SourceID"</td>
+            </tr>
+            <tr>
+              <td id="N_EACCODE">N_EACCODE</td>
+              <td>"EACCode"</td>
+            </tr>
+            <tr>
+              <td id="N_SYSTEMENTRYDATE">N_SYSTEMENTRYDATE</td>
+              <td>"SystemEntryDate"</td>
+            </tr>
+            <tr>
+              <td id="N_TRANSACTIONID">N_TRANSACTIONID</td>
+              <td>"TransactionID"</td>
+            </tr>
+            <tr>
+              <td id="N_CUSTOMERID">N_CUSTOMERID</td>
+              <td>"CustomerID"</td>
+            </tr>
+            <tr>
+              <td id="DESCONHECIDO">DESCONHECIDO</td>
+              <td>"Desconhecido"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</td>
+              <td>"999999990"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</td>
+              <td>"Consumidor final"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</td>
+              <td>"CONSUMIDOR_FINAL"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="atDocCodeID"><strong>$atDocCodeID</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\string|null" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_string|null.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/&amp;gt;</span></li>
+            <li id="documentNumber"><strong>$documentNumber</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref="DocumentNumber"/&amp;gt; &amp;lt;xs:element name="DocumentNumber"&amp;gt;   &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="documentStatus"><strong>$documentStatus</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_DocumentStatus.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus</a><br/><span class="indent">&amp;lt;xs:element name="DocumentStatus"&gt;</span></li>
+            <li id="documentTotals"><strong>$documentTotals</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_DocumentTotals.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals</a><br/><span class="indent">&amp;lt;xs:element name="DocumentTotals"&gt;</span></li>
+            <li id="line"><strong>$line</strong>
+                —
+                array<br/><span class="indent">&amp;lt;xs:element name="Line" maxOccurs="unbounded"&gt;</span></li>
+            <li id="movementComments"><strong>$movementComments</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\string|null" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_string|null.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="MovementComments" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</span></li>
+            <li id="movementDate"><strong>$movementDate</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">&amp;lt;xs:element ref="MovementDate"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementDate" type="SAFdateType"/&amp;gt;</span></li>
+            <li id="movementEndTime"><strong>$movementEndTime</strong>
+                —
+                <a title="\Rebelo\Date\Date|null" href="../classes/_Rebelo_Date_Date|null.xhtml">\Rebelo\Date\Date|null</a><br/><span class="indent">&amp;lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&amp;gt;</span></li>
+            <li id="movementStartTime"><strong>$movementStartTime</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">&amp;lt;xs:element ref="MovementStartTime" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&amp;gt;</span></li>
+            <li id="movementType"><strong>$movementType</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_MovementType.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType</a><br/><span class="indent">&amp;lt;xs:element ref="MovementType"/&amp;gt;</span></li>
+            <li id="shipFrom"><strong>$shipFrom</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_ShipFrom|null.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null</a><br/><span class="indent">&amp;lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&amp;gt;</span></li>
+            <li id="shipTo"><strong>$shipTo</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_ShipTo|null.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null</a><br/><span class="indent">&amp;lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&amp;gt;</span></li>
+            <li id="supplierID"><strong>$supplierID</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:choice&amp;gt;    &amp;lt;xs:element ref="CustomerID"/&amp;gt;    &amp;lt;xs:element ref="SupplierID"/&amp;gt; &amp;lt;/xs:choice&amp;gt; &lt;/pre&gt;</span></li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="atcud"><strong>$atcud</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref = "ATCUD"/&amp;gt; &amp;lt;xs:element name="ATCUD" type="SAFPTtextTypeMandatoryMax100Car"/&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="customerID"><strong>$customerID</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref = "CustomerID"/&amp;gt; &amp;lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;</span></li>
+            <li id="docTotalcal"><strong>$docTotalcal</strong>
+                —
+                <a title="\Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/_Rebelo_SaftPt_Validate_DocTotalCalc.xhtml">\Rebelo\SaftPt\Validate\DocTotalCalc</a><br/><span class="indent">The calulated values made by the validation classes</span></li>
+            <li id="eacCode"><strong>$eacCode</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\string|null" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_string|null.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\string|null</a><br/><span class="indent">&lt;pre&gt;  &amp;lt;xs:element name="EACCode"&amp;gt;  &amp;lt;xs:simpleType&amp;gt;      &amp;lt;xs:restriction base="xs:string"&amp;gt;          &amp;lt;xs:pattern value="(([0-9]*))"/&amp;gt;          &amp;lt;xs:length value="5"/&amp;gt;      &amp;lt;/xs:restriction&amp;gt;  &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="error"><strong>$error</strong>
+                —
+                array<br/><span class="indent">To registe particular validation and errors of documents or tables, the key must be the field name</span></li>
+            <li id="errorRegister"><strong>$errorRegister</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/_Rebelo_SaftPt_AuditFile_ErrorRegister.xhtml">\Rebelo\SaftPt\AuditFile\ErrorRegister</a><br/><span class="indent">Error Register, to register global validation and errors</span></li>
+            <li id="hash"><strong>$hash</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref = "Hash"/&amp;gt; &amp;lt;xs:element name="Hash" type="SAFPTtextTypeMandatoryMax172Car"/&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="hashControl"><strong>$hashControl</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref = "HashControl"/&amp;gt; &amp;lt;xs:element name="HashControl" type="SAFPTHashControl"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTHashControl"&amp;gt;  &amp;lt;xs:restriction base="xs:string"&amp;gt;      &amp;lt;xs:pattern value="[0-9]+|[0-9]+[.][0-9]+|[0-9]+-[A-Z]{2}(M )([^ ]+[/][0-9]+)|[0-9]+-[A-Z]{2}(D )([^ ]+ [^/^ ]+[/][0-9]+)"&amp;gt;&amp;lt;/xs:pattern&amp;gt;      &amp;lt;xs:minLength value="1"/&amp;gt;      &amp;lt;xs:maxLength value="70"/&amp;gt;  &amp;lt;/xs:restriction&amp;gt; &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="i18n"><strong>$i18n</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\i18n\AI18n" href="../classes/_Rebelo_SaftPt_AuditFile_i18n_AI18n.xhtml">\Rebelo\SaftPt\AuditFile\i18n\AI18n</a></li>
+            <li id="period"><strong>$period</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\int|null" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_int|null.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\int|null</a><br/><span class="indent">&lt;pre&gt;  &amp;lt;xs:element ref = "Period" minOccurs = "0"/&amp;gt;  &amp;lt;xs:element name="Period"&amp;gt;    &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:integer"&amp;gt;           &amp;lt;xs:minInclusive value="1"/&amp;gt;           &amp;lt;xs:maxInclusive value="12"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;    &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="sourceID"><strong>$sourceID</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref = "SourceID"/&amp;gt; &amp;lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="systemEntryDate"><strong>$systemEntryDate</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">&amp;lt;xs:element ref = "SystemEntryDate"/&amp;gt;</span></li>
+            <li id="transactionID"><strong>$transactionID</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\TransactionID|null" href="../classes/_Rebelo_SaftPt_AuditFile_TransactionID|null.xhtml">\Rebelo\SaftPt\AuditFile\TransactionID|null</a><br/><span class="indent">&amp;lt;xs:element ref = "TransactionID" minOccurs = "0"/&amp;gt;</span></li>
+            <li id="warning"><strong>$warning</strong>
+                —
+                array<br/><span class="indent">To regist particular warnings of documents or tables</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/__construct.xhtml">__construct()</a>
+                — StockMovement &lt;pre&gt; &amp;lt;xs:element name="StockMovement" minOccurs="0" maxOccurs="unbounded"&amp;gt;   &amp;lt;xs:complexType&amp;gt;       &amp;lt;xs:sequence&amp;gt;           &amp;lt;xs:element ref="DocumentNumber"/&amp;gt;           &amp;lt;xs:element ref="ATCUD"/&amp;gt;           &amp;lt;!-- Estrutura da situacao atual do documento --&amp;gt;           &amp;lt;xs:element name="DocumentStatus"/&amp;gt;           &amp;lt;xs:element ref="Hash"/&amp;gt;           &amp;lt;xs:element ref="HashControl"/&amp;gt;           &amp;lt;xs:element ref="Period" minOccurs="0"/&amp;gt;           &amp;lt;xs:element ref="MovementDate"/&amp;gt;           &amp;lt;xs:element ref="MovementType"/&amp;gt;           &amp;lt;xs:element ref="SystemEntryDate"/&amp;gt;           &amp;lt;xs:element ref="TransactionID" minOccurs="0"/&amp;gt;           &amp;lt;xs:choice&amp;gt;               &amp;lt;xs:element ref="CustomerID"/&amp;gt;               &amp;lt;xs:element ref="SupplierID"/&amp;gt;           &amp;lt;/xs:choice&amp;gt;           &amp;lt;xs:element ref="SourceID"/&amp;gt;           &amp;lt;xs:element ref="EACCode" minOccurs="0"/&amp;gt;           &amp;lt;xs:element ref="MovementComments" minOccurs="0"/&amp;gt;           &amp;lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&amp;gt;           &amp;lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&amp;gt;           &amp;lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&amp;gt;           &amp;lt;xs:element ref="MovementStartTime" maxOccurs="1"/&amp;gt;           &amp;lt;!-- Nos documentos resumo (MovementStatus "R"), na falta desta informacao em concreto, a hora de inicio de transporte (MovementStartTime) pode ser indicada com a concatenacao da data constante no campo MovementDate com a hora 00:00:00--&amp;gt;           &amp;lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&amp;gt;           &amp;lt;xs:element name="Line" maxOccurs="unbounded" /&amp;gt;           &amp;lt;xs:element name="DocumentTotals"/&amp;gt;       &amp;lt;/xs:sequence&amp;gt;   &amp;lt;/xs:complexType&amp;gt; &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;</li>
+            <li id="addLine"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/addLine.xhtml">addLine()</a>
+                — Add Line to stack&lt;br&gt; &amp;lt;xs:element name="Line" maxOccurs="unbounded"&gt;</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/createXmlNode.xhtml">createXmlNode()</a>
+                — Create XML node</li>
+            <li id="getAtDocCodeID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getAtDocCodeID.xhtml">getAtDocCodeID()</a>
+                — Get AtDocCodeID&lt;br&gt; Identification code given by the Tax Authority to the document, according to Decree No. 147/2003, of 11th July.&lt;br&gt; &amp;lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/&amp;gt;</li>
+            <li id="getDocumentNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getDocumentNumber.xhtml">getDocumentNumber()</a>
+                — Get DocumentNumber &amp;lt;xs:element ref="DocumentNumber"/&amp;gt; &amp;lt;xs:element name="DocumentNumber"&amp;gt;   &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt;</li>
+            <li id="getDocumentStatus"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getDocumentStatus.xhtml">getDocumentStatus()</a>
+                — Set DocumentStatus&lt;br&gt;&lt;br&gt; This identification is sequentially composed by following elements: the document type internal code, followed by a space, followed by the identifier of the document series, followed by (/) and by the sequential number of that document within the series.</li>
+            <li id="getDocumentTotals"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getDocumentTotals.xhtml">getDocumentTotals()</a>
+                — Get DocumentTotals&lt;br&gt; When this method is invoked a new instance will be created if wasn't previous</li>
+            <li id="getLine"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getLine.xhtml">getLine()</a>
+                — Get Line Stack&lt;br&gt; &amp;lt;xs:element name="Line" maxOccurs="unbounded"&gt;</li>
+            <li id="getMovementComments"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementComments.xhtml">getMovementComments()</a>
+                — Get MovementComments &amp;lt;xs:element ref="MovementComments" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+            <li id="getMovementDate"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementDate.xhtml">getMovementDate()</a>
+                — Get MovementDate&lt;br&gt; Date of the last record of the document status to the second.</li>
+            <li id="getMovementEndTime"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementEndTime.xhtml">getMovementEndTime()</a>
+                — Set MovementEndTime&lt;br&gt; Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”, if no specific information is available.&lt;br&gt; &amp;lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&amp;gt;</li>
+            <li id="getMovementStartTime"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementStartTime.xhtml">getMovementStartTime()</a>
+                — Get MovementStartTime&lt;br&gt; Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”, ” if no specific information is available.&lt;br&gt; &amp;lt;xs:element ref="MovementStartTime" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&amp;gt;</li>
+            <li id="getMovementType"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getMovementType.xhtml">getMovementType()</a>
+                — Get MovementType &lt;br&gt; Shall be filled in with:&lt;br&gt; "GR" - Delivery note;&lt;br&gt; "GT" - Transport guide (include here the global transport documents);&lt;br&gt; “GA” – Transport document for own fixed assets;&lt;br&gt; “GC” - Consignment note;&lt;br&gt; “GD” – Return note.&lt;br&gt; &amp;lt;xs:element ref="MovementType"/&amp;gt;</li>
+            <li id="getShipFrom"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getShipFrom.xhtml">getShipFrom()</a>
+                — Get ShipFrom&lt;br&gt; Information about the place and date of the shipping of the articles sold to the customer.&lt;br&gt; &amp;lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&amp;gt;</li>
+            <li id="getShipTo"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getShipTo.xhtml">getShipTo()</a>
+                — Get ShipTo&lt;br&gt; Information about the delivery place and date, where and when the goods have been made available for the client, or anyone assigned by him in the case of triangular transactions.&lt;br&gt; &amp;lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&amp;gt;</li>
+            <li id="getSupplierID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/getSupplierID.xhtml">getSupplierID()</a>
+                — Set SupplierID&lt;br&gt; The unique key of table 2.3. – Supplier, complying with rule defined for field 2.3.1. – SupplierID, in case of return notes or transport notes regarding movable assets produced or assembled according to an order of materials supplied for this purpose by the owner (work from materials supplied without the ownership being transferred).&lt;br&gt; &lt;pre&gt; &amp;lt;xs:choice&amp;gt;    &amp;lt;xs:element ref="CustomerID"/&amp;gt;    &amp;lt;xs:element ref="SupplierID"/&amp;gt; &amp;lt;/xs:choice&amp;gt; &lt;/pre&gt;</li>
+            <li id="issetDocumentNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetDocumentNumber.xhtml">issetDocumentNumber()</a>
+                — Get if is set DocumentNumber</li>
+            <li id="issetDocumentStatus"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetDocumentStatus.xhtml">issetDocumentStatus()</a>
+                — Get if is set DocumentStatus</li>
+            <li id="issetDocumentTotals"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetDocumentTotals.xhtml">issetDocumentTotals()</a>
+                — Get if is set DocumentTotals</li>
+            <li id="issetMovementDate"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetMovementDate.xhtml">issetMovementDate()</a>
+                — Get if is set MovementDate</li>
+            <li id="issetMovementStartTime"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetMovementStartTime.xhtml">issetMovementStartTime()</a>
+                — Get if is set MovementStartTime</li>
+            <li id="issetMovementType"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetMovementType.xhtml">issetMovementType()</a>
+                — Get if is set MovementType</li>
+            <li id="issetSupplierID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/issetSupplierID.xhtml">issetSupplierID()</a>
+                — Get if is set SupplierID</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Parse XML node</li>
+            <li id="setAtDocCodeID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setAtDocCodeID.xhtml">setAtDocCodeID()</a>
+                — Set AtDocCodeID&lt;br&gt; Identification code given by the Tax Authority to the document, according to Decree No. 147/2003, of 11th July.&lt;br&gt; &amp;lt;xs:element ref="ATDocCodeID" minOccurs="0" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ATDocCodeID" type="SAFPTtextTypeMandatoryMax200Car"/&amp;gt;</li>
+            <li id="setCustomerID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setCustomerID.xhtml">setCustomerID()</a>
+                — Set CustomerID&lt;br&gt; The unique key of table 2.2. – Customer complying with rule defined for field 2.2.1. - CustomerID.</li>
+            <li id="setDocumentNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setDocumentNumber.xhtml">setDocumentNumber()</a>
+                — Get DocumentNumber&lt;br&gt; This identification is sequentially composed by following elements: the document type internal code, followed by a space, followed by the identifier of the document series, followed by (/) and by the sequential number of that document within the series.</li>
+            <li id="setDocumentStatus"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setDocumentStatus.xhtml">setDocumentStatus()</a>
+                — Set DocumentStatus&lt;br&gt; &amp;lt;xs:element name="DocumentStatus"&gt;</li>
+            <li id="setMovementComments"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementComments.xhtml">setMovementComments()</a>
+                — Set MovementComments&lt;br&gt; &amp;lt;xs:element ref="MovementComments" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementComments" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+            <li id="setMovementDate"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementDate.xhtml">setMovementDate()</a>
+                — Set MovementDate&lt;br&gt; Date of the last record of the document status to the second.</li>
+            <li id="setMovementEndTime"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementEndTime.xhtml">setMovementEndTime()</a>
+                — Get MovementEndTime&lt;br&gt; Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”, if no specific information is available.&lt;br&gt; &amp;lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&amp;gt;</li>
+            <li id="setMovementStartTime"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementStartTime.xhtml">setMovementStartTime()</a>
+                — Set MovementStartTime&lt;br&gt; Date and time: “YYYY-MM-DDThh:mm:ss”, where “ss” may be “00”, ” if no specific information is available.&lt;br&gt; &amp;lt;xs:element ref="MovementStartTime" maxOccurs="1"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&amp;gt;</li>
+            <li id="setMovementType"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setMovementType.xhtml">setMovementType()</a>
+                — Set MovementType &lt;br&gt; Shall be filled in with:&lt;br&gt; "GR" - Delivery note;&lt;br&gt; "GT" - Transport guide (include here the global transport documents);&lt;br&gt; “GA” – Transport document for own fixed assets;&lt;br&gt; “GC” - Consignment note;&lt;br&gt; “GD” – Return note.&lt;br&gt; &amp;lt;xs:element ref="MovementType"/&amp;gt;</li>
+            <li id="setShipFromAsNull"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setShipFromAsNull.xhtml">setShipFromAsNull()</a>
+                — Set ShipFrom As Null</li>
+            <li id="setShipToAsNull"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setShipToAsNull.xhtml">setShipToAsNull()</a>
+                — Set ShipTo As Null</li>
+            <li id="setSupplierID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_MovementOfGoods_StockMovement/setSupplierID.xhtml">setSupplierID()</a>
+                — Set SupplierID&lt;br&gt; The unique key of table 2.3. – Supplier, complying with rule defined for field 2.3.1. – SupplierID, in case of return notes or transport notes regarding movable assets produced or assembled according to an order of materials supplied for this purpose by the owner (work from materials supplied without the ownership being transferred).&lt;br&gt; &lt;pre&gt; &amp;lt;xs:choice&amp;gt;    &amp;lt;xs:element ref="CustomerID"/&amp;gt;    &amp;lt;xs:element ref="SupplierID"/&amp;gt; &amp;lt;/xs:choice&amp;gt; &amp;lt;xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt; &lt;/pre&gt;</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="getAtcud"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getAtcud.xhtml">getAtcud()</a>
+                — Get Set the ATCUD This field shall contain the Document Unique Code.</li>
+            <li id="getCustomerID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getCustomerID.xhtml">getCustomerID()</a>
+                — Get CustomerID&lt;br&gt; The unique key of the table 2.2. - Customer respecting the rule defined for 2.2.1. - CustomerID.&lt;br&gt; &amp;lt;xs:element ref = "CustomerID"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;</li>
+            <li id="getDocTotalcal"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getDocTotalcal.xhtml">getDocTotalcal()</a>
+                — Get the caluleted values of the validation classes</li>
+            <li id="getEacCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getEacCode.xhtml">getEacCode()</a>
+                — Get EacCode&lt;br&gt; Code of the economic activity to which the document relates shall be indicated.</li>
+            <li id="getHash"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getHash.xhtml">getHash()</a>
+                — Get hash&lt;br&gt; The signature in the terms of Ordinance nº 363/2010 of 23rd June.</li>
+            <li id="getHashControl"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getHashControl.xhtml">getHashControl()</a>
+                — Get hash control&lt;br&gt; Version of the protected key used in the creation of signature of field 4.2.3.4. – Hash.</li>
+            <li id="getPeriod"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getPeriod.xhtml">getPeriod()</a>
+                — Get period&lt;br&gt; The month of the taxation period shall be indicated from “1” to “12”, counting from the start.</li>
+            <li id="getSourceID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getSourceID.xhtml">getSourceID()</a>
+                — Get sourceiID&lt;br&gt; User who created the document &lt;pre&gt; &amp;lt;xs:element ref = "SourceID"/&amp;gt; &amp;lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt; &lt;/pre&gt;</li>
+            <li id="getSystemEntryDate"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getSystemEntryDate.xhtml">getSystemEntryDate()</a>
+                — Set System entry date&lt;br&gt; Date of the last time the record was saved at the time of signing.</li>
+            <li id="getTransactionID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/getTransactionID.xhtml">getTransactionID()</a>
+                — Get transaction id&lt;br&gt; If an accounting record is created, filling in is compulsory if it is an integrated accounting and invoicing system, even if the file type (TaxAccountingBasis) shall not contain tables relating accounting.&lt;br&gt; If $create is true and a inatnce wasn't created previous a new instance will be created &amp;lt;xs:element ref = "TransactionID" minOccurs = "0"/&amp;gt;</li>
+            <li id="issetAtcud"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetAtcud.xhtml">issetAtcud()</a>
+                — Get if is set Atcud</li>
+            <li id="issetCustomerID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetCustomerID.xhtml">issetCustomerID()</a>
+                — Get if is set CustomerID</li>
+            <li id="issetHash"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetHash.xhtml">issetHash()</a>
+                — Get if is set Hash</li>
+            <li id="issetHashControl"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetHashControl.xhtml">issetHashControl()</a>
+                — Get if is set HashControl</li>
+            <li id="issetSourceID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetSourceID.xhtml">issetSourceID()</a>
+                — Get if is set SourceID</li>
+            <li id="issetSystemEntryDate"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/issetSystemEntryDate.xhtml">issetSystemEntryDate()</a>
+                — Get if is set SystemEntryDate</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Parse the xml node</li>
+            <li id="setAtcud"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setAtcud.xhtml">setAtcud()</a>
+                — Set the ATCUD&lt;br&gt; This field shall contain the Document Unique Code.</li>
+            <li id="setCustomerID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setCustomerID.xhtml">setCustomerID()</a>
+                — Set CustomerID&lt;br&gt; The unique key of the table 2.2. - Customer respecting the rule defined for 2.2.1. - CustomerID.&lt;br&gt; &amp;lt;xs:element ref = "CustomerID"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;</li>
+            <li id="setDocTotalcal"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setDocTotalcal.xhtml">setDocTotalcal()</a>
+                — Set the caluleted values of the validation classes</li>
+            <li id="setEacCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setEacCode.xhtml">setEacCode()</a>
+                — Set EacCode&lt;br&gt; Code of the economic activity to which the document relates shall be indicated.</li>
+            <li id="setHash"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setHash.xhtml">setHash()</a>
+                — Set Hash&lt;br&gt; The signature in the terms of Ordinance nº 363/2010 of 23rd June.</li>
+            <li id="setHashControl"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setHashControl.xhtml">setHashControl()</a>
+                — Set hash control&lt;br&gt; Version of the protected key used in the creation of signature of field 4.2.3.4. – Hash.</li>
+            <li id="setPeriod"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setPeriod.xhtml">setPeriod()</a>
+                — Set period&lt;br&gt; The month of the taxation period shall be indicated from “1” to “12”, counting from the start.</li>
+            <li id="setSourceID"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setSourceID.xhtml">setSourceID()</a>
+                — Set sourceiID&lt;br&gt; User who created the document &lt;pre&gt; &amp;lt;xs:element ref = "SourceID"/&amp;gt; &amp;lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt; &lt;/pre&gt;</li>
+            <li id="setSystemEntryDate"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setSystemEntryDate.xhtml">setSystemEntryDate()</a>
+                — Set System entry date&lt;br&gt; Date of the last time the record was saved at the time of signing.</li>
+            <li id="setTransactionIDAsNull"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ADocument/setTransactionIDAsNull.xhtml">setTransactionIDAsNull()</a>
+                — Set TransactionID as null</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">Rebelo\SaftPt\AuditFile\AAuditFile</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="__clone"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone()</a>
+                — Force to clone all object properties</li>
+            <li id="__isset"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset()</a>
+                — Invoke the isset to the propertie name</li>
+            <li id="addError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError()</a>
+                — Add a particular error</li>
+            <li id="addWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning()</a>
+                — Add a particular warning</li>
+            <li id="calcPeriod"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod()</a>
+                — Calc the document period based on the fiscal year start month</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="floatFormat"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat()</a>
+                — Format a float with grouped thousands</li>
+            <li id="getError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError()</a>
+                — Get all particular error</li>
+            <li id="getErrorRegistor"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor()</a>
+                — Get the ErrorRegistor instance</li>
+            <li id="getI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n()</a>
+                — Get i18n class</li>
+            <li id="getWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning()</a>
+                — Get all particular warning</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="replaceHexUtf"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf()</a>
+                — Convert the encoded caracters encoded by SimpleXmlElment</li>
+            <li id="setI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n()</a>
+                — Set the language to translate</li>
+            <li id="valPortugueseVatNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber()</a>
+                — Validate Portuguese VAT Number</li>
+            <li id="valTextMandMaxCar"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar()</a>
+                — Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string</li>
+            <li id="validateDocNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber()</a>
+                — Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;</li>
+            <li id="validateMod11auxFunction"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction()</a>
+                — validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

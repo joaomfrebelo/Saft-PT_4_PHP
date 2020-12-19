@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\ValidationConfig" namespace="Rebelo\SaftPt\Validate" name="ValidationConfig" abstract="false" final="false" start="37" end="301">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate" file="ValidationConfig.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/ValidationConfig.php" size="7412" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="827e8b65c367a1935f1e885772931e8ea6ad676d" relative="Rebelo/SaftPt/Validate/ValidationConfig.php"/>
+  <docblock>
+    <description compact="The validation generic configuration"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <member name="allowDebitAndCredit" default="false" type="boolean" visibility="protected" static="false" line="44">
+    <docblock>
+      <description compact="If allow Debit an Credit line in the same document"/>
+      <var type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="continuesLines" default="true" type="boolean" visibility="protected" static="false" line="51">
+    <docblock>
+      <description compact="If allow only continues lines"/>
+      <var type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="deltaCurrency" default="0.01" type="float" visibility="protected" static="false" line="58">
+    <docblock>
+      <description compact="The maximum delta in the currency calculation to be consider valid"/>
+      <var type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="deltaLine" default="0.01" type="float" visibility="protected" static="false" line="65">
+    <docblock>
+      <description compact="The maximum delta in the lines to be conider valid"/>
+      <var type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="deltaTable" default="0.01" type="float" visibility="protected" static="false" line="72">
+    <docblock>
+      <description compact="The maximum delta in the table's sums calculation to be consider valid"/>
+      <var type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="deltaTotalDoc" default="0.01" type="float" visibility="protected" static="false" line="79">
+    <docblock>
+      <description compact="The maximum delta in the document totals calculation to be consider value"/>
+      <var type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="signValidation" default="true" type="boolean" visibility="protected" static="false" line="86">
+    <docblock>
+      <description compact="Defifine if performes the signatures validation"/>
+      <var type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="style" default="NULL" visibility="protected" static="false" line="93">
+    <docblock>
+      <description compact="The output writer, to be use in concolde application"/>
+      <var type="object">
+        <type full="\Rebelo\SaftPt\Bin\Style|null" namespace="\Rebelo\SaftPt\Bin" name="Style|null"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="schema" default="true" type="boolean" visibility="protected" static="false" line="100">
+    <docblock>
+      <description compact="Define if validates schema against XSD"/>
+      <var type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="107" end="110" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The validation generic configuration"/>
+      <author value="João Rebelo"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constructor>
+  <method name="getAllowDebitAndCredit" start="117" end="120" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="If allow Debit an Credit line in the same document"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="getContinuesLines" start="127" end="130" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="If allow only continues lines"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="getDeltaCurrency" start="137" end="140" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the currency calculation to be consider valid"/>
+      <return type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="false"/>
+  </method>
+  <method name="getDeltaLine" start="147" end="150" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the line calculation to be consider valid"/>
+      <return type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="false"/>
+  </method>
+  <method name="getDeltaTable" start="157" end="160" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the table's sums calculation to be consider valid"/>
+      <return type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="false"/>
+  </method>
+  <method name="getDeltaTotalDoc" start="167" end="170" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the document totals calculation to be consider value"/>
+      <return type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="false"/>
+  </method>
+  <method name="getSignValidation" start="177" end="180" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="If performes signature validation"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="getStyle" start="187" end="190" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The output writer for console applications"/>
+      <return type="object">
+        <type full="\Rebelo\SaftPt\Bin\Style|null" namespace="\Rebelo\SaftPt\Bin" name="Style|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="object" nullable="true">
+      <type full="Rebelo\SaftPt\Bin\Style" namespace="Rebelo\SaftPt\Bin" name="Style"/>
+    </return>
+  </method>
+  <method name="getSchemaValidate" start="197" end="200" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get if is to validate schema against XSD"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="setAllowDebitAndCredit" start="208" end="211" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="If allow Debit an Credit line in the same document"/>
+      <param type="object" variable="$allowDebitAndCredit">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="allowDebitAndCredit" byreference="false" type="bool"/>
+  </method>
+  <method name="setContinuesLines" start="219" end="222" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="If allow only continues lines"/>
+      <param type="object" variable="$continuesLines">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="continuesLines" byreference="false" type="bool"/>
+  </method>
+  <method name="setDeltaCurrency" start="230" end="233" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the currency calculation to be consider valid"/>
+      <param type="float" variable="$deltaCurrency"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="deltaCurrency" byreference="false" type="float"/>
+  </method>
+  <method name="setDeltaLine" start="241" end="244" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the line calculation to be consider valid"/>
+      <param type="float" variable="$deltaLine"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="deltaLine" byreference="false" type="float"/>
+  </method>
+  <method name="setDeltaTable" start="252" end="255" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the table's sums calculation to be consider valid"/>
+      <param type="float" variable="$deltaTable"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="deltaTable" byreference="false" type="float"/>
+  </method>
+  <method name="setDeltaTotalDoc" start="263" end="266" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The maximum delta in the document totals calculation to be consider value"/>
+      <param type="float" variable="$deltaTotalDoc"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="deltaTotalDoc" byreference="false" type="float"/>
+  </method>
+  <method name="setSignValidation" start="274" end="278" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="If performes signature validation"/>
+      <param type="object" variable="$signValidation">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="signValidation" byreference="false" type="bool"/>
+  </method>
+  <method name="setStyle" start="286" end="289" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The output writer for console applications"/>
+      <param type="object" variable="$style">
+        <type full="\Rebelo\SaftPt\Bin\Style|null" namespace="\Rebelo\SaftPt\Bin" name="Style|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="style" byreference="false" nullable="true" type="object" default="NULL">
+      <type full="Rebelo\SaftPt\Bin\Style" namespace="Rebelo\SaftPt\Bin" name="Style"/>
+    </parameter>
+  </method>
+  <method name="setSchemaValidate" start="297" end="300" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set if is to validate schema against XSD"/>
+      <param type="object" variable="$schema">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="schema" byreference="false" type="bool"/>
+  </method>
+</class>

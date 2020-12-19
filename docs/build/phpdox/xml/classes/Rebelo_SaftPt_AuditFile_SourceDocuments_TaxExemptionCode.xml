@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="TaxExemptionCode" abstract="false" final="false" start="59" end="234">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments" file="TaxExemptionCode.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/TaxExemptionCode.php" size="7618" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="c6f5240c315d048c423ac0447893b851145a9a19" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/TaxExemptionCode.php"/>
+  <docblock>
+    <description compact="TaxExemptionCode&lt;br&gt;  It shall be filled in with the code of the reason for exemption or non-settlement, which is included in the &quot;Manual de Integração de Software – Comunicação das Faturas à AT&quot; [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].">The filling is required when fields 4.1.4.19.15.4. - TaxPercentage
+or 4.1.4.19.15.5. - TaxAmount are equal to zero.
+This field shall also be filled in, for the cases not to subject to the
+taxes mentioned in table 2.5. - TaxTable.
+
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M01()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M03()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M04()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M05()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M06()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M07()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M08()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M09()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M10()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M11()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M12()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M13()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M14()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M15()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M16()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M20()
+ @method \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M99()</description>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="M01" value="&quot;M01&quot;">
+    <docblock>
+      <description compact="Mensção: Artigo 16.º n.º 6 do CIVA(ou similar&lt;br&gt; Norma: Artigo 16.º  n.º  6 alíneas a) a d) do  CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M02" value="&quot;M02&quot;">
+    <docblock>
+      <description compact="Mensção: Artigo  6.º  do  Decreto-Lei  n.º  198/90,  de19  de Junho&lt;br&gt; Norma: Artigo  6.º  do  Decreto‐Lei  n.º  198/90,  de  19  de  junho"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M03" value="&quot;M03&quot;">
+    <docblock>
+      <description compact="Mensção: Exigibilidade de caixa&lt;br&gt; Norma: Decreto‐Lei n.º 204/97, de 9 de agosto, Decreto-Lei n.º 418/99, de 21 de outubro, Lei n.º 15/2009, de 1 de abril"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M04" value="&quot;M04&quot;">
+    <docblock>
+      <description compact="Mensção: Isento Artigo 13.º do CIVA(ou similar)&lt;br&gt; Norma: Artigo 13.º do CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M05" value="&quot;M05&quot;">
+    <docblock>
+      <description compact="Mensção: Isento Artigo 14.º do CIVA(ou similar)&lt;br&gt; Norma: Artigo 14.º do CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M06" value="&quot;M06&quot;">
+    <docblock>
+      <description compact="Mensção: sento Artigo 15.º do CIVA(ou similar)&lt;br&gt; Norma: Artigo 15.º do CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M07" value="&quot;M07&quot;">
+    <docblock>
+      <description compact="Mensção: Isento Artigo 9.º do CIVA(ou similar)&lt;br&gt; Norma: Artigo 9.º do CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M08" value="&quot;M08&quot;">
+    <docblock>
+      <description compact="Mensção: IVA –autoliquidação&lt;br&gt; Norma: Artigo 2.º n.º 1 alínea i), j) ou l)do CIVA, Artigo 6.º do CIVA, Decreto-Lei n.º 21/2007, de 29 de janeiro, Decreto-Lei n.º 362/99, de 16 de setembro, Artigo 8.º do RITI"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M09" value="&quot;M09&quot;">
+    <docblock>
+      <description compact="Mensção: IVA -não confere direito a dedução&lt;br&gt; Norma: Artigo 60.º CIVA, Artigo 72.º n.º 4 do CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M10" value="&quot;M10&quot;">
+    <docblock>
+      <description compact="Mensção: IVA –Regime de isenção&lt;br&gt; Norma: Artigo 53.ºdo CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M11" value="&quot;M11&quot;">
+    <docblock>
+      <description compact="Mensção: Regime particular do tabaco&lt;br&gt; Norma: Decreto-Lei n.º 346/85, de 23 de agosto"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M12" value="&quot;M12&quot;">
+    <docblock>
+      <description compact="Mensção: Regime  da  margem  de  lucro –Agências  de viagens&lt;br&gt; Norma: Decreto-Lei n.º 221/85, de 3 de julho"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M13" value="&quot;M13&quot;">
+    <docblock>
+      <description compact="Mensção: Regime da margem de lucro –Bens em segunda mão&lt;br&gt; Norma: Decreto-Lei n.º 199/96, de 18 de outubro"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M14" value="&quot;M14&quot;">
+    <docblock>
+      <description compact="Mensção: Regime da margem de lucro –Objetos de arte&lt;br&gt; Norma: Decreto-Lei n.º 199/96, de 18 de outubro"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M15" value="&quot;M15&quot;">
+    <docblock>
+      <description compact="Mensção: Regime   da   margem   de   lucro –Objetos   de coleção e antiguidades&lt;br&gt; Norma: Decreto-Lei n.º 199/96, de 18 de outubro"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M16" value="&quot;M16&quot;">
+    <docblock>
+      <description compact="Mensção: Isento Artigo 14.º do RITI (ou similar)&lt;br&gt; Norma: Artigo 14.º do RITI"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M20" value="&quot;M20&quot;">
+    <docblock>
+      <description compact="Mensção: IVA -Regime forfetário&lt;br&gt; Norma: Artigo 59.º-B do CIVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="M99" value="&quot;M99&quot;">
+    <docblock>
+      <description compact="Mensção: Não sujeito; não tributado (ou similar) &lt;br&gt; Norma: Outras  situações  de  não  liquidação  do  imposto (Exemplos: artigo 2.º, n.º 2 ;  artigo 3.º, n.ºs 4, 6 e 7; artigo 4.º, n.º 5, todos do CIVA)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="220" end="223" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="It shall be filled in with the code of the reason for exemption or non-settlement, which is included in the &quot;Manual de Integração de Software – Comunicação das Faturas à AT&quot; [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].">The filling is required when fields 4.1.4.19.15.4. - TaxPercentage
+or 4.1.4.19.15.5. - TaxAmount are equal to zero.
+This field shall also be filled in, for the cases not to subject to the
+taxes mentioned in table 2.5. - TaxTable.</description>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="230" end="233" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

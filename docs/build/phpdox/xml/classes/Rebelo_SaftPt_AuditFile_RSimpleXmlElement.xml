@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\RSimpleXmlElement" namespace="Rebelo\SaftPt\AuditFile" name="RSimpleXmlElement" abstract="false" final="false" start="36" end="133">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile" file="RSimpleXmlElement.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/RSimpleXmlElement.php" size="5576" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="2ec68aca34f12dcff4d93e84544392d06c569ec1" relative="Rebelo/SaftPt/AuditFile/RSimpleXmlElement.php"/>
+  <docblock>
+    <description compact="Description of RSimpleXmlElement This class exists to resove this 'feature' documented in:"/>
+    <link value="https://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+  <constant type="integer" name="NO_ESCAPE_HTML" value="0">
+    <docblock>
+      <description compact="Will be not escaped, you have to escape when set the properties in class"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="integer" name="FULL_ESCAPE_HTML" value="1">
+    <docblock>
+      <description compact="Will it be escape by \SimpleXMLElement lib&lt;br&gt; Afer the string being escaped the string length it will be grater and can overload the max size for that node, in this case the exportation of the xml will throw an Exception"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="integer" name="PARTIAL_ESCAPE_HTML" value="2">
+    <docblock>
+      <description compact="Only some entities will be escaped&lt;br&gt; Afer the string being escaped the string length it will be grater and can overload the max size for that node, in this case the exportation of the xml will throw an Exception"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <member name="escapeHtml" default="" type="{unknown}" constant="self::PARTIAL_ESCAPE_HTML" visibility="public" static="true" line="67">
+    <docblock>
+      <description compact="The type of escape to be used"/>
+      <var type="int"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <method name="getInstance" start="83" end="88" abstract="false" final="false" static="true" visibility="public">
+    <docblock>
+      <description compact="Creates a new SimpleXMLElement object &lt;p&gt;Creates a new SimpleXMLElement object.&lt;/p&gt;"/>
+      <param description="&lt;p&gt;A well-formed XML string or the path or URL to an XML document if &lt;code&gt;data_is_url&lt;/code&gt; is &lt;b&gt;&lt;code&gt;TRUE&lt;/code&gt;&lt;/b&gt;.&lt;/p&gt;" type="string" variable="$data"/>
+      <param description="&lt;p&gt;Optionally used to specify additional Libxml parameters.&lt;/p&gt; &lt;p&gt;&lt;b&gt;Note&lt;/b&gt;:&lt;/p&gt;&lt;p&gt;It may be necessary to pass &lt;b&gt;&lt;code&gt;LIBXML_PARSEHUGE&lt;/code&gt;&lt;/b&gt; to be able to process deeply nested XML or very large text nodes.&lt;/p&gt;" type="int" variable="$options"/>
+      <param description="&lt;p&gt;By default, &lt;code&gt;data_is_url&lt;/code&gt; is &lt;b&gt;&lt;code&gt;FALSE&lt;/code&gt;&lt;/b&gt;. Use &lt;b&gt;&lt;code&gt;TRUE&lt;/code&gt;&lt;/b&gt; to specify that &lt;code&gt;data&lt;/code&gt; is a path or URL to an XML document instead of &lt;code&gt;string&lt;/code&gt; data.&lt;/p&gt;" type="object" variable="$dataIsUrl">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </param>
+      <param description="&lt;p&gt;Namespace prefix or URI.&lt;/p&gt;" type="string" variable="$ns"/>
+      <param description="&lt;p&gt;&lt;b&gt;&lt;code&gt;TRUE&lt;/code&gt;&lt;/b&gt; if &lt;code&gt;ns&lt;/code&gt; is a prefix, &lt;b&gt;&lt;code&gt;FALSE&lt;/code&gt;&lt;/b&gt; if it's a URI; defaults to &lt;b&gt;&lt;code&gt;FALSE&lt;/code&gt;&lt;/b&gt;.&lt;/p&gt;" type="object" variable="$isPrefix">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </param>
+      <return description="&lt;p&gt;Returns a &lt;code&gt;SimpleXMLElement&lt;/code&gt; object representing &lt;code&gt;data&lt;/code&gt;.&lt;/p&gt;" resolution="self" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\RSimpleXmlElement" namespace="Rebelo\SaftPt\AuditFile" name="RSimpleXmlElement"/>
+      </return>
+      <link value="http://php.net/manual/en/simplexmlelement.construct.php"/>
+      <link value="https://stackoverflow.com/a/4347610/6397645 based on this example"/>
+      <see value="simplexml_load_string(), simplexml_load_file(), libxml_use_internal_errors()"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="data" byreference="false" type="{unknown}"/>
+    <parameter name="options" byreference="false" type="integer" default="0"/>
+    <parameter name="dataIsUrl" byreference="false" type="boolean" default="FALSE"/>
+    <parameter name="ns" byreference="false" type="string" default="&quot;&quot;"/>
+    <parameter name="isPrefix" byreference="false" type="boolean" default="FALSE"/>
+  </method>
+  <method name="addChild" start="100" end="132" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Adds a child element to the XML node &lt;p&gt;Adds a child element to the node and returns a SimpleXMLElement of the child.&lt;/p&gt;"/>
+      <param description="&lt;p&gt;The name of the child element to add.&lt;/p&gt;" type="string" variable="$name"/>
+      <param description="&lt;p&gt;If specified, the value of the child element.&lt;/p&gt;" type="string" variable="$value"/>
+      <param description="&lt;p&gt;Namespace (Not implemented)&lt;/p&gt;" type="string" variable="$ns"/>
+      <return type="object">
+        <type full="\SimpleXMLElement" namespace="" name="SimpleXMLElement"/>
+      </return>
+      <link value="http://php.net/manual/en/simplexmlelement.addchild.php"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="name" byreference="false" type="{unknown}"/>
+    <parameter name="value" byreference="false" type="{unknown}" default="NULL"/>
+    <parameter name="ns" byreference="false" type="{unknown}" default="NULL"/>
+  </method>
+  <parent full="SimpleXMLElement" namespace="" name="SimpleXMLElement">
+    <implements full="Traversable" namespace="" name="Traversable"/>
+    <constructor name="__construct" abstract="false" static="false" visibility="public" final="true">
+    <docblock>
+      <description compact="&#10;   Creates a new SimpleXMLElement object&#10;  "/>
+      <return type="void"/>
+    </docblock>
+    <parameter name="data" optional="false" byreference="false" type="string"/>
+    <parameter name="options" optional="true" byreference="false" type="int"/>
+    <parameter name="data_is_url" optional="true" byreference="false" type="object" class="bool"/>
+    <parameter name="ns" optional="true" byreference="false" type="string"/>
+    <parameter name="is_prefix" optional="true" byreference="false" type="object" class="bool"/>
+  </constructor>
+    <method name="addAttribute" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="&#10;   Adds an attribute to the SimpleXML element&#10;  "/>
+      <return type="void"/>
+    </docblock>
+    <parameter name="name" optional="false" byreference="false" type="string"/>
+    <parameter name="value" optional="true" byreference="false" type="string"/>
+    <parameter name="namespace" optional="true" byreference="false" type="string"/>
+  </method>
+    <method name="addChild" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="&#10;   Adds a child element to the XML node&#10;  "/>
+      <return type="SimpleXMLElement"/>
+    </docblock>
+    <parameter name="name" optional="false" byreference="false" type="string"/>
+    <parameter name="value" optional="true" byreference="false" type="string"/>
+    <parameter name="namespace" optional="true" byreference="false" type="string"/>
+  </method>
+    <method name="asXML" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="&#10;   Return a well-formed XML string based on SimpleXML element&#10;  "/>
+      <return type="mixed"/>
+    </docblock>
+    <parameter name="filename" optional="true" byreference="false" type="string"/>
+  </method>
+    <method name="attributes" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="Identifies an element's attributes"/>
+      <return type="SimpleXMLElement"/>
+    </docblock>
+    <parameter name="ns" optional="true" byreference="false" type="string"/>
+    <parameter name="is_prefix" optional="true" byreference="false" type="object" class="bool"/>
+  </method>
+    <method name="children" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="Finds children of given node"/>
+      <return type="SimpleXMLElement"/>
+    </docblock>
+    <parameter name="ns" optional="true" byreference="false" type="string"/>
+    <parameter name="is_prefix" optional="true" byreference="false" type="object" class="bool"/>
+  </method>
+    <method name="count" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="Counts the children of an element"/>
+      <return type="int"/>
+    </docblock>
+  </method>
+    <method name="getDocNamespaces" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="&#10;   Returns namespaces declared in document&#10;  "/>
+      <return type="array"/>
+    </docblock>
+    <parameter name="recursive" optional="true" byreference="false" type="object" class="bool"/>
+    <parameter name="from_root" optional="true" byreference="false" type="object" class="bool"/>
+  </method>
+    <method name="getName" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="Gets the name of the XML element"/>
+      <return type="string"/>
+    </docblock>
+  </method>
+    <method name="getNamespaces" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="&#10;   Returns namespaces used in document&#10;  "/>
+      <return type="array"/>
+    </docblock>
+    <parameter name="recursive" optional="true" byreference="false" type="object" class="bool"/>
+  </method>
+    <method name="registerXPathNamespace" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="&#10;   Creates a prefix/ns context for the next XPath query&#10;  "/>
+      <return type="bool"/>
+    </docblock>
+    <parameter name="prefix" optional="false" byreference="false" type="string"/>
+    <parameter name="ns" optional="false" byreference="false" type="string"/>
+  </method>
+    <method name="__toString" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="Returns the string content"/>
+      <return type="string"/>
+    </docblock>
+  </method>
+    <method name="xpath" abstract="false" static="false" visibility="public" final="false">
+    <docblock>
+      <description compact="Runs XPath query on XML data"/>
+      <return type="array"/>
+    </docblock>
+    <parameter name="path" optional="false" byreference="false" type="string"/>
+  </method>
+  </parent>
+  <interface full="Traversable" namespace="" name="Traversable"/>
+</class>

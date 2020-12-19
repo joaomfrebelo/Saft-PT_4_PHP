@@ -194,16 +194,16 @@ class Sign
             );
 
         $signature = "";
-        $resPriKey = openssl_get_privatekey($this->private);
+        $resPriKey = \openssl_get_privatekey($this->private);
 
         if ($resPriKey === false) {
             throw new SignException("Error getting private key");
         }
 
-        openssl_sign(
+        \openssl_sign(
             $str2sign, $signature, $resPriKey, OPENSSL_ALGO_SHA1
         );
-        return base64_encode($signature);
+        return \base64_encode($signature);
     }
 
     /**
@@ -241,14 +241,14 @@ class Sign
                 \sprintf(__METHOD__." verify sign hash for '%s'", $str2sign)
             );
 
-        $resPubKey = openssl_get_publickey($this->public);
+        $resPubKey = \openssl_get_publickey($this->public);
 
         if ($resPubKey === false) {
             throw new SignException("Error getting public key");
         }
 
-        return openssl_verify(
-            $str2sign, base64_decode($hash), $resPubKey, OPENSSL_ALGO_SHA1
+        return \openssl_verify(
+            $str2sign, \base64_decode($hash), $resPubKey, OPENSSL_ALGO_SHA1
         ) === 1;
     }
 }

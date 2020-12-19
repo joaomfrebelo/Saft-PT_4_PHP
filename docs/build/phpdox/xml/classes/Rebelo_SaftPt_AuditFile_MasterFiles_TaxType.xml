@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\MasterFiles\TaxType" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="TaxType" abstract="false" final="false" start="52" end="105">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles" file="TaxType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles/TaxType.php" size="3348" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="92bce46ea3723058d2eb6cc3b8c3e588e086e47b" relative="Rebelo/SaftPt/AuditFile/MasterFiles/TaxType.php"/>
+  <docblock>
+    <description compact="TaxType&lt;br&gt; This field shall be filled in with the tax type:&lt;br&gt; “IVA” – Value Added Tax;&lt;br&gt; “IS” – Stamp Duty;&lt;br&gt; “NS” – Not subject to VAT or Stamp Duty.&lt;br&gt; &lt;pre&gt;  &amp;lt;xs:element name=&quot;TaxType&quot;&amp;gt;      &amp;lt;xs:simpleType&amp;gt;          &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;              &amp;lt;xs:enumeration value=&quot;IVA&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;IS&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;NS&quot;/&amp;gt;          &amp;lt;/xs:restriction&amp;gt;      &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+    <method value="Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IVA()"/>
+    <method value="Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IS()"/>
+    <method value="Rebelo\SaftPt\AuditFile\MasterFiles\TaxType NS()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="IVA" value="&quot;IVA&quot;">
+    <docblock>
+      <description compact="“IVA” – Value Added Tax;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="IS" value="&quot;IS&quot;">
+    <docblock>
+      <description compact="“IS” – Stamp Duty"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NS" value="&quot;NS&quot;">
+    <docblock>
+      <description compact="“NS” – Not subject to VAT or Stamp Duty"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="92" end="95" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="This field shall be filled in with the tax type:&lt;br&gt; “IVA” – Value Added Tax;&lt;br&gt; “IS” – Stamp Duty;&lt;br&gt; “NS” – Not subject to VAT or Stamp Duty.&lt;br&gt; &lt;pre&gt;  &amp;lt;xs:element name=&quot;TaxType&quot;&amp;gt;      &amp;lt;xs:simpleType&amp;gt;          &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;              &amp;lt;xs:enumeration value=&quot;IVA&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;IS&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;NS&quot;/&amp;gt;          &amp;lt;/xs:restriction&amp;gt;      &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <param description="a contant value from TaxType class" type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="101" end="104" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

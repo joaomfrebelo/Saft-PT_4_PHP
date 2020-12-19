@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="MovementType" abstract="false" final="false" start="45" end="116">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods" file="MovementType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementType.php" size="3757" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="33796fc897fe47a4b915761bbf9ed5aa7bea3f5c" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementType.php"/>
+  <docblock>
+    <description compact="MovementType&lt;br&gt; Shall be filled in with:&lt;br&gt; &quot;GR&quot; - Delivery note;&lt;br&gt; &quot;GT&quot; - Transport guide (include here the global transport documents);&lt;br&gt; “GA” – Transport document for own fixed assets;&lt;br&gt; “GC” - Consignment note;&lt;br&gt; “GD” – Return note.&lt;br&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GR()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GT()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GA()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GC()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GD()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="GR" value="&quot;GR&quot;">
+    <docblock>
+      <description compact="&quot;GR&quot; - Delivery note"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="GT" value="&quot;GT&quot;">
+    <docblock>
+      <description compact="&quot;GT&quot; - Transport guide (include here the global transport documents)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="GA" value="&quot;GA&quot;">
+    <docblock>
+      <description compact="“GA” – Transport document for own fixed assets"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="GC" value="&quot;GC&quot;">
+    <docblock>
+      <description compact="“GC” - Consignment note"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="GD" value="&quot;GD&quot;">
+    <docblock>
+      <description compact="“GD” – Return note"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="102" end="105" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="&lt;br&gt; Shall be filled in with:&lt;br&gt; &quot;GR&quot; - Delivery note;&lt;br&gt; &quot;GT&quot; - Transport guide (include here the global transport documents);&lt;br&gt; “GA” – Transport document for own fixed assets;&lt;br&gt; “GC” - Consignment note;&lt;br&gt; “GD” – Return note.&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element name=&quot;MovementType&quot;&amp;gt;   &amp;lt;/xs:annotation&amp;gt;   &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;           &amp;lt;xs:enumeration value=&quot;GR&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;GT&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;GA&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;GC&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;GD&quot;/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="112" end="115" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

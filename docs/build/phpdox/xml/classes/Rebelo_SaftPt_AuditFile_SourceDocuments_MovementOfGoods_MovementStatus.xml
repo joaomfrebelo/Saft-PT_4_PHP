@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="MovementStatus" abstract="false" final="false" start="47" end="121">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods" file="MovementStatus.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementStatus.php" size="4289" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="9cef5ae4b93ae7b9ab42dc8b609e8ef5034e85ce" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementStatus.php"/>
+  <docblock>
+    <description compact="MovementStatus&lt;br&gt; The field must be filled in with:&lt;br&gt; “N” - Normal;&lt;br&gt; “T” - On behalf of third parties;&lt;br&gt; “A” - Cancelled document;&lt;br&gt; “F” – Billed document, even if partially, when for the same document there is also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice;&lt;br&gt; “R” - Summary document for other documents created in other applications and generated in this application.&lt;br&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus N()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus T()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus A()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus F()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus R()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="N" value="&quot;N&quot;">
+    <docblock>
+      <description compact="“N” - Normal"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="T" value="&quot;T&quot;">
+    <docblock>
+      <description compact="“T” - On behalf of third parties"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="A" value="&quot;A&quot;">
+    <docblock>
+      <description compact="“A” - Cancelled document"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="F" value="&quot;F&quot;">
+    <docblock>
+      <description compact="“F” – Billed document, even if partially, when for the same document there is also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="R" value="&quot;R&quot;">
+    <docblock>
+      <description compact="“R” - Summary document for other documents created in other applications and generated in this application"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="107" end="110" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="MovementStatus&lt;br&gt; The field must be filled in with:&lt;br&gt; “N” - Normal;&lt;br&gt; “T” - On behalf of third parties;&lt;br&gt; “A” - Cancelled document;&lt;br&gt; “F” – Billed document, even if partially, when for the same document there is also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice;&lt;br&gt; “R” - Summary document for other documents created in other applications and generated in this application.&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element name=&quot;MovementStatus&quot;&amp;gt;   &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;           &amp;lt;xs:enumeration value=&quot;N&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;T&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;A&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;F&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;R&quot;/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="117" end="120" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

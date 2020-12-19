@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\TaxAccountingBasis</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile">Rebelo\SaftPt\AuditFile</a>
+          </li>
+          <li class="separator">TaxAccountingBasis</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/TaxAccountingBasis.php.xhtml#line61">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\</small>TaxAccountingBasis</h1>
+        <h4>TaxAccountingBasis&lt;br&gt; Shall be filled in with the type of program, indicating the applicable data (including the transport documents, conference documents and issued receipts, if any):&lt;br&gt; “C” - Accounting;&lt;br&gt; “E” - Invoices issued by third parties;&lt;br&gt; “F” - Invoicing;&lt;br&gt; “I” - Invoicing and accounting integrated data;&lt;br&gt; “P” - Invoicing partial data.&lt;br&gt; “R” - Receipts (a);&lt;br&gt; “S” - Self-billing;&lt;br&gt; “T” - Transport documents (a).&lt;br&gt; (a) Type of program should be indicated, in case only this type of documents are issued. If not, fill in with type “C”, “F” or “I”.</h4>
+        <p>&lt;pre&gt;<br/>&amp;lt;xs:element name="TaxAccountingBasis"&gt;<br/>&amp;lt;xs:simpleType&gt;<br/>&amp;lt;xs:restriction base="xs:string"&gt;<br/>&amp;lt;xs:enumeration value="C"/&amp;gt;<br/>&amp;lt;xs:enumeration value="E"/&amp;gt;<br/>&amp;lt;xs:enumeration value="F"/&amp;gt;<br/>&amp;lt;xs:enumeration value="I"/&amp;gt;<br/>&amp;lt;xs:enumeration value="P"/&amp;gt;<br/>&amp;lt;xs:enumeration value="R"/&amp;gt;<br/>&amp;lt;xs:enumeration value="S"/&amp;gt;<br/>&amp;lt;xs:enumeration value="T"/&amp;gt;<br/>&amp;lt;/xs:restriction&amp;gt;<br/>&amp;lt;/xs:simpleType&amp;gt;<br/>&lt;pre&gt;</p>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class TaxAccountingBasis
+                extends AEnum
+            {<br/><ul class="none"><li>// constants</li><li>const CONTABILIDADE = "C";</li><li>const FACT_POR_TERC = "E";</li><li>const FACTURACAO = "F";</li><li>const CONTAB_FACTURACAO = "I";</li><li>const FACT_PARCIAL = "P";</li><li>const RECEIBOS = "R";</li><li>const AUTOFATURACAO = "S";</li><li>const TRANSPORTE = "S";</li><li>const DOC_TRANSP = "T";</li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\TaxAccountingBasis" href="../classes/Rebelo_SaftPt_AuditFile_TaxAccountingBasis/__construct.xhtml">__construct</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\TaxAccountingBasis" href="../classes/Rebelo_SaftPt_AuditFile_TaxAccountingBasis/get.xhtml">get</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>Rebelo\Enum\AEnum</li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="CONTABILIDADE">CONTABILIDADE</td>
+              <td>"C"</td>
+            </tr>
+            <tr>
+              <td id="FACT_POR_TERC">FACT_POR_TERC</td>
+              <td>"E"</td>
+            </tr>
+            <tr>
+              <td id="FACTURACAO">FACTURACAO</td>
+              <td>"F"</td>
+            </tr>
+            <tr>
+              <td id="CONTAB_FACTURACAO">CONTAB_FACTURACAO</td>
+              <td>"I"</td>
+            </tr>
+            <tr>
+              <td id="FACT_PARCIAL">FACT_PARCIAL</td>
+              <td>"P"</td>
+            </tr>
+            <tr>
+              <td id="RECEIBOS">RECEIBOS</td>
+              <td>"R"</td>
+            </tr>
+            <tr>
+              <td id="AUTOFATURACAO">AUTOFATURACAO</td>
+              <td>"S"</td>
+            </tr>
+            <tr>
+              <td id="TRANSPORTE">TRANSPORTE</td>
+              <td>"S"</td>
+            </tr>
+            <tr>
+              <td id="DOC_TRANSP">DOC_TRANSP</td>
+              <td>"T"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct">
+              <a title="Rebelo\SaftPt\AuditFile\TaxAccountingBasis" href="../classes/Rebelo_SaftPt_AuditFile_TaxAccountingBasis/__construct.xhtml">__construct()</a>
+            </li>
+            <li id="get"><a title="Rebelo\SaftPt\AuditFile\TaxAccountingBasis" href="../classes/Rebelo_SaftPt_AuditFile_TaxAccountingBasis/get.xhtml">get()</a>
+                — Get the value as string</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Sign\Sign" namespace="Rebelo\SaftPt\Sign" name="Sign" abstract="false" final="false" start="37" end="254">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Sign" file="Sign.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Sign/Sign.php" size="8385" time="2020-12-19T16:50:29+00:00" unixtime="1608396629" sha1="e6b8d0d16e4154c8abf9b5b169ecd7bcc0937d9b" relative="Rebelo/SaftPt/Sign/Sign.php"/>
+  <docblock>
+    <description compact="Create/verify the hash of signature"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <member name="private" visibility="private" static="false" line="46">
+    <docblock>
+      <description compact="Private key to create the hash sign"/>
+      <var type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="public" visibility="private" static="false" line="55">
+    <docblock>
+      <description compact="Public key to verify the hash sign"/>
+      <var type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="63" end="72" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param type="object" variable="$privateKey">
+        <type full="Rebelo\SaftPt\Sign\string|null" namespace="Rebelo\SaftPt\Sign" name="string|null"/>
+      </param>
+      <param type="object" variable="$publicKey">
+        <type full="Rebelo\SaftPt\Sign\string|null" namespace="Rebelo\SaftPt\Sign" name="string|null"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="privateKey" byreference="false" nullable="true" type="string" default="NULL"/>
+    <parameter name="publicKey" byreference="false" nullable="true" type="string" default="NULL"/>
+  </constructor>
+  <method name="setPrivateKey" start="80" end="84" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the private key to create the hash sign"/>
+      <param type="string" variable="$privatekey"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Sign\void" namespace="Rebelo\SaftPt\Sign" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="privatekey" byreference="false" type="string"/>
+  </method>
+  <method name="setPublicKey" start="92" end="96" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the public key to verify the hash sign"/>
+      <param type="string" variable="$publicKey"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Sign\void" namespace="Rebelo\SaftPt\Sign" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="publicKey" byreference="false" type="string"/>
+  </method>
+  <method name="setPrivateKeyFilePath" start="104" end="117" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the private key file path to create the hash sign"/>
+      <param type="string" variable="$path"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Sign\void" namespace="Rebelo\SaftPt\Sign" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="path" byreference="false" type="string"/>
+  </method>
+  <method name="setPublicKeyFilePath" start="125" end="138" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the public key file path to verify the hash sign"/>
+      <param type="string" variable="$path"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Sign\void" namespace="Rebelo\SaftPt\Sign" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="path" byreference="false" type="string"/>
+  </method>
+  <method name="creatString2Sign" start="150" end="160" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Create the string to be sign or verified"/>
+      <param description="The document date" type="object" variable="$docDate">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </param>
+      <param description="The System Entry Date of the document" type="object" variable="$systemEntryDate">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </param>
+      <param description="The document identifier EX: FT FT/1" type="string" variable="$doc"/>
+      <param description="The document gross total" type="float" variable="$grossTotal"/>
+      <param description="The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string" type="object" variable="$lastHash">
+        <type full="Rebelo\SaftPt\Sign\string|null" namespace="Rebelo\SaftPt\Sign" name="string|null"/>
+      </param>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+    <parameter name="docDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+    <parameter name="systemEntryDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+    <parameter name="doc" byreference="false" type="string"/>
+    <parameter name="grossTotal" byreference="false" type="float"/>
+    <parameter name="lastHash" byreference="false" nullable="true" type="string" default="NULL"/>
+  </method>
+  <method name="createSignature" start="173" end="207" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param description="The document date" type="object" variable="$docDate">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </param>
+      <param description="The System Entry Date of the document" type="object" variable="$systemEntryDate">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </param>
+      <param description="The document identifier EX: FT FT/1" type="string" variable="$doc"/>
+      <param description="The document gross total" type="float" variable="$grossTotal"/>
+      <param description="The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string" type="object" variable="$lastHash">
+        <type full="Rebelo\SaftPt\Sign\string|null" namespace="Rebelo\SaftPt\Sign" name="string|null"/>
+      </param>
+      <return type="string"/>
+      <throws type="object">
+        <type full="\Rebelo\SaftPt\Sign\SignException" namespace="\Rebelo\SaftPt\Sign" name="SignException"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+    <parameter name="docDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+    <parameter name="systemEntryDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+    <parameter name="doc" byreference="false" type="string"/>
+    <parameter name="grossTotal" byreference="false" type="float"/>
+    <parameter name="lastHash" byreference="false" nullable="true" type="string" default="NULL"/>
+  </method>
+  <method name="verifySignature" start="221" end="253" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Verify is the signature is valid"/>
+      <param description="The hash signature to be verified" type="string" variable="$hash"/>
+      <param description="The document date" type="object" variable="$docDate">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </param>
+      <param description="The System Entry Date of the document" type="object" variable="$systemEntryDate">
+        <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+      </param>
+      <param description="The document identifier EX: FT FT/1" type="string" variable="$doc"/>
+      <param description="The document gross total" type="float" variable="$grossTotal"/>
+      <param description="The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string" type="object" variable="$lastHash">
+        <type full="Rebelo\SaftPt\Sign\string|null" namespace="Rebelo\SaftPt\Sign" name="string|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Sign\bool" namespace="Rebelo\SaftPt\Sign" name="bool"/>
+      </return>
+      <throws type="object">
+        <type full="\Rebelo\SaftPt\Sign\SignException" namespace="\Rebelo\SaftPt\Sign" name="SignException"/>
+      </throws>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="hash" byreference="false" type="string"/>
+    <parameter name="docDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+    <parameter name="systemEntryDate" byreference="false" type="object">
+      <type full="Rebelo\Date\Date" namespace="Rebelo\Date" name="Date"/>
+    </parameter>
+    <parameter name="doc" byreference="false" type="string"/>
+    <parameter name="grossTotal" byreference="false" type="float"/>
+    <parameter name="lastHash" byreference="false" nullable="true" type="string" default="NULL"/>
+  </method>
+</class>

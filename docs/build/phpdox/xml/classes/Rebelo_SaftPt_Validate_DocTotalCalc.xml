@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\DocTotalCalc" namespace="Rebelo\SaftPt\Validate" name="DocTotalCalc" abstract="false" final="false" start="35" end="183">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate" file="DocTotalCalc.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/DocTotalCalc.php" size="4417" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="cfa191291e69dc59bb68db176628837694cdc6be" relative="Rebelo/SaftPt/Validate/DocTotalCalc.php"/>
+  <docblock>
+    <description compact="Recalcuted document values"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <member name="taxPayable" default="NULL" visibility="protected" static="false" line="41">
+    <docblock>
+      <description/>
+      <var description="$taxPayable" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="netTotal" default="NULL" visibility="protected" static="false" line="47">
+    <docblock>
+      <description/>
+      <var description="$netTotal" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="grossTotal" default="NULL" visibility="protected" static="false" line="53">
+    <docblock>
+      <description/>
+      <var description="$grossTotal" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="grossTotalFromCurrency" default="NULL" visibility="protected" static="false" line="59">
+    <docblock>
+      <description/>
+      <var description="$grossTotal" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="lineTotal" default="" type="array" visibility="protected" static="false" line="66">
+    <docblock>
+      <description compact="The calculated total line (credit/debit), ini format [lineNumber=&gt;totalLine]"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\Validate\float" namespace="Rebelo\SaftPt\Validate" name="float"/>
+      </var>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="72" end="75" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The Calculate values"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constructor>
+  <method name="getTaxPayable" start="82" end="85" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="get the calculated TaxPayable"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="getNetTotal" start="92" end="95" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the Calculated NetTotal"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="getGrossTotal" start="102" end="105" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the GrossTotal calculated"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="getGrossTotalFromCurrency" start="112" end="115" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the calculated GrossTotal from the currency"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="setTaxPayable" start="123" end="126" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated TaxPayable"/>
+      <param type="object" variable="$taxPayable">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="taxPayable" byreference="false" nullable="true" type="float"/>
+  </method>
+  <method name="setNetTotal" start="134" end="137" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated NetTotal"/>
+      <param type="object" variable="$netTotal">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="netTotal" byreference="false" nullable="true" type="float"/>
+  </method>
+  <method name="setGrossTotal" start="145" end="148" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated Grosstotal"/>
+      <param type="object" variable="$grossTotal">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="grossTotal" byreference="false" nullable="true" type="float"/>
+  </method>
+  <method name="setGrossTotalFromCurrency" start="156" end="159" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated Gross total from Currency"/>
+      <param type="object" variable="$grossFromCurrency">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="grossFromCurrency" byreference="false" nullable="true" type="float"/>
+  </method>
+  <method name="getLineTotal" start="167" end="170" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The calculate total of each line, the arrey keys are the line number"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\Validate\float" namespace="Rebelo\SaftPt\Validate" name="float"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addLineTotal" start="179" end="182" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add a total for a line"/>
+      <param type="int" variable="$lineNumber"/>
+      <param type="float" variable="$value"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="lineNumber" byreference="false" type="int"/>
+    <parameter name="value" byreference="false" type="float"/>
+  </method>
+</class>

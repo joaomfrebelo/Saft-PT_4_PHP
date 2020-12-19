@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\DocTableTotalCalc" namespace="Rebelo\SaftPt\Validate" name="DocTableTotalCalc" abstract="false" final="false" start="35" end="126">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate" file="DocTableTotalCalc.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/DocTableTotalCalc.php" size="3218" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="ea25ea416967573527c7b84ec409f553d1070766" relative="Rebelo/SaftPt/Validate/DocTableTotalCalc.php"/>
+  <docblock>
+    <description compact="Recalcuted Doc table values for SalesInvoices, WorkingDocuments and Payments"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <member name="numberOfEntries" default="NULL" visibility="protected" static="false" line="41">
+    <docblock>
+      <description/>
+      <var description="$numberOfEntries" type="int"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="totalDebit" default="NULL" visibility="protected" static="false" line="47">
+    <docblock>
+      <description/>
+      <var description="$totalDebit" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="totalCredit" default="NULL" visibility="protected" static="false" line="53">
+    <docblock>
+      <description/>
+      <var description="$totalCredit" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="59" end="62" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The Calculate values"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constructor>
+  <method name="getNumberOfEntries" start="69" end="72" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="get the calculated NumberOfEntries"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\int|null" namespace="Rebelo\SaftPt\Validate" name="int|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="int" nullable="true"/>
+  </method>
+  <method name="getTotalDebit" start="79" end="82" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the Calculated TotalDebit"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="getTotalCredit" start="89" end="92" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the TotalCredit calculated"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="setNumberOfEntries" start="100" end="103" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated NumberOfEntries"/>
+      <param type="object" variable="$numberOfEntries">
+        <type full="Rebelo\SaftPt\Validate\int|null" namespace="Rebelo\SaftPt\Validate" name="int|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="numberOfEntries" byreference="false" nullable="true" type="int"/>
+  </method>
+  <method name="setTotalDebit" start="111" end="114" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated TotalDebit"/>
+      <param type="object" variable="$totalDebit">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="totalDebit" byreference="false" nullable="true" type="float"/>
+  </method>
+  <method name="setTotalCredit" start="122" end="125" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated TotalCredit"/>
+      <param type="object" variable="$totalCredit">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="totalCredit" byreference="false" nullable="true" type="float"/>
+  </method>
+</class>

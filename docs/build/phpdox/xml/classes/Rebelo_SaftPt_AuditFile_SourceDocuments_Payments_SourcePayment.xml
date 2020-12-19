@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourcePayment" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="SourcePayment" abstract="false" final="false" start="44" end="58">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments" file="SourcePayment.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/SourcePayment.php" size="2206" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="9909d6f5c957f9f178c869212d4e561beef32b6d" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/SourcePayment.php"/>
+  <docblock>
+    <description compact="SourcePayment&lt;br&gt; “P” – Receipt created in the application;&lt;br&gt; “I” – Receipt integrated and produced in a different application;&lt;br&gt; “M” – Recovered or manually issued receipt.&lt;br&gt; &lt;pre&gt; &amp;lt;xs:simpleType name=&quot;SAFTPTSourcePayment&quot;&amp;gt;  &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;      &amp;lt;xs:enumeration value=&quot;P&quot;/&amp;gt;      &amp;lt;xs:enumeration value=&quot;I&quot;/&amp;gt;      &amp;lt;xs:enumeration value=&quot;M&quot;/&amp;gt;  &amp;lt;/xs:restriction&amp;gt; &lt;/pre&gt;"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="SourceBilling"/>
+  <constructor name="__construct" start="54" end="57" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="To be filled in with:&lt;br&gt; “P” – Receipt created in the application;&lt;br&gt; “I” – Receipt integrated and produced in a different application;&lt;br&gt; “M” – Recovered or manually issued receipt.&lt;br&gt;"/>
+      <param type="string" variable="$value"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <parent full="Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="SourceBilling">
+    <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+    <constant type="{unknown}" name="P" value="&quot;P&quot;">
+      <docblock>
+        <description compact="“P” – Document created in the invoicing program;&lt;br&gt; &amp;lt;xs:enumeration value=&quot;P&quot;/&amp;gt;"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="I" value="&quot;I&quot;">
+      <docblock>
+        <description compact="I -&gt; “I” – Document integrated and produced in a different invoicing program;&lt;br&gt; &amp;lt;xs:enumeration value=&quot;I&quot;/&amp;gt;"/>
+      </docblock>
+    </constant>
+    <constant type="{unknown}" name="M" value="&quot;M&quot;">
+      <docblock>
+        <description compact="“M” – Recovered or manually issued document.&lt;br&gt; &amp;lt;xs:enumeration value=&quot;M&quot;/&amp;gt;"/>
+      </docblock>
+    </constant>
+    <constructor name="__construct" start="82" end="85" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="To fill in with:&lt;br&gt; “P” – Document created in the invoicing program;&lt;br&gt; “I” – Document integrated and produced in a different invoicing program;&lt;br&gt; “M” – Recovered or manually issued document.&lt;br&gt;"/>
+        <param type="string" variable="$value"/>
+      </docblock>
+      <parameter name="value" byreference="false" type="string"/>
+    </constructor>
+    <method name="get" start="92" end="95" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Get the value as string"/>
+        <return type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="string" nullable="false"/>
+    </method>
+  </parent>
+</class>

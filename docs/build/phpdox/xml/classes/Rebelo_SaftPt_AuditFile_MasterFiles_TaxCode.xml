@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="TaxCode" abstract="false" final="false" start="60" end="149">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles" file="TaxCode.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles/TaxCode.php" size="5120" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="1f199d291eae7f97c2aba6b0f4702ae6b62e73f7" relative="Rebelo/SaftPt/AuditFile/MasterFiles/TaxCode.php"/>
+  <docblock>
+    <description compact="TaxCode&lt;br&gt; In case field 2.5.1.1. – TaxType = IVA, the field must be filled in with:&lt;br&gt; “RED” – Reduced tax rate;&lt;br&gt; “INT” – Intermediate tax rate;&lt;br&gt; “NOR” – Normal tax rate;&lt;br&gt; “ISE” – Exempted;&lt;br&gt; “OUT” – Others, applicable to the special VAT regimes.&lt;br&gt; In case field 2.5.1.1. – TaxType = IS, it shall be filled in with:&lt;br&gt; The correspondent code of the Stamp Duty’s table;&lt;br&gt; In case it is not subject to tax it shall be filled in with “NS”.">In receipts issued without tax discriminated it shall be filled in with “NA”.
+&lt;pre&gt;
+ &amp;lt;xs:simpleType name="TaxTableEntryTaxCode"&amp;gt;
+     &amp;lt;xs:restriction base="xs:string"&amp;gt;
+         &amp;lt;xs:minLength value="1"/&amp;gt;
+         &amp;lt;xs:maxLength value="10"/&amp;gt;
+         &amp;lt;xs:pattern value="RED|INT|NOR|ISE|OUT|([a-zA-Z0-9.])*|NS|NA"/&amp;gt;
+     &amp;lt;/xs:restriction&amp;gt;
+ &amp;lt;/xs:simpleType&amp;gt;
+&lt;/pre&gt;</description>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode RED()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode INT()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode NOR()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode ISE()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode OUT()"/>
+    <since value="1.0.0"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="RED" value="&quot;RED&quot;">
+    <docblock>
+      <description compact="“RED” – Reduced tax rate"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="INT" value="&quot;INT&quot;">
+    <docblock>
+      <description compact="“INT” – Intermediate tax rate"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NOR" value="&quot;NOR&quot;">
+    <docblock>
+      <description compact="“NOR” – Normal tax rate"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISE" value="&quot;ISE&quot;">
+    <docblock>
+      <description compact="“ISE” – Exempted"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OUT" value="&quot;OUT&quot;">
+    <docblock>
+      <description compact="“OUT” – Others, applicable to the special VAT regimes"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NS" value="&quot;NS&quot;">
+    <docblock>
+      <description compact="In case it is not subject to tax it shall be filled in with “NS”"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NA" value="&quot;NA&quot;">
+    <docblock>
+      <description compact="In receipts issued without tax discriminated it shall be filled in with “NA”"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="120" end="139" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="TaxCode&lt;br&gt; In case field 2.5.1.1. – TaxType = IVA, the field must be filled in with:&lt;br&gt; “RED” – Reduced tax rate;&lt;br&gt; “INT” – Intermediate tax rate;&lt;br&gt; “NOR” – Normal tax rate;&lt;br&gt; “ISE” – Exempted;&lt;br&gt; “OUT” – Others, applicable to the special VAT regimes.&lt;br&gt; In case field 2.5.1.1. – TaxType = IS, it shall be filled in with:&lt;br&gt; The correspondent code of the Stamp Duty’s table;&lt;br&gt; “ISE” – Exempted.&lt;br&gt; In case it is not subject to tax it shall be filled in with “NS”.">In receipts issued without tax discriminated it shall be filled in with “NA”.</description>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="145" end="148" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

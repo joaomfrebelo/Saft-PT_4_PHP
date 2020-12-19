@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\MasterFiles\ProductType</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile_MasterFiles">Rebelo\SaftPt\AuditFile\MasterFiles</a>
+          </li>
+          <li class="separator">ProductType</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/MasterFiles/ProductType.php.xhtml#line67">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\MasterFiles\</small>ProductType</h1>
+        <h4>Description of ProductType&lt;br&gt; The field shall be filled in with:&lt;br&gt; “P” - Products;&lt;br&gt; “S” - Services;&lt;br&gt; “O” - Others (e.g. charged freights, advance payments received or sale of assets);&lt;br&gt; “E” - Excise duties - (e.g. IABA, ISP, IT);&lt;br&gt; “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty which shall appear in table 2.5. – TaxTable and Excise Duties which shall be filled in with the "E" code.</h4>
+        <p>&lt;pre&gt;<br/>&amp;lt;xs:element name="ProductType"&amp;gt;<br/>&amp;lt;xs:annotation&gt;<br/>&amp;lt;xs:documentation&gt;Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes<br/>debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos<br/>Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos<br/>parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de<br/>impostos (TaxTable)e Impostos Especiais de Consumo &amp;lt;/xs:documentation&amp;gt;<br/>&amp;lt;/xs:annotation&gt;<br/>&amp;lt;xs:simpleType&gt;<br/>&amp;lt;xs:restriction base="xs:string"&gt;<br/>&amp;lt;xs:enumeration value="P"/&amp;gt;<br/>&amp;lt;xs:enumeration value="S"/&amp;gt;<br/>&amp;lt;xs:enumeration value="O"/&amp;gt;<br/>&amp;lt;xs:enumeration value="E"/&amp;gt;<br/>&amp;lt;xs:enumeration value="I"/&amp;gt;<br/>&amp;lt;/xs:restriction&amp;gt;<br/>&amp;lt;/xs:simpleType&amp;gt;<br/>&amp;lt;/xs:element&amp;gt;<br/>&lt;/pre&gt;</p>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class ProductType
+                extends AEnum
+            {<br/><ul class="none"><li>// constants</li><li>const P = "P";</li><li>const S = "S";</li><li>const O = "O";</li><li>const E = "E";</li><li>const I = "I";</li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ProductType" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ProductType/__construct.xhtml">__construct</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ProductType" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ProductType/get.xhtml">get</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>Rebelo\Enum\AEnum</li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="P">P</td>
+              <td>"P"</td>
+            </tr>
+            <tr>
+              <td id="S">S</td>
+              <td>"S"</td>
+            </tr>
+            <tr>
+              <td id="O">O</td>
+              <td>"O"</td>
+            </tr>
+            <tr>
+              <td id="E">E</td>
+              <td>"E"</td>
+            </tr>
+            <tr>
+              <td id="I">I</td>
+              <td>"I"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ProductType" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ProductType/__construct.xhtml">__construct()</a>
+                — ProductType&lt;br&gt; &lt;br&gt; The field shall be filled in with:&lt;br&gt; “P” - Products;&lt;br&gt; “S” - Services;&lt;br&gt; “O” - Others (e.g. charged freights, advance payments received or sale of assets);&lt;br&gt; “E” - Excise duties - (e.g. IABA, ISP, IT);&lt;br&gt; “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty which shall appear in table 2.5. – TaxTable and Excise Duties which shall be filled in with the "E" code.</li>
+            <li id="get"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ProductType" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ProductType/get.xhtml">get()</a>
+                — Get the value as string</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

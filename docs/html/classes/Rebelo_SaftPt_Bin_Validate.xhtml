@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\Bin\Validate</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_Bin">Rebelo\SaftPt\Bin</a>
+          </li>
+          <li class="separator">Validate</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/Bin/Validate.php.xhtml#line45">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\Bin\</small>Validate</h1>
+        <h4>The saft validation command</h4>
+        <p/>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Validate
+                extends Command
+            {<br/><ul class="none"><li>// constants</li><li>const COMMAND_NAME = "validate";</li><li>const DEFAULT_LANG = "en_GB";</li><li>const ARG_SAFT_FILE_PATH = "SAFT_PATH";</li><li>const OPT_PUB_KEY_PATH = "pubkey";</li><li>const OPT_PUB_KEY_PATH_SHORT = "p";</li><li>const OPT_LOG4PHP_CONG = "log";</li><li>const OPT_LOG4PHP_CONG_SHORT = "l";</li><li>const OPT_SHOW_WARNINGS = "warnings";</li><li>const OPT_SHOW_WARNINGS_SHORT = "w";</li><li>const OPT_LANG = "lang";</li><li>const OPT_LANG_SHORT = "g";</li><li>const OPT_DEBIT_CREDIT = "debcre";</li><li>const OPT_DELTA_CURRENCY = "dc";</li><li>const OPT_DELTA_LINES = "dl";</li><li>const OPT_DELTA_TABLE = "dt";</li><li>const OPT_DELTA_TOTAL_DOC = "ddt";</li></ul><ul class="none"><li>// members</li><li>protected <span title="\Logger">Logger</span> <a href="#members">$log</a>;
+                    </li><li>public static  <a href="#members">$start</a>;
+                    </li><li>protected static <span title="Rebelo\SaftPt\Bin\string|null">string|null</span> <a href="#members">$defaultName</a> =
+                        self::COMMAND_NAME;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/__construct.xhtml">__construct</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/configure.xhtml">configure</a>()
+                    </li><li>protected int <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/execute.xhtml">execute</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/setLang.xhtml">setLang</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/setLog.xhtml">setLog</a>()
+                    </li><li>protected ?string <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/getPubKeyPath.xhtml">getPubKeyPath</a>()
+                    </li><li>public <span title="ValidationConfig">ValidationConfig</span> <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/getValidationConfig.xhtml">getValidationConfig</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/parseBool.xhtml">parseBool</a>()
+                    </li><li>public float <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/parseFloat.xhtml">parseFloat</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/printStatistic.xhtml">printStatistic</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>Symfony\Component\Console\Command\Command</li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="COMMAND_NAME">COMMAND_NAME</td>
+              <td>"validate"</td>
+            </tr>
+            <tr>
+              <td id="DEFAULT_LANG">DEFAULT_LANG</td>
+              <td>"en_GB"</td>
+            </tr>
+            <tr>
+              <td id="ARG_SAFT_FILE_PATH">ARG_SAFT_FILE_PATH</td>
+              <td>"SAFT_PATH"</td>
+            </tr>
+            <tr>
+              <td id="OPT_PUB_KEY_PATH">OPT_PUB_KEY_PATH</td>
+              <td>"pubkey"</td>
+            </tr>
+            <tr>
+              <td id="OPT_PUB_KEY_PATH_SHORT">OPT_PUB_KEY_PATH_SHORT</td>
+              <td>"p"</td>
+            </tr>
+            <tr>
+              <td id="OPT_LOG4PHP_CONG">OPT_LOG4PHP_CONG</td>
+              <td>"log"</td>
+            </tr>
+            <tr>
+              <td id="OPT_LOG4PHP_CONG_SHORT">OPT_LOG4PHP_CONG_SHORT</td>
+              <td>"l"</td>
+            </tr>
+            <tr>
+              <td id="OPT_SHOW_WARNINGS">OPT_SHOW_WARNINGS</td>
+              <td>"warnings"</td>
+            </tr>
+            <tr>
+              <td id="OPT_SHOW_WARNINGS_SHORT">OPT_SHOW_WARNINGS_SHORT</td>
+              <td>"w"</td>
+            </tr>
+            <tr>
+              <td id="OPT_LANG">OPT_LANG</td>
+              <td>"lang"</td>
+            </tr>
+            <tr>
+              <td id="OPT_LANG_SHORT">OPT_LANG_SHORT</td>
+              <td>"g"</td>
+            </tr>
+            <tr>
+              <td id="OPT_DEBIT_CREDIT">OPT_DEBIT_CREDIT</td>
+              <td>"debcre"</td>
+            </tr>
+            <tr>
+              <td id="OPT_DELTA_CURRENCY">OPT_DELTA_CURRENCY</td>
+              <td>"dc"</td>
+            </tr>
+            <tr>
+              <td id="OPT_DELTA_LINES">OPT_DELTA_LINES</td>
+              <td>"dl"</td>
+            </tr>
+            <tr>
+              <td id="OPT_DELTA_TABLE">OPT_DELTA_TABLE</td>
+              <td>"dt"</td>
+            </tr>
+            <tr>
+              <td id="OPT_DELTA_TOTAL_DOC">OPT_DELTA_TOTAL_DOC</td>
+              <td>"ddt"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="defaultName"><strong>$defaultName</strong>
+                —
+                <a title="Rebelo\SaftPt\Bin\string|null" href="../classes/Rebelo_SaftPt_Bin_string|null.xhtml">Rebelo\SaftPt\Bin\string|null</a><br/><span class="indent">The name of the command</span></li>
+            <li id="log"><strong>$log</strong>
+                —
+                <a title="\Logger" href="../classes/_Logger.xhtml">\Logger</a></li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="start">
+              <strong>$start</strong>
+              <br/>
+              <span class="indent">App start time</span>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>protected</h4>
+          <ul>
+            <li id="configure"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/configure.xhtml">configure()</a>
+                — The command configuration</li>
+            <li id="execute"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/execute.xhtml">execute()</a>
+                — Execute the command</li>
+            <li id="getPubKeyPath"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/getPubKeyPath.xhtml">getPubKeyPath()</a>
+                — Get the Pub key file path option</li>
+            <li id="printStatistic"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/printStatistic.xhtml">printStatistic()</a>
+                — Prints the app running statistic</li>
+            <li id="setLang"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/setLang.xhtml">setLang()</a>
+                — Set the language pack</li>
+            <li id="setLog"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/setLog.xhtml">setLog()</a>
+                — Set the log</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct">
+              <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/__construct.xhtml">__construct()</a>
+            </li>
+            <li id="getValidationConfig"><a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/getValidationConfig.xhtml">getValidationConfig()</a>
+                — Get the validation config set by the input options</li>
+            <li id="parseBool">
+              <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/parseBool.xhtml">parseBool()</a>
+            </li>
+            <li id="parseFloat">
+              <a title="Rebelo\SaftPt\Bin\Validate" href="../classes/Rebelo_SaftPt_Bin_Validate/parseFloat.xhtml">parseFloat()</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\AuditFile::toFile</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml#Rebelo_SaftPt_AuditFile">Rebelo\SaftPt\AuditFile</a>
+          </li>
+          <li class="separator">
+            <a title="Rebelo\SaftPt\AuditFile\AuditFile" href="../../classes/Rebelo_SaftPt_AuditFile_AuditFile.xhtml">AuditFile</a>
+          </li>
+          <li class="separator">toFile</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#parameter">Parameter</a>
+          </li>
+          <li>
+            <a href="#return">Return</a>
+          </li>
+          <li>
+            <a href="#throws">Throws</a>
+          </li>
+          <li>
+            <a href="../../source/Rebelo/SaftPt/AuditFile/AuditFile.php.xhtml#line329">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Rebelo\SaftPt\AuditFile\AuditFile::</small>toFile</h1>
+        <h4>Write the XML to a file&lt;br&gt; By the Portuguese Tax law, the ERP must generate the saft even if has errors, because of that rule when there are errors instead of throws an exception the error is registed in the ErrorRegister instance of the AuditFile instance, only in severe condition where is not possible to catch the exception or error that a \Exception or \Error will be throw. To know if there are errors access to the ErrorRegister instance of the AuditFile instance. Some validation to check for errors are done on the setter methods, when write the AuditFile a file, other validation is done, the xml string structure is validated, but other validations can be done using the validation classes, however that validations in very big AuditFiles could have a time consume very hight, is recomended to use in test envoirment, in producion envoirment should be evaluated if is necessary.</h4>
+        <p/>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function toFile(string
+        $path )
+            </code>
+        </div>
+        <h2 id="parameterlist">Parameters</h2>
+        <dl class="styled">
+          <dt><code>$path</code>
+                —
+                string</dt>
+          <dd>File path to write, if exists will be  overwritten</dd>
+        </dl>
+        <h2 id="return">Returns</h2>
+        <dl class="styled">
+          <dt>int</dt>
+          <dd>The number of bytes that were written to the file</dd>
+        </dl>
+        <h2 id="throws">Errors/Exceptions</h2>
+        <dl class="styled">
+          <dt>
+            <code>
+              <a title="\Rebelo\SaftPt\AuditFile\AuditFileException" href="../../classes/_Rebelo_SaftPt_AuditFile_AuditFileException.xhtml">AuditFileException</a>
+            </code>
+          </dt>
+          <dd/>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

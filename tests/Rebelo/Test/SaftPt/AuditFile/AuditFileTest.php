@@ -546,7 +546,6 @@ class AuditFileTest extends TestCase
                                   RDate $docDate): void
     {
         $this->assertSame(
-            /* @phpstan-ignore-next-line */
             $period, AuditFile::calcPeriod($fiscalYearStartMonth, $docDate)
         );
     }
@@ -587,7 +586,6 @@ class AuditFileTest extends TestCase
     public function testCalperiodException(): void
     {
         try {
-            /* @phpstan-ignore-next-line */
             AuditFile::calcPeriod(0, new RDate());
             $this->fail(
                 "Set fiscal year start month less then 1 shoul throw "
@@ -600,7 +598,6 @@ class AuditFileTest extends TestCase
         }
 
         try {
-            /* @phpstan-ignore-next-line */
             AuditFile::calcPeriod(-1, new RDate());
             $this->fail(
                 "Set fiscal year start month less then 1 shoul throw "
@@ -613,7 +610,6 @@ class AuditFileTest extends TestCase
         }
 
         try {
-            /* @phpstan-ignore-next-line */
             AuditFile::calcPeriod(13, new RDate());
             $this->fail(
                 "Set fiscal year start month greater then 12 shoul throw "

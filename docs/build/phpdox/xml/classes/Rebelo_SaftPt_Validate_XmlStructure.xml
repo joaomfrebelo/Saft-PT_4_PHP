@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\XmlStructure" namespace="Rebelo\SaftPt\Validate" name="XmlStructure" abstract="false" final="false" start="38" end="98">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate" file="XmlStructure.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/XmlStructure.php" size="3368" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="5a96dd7ac9cd976924fab38dd814acb23d3ee00a" relative="Rebelo/SaftPt/Validate/XmlStructure.php"/>
+  <docblock>
+    <description compact="XmlStructure"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\SaftPt\Validate\AValidate" namespace="Rebelo\SaftPt\Validate" name="AValidate"/>
+  <constructor name="__construct" start="46" end="50" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Validate the xml with the xsd schema file using libxml"/>
+      <param type="object" variable="$auditFile">
+        <type full="\Rebelo\SaftPt\AuditFile\AuditFile" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="auditFile" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\AuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+    </parameter>
+  </constructor>
+  <method name="validate" start="58" end="97" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Validate the xml with the xsd schema file using libxml"/>
+      <param type="string" variable="$xml"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+    <parameter name="xml" byreference="true" type="string"/>
+  </method>
+  <parent full="Rebelo\SaftPt\Validate\AValidate" namespace="Rebelo\SaftPt\Validate" name="AValidate">
+    <member name="isValid" default="true" type="boolean" visibility="protected" static="false" line="45">
+      <docblock>
+        <description compact="To be return at the end of validation, within the validation will be set to false when not passed"/>
+        <var type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </var>
+      </docblock>
+    </member>
+    <member name="auditFile" visibility="protected" static="false" line="52">
+      <docblock>
+        <description/>
+        <var type="object">
+          <type full="\Rebelo\SaftPt\AuditFile\AuditFile;" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile;"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastType" default="NULL" visibility="protected" static="false" line="59">
+      <docblock>
+        <description compact="The last type of document that has been the signature validated"/>
+        <var type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastSerie" default="NULL" visibility="protected" static="false" line="66">
+      <docblock>
+        <description compact="The last serie of document that has been the signature validated"/>
+        <var type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastHash" default="&quot;&quot;" type="string" visibility="protected" static="false" line="74">
+      <docblock>
+        <description compact="The last hash of document that has been the signature validated in the same document serie"/>
+        <var type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastDocDate" default="NULL" visibility="protected" static="false" line="83">
+      <docblock>
+        <description compact="The SystemEntryDate of the last document of the same serie, if is the first of the serie will be null"/>
+        <var type="object">
+          <type full="\Rebelo\Date\Date" namespace="\Rebelo\Date" name="Date"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastSystemEntryDate" default="NULL" visibility="protected" static="false" line="92">
+      <docblock>
+        <description compact="The SystemEntryDate of the last document of the same serie, if is the first of the serie will be null"/>
+        <var type="object">
+          <type full="\Rebelo\Date\Date" namespace="\Rebelo\Date" name="Date"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastDocNumber" default="NULL" visibility="protected" static="false" line="98">
+      <docblock>
+        <description compact="The last number of the document of the same serie, to check if the numeration is continues"/>
+        <var type="int"/>
+      </docblock>
+    </member>
+    <constructor name="__construct" start="105" end="109" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description/>
+        <param type="object" variable="$auditFile">
+          <type full="\Rebelo\SaftPt\AuditFile\AuditFile" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+        </param>
+        <since value="1.0.0"/>
+      </docblock>
+      <parameter name="auditFile" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\AuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+      </parameter>
+    </constructor>
+  </parent>
+</class>

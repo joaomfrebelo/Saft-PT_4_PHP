@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile_SourceDocuments_Payments">Rebelo\SaftPt\AuditFile\SourceDocuments\Payments</a>
+          </li>
+          <li class="separator">Payments</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/Payments.php.xhtml#line43">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\</small>Payments</h1>
+        <h4>Payments&lt;br&gt; 4.4 – Payments Receipts issued after the entry into force of this structure should be exported on this table.</h4>
+        <p/>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Payments
+                extends <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments.xhtml">ASourceDocuments</a>
+            {<br/><ul class="none"><li>// constants</li><li>const N_PAYMENTS = "Payments";</li><li>const N_NUMBEROFENTRIES = "NumberOfEntries";</li><li>const N_TOTALDEBIT = "TotalDebit";</li><li>const N_TOTALCREDIT = "TotalCredit";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">AAuditFile</a></li><li>const <a href="#DESCONHECIDO">DESCONHECIDO</a> = "Desconhecido";</li><li>const <a href="#CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</a> = "999999990";</li><li>const <a href="#CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</a> = "Consumidor final";</li><li>const <a href="#CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</a> = "CONSUMIDOR_FINAL";</li></ul><ul class="none"><li>// members</li><li>private  <a href="#members">$numberOfEntries</a>;
+                    </li><li>private  <a href="#members">$totalDebit</a>;
+                    </li><li>private  <a href="#members">$totalCredit</a>;
+                    </li><li>private array <a href="#members">$payment</a> =
+                        ;
+                    </li><li>protected array <a href="#members">$order</a> =
+                        ;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments">ASourceDocuments</span></li><li>protected <span title="\Rebelo\SaftPt\Validate\DocTableTotalCalc">DocTableTotalCalc</span> <a href="#members">$docTableTotalCalc</a>;
+                        </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>protected static <span title="\Rebelo\SaftPt\AuditFile\i18n\AI18n">AI18n</span> <a href="#members">$i18n</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\ErrorRegister">ErrorRegister</span> <a href="#members">$errorRegister</a>;
+                        </li><li>protected array <a href="#members">$error</a>;
+                        </li><li>protected array <a href="#members">$warning</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/__construct.xhtml">__construct</a>()
+                    </li><li>public int <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getNumberOfEntries.xhtml">getNumberOfEntries</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/issetNumberOfEntries.xhtml">issetNumberOfEntries</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/setNumberOfEntries.xhtml">setNumberOfEntries</a>()
+                    </li><li>public float <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getTotalDebit.xhtml">getTotalDebit</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/issetTotalDebit.xhtml">issetTotalDebit</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/setTotalDebit.xhtml">setTotalDebit</a>()
+                    </li><li>public float <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getTotalCredit.xhtml">getTotalCredit</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/issetTotalCredit.xhtml">issetTotalCredit</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/setTotalCredit.xhtml">setTotalCredit</a>()
+                    </li><li>public <span title="Payment">Payment</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/addPayment.xhtml">addPayment</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getPayment.xhtml">getPayment</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getOrder.xhtml">getOrder</a>()
+                    </li><li>public <span title="SimpleXMLElement">SimpleXMLElement</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/createXmlNode.xhtml">createXmlNode</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/parseXmlNode.xhtml">parseXmlNode</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments">ASourceDocuments</span></li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments/__construct.xhtml">__construct</a>()
+                        </li><li>public DocTableTotalCalc|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments/getDocTableTotalCalc.xhtml">getDocTableTotalCalc</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments/setDocTableTotalCalc.xhtml">setDocTableTotalCalc</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>public bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__construct.xhtml">__construct</a>()
+                        </li><li>public abstract SimpleXMLElement <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode</a>()
+                        </li><li>public abstract void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf</a>()
+                        </li><li>public static void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n</a>()
+                        </li><li>public static AI18n <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n</a>()
+                        </li><li>public ErrorRegister <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber</a>()
+                        </li><li>public static int <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="N_PAYMENTS">N_PAYMENTS</td>
+              <td>"Payments"</td>
+            </tr>
+            <tr>
+              <td id="N_NUMBEROFENTRIES">N_NUMBEROFENTRIES</td>
+              <td>"NumberOfEntries"</td>
+            </tr>
+            <tr>
+              <td id="N_TOTALDEBIT">N_TOTALDEBIT</td>
+              <td>"TotalDebit"</td>
+            </tr>
+            <tr>
+              <td id="N_TOTALCREDIT">N_TOTALCREDIT</td>
+              <td>"TotalCredit"</td>
+            </tr>
+            <tr>
+              <td id="DESCONHECIDO">DESCONHECIDO</td>
+              <td>"Desconhecido"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</td>
+              <td>"999999990"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</td>
+              <td>"Consumidor final"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</td>
+              <td>"CONSUMIDOR_FINAL"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="numberOfEntries"><strong>$numberOfEntries</strong>
+                —
+                int<br/><span class="indent">&lt;xs:element ref="NumberOfEntries"/&gt;</span></li>
+            <li id="payment"><strong>$payment</strong>
+                —
+                array<br/><span class="indent">&lt;xs:element name="Payment" minOccurs="0" maxOccurs="unbounded"&gt;</span></li>
+            <li id="totalCredit"><strong>$totalCredit</strong>
+                —
+                float<br/><span class="indent">&lt;xs:element ref="TotalCredit"/&gt;</span></li>
+            <li id="totalDebit"><strong>$totalDebit</strong>
+                —
+                float<br/><span class="indent">&lt;xs:element ref="TotalDebit"/&gt;</span></li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="docTableTotalCalc"><strong>$docTableTotalCalc</strong>
+                —
+                <a title="\Rebelo\SaftPt\Validate\DocTableTotalCalc" href="../classes/_Rebelo_SaftPt_Validate_DocTableTotalCalc.xhtml">\Rebelo\SaftPt\Validate\DocTableTotalCalc</a></li>
+            <li id="error"><strong>$error</strong>
+                —
+                array<br/><span class="indent">To registe particular validation and errors of documents or tables, the key must be the field name</span></li>
+            <li id="errorRegister"><strong>$errorRegister</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/_Rebelo_SaftPt_AuditFile_ErrorRegister.xhtml">\Rebelo\SaftPt\AuditFile\ErrorRegister</a><br/><span class="indent">Error Register, to register global validation and errors</span></li>
+            <li id="i18n"><strong>$i18n</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\i18n\AI18n" href="../classes/_Rebelo_SaftPt_AuditFile_i18n_AI18n.xhtml">\Rebelo\SaftPt\AuditFile\i18n\AI18n</a></li>
+            <li id="order"><strong>$order</strong>
+                —
+                array<br/><span class="indent">$array[type][serie][number] = $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment[]</span></li>
+            <li id="warning"><strong>$warning</strong>
+                —
+                array<br/><span class="indent">To regist particular warnings of documents or tables</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/__construct.xhtml">__construct()</a>
+                — Payments&lt;br&gt; 4.4 – Payments Receipts issued after the entry into force of this structure should be exported on this table.</li>
+            <li id="addPayment"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/addPayment.xhtml">addPayment()</a>
+                — Add Payment to stack&lt;br&gt; When this method is invoked a new instance of Payment is created, add to the stack then returned to be populated</li>
+            <li id="createXmlNode">
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/createXmlNode.xhtml">createXmlNode()</a>
+            </li>
+            <li id="getNumberOfEntries"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getNumberOfEntries.xhtml">getNumberOfEntries()</a>
+                — Get Number of entries&lt;br&gt; The field shall contain the total number of issued receipts, including the documents which content in field 4.4.4.9.1. – PaymentStatus is type “A”.</li>
+            <li id="getOrder"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getOrder.xhtml">getOrder()</a>
+                — Get payment order by type/serie/number&lt;br&gt; Ex: $stack[type][serie][InvoiceNo] = Payment&lt;br&gt; If a error exist, th error is add to ValidationErrors stack</li>
+            <li id="getPayment"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getPayment.xhtml">getPayment()</a>
+                — Gets as payment&lt;br&gt; &amp;lt;xs:element name="Payment" minOccurs="0" maxOccurs="unbounded"&amp;gt;</li>
+            <li id="getTotalCredit"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getTotalCredit.xhtml">getTotalCredit()</a>
+                — Get total Credit&lt;br&gt; The field shall contain the control sum of field 4.4.4.14.5. – CreditAmount, excluding the documents which content in field 4.4.4.9.1. – PaymentStatus is “A”.</li>
+            <li id="getTotalDebit"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/getTotalDebit.xhtml">getTotalDebit()</a>
+                — Get total debit&lt;br&gt; The field shall contain the control sum of field 4.4.4.14.4. – DebitAmount, excluding the documents which content in field.4.4.9.1. – PaymentStatus is “A”.</li>
+            <li id="issetNumberOfEntries"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/issetNumberOfEntries.xhtml">issetNumberOfEntries()</a>
+                — Get if is set NumberOfEntries</li>
+            <li id="issetTotalCredit"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/issetTotalCredit.xhtml">issetTotalCredit()</a>
+                — Get if is set TotalCredit</li>
+            <li id="issetTotalDebit"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/issetTotalDebit.xhtml">issetTotalDebit()</a>
+                — Get if is set TotalDebit</li>
+            <li id="parseXmlNode">
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/parseXmlNode.xhtml">parseXmlNode()</a>
+            </li>
+            <li id="setNumberOfEntries"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/setNumberOfEntries.xhtml">setNumberOfEntries()</a>
+                — Set Number of entries&lt;br&gt; The field shall contain the total number of issued receipts, including the documents which content in field 4.4.4.9.1. – PaymentStatus is type “A”.</li>
+            <li id="setTotalCredit"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/setTotalCredit.xhtml">setTotalCredit()</a>
+                — Set total dredit</li>
+            <li id="setTotalDebit"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payments/setTotalDebit.xhtml">setTotalDebit()</a>
+                — Set total debit&lt;br&gt; The field shall contain the control sum of field 4.4.4.14.4. – DebitAmount, excluding the documents which content in field.4.4.9.1. – PaymentStatus is “A”.</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="getDocTableTotalCalc"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments/getDocTableTotalCalc.xhtml">getDocTableTotalCalc()</a>
+                — Get the Doc Table resume calculation from validation classes</li>
+            <li id="setDocTableTotalCalc"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ASourceDocuments/setDocTableTotalCalc.xhtml">setDocTableTotalCalc()</a>
+                — Get the Doc Table resume calculation from validation classes</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">Rebelo\SaftPt\AuditFile\AAuditFile</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="__clone"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone()</a>
+                — Force to clone all object properties</li>
+            <li id="__isset"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset()</a>
+                — Invoke the isset to the propertie name</li>
+            <li id="addError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError()</a>
+                — Add a particular error</li>
+            <li id="addWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning()</a>
+                — Add a particular warning</li>
+            <li id="calcPeriod"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod()</a>
+                — Calc the document period based on the fiscal year start month</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="floatFormat"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat()</a>
+                — Format a float with grouped thousands</li>
+            <li id="getError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError()</a>
+                — Get all particular error</li>
+            <li id="getErrorRegistor"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor()</a>
+                — Get the ErrorRegistor instance</li>
+            <li id="getI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n()</a>
+                — Get i18n class</li>
+            <li id="getWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning()</a>
+                — Get all particular warning</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="replaceHexUtf"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf()</a>
+                — Convert the encoded caracters encoded by SimpleXmlElment</li>
+            <li id="setI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n()</a>
+                — Set the language to translate</li>
+            <li id="valPortugueseVatNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber()</a>
+                — Validate Portuguese VAT Number</li>
+            <li id="valTextMandMaxCar"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar()</a>
+                — Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string</li>
+            <li id="validateDocNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber()</a>
+                — Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;</li>
+            <li id="validateMod11auxFunction"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction()</a>
+                — validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

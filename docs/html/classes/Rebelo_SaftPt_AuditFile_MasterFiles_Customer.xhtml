@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\MasterFiles\Customer</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile_MasterFiles">Rebelo\SaftPt\AuditFile\MasterFiles</a>
+          </li>
+          <li class="separator">Customer</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/MasterFiles/Customer.php.xhtml#line66">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\MasterFiles\</small>Customer</h1>
+        <h4>2.2. - Customer&lt;br&gt; This table shall contain all the existing records operated during the taxation period in the relevant customers’ file, as well as those which may be implicit in the operations and do not exist in the relevant file.</h4>
+        <p>If, for instance, there is a sale for cash showing only the customer’s<br/>taxpayer registration number or his name, and not included in the customers<br/>file of the application, this client’s data shall be exported<br/>as client in the SAF-T (PT).<br/>&lt;pre&gt;<br/>&amp;lt;xs:element name="Customer"&amp;gt;<br/>&amp;lt;xs:complexType&amp;gt;<br/>&amp;lt;xs:sequence&amp;gt;<br/>&amp;lt;xs:element ref="CustomerID"/&amp;gt;<br/>&amp;lt;xs:element ref="AccountID"/&amp;gt;<br/>&amp;lt;xs:element ref="CustomerTaxID"/&amp;gt;<br/>&amp;lt;xs:element ref="CompanyName"/&amp;gt;<br/>&amp;lt;xs:element ref="Contact" minOccurs="0"/&amp;gt;<br/>&amp;lt;xs:element ref="BillingAddress"/&amp;gt;<br/>&amp;lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&amp;gt;<br/>&amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;<br/>&amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;<br/>&amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;<br/>&amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;<br/>&amp;lt;xs:element ref="SelfBillingIndicator"/&amp;gt;<br/>&amp;lt;/xs:sequence&amp;gt;<br/>&amp;lt;/xs:complexType&amp;gt;<br/>&amp;lt;/xs:element&amp;gt;<br/>&lt;/pre&gt;<br/><br/>Class Customer</p>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Customer
+                extends <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier.xhtml">ACustomerSupplier</a>
+            {<br/><ul class="none"><li>// constants</li><li>const N_CUSTOMER = "Customer";</li><li>const N_CUSTOMERID = "CustomerID";</li><li>const N_CUSTOMERTAXID = "CustomerTaxID";</li><li>const N_SHIPTOADDRESS = "ShipToAddress";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier.xhtml">ACustomerSupplier</a></li><li>const <a href="#N_ACCOUNTID">N_ACCOUNTID</a> = "AccountID";</li><li>const <a href="#N_COMPANYNAME">N_COMPANYNAME</a> = "CompanyName";</li><li>const <a href="#N_CONTACT">N_CONTACT</a> = "Contact";</li><li>const <a href="#N_BILLINGADDRESS">N_BILLINGADDRESS</a> = "BillingAddress";</li><li>const <a href="#N_TELEPHONE">N_TELEPHONE</a> = "Telephone";</li><li>const <a href="#N_FAX">N_FAX</a> = "Fax";</li><li>const <a href="#N_EMAIL">N_EMAIL</a> = "Email";</li><li>const <a href="#N_WEBSITE">N_WEBSITE</a> = "Website";</li><li>const <a href="#N_SELFBILLINGINDICATOR">N_SELFBILLINGINDICATOR</a> = "SelfBillingIndicator";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">AAuditFile</a></li><li>const <a href="#DESCONHECIDO">DESCONHECIDO</a> = "Desconhecido";</li><li>const <a href="#CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</a> = "999999990";</li><li>const <a href="#CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</a> = "Consumidor final";</li><li>const <a href="#CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</a> = "CONSUMIDOR_FINAL";</li></ul><ul class="none"><li>// members</li><li>private  <a href="#members">$customerID</a>;
+                    </li><li>private  <a href="#members">$customerTaxID</a>;
+                    </li><li>private <span title="\Rebelo\SaftPt\AuditFile\Address">Address</span> <a href="#members">$billingAddress</a>;
+                    </li><li>private array <a href="#members">$shipToAddress</a> =
+                        ;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier">ACustomerSupplier</span></li><li>protected  <a href="#members">$accountID</a>;
+                        </li><li>protected  <a href="#members">$companyName</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null">string|null</span> <a href="#members">$contact</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null">string|null</span> <a href="#members">$telephone</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null">string|null</span> <a href="#members">$fax</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null">string|null</span> <a href="#members">$email</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null">string|null</span> <a href="#members">$website</a>;
+                        </li><li>protected <span title="Rebelo\SaftPt\AuditFile\MasterFiles\bool">bool</span> <a href="#members">$selfBillingIndicator</a>;
+                        </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>protected static <span title="\Rebelo\SaftPt\AuditFile\i18n\AI18n">AI18n</span> <a href="#members">$i18n</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\ErrorRegister">ErrorRegister</span> <a href="#members">$errorRegister</a>;
+                        </li><li>protected array <a href="#members">$error</a>;
+                        </li><li>protected array <a href="#members">$warning</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/__construct.xhtml">__construct</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getCustomerID.xhtml">getCustomerID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/issetCustomerID.xhtml">issetCustomerID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/setCustomerID.xhtml">setCustomerID</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getCustomerTaxID.xhtml">getCustomerTaxID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/issetCustomerTaxID.xhtml">issetCustomerTaxID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/setCustomerTaxID.xhtml">setCustomerTaxID</a>()
+                    </li><li>public <span title="Address">Address</span> <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getBillingAddress.xhtml">getBillingAddress</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/issetBillingAddress.xhtml">issetBillingAddress</a>()
+                    </li><li>public <span title="Address">Address</span> <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/addShipToAddress.xhtml">addShipToAddress</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getShipToAddress.xhtml">getShipToAddress</a>()
+                    </li><li>public <span title="SimpleXMLElement">SimpleXMLElement</span> <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/createXmlNode.xhtml">createXmlNode</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/parseXmlNode.xhtml">parseXmlNode</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier">ACustomerSupplier</span></li><li>public void <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/__construct.xhtml">__construct</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getAccountID.xhtml">getAccountID</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/issetAccountID.xhtml">issetAccountID</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setAccountID.xhtml">setAccountID</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getCompanyName.xhtml">getCompanyName</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/issetCompanyName.xhtml">issetCompanyName</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setCompanyName.xhtml">setCompanyName</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getContact.xhtml">getContact</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setContact.xhtml">setContact</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getTelephone.xhtml">getTelephone</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setTelephone.xhtml">setTelephone</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getFax.xhtml">getFax</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setFax.xhtml">setFax</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getEmail.xhtml">getEmail</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setEmail.xhtml">setEmail</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getWebsite.xhtml">getWebsite</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setWebsite.xhtml">setWebsite</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getSelfBillingIndicator.xhtml">getSelfBillingIndicator</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setSelfBillingIndicator.xhtml">setSelfBillingIndicator</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>public bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__construct.xhtml">__construct</a>()
+                        </li><li>public abstract SimpleXMLElement <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode</a>()
+                        </li><li>public abstract void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf</a>()
+                        </li><li>public static void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n</a>()
+                        </li><li>public static AI18n <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n</a>()
+                        </li><li>public ErrorRegister <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber</a>()
+                        </li><li>public static int <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="N_CUSTOMER">N_CUSTOMER</td>
+              <td>"Customer"</td>
+            </tr>
+            <tr>
+              <td id="N_CUSTOMERID">N_CUSTOMERID</td>
+              <td>"CustomerID"</td>
+            </tr>
+            <tr>
+              <td id="N_CUSTOMERTAXID">N_CUSTOMERTAXID</td>
+              <td>"CustomerTaxID"</td>
+            </tr>
+            <tr>
+              <td id="N_SHIPTOADDRESS">N_SHIPTOADDRESS</td>
+              <td>"ShipToAddress"</td>
+            </tr>
+            <tr>
+              <td id="N_ACCOUNTID">N_ACCOUNTID</td>
+              <td>"AccountID"</td>
+            </tr>
+            <tr>
+              <td id="N_COMPANYNAME">N_COMPANYNAME</td>
+              <td>"CompanyName"</td>
+            </tr>
+            <tr>
+              <td id="N_CONTACT">N_CONTACT</td>
+              <td>"Contact"</td>
+            </tr>
+            <tr>
+              <td id="N_BILLINGADDRESS">N_BILLINGADDRESS</td>
+              <td>"BillingAddress"</td>
+            </tr>
+            <tr>
+              <td id="N_TELEPHONE">N_TELEPHONE</td>
+              <td>"Telephone"</td>
+            </tr>
+            <tr>
+              <td id="N_FAX">N_FAX</td>
+              <td>"Fax"</td>
+            </tr>
+            <tr>
+              <td id="N_EMAIL">N_EMAIL</td>
+              <td>"Email"</td>
+            </tr>
+            <tr>
+              <td id="N_WEBSITE">N_WEBSITE</td>
+              <td>"Website"</td>
+            </tr>
+            <tr>
+              <td id="N_SELFBILLINGINDICATOR">N_SELFBILLINGINDICATOR</td>
+              <td>"SelfBillingIndicator"</td>
+            </tr>
+            <tr>
+              <td id="DESCONHECIDO">DESCONHECIDO</td>
+              <td>"Desconhecido"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</td>
+              <td>"999999990"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</td>
+              <td>"Consumidor final"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</td>
+              <td>"CONSUMIDOR_FINAL"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="billingAddress"><strong>$billingAddress</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\Address" href="../classes/_Rebelo_SaftPt_AuditFile_Address.xhtml">\Rebelo\SaftPt\AuditFile\Address</a><br/><span class="indent">&amp;lt;xs:element ref="BillingAddress"/&amp;gt;</span></li>
+            <li id="customerID"><strong>$customerID</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="CustomerID"/&amp;gt;</span></li>
+            <li id="customerTaxID"><strong>$customerTaxID</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="CustomerTaxID"/&amp;gt;</span></li>
+            <li id="shipToAddress"><strong>$shipToAddress</strong>
+                —
+                array<br/><span class="indent">&amp;lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&amp;gt;</span></li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="accountID"><strong>$accountID</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="AccountID"/&amp;gt;</span></li>
+            <li id="companyName"><strong>$companyName</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="CompanyName"/&amp;gt;</span></li>
+            <li id="contact"><strong>$contact</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_string|null.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="Contact" minOccurs="0"/&amp;gt;</span></li>
+            <li id="email"><strong>$email</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_string|null.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;</span></li>
+            <li id="error"><strong>$error</strong>
+                —
+                array<br/><span class="indent">To registe particular validation and errors of documents or tables, the key must be the field name</span></li>
+            <li id="errorRegister"><strong>$errorRegister</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/_Rebelo_SaftPt_AuditFile_ErrorRegister.xhtml">\Rebelo\SaftPt\AuditFile\ErrorRegister</a><br/><span class="indent">Error Register, to register global validation and errors</span></li>
+            <li id="fax"><strong>$fax</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_string|null.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;</span></li>
+            <li id="i18n"><strong>$i18n</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\i18n\AI18n" href="../classes/_Rebelo_SaftPt_AuditFile_i18n_AI18n.xhtml">\Rebelo\SaftPt\AuditFile\i18n\AI18n</a></li>
+            <li id="selfBillingIndicator"><strong>$selfBillingIndicator</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\MasterFiles\bool" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_bool.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\bool</a><br/><span class="indent">&amp;lt;xs:element ref="SelfBillingIndicator"/&amp;gt;</span></li>
+            <li id="telephone"><strong>$telephone</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_string|null.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;</span></li>
+            <li id="warning"><strong>$warning</strong>
+                —
+                array<br/><span class="indent">To regist particular warnings of documents or tables</span></li>
+            <li id="website"><strong>$website</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\MasterFiles\string|null" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_string|null.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/__construct.xhtml">__construct()</a>
+                — Customer&lt;br&gt; This table shall contain all the existing records operated during the taxation period in the relevant customers’ file, as well as those which may be implicit in the operations and do not exist in the relevant file.</li>
+            <li id="addShipToAddress"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/addShipToAddress.xhtml">addShipToAddress()</a>
+                — Adds as shipToAddress&lt;br&gt; This method every time that is invoked will return a new Instance of 'Address' that shal must be populated with the correct values.&lt;br&gt; If there is a need to make more than one reference, this structure can be generated as many times as necessary.&lt;br&gt; &amp;lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ShipToAddress" type="AddressStructure"/&amp;gt;</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the xml node for Customer</li>
+            <li id="getBillingAddress"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getBillingAddress.xhtml">getBillingAddress()</a>
+                — Gets as billingAddress&lt;br&gt; Head office address or the fixed /permanent establishment address, located on Portuguese territory.&lt;br&gt; The Address instance will be create once you get this method&lt;br&gt; &amp;lt;xs:element ref="BillingAddress"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="BillingAddress" type="AddressStructure"/&amp;gt;</li>
+            <li id="getCustomerID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getCustomerID.xhtml">getCustomerID()</a>
+                — Gets as customerID&lt;br&gt; In the list of clients cannot exist more than one registration with the same CustomerID. In the case of final consumers, a generic client with the designation of “Consumidor final” (Final Consumer) shall be created.</li>
+            <li id="getCustomerTaxID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getCustomerTaxID.xhtml">getCustomerTaxID()</a>
+                — Gets as customerTaxID&lt;br&gt; It must be indicated without the country’s prefix.</li>
+            <li id="getShipToAddress"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/getShipToAddress.xhtml">getShipToAddress()</a>
+                — Gets as shipToAddress</li>
+            <li id="issetBillingAddress"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/issetBillingAddress.xhtml">issetBillingAddress()</a>
+                — Get if is set BillingAddress</li>
+            <li id="issetCustomerID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/issetCustomerID.xhtml">issetCustomerID()</a>
+                — Get if is set CustomerID</li>
+            <li id="issetCustomerTaxID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/issetCustomerTaxID.xhtml">issetCustomerTaxID()</a>
+                — Get if is set CustomerTaxID</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Pasrse the xml node</li>
+            <li id="setCustomerID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/setCustomerID.xhtml">setCustomerID()</a>
+                — Sets a new customerID&lt;br&gt; In the list of clients cannot exist more than one registration with the same CustomerID. In the case of final consumers, a generic client with the designation of “Consumidor final” (Final Consumer) shall be created.</li>
+            <li id="setCustomerTaxID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\Customer" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_Customer/setCustomerTaxID.xhtml">setCustomerTaxID()</a>
+                — Sets a new customerTaxID&lt;br&gt; It must be indicated without the country’s prefix.</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier.xhtml">Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="getAccountID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getAccountID.xhtml">getAccountID()</a>
+                — Gets as accountID&lt;br&gt; The respective current account must be indicated in the general accounting plan, if it is defined. Otherwise the field shall be filled in with the designation “Desconhecido” (Unknown).</li>
+            <li id="getCompanyName"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getCompanyName.xhtml">getCompanyName()</a>
+                — Gets as companyName&lt;br&gt; The generic client/supplier shall be identified with the designation “Consumidor final” (Final Consumer).&lt;br&gt; &amp;lt;xs:element ref="CompanyName"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&amp;gt;</li>
+            <li id="getContact"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getContact.xhtml">getContact()</a>
+                — Gets Contact&lt;br&gt; Name of the contact person in the company&lt;br&gt; &amp;lt;xs:element ref="Contact" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/&amp;gt;</li>
+            <li id="getEmail"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getEmail.xhtml">getEmail()</a>
+                — Gets as email&lt;br&gt; &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&amp;gt;</li>
+            <li id="getFax"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getFax.xhtml">getFax()</a>
+                — Gets fax&lt;br&gt; &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;</li>
+            <li id="getSelfBillingIndicator"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getSelfBillingIndicator.xhtml">getSelfBillingIndicator()</a>
+                — Gets as selfBillingIndicator&lt;br&gt; Indicator of the existence of a self-billing agreement between the customer and the supplier.</li>
+            <li id="getTelephone"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getTelephone.xhtml">getTelephone()</a>
+                — Gets as telephone&lt;br&gt; &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;</li>
+            <li id="getWebsite"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/getWebsite.xhtml">getWebsite()</a>
+                — Gets as website&lt;br&gt; &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+            <li id="issetAccountID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/issetAccountID.xhtml">issetAccountID()</a>
+                — Get if is set AccountID</li>
+            <li id="issetCompanyName"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/issetCompanyName.xhtml">issetCompanyName()</a>
+                — Get if is set CompanyName</li>
+            <li id="setAccountID"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setAccountID.xhtml">setAccountID()</a>
+                — Sets AccountID&lt;br&gt; The respective current account must be indicated in the general accounting plan, if it is defined. Otherwise the field shall be filled in with the designation “Desconhecido” (Unknown).</li>
+            <li id="setCompanyName"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setCompanyName.xhtml">setCompanyName()</a>
+                — Sets CompanyName&lt;br&gt; The generic client/supplier shall be identified with the designation “Consumidor final” (Final Consumer).&lt;br&gt; &amp;lt;xs:element ref="CompanyName"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&amp;gt;</li>
+            <li id="setContact"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setContact.xhtml">setContact()</a>
+                — Sets Contact&lt;br&gt;&lt;br&gt; Name of the contact person in the company&lt;br&gt; &amp;lt;xs:element ref="Contact" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/&amp;gt;</li>
+            <li id="setEmail"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setEmail.xhtml">setEmail()</a>
+                — Sets a new email&lt;br&gt; &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&amp;gt;</li>
+            <li id="setFax"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setFax.xhtml">setFax()</a>
+                — Sets fax&lt;br&gt; &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;</li>
+            <li id="setSelfBillingIndicator"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setSelfBillingIndicator.xhtml">setSelfBillingIndicator()</a>
+                — Sets a new selfBillingIndicator&lt;br&gt; Indicator of the existence of a self-billing agreement between the customer and the supplier.</li>
+            <li id="setTelephone"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setTelephone.xhtml">setTelephone()</a>
+                — Sets a new telephone&lt;br&gt; &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;</li>
+            <li id="setWebsite"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\ACustomerSupplier" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_ACustomerSupplier/setWebsite.xhtml">setWebsite()</a>
+                — Sets a new website&lt;br&gt; &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">Rebelo\SaftPt\AuditFile\AAuditFile</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="__clone"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone()</a>
+                — Force to clone all object properties</li>
+            <li id="__isset"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset()</a>
+                — Invoke the isset to the propertie name</li>
+            <li id="addError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError()</a>
+                — Add a particular error</li>
+            <li id="addWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning()</a>
+                — Add a particular warning</li>
+            <li id="calcPeriod"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod()</a>
+                — Calc the document period based on the fiscal year start month</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="floatFormat"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat()</a>
+                — Format a float with grouped thousands</li>
+            <li id="getError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError()</a>
+                — Get all particular error</li>
+            <li id="getErrorRegistor"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor()</a>
+                — Get the ErrorRegistor instance</li>
+            <li id="getI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n()</a>
+                — Get i18n class</li>
+            <li id="getWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning()</a>
+                — Get all particular warning</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="replaceHexUtf"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf()</a>
+                — Convert the encoded caracters encoded by SimpleXmlElment</li>
+            <li id="setI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n()</a>
+                — Set the language to translate</li>
+            <li id="valPortugueseVatNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber()</a>
+                — Validate Portuguese VAT Number</li>
+            <li id="valTextMandMaxCar"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar()</a>
+                — Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string</li>
+            <li id="validateDocNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber()</a>
+                — Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;</li>
+            <li id="validateMod11auxFunction"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction()</a>
+                — validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

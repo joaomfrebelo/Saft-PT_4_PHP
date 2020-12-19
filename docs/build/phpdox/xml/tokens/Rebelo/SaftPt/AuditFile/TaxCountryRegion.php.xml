@@ -1,0 +1,1025 @@
+<?xml version="1.0"?>
+<source xmlns="http://xml.phpdox.net/token">
+  <file xmlns="http://xml.phpdox.net/src" path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile" file="TaxCountryRegion.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/TaxCountryRegion.php" size="17295" time="2020-12-19T16:24:43+00:00" unixtime="1608395083" sha1="a1c3e6dbd53fd2edc990440099c3aba5dbde448a" relative="Rebelo/SaftPt/AuditFile/TaxCountryRegion.php"/>
+  <line no="1">
+    <token name="T_OPEN_TAG">&lt;?php</token>
+  </line>
+  <line no="2">
+    <token name="T_COMMENT">/*</token>
+  </line>
+  <line no="3">
+    <token name="T_COMMENT"> * The MIT License</token>
+  </line>
+  <line no="4">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="5">
+    <token name="T_COMMENT"> * Copyright 2020 Jo&#xE3;o Rebelo.</token>
+  </line>
+  <line no="6">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="7">
+    <token name="T_COMMENT"> * Permission is hereby granted, free of charge, to any person obtaining a copy</token>
+  </line>
+  <line no="8">
+    <token name="T_COMMENT"> * of this software and associated documentation files (the "Software"), to deal</token>
+  </line>
+  <line no="9">
+    <token name="T_COMMENT"> * in the Software without restriction, including without limitation the rights</token>
+  </line>
+  <line no="10">
+    <token name="T_COMMENT"> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</token>
+  </line>
+  <line no="11">
+    <token name="T_COMMENT"> * copies of the Software, and to permit persons to whom the Software is</token>
+  </line>
+  <line no="12">
+    <token name="T_COMMENT"> * furnished to do so, subject to the following conditions:</token>
+  </line>
+  <line no="13">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="14">
+    <token name="T_COMMENT"> * The above copyright notice and this permission notice shall be included in</token>
+  </line>
+  <line no="15">
+    <token name="T_COMMENT"> * all copies or substantial portions of the Software.</token>
+  </line>
+  <line no="16">
+    <token name="T_COMMENT"> *</token>
+  </line>
+  <line no="17">
+    <token name="T_COMMENT"> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</token>
+  </line>
+  <line no="18">
+    <token name="T_COMMENT"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</token>
+  </line>
+  <line no="19">
+    <token name="T_COMMENT"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</token>
+  </line>
+  <line no="20">
+    <token name="T_COMMENT"> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</token>
+  </line>
+  <line no="21">
+    <token name="T_COMMENT"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</token>
+  </line>
+  <line no="22">
+    <token name="T_COMMENT"> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</token>
+  </line>
+  <line no="23">
+    <token name="T_COMMENT"> * THE SOFTWARE.</token>
+  </line>
+  <line no="24">
+    <token name="T_COMMENT"> */</token>
+  </line>
+  <line no="25">
+    <token name="T_DECLARE">declare</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_STRING">strict_types</token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_LNUMBER">1</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="26"/>
+  <line no="27">
+    <token name="T_NAMESPACE">namespace</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">Rebelo</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">SaftPt</token>
+    <token name="T_NS_SEPARATOR">\</token>
+    <token name="T_STRING">AuditFile</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="28"/>
+  <line no="29">
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="30">
+    <token name="T_DOC_COMMENT"> * TaxCountryRegion</token>
+  </line>
+  <line no="31">
+    <token name="T_DOC_COMMENT"> *</token>
+  </line>
+  <line no="32">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AD()</token>
+  </line>
+  <line no="33">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AE()</token>
+  </line>
+  <line no="34">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AF()</token>
+  </line>
+  <line no="35">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AG()</token>
+  </line>
+  <line no="36">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AI()</token>
+  </line>
+  <line no="37">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AL()</token>
+  </line>
+  <line no="38">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AM()</token>
+  </line>
+  <line no="39">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AO()</token>
+  </line>
+  <line no="40">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AQ()</token>
+  </line>
+  <line no="41">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AR()</token>
+  </line>
+  <line no="42">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AS()</token>
+  </line>
+  <line no="43">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AT()</token>
+  </line>
+  <line no="44">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AU()</token>
+  </line>
+  <line no="45">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AW()</token>
+  </line>
+  <line no="46">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AX()</token>
+  </line>
+  <line no="47">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AZ()</token>
+  </line>
+  <line no="48">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BA()</token>
+  </line>
+  <line no="49">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BB()</token>
+  </line>
+  <line no="50">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BD()</token>
+  </line>
+  <line no="51">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BE()</token>
+  </line>
+  <line no="52">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BF()</token>
+  </line>
+  <line no="53">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BG()</token>
+  </line>
+  <line no="54">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BH()</token>
+  </line>
+  <line no="55">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BI()</token>
+  </line>
+  <line no="56">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BJ()</token>
+  </line>
+  <line no="57">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BL()</token>
+  </line>
+  <line no="58">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BM()</token>
+  </line>
+  <line no="59">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BN()</token>
+  </line>
+  <line no="60">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BO()</token>
+  </line>
+  <line no="61">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BQ()</token>
+  </line>
+  <line no="62">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BR()</token>
+  </line>
+  <line no="63">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BS()</token>
+  </line>
+  <line no="64">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BT()</token>
+  </line>
+  <line no="65">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BV()</token>
+  </line>
+  <line no="66">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BW()</token>
+  </line>
+  <line no="67">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BY()</token>
+  </line>
+  <line no="68">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BZ()</token>
+  </line>
+  <line no="69">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CA()</token>
+  </line>
+  <line no="70">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CC()</token>
+  </line>
+  <line no="71">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CD()</token>
+  </line>
+  <line no="72">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CF()</token>
+  </line>
+  <line no="73">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CG()</token>
+  </line>
+  <line no="74">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CH()</token>
+  </line>
+  <line no="75">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CI()</token>
+  </line>
+  <line no="76">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CK()</token>
+  </line>
+  <line no="77">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CL()</token>
+  </line>
+  <line no="78">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CM()</token>
+  </line>
+  <line no="79">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CN()</token>
+  </line>
+  <line no="80">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CO()</token>
+  </line>
+  <line no="81">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CR()</token>
+  </line>
+  <line no="82">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CU()</token>
+  </line>
+  <line no="83">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CV()</token>
+  </line>
+  <line no="84">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CW()</token>
+  </line>
+  <line no="85">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CX()</token>
+  </line>
+  <line no="86">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CY()</token>
+  </line>
+  <line no="87">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CZ()</token>
+  </line>
+  <line no="88">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DE()</token>
+  </line>
+  <line no="89">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DJ()</token>
+  </line>
+  <line no="90">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DK()</token>
+  </line>
+  <line no="91">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DM()</token>
+  </line>
+  <line no="92">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DO()</token>
+  </line>
+  <line no="93">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DZ()</token>
+  </line>
+  <line no="94">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EC()</token>
+  </line>
+  <line no="95">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EE()</token>
+  </line>
+  <line no="96">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EG()</token>
+  </line>
+  <line no="97">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EH()</token>
+  </line>
+  <line no="98">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ER()</token>
+  </line>
+  <line no="99">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ES()</token>
+  </line>
+  <line no="100">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ET()</token>
+  </line>
+  <line no="101">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FI()</token>
+  </line>
+  <line no="102">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FJ()</token>
+  </line>
+  <line no="103">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FK()</token>
+  </line>
+  <line no="104">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FM()</token>
+  </line>
+  <line no="105">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FO()</token>
+  </line>
+  <line no="106">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FR()</token>
+  </line>
+  <line no="107">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GA()</token>
+  </line>
+  <line no="108">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GB()</token>
+  </line>
+  <line no="109">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GD()</token>
+  </line>
+  <line no="110">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GE()</token>
+  </line>
+  <line no="111">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GF()</token>
+  </line>
+  <line no="112">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GG()</token>
+  </line>
+  <line no="113">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GH()</token>
+  </line>
+  <line no="114">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GI()</token>
+  </line>
+  <line no="115">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GL()</token>
+  </line>
+  <line no="116">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GM()</token>
+  </line>
+  <line no="117">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GN()</token>
+  </line>
+  <line no="118">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GP()</token>
+  </line>
+  <line no="119">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GQ()</token>
+  </line>
+  <line no="120">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GR()</token>
+  </line>
+  <line no="121">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GS()</token>
+  </line>
+  <line no="122">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GT()</token>
+  </line>
+  <line no="123">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GU()</token>
+  </line>
+  <line no="124">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GW()</token>
+  </line>
+  <line no="125">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GY()</token>
+  </line>
+  <line no="126">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HK()</token>
+  </line>
+  <line no="127">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HM()</token>
+  </line>
+  <line no="128">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HN()</token>
+  </line>
+  <line no="129">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HR()</token>
+  </line>
+  <line no="130">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HT()</token>
+  </line>
+  <line no="131">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HU()</token>
+  </line>
+  <line no="132">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ID()</token>
+  </line>
+  <line no="133">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IE()</token>
+  </line>
+  <line no="134">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IL()</token>
+  </line>
+  <line no="135">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IM()</token>
+  </line>
+  <line no="136">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IN()</token>
+  </line>
+  <line no="137">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IO()</token>
+  </line>
+  <line no="138">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IQ()</token>
+  </line>
+  <line no="139">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IR()</token>
+  </line>
+  <line no="140">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IS()</token>
+  </line>
+  <line no="141">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IT()</token>
+  </line>
+  <line no="142">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JE()</token>
+  </line>
+  <line no="143">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JM()</token>
+  </line>
+  <line no="144">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JO()</token>
+  </line>
+  <line no="145">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JP()</token>
+  </line>
+  <line no="146">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KE()</token>
+  </line>
+  <line no="147">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KG()</token>
+  </line>
+  <line no="148">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KH()</token>
+  </line>
+  <line no="149">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KI()</token>
+  </line>
+  <line no="150">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KM()</token>
+  </line>
+  <line no="151">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KN()</token>
+  </line>
+  <line no="152">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KP()</token>
+  </line>
+  <line no="153">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KR()</token>
+  </line>
+  <line no="154">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KW()</token>
+  </line>
+  <line no="155">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KY()</token>
+  </line>
+  <line no="156">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KZ()</token>
+  </line>
+  <line no="157">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LA()</token>
+  </line>
+  <line no="158">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LB()</token>
+  </line>
+  <line no="159">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LC()</token>
+  </line>
+  <line no="160">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LI()</token>
+  </line>
+  <line no="161">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LK()</token>
+  </line>
+  <line no="162">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LR()</token>
+  </line>
+  <line no="163">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LS()</token>
+  </line>
+  <line no="164">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LT()</token>
+  </line>
+  <line no="165">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LU()</token>
+  </line>
+  <line no="166">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LV()</token>
+  </line>
+  <line no="167">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LY()</token>
+  </line>
+  <line no="168">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MA()</token>
+  </line>
+  <line no="169">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MC()</token>
+  </line>
+  <line no="170">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MD()</token>
+  </line>
+  <line no="171">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ME()</token>
+  </line>
+  <line no="172">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MF()</token>
+  </line>
+  <line no="173">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MG()</token>
+  </line>
+  <line no="174">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MH()</token>
+  </line>
+  <line no="175">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MK()</token>
+  </line>
+  <line no="176">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ML()</token>
+  </line>
+  <line no="177">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MM()</token>
+  </line>
+  <line no="178">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MN()</token>
+  </line>
+  <line no="179">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MO()</token>
+  </line>
+  <line no="180">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MP()</token>
+  </line>
+  <line no="181">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MQ()</token>
+  </line>
+  <line no="182">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MR()</token>
+  </line>
+  <line no="183">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MS()</token>
+  </line>
+  <line no="184">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MT()</token>
+  </line>
+  <line no="185">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MU()</token>
+  </line>
+  <line no="186">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MV()</token>
+  </line>
+  <line no="187">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MW()</token>
+  </line>
+  <line no="188">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MX()</token>
+  </line>
+  <line no="189">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MY()</token>
+  </line>
+  <line no="190">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MZ()</token>
+  </line>
+  <line no="191">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NA()</token>
+  </line>
+  <line no="192">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NC()</token>
+  </line>
+  <line no="193">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NE()</token>
+  </line>
+  <line no="194">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NF()</token>
+  </line>
+  <line no="195">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NG()</token>
+  </line>
+  <line no="196">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NI()</token>
+  </line>
+  <line no="197">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NL()</token>
+  </line>
+  <line no="198">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NO()</token>
+  </line>
+  <line no="199">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NP()</token>
+  </line>
+  <line no="200">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NR()</token>
+  </line>
+  <line no="201">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NU()</token>
+  </line>
+  <line no="202">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NZ()</token>
+  </line>
+  <line no="203">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_OM()</token>
+  </line>
+  <line no="204">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PA()</token>
+  </line>
+  <line no="205">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PE()</token>
+  </line>
+  <line no="206">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PF()</token>
+  </line>
+  <line no="207">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PG()</token>
+  </line>
+  <line no="208">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PH()</token>
+  </line>
+  <line no="209">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PK()</token>
+  </line>
+  <line no="210">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PL()</token>
+  </line>
+  <line no="211">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PM()</token>
+  </line>
+  <line no="212">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PN()</token>
+  </line>
+  <line no="213">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PR()</token>
+  </line>
+  <line no="214">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PS()</token>
+  </line>
+  <line no="215">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PT()</token>
+  </line>
+  <line no="216">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PW()</token>
+  </line>
+  <line no="217">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PY()</token>
+  </line>
+  <line no="218">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_QA()</token>
+  </line>
+  <line no="219">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RE()</token>
+  </line>
+  <line no="220">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RO()</token>
+  </line>
+  <line no="221">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RS()</token>
+  </line>
+  <line no="222">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RU()</token>
+  </line>
+  <line no="223">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RW()</token>
+  </line>
+  <line no="224">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SA()</token>
+  </line>
+  <line no="225">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SB()</token>
+  </line>
+  <line no="226">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SC()</token>
+  </line>
+  <line no="227">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SD()</token>
+  </line>
+  <line no="228">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SE()</token>
+  </line>
+  <line no="229">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SG()</token>
+  </line>
+  <line no="230">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SH()</token>
+  </line>
+  <line no="231">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SI()</token>
+  </line>
+  <line no="232">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SJ()</token>
+  </line>
+  <line no="233">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SK()</token>
+  </line>
+  <line no="234">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SL()</token>
+  </line>
+  <line no="235">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SM()</token>
+  </line>
+  <line no="236">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SN()</token>
+  </line>
+  <line no="237">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SO()</token>
+  </line>
+  <line no="238">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SR()</token>
+  </line>
+  <line no="239">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SS()</token>
+  </line>
+  <line no="240">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ST()</token>
+  </line>
+  <line no="241">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SV()</token>
+  </line>
+  <line no="242">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SX()</token>
+  </line>
+  <line no="243">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SY()</token>
+  </line>
+  <line no="244">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SZ()</token>
+  </line>
+  <line no="245">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TC()</token>
+  </line>
+  <line no="246">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TD()</token>
+  </line>
+  <line no="247">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TF()</token>
+  </line>
+  <line no="248">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TG()</token>
+  </line>
+  <line no="249">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TH()</token>
+  </line>
+  <line no="250">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TJ()</token>
+  </line>
+  <line no="251">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TK()</token>
+  </line>
+  <line no="252">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TL()</token>
+  </line>
+  <line no="253">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TM()</token>
+  </line>
+  <line no="254">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TN()</token>
+  </line>
+  <line no="255">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TO()</token>
+  </line>
+  <line no="256">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TR()</token>
+  </line>
+  <line no="257">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TT()</token>
+  </line>
+  <line no="258">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TV()</token>
+  </line>
+  <line no="259">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TW()</token>
+  </line>
+  <line no="260">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TZ()</token>
+  </line>
+  <line no="261">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UA()</token>
+  </line>
+  <line no="262">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UG()</token>
+  </line>
+  <line no="263">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UM()</token>
+  </line>
+  <line no="264">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_US()</token>
+  </line>
+  <line no="265">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UY()</token>
+  </line>
+  <line no="266">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UZ()</token>
+  </line>
+  <line no="267">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VA()</token>
+  </line>
+  <line no="268">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VC()</token>
+  </line>
+  <line no="269">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VE()</token>
+  </line>
+  <line no="270">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VG()</token>
+  </line>
+  <line no="271">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VI()</token>
+  </line>
+  <line no="272">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VN()</token>
+  </line>
+  <line no="273">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VU()</token>
+  </line>
+  <line no="274">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_WF()</token>
+  </line>
+  <line no="275">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_WS()</token>
+  </line>
+  <line no="276">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_XK()</token>
+  </line>
+  <line no="277">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_YE()</token>
+  </line>
+  <line no="278">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_YT()</token>
+  </line>
+  <line no="279">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ZA()</token>
+  </line>
+  <line no="280">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ZM()</token>
+  </line>
+  <line no="281">
+    <token name="T_DOC_COMMENT"> * @method \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ZW()</token>
+  </line>
+  <line no="282">
+    <token name="T_DOC_COMMENT"> * @author Jo&#xE3;o Rebelo</token>
+  </line>
+  <line no="283">
+    <token name="T_DOC_COMMENT"> */</token>
+  </line>
+  <line no="284">
+    <token name="T_CLASS">class</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">TaxCountryRegion</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_EXTENDS">extends</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">Country</token>
+  </line>
+  <line no="285">
+    <token name="T_PHPDOX_OPEN_CURLY">{</token>
+  </line>
+  <line no="286">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="287">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="288">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="289">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="290">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">PT_AC</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"PT-AC"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="291"/>
+  <line no="292">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="293">
+    <token name="T_DOC_COMMENT">     * Alias of PT_AC</token>
+  </line>
+  <line no="294">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="295">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="296">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">PT_MA</token>
+    <token name="T_WHITESPACE">     </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"PT-MA"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="297"/>
+  <line no="298">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="299">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="300">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="301">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="302">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">ISO_PT_AC</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"PT-AC"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="303"/>
+  <line no="304">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="305">
+    <token name="T_DOC_COMMENT">     * Alias of PT_MA</token>
+  </line>
+  <line no="306">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="307">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="308">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_CONST">const</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">ISO_PT_MA</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_PHPDOX_EQUAL">=</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"PT-MA"</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="309"/>
+  <line no="310">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="311">
+    <token name="T_DOC_COMMENT">     *</token>
+  </line>
+  <line no="312">
+    <token name="T_DOC_COMMENT">     * @param string $value</token>
+  </line>
+  <line no="313">
+    <token name="T_DOC_COMMENT">     * @since 1.0.0</token>
+  </line>
+  <line no="314">
+    <token name="T_DOC_COMMENT">     */</token>
+  </line>
+  <line no="315">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PUBLIC">public</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_FUNCTION">function</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_STRING">__construct</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_STRING">string</token>
+    <token name="T_WHITESPACE"> </token>
+    <token name="T_VARIABLE">$value</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+  </line>
+  <line no="316">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PHPDOX_OPEN_CURLY">{</token>
+  </line>
+  <line no="317">
+    <token name="T_WHITESPACE">        </token>
+    <token name="T_STRING">parent</token>
+    <token name="T_DOUBLE_COLON">::</token>
+    <token name="T_STRING">__construct</token>
+    <token name="T_PHPDOX_OPEN_BRACKET">(</token>
+    <token name="T_VARIABLE">$value</token>
+    <token name="T_PHPDOX_CLOSE_BRACKET">)</token>
+    <token name="T_PHPDOX_SEMICOLON">;</token>
+  </line>
+  <line no="318">
+    <token name="T_WHITESPACE">    </token>
+    <token name="T_PHPDOX_CLOSE_CURLY">}</token>
+  </line>
+  <line no="319">
+    <token name="T_PHPDOX_CLOSE_CURLY">}</token>
+  </line>
+  <line no="320"/>
+</source>

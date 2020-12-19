@@ -178,8 +178,8 @@ class en_GB extends AI18n
         $this->stack["payment_at_index_no_number"]                               = "The 'Payment' at index '%s' does not have document number";
         $this->stack["stock_move_at_index_no_number"]                            = "The 'StockMovement' at index '%s' does not have document number";
         $this->stack["workdoc_at_index_no_number"]                               = "The 'WorkDocument' at index '%s' does not have document number";
-        $this->stack["wrong_number_of_invoices"]                                 = "The number of 'Invoice' is wrong, is expected '%s' but only exists 's%";
-        $this->stack["wrong_number_of_workdocuments"]                            = "The number of 'WorkDocument' is wrong, is expected '%s' but only exists 's%";
+        $this->stack["wrong_number_of_invoices"]                                 = "The number of 'Invoice' is wrong, is expected '%s' but only exists '%s";
+        $this->stack["wrong_number_of_workdocuments"]                            = "The number of 'WorkDocument' is wrong, is expected '%s' but only exists '%s";
         $this->stack["does_not_have_hash"]                                       = "Invoice '%s' does not have the hash sign";
         $this->stack["is_valid_only_if_is_not_first_of_serie"]                   = "The signature of documento '%s' could be valid if is not the first document of teh serie";
         $this->stack["tax_iva_must_have_percentage"]                             = "The Tax in document '%s' is IVA, tax percentage is missing";

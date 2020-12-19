@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\ErrorRegister" namespace="Rebelo\SaftPt\AuditFile" name="ErrorRegister" abstract="false" final="false" start="37" end="254">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile" file="ErrorRegister.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/ErrorRegister.php" size="6156" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="f880b205584f3544ab2758756415783085ed0972" relative="Rebelo/SaftPt/AuditFile/ErrorRegister.php"/>
+  <docblock>
+    <description compact="File where is registed the error when create the xml node and export as xml.">This is because by teh Portuguese tax law the SAFT-PT file must exported even if as error.
+So the best option is when the SAFT-PT file is exported if has errors dond't throw a
+error but generate the file and show the errors to the user.</description>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <member name="onCreateXmlNode" default="" type="array" visibility="protected" static="false" line="44">
+    <docblock>
+      <description compact="Errors on create xml node"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="libXmlError" default="" type="array" visibility="protected" static="false" line="51">
+    <docblock>
+      <description compact="Errors of teh test performed by libxml"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="onSetValue" default="" type="array" visibility="protected" static="false" line="58">
+    <docblock>
+      <description compact="Errors when the value is setted"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="exceptionErrors" default="" type="array" visibility="protected" static="false" line="65">
+    <docblock>
+      <description compact="Exception errors"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="validationErrors" default="" type="array" visibility="protected" static="false" line="72">
+    <docblock>
+      <description compact="Exception errors"/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="warning" default="" type="array" visibility="protected" static="false" line="79">
+    <docblock>
+      <description/>
+      <var type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </var>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="85" end="88" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constructor>
+  <method name="getOnCreateXmlNode" start="95" end="98" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the onCreateXmlNode values error statck"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addOnCreateXmlNode" start="106" end="112" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add error to stack"/>
+      <param type="string" variable="$settedValError"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="settedValError" byreference="false" type="string"/>
+  </method>
+  <method name="getOnSetValue" start="119" end="122" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get on set values errors stack"/>
+      <return type="array"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addOnSetValue" start="130" end="136" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add error to track"/>
+      <param type="string" variable="$onSetValue"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="onSetValue" byreference="false" type="string"/>
+  </method>
+  <method name="clearAllErrors" start="143" end="151" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Clear all errors"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+  </method>
+  <method name="getLibXmlError" start="158" end="161" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addLibXmlError" start="169" end="176" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add error to stack"/>
+      <param type="string" variable="$error"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="error" byreference="false" type="string"/>
+  </method>
+  <method name="getExceptionErrors" start="183" end="186" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addExceptionErrors" start="194" end="197" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add error to stack"/>
+      <param type="string" variable="$error"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="error" byreference="false" type="string"/>
+  </method>
+  <method name="getValidationErrors" start="204" end="207" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addValidationErrors" start="215" end="218" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add error to stack"/>
+      <param type="string" variable="$error"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="error" byreference="false" type="string"/>
+  </method>
+  <method name="getWarnings" start="225" end="228" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get"/>
+      <return type="array" of="object">
+        <type full="Rebelo\SaftPt\AuditFile\string" namespace="Rebelo\SaftPt\AuditFile" name="string"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="array" nullable="false"/>
+  </method>
+  <method name="addWarning" start="236" end="239" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Add warning"/>
+      <param type="string" variable="$warning"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\void" namespace="Rebelo\SaftPt\AuditFile" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="warning" byreference="false" type="string"/>
+  </method>
+  <method name="hasErrors" start="246" end="253" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Check if has errors"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\AuditFile\bool" namespace="Rebelo\SaftPt\AuditFile" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+</class>

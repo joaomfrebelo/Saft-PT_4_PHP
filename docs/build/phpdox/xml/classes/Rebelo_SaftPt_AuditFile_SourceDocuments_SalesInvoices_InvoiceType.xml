@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices" name="InvoiceType" abstract="false" final="false" start="65" end="196">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices" file="InvoiceType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/InvoiceType.php" size="6438" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="baebbcf68c641145d731e9047a16432571ecc355" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/SalesInvoices/InvoiceType.php"/>
+  <docblock>
+    <description compact="InvoiceType&lt;br&gt; The field shall be filled in with: “FT” - Invoice; “FS” - Simplified Invoice issued according to article 40 of the VAT code; “FR” – Invoice-receipt; “ND” - Debit note; “NC” - Credit note; “VD” - Sale for cash and invoice/sales ticket; (a) “TV” - Sale ticket; (a) “TD” - Devolution ticket; (a) “AA” - Assets sales; (a) “DA” - Assets returns. (a) For the Insurance sector when it must not be included in table 4.3. - WorkingDocuments, may also be filled in with: “RP” – Premium or premium receipt; “RE” - Return insurance or receipt of return insurance; “CS” - Imputation to co-insurance companies; “LD” - Imputation to a leader co-insurance company; “RA” - Accepted reinsurance. (a) For data up to 2012-12-31."/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FT()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FS()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FR()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType ND()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType NC()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType VD()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType TV()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType TD()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType AA()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType DA()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RP()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RE()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType CS()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType LD()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RA()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="FT" value="&quot;FT&quot;">
+    <docblock>
+      <description compact="“FT” - Invoice issued according to article 36 of the VAT code; do Codigo do IVA"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FS" value="&quot;FS&quot;">
+    <docblock>
+      <description compact="“FS” - Simplified Invoice issued according to article 40 of the VAT code;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FR" value="&quot;FR&quot;">
+    <docblock>
+      <description compact="“FR” – Invoice-receipt"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ND" value="&quot;ND&quot;">
+    <docblock>
+      <description compact="“ND” - Debit note;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NC" value="&quot;NC&quot;">
+    <docblock>
+      <description compact="“NC” - Credit note"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="VD" value="&quot;VD&quot;">
+    <docblock>
+      <description compact="“VD” - Sale for cash and invoice/sales ticket; (a)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="TV" value="&quot;TV&quot;">
+    <docblock>
+      <description compact="“TV” - Sale ticket; (a)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="TD" value="&quot;TD&quot;">
+    <docblock>
+      <description compact="“TD” - Devolution ticket; (a)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="AA" value="&quot;AA&quot;">
+    <docblock>
+      <description compact="“AA” - Assets sales; (a)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="DA" value="&quot;DA&quot;">
+    <docblock>
+      <description compact="“DA” - Assets returns. (a) For the Insurance sector when it must not be included in table 4.3. - WorkingDocuments"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RP" value="&quot;RP&quot;">
+    <docblock>
+      <description compact="“RP” – Premium or premium receipt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RE" value="&quot;RE&quot;">
+    <docblock>
+      <description compact="“RE” - Return insurance or receipt of return insurance;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="CS" value="&quot;CS&quot;">
+    <docblock>
+      <description compact="“CS” - Imputation to co-insurance companies;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="LD" value="&quot;LD&quot;">
+    <docblock>
+      <description compact="“LD” - Imputation to a leader co-insurance company"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RA" value="&quot;RA&quot;">
+    <docblock>
+      <description compact="“RA” - Accepted reinsurance. (a) For data up to 2012-12-31."/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="182" end="185" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="InvoiceType&lt;br&gt; The field shall be filled in with: “FT” - Invoice; “FS” - Simplified Invoice issued according to article 40 of the VAT code; “FR” – Invoice-receipt; “ND” - Debit note; “NC” - Credit note; “VD” - Sale for cash and invoice/sales ticket; (a) “TV” - Sale ticket; (a) “TD” - Devolution ticket; (a) “AA” - Assets sales; (a) “DA” - Assets returns. (a) For the Insurance sector when it must not be included in table 4.3. - WorkingDocuments, may also be filled in with: “RP” – Premium or premium receipt; “RE” - Return insurance or receipt of return insurance; “CS” - Imputation to co-insurance companies; “LD” - Imputation to a leader co-insurance company; “RA” - Accepted reinsurance. (a) For data up to 2012-12-31."/>
+      <param type="string" variable="$value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="192" end="195" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

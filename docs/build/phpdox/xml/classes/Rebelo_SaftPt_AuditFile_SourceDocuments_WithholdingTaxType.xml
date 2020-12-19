@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="WithholdingTaxType" abstract="false" final="false" start="38" end="94">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments" file="WithholdingTaxType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/WithholdingTaxType.php" size="3117" time="2020-12-19T16:24:48+00:00" unixtime="1608395088" sha1="b41c8e3ce1fabb69563b339da29cc9a2ccb7e567" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/WithholdingTaxType.php"/>
+  <docblock>
+    <description compact="WithholdingTaxType&lt;br&gt; Indicate the type of withholding tax in this field, filling in:&lt;br&gt; “IRS” – Personal income tax;&lt;br&gt; “IRC” – Corporate income tax;&lt;br&gt; “IS” – Stamp Duty.&lt;br&gt;"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="IRS" value="&quot;IRS&quot;">
+    <docblock>
+      <description compact="IRS para Imposto Sobre o Rendimento das Pessoas Singulares"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="IRC" value="&quot;IRC&quot;">
+    <docblock>
+      <description compact="IRC para Imposto Sobre o Rendimento das Pessoas colectivas"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="IS" value="&quot;IS&quot;">
+    <docblock>
+      <description compact="IS para Imposto do selo"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="81" end="84" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Indicate the type of withholding tax in this field, filling in:&lt;br&gt; “IRS” – Personal income tax;&lt;br&gt; “IRC” – Corporate income tax;&lt;br&gt; “IS” – Stamp Duty.&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element name=&quot;WithholdingTaxType&quot;&amp;gt;     &amp;lt;xs:annotation&amp;gt;         &amp;lt;xs:documentation&amp;gt;Restricao: IRS para Imposto Sobre o Rendimento das Pessoas Singulares,             IRC para Imposto Sobre o Rendimento das Pessoas colectivas, IS para Imposto do selo         &amp;lt;/xs:documentation&amp;gt;     &amp;lt;/xs:annotation&amp;gt;     &amp;lt;xs:simpleType&amp;gt;         &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;             &amp;lt;xs:enumeration value=&quot;IRS&quot;/&amp;gt;             &amp;lt;xs:enumeration value=&quot;IRC&quot;/&amp;gt;             &amp;lt;xs:enumeration value=&quot;IS&quot;/&amp;gt;         &amp;lt;/xs:restriction&amp;gt;     &amp;lt;/xs:simpleType&amp;gt; &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <param type="string" variable="$value"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="90" end="93" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

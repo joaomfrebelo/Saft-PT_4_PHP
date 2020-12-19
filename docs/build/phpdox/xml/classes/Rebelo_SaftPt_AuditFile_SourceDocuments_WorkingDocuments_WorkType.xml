@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkType" abstract="false" final="false" start="48" end="193">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments" file="WorkType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkType.php" size="6763" time="2020-12-19T16:24:46+00:00" unixtime="1608395086" sha1="656a59b322ee1da911b0f440b3c045722a9fa23b" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/WorkingDocuments/WorkType.php"/>
+  <docblock>
+    <description compact="Description of WorkType"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType CM()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType CC()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType FC()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType FO()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType NE()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType OU()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType OR()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType PF()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType DC()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType RP()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType RE()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType CS()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType LD()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType RA()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="CM" value="&quot;CM&quot;">
+    <docblock>
+      <description compact="“CM” – Table checks;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="CC" value="&quot;CC&quot;">
+    <docblock>
+      <description compact="“CC” – Consignment credit note;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FC" value="&quot;FC&quot;">
+    <docblock>
+      <description compact="“FC” – Consignment invoice according to art. 38 of the Portuguese VAT Code;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FO" value="&quot;FO&quot;">
+    <docblock>
+      <description compact="“FO” – Worksheets [to record the service rendered or the work performed];"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NE" value="&quot;NE&quot;">
+    <docblock>
+      <description compact="“NE” – Purchase order;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OU" value="&quot;OU&quot;">
+    <docblock>
+      <description compact="“OU” – Others [not specified in the remaining WorkTypes];"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OR" value="&quot;OR&quot;">
+    <docblock>
+      <description compact="“OR” – Budgets;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="PF" value="&quot;PF&quot;">
+    <docblock>
+      <description compact="“PF” – Pro forma invoice;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="DC" value="&quot;DC&quot;">
+    <docblock>
+      <description compact="“DC” - Issued documents likely to be presented to the customer for the purpose of checking goods or provision of services (for data until 2017-06-30)."/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="N_RP" value="&quot;RP&quot;">
+    <docblock>
+      <description compact="“RP” – Premium or Premium receipt;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RE" value="&quot;RE&quot;">
+    <docblock>
+      <description compact="“RE” - Return insurance or receipt of return insurance;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="CS" value="&quot;CS&quot;">
+    <docblock>
+      <description compact="“CS” - Imputation to co-insurance companies;"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="LD" value="&quot;LD&quot;">
+    <docblock>
+      <description compact="rance company"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RA" value="&quot;RA&quot;">
+    <docblock>
+      <description compact="“RA” - Accepted reinsurance."/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="179" end="182" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="WorkType&lt;br&gt; The field shall be filled in with:&lt;br&gt; “CM” – Table checks;&lt;br&gt; “CC” – Consignment credit note;&lt;br&gt; “FC” – Consignment invoice according to art. 38 of the Portuguese VAT Code;&lt;br&gt; “FO” – Worksheets [to record the service rendered or the work performed];&lt;br&gt; “NE” – Purchase order;&lt;br&gt; “OU” – Others [not specified in the remaining WorkTypes];&lt;br&gt; “OR” – Budgets;&lt;br&gt; “PF” – Pro forma invoice;&lt;br&gt; “DC” - Issued documents likely to be presented to the customer for the purpose of checking goods or provision of services (for data until 2017-06-30).&lt;br&gt; For the insurance sector as to the types of documents identified below must also exist in table 4.1. - SalesInvoices the corresponding invoice or invoice amending document, can also be filled with:&lt;br&gt; “RP” – Premium or Premium receipt;&lt;br&gt; “RE” - Return insurance or receipt of return insurance;&lt;br&gt; “CS” - Imputation to co-insurance companies;&lt;br&gt; “LD” - Imputation to a leader co-insurance company;&lt;br&gt; “RA” - Accepted reinsurance.&lt;br&gt;">&amp;lt;xs:element name="WorkType"&amp;gt;
+  &amp;lt;xs:simpleType&amp;gt;
+      &amp;lt;xs:restriction base="xs:string"&amp;gt;
+          &amp;lt;xs:enumeration value="CM"/&amp;gt;
+          &amp;lt;xs:enumeration value="CC"/&amp;gt;
+          &amp;lt;xs:enumeration value="FC"/&amp;gt;
+          &amp;lt;xs:enumeration value="FO"/&amp;gt;
+          &amp;lt;xs:enumeration value="NE"/&amp;gt;
+          &amp;lt;xs:enumeration value="OU"/&amp;gt;
+          &amp;lt;xs:enumeration value="OR"/&amp;gt;
+          &amp;lt;xs:enumeration value="PF"/&amp;gt;
+          &amp;lt;!-- Para para dados ate 2017-06-30--&amp;gt;
+          &amp;lt;xs:enumeration value="DC"/&amp;gt;
+          &amp;lt;!-- Para o sector segurador--&amp;gt;
+          &amp;lt;xs:enumeration value="RP"/&amp;gt;
+          &amp;lt;xs:enumeration value="RE"/&amp;gt;
+          &amp;lt;xs:enumeration value="CS"/&amp;gt;
+          &amp;lt;xs:enumeration value="LD"/&amp;gt;
+          &amp;lt;xs:enumeration value="RA"/&amp;gt;
+      &amp;lt;/xs:restriction&amp;gt;
+  &amp;lt;/xs:simpleType&amp;gt;
+ &amp;lt;/xs:element&amp;gt;</description>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="189" end="192" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

@@ -181,8 +181,8 @@ class pt_PT extends AI18n
         $this->stack["payment_at_index_no_number"]                               = "O 'Payment' no indice '%s' não tem o número de documento";
         $this->stack["workdoc_at_index_no_number"]                               = "O 'WorkDocument' no indice '%s' não tem o número de documento";
         $this->stack["stock_move_at_index_no_number"]                            = "O 'StockMovement' no indice '%s' não tem o número de documento";
-        $this->stack["wrong_number_of_invoices"]                                 = "O número de 'Invoice' está errado, é esperado '%s' mas apenas existem 's%";
-        $this->stack["wrong_number_of_workdocuments"]                            = "O número de 'WorkDocument' está errado, é esperado '%s' mas apenas existem 's%";
+        $this->stack["wrong_number_of_invoices"]                                 = "O número de 'Invoice' está errado, é esperado '%s' mas apenas existem '%s";
+        $this->stack["wrong_number_of_workdocuments"]                            = "O número de 'WorkDocument' está errado, é esperado '%s' mas apenas existem '%s";
         $this->stack["does_not_have_hash"]                                       = "O documento '%s' não tem o hash da assinatura";
         $this->stack["is_valid_only_if_is_not_first_of_serie"]                   = "A assinatura do documento '%s' poderá ser válida se não for o primeiro documento da série";
         $this->stack["tax_iva_must_have_percentage"]                             = "O tipo de imposto do documento '%s' é IVA, a percentagem de imposto tem que ser definida";

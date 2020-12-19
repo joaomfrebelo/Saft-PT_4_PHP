@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile_SourceDocuments">Rebelo\SaftPt\AuditFile\SourceDocuments</a>
+          </li>
+          <li class="separator">A2Line</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/SourceDocuments/A2Line.php.xhtml#line38">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\SourceDocuments\</small>A2Line</h1>
+        <h4>Function and properties comumn to Invoice, Movement of Goods and Working Documents</h4>
+        <p/>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class A2Line
+                extends <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine.xhtml">ALine</a>
+            {<br/><ul class="none"><li>// constants</li><li>const N_ORDERREFERENCES = "OrderReferences";</li><li>const N_PRODUCTCODE = "ProductCode";</li><li>const N_PRODUCTDESCRIPTION = "ProductDescription";</li><li>const N_QUANTITY = "Quantity";</li><li>const N_UNITOFMEASURE = "UnitOfMeasure";</li><li>const N_UNITPRICE = "UnitPrice";</li><li>const N_DESCRIPTION = "Description";</li><li>const N_PRODUCTSERIALNUMBER = "ProductSerialNumber";</li><li>const N_DEBITAMOUNT = "DebitAmount";</li><li>const N_CREDITAMOUNT = "CreditAmount";</li><li>const N_CUSTOMSINFORMATION = "CustomsInformation";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine.xhtml">ALine</a></li><li>const <a href="#N_LINE">N_LINE</a> = "Line";</li><li>const <a href="#N_LINENUMBER">N_LINENUMBER</a> = "LineNumber";</li><li>const <a href="#N_DEBITAMOUNT">N_DEBITAMOUNT</a> = "DebitAmount";</li><li>const <a href="#N_CREDITAMOUNT">N_CREDITAMOUNT</a> = "CreditAmount";</li><li>const <a href="#N_TAXEXEMPTIONREASON">N_TAXEXEMPTIONREASON</a> = "TaxExemptionReason";</li><li>const <a href="#N_SETTLEMENTAMOUNT">N_SETTLEMENTAMOUNT</a> = "SettlementAmount";</li><li>const <a href="#N_TAXEXEMPTIONCODE">N_TAXEXEMPTIONCODE</a> = "TaxExemptionCode";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">AAuditFile</a></li><li>const <a href="#DESCONHECIDO">DESCONHECIDO</a> = "Desconhecido";</li><li>const <a href="#CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</a> = "999999990";</li><li>const <a href="#CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</a> = "Consumidor final";</li><li>const <a href="#CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</a> = "CONSUMIDOR_FINAL";</li></ul><ul class="none"><li>// members</li><li>protected array <a href="#members">$orderReferences</a> =
+                        ;
+                    </li><li>protected  <a href="#members">$productCode</a>;
+                    </li><li>protected  <a href="#members">$productDescription</a>;
+                    </li><li>protected  <a href="#members">$quantity</a>;
+                    </li><li>protected  <a href="#members">$unitOfMeasure</a>;
+                    </li><li>protected  <a href="#members">$unitPrice</a>;
+                    </li><li>protected  <a href="#members">$description</a>;
+                    </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null">ProductSerialNumber|null</span> <a href="#members">$productSerialNumber</a> =
+                        NULL;
+                    </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation">CustomsInformation</span> <a href="#members">$customsInformation</a> =
+                        NULL;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>protected static <span title="\Rebelo\SaftPt\AuditFile\i18n\AI18n">AI18n</span> <a href="#members">$i18n</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\ErrorRegister">ErrorRegister</span> <a href="#members">$errorRegister</a>;
+                        </li><li>protected array <a href="#members">$error</a>;
+                        </li><li>protected array <a href="#members">$warning</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/__construct.xhtml">__construct</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getOrderReferences.xhtml">getOrderReferences</a>()
+                    </li><li>public <span title="OrderReferences">OrderReferences</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/addOrderReferences.xhtml">addOrderReferences</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getProductCode.xhtml">getProductCode</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetProductCode.xhtml">issetProductCode</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setProductCode.xhtml">setProductCode</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getProductDescription.xhtml">getProductDescription</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetProductDescription.xhtml">issetProductDescription</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setProductDescription.xhtml">setProductDescription</a>()
+                    </li><li>public float <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getQuantity.xhtml">getQuantity</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetQuantity.xhtml">issetQuantity</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setQuantity.xhtml">setQuantity</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getUnitOfMeasure.xhtml">getUnitOfMeasure</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetUnitOfMeasure.xhtml">issetUnitOfMeasure</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setUnitOfMeasure.xhtml">setUnitOfMeasure</a>()
+                    </li><li>public float <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getUnitPrice.xhtml">getUnitPrice</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetUnitPrice.xhtml">issetUnitPrice</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setUnitPrice.xhtml">setUnitPrice</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getDescription.xhtml">getDescription</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetDescription.xhtml">issetDescription</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setDescription.xhtml">setDescription</a>()
+                    </li><li>public ?<span title="ProductSerialNumber">ProductSerialNumber</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getProductSerialNumber.xhtml">getProductSerialNumber</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setProductSerialNumberAsNull.xhtml">setProductSerialNumberAsNull</a>()
+                    </li><li>public ?<span title="CustomsInformation">CustomsInformation</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getCustomsInformation.xhtml">getCustomsInformation</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setCustomsInformationAsNull.xhtml">setCustomsInformationAsNull</a>()
+                    </li><li>public <span title="SimpleXMLElement">SimpleXMLElement</span> <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/createXmlNode.xhtml">createXmlNode</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/createXmlNodeDebitCreditNode.xhtml">createXmlNodeDebitCreditNode</a>()
+                    </li><li>protected void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/createXmlNodeTaxExcSettAndCustoms.xhtml">createXmlNodeTaxExcSettAndCustoms</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/parseXmlNode.xhtml">parseXmlNode</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine">ALine</span></li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/__construct.xhtml">__construct</a>()
+                        </li><li>public int <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getLineNumber.xhtml">getLineNumber</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/issetLineNumber.xhtml">issetLineNumber</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setLineNumber.xhtml">setLineNumber</a>()
+                        </li><li>public float|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getDebitAmount.xhtml">getDebitAmount</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setDebitAmount.xhtml">setDebitAmount</a>()
+                        </li><li>public float|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getCreditAmount.xhtml">getCreditAmount</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setCreditAmount.xhtml">setCreditAmount</a>()
+                        </li><li>public string|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getTaxExemptionReason.xhtml">getTaxExemptionReason</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setTaxExemptionReason.xhtml">setTaxExemptionReason</a>()
+                        </li><li>public TaxExemptionCode|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getTaxExemptionCode.xhtml">getTaxExemptionCode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setTaxExemptionCode.xhtml">setTaxExemptionCode</a>()
+                        </li><li>public float|null <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getSettlementAmount.xhtml">getSettlementAmount</a>()
+                        </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setSettlementAmount.xhtml">setSettlementAmount</a>()
+                        </li><li>public SimpleXMLElement <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/createXmlNode.xhtml">createXmlNode</a>()
+                        </li><li>protected void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/createXmlNodeDebitCreditNode.xhtml">createXmlNodeDebitCreditNode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>public bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__construct.xhtml">__construct</a>()
+                        </li><li>public abstract SimpleXMLElement <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode</a>()
+                        </li><li>public abstract void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf</a>()
+                        </li><li>public static void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n</a>()
+                        </li><li>public static AI18n <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n</a>()
+                        </li><li>public ErrorRegister <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber</a>()
+                        </li><li>public static int <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\ALine</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="N_ORDERREFERENCES">N_ORDERREFERENCES</td>
+              <td>"OrderReferences"</td>
+            </tr>
+            <tr>
+              <td id="N_PRODUCTCODE">N_PRODUCTCODE</td>
+              <td>"ProductCode"</td>
+            </tr>
+            <tr>
+              <td id="N_PRODUCTDESCRIPTION">N_PRODUCTDESCRIPTION</td>
+              <td>"ProductDescription"</td>
+            </tr>
+            <tr>
+              <td id="N_QUANTITY">N_QUANTITY</td>
+              <td>"Quantity"</td>
+            </tr>
+            <tr>
+              <td id="N_UNITOFMEASURE">N_UNITOFMEASURE</td>
+              <td>"UnitOfMeasure"</td>
+            </tr>
+            <tr>
+              <td id="N_UNITPRICE">N_UNITPRICE</td>
+              <td>"UnitPrice"</td>
+            </tr>
+            <tr>
+              <td id="N_DESCRIPTION">N_DESCRIPTION</td>
+              <td>"Description"</td>
+            </tr>
+            <tr>
+              <td id="N_PRODUCTSERIALNUMBER">N_PRODUCTSERIALNUMBER</td>
+              <td>"ProductSerialNumber"</td>
+            </tr>
+            <tr>
+              <td id="N_DEBITAMOUNT">N_DEBITAMOUNT</td>
+              <td>"DebitAmount"</td>
+            </tr>
+            <tr>
+              <td id="N_CREDITAMOUNT">N_CREDITAMOUNT</td>
+              <td>"CreditAmount"</td>
+            </tr>
+            <tr>
+              <td id="N_CUSTOMSINFORMATION">N_CUSTOMSINFORMATION</td>
+              <td>"CustomsInformation"</td>
+            </tr>
+            <tr>
+              <td id="N_LINE">N_LINE</td>
+              <td>"Line"</td>
+            </tr>
+            <tr>
+              <td id="N_LINENUMBER">N_LINENUMBER</td>
+              <td>"LineNumber"</td>
+            </tr>
+            <tr>
+              <td id="N_DEBITAMOUNT">N_DEBITAMOUNT</td>
+              <td>"DebitAmount"</td>
+            </tr>
+            <tr>
+              <td id="N_CREDITAMOUNT">N_CREDITAMOUNT</td>
+              <td>"CreditAmount"</td>
+            </tr>
+            <tr>
+              <td id="N_TAXEXEMPTIONREASON">N_TAXEXEMPTIONREASON</td>
+              <td>"TaxExemptionReason"</td>
+            </tr>
+            <tr>
+              <td id="N_SETTLEMENTAMOUNT">N_SETTLEMENTAMOUNT</td>
+              <td>"SettlementAmount"</td>
+            </tr>
+            <tr>
+              <td id="N_TAXEXEMPTIONCODE">N_TAXEXEMPTIONCODE</td>
+              <td>"TaxExemptionCode"</td>
+            </tr>
+            <tr>
+              <td id="DESCONHECIDO">DESCONHECIDO</td>
+              <td>"Desconhecido"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</td>
+              <td>"999999990"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</td>
+              <td>"Consumidor final"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</td>
+              <td>"CONSUMIDOR_FINAL"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="customsInformation"><strong>$customsInformation</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_CustomsInformation.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation</a><br/><span class="indent">&amp;lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&amp;gt;</span></li>
+            <li id="description"><strong>$description</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="Description"/&amp;gt;</span></li>
+            <li id="error"><strong>$error</strong>
+                —
+                array<br/><span class="indent">To registe particular validation and errors of documents or tables, the key must be the field name</span></li>
+            <li id="errorRegister"><strong>$errorRegister</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/_Rebelo_SaftPt_AuditFile_ErrorRegister.xhtml">\Rebelo\SaftPt\AuditFile\ErrorRegister</a><br/><span class="indent">Error Register, to register global validation and errors</span></li>
+            <li id="i18n"><strong>$i18n</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\i18n\AI18n" href="../classes/_Rebelo_SaftPt_AuditFile_i18n_AI18n.xhtml">\Rebelo\SaftPt\AuditFile\i18n\AI18n</a></li>
+            <li id="orderReferences"><strong>$orderReferences</strong>
+                —
+                array<br/><span class="indent">&amp;lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&amp;gt;</span></li>
+            <li id="productCode"><strong>$productCode</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="ProductCode"/&amp;gt;</span></li>
+            <li id="productDescription"><strong>$productDescription</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="ProductDescription"/&amp;gt;</span></li>
+            <li id="productSerialNumber"><strong>$productSerialNumber</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null" href="../classes/_Rebelo_SaftPt_AuditFile_SourceDocuments_ProductSerialNumber|null.xhtml">\Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null</a><br/><span class="indent">&amp;lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&amp;gt;</span></li>
+            <li id="quantity"><strong>$quantity</strong>
+                —
+                float<br/><span class="indent">&amp;lt;xs:element ref="Quantity"/&amp;gt;</span></li>
+            <li id="unitOfMeasure"><strong>$unitOfMeasure</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="UnitOfMeasure"/&amp;gt;</span></li>
+            <li id="unitPrice"><strong>$unitPrice</strong>
+                —
+                float<br/><span class="indent">&amp;lt;xs:element ref="UnitPrice"/&amp;gt;</span></li>
+            <li id="warning"><strong>$warning</strong>
+                —
+                array<br/><span class="indent">To regist particular warnings of documents or tables</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>protected</h4>
+          <ul>
+            <li id="createXmlNodeDebitCreditNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/createXmlNodeDebitCreditNode.xhtml">createXmlNodeDebitCreditNode()</a>
+                — Create xml nodefor Credit and Debit</li>
+            <li id="createXmlNodeTaxExcSettAndCustoms"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/createXmlNodeTaxExcSettAndCustoms.xhtml">createXmlNodeTaxExcSettAndCustoms()</a>
+                — Create the TaxExemptionReason,  TaxExemptionCode, SettlementAmount, CustomsInformation nodes</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct">
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/__construct.xhtml">__construct()</a>
+            </li>
+            <li id="addOrderReferences"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/addOrderReferences.xhtml">addOrderReferences()</a>
+                — AddOrderReferences&lt;br&gt; If there is a need to make more than one reference, this structure can be generated as many times as necessary&lt;br&gt; Every time that this method is invoked a new instance of OrderReferences is created, add to the stack and returned to be populaed&lt;br&gt; &amp;lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&amp;gt;</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the XML node</li>
+            <li id="getCustomsInformation"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getCustomsInformation.xhtml">getCustomsInformation()</a>
+                — Get CustomsInformation&lt;br&gt; When this method is invoked and $create is true a new instance of CustomsInformation will be created, if not previousm, add to the stack and returned to be populaed&lt;br&gt; &amp;lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&amp;gt;</li>
+            <li id="getDescription"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getDescription.xhtml">getDescription()</a>
+                — Get Description&lt;br&gt; Description of the document line.</li>
+            <li id="getOrderReferences"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getOrderReferences.xhtml">getOrderReferences()</a>
+                — GetOrderReferences&lt;br&gt; References to invoices on the correspondent correcting documents.</li>
+            <li id="getProductCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getProductCode.xhtml">getProductCode()</a>
+                — Get ProductCode&lt;br&gt; Record Key related to table 2.4. – Product in field 2.4.2. - ProductCode.&lt;br&gt; &amp;lt;xs:element ref="ProductCode"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+            <li id="getProductDescription"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getProductDescription.xhtml">getProductDescription()</a>
+                — Get ProductDescription&lt;br&gt; Description of the invoice line, related to table 2.4. – Product in field 2.4.4. – ProductDescription.</li>
+            <li id="getProductSerialNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getProductSerialNumber.xhtml">getProductSerialNumber()</a>
+                — GetProductSerialNumber&lt;br&gt; When this method is invoked and $create is true a new instance of ProductSerialNumber will be created, if not previousm, add to the stack and returned to be populaed&lt;br&gt; &amp;lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&amp;gt;</li>
+            <li id="getQuantity"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getQuantity.xhtml">getQuantity()</a>
+                — Get Quantity&lt;br&gt; &amp;lt;xs:element ref="Quantity"/&amp;gt;</li>
+            <li id="getUnitOfMeasure"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getUnitOfMeasure.xhtml">getUnitOfMeasure()</a>
+                — Get UnitOfMeasure&lt;br&gt; &amp;lt;xs:element ref="UnitOfMeasure"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;</li>
+            <li id="getUnitPrice"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/getUnitPrice.xhtml">getUnitPrice()</a>
+                — Get UnitPrice&lt;br&gt; Price per Unit without tax, and after the deduction of the line and header discounts.</li>
+            <li id="issetDescription"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetDescription.xhtml">issetDescription()</a>
+                — Get if is set Description</li>
+            <li id="issetProductCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetProductCode.xhtml">issetProductCode()</a>
+                — Get if is set ProductCode</li>
+            <li id="issetProductDescription"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetProductDescription.xhtml">issetProductDescription()</a>
+                — Get if is set ProductDescription</li>
+            <li id="issetQuantity"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetQuantity.xhtml">issetQuantity()</a>
+                — Get if is set Quantity</li>
+            <li id="issetUnitOfMeasure"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetUnitOfMeasure.xhtml">issetUnitOfMeasure()</a>
+                — Get if is set UnitOfMeasure</li>
+            <li id="issetUnitPrice"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/issetUnitPrice.xhtml">issetUnitPrice()</a>
+                — Get if is set UnitPrice</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Parse xml node</li>
+            <li id="setCustomsInformationAsNull"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setCustomsInformationAsNull.xhtml">setCustomsInformationAsNull()</a>
+                — Set CustomsInformation As Null</li>
+            <li id="setDescription"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setDescription.xhtml">setDescription()</a>
+                — Set Description&lt;br&gt; Description of the document line.&lt;br&gt; &amp;lt;xs:element ref="Description"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&amp;gt;</li>
+            <li id="setProductCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setProductCode.xhtml">setProductCode()</a>
+                — Set ProductCode&lt;br&gt; Record Key related to table 2.4. – Product in field 2.4.2. - ProductCode.&lt;br&gt; &amp;lt;xs:element ref="ProductCode"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+            <li id="setProductDescription"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setProductDescription.xhtml">setProductDescription()</a>
+                — Set ProductDescriptionet ProductDescription&lt;br&gt; Description of the invoice line, related to table 2.4. – Product in field 2.4.4. – ProductDescription.</li>
+            <li id="setProductSerialNumberAsNull"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setProductSerialNumberAsNull.xhtml">setProductSerialNumberAsNull()</a>
+                — Set ProductSerialNumberAsNull</li>
+            <li id="setQuantity"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setQuantity.xhtml">setQuantity()</a>
+                — Set Quantity&lt;br&gt; &amp;lt;xs:element ref="Quantity"/&amp;gt;</li>
+            <li id="setUnitOfMeasure"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setUnitOfMeasure.xhtml">setUnitOfMeasure()</a>
+                — Set UnitOfMeasure&lt;br&gt; &amp;lt;xs:element ref="UnitOfMeasure"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;</li>
+            <li id="setUnitPrice"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_A2Line/setUnitPrice.xhtml">setUnitPrice()</a>
+                — Set UnitPrice&lt;br&gt; Price per Unit without tax, and after the deduction of the line and header discounts.</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine.xhtml">Rebelo\SaftPt\AuditFile\SourceDocuments\ALine</a></h3>
+          <h4>protected</h4>
+          <ul>
+            <li id="createXmlNodeDebitCreditNode">
+              <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/createXmlNodeDebitCreditNode.xhtml">createXmlNodeDebitCreditNode()</a>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/createXmlNode.xhtml">createXmlNode()</a>
+                — Create common xml node</li>
+            <li id="getCreditAmount"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getCreditAmount.xhtml">getCreditAmount()</a>
+                — Get CreditAmount&lt;br&gt; Amount of the line of the credit documents.</li>
+            <li id="getDebitAmount"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getDebitAmount.xhtml">getDebitAmount()</a>
+                — Get DebitAmount&lt;br&gt; Amount of the line of the debit documents.</li>
+            <li id="getLineNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getLineNumber.xhtml">getLineNumber()</a>
+                — Get LineNumber&lt;br&gt; Lines should be exported in the same order as on the original receipt.&lt;br&gt; &amp;lt;xs:element ref="LineNumber"/&amp;gt;</li>
+            <li id="getSettlementAmount"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getSettlementAmount.xhtml">getSettlementAmount()</a>
+                — Get SettlementAmount&lt;br&gt; Shall present all the discounts (the proportion of global discounts for this line and the specific of the same line) affecting the amount on field 4.1.4.20.3. – GrossTotal.&lt;br&gt; &amp;lt;xs:element ref="SettlementAmount" minOccurs="0"/&amp;gt;</li>
+            <li id="getTaxExemptionCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getTaxExemptionCode.xhtml">getTaxExemptionCode()</a>
+                — Get TaxExemptionCode&lt;br&gt; It shall be filled in with the code of the reason for exemption or non-settlement, which is included in the "Manual de Integração de Software – Comunicação das Faturas à AT" (Software Integration Manual - Communication of the Invoices to Tax and Customs Authority).</li>
+            <li id="getTaxExemptionReason"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/getTaxExemptionReason.xhtml">getTaxExemptionReason()</a>
+                — Get Tax ExemptionReason&lt;br&gt; When fields 4.3.4.14.15.4. - TaxPercentage or 4.3.4.14.15.5. - TaxAmount fields are equal to zero, it is required to fill in this field.</li>
+            <li id="issetLineNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/issetLineNumber.xhtml">issetLineNumber()</a>
+                — Get if is set LineNumber</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Parse common xml node</li>
+            <li id="setCreditAmount"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setCreditAmount.xhtml">setCreditAmount()</a>
+                — Set CreditAmount&lt;br&gt; Amount of the line of the credit documents.</li>
+            <li id="setDebitAmount"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setDebitAmount.xhtml">setDebitAmount()</a>
+                — Set DebitAmount&lt;br&gt; Amount of the line of the debit documents.</li>
+            <li id="setLineNumber"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setLineNumber.xhtml">setLineNumber()</a>
+                — Set LineNumber&lt;br&gt; Lines should be exported in the same order as on the original receipt.&lt;br&gt; &amp;lt;xs:element ref="LineNumber"/&amp;gt;</li>
+            <li id="setSettlementAmount"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setSettlementAmount.xhtml">setSettlementAmount()</a>
+                — set SettlementAmount&lt;br&gt; Shall present all the discounts (the proportion of global discounts for this line and the specific of the same line) affecting the amount on field 4.1.4.20.3. – GrossTotal.&lt;br&gt; &amp;lt;xs:element ref="SettlementAmount" minOccurs="0"/&amp;gt;</li>
+            <li id="setTaxExemptionCode"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setTaxExemptionCode.xhtml">setTaxExemptionCode()</a>
+                — Set TaxExemptionCode&lt;br&gt; It shall be filled in with the code of the reason for exemption or non-settlement, which is included in the "Manual de Integração de Software – Comunicação das Faturas à AT" (Software Integration Manual - Communication of the Invoices to Tax and Customs Authority).</li>
+            <li id="setTaxExemptionReason"><a title="Rebelo\SaftPt\AuditFile\SourceDocuments\ALine" href="../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_ALine/setTaxExemptionReason.xhtml">setTaxExemptionReason()</a>
+                — Set Tax ExemptionReason&lt;br&gt; When fields 4.3.4.14.15.4. - TaxPercentage or 4.3.4.14.15.5. - TaxAmount fields are equal to zero, it is required to fill in this field.</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">Rebelo\SaftPt\AuditFile\AAuditFile</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="__clone"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone()</a>
+                — Force to clone all object properties</li>
+            <li id="__isset"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset()</a>
+                — Invoke the isset to the propertie name</li>
+            <li id="addError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError()</a>
+                — Add a particular error</li>
+            <li id="addWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning()</a>
+                — Add a particular warning</li>
+            <li id="calcPeriod"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod()</a>
+                — Calc the document period based on the fiscal year start month</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="floatFormat"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat()</a>
+                — Format a float with grouped thousands</li>
+            <li id="getError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError()</a>
+                — Get all particular error</li>
+            <li id="getErrorRegistor"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor()</a>
+                — Get the ErrorRegistor instance</li>
+            <li id="getI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n()</a>
+                — Get i18n class</li>
+            <li id="getWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning()</a>
+                — Get all particular warning</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="replaceHexUtf"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf()</a>
+                — Convert the encoded caracters encoded by SimpleXmlElment</li>
+            <li id="setI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n()</a>
+                — Set the language to translate</li>
+            <li id="valPortugueseVatNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber()</a>
+                — Validate Portuguese VAT Number</li>
+            <li id="valTextMandMaxCar"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar()</a>
+                — Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string</li>
+            <li id="validateDocNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber()</a>
+                — Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;</li>
+            <li id="validateMod11auxFunction"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction()</a>
+                — validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

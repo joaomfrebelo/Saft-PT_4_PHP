@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment::getPaymentRefNo</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml#Rebelo_SaftPt_AuditFile_SourceDocuments_Payments">Rebelo\SaftPt\AuditFile\SourceDocuments\Payments</a>
+          </li>
+          <li class="separator">
+            <a title="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment" href="../../classes/Rebelo_SaftPt_AuditFile_SourceDocuments_Payments_Payment.xhtml">Payment</a>
+          </li>
+          <li class="separator">getPaymentRefNo</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#return">Return</a>
+          </li>
+          <li>
+            <a href="#throws">Throws</a>
+          </li>
+          <li>
+            <a href="../../source/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/Payment.php.xhtml#line427">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment::</small>getPaymentRefNo</h1>
+        <h4>Gets as paymentRefNo &lt;br&gt; This identification is a sequential composition of following elements: the receipt type internal code created by the application, space, receipt series identifier, slash (/) and sequential number of the receipt within the series.</h4>
+        <p>Records with the same identification are not allowed in this field.
+The same document type internal code cannot be used for different types of documents.
+&amp;lt;xs:element ref="PaymentRefNo"/&amp;gt;&lt;br&gt;
+&lt;pre&gt;
+&lt;!-- Codigo unico do documento de venda --&gt;
+&amp;lt;xs:element name="PaymentRefNo"&amp;gt;
+    &amp;lt;xs:simpleType&amp;gt;
+        &amp;lt;xs:restriction base="xs:string"&amp;gt;
+            &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;
+            &amp;lt;xs:minLength value="1"/&amp;gt;
+            &amp;lt;xs:maxLength value="60"/&amp;gt;
+        &amp;lt;/xs:restriction&amp;gt;
+    &amp;lt;/xs:simpleType&amp;gt;
+&amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</p>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function getPaymentRefNo()
+            </code>
+        </div>
+        <h2 id="return">Returns</h2>
+        <dl class="styled">
+          <dt>string</dt>
+          <dd/>
+        </dl>
+        <h2 id="throws">Errors/Exceptions</h2>
+        <dl class="styled">
+          <dt>
+            <code>
+              <a title="\Error" href="../../classes/_Error.xhtml">Error</a>
+            </code>
+          </dt>
+          <dd/>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

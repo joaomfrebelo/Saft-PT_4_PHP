@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\MasterFiles\ProductType" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="ProductType" abstract="false" final="false" start="67" end="141">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles" file="ProductType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/MasterFiles/ProductType.php" size="5136" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="bf5caa4cf06aafbbd06a921bda5ab4ea7988057d" relative="Rebelo/SaftPt/AuditFile/MasterFiles/ProductType.php"/>
+  <docblock>
+    <description compact="Description of ProductType&lt;br&gt; The field shall be filled in with:&lt;br&gt; “P” - Products;&lt;br&gt; “S” - Services;&lt;br&gt; “O” - Others (e.g. charged freights, advance payments received or sale of assets);&lt;br&gt; “E” - Excise duties - (e.g. IABA, ISP, IT);&lt;br&gt; “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty which shall appear in table 2.5. – TaxTable and Excise Duties which shall be filled in with the &quot;E&quot; code.">&lt;pre&gt;
+    &amp;lt;xs:element name="ProductType"&amp;gt;
+     &amp;lt;xs:annotation&gt;
+         &amp;lt;xs:documentation&gt;Restricao: P para Produtos, S para Servicos, O para Outros (Ex: portes
+             debitados, adiantamentos recebidos ou alienacao de ativos), E para Impostos
+             Especiais de Consumo (ex.:IABA, ISP, IT); I para impostos, taxas e encargos
+             parafiscais exceto IVA e IS que deverao ser refletidos na tabela 2.5 Tabela de
+             impostos (TaxTable)e Impostos Especiais de Consumo &amp;lt;/xs:documentation&amp;gt;
+     &amp;lt;/xs:annotation&gt;
+     &amp;lt;xs:simpleType&gt;
+         &amp;lt;xs:restriction base="xs:string"&gt;
+             &amp;lt;xs:enumeration value="P"/&amp;gt;
+             &amp;lt;xs:enumeration value="S"/&amp;gt;
+             &amp;lt;xs:enumeration value="O"/&amp;gt;
+             &amp;lt;xs:enumeration value="E"/&amp;gt;
+             &amp;lt;xs:enumeration value="I"/&amp;gt;
+         &amp;lt;/xs:restriction&amp;gt;
+     &amp;lt;/xs:simpleType&amp;gt;
+ &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\ProductType P()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\ProductType S()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\ProductType O()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\ProductType E()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\MasterFiles\ProductType I()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="P" value="&quot;P&quot;">
+    <docblock>
+      <description compact="“P” - Products"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="S" value="&quot;S&quot;">
+    <docblock>
+      <description compact="“S” - Services"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="O" value="&quot;O&quot;">
+    <docblock>
+      <description compact="“O” - Others &lt;br&gt; (e.g. charged freights, advance payments received or sale of assets)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="E" value="&quot;E&quot;">
+    <docblock>
+      <description compact="“E” - Excise duties - (e.g. IABA, ISP, IT)"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="I" value="&quot;I&quot;">
+    <docblock>
+      <description compact="“I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty which shall appear in table 2.5. – TaxTable and Excise Duties which shall be filled in with the &quot;E&quot; code."/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="128" end="131" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="ProductType&lt;br&gt; &lt;br&gt; The field shall be filled in with:&lt;br&gt; “P” - Products;&lt;br&gt; “S” - Services;&lt;br&gt; “O” - Others (e.g. charged freights, advance payments received or sale of assets);&lt;br&gt; “E” - Excise duties - (e.g. IABA, ISP, IT);&lt;br&gt; “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty which shall appear in table 2.5. – TaxTable and Excise Duties which shall be filled in with the &quot;E&quot; code.">&lt;pre&gt;
+    &amp;lt;xs:element name="ProductType"&gt;
+     &amp;lt;xs:simpleType&gt;
+         &amp;lt;xs:restriction base="xs:string"&gt;
+             &amp;lt;xs:enumeration value="P"/&amp;gt;
+             &amp;lt;xs:enumeration value="S"/&amp;gt;
+             &amp;lt;xs:enumeration value="O"/&amp;gt;
+             &amp;lt;xs:enumeration value="E"/&amp;gt;
+             &amp;lt;xs:enumeration value="I"/&amp;gt;
+         &amp;lt;/xs:restriction&amp;gt;
+     &amp;lt;/xs:simpleType&amp;gt;
+ &amp;lt;/xs:element&amp;gt;
+&lt;/pre&gt;</description>
+      <param type="object" variable="$value">
+        <type full="Rebelo\SaftPt\AuditFile\MasterFiles\Mixed" namespace="Rebelo\SaftPt\AuditFile\MasterFiles" name="Mixed"/>
+      </param>
+    </docblock>
+    <parameter name="value" byreference="false" type="{unknown}"/>
+  </constructor>
+  <method name="get" start="137" end="140" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

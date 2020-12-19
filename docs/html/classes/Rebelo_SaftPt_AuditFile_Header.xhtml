@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\Header</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile">Rebelo\SaftPt\AuditFile</a>
+          </li>
+          <li class="separator">Header</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/Header.php.xhtml#line66">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\</small>Header</h1>
+        <h4>Class representing Header &lt;pre&gt; &lt;!-- Estrutura de cabecalho (AuditFile.Header) --&gt; &amp;lt;xs:element name="Header"&amp;gt; &amp;lt;xs:complexType&amp;gt; &amp;lt;xs:sequence&amp;gt; &amp;lt;xs:element ref="AuditFileVersion"/&amp;gt; &amp;lt;xs:element ref="CompanyID"/&amp;gt; &amp;lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&amp;gt; &amp;lt;xs:element ref="TaxAccountingBasis"/&amp;gt; &amp;lt;xs:element ref="CompanyName"/&amp;gt; &amp;lt;xs:element ref="BusinessName" minOccurs="0"/&amp;gt; &amp;lt;xs:element ref="CompanyAddress"/&amp;gt; &amp;lt;xs:element ref="FiscalYear"/&amp;gt; &amp;lt;xs:element ref="StartDate"/&amp;gt; &amp;lt;xs:element ref="EndDate"/&amp;gt; &amp;lt;xs:element name="CurrencyCode" fixed="EUR"/&amp;gt; &amp;lt;xs:element ref="DateCreated"/&amp;gt; &amp;lt;xs:element ref="TaxEntity"/&amp;gt; &amp;lt;xs:element ref="ProductCompanyTaxID"/&amp;gt; &amp;lt;xs:element ref="SoftwareCertificateNumber"/&amp;gt; &amp;lt;xs:element ref="ProductID"/&amp;gt; &amp;lt;xs:element ref="ProductVersion"/&amp;gt; &amp;lt;xs:element ref="HeaderComment" minOccurs="0"/&amp;gt; &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt; &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt; &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt; &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt; &amp;lt;/xs:sequence&amp;gt; &amp;lt;/xs:complexType&amp;gt; &lt;/pre&gt;</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Header
+                extends <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">AAuditFile</a>
+            {<br/><ul class="none"><li>// constants</li><li>const N_HEADER = "Header";</li><li>const N_AUDITFILEVERSION = "AuditFileVersion";</li><li>const N_COMPANYID = "CompanyID";</li><li>const N_TAXREGISTRATIONNUMBER = "TaxRegistrationNumber";</li><li>const N_TAXACCOUNTINGBASIS = "TaxAccountingBasis";</li><li>const N_COMPANYNAME = "CompanyName";</li><li>const N_BUSINESSNAME = "BusinessName";</li><li>const N_COMPANYADDRESS = "CompanyAddress";</li><li>const N_FISCALYEAR = "FiscalYear";</li><li>const N_STARTDATE = "StartDate";</li><li>const N_ENDDATE = "EndDate";</li><li>const N_CURRENCYCODE = "CurrencyCode";</li><li>const N_DATECREATED = "DateCreated";</li><li>const N_TAXENTITY = "TaxEntity";</li><li>const N_PRODUCTCOMPANYTAXID = "ProductCompanyTaxID";</li><li>const N_SOFTWARECERTIFICATENUMBER = "SoftwareCertificateNumber";</li><li>const N_PRODUCTID = "ProductID";</li><li>const N_PRODUCTVERSION = "ProductVersion";</li><li>const N_HEADERCOMMENT = "HeaderComment";</li><li>const N_TELEPHONE = "Telephone";</li><li>const N_FAX = "Fax";</li><li>const N_EMAIL = "Email";</li><li>const N_WEBSITE = "Website";</li></ul><ul class="none"><li>// Inherited constants from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">AAuditFile</a></li><li>const <a href="#DESCONHECIDO">DESCONHECIDO</a> = "Desconhecido";</li><li>const <a href="#CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</a> = "999999990";</li><li>const <a href="#CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</a> = "Consumidor final";</li><li>const <a href="#CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</a> = "CONSUMIDOR_FINAL";</li></ul><ul class="none"><li>// members</li><li>private string <a href="#members">$auditFileVersion</a> =
+                        "1.04_01";
+                    </li><li>private  <a href="#members">$companyID</a>;
+                    </li><li>private  <a href="#members">$taxRegistrationNumber</a>;
+                    </li><li>private <span title="Rebelo\SaftPt\AuditFile\TaxAccountingBasis">TaxAccountingBasis</span> <a href="#members">$taxAccountingBasis</a>;
+                    </li><li>private  <a href="#members">$companyName</a>;
+                    </li><li>private  <a href="#members">$businessName</a> =
+                        NULL;
+                    </li><li>private <span title="Rebelo\SaftPt\AuditFile\AddressPT">AddressPT</span> <a href="#members">$companyAddress</a>;
+                    </li><li>private  <a href="#members">$fiscalYear</a>;
+                    </li><li>private <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$startDate</a>;
+                    </li><li>private <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$endDate</a>;
+                    </li><li>private string <a href="#members">$currencyCode</a> =
+                        "EUR";
+                    </li><li>private <span title="\Rebelo\Date\Date">Date</span> <a href="#members">$dateCreated</a>;
+                    </li><li>private  <a href="#members">$taxEntity</a>;
+                    </li><li>private  <a href="#members">$productCompanyTaxID</a>;
+                    </li><li>private  <a href="#members">$softwareCertificateNumber</a>;
+                    </li><li>private  <a href="#members">$productID</a>;
+                    </li><li>private  <a href="#members">$productVersion</a>;
+                    </li><li>private <span title="Rebelo\SaftPt\AuditFile\string|null">string|null</span> <a href="#members">$headerComment</a> =
+                        NULL;
+                    </li><li>private  <a href="#members">$telephone</a> =
+                        NULL;
+                    </li><li>private  <a href="#members">$fax</a> =
+                        NULL;
+                    </li><li>private  <a href="#members">$email</a> =
+                        NULL;
+                    </li><li>private <span title="Rebelo\SaftPt\AuditFile\string|null">string|null</span> <a href="#members">$website</a> =
+                        NULL;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>protected static <span title="\Rebelo\SaftPt\AuditFile\i18n\AI18n">AI18n</span> <a href="#members">$i18n</a>;
+                        </li><li>protected <span title="\Rebelo\SaftPt\AuditFile\ErrorRegister">ErrorRegister</span> <a href="#members">$errorRegister</a>;
+                        </li><li>protected array <a href="#members">$error</a>;
+                        </li><li>protected array <a href="#members">$warning</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/__construct.xhtml">__construct</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getAuditFileVersion.xhtml">getAuditFileVersion</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCompanyID.xhtml">getCompanyID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCompanyID.xhtml">issetCompanyID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setCompanyID.xhtml">setCompanyID</a>()
+                    </li><li>public int <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTaxRegistrationNumber.xhtml">getTaxRegistrationNumber</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetTaxRegistrationNumber.xhtml">issetTaxRegistrationNumber</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTaxRegistrationNumber.xhtml">setTaxRegistrationNumber</a>()
+                    </li><li>public <span title="TaxAccountingBasis">TaxAccountingBasis</span> <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTaxAccountingBasis.xhtml">getTaxAccountingBasis</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetTaxAccountingBasis.xhtml">issetTaxAccountingBasis</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTaxAccountingBasis.xhtml">setTaxAccountingBasis</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCompanyName.xhtml">getCompanyName</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCompanyName.xhtml">issetCompanyName</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setCompanyName.xhtml">setCompanyName</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getBusinessName.xhtml">getBusinessName</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setBusinessName.xhtml">setBusinessName</a>()
+                    </li><li>public <span title="AddressPT">AddressPT</span> <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCompanyAddress.xhtml">getCompanyAddress</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCompanyAddress.xhtml">issetCompanyAddress</a>()
+                    </li><li>public int <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getFiscalYear.xhtml">getFiscalYear</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetFiscalYear.xhtml">issetFiscalYear</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setFiscalYear.xhtml">setFiscalYear</a>()
+                    </li><li>public <span title="Date">Date</span> <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getStartDate.xhtml">getStartDate</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetStartDate.xhtml">issetStartDate</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setStartDate.xhtml">setStartDate</a>()
+                    </li><li>public <span title="Date">Date</span> <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getEndDate.xhtml">getEndDate</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetEndDate.xhtml">issetEndDate</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setEndDate.xhtml">setEndDate</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCurrencyCode.xhtml">getCurrencyCode</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCurrencyCode.xhtml">issetCurrencyCode</a>()
+                    </li><li>public <span title="Date">Date</span> <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getDateCreated.xhtml">getDateCreated</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetDateCreated.xhtml">issetDateCreated</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setDateCreated.xhtml">setDateCreated</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTaxEntity.xhtml">getTaxEntity</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetTaxEntity.xhtml">issetTaxEntity</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTaxEntity.xhtml">setTaxEntity</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getProductCompanyTaxID.xhtml">getProductCompanyTaxID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetProductCompanyTaxID.xhtml">issetProductCompanyTaxID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setProductCompanyTaxID.xhtml">setProductCompanyTaxID</a>()
+                    </li><li>public int <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getSoftwareCertificateNumber.xhtml">getSoftwareCertificateNumber</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetSoftwareCertificateNumber.xhtml">issetSoftwareCertificateNumber</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setSoftwareCertificateNumber.xhtml">setSoftwareCertificateNumber</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getProductID.xhtml">getProductID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetProductID.xhtml">issetProductID</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setProductID.xhtml">setProductID</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getProductVersion.xhtml">getProductVersion</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetProductVersion.xhtml">issetProductVersion</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setProductVersion.xhtml">setProductVersion</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getHeaderComment.xhtml">getHeaderComment</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setHeaderComment.xhtml">setHeaderComment</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTelephone.xhtml">getTelephone</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTelephone.xhtml">setTelephone</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getFax.xhtml">getFax</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setFax.xhtml">setFax</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getEmail.xhtml">getEmail</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setEmail.xhtml">setEmail</a>()
+                    </li><li>public ?string <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getWebsite.xhtml">getWebsite</a>()
+                    </li><li>public bool <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setWebsite.xhtml">setWebsite</a>()
+                    </li><li>public <span title="SimpleXMLElement">SimpleXMLElement</span> <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/createXmlNode.xhtml">createXmlNode</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/parseXmlNode.xhtml">parseXmlNode</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Rebelo\SaftPt\AuditFile\AAuditFile">AAuditFile</span></li><li>public bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__construct.xhtml">__construct</a>()
+                        </li><li>public abstract SimpleXMLElement <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode</a>()
+                        </li><li>public abstract void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction</a>()
+                        </li><li>public string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat</a>()
+                        </li><li>public static string <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf</a>()
+                        </li><li>public static void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n</a>()
+                        </li><li>public static AI18n <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n</a>()
+                        </li><li>public ErrorRegister <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError</a>()
+                        </li><li>public array <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError</a>()
+                        </li><li>public void <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning</a>()
+                        </li><li>public static bool <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber</a>()
+                        </li><li>public static int <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">Rebelo\SaftPt\AuditFile\AAuditFile</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="N_HEADER">N_HEADER</td>
+              <td>"Header"</td>
+            </tr>
+            <tr>
+              <td id="N_AUDITFILEVERSION">N_AUDITFILEVERSION</td>
+              <td>"AuditFileVersion"</td>
+            </tr>
+            <tr>
+              <td id="N_COMPANYID">N_COMPANYID</td>
+              <td>"CompanyID"</td>
+            </tr>
+            <tr>
+              <td id="N_TAXREGISTRATIONNUMBER">N_TAXREGISTRATIONNUMBER</td>
+              <td>"TaxRegistrationNumber"</td>
+            </tr>
+            <tr>
+              <td id="N_TAXACCOUNTINGBASIS">N_TAXACCOUNTINGBASIS</td>
+              <td>"TaxAccountingBasis"</td>
+            </tr>
+            <tr>
+              <td id="N_COMPANYNAME">N_COMPANYNAME</td>
+              <td>"CompanyName"</td>
+            </tr>
+            <tr>
+              <td id="N_BUSINESSNAME">N_BUSINESSNAME</td>
+              <td>"BusinessName"</td>
+            </tr>
+            <tr>
+              <td id="N_COMPANYADDRESS">N_COMPANYADDRESS</td>
+              <td>"CompanyAddress"</td>
+            </tr>
+            <tr>
+              <td id="N_FISCALYEAR">N_FISCALYEAR</td>
+              <td>"FiscalYear"</td>
+            </tr>
+            <tr>
+              <td id="N_STARTDATE">N_STARTDATE</td>
+              <td>"StartDate"</td>
+            </tr>
+            <tr>
+              <td id="N_ENDDATE">N_ENDDATE</td>
+              <td>"EndDate"</td>
+            </tr>
+            <tr>
+              <td id="N_CURRENCYCODE">N_CURRENCYCODE</td>
+              <td>"CurrencyCode"</td>
+            </tr>
+            <tr>
+              <td id="N_DATECREATED">N_DATECREATED</td>
+              <td>"DateCreated"</td>
+            </tr>
+            <tr>
+              <td id="N_TAXENTITY">N_TAXENTITY</td>
+              <td>"TaxEntity"</td>
+            </tr>
+            <tr>
+              <td id="N_PRODUCTCOMPANYTAXID">N_PRODUCTCOMPANYTAXID</td>
+              <td>"ProductCompanyTaxID"</td>
+            </tr>
+            <tr>
+              <td id="N_SOFTWARECERTIFICATENUMBER">N_SOFTWARECERTIFICATENUMBER</td>
+              <td>"SoftwareCertificateNumber"</td>
+            </tr>
+            <tr>
+              <td id="N_PRODUCTID">N_PRODUCTID</td>
+              <td>"ProductID"</td>
+            </tr>
+            <tr>
+              <td id="N_PRODUCTVERSION">N_PRODUCTVERSION</td>
+              <td>"ProductVersion"</td>
+            </tr>
+            <tr>
+              <td id="N_HEADERCOMMENT">N_HEADERCOMMENT</td>
+              <td>"HeaderComment"</td>
+            </tr>
+            <tr>
+              <td id="N_TELEPHONE">N_TELEPHONE</td>
+              <td>"Telephone"</td>
+            </tr>
+            <tr>
+              <td id="N_FAX">N_FAX</td>
+              <td>"Fax"</td>
+            </tr>
+            <tr>
+              <td id="N_EMAIL">N_EMAIL</td>
+              <td>"Email"</td>
+            </tr>
+            <tr>
+              <td id="N_WEBSITE">N_WEBSITE</td>
+              <td>"Website"</td>
+            </tr>
+            <tr>
+              <td id="DESCONHECIDO">DESCONHECIDO</td>
+              <td>"Desconhecido"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_TAX_ID">CONSUMIDOR_FINAL_TAX_ID</td>
+              <td>"999999990"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL">CONSUMIDOR_FINAL</td>
+              <td>"Consumidor final"</td>
+            </tr>
+            <tr>
+              <td id="CONSUMIDOR_FINAL_ID">CONSUMIDOR_FINAL_ID</td>
+              <td>"CONSUMIDOR_FINAL"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="auditFileVersion"><strong>$auditFileVersion</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="AuditFileVersion"/&amp;gt;</span></li>
+            <li id="businessName"><strong>$businessName</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="BusinessName" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="companyAddress"><strong>$companyAddress</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\AddressPT" href="../classes/Rebelo_SaftPt_AuditFile_AddressPT.xhtml">Rebelo\SaftPt\AuditFile\AddressPT</a><br/><span class="indent">&amp;lt;xs:element ref="CompanyAddress"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyAddress" type="AddressStructurePT"/&amp;gt;</span></li>
+            <li id="companyID"><strong>$companyID</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref="CompanyID"/&amp;gt; &amp;lt;xs:element name="CompanyID"&amp;gt;     &amp;lt;xs:annotation&amp;gt;         &amp;lt;xs:documentation&amp;gt;Concatenacao da Conservatoria do Registo Comercial com o numero do             registo comercial separados pelo caracter espaco. Nos casos em que nao existe o             registo comercial, deve ser indicado o NIF.&amp;lt;/xs:documentation&amp;gt;     &amp;lt;/xs:annotation&amp;gt;     &amp;lt;xs:simpleType&amp;gt;         &amp;lt;xs:restriction base="xs:string"&amp;gt;             &amp;lt;xs:pattern value="([0-9]{9})+|([^^]+ [0-9/]+)"/&amp;gt;             &amp;lt;xs:minLength value="1"/&amp;gt;             &amp;lt;xs:maxLength value="50"/&amp;gt;         &amp;lt;/xs:restriction&amp;gt;     &amp;lt;/xs:simpleType&amp;gt; &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="companyName"><strong>$companyName</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="CompanyName"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="currencyCode"><strong>$currencyCode</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element name="CurrencyCode" fixed="EUR"/&amp;gt;</span></li>
+            <li id="dateCreated"><strong>$dateCreated</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">&amp;lt;xs:element ref="DateCreated"/&amp;gt;</span></li>
+            <li id="email"><strong>$email</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&amp;gt;&lt;br&gt; &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="endDate"><strong>$endDate</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref="EndDate"/&amp;gt; &amp;lt;xs:element name="EndDate" type="SAFPTDateSpan"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTDateSpan"&amp;gt;       &amp;lt;xs:restriction base="xs:date"&amp;gt;           &amp;lt;xs:minInclusive value="2000-01-01"/&amp;gt;           &amp;lt;xs:maxInclusive value="9999-12-31"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="fax"><strong>$fax</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="fiscalYear"><strong>$fiscalYear</strong>
+                —
+                int<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref="FiscalYear"/&amp;gt; &amp;lt;xs:element name="FiscalYear"&amp;gt;      &amp;lt;xs:simpleType&amp;gt;          &amp;lt;xs:restriction base="xs:integer"&amp;gt;              &amp;lt;xs:minInclusive value="2000"/&amp;gt;              &amp;lt;xs:maxInclusive value="9999"/&amp;gt;        &amp;lt;/xs:restriction&amp;gt;     &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="headerComment"><strong>$headerComment</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\string|null" href="../classes/Rebelo_SaftPt_AuditFile_string|null.xhtml">Rebelo\SaftPt\AuditFile\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="HeaderComment" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="HeaderComment" type="SAFPTtextTypeMandatoryMax255Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="productCompanyTaxID"><strong>$productCompanyTaxID</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="ProductCompanyTaxID"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductCompanyTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="productID"><strong>$productID</strong>
+                —
+                string<br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref="ProductID"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTProductID"&amp;gt;     &amp;lt;xs:restriction base="xs:string"&amp;gt;         &amp;lt;xs:pattern value="[^/]+/[^/]+"/&amp;gt;         &amp;lt;xs:minLength value="3"/&amp;gt;         &amp;lt;xs:maxLength value="255"/&amp;gt;     &amp;lt;/xs:restriction&amp;gt; &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="productVersion"><strong>$productVersion</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="ProductVersion"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductVersion" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="softwareCertificateNumber"><strong>$softwareCertificateNumber</strong>
+                —
+                int<br/><span class="indent">&amp;lt;xs:element ref="SoftwareCertificateNumber"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="SoftwareCertificateNumber" type="xs:nonNegativeInteger"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="startDate"><strong>$startDate</strong>
+                —
+                <a title="\Rebelo\Date\Date" href="../classes/_Rebelo_Date_Date.xhtml">\Rebelo\Date\Date</a><br/><span class="indent">&lt;pre&gt; &amp;lt;xs:element ref="StartDate"/&amp;gt; &amp;lt;xs:element name="StartDate" type="SAFPTDateSpan"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTDateSpan"&amp;gt;       &amp;lt;xs:restriction base="xs:date"&amp;gt;           &amp;lt;xs:minInclusive value="2000-01-01"/&amp;gt;           &amp;lt;xs:maxInclusive value="9999-12-31"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;</span></li>
+            <li id="taxAccountingBasis"><strong>$taxAccountingBasis</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\TaxAccountingBasis" href="../classes/Rebelo_SaftPt_AuditFile_TaxAccountingBasis.xhtml">Rebelo\SaftPt\AuditFile\TaxAccountingBasis</a><br/><span class="indent">&amp;lt;xs:element ref="TaxAccountingBasis"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="taxEntity"><strong>$taxEntity</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="TaxEntity"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="TaxEntity" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="taxRegistrationNumber"><strong>$taxRegistrationNumber</strong>
+                —
+                int<br/><span class="indent">&amp;lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="telephone"><strong>$telephone</strong>
+                —
+                string<br/><span class="indent">&amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</span></li>
+            <li id="website"><strong>$website</strong>
+                —
+                <a title="Rebelo\SaftPt\AuditFile\string|null" href="../classes/Rebelo_SaftPt_AuditFile_string|null.xhtml">Rebelo\SaftPt\AuditFile\string|null</a><br/><span class="indent">&amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</span></li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="error"><strong>$error</strong>
+                —
+                array<br/><span class="indent">To registe particular validation and errors of documents or tables, the key must be the field name</span></li>
+            <li id="errorRegister"><strong>$errorRegister</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\ErrorRegister" href="../classes/_Rebelo_SaftPt_AuditFile_ErrorRegister.xhtml">\Rebelo\SaftPt\AuditFile\ErrorRegister</a><br/><span class="indent">Error Register, to register global validation and errors</span></li>
+            <li id="i18n"><strong>$i18n</strong>
+                —
+                <a title="\Rebelo\SaftPt\AuditFile\i18n\AI18n" href="../classes/_Rebelo_SaftPt_AuditFile_i18n_AI18n.xhtml">\Rebelo\SaftPt\AuditFile\i18n\AI18n</a></li>
+            <li id="warning"><strong>$warning</strong>
+                —
+                array<br/><span class="indent">To regist particular warnings of documents or tables</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/__construct.xhtml">__construct()</a>
+                — The item Header contains the general information regarding the taxpayer, whom the SAF-T (PT) refers to.&lt;br&gt; &amp;lt;xs:element name="Header"&amp;gt;</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/createXmlNode.xhtml">createXmlNode()</a>
+                — Create XML node</li>
+            <li id="getAuditFileVersion"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getAuditFileVersion.xhtml">getAuditFileVersion()</a>
+                — Gets as auditFileVersion&lt;br&gt; The version of XML scheme to be used is the one available on http://www.portaldasfinancas.gov.pt</li>
+            <li id="getBusinessName"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getBusinessName.xhtml">getBusinessName()</a>
+                — Gets as businessName&lt;br&gt; Commercial designation of the taxpayer&lt;br&gt; &amp;lt;xs:element ref="BusinessName" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getCompanyAddress"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCompanyAddress.xhtml">getCompanyAddress()</a>
+                — Gets as companyAddress&lt;br&gt; &amp;lt;xs:element ref="CompanyAddress"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyAddress" type="AddressStructurePT"/&amp;gt;</li>
+            <li id="getCompanyID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCompanyID.xhtml">getCompanyID()</a>
+                — Gets as companyID &lt;br&gt; It is obtained by linking together the name of the commercial registry office and the commercial registration number, separated by a space.</li>
+            <li id="getCompanyName"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCompanyName.xhtml">getCompanyName()</a>
+                — Gets as companyName&lt;br&gt; Social designation of the company or taxpayer’s name.&lt;br&gt; &amp;lt;xs:element ref="CompanyName"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getCurrencyCode"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getCurrencyCode.xhtml">getCurrencyCode()</a>
+                — Gets as currencyCode&lt;br&gt; Identifies the default currency to use in the monetary type fields in the file. Fill in with "EUR".&lt;br&gt; &amp;lt;xs:element name="CurrencyCode" fixed="EUR"/&amp;gt;</li>
+            <li id="getDateCreated"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getDateCreated.xhtml">getDateCreated()</a>
+                — Gets as dateCreated&lt;br&gt; Date of creation of file XML of SAF-T (PT)&lt;br&gt; &amp;lt;xs:element ref="DateCreated"/&amp;gt;</li>
+            <li id="getEmail"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getEmail.xhtml">getEmail()</a>
+                — Gets as email&lt;br&gt; &amp;lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&amp;gt;&lt;br&gt; &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;&lt;br&gt;</li>
+            <li id="getEndDate"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getEndDate.xhtml">getEndDate()</a>
+                — Gets as endDate&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element ref="EndDate"/&amp;gt; &amp;lt;xs:element name="EndDate" type="SAFPTDateSpan"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTDateSpan"&amp;gt;       &amp;lt;xs:restriction base="xs:date"&amp;gt;           &amp;lt;xs:minInclusive value="2000-01-01"/&amp;gt;           &amp;lt;xs:maxInclusive value="9999-12-31"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt; &lt;br&gt; The max date allow is the next year&lt;br&gt;</li>
+            <li id="getFax"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getFax.xhtml">getFax()</a>
+                — Gets as fax&lt;br&gt; &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getFiscalYear"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getFiscalYear.xhtml">getFiscalYear()</a>
+                — Gets Fiscal Year&lt;br&gt; Use Corporate Income Tax Code rules, in the case of accounting periods that do not coincide with the calendar year.</li>
+            <li id="getHeaderComment"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getHeaderComment.xhtml">getHeaderComment()</a>
+                — Gets as headerComment&lt;br&gt; &amp;lt;xs:element ref="HeaderComment" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="HeaderComment" type="SAFPTtextTypeMandatoryMax255Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getProductCompanyTaxID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getProductCompanyTaxID.xhtml">getProductCompanyTaxID()</a>
+                — Gets as productCompanyTaxID&lt;br&gt; Fill in with the Tax Identification Number/Tax Registration Number of the entity that produced the software.&lt;br&gt; &amp;lt;xs:element ref="ProductCompanyTaxID"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductCompanyTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getProductID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getProductID.xhtml">getProductID()</a>
+                — Gets as productID&lt;br&gt; Name of the product that generates the SAF-T (PT).</li>
+            <li id="getProductVersion"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getProductVersion.xhtml">getProductVersion()</a>
+                — Gets as productVersion&lt;br&gt; The product version shall be indicated&lt;br&gt; &amp;lt;xs:element ref="ProductVersion"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductVersion" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getSoftwareCertificateNumber"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getSoftwareCertificateNumber.xhtml">getSoftwareCertificateNumber()</a>
+                — Get SoftwareCertificateNumber&lt;br&gt; Number of the software certificate allocated to the entity that created the software, pursuant to Ordinance No. 363/2010, of 23th June.</li>
+            <li id="getStartDate"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getStartDate.xhtml">getStartDate()</a>
+                — Gets Start Date&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element ref="StartDate"/&amp;gt; &amp;lt;xs:element name="StartDate" type="SAFPTDateSpan"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTDateSpan"&amp;gt;       &amp;lt;xs:restriction base="xs:date"&amp;gt;           &amp;lt;xs:minInclusive value="2000-01-01"/&amp;gt;           &amp;lt;xs:maxInclusive value="9999-12-31"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt; &lt;br&gt; The max date allow is the next year&lt;br&gt;</li>
+            <li id="getTaxAccountingBasis"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTaxAccountingBasis.xhtml">getTaxAccountingBasis()</a>
+                — Gets as taxAccountingBasis&lt;br&gt; Shall be filled in with the type of program, indicating the applicable data (including the transport documents, conference documents and issued receipts, if any):&lt;br&gt; “C” - Accounting;&lt;br&gt; “E” - Invoices issued by third parties;&lt;br&gt; “F” - Invoicing;&lt;br&gt; “I” - Invoicing and accounting integrated data;&lt;br&gt; “P” - Invoicing partial data.&lt;br&gt; “R” - Receipts (a);&lt;br&gt; “S” - Self-billing;&lt;br&gt; “T” - Transport documents (a).&lt;br&gt; (a) Type of program should be indicated, in case only this type of documents are issued. If not, fill in with type “C”, “F” or “I”.</li>
+            <li id="getTaxEntity"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTaxEntity.xhtml">getTaxEntity()</a>
+                — Gets as taxEntity&lt;br&gt; In the case of an invoicing file, it shall be specified which establishment the produced file refers to, if applicable, otherwise it must be filled in with the specification “Global”.</li>
+            <li id="getTaxRegistrationNumber"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTaxRegistrationNumber.xhtml">getTaxRegistrationNumber()</a>
+                — Gets as taxRegistrationNumber&lt;br&gt; To be filled in with the Portuguese Tax Identification Number/Tax Registration Number without spaces and without country prefixes.&lt;br&gt; &amp;lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&amp;gt;&lt;br&gt;</li>
+            <li id="getTelephone"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getTelephone.xhtml">getTelephone()</a>
+                — Gets as telephone&lt;br&gt; &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="getWebsite"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/getWebsite.xhtml">getWebsite()</a>
+                — Gets as website&lt;br&gt; &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+            <li id="issetCompanyAddress"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCompanyAddress.xhtml">issetCompanyAddress()</a>
+                — Get if is set CompanyAddress</li>
+            <li id="issetCompanyID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCompanyID.xhtml">issetCompanyID()</a>
+                — Get if is set CompanyID</li>
+            <li id="issetCompanyName"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCompanyName.xhtml">issetCompanyName()</a>
+                — Get if is set CompanyName</li>
+            <li id="issetCurrencyCode"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetCurrencyCode.xhtml">issetCurrencyCode()</a>
+                — Get if is set CurrencyCode</li>
+            <li id="issetDateCreated"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetDateCreated.xhtml">issetDateCreated()</a>
+                — Get if is set DateCreated</li>
+            <li id="issetEndDate"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetEndDate.xhtml">issetEndDate()</a>
+                — Get if is set EndDate</li>
+            <li id="issetFiscalYear"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetFiscalYear.xhtml">issetFiscalYear()</a>
+                — Get if is set FiscalYear</li>
+            <li id="issetProductCompanyTaxID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetProductCompanyTaxID.xhtml">issetProductCompanyTaxID()</a>
+                — Get if is set ProductCompanyTaxID</li>
+            <li id="issetProductID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetProductID.xhtml">issetProductID()</a>
+                — Get if is set ProductID</li>
+            <li id="issetProductVersion"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetProductVersion.xhtml">issetProductVersion()</a>
+                — Get if is set ProductVersion</li>
+            <li id="issetSoftwareCertificateNumber"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetSoftwareCertificateNumber.xhtml">issetSoftwareCertificateNumber()</a>
+                — Get if is set SoftwareCertificateNumber</li>
+            <li id="issetStartDate"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetStartDate.xhtml">issetStartDate()</a>
+                — Get if is set StartDate</li>
+            <li id="issetTaxAccountingBasis"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetTaxAccountingBasis.xhtml">issetTaxAccountingBasis()</a>
+                — Get if is set TaxAccountingBasis</li>
+            <li id="issetTaxEntity"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetTaxEntity.xhtml">issetTaxEntity()</a>
+                — Get if is set TaxEntity</li>
+            <li id="issetTaxRegistrationNumber"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/issetTaxRegistrationNumber.xhtml">issetTaxRegistrationNumber()</a>
+                — Get if is set TaxRegistrationNumber</li>
+            <li id="parseXmlNode">
+              <a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/parseXmlNode.xhtml">parseXmlNode()</a>
+            </li>
+            <li id="setBusinessName"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setBusinessName.xhtml">setBusinessName()</a>
+                — Sets a new businessName&lt;br&gt; Commercial designation of the taxpayer&lt;br&gt; &amp;lt;xs:element ref="BusinessName" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setCompanyID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setCompanyID.xhtml">setCompanyID()</a>
+                — Sets a new companyID&lt;br&gt; It is obtained by linking together the name of the commercial registry office and the commercial registration number, separated by a space.</li>
+            <li id="setCompanyName"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setCompanyName.xhtml">setCompanyName()</a>
+                — Sets a CompanyName&lt;br&gt; Social designation of the company or taxpayer’s name.&lt;br&gt; &amp;lt;xs:element ref="CompanyName"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setDateCreated"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setDateCreated.xhtml">setDateCreated()</a>
+                — Sets a new dateCreated&lt;br&gt; Date of creation of file XML of SAF-T (PT)&lt;br&gt; &amp;lt;xs:element ref="DateCreated"/&amp;gt;&lt;br&gt; Tthe creation date is setten when the object is created, use this if you wont a diferent date from that one in the OS&lt;br&gt;</li>
+            <li id="setEmail"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setEmail.xhtml">setEmail()</a>
+                — Sets a new email&lt;br&gt; &amp;lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&amp;gt;&lt;br&gt; &amp;lt;xs:element ref="Email" minOccurs="0"/&amp;gt;&lt;br&gt;</li>
+            <li id="setEndDate"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setEndDate.xhtml">setEndDate()</a>
+                — Sets a new endDate&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element ref="EndDate"/&amp;gt; &amp;lt;xs:element name="EndDate" type="SAFPTDateSpan"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTDateSpan"&amp;gt;       &amp;lt;xs:restriction base="xs:date"&amp;gt;           &amp;lt;xs:minInclusive value="2000-01-01"/&amp;gt;           &amp;lt;xs:maxInclusive value="9999-12-31"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;</li>
+            <li id="setFax"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setFax.xhtml">setFax()</a>
+                — Sets a new fax&lt;br&gt; &amp;lt;xs:element ref="Fax" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setFiscalYear"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setFiscalYear.xhtml">setFiscalYear()</a>
+                — Sets a Fiscal Year&lt;br&gt; Use Corporate Income Tax Code rules, in the case of accounting periods that do not coincide with the calendar year.</li>
+            <li id="setHeaderComment"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setHeaderComment.xhtml">setHeaderComment()</a>
+                — Sets HeaderComment&lt;br&gt; &amp;lt;xs:element ref="HeaderComment" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="HeaderComment" type="SAFPTtextTypeMandatoryMax255Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setProductCompanyTaxID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setProductCompanyTaxID.xhtml">setProductCompanyTaxID()</a>
+                — Sets a new productCompanyTaxID&lt;br&gt; Fill in with the Tax Identification Number/Tax Registration Number of the entity that produced the software.&lt;br&gt; &amp;lt;xs:element ref="ProductCompanyTaxID"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductCompanyTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setProductID"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setProductID.xhtml">setProductID()</a>
+                — Sets a new productID&lt;br&gt; Name of the product that generates the SAF-T (PT).</li>
+            <li id="setProductVersion"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setProductVersion.xhtml">setProductVersion()</a>
+                — Sets a new productVersion&lt;br&gt; The product version shall be indicated&lt;br&gt; &amp;lt;xs:element ref="ProductVersion"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="ProductVersion" type="SAFPTtextTypeMandatoryMax30Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setSoftwareCertificateNumber"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setSoftwareCertificateNumber.xhtml">setSoftwareCertificateNumber()</a>
+                — Sets a new softwareCertificateNumber&lt;br&gt;&lt;br&gt; Number of the software certificate allocated to the entity that created the software, pursuant to Ordinance No. 363/2010, of 23th June.</li>
+            <li id="setStartDate"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setStartDate.xhtml">setStartDate()</a>
+                — Sets StartDate&lt;br&gt; &lt;pre&gt; &amp;lt;xs:element ref="StartDate"/&amp;gt; &amp;lt;xs:element name="StartDate" type="SAFPTDateSpan"/&amp;gt; &amp;lt;xs:simpleType name="SAFPTDateSpan"&amp;gt;       &amp;lt;xs:restriction base="xs:date"&amp;gt;           &amp;lt;xs:minInclusive value="2000-01-01"/&amp;gt;           &amp;lt;xs:maxInclusive value="9999-12-31"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt; &lt;br&gt; The max date allow is the next year&lt;br&gt;</li>
+            <li id="setTaxAccountingBasis"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTaxAccountingBasis.xhtml">setTaxAccountingBasis()</a>
+                — Sets a new taxAccountingBasis&lt;br&gt; Shall be filled in with the type of program, indicating the applicable data (including the transport documents, conference documents and issued receipts, if any):&lt;br&gt; “C” - Accounting;&lt;br&gt; “E” - Invoices issued by third parties;&lt;br&gt; “F” - Invoicing;&lt;br&gt; “I” - Invoicing and accounting integrated data;&lt;br&gt; “P” - Invoicing partial data.&lt;br&gt; “R” - Receipts (a);&lt;br&gt; “S” - Self-billing;&lt;br&gt; “T” - Transport documents (a).&lt;br&gt; (a) Type of program should be indicated, in case only this type of documents are issued. If not, fill in with type “C”, “F” or “I”.</li>
+            <li id="setTaxEntity"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTaxEntity.xhtml">setTaxEntity()</a>
+                — Sets a new taxEntity&lt;br&gt; In the case of an invoicing file, it shall be specified which establishment the produced file refers to, if applicable, otherwise it must be filled in with the specification “Global”.</li>
+            <li id="setTaxRegistrationNumber"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTaxRegistrationNumber.xhtml">setTaxRegistrationNumber()</a>
+                — Sets the taxRegistrationNumber&lt;br&gt; To be filled in with the Portuguese Tax Identification Number/Tax Registration Number without spaces and without country prefixes.&lt;br&gt; &amp;lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&amp;gt;&lt;br&gt;</li>
+            <li id="setTelephone"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setTelephone.xhtml">setTelephone()</a>
+                — Sets a new telephone&lt;br&gt; &amp;lt;xs:element ref="Telephone" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&amp;gt;&lt;br&gt;</li>
+            <li id="setWebsite"><a title="Rebelo\SaftPt\AuditFile\Header" href="../classes/Rebelo_SaftPt_AuditFile_Header/setWebsite.xhtml">setWebsite()</a>
+                — Sets a new website &amp;lt;xs:element ref="Website" minOccurs="0"/&amp;gt;&lt;br&gt; &amp;lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&amp;gt;</li>
+          </ul>
+          <h3>Inherited from <a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile.xhtml">Rebelo\SaftPt\AuditFile\AAuditFile</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="__clone"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__clone.xhtml">__clone()</a>
+                — Force to clone all object properties</li>
+            <li id="__isset"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/__isset.xhtml">__isset()</a>
+                — Invoke the isset to the propertie name</li>
+            <li id="addError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addError.xhtml">addError()</a>
+                — Add a particular error</li>
+            <li id="addWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/addWarning.xhtml">addWarning()</a>
+                — Add a particular warning</li>
+            <li id="calcPeriod"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/calcPeriod.xhtml">calcPeriod()</a>
+                — Calc the document period based on the fiscal year start month</li>
+            <li id="createXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/createXmlNode.xhtml">createXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="floatFormat"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/floatFormat.xhtml">floatFormat()</a>
+                — Format a float with grouped thousands</li>
+            <li id="getError"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getError.xhtml">getError()</a>
+                — Get all particular error</li>
+            <li id="getErrorRegistor"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getErrorRegistor.xhtml">getErrorRegistor()</a>
+                — Get the ErrorRegistor instance</li>
+            <li id="getI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getI18n.xhtml">getI18n()</a>
+                — Get i18n class</li>
+            <li id="getWarning"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/getWarning.xhtml">getWarning()</a>
+                — Get all particular warning</li>
+            <li id="parseXmlNode"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/parseXmlNode.xhtml">parseXmlNode()</a>
+                — Create the xml node for the object</li>
+            <li id="replaceHexUtf"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/replaceHexUtf.xhtml">replaceHexUtf()</a>
+                — Convert the encoded caracters encoded by SimpleXmlElment</li>
+            <li id="setI18n"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/setI18n.xhtml">setI18n()</a>
+                — Set the language to translate</li>
+            <li id="valPortugueseVatNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valPortugueseVatNumber.xhtml">valPortugueseVatNumber()</a>
+                — Validate Portuguese VAT Number</li>
+            <li id="valTextMandMaxCar"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/valTextMandMaxCar.xhtml">valTextMandMaxCar()</a>
+                — Validate the string if length is zero throws AuditFileException, if greater than $lentgh will return a truncated string</li>
+            <li id="validateDocNumber"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateDocNumber.xhtml">validateDocNumber()</a>
+                — Validate documents number &amp;lt;xs:simpleType&amp;gt;       &amp;lt;xs:restriction base="xs:string"&amp;gt;           &amp;lt;xs:pattern value="[^ ]+ [^/^ ]+/[0-9]+"/&amp;gt;           &amp;lt;xs:minLength value="1"/&amp;gt;           &amp;lt;xs:maxLength value="60"/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;</li>
+            <li id="validateMod11auxFunction"><a title="Rebelo\SaftPt\AuditFile\AAuditFile" href="../classes/Rebelo_SaftPt_AuditFile_AAuditFile/validateMod11auxFunction.xhtml">validateMod11auxFunction()</a>
+                — validate Mod11 numbers (true whene the remaining of the division per 11 is 0) number % 11 === 0</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

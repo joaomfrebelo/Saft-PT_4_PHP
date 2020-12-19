@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\TaxAccountingBasis" namespace="Rebelo\SaftPt\AuditFile" name="TaxAccountingBasis" abstract="false" final="false" start="61" end="167">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile" file="TaxAccountingBasis.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/TaxAccountingBasis.php" size="5654" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="2c54f7a77401bf4edb4e5da39ccb9897212dd3f3" relative="Rebelo/SaftPt/AuditFile/TaxAccountingBasis.php"/>
+  <docblock>
+    <description compact="TaxAccountingBasis&lt;br&gt; Shall be filled in with the type of program, indicating the applicable data (including the transport documents, conference documents and issued receipts, if any):&lt;br&gt; “C” - Accounting;&lt;br&gt; “E” - Invoices issued by third parties;&lt;br&gt; “F” - Invoicing;&lt;br&gt; “I” - Invoicing and accounting integrated data;&lt;br&gt; “P” - Invoicing partial data.&lt;br&gt; “R” - Receipts (a);&lt;br&gt; “S” - Self-billing;&lt;br&gt; “T” - Transport documents (a).&lt;br&gt; (a) Type of program should be indicated, in case only this type of documents are issued. If not, fill in with type “C”, “F” or “I”.">&lt;pre&gt;
+&amp;lt;xs:element name="TaxAccountingBasis"&gt;
+    &amp;lt;xs:simpleType&gt;
+        &amp;lt;xs:restriction base="xs:string"&gt;
+            &amp;lt;xs:enumeration value="C"/&amp;gt;
+            &amp;lt;xs:enumeration value="E"/&amp;gt;
+            &amp;lt;xs:enumeration value="F"/&amp;gt;
+            &amp;lt;xs:enumeration value="I"/&amp;gt;
+            &amp;lt;xs:enumeration value="P"/&amp;gt;
+            &amp;lt;xs:enumeration value="R"/&amp;gt;
+            &amp;lt;xs:enumeration value="S"/&amp;gt;
+            &amp;lt;xs:enumeration value="T"/&amp;gt;
+        &amp;lt;/xs:restriction&amp;gt;
+    &amp;lt;/xs:simpleType&amp;gt;
+&lt;pre&gt;</description>
+    <since value="1.0.0"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="CONTABILIDADE" value="&quot;C&quot;">
+    <docblock>
+      <description compact="“C” - Accounting&lt;br&gt; &amp;lt;xs:enumeration value=&quot;C&quot;/&amp;gt;&lt;br&gt; C para Contabilidade"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FACT_POR_TERC" value="&quot;E&quot;">
+    <docblock>
+      <description compact="“E” - Invoices issued by third parties;&lt;br&gt; &amp;lt;xs:enumeration value=&quot;E&quot;/&amp;gt;&lt;br&gt; E para Faturacao emitida por terceiros"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FACTURACAO" value="&quot;F&quot;">
+    <docblock>
+      <description compact="“F” - Invoicing;&lt;br&gt; &amp;lt;xs:enumeration value=&quot;F&quot;/&amp;gt;&lt;br&gt; F para Faturacao"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="CONTAB_FACTURACAO" value="&quot;I&quot;">
+    <docblock>
+      <description compact="“I” - Invoicing and accounting integrated data;&lt;br&gt; &amp;lt;xs:enumeration value=&quot;I&quot;/&amp;gt;&lt;br&gt; I para Contabilidade integrada com a faturacao"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="FACT_PARCIAL" value="&quot;P&quot;">
+    <docblock>
+      <description compact="“P” - Invoicing partial data.&lt;br&gt; &amp;lt;xs:enumeration value=&quot;P&quot;/&amp;gt;&lt;br&gt; P para Faturacao parcial"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="RECEIBOS" value="&quot;R&quot;">
+    <docblock>
+      <description compact="“R” - Receipts (a);&lt;br&gt; &amp;lt;xs:enumeration value=&quot;R&quot;/&amp;gt;&lt;br&gt; R para Recibos&lt;br&gt; Deve ser indicado este tipo, se o programa apenas este emitir este tipo de documento. Caso contrario, devera ser utilizado o tipo C, F ou I"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="AUTOFATURACAO" value="&quot;S&quot;">
+    <docblock>
+      <description compact="“S” - Self-billing;&lt;br&gt; &amp;lt;xs:enumeration value=&quot;S&quot;/&amp;gt;&lt;br&gt; S para Autofaturacao"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="TRANSPORTE" value="&quot;S&quot;">
+    <docblock>
+      <description compact="“T” - Transport documents (a).&lt;br&gt; (a) Type of program should be indicated, in case only this type of documents are issued. If not, fill in with type “C”, “F” or “I”.&lt;br&gt; &amp;lt;xs:enumeration value=&quot;T&quot;/&amp;gt;&lt;br&gt; T para Transporte"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="DOC_TRANSP" value="&quot;T&quot;">
+    <docblock>
+      <description compact="&lt;br&gt; Shall be filled in with the type of program, indicating the applicable data (including the transport documents, conference documents and issued receipts, if any):&lt;br&gt; “C” - Accounting;&lt;br&gt; “E” - Invoices issued by third parties;&lt;br&gt; “F” - Invoicing;&lt;br&gt; “I” - Invoicing and accounting integrated data;&lt;br&gt; “P” - Invoicing partial data.&lt;br&gt; “R” - Receipts (a);&lt;br&gt; “S” - Self-billing;&lt;br&gt; “T” - Transport documents (a).&lt;br&gt; (a) Type of program should be indicated, in case only this type of documents are issued. If not, fill in with type “C”, “F” or “I”.">&amp;lt;xs:enumeration value="T"/&amp;gt;&lt;br&gt;
+T para Documentos de transporte&lt;br&gt;
+Deve ser indicado este tipo, se o programa apenas este emitir este tipo de
+documento. Caso contrario, devera ser utilizado o tipo C, F ou I</description>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="153" end="156" abstract="false" final="false" static="false" visibility="public">
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="163" end="166" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

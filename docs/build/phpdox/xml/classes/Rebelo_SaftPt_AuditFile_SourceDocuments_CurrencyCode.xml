@@ -1,0 +1,1159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments" name="CurrencyCode" abstract="false" final="false" start="34" end="1201">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments" file="CurrencyCode.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/CurrencyCode.php" size="18072" time="2020-12-19T16:24:44+00:00" unixtime="1608395084" sha1="5637e88f1cbc1539b5bdabdba3d3b7bcf1f943cc" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/CurrencyCode.php"/>
+  <docblock>
+    <description compact="CurrencyCode"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="ISO_AED" value="&quot;AED&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_AFN" value="&quot;AFN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ALL" value="&quot;ALL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_AMD" value="&quot;AMD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ANG" value="&quot;ANG&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_AOA" value="&quot;AOA&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ARS" value="&quot;ARS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_AUD" value="&quot;AUD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_AWG" value="&quot;AWG&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_AZN" value="&quot;AZN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BAM" value="&quot;BAM&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BBD" value="&quot;BBD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BDT" value="&quot;BDT&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BGN" value="&quot;BGN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BHD" value="&quot;BHD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BIF" value="&quot;BIF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BMD" value="&quot;BMD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BND" value="&quot;BND&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BOB" value="&quot;BOB&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BOV" value="&quot;BOV&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BRL" value="&quot;BRL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BSD" value="&quot;BSD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BTN" value="&quot;BTN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BWP" value="&quot;BWP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BYN" value="&quot;BYN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BYR" value="&quot;BYR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_BZD" value="&quot;BZD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CAD" value="&quot;CAD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CDF" value="&quot;CDF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CHE" value="&quot;CHE&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CHF" value="&quot;CHF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CHW" value="&quot;CHW&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CLF" value="&quot;CLF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CLP" value="&quot;CLP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CNY" value="&quot;CNY&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_COP" value="&quot;COP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_COU" value="&quot;COU&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CRC" value="&quot;CRC&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CUC" value="&quot;CUC&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CUP" value="&quot;CUP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CVE" value="&quot;CVE&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_CZK" value="&quot;CZK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_DJF" value="&quot;DJF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_DKK" value="&quot;DKK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_DOP" value="&quot;DOP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_DZD" value="&quot;DZD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_EGP" value="&quot;EGP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ERN" value="&quot;ERN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ETB" value="&quot;ETB&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_FJD" value="&quot;FJD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_FKP" value="&quot;FKP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GBP" value="&quot;GBP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GEL" value="&quot;GEL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GHS" value="&quot;GHS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GIP" value="&quot;GIP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GMD" value="&quot;GMD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GNF" value="&quot;GNF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GTQ" value="&quot;GTQ&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_GYD" value="&quot;GYD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_HKD" value="&quot;HKD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_HNL" value="&quot;HNL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_HRK" value="&quot;HRK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_HTG" value="&quot;HTG&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_HUF" value="&quot;HUF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_IDR" value="&quot;IDR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ILS" value="&quot;ILS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_INR" value="&quot;INR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_IQD" value="&quot;IQD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_IRR" value="&quot;IRR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ISK" value="&quot;ISK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_JMD" value="&quot;JMD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_JOD" value="&quot;JOD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_JPY" value="&quot;JPY&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KES" value="&quot;KES&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KGS" value="&quot;KGS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KHR" value="&quot;KHR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KMF" value="&quot;KMF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KPW" value="&quot;KPW&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KRW" value="&quot;KRW&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KWD" value="&quot;KWD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KYD" value="&quot;KYD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_KZT" value="&quot;KZT&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LAK" value="&quot;LAK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LBP" value="&quot;LBP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LKR" value="&quot;LKR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LRD" value="&quot;LRD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LSL" value="&quot;LSL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LTL" value="&quot;LTL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LVL" value="&quot;LVL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_LYD" value="&quot;LYD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MAD" value="&quot;MAD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MDL" value="&quot;MDL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MGA" value="&quot;MGA&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MKD" value="&quot;MKD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MMK" value="&quot;MMK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MNT" value="&quot;MNT&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MOP" value="&quot;MOP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MRO" value="&quot;MRO&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MRU" value="&quot;MRU&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MUR" value="&quot;MUR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MVR" value="&quot;MVR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MWK" value="&quot;MWK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MXN" value="&quot;MXN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MXV" value="&quot;MXV&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MYR" value="&quot;MYR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_MZN" value="&quot;MZN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_NAD" value="&quot;NAD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_NGN" value="&quot;NGN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_NIO" value="&quot;NIO&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_NOK" value="&quot;NOK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_NPR" value="&quot;NPR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_NZD" value="&quot;NZD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_OMR" value="&quot;OMR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PAB" value="&quot;PAB&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PEN" value="&quot;PEN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PGK" value="&quot;PGK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PHP" value="&quot;PHP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PKR" value="&quot;PKR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PLN" value="&quot;PLN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_PYG" value="&quot;PYG&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_QAR" value="&quot;QAR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_RON" value="&quot;RON&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_RSD" value="&quot;RSD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_RUB" value="&quot;RUB&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_RWF" value="&quot;RWF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SAR" value="&quot;SAR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SBD" value="&quot;SBD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SCR" value="&quot;SCR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SDG" value="&quot;SDG&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SEK" value="&quot;SEK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SGD" value="&quot;SGD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SHP" value="&quot;SHP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SLL" value="&quot;SLL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SOS" value="&quot;SOS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SRD" value="&quot;SRD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SSP" value="&quot;SSP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_STD" value="&quot;STD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_STN" value="&quot;STN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SVC" value="&quot;SVC&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SYP" value="&quot;SYP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SZL" value="&quot;SZL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_THB" value="&quot;THB&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TJS" value="&quot;TJS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TMT" value="&quot;TMT&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TND" value="&quot;TND&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TOP" value="&quot;TOP&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TRY" value="&quot;TRY&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TTD" value="&quot;TTD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TWD" value="&quot;TWD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TZS" value="&quot;TZS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_UAH" value="&quot;UAH&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_UGX" value="&quot;UGX&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_USD" value="&quot;USD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_USN" value="&quot;USN&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_USS" value="&quot;USS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_UYI" value="&quot;UYI&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_UYU" value="&quot;UYU&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_UZS" value="&quot;UZS&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_VEF" value="&quot;VEF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_VES" value="&quot;VES&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_VND" value="&quot;VND&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_VUV" value="&quot;VUV&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_WST" value="&quot;WST&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XAF" value="&quot;XAF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XAG" value="&quot;XAG&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XAU" value="&quot;XAU&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XBA" value="&quot;XBA&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XBB" value="&quot;XBB&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XBC" value="&quot;XBC&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XBD" value="&quot;XBD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XCD" value="&quot;XCD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XDR" value="&quot;XDR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XFU" value="&quot;XFU&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XOF" value="&quot;XOF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XPD" value="&quot;XPD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XPF" value="&quot;XPF&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XPT" value="&quot;XPT&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XSU" value="&quot;XSU&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_XUA" value="&quot;XUA&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_YER" value="&quot;YER&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ZAR" value="&quot;ZAR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ZMW" value="&quot;ZMW&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ZWL" value="&quot;ZWL&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_EEK" value="&quot;EEK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_SKK" value="&quot;SKK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_TMM" value="&quot;TMM&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ZMK" value="&quot;ZMK&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ZWD" value="&quot;ZWD&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISO_ZWR" value="&quot;ZWR&quot;">
+    <docblock>
+      <description compact="Iso code"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="1187" end="1190" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="CurrencyCode (ISO 4217)&lt;br&gt; &lt;pre&gt;   &amp;lt;xs:element name=&quot;CurrencyCode&quot;&amp;gt;       &amp;lt;!-- Nao consta o EUR por nao existirem situacoes que requeiram este codigo de moeda --&amp;gt;       &amp;lt;xs:simpleType&amp;gt;           &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;               &amp;lt;xs:pattern                   value=&quot;AED|AFN|ALL|AMD|ANG|AOA|ARS|AUD|AWG|AZN|BAM|BBD|BDT|BGN|BHD|BIF|BMD|BND|BOB|BOV|BRL|BSD|BTN|BWP|BYN|BYR|BZD|CAD|CDF|CHE|CHF|CHW|CLF|CLP|CNY|COP|COU|CRC|CUC|CUP|CVE|CZK|DJF|DKK|DOP|DZD|EGP|ERN|ETB|FJD|FKP|GBP|GEL|GHS|GIP|GMD|GNF|GTQ|GYD|HKD|HNL|HRK|HTG|HUF|IDR|ILS|INR|IQD|IRR|ISK|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LTL|LVL|LYD|MAD|MDL|MGA|MKD|MMK|MNT|MOP|MRO|MRU|MUR|MVR|MWK|MXN|MXV|MYR|MZN|NAD|NGN|NIO|NOK|NPR|NZD|OMR|PAB|PEN|PGK|PHP|PKR|PLN|PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SRD|SSP|STD|STN|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TWD|TZS|UAH|UGX|USD|USN|USS|UYI|UYU|UZS|VEF|VES|VND|VUV|WST|XAF|XAG|XAU|XBA|XBB|XBC|XBD|XCD|XDR|XFU|XOF|XPD|XPF|XPT|XSU|XUA|YER|ZAR|ZMW|ZWL|EEK|SKK|TMM|ZMK|ZWD|ZWR&quot;/&amp;gt;               &amp;lt;xs:length value=&quot;3&quot;/&amp;gt;           &amp;lt;/xs:restriction&amp;gt;       &amp;lt;/xs:simpleType&amp;gt;   &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="1197" end="1200" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the value as string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

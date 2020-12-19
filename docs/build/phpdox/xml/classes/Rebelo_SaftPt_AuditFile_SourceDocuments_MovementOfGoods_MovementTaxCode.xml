@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="MovementTaxCode" abstract="false" final="false" start="46" end="121">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods" file="MovementTaxCode.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTaxCode.php" size="3845" time="2020-12-19T16:24:51+00:00" unixtime="1608395091" sha1="fe7323802a9ff1a628d2488b7f3337e6c23e0f5e" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTaxCode.php"/>
+  <docblock>
+    <description compact="MovementTaxCode&lt;br&gt; Tax rate code in the table of taxes.&lt;br&gt; Shall be filled in with:&lt;br&gt; “RED” - Reduced tax rate;&lt;br&gt; “INT” - Intermediate tax rate;&lt;br&gt; “NOR” - Normal tax rate;&lt;br&gt; “ISE” - Exempted;&lt;br&gt; “OUT” - Other, applicable to the special VAT regimes.&lt;br&gt; In case of not subject to tax, to fill in with “NS”.&lt;br&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode RED()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode INT()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode NOR()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode ISE()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode OUT()"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="RED" value="&quot;RED&quot;">
+    <docblock>
+      <description compact="“RED” - Reduced tax rate"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="INT" value="&quot;INT&quot;">
+    <docblock>
+      <description compact="“INT” - Intermediate tax rate"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NOR" value="&quot;NOR&quot;">
+    <docblock>
+      <description compact="“NOR” - Normal tax rate"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="ISE" value="&quot;ISE&quot;">
+    <docblock>
+      <description compact="Exempted"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="OUT" value="&quot;OUT&quot;">
+    <docblock>
+      <description compact="“OUT” - Other, applicable to the special VAT regimes"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NS" value="&quot;NS&quot;">
+    <docblock>
+      <description compact="In case of not subject to tax, to fill in with “NS”"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="107" end="110" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="MovementTaxCode &lt;br&gt; Tax rate code in the table of taxes.&lt;br&gt; Shall be filled in with:&lt;br&gt; “RED” - Reduced tax rate;&lt;br&gt; “INT” - Intermediate tax rate;&lt;br&gt; “NOR” - Normal tax rate;&lt;br&gt; “ISE” - Exempted;&lt;br&gt; “OUT” - Other, applicable to the special VAT regimes.&lt;br&gt; In case of not subject to tax, to fill in with “NS”.&lt;br&gt; &lt;pre&gt;  &amp;lt;xs:simpleType name=&quot;SAFTPTMovementTaxCode&quot;&amp;gt;  &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;       &amp;lt;xs:pattern value=&quot;RED|INT|NOR|ISE|OUT|NS&quot;/&amp;gt;       &amp;lt;xs:minLength value=&quot;1&quot;/&amp;gt;       &amp;lt;xs:maxLength value=&quot;3&quot;/&amp;gt;      &amp;lt;/xs:restriction&amp;gt;  &amp;lt;/xs:simpleType&amp;gt; &lt;/pre&gt;"/>
+      <param type="object" variable="$value">
+        <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Mixed" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="Mixed"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="{unknown}"/>
+  </constructor>
+  <method name="get" start="117" end="120" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

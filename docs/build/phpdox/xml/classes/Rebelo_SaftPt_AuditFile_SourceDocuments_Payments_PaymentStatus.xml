@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\Payments" name="PaymentStatus" abstract="false" final="false" start="40" end="90">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments" file="PaymentStatus.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/PaymentStatus.php" size="2837" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="fa912f7144ac6eb806772aeea702d9570726b53f" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/Payments/PaymentStatus.php"/>
+  <docblock>
+    <description compact="PaymentStatus&lt;br&gt; To fill in with: “N” – Normal receipt in force;&lt;br&gt; “A” – Cancelled receipt.&lt;br&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus N()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus A()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="N" value="&quot;N&quot;">
+    <docblock>
+      <description compact="“N” – Normal receipt in force “A” – Cancelled receipt."/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="A" value="&quot;A&quot;">
+    <docblock>
+      <description compact="A para Anulado"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="76" end="79" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="PaymentStatus&lt;br&gt; To fill in with:&lt;br&gt; “N” – Normal receipt in force;&lt;br&gt; “A” – Cancelled receipt.&lt;br&gt; &lt;pre&gt;  &amp;lt;xs:element name=&quot;PaymentStatus&quot;&amp;gt;      &amp;lt;xs:annotation&amp;gt;          &amp;lt;xs:documentation&amp;gt;N para normal, A para Anulado &amp;lt;/xs:documentation&amp;gt;      &amp;lt;/xs:annotation&amp;gt;      &amp;lt;xs:simpleType&amp;gt;          &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;              &amp;lt;xs:enumeration value=&quot;N&quot;/&amp;gt;              &amp;lt;xs:enumeration value=&quot;A&quot;/&amp;gt;          &amp;lt;/xs:restriction&amp;gt;      &amp;lt;/xs:simpleType&amp;gt;  &amp;lt;/xs:element&amp;gt; &lt;/pre&gt;"/>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="86" end="89" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

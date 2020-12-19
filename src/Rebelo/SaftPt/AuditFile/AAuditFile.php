@@ -493,7 +493,7 @@ abstract class AAuditFile
      * @throws CalcPeriodException
      * @since 1.0.0
      */
-    public function calcPeriod(int $fiscalYearStartMonth, RDate $docDate) : int
+    public static function calcPeriod(int $fiscalYearStartMonth, RDate $docDate) : int
     {
         if($fiscalYearStartMonth < 1 || $fiscalYearStartMonth > 12){
             throw new CalcPeriodException("wrong fiscal year start month");

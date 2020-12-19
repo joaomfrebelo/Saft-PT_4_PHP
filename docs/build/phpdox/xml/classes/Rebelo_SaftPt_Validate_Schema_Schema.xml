@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\Schema\Schema" namespace="Rebelo\SaftPt\Validate\Schema" name="Schema" abstract="false" final="false" start="34" end="61">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/Schema" file="Schema.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/Schema/Schema.php" size="2309" time="2020-12-19T16:24:47+00:00" unixtime="1608395087" sha1="7a39cf07349c830af49cef102cfd09da4e62428a" relative="Rebelo/SaftPt/Validate/Schema/Schema.php"/>
+  <docblock>
+    <description compact="Description of Schema"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <constant type="expression" name="ORIGINAL_AT_XSD" value="__DIR__ . DIRECTORY_SEPARATOR . &quot;SAFTPT_1_04_01.xsd">
+    <docblock>
+      <description compact="The original AT schema fil that not work with libXml becauss:&lt;br&gt; 1º Has tags of the xml 1.1 and libxml only works with xml 1.0, this tagd are &amp;lt;xs:assert&amp;gt;&lt;br&gt; 2º The AT's original schema file have a error using the tag &amp;lt;all&amp;gt;, that error is not detected in Java (used by AT) but is detected in libxml"/>
+    </docblock>
+  </constant>
+  <constant type="expression" name="XSD_V_1_0" value="__DIR__ . DIRECTORY_SEPARATOR . &quot;SAFTPT_1_04_01_NO_ASSERT.xsd">
+    <docblock>
+      <description compact="Xsd without assert but with tagl all, xml v 1.0"/>
+    </docblock>
+  </constant>
+  <constant type="expression" name="GLOBAL_XSD" value="__DIR__ . DIRECTORY_SEPARATOR . &quot;SAFTPT_1_04_01_NO_ASSERT_NO_ALL.xsd">
+    <docblock>
+      <description compact="The complete xsd validation, because of the libxml do not validade assert of xml 1.1 and because a xsd error with tag all, we have to use this modified xsd file"/>
+    </docblock>
+  </constant>
+  <constant type="expression" name="PERMISSIVE_XSD" value="__DIR__ . DIRECTORY_SEPARATOR . &quot;SAFTPT_1_04_01_permissivo.xsd">
+    <docblock>
+      <description compact="The permissive xsd validation"/>
+    </docblock>
+  </constant>
+</class>

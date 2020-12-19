@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods" name="MovementTaxType" abstract="false" final="false" start="39" end="83">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods" file="MovementTaxType.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTaxType.php" size="2592" time="2020-12-19T16:24:49+00:00" unixtime="1608395089" sha1="27854dc938c497216a3e8159c8127adabf1d634c" relative="Rebelo/SaftPt/AuditFile/SourceDocuments/MovementOfGoods/MovementTaxType.php"/>
+  <docblock>
+    <description compact="MovementTaxType&lt;br&gt; This field shall be filled in with:&lt;br&gt; “IVA” – Value Added Tax;&lt;br&gt; “NS” – Not subject to VAT.&lt;br&gt;"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType IVA()"/>
+    <method value="\Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType NS()"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+  <constant type="string" name="IVA" value="&quot;IVA&quot;">
+    <docblock>
+      <description/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constant type="string" name="NS" value="&quot;NS&quot;">
+    <docblock>
+      <description/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constant>
+  <constructor name="__construct" start="69" end="72" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="MovementTaxType&lt;br&gt; This field shall be filled in with:&lt;br&gt; “IVA” – Value Added Tax;&lt;br&gt; “NS” – Not subject to VAT.&lt;br&gt; &lt;pre&gt;   &amp;lt;xs:simpleType name=&quot;SAFTPTMovementTaxType&quot;&amp;gt;       &amp;lt;xs:restriction base=&quot;xs:string&quot;&amp;gt;           &amp;lt;xs:enumeration value=&quot;IVA&quot;/&amp;gt;           &amp;lt;xs:enumeration value=&quot;NS&quot;/&amp;gt;       &amp;lt;/xs:restriction&amp;gt;   &amp;lt;/xs:simpleType&amp;gt;"/>
+      <param type="string" variable="$value">&lt;/pre&gt;</param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="79" end="82" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get enum value"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+</class>

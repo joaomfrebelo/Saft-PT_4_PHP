@@ -4,9 +4,11 @@
 .settings/
 .buildpath/
 .project/
+.phive
 /.metadata
 logs
 .phpunit.result.cache
 .buildpath
 .composer.lock
 .project
+tools

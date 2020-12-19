@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\WorkingDocuments" namespace="Rebelo\SaftPt\Validate" name="WorkingDocuments" abstract="false" final="false" start="57" end="1451">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate" file="WorkingDocuments.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/WorkingDocuments.php" size="60020" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="c964b6589dcf1cd1e4b19afe0871da381a45e76b" relative="Rebelo/SaftPt/Validate/WorkingDocuments.php"/>
+  <docblock>
+    <description compact="Validate WorkingDocuments table.&lt;br&gt; This class will validate the values of WorkingDocuments, the signtuare hash and dates"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <extends full="Rebelo\SaftPt\Validate\ADocuments" namespace="Rebelo\SaftPt\Validate" name="ADocuments"/>
+  <constructor name="__construct" start="68" end="82" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Validate WorkingDocuments table.&lt;br&gt; This class will validate the values of WorkingDocuments, the signtuare hash and dates"/>
+      <param description="The AuditFile to be validated" type="object" variable="$auditFile">
+        <type full="\Rebelo\SaftPt\AuditFile\AuditFile" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+      </param>
+      <param description="The sign class to be used to validate the hash, must have the public key defined" type="object" variable="$sign">
+        <type full="\Rebelo\SaftPt\Sign\Sign" namespace="\Rebelo\SaftPt\Sign" name="Sign"/>
+      </param>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="auditFile" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\AuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+    </parameter>
+    <parameter name="sign" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\Sign\Sign" namespace="Rebelo\SaftPt\Sign" name="Sign"/>
+    </parameter>
+  </constructor>
+  <method name="validate" start="89" end="220" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Validate the workingdocuments"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="bool" nullable="false"/>
+  </method>
+  <method name="workDocument" start="228" end="304" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate WorkDocument"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="numberOfEntries" start="311" end="337" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate if the NumberOfEntries is equal to the number of WorkDocuments"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+  </method>
+  <method name="totalDebit" start="344" end="370" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate WorkingDocuments TotalDebit"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+  </method>
+  <method name="totalCredit" start="377" end="404" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate WorkingDocuments TotalCredit"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+  </method>
+  <method name="documentStatus" start="412" end="456" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate the Document Status"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="customerId" start="465" end="495" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="validate if the customerID of the WorkDocument if is set and if exits in the customer table"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="lines" start="503" end="810" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="validate each line of the WorkDocument"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+    <inline>
+      <comment value="$hasDebit and $hasCredit is to check if the document as both debit and credit lines" line="522"/>
+      <comment value="For the case that line anulation are use," line="526"/>
+      <comment value="validate if the anulation is bigger or not" line="527"/>
+    </inline>
+  </method>
+  <method name="refernces" start="819" end="884" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Validate refernces of NC (Credit note)"/>
+      <param type="object" variable="$line">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+      </param>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="line" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+    </parameter>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="orderReferences" start="893" end="951" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Validate the Order References"/>
+      <param type="object" variable="$line">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+      </param>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="line" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+    </parameter>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="producCode" start="960" end="993" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate if Product CodeExist"/>
+      <param type="object" variable="$line">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+      </param>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="line" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+    </parameter>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="tax" start="1002" end="1158" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate the line Tax"/>
+      <param type="object" variable="$line">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+      </param>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="line" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="Line"/>
+    </parameter>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+    <inline>
+      <comment value="valiedate if exists in tax table" line="1124"/>
+      <comment value="No table tax entry" line="1149"/>
+    </inline>
+  </method>
+  <method name="totals" start="1167" end="1270" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate the document total, only can be invoked after validate lines (Because total controls are getted from that validation)"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="sign" start="1278" end="1344" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Test if the signature is valide or not"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="workDocumentDateAndSystemEntryDate" start="1352" end="1415" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate the WorkDocument date nad SystemEntrydate"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <method name="outOfDateInvoiceTypes" start="1424" end="1450" abstract="false" final="false" static="false" visibility="protected">
+    <docblock>
+      <description compact="Validate if exists workdoc types out of date"/>
+      <param type="object" variable="$workDocument">
+        <type full="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="\Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="workDocument" byreference="false" type="object">
+      <type full="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument" namespace="Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments" name="WorkDocument"/>
+    </parameter>
+  </method>
+  <parent full="Rebelo\SaftPt\Validate\ADocuments" namespace="Rebelo\SaftPt\Validate" name="ADocuments">
+    <extends full="Rebelo\SaftPt\Validate\AValidate" namespace="Rebelo\SaftPt\Validate" name="AValidate"/>
+    <constant type="{unknown}" name="CALC_PRECISION" value="9">
+      <docblock>
+        <description compact="The number of decimal to use in the UDecimal class for calculation of documents values validation"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </constant>
+    <member name="style" default="NULL" visibility="protected" static="false" line="54">
+      <docblock>
+        <description compact="The output writer, to be use in concolde application"/>
+        <var type="object">
+          <type full="\Rebelo\SaftPt\Bin\Style|null" namespace="\Rebelo\SaftPt\Bin" name="Style|null"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="debit" visibility="protected" static="false" line="61">
+      <docblock>
+        <description compact="The total debit calculated from all docmunts of the table"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="credit" visibility="protected" static="false" line="68">
+      <docblock>
+        <description compact="The total credit calculated from all documents of the table"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="docDebit" visibility="protected" static="false" line="75">
+      <docblock>
+        <description compact="The total debit calculated of the current document"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="docCredit" visibility="protected" static="false" line="82">
+      <docblock>
+        <description compact="The total credit calculated of the current document"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="taxPayable" visibility="protected" static="false" line="89">
+      <docblock>
+        <description compact="The total tax calculated of the current document"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="netTotal" visibility="protected" static="false" line="96">
+      <docblock>
+        <description compact="The net total calculated of the current document"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="grossTotal" visibility="protected" static="false" line="103">
+      <docblock>
+        <description compact="The gross total calculated of the current document"/>
+        <var type="object">
+          <type full="\Rebelo\Decimal\UDecimal" namespace="\Rebelo\Decimal" name="UDecimal"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="sign" visibility="protected" static="false" line="110">
+      <docblock>
+        <description compact="The Sign instance with the public key defined"/>
+        <var type="object">
+          <type full="\Rebelo\SaftPt\Sign\Sign" namespace="\Rebelo\SaftPt\Sign" name="Sign"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="deltaTotalDoc" default="0.0" type="float" visibility="protected" static="false" line="117">
+      <docblock>
+        <description compact="The delta that can be consider valid for total documents calculation"/>
+        <var type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="deltaLine" default="0.0" type="float" visibility="protected" static="false" line="124">
+      <docblock>
+        <description compact="The delta that can be consider valid for the product of UnitPRice and Quantity"/>
+        <var type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="deltaCurrency" default="0.0" type="float" visibility="protected" static="false" line="131">
+      <docblock>
+        <description compact="The delta that can be consider valid for total documents currency"/>
+        <var type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="deltaTable" default="0.0" type="float" visibility="protected" static="false" line="138">
+      <docblock>
+        <description compact="The delta that can be consider valid for total tables"/>
+        <var type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="continuesLines" default="true" type="boolean" visibility="protected" static="false" line="154">
+      <docblock>
+        <description compact="Set if the lines number are to be verified continues or not. If you set to true all lines numbers have to be continues and starting from 1, else only check if ther are repeated line numbers.&lt;br&gt; The AT ordinance is not very clear how should be done, only says that the lines are to be exported in the same order as in the document and non fiscal lines aren't to be exported. So there are two situation if you have some non fiscal lines and you are exporting with the ordr and same number line or database document will miss the numbers of non fiscal lines, if you export with the continues numeration, the numeration in the saft will be not equal to the line numebr in the database."/>
+        <var type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="allowDebitAndCredit" default="false" type="boolean" visibility="protected" static="false" line="164">
+      <docblock>
+        <description compact="The normal situation is the documents only have credit or debit lines, however there are two situation where is possible to have debit and credit lines, by default this is set to not allow, if the saft that are being test have that situations set this to true"/>
+        <var type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="signValidation" default="true" type="boolean" visibility="protected" static="false" line="171">
+      <docblock>
+        <description compact="Defifine if performes the signatures validation"/>
+        <var type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <constructor name="__construct" start="179" end="187" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description/>
+        <param type="object" variable="$auditFile">
+          <type full="\Rebelo\SaftPt\AuditFile\AuditFile" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+        </param>
+        <param type="object" variable="$sign">
+          <type full="\Rebelo\SaftPt\Sign\Sign|null" namespace="\Rebelo\SaftPt\Sign" name="Sign|null"/>
+        </param>
+        <since value="1.0.0"/>
+      </docblock>
+      <parameter name="auditFile" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\AuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+      </parameter>
+      <parameter name="sign" byreference="false" type="object" default="NULL">
+        <type full="Rebelo\SaftPt\Sign\Sign" namespace="Rebelo\SaftPt\Sign" name="Sign"/>
+      </parameter>
+    </constructor>
+    <method name="getDeltaTotalDoc" start="194" end="198" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for total documents calculation"/>
+        <return type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="float" nullable="false"/>
+    </method>
+    <method name="getDeltaCurrency" start="205" end="209" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for total documents currency"/>
+        <return type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="float" nullable="false"/>
+    </method>
+    <method name="getDeltaTable" start="216" end="220" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for total tables"/>
+        <return type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="float" nullable="false"/>
+    </method>
+    <method name="getDeltaLine" start="227" end="231" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for UnitPrice * Quantity"/>
+        <return type="float"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="float" nullable="false"/>
+    </method>
+    <method name="setDeltaTotalDoc" start="239" end="247" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for total documents calculation"/>
+        <param type="float" variable="$deltaTotalDoc"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="deltaTotalDoc" byreference="false" type="float"/>
+    </method>
+    <method name="setDeltaCurrency" start="255" end="263" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for total documents currency"/>
+        <param type="float" variable="$deltaCurrency"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="deltaCurrency" byreference="false" type="float"/>
+    </method>
+    <method name="setDeltaTable" start="271" end="279" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for total tables"/>
+        <param type="float" variable="$deltaTable"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="deltaTable" byreference="false" type="float"/>
+    </method>
+    <method name="setDeltaLine" start="287" end="295" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The delta that can be consider valid for Quantity * UnitPrice"/>
+        <param type="float" variable="$deltaLine"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="deltaLine" byreference="false" type="float"/>
+    </method>
+    <method name="getContinuesLines" start="303" end="314" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Check if the line numbers are to be check as continues or only if there are repeated line numbers"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+    </method>
+    <method name="setContinuesLines" start="323" end="334" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Check if the line numbers are to be check as continues or only if there are repeated line numbers"/>
+        <param description="If true the validation will check if the line number are continues, false will check only id there are repeated values" type="object" variable="$continuesLines">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="continuesLines" byreference="false" type="bool"/>
+    </method>
+    <method name="getAllowDebitAndCredit" start="345" end="356" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The normal situation is the documents only have credit or debit lines, however there are two situation where is possible to have debit and credit lines, by default this is set to not allow, if the saft that are being test have that situations set this to true.&lt;br&gt; Point 2.2.6 of Ordinance 8632/2014, of 3th of July"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+    </method>
+    <method name="setAllowDebitAndCredit" start="368" end="379" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The normal situation is the documents only have credit or debit lines, however there are two situation where is possible to have debit and credit lines, by default this is set to not allow, if the saft that are being test have that situations set this to true.&lt;br&gt; Point 2.2.6 of Ordinance 8632/2014, of 3th of July"/>
+        <param type="object" variable="$allowDebitAndCredit">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="allowDebitAndCredit" byreference="false" type="bool"/>
+    </method>
+    <method name="setSignValidation" start="387" end="398" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="If performes signature validation"/>
+        <param type="object" variable="$signValidation">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="signValidation" byreference="false" type="bool"/>
+    </method>
+    <method name="getSignValidation" start="405" end="416" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="If performes signature validation"/>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="bool" nullable="false"/>
+    </method>
+    <method name="setConfiguration" start="424" end="434" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="Set the configuration"/>
+        <param type="object" variable="$config">
+          <type full="\Rebelo\SaftPt\Validate\ValidationConfig" namespace="\Rebelo\SaftPt\Validate" name="ValidationConfig"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="config" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\Validate\ValidationConfig" namespace="Rebelo\SaftPt\Validate" name="ValidationConfig"/>
+      </parameter>
+    </method>
+    <method name="getStyle" start="441" end="444" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The output writer for console applications"/>
+        <return type="object">
+          <type full="\Rebelo\SaftPt\Bin\Style|null" namespace="\Rebelo\SaftPt\Bin" name="Style|null"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="object" nullable="true">
+        <type full="Rebelo\SaftPt\Bin\Style" namespace="Rebelo\SaftPt\Bin" name="Style"/>
+      </return>
+    </method>
+    <method name="setStyle" start="452" end="455" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description compact="The output writer for console applications"/>
+        <param type="object" variable="$style">
+          <type full="\Rebelo\SaftPt\Bin\Style|null" namespace="\Rebelo\SaftPt\Bin" name="Style|null"/>
+        </param>
+        <return type="object">
+          <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+        </return>
+        <since value="1.0.0"/>
+      </docblock>
+      <return type="void" nullable="false"/>
+      <parameter name="style" byreference="false" nullable="true" type="object" default="NULL">
+        <type full="Rebelo\SaftPt\Bin\Style" namespace="Rebelo\SaftPt\Bin" name="Style"/>
+      </parameter>
+    </method>
+  </parent>
+  <parent full="Rebelo\SaftPt\Validate\AValidate" namespace="Rebelo\SaftPt\Validate" name="AValidate">
+    <member name="isValid" default="true" type="boolean" visibility="protected" static="false" line="45">
+      <docblock>
+        <description compact="To be return at the end of validation, within the validation will be set to false when not passed"/>
+        <var type="object">
+          <type full="Rebelo\SaftPt\Validate\bool" namespace="Rebelo\SaftPt\Validate" name="bool"/>
+        </var>
+      </docblock>
+    </member>
+    <member name="auditFile" visibility="protected" static="false" line="52">
+      <docblock>
+        <description/>
+        <var type="object">
+          <type full="\Rebelo\SaftPt\AuditFile\AuditFile;" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile;"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastType" default="NULL" visibility="protected" static="false" line="59">
+      <docblock>
+        <description compact="The last type of document that has been the signature validated"/>
+        <var type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastSerie" default="NULL" visibility="protected" static="false" line="66">
+      <docblock>
+        <description compact="The last serie of document that has been the signature validated"/>
+        <var type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastHash" default="&quot;&quot;" type="string" visibility="protected" static="false" line="74">
+      <docblock>
+        <description compact="The last hash of document that has been the signature validated in the same document serie"/>
+        <var type="string"/>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastDocDate" default="NULL" visibility="protected" static="false" line="83">
+      <docblock>
+        <description compact="The SystemEntryDate of the last document of the same serie, if is the first of the serie will be null"/>
+        <var type="object">
+          <type full="\Rebelo\Date\Date" namespace="\Rebelo\Date" name="Date"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastSystemEntryDate" default="NULL" visibility="protected" static="false" line="92">
+      <docblock>
+        <description compact="The SystemEntryDate of the last document of the same serie, if is the first of the serie will be null"/>
+        <var type="object">
+          <type full="\Rebelo\Date\Date" namespace="\Rebelo\Date" name="Date"/>
+        </var>
+        <since value="1.0.0"/>
+      </docblock>
+    </member>
+    <member name="lastDocNumber" default="NULL" visibility="protected" static="false" line="98">
+      <docblock>
+        <description compact="The last number of the document of the same serie, to check if the numeration is continues"/>
+        <var type="int"/>
+      </docblock>
+    </member>
+    <constructor name="__construct" start="105" end="109" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description/>
+        <param type="object" variable="$auditFile">
+          <type full="\Rebelo\SaftPt\AuditFile\AuditFile" namespace="\Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+        </param>
+        <since value="1.0.0"/>
+      </docblock>
+      <parameter name="auditFile" byreference="false" type="object">
+        <type full="Rebelo\SaftPt\AuditFile\AuditFile" namespace="Rebelo\SaftPt\AuditFile" name="AuditFile"/>
+      </parameter>
+    </constructor>
+  </parent>
+</class>

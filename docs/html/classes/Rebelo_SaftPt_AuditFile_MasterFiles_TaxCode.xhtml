@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_AuditFile_MasterFiles">Rebelo\SaftPt\AuditFile\MasterFiles</a>
+          </li>
+          <li class="separator">TaxCode</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/AuditFile/MasterFiles/TaxCode.php.xhtml#line60">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\AuditFile\MasterFiles\</small>TaxCode</h1>
+        <h4>TaxCode&lt;br&gt; In case field 2.5.1.1. – TaxType = IVA, the field must be filled in with:&lt;br&gt; “RED” – Reduced tax rate;&lt;br&gt; “INT” – Intermediate tax rate;&lt;br&gt; “NOR” – Normal tax rate;&lt;br&gt; “ISE” – Exempted;&lt;br&gt; “OUT” – Others, applicable to the special VAT regimes.&lt;br&gt; In case field 2.5.1.1. – TaxType = IS, it shall be filled in with:&lt;br&gt; The correspondent code of the Stamp Duty’s table;&lt;br&gt; In case it is not subject to tax it shall be filled in with “NS”.</h4>
+        <p>In receipts issued without tax discriminated it shall be filled in with “NA”.<br/>&lt;pre&gt;<br/>&amp;lt;xs:simpleType name="TaxTableEntryTaxCode"&amp;gt;<br/>&amp;lt;xs:restriction base="xs:string"&amp;gt;<br/>&amp;lt;xs:minLength value="1"/&amp;gt;<br/>&amp;lt;xs:maxLength value="10"/&amp;gt;<br/>&amp;lt;xs:pattern value="RED|INT|NOR|ISE|OUT|([a-zA-Z0-9.])*|NS|NA"/&amp;gt;<br/>&amp;lt;/xs:restriction&amp;gt;<br/>&amp;lt;/xs:simpleType&amp;gt;<br/>&lt;/pre&gt;</p>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class TaxCode
+                extends AEnum
+            {<br/><ul class="none"><li>// constants</li><li>const RED = "RED";</li><li>const INT = "INT";</li><li>const NOR = "NOR";</li><li>const ISE = "ISE";</li><li>const OUT = "OUT";</li><li>const NS = "NS";</li><li>const NA = "NA";</li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_TaxCode/__construct.xhtml">__construct</a>()
+                    </li><li>public string <a title="Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_TaxCode/get.xhtml">get</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>Rebelo\Enum\AEnum</li>
+          </ul>
+        </div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="RED">RED</td>
+              <td>"RED"</td>
+            </tr>
+            <tr>
+              <td id="INT">INT</td>
+              <td>"INT"</td>
+            </tr>
+            <tr>
+              <td id="NOR">NOR</td>
+              <td>"NOR"</td>
+            </tr>
+            <tr>
+              <td id="ISE">ISE</td>
+              <td>"ISE"</td>
+            </tr>
+            <tr>
+              <td id="OUT">OUT</td>
+              <td>"OUT"</td>
+            </tr>
+            <tr>
+              <td id="NS">NS</td>
+              <td>"NS"</td>
+            </tr>
+            <tr>
+              <td id="NA">NA</td>
+              <td>"NA"</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_TaxCode/__construct.xhtml">__construct()</a>
+                — TaxCode&lt;br&gt; In case field 2.5.1.1. – TaxType = IVA, the field must be filled in with:&lt;br&gt; “RED” – Reduced tax rate;&lt;br&gt; “INT” – Intermediate tax rate;&lt;br&gt; “NOR” – Normal tax rate;&lt;br&gt; “ISE” – Exempted;&lt;br&gt; “OUT” – Others, applicable to the special VAT regimes.&lt;br&gt; In case field 2.5.1.1. – TaxType = IS, it shall be filled in with:&lt;br&gt; The correspondent code of the Stamp Duty’s table;&lt;br&gt; “ISE” – Exempted.&lt;br&gt; In case it is not subject to tax it shall be filled in with “NS”.</li>
+            <li id="get"><a title="Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode" href="../classes/Rebelo_SaftPt_AuditFile_MasterFiles_TaxCode/get.xhtml">get()</a>
+                — Get the value as string</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

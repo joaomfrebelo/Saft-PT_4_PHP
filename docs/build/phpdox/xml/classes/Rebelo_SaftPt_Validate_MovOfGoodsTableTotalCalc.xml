@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc" namespace="Rebelo\SaftPt\Validate" name="MovOfGoodsTableTotalCalc" abstract="false" final="false" start="35" end="99">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate" file="MovOfGoodsTableTotalCalc.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/Validate/MovOfGoodsTableTotalCalc.php" size="2804" time="2020-12-19T16:24:50+00:00" unixtime="1608395090" sha1="058cad0024c90be31e2f2a95780235073b2d9ff8" relative="Rebelo/SaftPt/Validate/MovOfGoodsTableTotalCalc.php"/>
+  <docblock>
+    <description compact="Recalcuted Doc table values for Movement of goods"/>
+    <author value="João Rebelo"/>
+    <since value="1.0.0"/>
+  </docblock>
+  <member name="numberOfMovementLines" default="NULL" visibility="protected" static="false" line="41">
+    <docblock>
+      <description/>
+      <var description="$numberOfMovementLines" type="int"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <member name="totalQuantityIssued" default="NULL" visibility="protected" static="false" line="47">
+    <docblock>
+      <description/>
+      <var description="$totalQuantityIssued" type="float"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </member>
+  <constructor name="__construct" start="53" end="56" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="The Calculate values"/>
+      <since value="1.0.0"/>
+    </docblock>
+  </constructor>
+  <method name="getNumberOfMovementLines" start="63" end="66" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="get the calculated numberOfMovementLines"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\int|null" namespace="Rebelo\SaftPt\Validate" name="int|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="int" nullable="true"/>
+  </method>
+  <method name="geTtotalQuantityIssued" start="73" end="76" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get the Calculated TotalQuantityIssued"/>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="float" nullable="true"/>
+  </method>
+  <method name="setNumberOfMovementLines" start="84" end="87" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated NumberOfEntries"/>
+      <param type="object" variable="$numberOfMovementLines">
+        <type full="Rebelo\SaftPt\Validate\int|null" namespace="Rebelo\SaftPt\Validate" name="int|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="numberOfMovementLines" byreference="false" nullable="true" type="int"/>
+  </method>
+  <method name="setTotalQuantityIssued" start="95" end="98" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Set the calculated TotalQuantityIssued"/>
+      <param type="object" variable="$totalQuantityIssued">
+        <type full="Rebelo\SaftPt\Validate\float|null" namespace="Rebelo\SaftPt\Validate" name="float|null"/>
+      </param>
+      <return type="object">
+        <type full="Rebelo\SaftPt\Validate\void" namespace="Rebelo\SaftPt\Validate" name="void"/>
+      </return>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="void" nullable="false"/>
+    <parameter name="totalQuantityIssued" byreference="false" nullable="true" type="float"/>
+  </method>
+</class>

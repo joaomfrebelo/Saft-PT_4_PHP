@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="Rebelo\SaftPt\AuditFile\Country" namespace="Rebelo\SaftPt\AuditFile" name="Country" abstract="false" final="false" start="34" end="59">
+  <file path="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile" file="Country.php" realpath="D:/NetBeansProjects/PHP/Saft-PT_4_PHP/src/Rebelo/SaftPt/AuditFile/Country.php" size="1737" time="2020-12-19T16:24:45+00:00" unixtime="1608395085" sha1="de616ba251ccce46e8faeaad57e2799739a864e0" relative="Rebelo/SaftPt/AuditFile/Country.php"/>
+  <docblock>
+    <description compact="Country"/>
+    <method value="\Rebelo\SaftPt\AuditFile\Country DESCONHECIDO()"/>
+    <author value="João Rebelo"/>
+  </docblock>
+  <extends full="Rebelo\SaftPt\AuditFile\ACountry" namespace="Rebelo\SaftPt\AuditFile" name="ACountry"/>
+  <constant type="{unknown}" name="DESCONHECIDO" value="&quot;Desconhecido&quot;"/>
+  <constructor name="__construct" start="43" end="46" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param type="string" variable="$value"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <parameter name="value" byreference="false" type="string"/>
+  </constructor>
+  <method name="get" start="55" end="58" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Get Country as string"/>
+      <return type="string"/>
+      <since value="1.0.0"/>
+    </docblock>
+    <return type="string" nullable="false"/>
+  </method>
+  <parent full="Rebelo\SaftPt\AuditFile\ACountry" namespace="Rebelo\SaftPt\AuditFile" name="ACountry">
+    <extends full="Rebelo\Enum\AEnum" namespace="Rebelo\Enum" name="AEnum" unresolved="true"/>
+    <constant type="{unknown}" name="ISO_AD" value="&quot;AD&quot;"/>
+    <constant type="{unknown}" name="ISO_AE" value="&quot;AE&quot;"/>
+    <constant type="{unknown}" name="ISO_AF" value="&quot;AF&quot;"/>
+    <constant type="{unknown}" name="ISO_AG" value="&quot;AG&quot;"/>
+    <constant type="{unknown}" name="ISO_AI" value="&quot;AI&quot;"/>
+    <constant type="{unknown}" name="ISO_AL" value="&quot;AL&quot;"/>
+    <constant type="{unknown}" name="ISO_AM" value="&quot;AM&quot;"/>
+    <constant type="{unknown}" name="ISO_AO" value="&quot;AO&quot;"/>
+    <constant type="{unknown}" name="ISO_AQ" value="&quot;AQ&quot;"/>
+    <constant type="{unknown}" name="ISO_AR" value="&quot;AR&quot;"/>
+    <constant type="{unknown}" name="ISO_AS" value="&quot;AS&quot;"/>
+    <constant type="{unknown}" name="ISO_AT" value="&quot;AT&quot;"/>
+    <constant type="{unknown}" name="ISO_AU" value="&quot;AU&quot;"/>
+    <constant type="{unknown}" name="ISO_AW" value="&quot;AW&quot;"/>
+    <constant type="{unknown}" name="ISO_AX" value="&quot;AX&quot;"/>
+    <constant type="{unknown}" name="ISO_AZ" value="&quot;AZ&quot;"/>
+    <constant type="{unknown}" name="ISO_BA" value="&quot;BA&quot;"/>
+    <constant type="{unknown}" name="ISO_BB" value="&quot;BB&quot;"/>
+    <constant type="{unknown}" name="ISO_BD" value="&quot;BD&quot;"/>
+    <constant type="{unknown}" name="ISO_BE" value="&quot;BE&quot;"/>
+    <constant type="{unknown}" name="ISO_BF" value="&quot;BF&quot;"/>
+    <constant type="{unknown}" name="ISO_BG" value="&quot;BG&quot;"/>
+    <constant type="{unknown}" name="ISO_BH" value="&quot;BH&quot;"/>
+    <constant type="{unknown}" name="ISO_BI" value="&quot;BI&quot;"/>
+    <constant type="{unknown}" name="ISO_BJ" value="&quot;BJ&quot;"/>
+    <constant type="{unknown}" name="ISO_BL" value="&quot;BL&quot;"/>
+    <constant type="{unknown}" name="ISO_BM" value="&quot;BM&quot;"/>
+    <constant type="{unknown}" name="ISO_BN" value="&quot;BN&quot;"/>
+    <constant type="{unknown}" name="ISO_BO" value="&quot;BO&quot;"/>
+    <constant type="{unknown}" name="ISO_BQ" value="&quot;BQ&quot;"/>
+    <constant type="{unknown}" name="ISO_BR" value="&quot;BR&quot;"/>
+    <constant type="{unknown}" name="ISO_BS" value="&quot;BS&quot;"/>
+    <constant type="{unknown}" name="ISO_BT" value="&quot;BT&quot;"/>
+    <constant type="{unknown}" name="ISO_BV" value="&quot;BV&quot;"/>
+    <constant type="{unknown}" name="ISO_BW" value="&quot;BW&quot;"/>
+    <constant type="{unknown}" name="ISO_BY" value="&quot;BY&quot;"/>
+    <constant type="{unknown}" name="ISO_BZ" value="&quot;BZ&quot;"/>
+    <constant type="{unknown}" name="ISO_CA" value="&quot;CA&quot;"/>
+    <constant type="{unknown}" name="ISO_CC" value="&quot;CC&quot;"/>
+    <constant type="{unknown}" name="ISO_CD" value="&quot;CD&quot;"/>
+    <constant type="{unknown}" name="ISO_CF" value="&quot;CF&quot;"/>
+    <constant type="{unknown}" name="ISO_CG" value="&quot;CG&quot;"/>
+    <constant type="{unknown}" name="ISO_CH" value="&quot;CH&quot;"/>
+    <constant type="{unknown}" name="ISO_CI" value="&quot;CI&quot;"/>
+    <constant type="{unknown}" name="ISO_CK" value="&quot;CK&quot;"/>
+    <constant type="{unknown}" name="ISO_CL" value="&quot;CL&quot;"/>
+    <constant type="{unknown}" name="ISO_CM" value="&quot;CM&quot;"/>
+    <constant type="{unknown}" name="ISO_CN" value="&quot;CN&quot;"/>
+    <constant type="{unknown}" name="ISO_CO" value="&quot;CO&quot;"/>
+    <constant type="{unknown}" name="ISO_CR" value="&quot;CR&quot;"/>
+    <constant type="{unknown}" name="ISO_CU" value="&quot;CU&quot;"/>
+    <constant type="{unknown}" name="ISO_CV" value="&quot;CV&quot;"/>
+    <constant type="{unknown}" name="ISO_CW" value="&quot;CW&quot;"/>
+    <constant type="{unknown}" name="ISO_CX" value="&quot;CX&quot;"/>
+    <constant type="{unknown}" name="ISO_CY" value="&quot;CY&quot;"/>
+    <constant type="{unknown}" name="ISO_CZ" value="&quot;CZ&quot;"/>
+    <constant type="{unknown}" name="ISO_DE" value="&quot;DE&quot;"/>
+    <constant type="{unknown}" name="ISO_DJ" value="&quot;DJ&quot;"/>
+    <constant type="{unknown}" name="ISO_DK" value="&quot;DK&quot;"/>
+    <constant type="{unknown}" name="ISO_DM" value="&quot;DM&quot;"/>
+    <constant type="{unknown}" name="ISO_DO" value="&quot;DO&quot;"/>
+    <constant type="{unknown}" name="ISO_DZ" value="&quot;DZ&quot;"/>
+    <constant type="{unknown}" name="ISO_EC" value="&quot;EC&quot;"/>
+    <constant type="{unknown}" name="ISO_EE" value="&quot;EE&quot;"/>
+    <constant type="{unknown}" name="ISO_EG" value="&quot;EG&quot;"/>
+    <constant type="{unknown}" name="ISO_EH" value="&quot;EH&quot;"/>
+    <constant type="{unknown}" name="ISO_ER" value="&quot;ER&quot;"/>
+    <constant type="{unknown}" name="ISO_ES" value="&quot;ES&quot;"/>
+    <constant type="{unknown}" name="ISO_ET" value="&quot;ET&quot;"/>
+    <constant type="{unknown}" name="ISO_FI" value="&quot;FI&quot;"/>
+    <constant type="{unknown}" name="ISO_FJ" value="&quot;FJ&quot;"/>
+    <constant type="{unknown}" name="ISO_FK" value="&quot;FK&quot;"/>
+    <constant type="{unknown}" name="ISO_FM" value="&quot;FM&quot;"/>
+    <constant type="{unknown}" name="ISO_FO" value="&quot;FO&quot;"/>
+    <constant type="{unknown}" name="ISO_FR" value="&quot;FR&quot;"/>
+    <constant type="{unknown}" name="ISO_GA" value="&quot;GA&quot;"/>
+    <constant type="{unknown}" name="ISO_GB" value="&quot;GB&quot;"/>
+    <constant type="{unknown}" name="ISO_GD" value="&quot;GD&quot;"/>
+    <constant type="{unknown}" name="ISO_GE" value="&quot;GE&quot;"/>
+    <constant type="{unknown}" name="ISO_GF" value="&quot;GF&quot;"/>
+    <constant type="{unknown}" name="ISO_GG" value="&quot;GG&quot;"/>
+    <constant type="{unknown}" name="ISO_GH" value="&quot;GH&quot;"/>
+    <constant type="{unknown}" name="ISO_GI" value="&quot;GI&quot;"/>
+    <constant type="{unknown}" name="ISO_GL" value="&quot;GL&quot;"/>
+    <constant type="{unknown}" name="ISO_GM" value="&quot;GM&quot;"/>
+    <constant type="{unknown}" name="ISO_GN" value="&quot;GN&quot;"/>
+    <constant type="{unknown}" name="ISO_GP" value="&quot;GP&quot;"/>
+    <constant type="{unknown}" name="ISO_GQ" value="&quot;GQ&quot;"/>
+    <constant type="{unknown}" name="ISO_GR" value="&quot;GR&quot;"/>
+    <constant type="{unknown}" name="ISO_GS" value="&quot;GS&quot;"/>
+    <constant type="{unknown}" name="ISO_GT" value="&quot;GT&quot;"/>
+    <constant type="{unknown}" name="ISO_GU" value="&quot;GU&quot;"/>
+    <constant type="{unknown}" name="ISO_GW" value="&quot;GW&quot;"/>
+    <constant type="{unknown}" name="ISO_GY" value="&quot;GY&quot;"/>
+    <constant type="{unknown}" name="ISO_HK" value="&quot;HK&quot;"/>
+    <constant type="{unknown}" name="ISO_HM" value="&quot;HM&quot;"/>
+    <constant type="{unknown}" name="ISO_HN" value="&quot;HN&quot;"/>
+    <constant type="{unknown}" name="ISO_HR" value="&quot;HR&quot;"/>
+    <constant type="{unknown}" name="ISO_HT" value="&quot;HT&quot;"/>
+    <constant type="{unknown}" name="ISO_HU" value="&quot;HU&quot;"/>
+    <constant type="{unknown}" name="ISO_ID" value="&quot;ID&quot;"/>
+    <constant type="{unknown}" name="ISO_IE" value="&quot;IE&quot;"/>
+    <constant type="{unknown}" name="ISO_IL" value="&quot;IL&quot;"/>
+    <constant type="{unknown}" name="ISO_IM" value="&quot;IM&quot;"/>
+    <constant type="{unknown}" name="ISO_IN" value="&quot;IN&quot;"/>
+    <constant type="{unknown}" name="ISO_IO" value="&quot;IO&quot;"/>
+    <constant type="{unknown}" name="ISO_IQ" value="&quot;IQ&quot;"/>
+    <constant type="{unknown}" name="ISO_IR" value="&quot;IR&quot;"/>
+    <constant type="{unknown}" name="ISO_IS" value="&quot;IS&quot;"/>
+    <constant type="{unknown}" name="ISO_IT" value="&quot;IT&quot;"/>
+    <constant type="{unknown}" name="ISO_JE" value="&quot;JE&quot;"/>
+    <constant type="{unknown}" name="ISO_JM" value="&quot;JM&quot;"/>
+    <constant type="{unknown}" name="ISO_JO" value="&quot;JO&quot;"/>
+    <constant type="{unknown}" name="ISO_JP" value="&quot;JP&quot;"/>
+    <constant type="{unknown}" name="ISO_KE" value="&quot;KE&quot;"/>
+    <constant type="{unknown}" name="ISO_KG" value="&quot;KG&quot;"/>
+    <constant type="{unknown}" name="ISO_KH" value="&quot;KH&quot;"/>
+    <constant type="{unknown}" name="ISO_KI" value="&quot;KI&quot;"/>
+    <constant type="{unknown}" name="ISO_KM" value="&quot;KM&quot;"/>
+    <constant type="{unknown}" name="ISO_KN" value="&quot;KN&quot;"/>
+    <constant type="{unknown}" name="ISO_KP" value="&quot;KP&quot;"/>
+    <constant type="{unknown}" name="ISO_KR" value="&quot;KR&quot;"/>
+    <constant type="{unknown}" name="ISO_KW" value="&quot;KW&quot;"/>
+    <constant type="{unknown}" name="ISO_KY" value="&quot;KY&quot;"/>
+    <constant type="{unknown}" name="ISO_KZ" value="&quot;KZ&quot;"/>
+    <constant type="{unknown}" name="ISO_LA" value="&quot;LA&quot;"/>
+    <constant type="{unknown}" name="ISO_LB" value="&quot;LB&quot;"/>
+    <constant type="{unknown}" name="ISO_LC" value="&quot;LC&quot;"/>
+    <constant type="{unknown}" name="ISO_LI" value="&quot;LI&quot;"/>
+    <constant type="{unknown}" name="ISO_LK" value="&quot;LK&quot;"/>
+    <constant type="{unknown}" name="ISO_LR" value="&quot;LR&quot;"/>
+    <constant type="{unknown}" name="ISO_LS" value="&quot;LS&quot;"/>
+    <constant type="{unknown}" name="ISO_LT" value="&quot;LT&quot;"/>
+    <constant type="{unknown}" name="ISO_LU" value="&quot;LU&quot;"/>
+    <constant type="{unknown}" name="ISO_LV" value="&quot;LV&quot;"/>
+    <constant type="{unknown}" name="ISO_LY" value="&quot;LY&quot;"/>
+    <constant type="{unknown}" name="ISO_MA" value="&quot;MA&quot;"/>
+    <constant type="{unknown}" name="ISO_MC" value="&quot;MC&quot;"/>
+    <constant type="{unknown}" name="ISO_MD" value="&quot;MD&quot;"/>
+    <constant type="{unknown}" name="ISO_ME" value="&quot;ME&quot;"/>
+    <constant type="{unknown}" name="ISO_MF" value="&quot;MF&quot;"/>
+    <constant type="{unknown}" name="ISO_MG" value="&quot;MG&quot;"/>
+    <constant type="{unknown}" name="ISO_MH" value="&quot;MH&quot;"/>
+    <constant type="{unknown}" name="ISO_MK" value="&quot;MK&quot;"/>
+    <constant type="{unknown}" name="ISO_ML" value="&quot;ML&quot;"/>
+    <constant type="{unknown}" name="ISO_MM" value="&quot;MM&quot;"/>
+    <constant type="{unknown}" name="ISO_MN" value="&quot;MN&quot;"/>
+    <constant type="{unknown}" name="ISO_MO" value="&quot;MO&quot;"/>
+    <constant type="{unknown}" name="ISO_MP" value="&quot;MP&quot;"/>
+    <constant type="{unknown}" name="ISO_MQ" value="&quot;MQ&quot;"/>
+    <constant type="{unknown}" name="ISO_MR" value="&quot;MR&quot;"/>
+    <constant type="{unknown}" name="ISO_MS" value="&quot;MS&quot;"/>
+    <constant type="{unknown}" name="ISO_MT" value="&quot;MT&quot;"/>
+    <constant type="{unknown}" name="ISO_MU" value="&quot;MU&quot;"/>
+    <constant type="{unknown}" name="ISO_MV" value="&quot;MV&quot;"/>
+    <constant type="{unknown}" name="ISO_MW" value="&quot;MW&quot;"/>
+    <constant type="{unknown}" name="ISO_MX" value="&quot;MX&quot;"/>
+    <constant type="{unknown}" name="ISO_MY" value="&quot;MY&quot;"/>
+    <constant type="{unknown}" name="ISO_MZ" value="&quot;MZ&quot;"/>
+    <constant type="{unknown}" name="ISO_NA" value="&quot;NA&quot;"/>
+    <constant type="{unknown}" name="ISO_NC" value="&quot;NC&quot;"/>
+    <constant type="{unknown}" name="ISO_NE" value="&quot;NE&quot;"/>
+    <constant type="{unknown}" name="ISO_NF" value="&quot;NF&quot;"/>
+    <constant type="{unknown}" name="ISO_NG" value="&quot;NG&quot;"/>
+    <constant type="{unknown}" name="ISO_NI" value="&quot;NI&quot;"/>
+    <constant type="{unknown}" name="ISO_NL" value="&quot;NL&quot;"/>
+    <constant type="{unknown}" name="ISO_NO" value="&quot;NO&quot;"/>
+    <constant type="{unknown}" name="ISO_NP" value="&quot;NP&quot;"/>
+    <constant type="{unknown}" name="ISO_NR" value="&quot;NR&quot;"/>
+    <constant type="{unknown}" name="ISO_NU" value="&quot;NU&quot;"/>
+    <constant type="{unknown}" name="ISO_NZ" value="&quot;NZ&quot;"/>
+    <constant type="{unknown}" name="ISO_OM" value="&quot;OM&quot;"/>
+    <constant type="{unknown}" name="ISO_PA" value="&quot;PA&quot;"/>
+    <constant type="{unknown}" name="ISO_PE" value="&quot;PE&quot;"/>
+    <constant type="{unknown}" name="ISO_PF" value="&quot;PF&quot;"/>
+    <constant type="{unknown}" name="ISO_PG" value="&quot;PG&quot;"/>
+    <constant type="{unknown}" name="ISO_PH" value="&quot;PH&quot;"/>
+    <constant type="{unknown}" name="ISO_PK" value="&quot;PK&quot;"/>
+    <constant type="{unknown}" name="ISO_PL" value="&quot;PL&quot;"/>
+    <constant type="{unknown}" name="ISO_PM" value="&quot;PM&quot;"/>
+    <constant type="{unknown}" name="ISO_PN" value="&quot;PN&quot;"/>
+    <constant type="{unknown}" name="ISO_PR" value="&quot;PR&quot;"/>
+    <constant type="{unknown}" name="ISO_PS" value="&quot;PS&quot;"/>
+    <constant type="{unknown}" name="ISO_PT" value="&quot;PT&quot;"/>
+    <constant type="{unknown}" name="ISO_PW" value="&quot;PW&quot;"/>
+    <constant type="{unknown}" name="ISO_PY" value="&quot;PY&quot;"/>
+    <constant type="{unknown}" name="ISO_QA" value="&quot;QA&quot;"/>
+    <constant type="{unknown}" name="ISO_RE" value="&quot;RE&quot;"/>
+    <constant type="{unknown}" name="ISO_RO" value="&quot;RO&quot;"/>
+    <constant type="{unknown}" name="ISO_RS" value="&quot;RS&quot;"/>
+    <constant type="{unknown}" name="ISO_RU" value="&quot;RU&quot;"/>
+    <constant type="{unknown}" name="ISO_RW" value="&quot;RW&quot;"/>
+    <constant type="{unknown}" name="ISO_SA" value="&quot;SA&quot;"/>
+    <constant type="{unknown}" name="ISO_SB" value="&quot;SB&quot;"/>
+    <constant type="{unknown}" name="ISO_SC" value="&quot;SC&quot;"/>
+    <constant type="{unknown}" name="ISO_SD" value="&quot;SD&quot;"/>
+    <constant type="{unknown}" name="ISO_SE" value="&quot;SE&quot;"/>
+    <constant type="{unknown}" name="ISO_SG" value="&quot;SG&quot;"/>
+    <constant type="{unknown}" name="ISO_SH" value="&quot;SH&quot;"/>
+    <constant type="{unknown}" name="ISO_SI" value="&quot;SI&quot;"/>
+    <constant type="{unknown}" name="ISO_SJ" value="&quot;SJ&quot;"/>
+    <constant type="{unknown}" name="ISO_SK" value="&quot;SK&quot;"/>
+    <constant type="{unknown}" name="ISO_SL" value="&quot;SL&quot;"/>
+    <constant type="{unknown}" name="ISO_SM" value="&quot;SM&quot;"/>
+    <constant type="{unknown}" name="ISO_SN" value="&quot;SN&quot;"/>
+    <constant type="{unknown}" name="ISO_SO" value="&quot;SO&quot;"/>
+    <constant type="{unknown}" name="ISO_SR" value="&quot;SR&quot;"/>
+    <constant type="{unknown}" name="ISO_SS" value="&quot;SS&quot;"/>
+    <constant type="{unknown}" name="ISO_ST" value="&quot;ST&quot;"/>
+    <constant type="{unknown}" name="ISO_SV" value="&quot;SV&quot;"/>
+    <constant type="{unknown}" name="ISO_SX" value="&quot;SX&quot;"/>
+    <constant type="{unknown}" name="ISO_SY" value="&quot;SY&quot;"/>
+    <constant type="{unknown}" name="ISO_SZ" value="&quot;SZ&quot;"/>
+    <constant type="{unknown}" name="ISO_TC" value="&quot;TC&quot;"/>
+    <constant type="{unknown}" name="ISO_TD" value="&quot;TD&quot;"/>
+    <constant type="{unknown}" name="ISO_TF" value="&quot;TF&quot;"/>
+    <constant type="{unknown}" name="ISO_TG" value="&quot;TG&quot;"/>
+    <constant type="{unknown}" name="ISO_TH" value="&quot;TH&quot;"/>
+    <constant type="{unknown}" name="ISO_TJ" value="&quot;TJ&quot;"/>
+    <constant type="{unknown}" name="ISO_TK" value="&quot;TK&quot;"/>
+    <constant type="{unknown}" name="ISO_TL" value="&quot;TL&quot;"/>
+    <constant type="{unknown}" name="ISO_TM" value="&quot;TM&quot;"/>
+    <constant type="{unknown}" name="ISO_TN" value="&quot;TN&quot;"/>
+    <constant type="{unknown}" name="ISO_TO" value="&quot;TO&quot;"/>
+    <constant type="{unknown}" name="ISO_TR" value="&quot;TR&quot;"/>
+    <constant type="{unknown}" name="ISO_TT" value="&quot;TT&quot;"/>
+    <constant type="{unknown}" name="ISO_TV" value="&quot;TV&quot;"/>
+    <constant type="{unknown}" name="ISO_TW" value="&quot;TW&quot;"/>
+    <constant type="{unknown}" name="ISO_TZ" value="&quot;TZ&quot;"/>
+    <constant type="{unknown}" name="ISO_UA" value="&quot;UA&quot;"/>
+    <constant type="{unknown}" name="ISO_UG" value="&quot;UG&quot;"/>
+    <constant type="{unknown}" name="ISO_UM" value="&quot;UM&quot;"/>
+    <constant type="{unknown}" name="ISO_US" value="&quot;US&quot;"/>
+    <constant type="{unknown}" name="ISO_UY" value="&quot;UY&quot;"/>
+    <constant type="{unknown}" name="ISO_UZ" value="&quot;UZ&quot;"/>
+    <constant type="{unknown}" name="ISO_VA" value="&quot;VA&quot;"/>
+    <constant type="{unknown}" name="ISO_VC" value="&quot;VC&quot;"/>
+    <constant type="{unknown}" name="ISO_VE" value="&quot;VE&quot;"/>
+    <constant type="{unknown}" name="ISO_VG" value="&quot;VG&quot;"/>
+    <constant type="{unknown}" name="ISO_VI" value="&quot;VI&quot;"/>
+    <constant type="{unknown}" name="ISO_VN" value="&quot;VN&quot;"/>
+    <constant type="{unknown}" name="ISO_VU" value="&quot;VU&quot;"/>
+    <constant type="{unknown}" name="ISO_WF" value="&quot;WF&quot;"/>
+    <constant type="{unknown}" name="ISO_WS" value="&quot;WS&quot;"/>
+    <constant type="{unknown}" name="ISO_XK" value="&quot;XK&quot;"/>
+    <constant type="{unknown}" name="ISO_YE" value="&quot;YE&quot;"/>
+    <constant type="{unknown}" name="ISO_YT" value="&quot;YT&quot;"/>
+    <constant type="{unknown}" name="ISO_ZA" value="&quot;ZA&quot;"/>
+    <constant type="{unknown}" name="ISO_ZM" value="&quot;ZM&quot;"/>
+    <constant type="{unknown}" name="ISO_ZW" value="&quot;ZW&quot;"/>
+    <constructor name="__construct" start="292" end="295" abstract="false" final="false" static="false" visibility="public">
+      <docblock>
+        <description/>
+        <param type="string" variable="$value"/>
+        <since value="1.0.0"/>
+      </docblock>
+      <parameter name="value" byreference="false" type="string"/>
+    </constructor>
+  </parent>
+  <extenders>
+    <extender full="Rebelo\SaftPt\AuditFile\TaxCountryRegion" namespace="Rebelo\SaftPt\AuditFile" name="TaxCountryRegion"/>
+  </extenders>
+</class>

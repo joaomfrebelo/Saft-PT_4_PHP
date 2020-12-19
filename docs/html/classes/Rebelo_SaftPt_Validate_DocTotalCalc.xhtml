@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Rebelo\SaftPt\Validate\DocTotalCalc</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Rebelo_SaftPt_Validate">Rebelo\SaftPt\Validate</a>
+          </li>
+          <li class="separator">DocTotalCalc</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Rebelo/SaftPt/Validate/DocTotalCalc.php.xhtml#line35">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Rebelo\SaftPt\Validate\</small>DocTotalCalc</h1>
+        <h4>Recalcuted document values</h4>
+        <p/>
+        <ul>
+          <li>Author: João Rebelo</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class DocTotalCalc
+            {<br/><ul class="none"><li>// members</li><li>protected  <a href="#members">$taxPayable</a> =
+                        NULL;
+                    </li><li>protected  <a href="#members">$netTotal</a> =
+                        NULL;
+                    </li><li>protected  <a href="#members">$grossTotal</a> =
+                        NULL;
+                    </li><li>protected  <a href="#members">$grossTotalFromCurrency</a> =
+                        NULL;
+                    </li><li>protected array <a href="#members">$lineTotal</a> =
+                        ;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/__construct.xhtml">__construct</a>()
+                    </li><li>public ?float <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getTaxPayable.xhtml">getTaxPayable</a>()
+                    </li><li>public ?float <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getNetTotal.xhtml">getNetTotal</a>()
+                    </li><li>public ?float <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getGrossTotal.xhtml">getGrossTotal</a>()
+                    </li><li>public ?float <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getGrossTotalFromCurrency.xhtml">getGrossTotalFromCurrency</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setTaxPayable.xhtml">setTaxPayable</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setNetTotal.xhtml">setNetTotal</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setGrossTotal.xhtml">setGrossTotal</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setGrossTotalFromCurrency.xhtml">setGrossTotalFromCurrency</a>()
+                    </li><li>public array <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getLineTotal.xhtml">getLineTotal</a>()
+                    </li><li>public void <a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/addLineTotal.xhtml">addLineTotal</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="grossTotal"><strong>$grossTotal</strong>
+                —
+                float</li>
+            <li id="grossTotalFromCurrency"><strong>$grossTotalFromCurrency</strong>
+                —
+                float</li>
+            <li id="lineTotal"><strong>$lineTotal</strong>
+                —
+                array<br/><span class="indent">The calculated total line (credit/debit), ini format [lineNumber=&gt;totalLine]</span></li>
+            <li id="netTotal"><strong>$netTotal</strong>
+                —
+                float</li>
+            <li id="taxPayable"><strong>$taxPayable</strong>
+                —
+                float</li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/__construct.xhtml">__construct()</a>
+                — The Calculate values</li>
+            <li id="addLineTotal"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/addLineTotal.xhtml">addLineTotal()</a>
+                — Add a total for a line</li>
+            <li id="getGrossTotal"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getGrossTotal.xhtml">getGrossTotal()</a>
+                — Get the GrossTotal calculated</li>
+            <li id="getGrossTotalFromCurrency"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getGrossTotalFromCurrency.xhtml">getGrossTotalFromCurrency()</a>
+                — Get the calculated GrossTotal from the currency</li>
+            <li id="getLineTotal"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getLineTotal.xhtml">getLineTotal()</a>
+                — The calculate total of each line, the arrey keys are the line number</li>
+            <li id="getNetTotal"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getNetTotal.xhtml">getNetTotal()</a>
+                — Get the Calculated NetTotal</li>
+            <li id="getTaxPayable"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/getTaxPayable.xhtml">getTaxPayable()</a>
+                — get the calculated TaxPayable</li>
+            <li id="setGrossTotal"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setGrossTotal.xhtml">setGrossTotal()</a>
+                — Set the calculated Grosstotal</li>
+            <li id="setGrossTotalFromCurrency"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setGrossTotalFromCurrency.xhtml">setGrossTotalFromCurrency()</a>
+                — Set the calculated Gross total from Currency</li>
+            <li id="setNetTotal"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setNetTotal.xhtml">setNetTotal()</a>
+                — Set the calculated NetTotal</li>
+            <li id="setTaxPayable"><a title="Rebelo\SaftPt\Validate\DocTotalCalc" href="../classes/Rebelo_SaftPt_Validate_DocTotalCalc/setTaxPayable.xhtml">setTaxPayable()</a>
+                — Set the calculated TaxPayable</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>
