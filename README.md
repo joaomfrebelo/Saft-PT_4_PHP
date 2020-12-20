@@ -78,6 +78,42 @@ To more options like delta, help
 ./vendor/bin/saft4php validate --help
 ```
 
+#### ![](img/help.png)
+
+#### Using as stand alone SAFT-PT validator
+
+First clone or download the project
+
+```bash
+git clone https://github.com/joaomfrebelo/Saft-PT_4_PHP.git
+```
+
+In the project root (php  >= 7.4 installed)
+
+```bash
+php saft4php validate /path/saft.xml
+```
+
+<img title="" src="file:///D:/NetBeansProjects/PHP/Saft-PT_4_PHP/img/validation.png" alt="">
+
+#### Some type of validations
+
+- XML scheme
+
+- Document values
+
+- Total values
+
+- Documents number sequence
+
+- Signature
+
+- Address where are mandatory
+
+- Dates
+
+- And other stuff
+
 #### API documentation
 
 https://joaomfrebelo.github.io/Saft-PT_4_PHP/
