@@ -94,7 +94,7 @@ In the project root (php  >= 7.4 installed)
 php saft4php validate /path/saft.xml
 ```
 
-<img title="" src="file:///D:/NetBeansProjects/PHP/Saft-PT_4_PHP/img/validation.png" alt="">
+#### ![](img/validation.png)
 
 #### Some type of validations
 
