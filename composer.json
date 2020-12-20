@@ -2,14 +2,14 @@
     "name": "joaomfrebelo/saft-pt_4_php",
     "description": "PHP core lib to work with SAFT-PT. A library/framework to generate, parse, import and validate programmatically or cli the Portuguese Tax Audit file SAFT-PT",
     "homepage": "https://github.com/joaomfrebelo/saft-pt_4_php",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": [
         "SAFT-PT",
         "AT",
         "Autoridade tributaria",
         "e-fatura",
-	"Portuguese Tax Authority",
-	"Portuguese tax file audit"
+        "Portuguese Tax Authority",
+        "Portuguese tax file audit"
     ],
     "authors": [
         {
@@ -18,8 +18,13 @@
         }
     ],
     "autoload": {
-            "classmap": ["src/", "tests/"],
-	    "files" : ["bootstrap.php"]
+        "classmap": [
+            "src/",
+            "tests/"
+        ],
+        "files": [
+            "bootstrap.php"
+        ]
     },
     "license": "MIT",
     "prefer-stable": true,
@@ -27,12 +32,12 @@
         "php": "^7.4 || ^8.0",
         "apache/log4php": "^2.3",
         "joaomfrebelo/date": "^2.2",
-        "joaomfrebelo/composer-revision-plugin": "1.0.0",
         "joaomfrebelo/decimal": "^2.0.2",
         "joaomfrebelo/enum": "^2.0",
         "symfony/console": "^5.1",
         "spatie/async": "^1.5",
-        "symfony/process": "^5.1"
+        "symfony/process": "^5.1",
+        "joaomfrebelo/composer-revision-plugin": "^2.0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
@@ -41,6 +46,6 @@
     },
     "type": "library",
     "bin": [
-	"saft4php"
+        "saft4php"
     ]
 }
