@@ -313,6 +313,7 @@ class pt_PT extends AI18n
         $this->stack["has_n_errors_on_create_xml_node"]                          = "Erros ao criar os nós XML: %s ";
         $this->stack["has_n_errors_on_data_validation"]                          = "Erros na validação de dados: %s ";
         $this->stack["validating_file"]                                          = "A validar o ficheiro '%s'";
+        $this->stack["loading_file"]                                             = "A carregar o ficheiro '%s'";
         $this->stack["memory"]                                                   = "Memória";
         $this->stack["saft_file"]                                                = "Ficheiro SAFT-PT";
         $this->stack["exec_time"]                                                = "Tempo";

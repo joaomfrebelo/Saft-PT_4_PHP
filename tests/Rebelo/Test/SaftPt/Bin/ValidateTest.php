@@ -288,6 +288,7 @@ class ValidateTest extends TestCase
             \sprintf("--%s=0.009", Validate::OPT_DELTA_TABLE),
             \sprintf("--%s=0.007", Validate::OPT_DELTA_TABLE),
             \sprintf("--%s=false", Validate::OPT_SHOW_WARNINGS),
+            \sprintf("--%s=true", Validate::OPT_CONTINUES_LINES),
             SAFT_DEMO_PATH
             ]
         );
