@@ -69,11 +69,9 @@ class LibXmlTest extends TestCase
                 $this->fail($this->createLibXmlErrorMsg());
             }
             $this->assertTrue($validate);
+            $this->fail("XML validation already uses xml 1.1, change your code");
         } catch (\Exception | \Error $e) {
-            $this->markTestSkipped(
-                'Only for test the AT xsd and libxml'
-            );
-            //$this->fail($this->createLibXmlErrorMsg()."\r\n".$e->getMessage());
+            $this->assertInstanceOf(\Exception::class, $e);
         }
     }
 
@@ -179,19 +177,17 @@ class LibXmlTest extends TestCase
                 $msg        = "";
                 foreach ($errorStack as $erro) {
                     $msg .= sprintf(
-                        "'%s' on Line '%s' column '%s'\r\n",
-                        $erro->message, $erro->line, $erro->column
+                        "'%s' on Line '%s' column '%s'\r\n", $erro->message,
+                        $erro->line, $erro->column
                     );
                 }
                 $this->fail($msg);
             }
 
             $this->assertTrue($validate);
+            $this->fail("XML validation already uses xml 1.1, change your code");
         } catch (\Exception | \Error $e) {
-            $this->markTestSkipped(
-                'Only for test the AT xsd and libxml'
-            );
-            //$this->fail($this->createLibXmlErrorMsg()."\r\n".$e->getMessage());
+            $this->assertInstanceOf(\Exception::class, $e);
         }
     }
 
@@ -210,7 +206,6 @@ class LibXmlTest extends TestCase
 
         \libxml_use_internal_errors(true);
         \libxml_clear_errors();
-        \libxml_disable_entity_loader(false);
         $dom      = new \DOMDocument("1.0", "ISO-8859-1");
         $dom->load(SAFT_DEMO_PATH);
         $validate = $dom->schemaValidate($xsd);
@@ -220,8 +215,8 @@ class LibXmlTest extends TestCase
             $msg        = "";
             foreach ($errorStack as $erro) {
                 $msg .= sprintf(
-                    "'%s' on Line '%s' column '%s'\r\n",
-                    $erro->message, $erro->line, $erro->column
+                    "'%s' on Line '%s' column '%s'\r\n", $erro->message,
+                    $erro->line, $erro->column
                 );
             }
             $this->fail($msg);
@@ -245,7 +240,6 @@ class LibXmlTest extends TestCase
 
         \libxml_use_internal_errors(true);
         \libxml_clear_errors();
-        \libxml_disable_entity_loader(false);
         $dom      = new \DOMDocument("1.0", "ISO-8859-1");
         $dom->load(SAFT_DEMO_PATH);
         $validate = $dom->schemaValidate($xsd);
@@ -255,8 +249,8 @@ class LibXmlTest extends TestCase
             $msg        = "";
             foreach ($errorStack as $erro) {
                 $msg .= sprintf(
-                    "'%s' on Line '%s' column '%s'\r\n",
-                    $erro->message, $erro->line, $erro->column
+                    "'%s' on Line '%s' column '%s'\r\n", $erro->message,
+                    $erro->line, $erro->column
                 );
             }
             $this->fail($msg);

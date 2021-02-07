@@ -91,8 +91,7 @@ class WorkingDocuments extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $progreBar = null;
         try {
-            $workingDocuments = $this->auditFile->getSourceDocuments()
-                ->getWorkingDocuments(false);
+            $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false);
 
             if ($workingDocuments === null) {
                 \Logger::getLogger(\get_class($this))
@@ -137,11 +136,11 @@ class WorkingDocuments extends ADocuments
 
             $order = $workingDocuments->getOrder();
 
-             if ($this->getStyle() !== null) {
-                $nDoc = \count($workingDocuments->getWorkDocument());
+            if ($this->getStyle() !== null) {
+                $nDoc      = \count($workingDocuments->getWorkDocument());
                 /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
-                $section = null;
-                $progreBar  = $this->getStyle()->addProgressBar($section);
+                $section   = null;
+                $progreBar = $this->getStyle()->addProgressBar($section);
                 $section->writeln("");
                 $section->writeln(
                     \sprintf(
@@ -149,46 +148,50 @@ class WorkingDocuments extends ADocuments
                         "WorkDocument"
                     )
                 );
-                $progreBar->start($nDoc);
-             }
-            
+                $progreBar?->start($nDoc);
+            }
+
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
-                        
+
                         if ($progreBar !== null) {
                             $progreBar->advance();
                         }
-                        
+
                         /* @var $workDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
                         $workDocument = $order[$type][$serie][$no];
-                        list(, $no) = \explode("/", $workDocument->getDocumentNumber());
-                       if ((string)$type !== $this->lastType || (string)$serie !== $this->lastSerie) {
+                        list(, $no) = \explode(
+                            "/",
+                            $workDocument->getDocumentNumber()
+                        );
+                        if ((string) $type !== $this->lastType || (string) $serie
+                            !== $this->lastSerie) {
                             $this->lastHash            = "";
                             $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
-                       }else {
+                        } else {
                             $noExpected = $this->lastDocNumber + 1;
                             if (\intval($no) !== $noExpected) {
-                                do{
-                                $msg = \sprintf(
-                                    AuditFile::getI18n()->get("the_document_n_is_missing"),
-                                    $type, $serie, $noExpected
-                                );
-                                \Logger::getLogger(\get_class($this))->debug($msg);
-                                $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                                $this->isValid = false;
-                                $this->lastDocNumber = $noExpected;
-                                $noExpected++;
-                                }while ($no !== \strval($noExpected));
+                                do {
+                                    $msg                 = \sprintf(
+                                        AuditFile::getI18n()->get("the_document_n_is_missing"),
+                                        $type, $serie, $noExpected
+                                    );
+                                    \Logger::getLogger(\get_class($this))->debug($msg);
+                                    $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
+                                    $this->isValid       = false;
+                                    $this->lastDocNumber = $noExpected;
+                                    $noExpected++;
+                                } while ($no !== \strval($noExpected));
                             }
-                       }
+                        }
                         $this->lastDocNumber = (int) $no;
-                        
+
                         $workDocument->setDocTotalcal(new DocTotalCalc());
                         $this->workDocument($workDocument);
-                        $this->lastType = (string)$type;
-                        $this->lastSerie = (string)$serie;
+                        $this->lastType  = (string) $type;
+                        $this->lastSerie = (string) $serie;
                     }
                 }
             }
@@ -196,7 +199,7 @@ class WorkingDocuments extends ADocuments
             if ($progreBar !== null) {
                 $progreBar->finish();
             }
-            
+
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
@@ -205,7 +208,7 @@ class WorkingDocuments extends ADocuments
             if ($progreBar !== null) {
                 $progreBar->finish();
             }
-            
+
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
 
@@ -311,13 +314,17 @@ class WorkingDocuments extends ADocuments
     protected function numberOfEntries(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $workingDocuments       = $this->auditFile->getSourceDocuments()->getWorkingDocuments();
+
+        if (null === $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false)) {
+            return;
+        }
+
         $calculatedNumOfEntries = \count($workingDocuments->getWorkDocument());
         $numberOfEntries        = $workingDocuments->getNumberOfEntries();
         $test                   = $numberOfEntries === $calculatedNumOfEntries;
 
-        $this->auditFile->getSourceDocuments()->getWorkingDocuments()
-            ->getDocTableTotalCalc()->setNumberOfEntries($calculatedNumOfEntries);
+        $this->auditFile->getSourceDocuments()?->getWorkingDocuments()
+            ?->getDocTableTotalCalc()?->setNumberOfEntries($calculatedNumOfEntries);
 
         if ($test === false) {
             $msg = \sprintf(
@@ -344,11 +351,12 @@ class WorkingDocuments extends ADocuments
     protected function totalDebit(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $workingDocuments = $this->auditFile->getSourceDocuments()
-            ->getWorkingDocuments();
 
-        $workingDocuments->getDocTableTotalCalc()
-            ->setTotalDebit($this->debit->valueOf());
+        if (null === $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false)) {
+            return;
+        }
+
+        $workingDocuments->getDocTableTotalCalc()?->setTotalDebit($this->debit->valueOf());
 
         $diff = $this->debit->signedSubtract(
             new Decimal(
@@ -377,9 +385,11 @@ class WorkingDocuments extends ADocuments
     protected function totalCredit(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $workingDocuments = $this->auditFile->getSourceDocuments()->getWorkingDocuments();
+        if (null === $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false)) {
+            return;
+        }
 
-        $workingDocuments->getDocTableTotalCalc()->setTotalDebit($this->credit->valueOf());
+        $workingDocuments->getDocTableTotalCalc()?->setTotalDebit($this->credit->valueOf());
 
         $diff = $this->credit->signedSubtract(
             new Decimal(
@@ -395,8 +405,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workingDocuments->addError(
-                $msg,
-                SaftWorkingDocuments::N_TOTALCREDIT
+                $msg, SaftWorkingDocuments::N_TOTALCREDIT
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -666,7 +675,7 @@ class WorkingDocuments extends ADocuments
                 new UDecimal($line->getQuantity(), static::CALC_PRECISION)
             );
 
-            $workDocument->getDocTotalcal()->addLineTotal(
+            $workDocument->getDocTotalcal()?->addLineTotal(
                 $line->getLineNumber(), $uniQt->valueOf()
             );
 
@@ -792,9 +801,9 @@ class WorkingDocuments extends ADocuments
 
         $this->grossTotal = $this->netTotal->plus($this->taxPayable);
 
-        $workDocument->getDocTotalcal()->setGrossTotal($this->grossTotal->valueOf());
-        $workDocument->getDocTotalcal()->setNetTotal($this->netTotal->valueOf());
-        $workDocument->getDocTotalcal()->setTaxPayable($this->taxPayable->valueOf());
+        $workDocument->getDocTotalcal()?->setGrossTotal($this->grossTotal->valueOf());
+        $workDocument->getDocTotalcal()?->setNetTotal($this->netTotal->valueOf());
+        $workDocument->getDocTotalcal()?->setTaxPayable($this->taxPayable->valueOf());
 
         if ($hasCredit && $hasDebit && $this->allowDebitAndCredit === false) {
             $msg           = \sprintf(
@@ -1201,7 +1210,8 @@ class WorkingDocuments extends ADocuments
         if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $this->grossTotal, $workDocument->getDocumentNumber(), $gross->valueOf()
+                $this->grossTotal, $workDocument->getDocumentNumber(),
+                $gross->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
@@ -1212,7 +1222,8 @@ class WorkingDocuments extends ADocuments
         if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $this->netTotal, $workDocument->getDocumentNumber(), $net->valueOf()
+                $this->netTotal, $workDocument->getDocumentNumber(),
+                $net->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NETTOTAL);
@@ -1223,7 +1234,8 @@ class WorkingDocuments extends ADocuments
         if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
-                $this->taxPayable, $workDocument->getDocumentNumber(), $tax->valueOf()
+                $this->taxPayable, $workDocument->getDocumentNumber(),
+                $tax->valueOf()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);
@@ -1231,7 +1243,7 @@ class WorkingDocuments extends ADocuments
             $this->isValid = false;
         }
 
-        if ($workDocument->getDocumentTotals()->getCurrency(false) === null) {
+        if (null === $currency = $workDocument->getDocumentTotals()->getCurrency(false)) {
             \Logger::getLogger(\get_class($this))->info(
                 \sprintf(
                     "WorkDocument '%s' without currency node",
@@ -1241,7 +1253,6 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        $currency      = $workDocument->getDocumentTotals()->getCurrency();
         $currAmou      = new UDecimal(
             $currency->getCurrencyAmount(), static::CALC_PRECISION
         );
@@ -1249,7 +1260,7 @@ class WorkingDocuments extends ADocuments
             $currency->getExchangeRate(), static::CALC_PRECISION
         );
         $grossExchange = $currAmou->multiply($rate);
-        $workDocument->getDocTotalcal()->setGrossTotalFromCurrency($grossExchange->valueOf());
+        $workDocument->getDocTotalcal()?->setGrossTotalFromCurrency($grossExchange->valueOf());
         $calcCambio    = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
 
         if ($calcCambio > $this->deltaCurrency) {
@@ -1278,7 +1289,7 @@ class WorkingDocuments extends ADocuments
     protected function sign(WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        
+
         if ($workDocument->issetHash() === false) {
             $msg           = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_hash"),
@@ -1291,11 +1302,11 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        if($this->getSignValidation() === false){
+        if ($this->getSignValidation() === false) {
             \Logger::getLogger(\get_class($this))->debug("Skip sing test as ValidationConfig");
             return;
         }
-        
+
         if ($workDocument->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::I)) {
             $validate = true;
         } else {
@@ -1367,8 +1378,7 @@ class WorkingDocuments extends ADocuments
                     );
                     $msgStack[] = $msg;
                     $workDocument->addError(
-                        $msg,
-                        WorkDocument::N_SYSTEMENTRYDATE
+                        $msg, WorkDocument::N_SYSTEMENTRYDATE
                     );
                 }
                 $headerDateChecked = true;
@@ -1413,7 +1423,6 @@ class WorkingDocuments extends ADocuments
             $this->isValid = false;
         }
     }
-    
 
     /**
      * Validate if exists workdoc types out of date
@@ -1421,14 +1430,15 @@ class WorkingDocuments extends ADocuments
      * @return void
      * @since 1.0.0
      */
-    protected function outOfDateInvoiceTypes(WorkDocument $workDocument) : void
+    protected function outOfDateInvoiceTypes(WorkDocument $workDocument): void
     {
-        if ($workDocument->issetWorkType() === false || $workDocument->issetWorkDate() === false) {
+        if ($workDocument->issetWorkType() === false || $workDocument->issetWorkDate()
+            === false) {
             return;
         }
 
-        $type     = $workDocument->getWorkType()->get();
-        $lastDay  = RDate::parse(RDate::SQL_DATE, "2017-06-30");
+        $type         = $workDocument->getWorkType()->get();
+        $lastDay      = RDate::parse(RDate::SQL_DATE, "2017-06-30");
         $outDateTypes = [
             WorkType::DC
         ];
@@ -1438,7 +1448,7 @@ class WorkingDocuments extends ADocuments
         }
 
         if ($workDocument->getWorkDate()->isLater($lastDay)) {
-            $msg = \sprintf(
+            $msg           = \sprintf(
                 AuditFile::getI18n()->get("document_type_last_date_later"),
                 $type, "2017-06-30", $workDocument->getDocumentNumber()
             );

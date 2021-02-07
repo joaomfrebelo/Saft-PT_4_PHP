@@ -165,7 +165,7 @@ abstract class ASalesInvoiceBase extends TestCase
             /**
              * The last hash of document that has been the signature validated
              * in the same document serie
-             * @var string
+             * @param string $hash
              * @since 1.0.0
              */
             public function setLastHash(string $hash): void

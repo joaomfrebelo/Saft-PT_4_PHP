@@ -210,9 +210,9 @@ class AuditFile extends AAuditFile
             \Logger::getLogger(\get_class($this))
                 ->error("No 'MasterFiles' on create xml node");
         }
-        if ($this->sourceDocuments !== null) {
-            $this->getSourceDocuments()->createXmlNode($node);
-        }
+        
+        $this->getSourceDocuments(false)?->createXmlNode($node);
+        
         return $node;
     }
 
@@ -237,12 +237,10 @@ class AuditFile extends AAuditFile
         $header = $this->getHeader();
         $header->parseXmlNode($node->{Header::N_HEADER});
 
-        $master = $this->getMasterFiles();
-        $master->parseXmlNode($node->{MasterFiles::N_MASTERFILES});
+        $this->getMasterFiles()->parseXmlNode($node->{MasterFiles::N_MASTERFILES});
 
         if ($node->{SourceDocuments::N_SOURCEDOCUMENTS}->count() > 0) {
-            $sourceDocs = $this->getSourceDocuments(true);
-            $sourceDocs->parseXmlNode($node->{SourceDocuments::N_SOURCEDOCUMENTS});
+            $this->getSourceDocuments(true)?->parseXmlNode($node->{SourceDocuments::N_SOURCEDOCUMENTS});
         }
     }
 
@@ -253,7 +251,7 @@ class AuditFile extends AAuditFile
      */
     public function createRootElement(): \SimpleXMLElement
     {
-        return RSimpleXMLElement::getInstance(
+        return RSimpleXmlElement::getInstance(
             '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
                 'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd" '.
                 'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>',

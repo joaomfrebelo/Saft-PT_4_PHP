@@ -1216,10 +1216,8 @@ class Payment extends AAuditFile
             $payNode->addChild(static::N_PERIOD, \strval($this->getPeriod()));
         }
 
-        if ($this->getTransactionID(false) !== null) {
-            $this->getTransactionID()->createXmlNode($payNode);
-        }
-
+        $this->getTransactionID(false)?->createXmlNode($payNode);
+        
         if (isset($this->transactionDate)) {
             $payNode->addChild(
                 static::N_TRANSACTIONDATE,
@@ -1337,7 +1335,7 @@ class Payment extends AAuditFile
         }
 
         if ($node->{static::N_TRANSACTIONID}->count() > 0) {
-            $this->getTransactionID()->parseXmlNode(
+            $this->getTransactionID()?->parseXmlNode(
                 $node->{static::N_TRANSACTIONID}
             );
         }

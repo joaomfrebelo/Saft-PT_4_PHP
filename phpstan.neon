@@ -1,5 +1,5 @@
 parameters:
-	level: 7
+	level: 8
 	checkMissingIterableValueType: false
 	checkGenericClassInNonGenericObjectType: false
 	paths:
@@ -8,19 +8,11 @@ parameters:
 	bootstrapFiles:
 		- tests/bootstrap.php
 	ignoreErrors:
-		- '#Class Rebelo\\SaftPt\\AuditFile\\RSimpleXmlElement referenced with incorrect case: Rebelo\\SaftPt\\AuditFile\\RSimpleXMLElement#'
-		- '#Call to an undefined method ReflectionType::getName\(\)#'
 		- 
 		    message: '#Call to an undefined method ([\.a-zA-Z0-9\(\) \\:])+#'
 		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
 		- 
 		    message: '#Call to protected method ([\.a-zA-Z0-9\(\) \\:])+#'
-		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
-		- 
-		    message: '#Static call to instance method ([\.a-zA-Z0-9\(\) \\:])+#'
-		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
-		- 
-		    message: '#Call to an undefined static method ([\.a-zA-Z0-9\(\) \\:])+#'
 		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
 	excludes_analyse:
 		- tests/bootstrap.php

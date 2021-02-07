@@ -44,21 +44,21 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
  * “CS” - Imputation to co-insurance companies;
  * “LD” - Imputation to a leader co-insurance company;
  * “RA” - Accepted reinsurance. (a) For data up to 2012-12-31.
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FT()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FS()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FR()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType ND()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType NC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType VD()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType TV()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType TD()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType AA()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType DA()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RP()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RE()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType CS()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType LD()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RA()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FT()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FS()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType FR()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType ND()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType NC()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType VD()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType TV()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType TD()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType AA()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType DA()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RP()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RE()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType CS()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType LD()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType RA()
  * @author João Rebelo
  * @since 1.0.0
  */

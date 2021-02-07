@@ -26,7 +26,6 @@
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
@@ -319,7 +318,7 @@ abstract class ALineInvoiveAndWorking extends A2Line
 
 
         if ($this->getProductSerialNumber(false) !== null) {
-            $this->getProductSerialNumber()->createXmlNode($lineNode);
+            $this->getProductSerialNumber()?->createXmlNode($lineNode);
         }
 
         parent::createXmlNodeDebitCreditNode($lineNode);

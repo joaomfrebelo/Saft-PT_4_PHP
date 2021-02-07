@@ -34,9 +34,9 @@ use Rebelo\Enum\AEnum;
  * “P” – Document created in the invoicing program;<br>
  * “I” – Document integrated and produced in a different invoicing program;<br>
  * “M” – Recovered or manually issued document.<br>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling P()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling I()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling M()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling P()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling I()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling M()
  * <pre>
  * &lt;xs:simpleType name="SAFTPTSourceBilling"&gt;
  *  &lt;xs:annotation&gt;

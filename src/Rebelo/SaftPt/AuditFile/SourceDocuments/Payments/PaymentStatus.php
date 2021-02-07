@@ -32,8 +32,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
  * “N” – Normal receipt in force;<br>
  * “A” – Cancelled receipt.<br>
  *
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus N()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus A()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus N()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus A()
  * @author João Rebelo
  * @since 1.0.0
  */

@@ -49,11 +49,11 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *      &lt;/xs:restriction&gt;
  *  &lt;/xs:simpleType&gt;
  * </pre>
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode RED()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode INT()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode NOR()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode ISE()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode OUT()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode RED()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode INT()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode NOR()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode ISE()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode OUT()
  * @since 1.0.0
  * @author João Rebelo
  */

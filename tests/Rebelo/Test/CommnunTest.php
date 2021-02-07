@@ -183,6 +183,7 @@ class CommnunTest extends TestCase
                 );
                 $paramMatchPart = \explode(" ", $paramMatch[0]);
 
+                /** @phpstan-ignore-next-line */
                 if ($param->getType()->getName() === "array") {
                     $parmType = "/array|\[\]/";
                     $this->assertEquals(
@@ -195,6 +196,7 @@ class CommnunTest extends TestCase
                     );
                 } else {
 
+                    /** @phpstan-ignore-next-line */
                     $parmType = $param->getType()->getName().( $param->allowsNull()
                             ? "|null" : "");
 

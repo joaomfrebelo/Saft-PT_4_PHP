@@ -233,22 +233,11 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $souDocNode = $node->addChild(static::N_SOURCEDOCUMENTS);
 
-        if ($this->salesInvoices !== null) {
-            $this->getSalesInvoices()->createXmlNode($souDocNode);
-        }
-
-        if ($this->movementOfGoods !== null) {
-            $this->getMovementOfGoods()->createXmlNode($souDocNode);
-        }
-
-        if ($this->workingDocuments !== null) {
-            $this->getWorkingDocuments()->createXmlNode($souDocNode);
-        }
-
-        if ($this->payments !== null) {
-            $this->getPayments()->createXmlNode($souDocNode);
-        }
-
+        $this->getSalesInvoices(false)?->createXmlNode($souDocNode);
+        $this->getMovementOfGoods(false)?->createXmlNode($souDocNode);
+        $this->getWorkingDocuments(false)?->createXmlNode($souDocNode);
+        $this->getPayments(false)?->createXmlNode($souDocNode);
+        
         return $souDocNode;
     }
 
@@ -274,25 +263,25 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         if ($node->{SalesInvoices::N_SALESINVOICES}->count() > 0) {
-            $this->getSalesInvoices()->parseXmlNode(
+            $this->getSalesInvoices()?->parseXmlNode(
                 $node->{SalesInvoices::N_SALESINVOICES}
             );
         }
 
         if ($node->{MovementOfGoods::N_MOVEMENTOFGOODS}->count() > 0) {
-            $this->getMovementOfGoods()->parseXmlNode(
+            $this->getMovementOfGoods()?->parseXmlNode(
                 $node->{MovementOfGoods::N_MOVEMENTOFGOODS}
             );
         }
 
         if ($node->{WorkingDocuments::N_WORKINGDOCUMENTS}->count() > 0) {
-            $this->getWorkingDocuments()->parseXmlNode(
+            $this->getWorkingDocuments()?->parseXmlNode(
                 $node->{WorkingDocuments::N_WORKINGDOCUMENTS}
             );
         }
 
         if ($node->{Payments::N_PAYMENTS}->count() > 0) {
-            $this->getPayments()->parseXmlNode($node->{Payments::N_PAYMENTS});
+            $this->getPayments()?->parseXmlNode($node->{Payments::N_PAYMENTS});
         }
     }
 }

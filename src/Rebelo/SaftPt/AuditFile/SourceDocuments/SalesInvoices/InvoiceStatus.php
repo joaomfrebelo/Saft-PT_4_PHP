@@ -47,11 +47,11 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus N()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus S()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus A()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus R()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus F()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus N()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus S()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus A()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus R()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus F()
  * @author João Rebelo
  * @since 1.0.0
  */

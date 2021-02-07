@@ -65,20 +65,20 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
  *    &lt;/xs:simpleType&gt;
  * &lt;/xs:element&gt;
  *
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CD()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CH()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CI()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CO()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CS()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism DE()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism LC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism MB()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism NU()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism OU()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism PR()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism TB()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism TR()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CC()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CD()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CH()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CI()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CO()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism CS()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism DE()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism LC()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism MB()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism NU()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism OU()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism PR()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism TB()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism TR()
  *
  *
  * @author João Rebelo

@@ -753,7 +753,7 @@ abstract class A2Line extends ALine
         }
 
         if ($this->getCustomsInformation(false) !== null) {
-            $this->getCustomsInformation()->createXmlNode($node);
+            $this->getCustomsInformation()?->createXmlNode($node);
         }
     }
 
@@ -777,7 +777,7 @@ abstract class A2Line extends ALine
         $this->setUnitPrice((float) $node->{static::N_UNITPRICE});
 
         if ($node->{static::N_PRODUCTSERIALNUMBER}->count() > 0) {
-            $this->getProductSerialNumber()->parseXmlNode(
+            $this->getProductSerialNumber()?->parseXmlNode(
                 $node->{static::N_PRODUCTSERIALNUMBER}
             );
         }
@@ -805,7 +805,7 @@ abstract class A2Line extends ALine
         }
 
         if ($node->{static::N_CUSTOMSINFORMATION}->count() > 0) {
-            $this->getCustomsInformation()->parseXmlNode(
+            $this->getCustomsInformation()?->parseXmlNode(
                 $node->{static::N_CUSTOMSINFORMATION}
             );
         }

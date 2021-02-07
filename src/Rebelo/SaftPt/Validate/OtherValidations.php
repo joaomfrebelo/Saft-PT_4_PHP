@@ -61,30 +61,30 @@ class OtherValidations extends ADocuments
         try {
 
             $invoices = $this->auditFile->getSourceDocuments()
-                    ->getSalesInvoices(false) === null ?
+                    ?->getSalesInvoices(false) === null ?
                 [] :
                 $this->auditFile->getSourceDocuments()
-                    ->getSalesInvoices(false)->getInvoice();
+                    ?->getSalesInvoices(false)->getInvoice();
 
             $stockMovements = $this->auditFile->getSourceDocuments()
-                    ->getMovementOfGoods(false) === null ? [] :
+                    ?->getMovementOfGoods(false) === null ? [] :
                 $this->auditFile->getSourceDocuments()
-                    ->getMovementOfGoods(false)->getStockMovement();
+                    ?->getMovementOfGoods(false)->getStockMovement();
 
             $workDocs = $this->auditFile->getSourceDocuments()
-                    ->getWorkingDocuments(false) === null ? [] :
+                    ?->getWorkingDocuments(false) === null ? [] :
                 $this->auditFile->getSourceDocuments()
-                    ->getWorkingDocuments(false)->getWorkDocument();
+                    ?->getWorkingDocuments(false)->getWorkDocument();
 
             $payments = $this->auditFile->getSourceDocuments()
-                    ->getPayments(false) === null ? [] :
+                    ?->getPayments(false) === null ? [] :
                 $this->auditFile->getSourceDocuments()
-                    ->getPayments(false)->getPayment();
+                    ?->getPayments(false)->getPayment();
 
-            $nDoc = \count($invoices);
-            $nDoc += \count($stockMovements);
-            $nDoc += \count($workDocs);
-            $nDoc += \count($payments);
+            $nDoc = \count($invoices ?? []);
+            $nDoc += \count($stockMovements ?? []);
+            $nDoc += \count($workDocs ?? []);
+            $nDoc += \count($payments ?? []);
 
             if ($this->getStyle() !== null) {
                 /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
@@ -97,7 +97,7 @@ class OtherValidations extends ADocuments
                         $nDoc
                     )
                 );
-                $progreBar->start($nDoc);
+                $progreBar?->start($nDoc);
             }
 
             $type = [];
@@ -154,9 +154,7 @@ class OtherValidations extends ADocuments
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code,
-                        $type[$code],
-                        $inv->getInvoiceType()->get()
+                        $code, $type[$code], $inv->getInvoiceType()->get()
                     );
 
                     $this->auditFile->getErrorRegistor()
@@ -196,9 +194,7 @@ class OtherValidations extends ADocuments
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code,
-                        $type[$code],
-                        $stockMov->getMovementType()->get()
+                        $code, $type[$code], $stockMov->getMovementType()->get()
                     );
 
                     $this->auditFile->getErrorRegistor()
@@ -237,9 +233,7 @@ class OtherValidations extends ADocuments
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code,
-                        $type[$code],
-                        $work->getWorkType()->get()
+                        $code, $type[$code], $work->getWorkType()->get()
                     );
 
                     $this->auditFile->getErrorRegistor()
@@ -278,9 +272,7 @@ class OtherValidations extends ADocuments
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code,
-                        $type[$code],
-                        $pay->getPaymentType()->get()
+                        $code, $type[$code], $pay->getPaymentType()->get()
                     );
 
                     $this->auditFile->getErrorRegistor()

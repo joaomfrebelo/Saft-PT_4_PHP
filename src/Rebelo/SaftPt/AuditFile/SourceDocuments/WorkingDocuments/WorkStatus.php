@@ -28,9 +28,9 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 /**
  * WorkStatus
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments N()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments A()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments F()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments N()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments A()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments F()
  * @author João Rebelo
  * @since 1.0.0
  */

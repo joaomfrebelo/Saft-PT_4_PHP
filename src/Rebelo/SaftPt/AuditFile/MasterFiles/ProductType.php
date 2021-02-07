@@ -56,11 +56,11 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType P()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType S()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType O()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType E()
- * @method \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType I()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType P()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType S()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType O()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType E()
+ * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType I()
  * @author João Rebelo
  * @since 1.0.0
  */

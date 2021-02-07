@@ -836,10 +836,8 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
-        if ($this->getTransactionID(false) !== null) {
-            $this->getTransactionID()->createXmlNode($invNode);
-        }
-
+        $this->getTransactionID(false)?->createXmlNode($invNode);
+        
         if (isset($this->customerID)) {
             $invNode->addChild(static:: N_CUSTOMERID, $this->getCustomerID());
         } else {
@@ -847,14 +845,9 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
         }
 
-        if ($this->getShipTo(false) !== null) {
-            $this->getShipTo()->createXmlNode($invNode);
-        }
-
-        if ($this->getShipFrom(false) !== null) {
-            $this->getShipFrom()->createXmlNode($invNode);
-        }
-
+        $this->getShipTo(false)?->createXmlNode($invNode);
+        $this->getShipFrom(false)?->createXmlNode($invNode);
+        
         if ($this->getMovementEndTime() !== null) {
             $invNode->addChild(
                 static::N_MOVEMENTENDTIME,
@@ -933,11 +926,11 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         if ($node->{static::N_SHIPTO}->count() > 0) {
-            $this->getShipTo()->parseXmlNode($node->{static::N_SHIPTO});
+            $this->getShipTo()?->parseXmlNode($node->{static::N_SHIPTO});
         }
 
         if ($node->{static::N_SHIPFROM}->count() > 0) {
-            $this->getShipFrom()->parseXmlNode($node->{static::N_SHIPFROM});
+            $this->getShipFrom()?->parseXmlNode($node->{static::N_SHIPFROM});
         }
 
         if ($node->{static::N_MOVEMENTENDTIME}->count() > 0) {

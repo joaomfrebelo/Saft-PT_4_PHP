@@ -123,16 +123,12 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line
             $this->getErrorRegistor()->addOnCreateXmlNode("Description_not_valid");
         }
 
-        if ($this->getProductSerialNumber(false) !== null) {
-            $this->getProductSerialNumber()->createXmlNode($lineNode);
-        }
-
+        $this->getProductSerialNumber(false)?->createXmlNode($lineNode);
+        
         parent::createXmlNodeDebitCreditNode($lineNode);
 
-        if ($this->getTax(false) !== null) {
-            $this->getTax()->createXmlNode($lineNode);
-        }
-
+        $this->getTax(false)?->createXmlNode($lineNode);
+        
         parent::createXmlNodeTaxExcSettAndCustoms($lineNode);
 
         return $lineNode;
@@ -155,7 +151,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
         if ($node->{static::N_TAX}->count() > 0) {
-            $this->getTax()->parseXmlNode($node->{static::N_TAX});
+            $this->getTax()?->parseXmlNode($node->{static::N_TAX});
         }
     }
 }
