@@ -27,290 +27,222 @@ declare(strict_types=1);
 namespace Rebelo\Test\SaftPt\AuditFile\SourceDocuments;
 
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
-use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo;
 
 /**
  * Class TaxTest
  *
  * @author João Rebelo
  */
-class TaxTest extends TestCase
+class WarehouseTest extends TestCase
 {
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testReflection()
+    public function testReflection(): void
     {
         (new \Rebelo\Test\CommnunTest())
-            ->testReflection(Tax::class);
+            ->testReflection(Warehouse::class);
         $this->assertTrue(true);
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testInstance()
+    public function testInstance(): void
     {
-        $tax = new Tax();
-        $this->assertInstanceOf(Tax::class, $tax);
-        $this->assertNull($tax->getTaxAmount());
-        $this->assertNull($tax->getTaxPercentage());
+        $warehouse = new Warehouse(new ErrorRegister());
+        $this->assertInstanceOf(Warehouse::class, $warehouse);
+        $this->assertNull($warehouse->getWarehouseID());
+        $this->assertNull($warehouse->getLocationID());
 
-        try {
-            $tax->getTaxCode();
-            $this->fail("Get TaxCode not initialized should throw \Error");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Error::class, $e);
-        }
-        try {
-            $tax->getTaxCountryRegion();
-            $this->fail("Get TaxCountryRegion not initialized should throw \Error");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Error::class, $e);
-        }
-        try {
-            $tax->getTaxType();
-            $this->fail("Get TaxType not initialized should throw \Error");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Error::class, $e);
-        }
+        $warehouseid = "C999";
+        $this->assertTrue($warehouse->setWarehouseID($warehouseid));
+        $this->assertSame($warehouseid, $warehouse->getWarehouseID());
+        $this->assertTrue($warehouse->setWarehouseID(null));
+        $this->assertNull($warehouse->getWarehouseID());
+        $this->assertTrue(
+            $warehouse->setWarehouseID(
+                \str_pad(
+                    $warehouseid, 99,
+                    "A"
+                )
+            )
+        );
+        $this->assertSame(50, \strlen($warehouse->getWarehouseID()));
+
+        $warehouse->getErrorRegistor()->clearAllErrors();
+        $this->assertFalse($warehouse->setWarehouseID(""));
+        $this->assertSame("", $warehouse->getWarehouseID());
+        $this->assertNotEmpty($warehouse->getErrorRegistor()->getOnSetValue());
+
+        $locationid = "A999";
+        $this->assertTrue($warehouse->setLocationID($locationid));
+        $this->assertSame($locationid, $warehouse->getLocationID());
+        $this->assertTrue($warehouse->setLocationID(null));
+        $this->assertNull($warehouse->getLocationID());
+        $this->assertTrue(
+            $warehouse->setLocationID(\str_pad($locationid, 99, "A"))
+        );
+        $this->assertSame(30, \strlen($warehouse->getLocationID()));
+
+        $warehouse->getErrorRegistor()->clearAllErrors();
+        $this->assertFalse($warehouse->setLocationID(""));
+        $this->assertSame("", $warehouse->getLocationID());
+        $this->assertNotEmpty($warehouse->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testSetGet()
+    public function testCreateXmlNode(): void
     {
-        $tax  = new Tax();
-        $type = TaxType::IVA;
-        $tax->setTaxType(new TaxType($type));
-        $this->assertSame($type, $tax->getTaxType()->get());
+        $warehouse = new Warehouse(new ErrorRegister());
+        $node      = new \SimpleXMLElement(
+            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+        );
 
-        $code = TaxCode::NOR;
-        $tax->setTaxCode(new TaxCode($code));
-        $this->assertSame($code, $tax->getTaxCode()->get());
+        $warehouseid = "A999";
+        $locationid  = "C999";
 
-        $country = TaxCountryRegion::ISO_PT;
-        $tax->setTaxCountryRegion(new TaxCountryRegion($country));
-        $this->assertSame($country, $tax->getTaxCountryRegion()->get());
+        $warehouse->setWarehouseID($warehouseid);
+        $warehouse->setLocationID($locationid);
 
-        $percent = 23.00;
-        $tax->setTaxPercentage($percent);
-        $this->assertSame($percent, $tax->getTaxPercentage());
-        $tax->setTaxPercentage(null);
-        $this->assertNull($tax->getTaxPercentage());
+        $warehouse->createXmlNode($node);
 
-        $amount = 4.59;
-        $tax->setTaxAmount($amount);
-        $this->assertSame($amount, $tax->getTaxAmount());
-        $tax->setTaxAmount(null);
-        $this->assertNull($tax->getTaxAmount());
+        $this->assertSame(
+            $warehouse->getWarehouseID(),
+            (string) $node->{Warehouse::N_WAREHOUSEID}
+        );
 
-        $tax->setTaxPercentage($percent);
-        try {
-            $tax->setTaxAmount($amount);
-            $this->fail("Setting TaxAmount with TaxPercent setted should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
+        $this->assertSame(
+            $warehouse->getLocationID(),
+            (string) $node->{Warehouse::N_LOCATIONID}
+        );
+
+        $nullNode = new \SimpleXMLElement(
+            "<".ShipTo::N_SHIPTO."></".ShipTo::N_SHIPTO.">"
+        );
+
+        $warehouse->setLocationID(null);
+        $warehouse->setWarehouseID(null);
+        $warehouse->createXmlNode($nullNode);
+        $this->assertSame(0, $nullNode->{Warehouse::N_WAREHOUSEID}->count());
+        $this->assertSame(0, $nullNode->{Warehouse::N_LOCATIONID}->count());
+
+        $this->assertEmpty($warehouse->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnSetValue());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testeParseXml(): void
+    {
+        $warehouse = new Warehouse(new ErrorRegister());
+        $node      = new \SimpleXMLElement(
+            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+        );
+
+        $warehouseid = "A999";
+        $locationid  = "C999";
+
+        $warehouse->setWarehouseID($warehouseid);
+        $warehouse->setLocationID($locationid);
+
+        $xml = $warehouse->createXmlNode($node)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
         }
 
-        $tax->setTaxPercentage(null);
-        $tax->setTaxAmount($amount);
-        try {
-            $tax->setTaxPercentage($percent);
-            $this->fail("Setting TaxPercentage with TaxAmount setted should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(AuditFileException::class, $e);
-        }
-    }
-
-    /**
-     *
-     * @return Tax
-     */
-    public function createTax(): Tax
-    {
-        $tax = new Tax();
-        $tax->setTaxCode(new TaxCode(TaxCode::NOR));
-        $tax->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::ISO_PT));
-        $tax->setTaxType(new TaxType(TaxType::IVA));
-        $tax->setTaxPercentage(23.00);
-        return $tax;
-    }
-
-    /**
-     *
-     */
-    public function testCreateXmlNodeWrongName()
-    {
-        $tax  = new Tax();
-        $node = new \SimpleXMLElement("<root></root>");
-        try {
-            $tax->createXmlNode($node);
-            $this->fail("Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(
-                AuditFileException::class, $e
-            );
-        }
-    }
-
-    /**
-     *
-     */
-    public function testParseXmlNodeWrongName()
-    {
-        $psn  = new Tax();
-        $node = new \SimpleXMLElement("<root></root>");
-        try {
-            $psn->parseXmlNode($node);
-            $this->fail("Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(
-                AuditFileException::class, $e
-            );
-        }
-    }
-
-    /**
-     *
-     */
-    public function testCreateXmlNode()
-    {
-        $tax  = $this->createTax();
-        $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
-        );
-
-        $taxNode = $tax->createXmlNode($node);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $taxNode);
-
-        $this->assertSame(
-            Tax::N_TAX, $taxNode->getName()
-        );
-
-        $this->assertSame(
-            $tax->getTaxCode()->get(),
-            (string) $node->{Tax::N_TAX}->{Tax::N_TAXCODE}
-        );
-
-        $this->assertSame(
-            $tax->getTaxCountryRegion()->get(),
-            (string) $node->{Tax::N_TAX}->{Tax::N_TAXCOUNTRYREGION}
-        );
-
-        $this->assertSame(
-            $tax->getTaxType()->get(),
-            (string) $node->{Tax::N_TAX}->{Tax::N_TAXTYPE}
-        );
-
-        $this->assertSame(
-            $tax->getTaxPercentage(),
-            (float) $node->{Tax::N_TAX}->{Tax::N_TAXPERCENTAGE}
-        );
-
-        $this->assertSame(0, $node->{Tax::N_TAX}->{Tax::N_TAXAMOUNT}->count());
-    }
-
-    /**
-     *
-     */
-    public function testCreateXmlNodeAmount()
-    {
-        $tax     = $this->createTax();
-        $node    = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
-        );
-        $tax->setTaxPercentage(null);
-        $tax->setTaxAmount(4.59);
-        $taxNode = $tax->createXmlNode($node);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $taxNode);
-
-        $this->assertSame(
-            Tax::N_TAX, $taxNode->getName()
-        );
-
-        $this->assertSame(
-            $tax->getTaxCode()->get(),
-            (string) $node->{Tax::N_TAX}->{Tax::N_TAXCODE}
-        );
-
-        $this->assertSame(
-            $tax->getTaxCountryRegion()->get(),
-            (string) $node->{Tax::N_TAX}->{Tax::N_TAXCOUNTRYREGION}
-        );
-
-        $this->assertSame(
-            $tax->getTaxType()->get(),
-            (string) $node->{Tax::N_TAX}->{Tax::N_TAXTYPE}
-        );
-
-        $this->assertSame(
-            $tax->getTaxAmount(),
-            (float) $node->{Tax::N_TAX}->{Tax::N_TAXAMOUNT}
-        );
-
-        $this->assertSame(0,
-            $node->{Tax::N_TAX}->{Tax::N_TAXPERCENTAGE}->count());
-    }
-
-    /**
-     *
-     */
-    public function testeParseXml()
-    {
-        $tax  = $this->createTax();
-        $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
-        );
-        $xml  = $tax->createXmlNode($node)->asXML();
-
-        $parsed = new Tax();
+        $parsed = new Warehouse(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
-        $this->assertSame($tax->getTaxAmount(), $parsed->getTaxAmount());
-        $this->assertSame($tax->getTaxPercentage(), $parsed->getTaxPercentage());
-        $this->assertSame($tax->getTaxCode()->get(),
-            $parsed->getTaxCode()->get());
-        $this->assertSame($tax->getTaxCountryRegion()->get(),
-            $parsed->getTaxCountryRegion()->get());
-        $this->assertSame($tax->getTaxType()->get(),
-            $parsed->getTaxType()->get());
+        $this->assertSame(
+            $warehouse->getWarehouseID(), $parsed->getWarehouseID()
+        );
+        $this->assertSame(
+            $warehouse->getLocationID(), $parsed->getLocationID()
+        );
+
+        $nodeNull = new \SimpleXMLElement(
+            "<".ShipTo::N_SHIPTO."></".ShipTo::N_SHIPTO.">"
+        );
+        $warehouse->setWarehouseID(null);
+        $warehouse->setLocationID(null);
+        $xmlNull  = $warehouse->createXmlNode($nodeNull)->asXML();
+        if ($xmlNull === false) {
+            $this->fail("Fail to generate xml string");
+        }
+
+        $parsedNull = new Warehouse(new ErrorRegister());
+        $parsedNull->parseXmlNode(new \SimpleXMLElement($xmlNull));
+
+        $this->assertNull($parsedNull->getWarehouseID());
+        $this->assertNull($parsedNull->getLocationID());
+
+        $this->assertEmpty($warehouse->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     *
+     * @author João Rebelo
+     * @test
      */
-    public function testeParseXmlAmount()
+    public function testCreateXmlNodeWithoutSet(): void
     {
-        $tax  = $this->createTax();
-        $tax->setTaxPercentage(null);
-        $tax->setTaxAmount(4.59);
-        $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+        $warehouseNode = new \SimpleXMLElement(
+            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
         );
-        $xml  = $tax->createXmlNode($node)->asXML();
+        $warehouse     = new Warehouse(new ErrorRegister());
+        $xml           = $warehouse->createXmlNode($warehouseNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+        }
 
-        $parsed = new Tax();
-        $parsed->parseXmlNode(new \SimpleXMLElement($xml));
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
 
-        $this->assertSame($tax->getTaxAmount(), $parsed->getTaxAmount());
-        $this->assertSame($tax->getTaxPercentage(), $parsed->getTaxPercentage());
-        $this->assertSame($tax->getTaxCode()->get(),
-            $parsed->getTaxCode()->get());
-        $this->assertSame($tax->getTaxCountryRegion()->get(),
-            $parsed->getTaxCountryRegion()->get());
-        $this->assertSame($tax->getTaxType()->get(),
-            $parsed->getTaxType()->get());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getLibXmlError());
+    }
+
+    /**
+     * @author João Rebelo
+     * @test
+     */
+    public function testCreateXmlWithWrongValues(): void
+    {
+        $warehouseNode = new \SimpleXMLElement(
+            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+        );
+        $warehouse     = new Warehouse(new ErrorRegister());
+        $warehouse->setWarehouseID("");
+        $warehouse->setLocationID("");
+
+        $xml = $warehouse->createXmlNode($warehouseNode)->asXML();
+        if ($xml === false) {
+            $this->fail("Fail to generate xml string");
+        }
+
+        $this->assertInstanceOf(
+            \SimpleXMLElement::class, new \SimpleXMLElement($xml)
+        );
+
+        $this->assertEmpty($warehouse->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertNotEmpty($warehouse->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($warehouse->getErrorRegistor()->getLibXmlError());
     }
 }

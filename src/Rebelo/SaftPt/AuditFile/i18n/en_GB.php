@@ -309,6 +309,7 @@ class en_GB extends AI18n
         $this->stack["has_n_errors_on_create_xml_node"]                          = "Errors on creating the XML nodes %s ";
         $this->stack["has_n_errors_on_data_validation"]                          = "Data validation errors: %s ";
         $this->stack["validating_file"]                                          = "Validating file '%s'";
+        $this->stack["loading_file"]                                             = "Loading file '%s'";
         $this->stack["memory"]                                                   = "Memory";
         $this->stack["saft_file"]                                                = "SAFT-PT file";
         $this->stack["exec_time"]                                                = "Time";

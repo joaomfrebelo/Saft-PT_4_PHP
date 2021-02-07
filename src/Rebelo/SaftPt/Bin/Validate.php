@@ -149,6 +149,14 @@ class Validate extends Command
     public const OPT_DELTA_TOTAL_DOC = "ddt";
 
     /**
+     * Argument name of the configuration option 
+     * if validates continues lines numeration in documents   
+     * calculation to be consider valid
+     * @since 1.0.0
+     */
+    public const OPT_CONTINUES_LINES = "cl";
+
+    /**
      *
      * @var \Logger
      * @since 1.0.0
@@ -227,6 +235,13 @@ class Validate extends Command
         );
 
         $this->addOption(
+            static::OPT_CONTINUES_LINES, null,
+            InputOption::VALUE_OPTIONAL,
+            "Define if validates the continues line numbering, defualt true",
+            null
+        );
+
+        $this->addOption(
             static::OPT_DEBIT_CREDIT, null, InputOption::VALUE_OPTIONAL,
             "Accepts Debit and Credit lines in the same document (yes|no|true|false|0|1).",
             false
@@ -283,24 +298,30 @@ class Validate extends Command
                 throw new \Exception("Saft file path is not set");
             }
 
+            $pubKey = $this->getPubKeyPath($input);
+            $config = $this->getValidationConfig($input);
+            $config->setSignValidation($pubKey !== null);
+            $config->setStyle($io);            
+            // The AuditFile::loadFile always validate schema so
+            // is not necessary to validate twice
+            $config->setSchemaValidate(false);
+            
+            $io->writeln(
+                "<info>" . \sprintf(
+                    AuditFile::getI18n()->get("loading_file"), $saft
+                ) . "</info>"
+            );
+            
+            $audit = AuditFile::loadFile($saft);
+            
             $io->writeln(
                 "<info>" . \sprintf(
                     AuditFile::getI18n()->get("validating_file"), $saft
                 ) . "</info>"
             );
-
-            $pubKey = $this->getPubKeyPath($input);
-            $config = $this->getValidationConfig($input);
-            $config->setSignValidation($pubKey !== null);
-            $config->setStyle($io);
-            // The AuditFile::loadFile always validate schema so
-            // is not necessary to validate twice
-            $config->setSchemaValidate(false);
-
-            $audit = AuditFile::loadFile($saft);
-
+            
             $audit->validate($pubKey, $config);
-
+            
             $io->newLine();
 
             $nWar = \count($audit->getErrorRegistor()->getWarnings());
@@ -548,6 +569,14 @@ class Validate extends Command
             )
         );
 
+        $clopt = $input->getOption(self::OPT_CONTINUES_LINES);
+        $config->setContinuesLines(
+            $clopt === null ? true :
+                        $this->parseBool(
+                            $clopt, self::OPT_CONTINUES_LINES
+                        )
+        );
+        
         return $config;
     }
 
