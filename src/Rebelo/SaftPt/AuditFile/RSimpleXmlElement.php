@@ -28,7 +28,7 @@ namespace Rebelo\SaftPt\AuditFile;
 
 /**
  * Description of RSimpleXmlElement
- * This class exists to resove this 'feature' documented in:
+ * This class exists to resolve this 'feature' documented in:
  * @link https://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda
  * @author João Rebelo
  * @since 1.0.0
@@ -67,7 +67,9 @@ class RSimpleXmlElement extends \SimpleXMLElement
     public static int $escapeHtml = self::PARTIAL_ESCAPE_HTML;
 
     /**
-     * Creates a new SimpleXMLElement object
+     * Creates a new SimpleXMLElement child object with encoding converter to UTF-8. 
+     * Possibility of escape html and resolve the issue of some character 
+     * in add child in SimpleXMLElement native class
      * <p>Creates a new SimpleXMLElement object.</p>
      * @param string $data <p>A well-formed XML string or the path or URL to an XML document if <code>data_is_url</code> is <b><code>TRUE</code></b>.</p>
      * @param int $options <p>Optionally used to specify additional Libxml parameters.</p> <p><b>Note</b>:</p><p>It may be necessary to pass <b><code>LIBXML_PARSEHUGE</code></b> to be able to process deeply nested XML or very large text nodes.</p>
@@ -82,9 +84,21 @@ class RSimpleXmlElement extends \SimpleXMLElement
      */
     public static function getInstance($data, $options = 0,
                                        $dataIsUrl = FALSE,
-                                       $ns = "", $isPrefix = FALSE)
+                                       $ns = "", $isPrefix = FALSE) : self
     {
-        return new self($data, $options, $dataIsUrl, $ns, $isPrefix);
+        
+        if (false === $encode = \mb_detect_encoding(
+            $data,
+            ["UTF-8", "Windows-1252", "ISO-8859-1", ...\mb_list_encodings()],
+            true
+        )) {
+            throw new \Rebelo\SaftPt\AuditFile\AuditFileException("Data encodede not detected");
+        }
+
+        $dataUtf8 = ("UTF-8" !== $encode) ?
+            \mb_convert_encoding($data, "UTF-8", $encode) : $data;
+        
+        return new self($dataUtf8, $options, $dataIsUrl, $ns, $isPrefix);
     }
 
     /**

@@ -312,7 +312,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         if ($this->getAddress(false) !== null) {
             $addNode = $node->addChild(static::N_ADDRESS);
-            $this->getAddress()->createXmlNode($addNode);
+            $this->getAddress()?->createXmlNode($addNode);
         }
 
         return $node;
@@ -366,7 +366,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
                         );
                         break;
                     case static::N_ADDRESS:
-                        $this->getAddress()->parseXmlNode($node->{static::N_ADDRESS});
+                        $this->getAddress()?->parseXmlNode($node->{static::N_ADDRESS});
                         break;
                     case Warehouse::N_WAREHOUSEID:
                         $warehouse   = $this->addWarehouse();

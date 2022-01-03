@@ -785,7 +785,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         );
 
         if ($node->{static::N_TRANSACTIONID}->count() > 0) {
-            $this->getTransactionID()->parseXmlNode(
+            $this->getTransactionID()?->parseXmlNode(
                 $node->{static::N_TRANSACTIONID}
             );
         }

@@ -31,8 +31,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
  * This field shall be filled in with:<br>
  * “IVA” – Value Added Tax;<br>
  * “NS” – Not subject to VAT.<br>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType IVA()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType NS()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType IVA()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType NS()
  * @author João Rebelo
  * @since 1.0.0
  */

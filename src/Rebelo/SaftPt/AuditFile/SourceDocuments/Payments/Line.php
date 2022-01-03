@@ -198,10 +198,8 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
 
         $this->createXmlNodeDebitCreditNode($lineNode);
 
-        if ($this->getTax(false) !== null) {
-            $this->getTax()->createXmlNode($lineNode);
-        }
-
+        $this->getTax(false)?->createXmlNode($lineNode);
+        
         if ($this->getTaxExemptionReason() !== null) {
             $lineNode->addChild(
                 static::N_TAXEXEMPTIONREASON,
@@ -248,7 +246,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         }
 
         if ($node->{static::N_TAX}->count() > 0) {
-            $this->getTax()->parseXmlNode($node->{static::N_TAX});
+            $this->getTax()?->parseXmlNode($node->{static::N_TAX});
         }
 
         if ($node->{static::N_TAXEXEMPTIONREASON}->count() > 0) {

@@ -36,11 +36,11 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
  * also on table 4.1. – SalesInvoices the corresponding invoice or simplified invoice;<br>
  * “R” - Summary document for other documents created in other applications and
  * generated in this application.<br>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus N()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus T()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus A()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus F()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus R()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus N()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus T()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus A()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus F()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus R()
  * @author João Rebelo
  * @since 1.0.0
  */

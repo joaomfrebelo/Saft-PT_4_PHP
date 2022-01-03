@@ -36,11 +36,11 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
  * “ISE” - Exempted;<br>
  * “OUT” - Other, applicable to the special VAT regimes.<br>
  * In case of not subject to tax, to fill in with “NS”.<br>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode RED()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode INT()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode NOR()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode ISE()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode OUT()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode RED()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode INT()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode NOR()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode ISE()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode OUT()
  * @author João Rebelo
  */
 class MovementTaxCode extends \Rebelo\Enum\AEnum

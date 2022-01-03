@@ -505,10 +505,8 @@ class WorkDocument extends ADocument
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
-        if ($this->getTransactionID(false) !== null) {
-            $this->getTransactionID()->createXmlNode($workNode);
-        }
-
+        $this->getTransactionID(false)?->createXmlNode($workNode);
+        
         if (isset($this->customerID)) {
             $workNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
         } else {

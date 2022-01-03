@@ -586,7 +586,6 @@ class MasterFiles extends AAuditFile
         $addr->setAddressDetail(AuditFile::DESCONHECIDO);
         $addr->setCity(AuditFile::DESCONHECIDO);
         $addr->setPostalCode(AuditFile::DESCONHECIDO);
-        /** @phpstan-ignore-next-line */
         $addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::DESCONHECIDO());
         
         $this->isFinalConsumerAdd = true;

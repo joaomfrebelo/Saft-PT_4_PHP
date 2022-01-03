@@ -361,14 +361,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
             throw new AuditFileException($msg);
         }
 
-        if ($this->getCurrency(false) !== null) {
-            $this->getCurrency()->createXmlNode($node);
-        } else {
-            \Logger::getLogger(\get_class($this))->trace(
-                __METHOD__
-                ." No Currency defined to create XMML node"
-            );
-        }
+        $this->getCurrency(false)?->createXmlNode($node);
     }
 
     /**
@@ -398,13 +391,13 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         $this->setGrossTotal((float) $node->{static::N_GROSSTOTAL});
         if ($node->{static::N_CURRENCY}->count() > 0) {
             $currency = $this->getCurrency();
-            $currency->setCurrencyAmount(
+            $currency?->setCurrencyAmount(
                 (float) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYAMOUNT}
             );
-            $currency->setExchangeRate(
+            $currency?->setExchangeRate(
                 (float) $node->{static::N_CURRENCY}->{Currency::N_EXCHANGERATE}
             );
-            $currency->setCurrencyCode(
+            $currency?->setCurrencyCode(
                 new \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode(
                     (string) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYCODE}
                 )

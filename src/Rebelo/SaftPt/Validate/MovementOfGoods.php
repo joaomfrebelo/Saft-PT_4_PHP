@@ -104,10 +104,7 @@ class MovementOfGoods extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $progreBar = null;
         try {
-            $movementOfGoods = $this->auditFile->getSourceDocuments()
-                    ->getMovementOfGoods(false);
-
-            if ($movementOfGoods === null) {
+            if(null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods(false)){
                 \Logger::getLogger(\get_class($this))
                         ->debug(__METHOD__ . " no movement of goods documents to be vaidated");
                 return $this->isValid;
@@ -131,7 +128,7 @@ class MovementOfGoods extends ADocuments
                         "StockMovement"
                     )
                 );
-                $progreBar->start($nDoc);
+                $progreBar?->start($nDoc);
             }
 
             foreach (\array_keys($order) as $type) {
@@ -180,7 +177,7 @@ class MovementOfGoods extends ADocuments
 
             $this->numberOfLinesAndTotalQuantity();
 
-            if ($movementOfGoods->getMovOfGoodsTableTotalCalc()->getNumberOfMovementLines() === 0) {
+            if ($movementOfGoods->getMovOfGoodsTableTotalCalc()?->getNumberOfMovementLines() === 0) {
 
                 if ($movementOfGoods->getNumberOfMovementLines() !== 0) {
                     $msg = \sprintf(
@@ -322,20 +319,23 @@ class MovementOfGoods extends ADocuments
     protected function numberOfLinesAndTotalQuantity(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $movementOfGoods = $this->auditFile->getSourceDocuments()->getMovementOfGoods();
+        
+        if(null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods()){
+            return;
+        }
 
         $testNlines = $this->numberOfMovementLines === $movementOfGoods->getNumberOfMovementLines();
         $testQt = $this->totalQuantityIssued->signedSubtract(
             $movementOfGoods->getTotalQuantityIssued()
         )->abs()->valueOf() <= $this->getDeltaTable();
 
-        $this->auditFile->getSourceDocuments()->getMovementOfGoods()
-                ->getMovOfGoodsTableTotalCalc()->setNumberOfMovementLines(
+        $this->auditFile->getSourceDocuments()?->getMovementOfGoods()
+                ?->getMovOfGoodsTableTotalCalc()?->setNumberOfMovementLines(
                     $this->numberOfMovementLines
                 );
 
-        $this->auditFile->getSourceDocuments()->getMovementOfGoods()
-                ->getMovOfGoodsTableTotalCalc()->setTotalQuantityIssued(
+        $this->auditFile->getSourceDocuments()?->getMovementOfGoods()
+                ?->getMovOfGoodsTableTotalCalc()?->setTotalQuantityIssued(
                     $this->totalQuantityIssued->valueOf()
                 );
 
@@ -650,8 +650,8 @@ class MovementOfGoods extends ADocuments
             // Get value for total validation
             $lineValue->plusThis($lineAmount);
 
-            if ($line->getTax(false) !== null) {
-                $lineTax = $line->getTax();
+            if (null !== $lineTax = $line->getTax(false)) {
+                
                 if ($lineTax->issetTaxPercentage()) {
 
                     $lineFactor = $lineTax->getTaxPercentage() / 100;
@@ -682,7 +682,7 @@ class MovementOfGoods extends ADocuments
                 new UDecimal($line->getQuantity(), static::CALC_PRECISION)
             );
 
-            $stockMovDocument->getDocTotalcal()->addLineTotal(
+            $stockMovDocument->getDocTotalcal()?->addLineTotal(
                 $line->getLineNumber(), $uniQt->valueOf()
             );
 
@@ -1159,7 +1159,10 @@ class MovementOfGoods extends ADocuments
             return;
         }
 
-        $currency = $stockMovDocument->getDocumentTotals()->getCurrency();
+        if(null === $currency = $stockMovDocument->getDocumentTotals()->getCurrency()){
+            return;
+        }
+        
         $currAmou = new UDecimal(
             $currency->getCurrencyAmount(), static::CALC_PRECISION
         );
@@ -1167,7 +1170,7 @@ class MovementOfGoods extends ADocuments
             $currency->getExchangeRate(), static::CALC_PRECISION
         );
         $grossExchange = $currAmou->multiply($rate);
-        $stockMovDocument->getDocTotalcal()->setGrossTotalFromCurrency($grossExchange->valueOf());
+        $stockMovDocument->getDocTotalcal()?->setGrossTotalFromCurrency($grossExchange->valueOf());
         $calcCambio = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
 
         if ($calcCambio > $this->deltaCurrency) {
@@ -1517,8 +1520,7 @@ class MovementOfGoods extends ADocuments
             $stockMov->addError($msg, StockMovement::N_SHIPFROM);
         } else {
 
-            if ($shipFromAddr->issetCity() === false ||
-                    $shipFromAddr->getCity() === "") {
+            if ($shipFromAddr->issetCity() === false || $shipFromAddr->getCity() === "") {
 
                 $msg = \sprintf(
                     AAuditFile::getI18n()
@@ -1550,8 +1552,8 @@ class MovementOfGoods extends ADocuments
                 );
                 $msgStack[] = $msg;
                 $stockMov->addError($msg, StockMovement::N_SHIPTO);
-            } else {
-                $shipToAddr = $shipTo->getAddress(false);
+            } else if(null !== $shipToAddr = $shipTo->getAddress(false)){
+                
                 if (($shipToAddr->getStreetName() === null ||
                         $shipToAddr->getStreetName() === "") &&
                         ($shipToAddr->getAddressDetail() === null ||
@@ -1566,7 +1568,7 @@ class MovementOfGoods extends ADocuments
                     $stockMov->addError($msg, StockMovement::N_SHIPTO);
                 } else {
 
-                    if ($shipToAddr->issetCity() === false || $shipTo->getAddress()->getCity() === "") {
+                    if ($shipToAddr->issetCity() === false || $shipToAddr->getCity() === "") {
                         $msg = \sprintf(
                             AAuditFile::getI18n()->get("shipement_address_to_must_heve_city"),
                             $stockMov->getDocumentNumber()

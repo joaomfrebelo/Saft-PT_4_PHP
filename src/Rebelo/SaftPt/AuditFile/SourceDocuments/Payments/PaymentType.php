@@ -32,8 +32,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
  * “RC” – Receipt issued according to the Cash VAT regime
  * (including advance payments in this regime);<br>
  * “RG” – Other issued receipts.<br>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RG()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RC()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RG()
  * @author João Rebelo
  * @since 1.0.0
  */

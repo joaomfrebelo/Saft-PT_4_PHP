@@ -43,9 +43,9 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * @method Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IVA()
- * @method Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IS()
- * @method Rebelo\SaftPt\AuditFile\MasterFiles\TaxType NS()
+ * @method static Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IVA()
+ * @method static Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IS()
+ * @method static Rebelo\SaftPt\AuditFile\MasterFiles\TaxType NS()
  * @author João Rebelo
  * @since 1.0.0
  */

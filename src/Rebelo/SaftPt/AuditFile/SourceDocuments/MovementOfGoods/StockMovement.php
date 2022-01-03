@@ -1038,10 +1038,8 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
-        if ($this->getTransactionID(false) !== null) {
-            $this->getTransactionID()->createXmlNode($stkMov);
-        }
-
+        $this->getTransactionID(false)?->createXmlNode($stkMov);
+       
         if (isset($this->customerID) === false && isset($this->supplierID) === false) {
             $msg = "CustomerID or SupplierID must be setted";
             \Logger::getLogger(\get_class($this))
@@ -1074,13 +1072,8 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             );
         }
 
-        if ($this->getShipTo(false) !== null) {
-            $this->getShipTo()->createXmlNode($stkMov);
-        }
-
-        if ($this->getShipFrom(false) !== null) {
-            $this->getShipFrom()->createXmlNode($stkMov);
-        }
+        $this->getShipTo(false)?->createXmlNode($stkMov);        
+        $this->getShipFrom(false)?->createXmlNode($stkMov);
 
         if ($this->getMovementEndTime() !== null) {
             $stkMov->addChild(
@@ -1170,11 +1163,11 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         if ($node->{static::N_SHIPTO}->count() > 0) {
-            $this->getShipTo()->parseXmlNode($node->{static::N_SHIPTO});
+            $this->getShipTo()?->parseXmlNode($node->{static::N_SHIPTO});
         }
 
         if ($node->{static::N_SHIPFROM}->count() > 0) {
-            $this->getShipFrom()->parseXmlNode($node->{static::N_SHIPFROM});
+            $this->getShipFrom()?->parseXmlNode($node->{static::N_SHIPFROM});
         }
 
         if ($node->{static::N_MOVEMENTENDTIME}->count() > 0) {

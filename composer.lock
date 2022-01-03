@@ -151,6 +151,7 @@
         },
         {
             "name": "joaomfrebelo/decimal",
+
             "version": "4.0.0",
             "source": {
                 "type": "git",
@@ -446,6 +447,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/console/zipball/a2c6b7ced2eb7799a35375fb9022519282b5405e",
                 "reference": "a2c6b7ced2eb7799a35375fb9022519282b5405e",
+
                 "shasum": ""
             },
             "require": {
@@ -531,6 +533,7 @@
                     "type": "tidelift"
                 }
             ],
+
             "time": "2021-12-20T16:11:12+00:00"
         },
         {
@@ -677,6 +680,7 @@
                     "type": "tidelift"
                 }
             ],
+
             "time": "2021-02-19T12:13:01+00:00"
         },
         {
@@ -772,6 +776,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/8590a5f561694770bdcd3f9b5c69dde6945028e8",
                 "reference": "8590a5f561694770bdcd3f9b5c69dde6945028e8",
+
                 "shasum": ""
             },
             "require": {
@@ -856,6 +861,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9174a3d80210dca8daa7f31fec659150bbeabfc6",
                 "reference": "9174a3d80210dca8daa7f31fec659150bbeabfc6",
+
                 "shasum": ""
             },
             "require": {
@@ -936,6 +942,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/fba8933c384d6476ab14fb7b8526e5287ca7e010",
                 "reference": "fba8933c384d6476ab14fb7b8526e5287ca7e010",
+
                 "shasum": ""
             },
             "require": {
@@ -1001,6 +1008,7 @@
                     "type": "tidelift"
                 }
             ],
+
             "time": "2021-02-19T12:13:01+00:00"
         },
         {
@@ -1068,6 +1076,7 @@
                 "shim"
             ],
             "support": {
+
                 "source": "https://github.com/symfony/polyfill-php80/tree/v1.23.1"
             },
             "funding": [
@@ -3458,7 +3467,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.4 || ^8.0"
+        "php": "^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

@@ -86,10 +86,7 @@ class Payments extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $progreBar = null;
         try {
-            $payments = $this->auditFile->getSourceDocuments()
-                    ->getPayments(false);
-
-            if ($payments === null) {
+            if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments(false)){
                 \Logger::getLogger(\get_class($this))
                         ->debug(__METHOD__ . " no sales payments to be vaidated");
                 return $this->isValid;
@@ -144,7 +141,7 @@ class Payments extends ADocuments
                         "Payments"
                     )
                 );
-                $progreBar->start($nDoc);
+                $progreBar?->start($nDoc);
             }
 
             foreach (\array_keys($order) as $type) {
@@ -305,13 +302,16 @@ class Payments extends ADocuments
     protected function numberOfEntries(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $payments = $this->auditFile->getSourceDocuments()->getPayments();
+        
+        if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()){
+            return;
+        }
         $calculatedNumOfEntries = \count($payments->getPayment());
         $numberOfEntries = $payments->getNumberOfEntries();
         $test = $numberOfEntries === $calculatedNumOfEntries;
 
-        $this->auditFile->getSourceDocuments()->getPayments()
-                ->getDocTableTotalCalc()->setNumberOfEntries($calculatedNumOfEntries);
+        $this->auditFile->getSourceDocuments()?->getPayments()
+                ?->getDocTableTotalCalc()?->setNumberOfEntries($calculatedNumOfEntries);
 
         if ($test === false) {
             $msg = \sprintf(
@@ -334,11 +334,12 @@ class Payments extends ADocuments
     protected function totalDebit(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $payments = $this->auditFile->getSourceDocuments()
-                ->getPayments();
+        if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()){
+            return;
+        }
 
         $payments->getDocTableTotalCalc()
-                ->setTotalDebit($this->debit->valueOf());
+                ?->setTotalDebit($this->debit->valueOf());
 
         $diff = $this->debit->signedSubtract(
             new Decimal(
@@ -367,9 +368,12 @@ class Payments extends ADocuments
     protected function totalCredit(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $payments = $this->auditFile->getSourceDocuments()->getPayments();
+        
+        if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()){
+            return;
+        }
 
-        $payments->getDocTableTotalCalc()->setTotalCredit($this->credit->valueOf());
+        $payments->getDocTableTotalCalc()?->setTotalCredit($this->credit->valueOf());
 
         $diff = $this->credit->signedSubtract(
             new Decimal(
@@ -669,9 +673,9 @@ class Payments extends ADocuments
         $this->taxPayable->plusThis($lineSumTaxPayable->abs());
         $this->grossTotal = $this->netTotal->plus($this->taxPayable->abs());
 
-        $payment->getDocTotalcal()->setGrossTotal($this->grossTotal->valueOf());
-        $payment->getDocTotalcal()->setNetTotal($this->netTotal->valueOf());
-        $payment->getDocTotalcal()->setTaxPayable($this->taxPayable->valueOf());
+        $payment->getDocTotalcal()?->setGrossTotal($this->grossTotal->valueOf());
+        $payment->getDocTotalcal()?->setNetTotal($this->netTotal->valueOf());
+        $payment->getDocTotalcal()?->setTaxPayable($this->taxPayable->valueOf());
 
         if ($totalSettlement->isGreater(0.0)) {
             if ($payment->issetDocumentTotals()) {
@@ -1031,7 +1035,10 @@ class Payments extends ADocuments
             return;
         }
 
-        $currency = $payment->getDocumentTotals()->getCurrency();
+        if(null === $currency = $payment->getDocumentTotals()->getCurrency()){
+            return;
+        }
+        
         $currAmou = new UDecimal(
             $currency->getCurrencyAmount(), static::CALC_PRECISION
         );
@@ -1039,7 +1046,7 @@ class Payments extends ADocuments
             $currency->getExchangeRate(), static::CALC_PRECISION
         );
         $grossExchange = $currAmou->multiply($rate);
-        $payment->getDocTotalcal()->setGrossTotalFromCurrency($grossExchange->valueOf());
+        $payment->getDocTotalcal()?->setGrossTotalFromCurrency($grossExchange->valueOf());
         $calcCambio = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
 
         if ($calcCambio > $this->deltaCurrency) {

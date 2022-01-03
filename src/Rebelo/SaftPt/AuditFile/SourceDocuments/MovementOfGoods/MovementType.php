@@ -34,11 +34,11 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
  * “GA” – Transport document for own fixed assets;<br>
  * “GC” - Consignment note;<br>
  * “GD” – Return note.<br>
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GR()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GT()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GA()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GC()
- * @method \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GD()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GR()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GT()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GA()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GC()
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GD()
  * @author João Rebelo
  * @since 1.0.0
  */

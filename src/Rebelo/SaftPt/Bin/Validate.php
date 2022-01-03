@@ -420,7 +420,9 @@ class Validate extends Command
         $lang = $input->getOption(self::OPT_LANG);
         if (\is_string($lang)) {
 
-            $lang = \preg_replace("/^=/", "", $lang);
+            if(null === $lang = \preg_replace("/^=/", "", $lang)){
+                throw new \Exception("Failed apply preg_replace to '$lang'");
+            }
 
             switch (\strtolower($lang)) {
                 case null:
@@ -460,7 +462,9 @@ class Validate extends Command
 
         if (\is_string($logFile)) {
 
-            $logFile = \preg_replace("/^=/", "", $logFile);
+            if(null === $logFile = \preg_replace("/^=/", "", $logFile)){
+            throw new \Exception("Failed apply preg_replace to '$logFile'");
+            }
 
             if (\file_exists($logFile)) {
                 AuditFile::$log4phpConfigFilePath = $logFile;
@@ -508,7 +512,9 @@ class Validate extends Command
             );
         }
 
-        $pubKeyClean = \preg_replace("/^=/", "", $pubKey);
+        if(null === $pubKeyClean = \preg_replace("/^=/", "", $pubKey)){
+            throw new \Exception("Failed apply preg_replace to '$pubKey'");
+        }
 
         if (\file_exists($pubKeyClean) === false) {
             throw new \Exception(

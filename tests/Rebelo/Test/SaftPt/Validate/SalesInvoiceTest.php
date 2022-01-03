@@ -4751,7 +4751,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -4760,7 +4760,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -4798,7 +4798,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -4807,7 +4807,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -4845,7 +4845,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -4854,7 +4854,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -4892,7 +4892,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -4901,7 +4901,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -4939,7 +4939,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -4948,7 +4948,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -4990,7 +4990,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5028,7 +5028,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5065,7 +5065,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr = $from->getAddress();
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5074,7 +5074,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5113,7 +5113,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setStreetName("");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5122,7 +5122,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5159,7 +5159,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr = $from->getAddress();
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5168,7 +5168,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5206,7 +5206,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5215,7 +5215,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5261,7 +5261,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5299,7 +5299,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5341,7 +5341,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5383,7 +5383,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5393,7 +5393,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setStreetName("");
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5431,7 +5431,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5439,7 +5439,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr = $to->getAddress();
         $toAddr->setCity("Rio de Mouro");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5477,7 +5477,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5485,7 +5485,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr = $to->getAddress();
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5523,7 +5523,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5532,7 +5532,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5570,7 +5570,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5616,7 +5616,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5625,7 +5625,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Lisboa");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
@@ -5662,7 +5662,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $fromAddr->setAddressDetail("Rua das Escolas Gerais");
         $fromAddr->setCity("Lisboa");
         $fromAddr->setPostalCode("1100-999");
-        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $fromAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $to     = $invoice->getShipTo();
         $to->addDeliveryID("Delivery ID");
@@ -5671,7 +5671,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $toAddr->setAddressDetail("Estrada Marquês de Pombal");
         $toAddr->setCity("Lisboa");
         $toAddr->setPostalCode("2635-302");
-        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::PT());
+        $toAddr->setCountry(\Rebelo\SaftPt\AuditFile\Country::ISO_PT());
 
         $this->salesInvoice->shipement($invoice);
 
