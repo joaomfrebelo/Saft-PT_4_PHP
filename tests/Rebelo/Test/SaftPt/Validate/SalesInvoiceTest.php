@@ -1464,9 +1464,9 @@ class SalesInvoiceTest extends ASalesInvoiceBase
 
         $this->assertTrue($this->salesInvoice->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
-        $this->assertEmpty($salesInvoices->getError());        
+        $this->assertEmpty($salesInvoices->getError());
     }
-    
+
     /**
      * @author João Rebelo
      * @test
@@ -4118,7 +4118,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $net       = 100.00;
         $tax       = 23.00;
         $gross     = 123.00;
-        $delta     = 0.01;
+        $delta     = 0.02;
         $rate      = 0.5;
 
         /* @var $salesInvoices \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices */
@@ -6106,7 +6106,7 @@ class SalesInvoiceTest extends ASalesInvoiceBase
         $totals->setNetTotal($net);
         $totals->setTaxPayable($taxPayable);
 
-        //$withholdingTax = 
+        //$withholdingTax =
         $invoice->addWithholdingTax();
         //$withholdingTax->setWithholdingTaxAmount(10.0);
 
