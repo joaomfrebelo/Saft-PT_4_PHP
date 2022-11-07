@@ -6,6 +6,9 @@
       <option name="CUSTOM_RULESET_PATH" value="$PROJECT_DIR$/phpcs.xml" />
       <option name="EXTENSIONS" value="php,js,css,inc" />
     </inspection_tool>
+    <inspection_tool class="PhpFullyQualifiedNameUsageInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="IGNORE_GLOBAL_NAMESPACE" value="true" />
+    </inspection_tool>
     <inspection_tool class="PhpStanGlobal" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="config" value="$PROJECT_DIR$/phpstan.neon" />
     </inspection_tool>
