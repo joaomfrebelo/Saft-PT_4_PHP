@@ -37,7 +37,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo;
  *
  * @author João Rebelo
  */
-class WarehouseTest extends TestCase
+class WareHouseTest extends TestCase
 {
 
     /**
@@ -75,7 +75,7 @@ class WarehouseTest extends TestCase
                 )
             )
         );
-        $this->assertSame(50, \strlen($warehouse->getWarehouseID()));
+        $this->assertSame(50, \strlen($warehouse->getWarehouseID() ?? ""));
 
         $warehouse->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($warehouse->setWarehouseID(""));
@@ -90,7 +90,7 @@ class WarehouseTest extends TestCase
         $this->assertTrue(
             $warehouse->setLocationID(\str_pad($locationid, 99, "A"))
         );
-        $this->assertSame(30, \strlen($warehouse->getLocationID()));
+        $this->assertSame(30, \strlen($warehouse->getLocationID() ?? ""));
 
         $warehouse->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($warehouse->setLocationID(""));
@@ -99,6 +99,7 @@ class WarehouseTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
      * @test
      */
@@ -143,6 +144,7 @@ class WarehouseTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
      * @test
      */
@@ -196,6 +198,7 @@ class WarehouseTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
      * @test
      */
@@ -220,6 +223,7 @@ class WarehouseTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
      * @test
      */
