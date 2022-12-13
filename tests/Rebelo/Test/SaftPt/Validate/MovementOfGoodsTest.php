@@ -1680,7 +1680,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
     }
 
     /**
-     * 
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMov
      * @param bool $debit The line are to be debit
      * @return void
@@ -3381,7 +3381,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         $net       = 100.00;
         $tax       = 23.00;
         $gross     = 123.00;
-        $delta     = 0.01;
+        $delta     = 0.02;
         $rate      = 0.5;
 
         /* @var $movOfGoodsDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods */
@@ -4388,7 +4388,7 @@ class MovementOfGoodsTest extends \Rebelo\Test\SaftPt\Validate\AMovementOfGoodsB
         );
         $stockMov->getShipFrom()->addDeliveryID("AA-99-99");
         $this->createShipFrom($stockMov);
-        //$this->createShipTo($stockMov); 
+        //$this->createShipTo($stockMov);
         // Global not have ShipTo And Only Can be of type GT
         $stockMov->setMovementType(MovementType::GT());
 

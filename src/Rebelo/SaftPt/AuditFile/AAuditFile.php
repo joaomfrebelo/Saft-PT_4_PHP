@@ -34,7 +34,7 @@ use Rebelo\Date\Date as RDate;
  * Abstract of AAuditFile
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class AAuditFile
 {
@@ -82,28 +82,31 @@ abstract class AAuditFile
      * @var string[]
      * @since 1.0.0
      */
-    protected array $error = array();
+    protected array $error = [];
 
     /**
      * To regist particular warnings of documents or tables
      * @var string[]
      * @since 1.0.0
      */
-    protected array $warning = array();
+    protected array $warning = [];
 
     /**
      * Invoke the isset to the propertie name
+     *
      * @param string $name The propertie name to check
+     *
      * @return bool
      * @since 1.0.0
      */
-    public function __isset(string $name) : bool
+    public function __isset(string $name): bool
     {
         return isset($this->{$name});
     }
 
     /**
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -114,7 +117,9 @@ abstract class AAuditFile
 
     /**
      * Create the xml node for the object
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @since 1.0.0
      */
@@ -122,7 +127,9 @@ abstract class AAuditFile
 
     /**
      * Create the xml node for the object
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @since 1.0.0
      */
@@ -148,7 +155,7 @@ abstract class AAuditFile
                 \Logger::getLogger(\get_class($this))
                     ->debug(
                         \sprintf(
-                            __METHOD__." cloning error '%s'", $e->getMessage()
+                            __METHOD__ . " cloning error '%s'", $e->getMessage()
                         )
                     );
             }
@@ -160,31 +167,32 @@ abstract class AAuditFile
      * greater than $lentgh will return a truncated string
      *
      * @param string $string
-     * @param int $length
+     * @param int    $length
      * @param string $method
-     * @param bool $trucate If truncate is set to <code>false</code> and the string is bigger will throw AuditFileException
+     * @param bool   $trucate If truncate is set to <code>false</code> and the string is bigger will throw AuditFileException
+     *
      * @return string
      * @throws AuditFileException
      * @since 1.0.0
      */
     public static function valTextMandMaxCar(string $string, int $length,
                                              string $method,
-                                             bool $trucate = true): string
+                                             bool   $trucate = true): string
     {
         if ($trucate === false && \strlen($string) > $length) {
             $msg = \sprintf(
                 "string length '%s' is bigger than '\$length' '%s' ",
-                (string) \strlen($string), (string) $length
+                (string)\strlen($string), (string)$length
             );
             \Logger::getLogger(__CLASS__)
-                ->error(\sprintf($method." '%s'", $msg));
+                   ->error(\sprintf($method . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $subString = \substr(\trim($string), 0, $length);
         if (strlen($subString) === 0) {
             $msg = "string can not be empty";
             \Logger::getLogger(__CLASS__)
-                ->error(\sprintf($method." '%s'", $msg));
+                   ->error(\sprintf($method . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         return $subString;
@@ -192,14 +200,19 @@ abstract class AAuditFile
 
     /**
      * Validate Portuguese VAT Number
+     *
      * @param int $nif
+     *
      * @return bool
      * @since 1.0.0
      */
     public static function valPortugueseVatNumber(int $nif): bool
     {
-        if ((preg_match("/^[1235689]{1}[0-9]{8}$/", \strval($nif)) &&
-            self::validateMod11auxFunction(\strval($nif))) ||
+        $regPreg = "/^(1|2|3|45|5|6|70|71|72|74|75|77|78|79|8|90|91|98|99)+[0-9]{7,8}$/";
+
+        if ((preg_match($regPreg, \strval($nif)) &&
+             \strlen((string)$nif) === 9 &&
+             self::validateMod11auxFunction(\strval($nif))) ||
             $nif === 999999990) {
             return true;
         } else {
@@ -213,6 +226,7 @@ abstract class AAuditFile
      * number % 11 === 0
      *
      * @param string $nif
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -222,7 +236,7 @@ abstract class AAuditFile
             $nif = \str_pad($nif, 9, "0", STR_PAD_LEFT);
         }
         $checkerVal = 0;
-        $c          = array();
+        $c          = [];
         for ($i = \strlen($nif) - 1; $i >= 0; $i--) {
             $c[] = \intval(\substr($nif, $i, 1));
         }
@@ -249,14 +263,15 @@ abstract class AAuditFile
     /**
      * Format a float with grouped thousands
      *
-     * @param float $float The float to be format
-     * @param int $decimals Number of decimals
-     * @param string $decPoint The decimal separator
+     * @param float  $float        The float to be format
+     * @param int    $decimals     Number of decimals
+     * @param string $decPoint     The decimal separator
      * @param string $thousandsSep the thousends separator
+     *
      * @return string
      * @since 1.0.0
      */
-    public function floatFormat(float $float, int $decimals = 6,
+    public function floatFormat(float  $float, int $decimals = 6,
                                 string $decPoint = ".",
                                 string $thousandsSep = ""): string
     {
@@ -268,13 +283,15 @@ abstract class AAuditFile
 
     /**
      * Convert the encoded caracters encoded by SimpleXmlElment
+     *
      * @param string $string
+     *
      * @return string
      * @since 1.0.0
      */
     public static function replaceHexUtf(string &$string): string
     {
-        $utf    = array(
+        $utf    = [
             "&#xA1;" => "¡",
             "&#xA2;" => "¢",
             "&#xA3;" => "£",
@@ -369,7 +386,7 @@ abstract class AAuditFile
             "&#xFC;" => "ü",
             "&#xFD;" => "ý",
             "&#xFE;" => "þ",
-            "&#xFF;" => "ÿ");
+            "&#xFF;" => "ÿ"];
         $string = \str_replace(
             \array_keys($utf), $utf, $string
         );
@@ -378,7 +395,9 @@ abstract class AAuditFile
 
     /**
      * Set the language to translate
+     *
      * @param \Rebelo\SaftPt\AuditFile\i18n\AI18n $i18n
+     *
      * @return void
      * @since 1.0.0
      */
@@ -436,8 +455,10 @@ abstract class AAuditFile
 
     /**
      * Add a particular error
-     * @param string $error
+     *
+     * @param string      $error
      * @param string|null $field The field name with error, will be used as array key, if null array key will be numeric
+     *
      * @return void
      * @since 1.0.0
      */
@@ -452,7 +473,9 @@ abstract class AAuditFile
 
     /**
      * Add a particular warning
+     *
      * @param string $warning
+     *
      * @return void
      * @since 1.0.0
      */
@@ -470,7 +493,9 @@ abstract class AAuditFile
      *           &lt;xs:maxLength value="60"/&gt;
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
+     *
      * @param string $docNumber
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -484,32 +509,34 @@ abstract class AAuditFile
         }
         return true;
     }
-    
+
     /**
      * Calc the document period based on the fiscal year start month
-     * @param int $fiscalYearStartMonth
+     *
+     * @param int               $fiscalYearStartMonth
      * @param \Rebelo\Date\Date $docDate
+     *
      * @return int
-     * @throws CalcPeriodException
+     * @throws CalcPeriodException|\Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public static function calcPeriod(int $fiscalYearStartMonth, RDate $docDate) : int
+    public static function calcPeriod(int $fiscalYearStartMonth, RDate $docDate): int
     {
-        if($fiscalYearStartMonth < 1 || $fiscalYearStartMonth > 12){
+        if ($fiscalYearStartMonth < 1 || $fiscalYearStartMonth > 12) {
             throw new CalcPeriodException("wrong fiscal year start month");
         }
-        
+
         $docMonth = (int)$docDate->format(RDate::MONTH_SHORT);
-        
-        if($fiscalYearStartMonth === 1){
+
+        if ($fiscalYearStartMonth === 1) {
             return $docMonth;
         }
-        
-        if($docMonth >= $fiscalYearStartMonth){
+
+        if ($docMonth >= $fiscalYearStartMonth) {
             return ($docMonth - $fiscalYearStartMonth) + 1;
         }
-        
+
         return (13 - $fiscalYearStartMonth) + $docMonth;
     }
-    
+
 }

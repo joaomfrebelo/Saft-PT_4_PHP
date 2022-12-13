@@ -407,7 +407,7 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
         $this->assertEmpty($workingDocs->getError());
         $this->assertEmpty($workDoc->getError());
     }
-    
+
     /**
      * @author João Rebelo
      * @depends testDocumentStatus
@@ -486,10 +486,10 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
         $this->assertEmpty($workingDocs->getError());
         $this->assertNotEmpty($workDoc->getError());
     }
-    
-    
-    
-    
+
+
+
+
 
     /**
      * @author João Rebelo
@@ -1570,7 +1570,7 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
     }
 
     /**
-     * 
+     *
      * @param WorkDocument $workDoc
      * @param bool $debit The line are to be debit
      * @return void
@@ -3648,7 +3648,7 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
         $net       = 100.00;
         $tax       = 23.00;
         $gross     = 123.00;
-        $delta     = 0.01;
+        $delta     = 0.02;
         $rate      = 0.5;
 
         /* @var $workingDocs \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments */
@@ -4522,7 +4522,7 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($workDoc->getError());
     }
-    
+
     /**
      * @author João Rebelo
      * @return array
@@ -4547,7 +4547,7 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
     }
 
     /**
-     * 
+     *
      * @param RDate $date
      * @param WorkType $type@author João Rebelo
      * @test
@@ -4596,7 +4596,7 @@ class WorkingDocumentsTest extends AWorkingDocumentsBase
     }
 
     /**
-     * 
+     *
      * @param RDate $date
      * @param WorkType $type
      * @author João Rebelo

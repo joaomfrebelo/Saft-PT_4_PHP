@@ -2465,7 +2465,7 @@ class PaymentsTest extends \Rebelo\Test\SaftPt\Validate\APaymentsBase
         $net       = 100.00;
         $tax       = 23.00;
         $gross     = 123.00;
-        $delta     = 0.01;
+        $delta     = 0.02;
         $rate      = 0.5;
 
         /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
@@ -3358,7 +3358,7 @@ class PaymentsTest extends \Rebelo\Test\SaftPt\Validate\APaymentsBase
         $totals->setNetTotal($net);
         $totals->setTaxPayable($taxPayable);
 
-        //$withholdingTax = 
+        //$withholdingTax =
         $payment->addWithholdingTax();
         //$withholdingTax->setWithholdingTaxAmount(10.0);
 
