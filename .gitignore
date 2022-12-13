@@ -12,3 +12,4 @@ logs
 .composer.lock
 .project
 tools
+.idea

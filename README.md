@@ -27,7 +27,7 @@ $auditFile->validate();
 if ($auditFile->getErrorRegistor()->hasErrors()) {
     // Do stuff
 } else {
-    // read and integrate data to you database ERP 
+    // read and integrate data to you database ERP
 }
 ```
 
@@ -124,15 +124,20 @@ https://www.pchouse.pt
 
 joao.rebelo@pchouse.pt
 
-| Features                       | CE  | EE  |
-| ------------------------------ |:---:|:---:|
-| Generate SAFT                  | yes | yes |
-| Parse SAFT                     | yes | yes |
-| Create hash signature          | yes | yes |
-| Validate file programmatically | yes | yes |
-| Validate file CLI              | yes | yes |
-| Validate hash signature        | yes | yes |
-| Submit file to e-fatura        | no  | yes |
+| Features                                          | CE  | EE  |
+|---------------------------------------------------|:---:|:---:|
+| Generate SAFT                                     | yes | yes |
+| Parse SAFT                                        | yes | yes |
+| Create hash signature                             | yes | yes |
+| Validate file programmatically                 | yes | yes |
+| Validate file CLI                                 | yes | yes |
+| Validate hash signature                           | yes | yes |
+| Submit file to e-fatura                           | no  | yes |
+| Create XML file in memory                         | yes | yes |
+| Create XML file with StreamWriter to save memory  | no  | yes |
+| Integration with DataSource                       | no  | yes |
+| Easy to integrate with Unit test                  | yes | yes |
+| Integration with other languages (With midleware) |     | yes |
 
 ### License
 
