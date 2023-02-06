@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -25,8 +25,6 @@
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
-
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * AddressPT<br>
@@ -54,7 +52,7 @@ class SupplierAddress extends AAddress
 
     /**
      * &lt;xs:complexType name="SupplierAddressStructure">
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
      * @since 1.0.0
      */
     function __construct(ErrorRegister $errorRegister)
@@ -72,7 +70,7 @@ class SupplierAddress extends AAddress
     public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCode));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->postalCode));
         return $this->postalCode;
     }
 
@@ -144,7 +142,7 @@ class SupplierAddress extends AAddress
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->suplierCountry->get()
                 )
             );
@@ -169,7 +167,6 @@ class SupplierAddress extends AAddress
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement

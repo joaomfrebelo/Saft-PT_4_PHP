@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -25,9 +25,6 @@
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
-
-use Rebelo\SaftPt\AuditFile\Address;
-use Rebelo\SaftPt\AuditFile\AddressPT;
 
 /**
  * AAddress<br>
@@ -85,7 +82,7 @@ abstract class AAddress extends AAuditFile
     /**
      * &lt;xs:element ref="BuildingNumber" minOccurs="0"/&gt;
      * &lt;xs:element name="BuildingNumber" type="SAFPTtextTypeMandatoryMax10Car"/&gt;
-     * @var string
+     * @var string|null
      * @since 1.0.0
      */
     protected ?string $buildingNumber = null;
@@ -93,7 +90,7 @@ abstract class AAddress extends AAuditFile
     /**
      * &lt;xs:element ref="StreetName" minOccurs="0"/&gt;
      * &lt;xs:element name="StreetName" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
-     * @var string
+     * @var string|null
      * @since 1.0.0
      */
     protected ?string $streetName = null;
@@ -101,7 +98,7 @@ abstract class AAddress extends AAuditFile
     /**
      * &lt;xs:element ref="AddressDetail"/&gt;
      * &lt;xs:element name="AddressDetail" type="SAFPTtextTypeMandatoryMax210Car"/&gt;
-     * @var string
+     * @var string|null
      * @since 1.0.0
      */
     protected ?string $addressDetail = null;
@@ -117,7 +114,7 @@ abstract class AAddress extends AAuditFile
     /**
      * &lt;xs:element ref="Region" minOccurs="0"/&gt;
      * &lt;xs:element name="Region" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
-     * @var string
+     * @var string|null
      * @since 1.0.0
      */
     protected ?string $region = null;
@@ -152,7 +149,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->buildingNumber === null ? "null" : $this->buildingNumber
                 )
             );
@@ -170,7 +167,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->streetName === null ? "null" : $this->streetName
                 )
             );
@@ -190,7 +187,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->addressDetail === null ? "null" : $this->addressDetail
                 )
             );
@@ -208,7 +205,7 @@ abstract class AAddress extends AAuditFile
     public function getCity(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->city));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->city));
         return $this->city;
     }
 
@@ -234,7 +231,7 @@ abstract class AAddress extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->region === null ? "null" : $this->region
                 )
             );
@@ -394,11 +391,10 @@ abstract class AAddress extends AAuditFile
      * Create the child nodes to the address<br>
      * In the case of this nodeXml, address only will create the address
      * child node, the address root node will be created by the invoker
-     * because cane be CompanyAddress or SupplierAddres or CustomerAddress, etc
+     * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -435,7 +431,7 @@ abstract class AAddress extends AAuditFile
             } elseif ($this instanceof AddressPT) {
                 $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
             } else {
-                $msg = "unknow address class instande to get the postal code";
+                $msg = "unknown address class instance to get the postal code";
                 throw new AuditFileException($msg);
             }
         } catch (\Exception | \Error $e) {

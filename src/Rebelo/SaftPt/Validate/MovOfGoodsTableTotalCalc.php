@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 /**
- * Recalcuted Doc table values for Movement of goods
+ * Recalculated Doc table values for Movement of goods
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -35,13 +35,13 @@ namespace Rebelo\SaftPt\Validate;
 class MovOfGoodsTableTotalCalc
 {
     /**
-     * @var int $numberOfMovementLines
+     * @var int|null $numberOfMovementLines
      * @since 1.0.0
      */
     protected ?int $numberOfMovementLines = null;
 
     /**
-     * @var float $totalQuantityIssued
+     * @var float|null $totalQuantityIssued
      * @since 1.0.0
      */
     protected ?float $totalQuantityIssued = null;
@@ -70,7 +70,7 @@ class MovOfGoodsTableTotalCalc
      * @return float|null
      * @since 1.0.0
      */
-    public function geTtotalQuantityIssued(): ?float
+    public function getTotalQuantityIssued(): ?float
     {
         return $this->totalQuantityIssued;
     }

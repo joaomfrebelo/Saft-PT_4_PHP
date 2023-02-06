@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
@@ -48,7 +49,7 @@ use Rebelo\Date\Date as RDate;
  * @author João Rebelo
  * @since 1.0.0
  */
-class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class DocumentStatus extends AAuditFile
 {
     /**
      * Node Name
@@ -180,7 +181,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->paymentStatus->get()
                 )
             );
@@ -231,6 +232,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getPaymentStatusDate(): RDate
@@ -238,7 +240,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->paymentStatusDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -267,6 +269,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param \Rebelo\Date\Date $paymentStatusDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setPaymentStatusDate(RDate $paymentStatusDate): void
@@ -294,7 +297,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->reason === null ? "null" : $this->reason
                 )
             );
@@ -344,7 +347,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getSourceID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->sourceID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
@@ -407,7 +410,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->sourcePayment->get()
                 )
             );
@@ -460,6 +463,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -528,6 +532,9 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse XML node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

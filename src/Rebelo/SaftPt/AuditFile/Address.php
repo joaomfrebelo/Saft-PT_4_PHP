@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,7 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
-use Rebelo\SaftPt\AuditFile\MasterFiles\Customer;
 
 /**
  * AddressPT<br>
@@ -67,7 +66,7 @@ class Address extends AAddress
     public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCode));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->postalCode));
         return $this->postalCode;
     }
 
@@ -133,7 +132,7 @@ class Address extends AAddress
     public function getCountry(): Country
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->country->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->country->get()));
         return $this->country;
     }
 
@@ -155,8 +154,7 @@ class Address extends AAddress
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws AuditFileException
-     * @since 1.0.0
+	 * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {

@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,8 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Rebelo\Decimal\DecimalException;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\Sign\Sign;
 use Rebelo\Decimal\UDecimal;
 use Rebelo\Decimal\Decimal;
@@ -50,7 +52,7 @@ use Rebelo\Date\Date as RDate;
 /**
  * Validate SalesInvoices table.<br>
  * This class will validate the values of SalesInvoices, the
- * signtuare hash and dates
+ * signature hash and dates
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -64,6 +66,7 @@ class SalesInvoices extends ADocuments
      * signtuare hash and dates
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile The AuditFile to be validated
      * @param \Rebelo\SaftPt\Sign\Sign $sign The sign class to be used to validate the hash, must have the public key defined
+     * @throws DecimalException
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
@@ -74,11 +77,9 @@ class SalesInvoices extends ADocuments
         $sourceDoc = $auditFile->getSourceDocuments(false);
         if ($sourceDoc !== null) {
             $salesInvoices = $sourceDoc->getSalesInvoices(false);
-            if ($salesInvoices !== null) {
-                $salesInvoices->setDocTableTotalCalc(
-                    new \Rebelo\SaftPt\Validate\DocTableTotalCalc()
-                );
-            }
+            $salesInvoices?->setDocTableTotalCalc(
+                new DocTableTotalCalc()
+            );
         }
     }
 
@@ -90,11 +91,11 @@ class SalesInvoices extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $progreBar = null;
+        $progressBar = null;
         try {
             if(null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices(false)){
                 \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." no sales invoices to be vaidated");
+                    ->debug(__METHOD__." no sales invoices to be validated");
                 return $this->isValid;
             }
 
@@ -137,9 +138,8 @@ class SalesInvoices extends ADocuments
 
             if ($this->getStyle() !== null) {
                 $nDoc      = \count($salesInvoices->getInvoice());
-                /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
                 $section   = null;
-                $progreBar = $this->getStyle()->addProgressBar($section);
+                $progressBar = $this->getStyle()->addProgressBar($section);
                 $section->writeln("");
                 $section->writeln(
                     \sprintf(
@@ -147,18 +147,15 @@ class SalesInvoices extends ADocuments
                         "Invoice"
                     )
                 );
-                $progreBar?->start($nDoc);
+                $progressBar?->start($nDoc);
             }
 
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
 
-                        if ($progreBar !== null) {
-                            $progreBar->advance();
-                        }
+                        $progressBar?->advance();
 
-                        /* @var $invoice \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice */
                         $invoice = $order[$type][$serie][$no];
                         list(, $no) = \explode("/", $invoice->getInvoiceNo());
                         if ((string) $type !== $this->lastType || (string) $serie
@@ -191,18 +188,14 @@ class SalesInvoices extends ADocuments
                 }
             }
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progressBar?->finish();
 
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -342,6 +335,8 @@ class SalesInvoices extends ADocuments
     /**
      * Validate SalesInvoices TotalDebit
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalDebit(): void
@@ -377,6 +372,8 @@ class SalesInvoices extends ADocuments
     /**
      * Validate SalesInvoices TotalCredit
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalCredit(): void
@@ -411,6 +408,7 @@ class SalesInvoices extends ADocuments
      * Validate the Document Status
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(Invoice $invoice): void
@@ -456,7 +454,6 @@ class SalesInvoices extends ADocuments
             $invoice->addError($msg, DocumentStatus::N_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
-            return;
         }
     }
 
@@ -503,6 +500,9 @@ class SalesInvoices extends ADocuments
      * validate each line of the Invoice
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function lines(Invoice $invoice): void
@@ -786,7 +786,7 @@ class SalesInvoices extends ADocuments
             $this->taxPayable->plusThis($lineTaxCal);
 
             if (\count($line->getReferences()) > 0) {
-                $this->refernces($line, $invoice);
+                $this->references($line, $invoice);
             }
             if (\count($line->getOrderReferences()) > 0) {
                 $this->orderReferences($line, $invoice);
@@ -840,7 +840,6 @@ class SalesInvoices extends ADocuments
 
         if ($hasCredit && $hasDebit && $this->allowDebitAndCredit) {
             foreach ($invoice->getLine() as $line) {
-                /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line */
                 if ($invoice->getInvoiceType()->isEqual("NC")) {
                     foreach ($anulaCreditQt as $code => $qt) {
                         if (\array_key_exists($code, $anulaDebitQt)) {
@@ -938,7 +937,7 @@ class SalesInvoices extends ADocuments
      * @return void
      * @since 1.0.0
      */
-    public function refernces(Line $line, Invoice $invoice): void
+    public function references(Line $line, Invoice $invoice): void
     {
         if (\in_array($invoice->getInvoiceType()->get(), ["NC", "ND"]) === false) {
             $msg           = \sprintf(
@@ -969,7 +968,6 @@ class SalesInvoices extends ADocuments
         $hasRef    = false;
         $hasReason = false;
         foreach ($line->getReferences() as $reference) {
-            /* @var $reference \Rebelo\SaftPt\AuditFile\SourceDocuments\References */
             if ($reference->getReference() !== null) {
                 $hasRef = true;
                 if (AAuditFile::validateDocNumber($reference->getReference()) === false) {
@@ -1014,7 +1012,6 @@ class SalesInvoices extends ADocuments
             $line->addError($msg, References::N_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
-            return;
         }
     }
 
@@ -1023,6 +1020,7 @@ class SalesInvoices extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function orderReferences(Line $line, Invoice $invoice): void
@@ -1042,7 +1040,6 @@ class SalesInvoices extends ADocuments
         }
 
         foreach ($line->getOrderReferences() as $orderRef) {
-            /* @var $orderRef \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences */
             if ($orderRef->getOriginatingON() === null) {
                 $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
@@ -1142,6 +1139,7 @@ class SalesInvoices extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, Invoice $invoice): void
@@ -1249,7 +1247,7 @@ class SalesInvoices extends ADocuments
         }
 
 
-        if ($lineTax->getTaxCode() !== TaxCode::ISE &&
+        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
             $lineTax->getTaxPercentage() !== 0.0 &&
             ($line->getTaxExemptionCode() !== null ||
             $line->getTaxExemptionReason() !== null)
@@ -1304,9 +1302,11 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the document total, only can be invoked after
-     * validate lines (Because total controls are getted from that validation)
+     * validate lines (Because total controls are get from that validation)
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(Invoice $invoice): void
@@ -1404,10 +1404,7 @@ class SalesInvoices extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError(
-                $msg,
-                \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency::N_EXCHANGERATE
-            );
+            $totals->addError($msg, Currency::N_EXCHANGERATE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1417,6 +1414,9 @@ class SalesInvoices extends ADocuments
      * Test if the signature is valide or not
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
     protected function sign(Invoice $invoice): void
@@ -1489,6 +1489,7 @@ class SalesInvoices extends ADocuments
      * Validate shipement data
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function shipement(Invoice $invoice): void
@@ -1690,6 +1691,7 @@ class SalesInvoices extends ADocuments
      * Validate the Invoice date nad SystemEntrydate
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function invoiceDateAndSystemEntryDate(Invoice $invoice): void
@@ -1758,6 +1760,8 @@ class SalesInvoices extends ADocuments
      * Validate the Payment
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function payment(Invoice $invoice): void
@@ -1777,7 +1781,6 @@ class SalesInvoices extends ADocuments
 
         $totalPayMeth = new UDecimal(0.0, static::CALC_PRECISION);
 
-        /* @var $payMet \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod */
         foreach ($invoice->getDocumentTotals()->getPayment() as $payMet) {
             if ($payMet->issetPaymentAmount()) {
                 $totalPayMeth->plusThis($payMet->getPaymentAmount());
@@ -1814,7 +1817,6 @@ class SalesInvoices extends ADocuments
                 $diff           = $totalPayMeth->signedSubtract($gross);
                 $sumWithholding = new UDecimal(0.0, static::CALC_PRECISION);
                 foreach ($invoice->getWithholdingTax() as $withholding) {
-                    /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
                     if ($withholding->issetWithholdingTaxAmount()) {
                         $sumWithholding->plusThis($withholding->getWithholdingTaxAmount());
                     }
@@ -1846,7 +1848,6 @@ class SalesInvoices extends ADocuments
                     $invoice->addError($msg);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
-                    return;
                 }
             }
         }
@@ -1856,13 +1857,13 @@ class SalesInvoices extends ADocuments
      * Validate the withholdingTax
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
      * @since 1.0.0
      */
     protected function withholdingTax(Invoice $invoice): void
     {
         $totalTax = new UDecimal(0.0, static::CALC_PRECISION);
         foreach ($invoice->getWithholdingTax() as $withholding) {
-            /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
             if ($withholding->issetWithholdingTaxAmount() === false) {
                 $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
@@ -1906,7 +1907,6 @@ class SalesInvoices extends ADocuments
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $invoice->addWarning($msg);
                     \Logger::getLogger(\get_class($this))->info($msg);
-                    return;
                 }
             }
         }
@@ -1916,6 +1916,8 @@ class SalesInvoices extends ADocuments
      * Validate if exists invoice types out of date
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @since 1.0.0
      */
     protected function outOfDateInvoiceTypes(Invoice $invoice): void

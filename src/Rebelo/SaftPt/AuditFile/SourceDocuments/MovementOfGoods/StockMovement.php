@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -38,8 +39,9 @@ use Rebelo\SaftPt\AuditFile\AAuditFile;
  *
  * @author João Rebelo
  * @since 1.0.0
+ * @method addStockMovement()
  */
-class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
+class StockMovement extends ADocument
 {
     /**
      *
@@ -281,7 +283,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     public function getDocumentNumber(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->documentNumber));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->documentNumber));
         return $this->documentNumber;
     }
 
@@ -350,7 +352,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "DocumentSatus"));
+            ->info(\sprintf(__METHOD__." get '%s'", "DocumentSatus"));
         return $this->documentStatus;
     }
 
@@ -385,6 +387,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element ref="MovementDate"/&gt;<br>
      * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
      * @return \Rebelo\Date\Date
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementDate(): RDate
@@ -392,7 +395,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementDate->format(RDate::SQL_DATE)
                 )
             );
@@ -418,6 +421,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
      * @param \Rebelo\Date\Date $movementDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementDate(RDate $movementDate): void
@@ -449,7 +453,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementType->get()
                 )
             );
@@ -515,10 +519,9 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $msg              = "Can not set CustomerID if SupplierID is setted";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            $return           = false;
             $this->getErrorRegistor()->addOnSetValue("CustomerID_and_SupplierID_at_same_time");
             $this->customerID = $customerID;
-            return $return;
+            return false;
         } else {
             return parent::setCustomerID($customerID);
         }
@@ -547,7 +550,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", $this->supplierID
+                    __METHOD__." get '%s'", $this->supplierID
                 )
             );
         return $this->supplierID;
@@ -624,7 +627,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementComments === null ? "null" : $this->movementComments
                 )
             );
@@ -682,7 +685,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
         \Logger::getLogger(\get_class($this))
             ->info(
-                \sprintf(__METHOD__." getted '%s'", "ShipTo")
+                \sprintf(__METHOD__." get '%s'", "ShipTo")
             );
         return $this->shipTo;
     }
@@ -714,7 +717,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", "ShipFrom"
+                    __METHOD__." get '%s'", "ShipFrom"
                 )
             );
         return $this->shipFrom;
@@ -737,6 +740,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementEndTime(): ?RDate
@@ -744,7 +748,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementEndTime === null ?
                         "null" : $this->movementEndTime->format(RDate::DATE_T_TIME)
                 )
@@ -760,6 +764,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date|null $movementEndTime
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementEndTime(?RDate $movementEndTime): void
@@ -783,6 +788,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementStartTime(): RDate
@@ -790,7 +796,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
             );
@@ -815,6 +821,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date $movementStartTime
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementStartTime(RDate $movementStartTime): void
@@ -843,7 +850,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->atDocCodeID === null ? "null" : $this->atDocCodeID
                 )
             );
@@ -896,7 +903,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted stack with '%s' elements",
+                    __METHOD__." get stack with '%s' elements",
                     \count($this->line)
                 )
             );
@@ -951,6 +958,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -1039,7 +1047,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         $this->getTransactionID(false)?->createXmlNode($stkMov);
-       
+
         if (isset($this->customerID) === false && isset($this->supplierID) === false) {
             $msg = "CustomerID or SupplierID must be setted";
             \Logger::getLogger(\get_class($this))
@@ -1072,7 +1080,7 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             );
         }
 
-        $this->getShipTo(false)?->createXmlNode($stkMov);        
+        $this->getShipTo(false)?->createXmlNode($stkMov);
         $this->getShipFrom(false)?->createXmlNode($stkMov);
 
         if ($this->getMovementEndTime() !== null) {
@@ -1104,7 +1112,6 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         foreach ($this->getLine() as $line) {
-            /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line */
             $line->createXmlNode($stkMov);
         }
 
@@ -1122,6 +1129,9 @@ class StockMovement extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * Parse XML node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -25,6 +25,9 @@
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
+
+use Rebelo\Enum\AEnum;
+use Rebelo\Enum\EnumException;
 
 /**
  * InvoiceType<br>
@@ -62,7 +65,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
  * @author João Rebelo
  * @since 1.0.0
  */
-class InvoiceType extends \Rebelo\Enum\AEnum
+class InvoiceType extends AEnum
 {
     /**
      * “FT” - Invoice issued according to article 36 of the VAT code;
@@ -176,7 +179,8 @@ class InvoiceType extends \Rebelo\Enum\AEnum
      * “LD” - Imputation to a leader co-insurance company;
      * “RA” - Accepted reinsurance. (a) For data up to 2012-12-31.
      * @param string $value
-     * @return string
+     * @return void
+     * @throws EnumException
      * @since 1.0.0
      */
     public function __construct(string $value)

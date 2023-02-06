@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -77,7 +77,7 @@ abstract class AAuditFile
     protected ErrorRegister $errorRegister;
 
     /**
-     * To registe particular validation and errors of documents or tables,
+     * To register particular validation and errors of documents or tables,
      * the key must be the field name
      * @var string[]
      * @since 1.0.0
@@ -85,16 +85,16 @@ abstract class AAuditFile
     protected array $error = [];
 
     /**
-     * To regist particular warnings of documents or tables
+     * To register particular warnings of documents or tables
      * @var string[]
      * @since 1.0.0
      */
     protected array $warning = [];
 
     /**
-     * Invoke the isset to the propertie name
+     * Invoke the isset to the propertied name
      *
-     * @param string $name The propertie name to check
+     * @param string $name The propertied name to check
      *
      * @return bool
      * @since 1.0.0
@@ -144,7 +144,6 @@ abstract class AAuditFile
         $refClass = new \ReflectionClass($this);
 
         foreach ($refClass->getProperties() as $prop) {
-            /* @var $prop \ReflectionProperty */
             $prop->setAccessible(true);
             try {
                 $value = $prop->getValue($this);
@@ -164,7 +163,7 @@ abstract class AAuditFile
 
     /**
      * Validate the string if length is zero throws AuditFileException, if
-     * greater than $lentgh will return a truncated string
+     * greater than $length will return a truncated string
      *
      * @param string $string
      * @param int    $length
@@ -182,7 +181,7 @@ abstract class AAuditFile
         if ($trucate === false && \strlen($string) > $length) {
             $msg = \sprintf(
                 "string length '%s' is bigger than '\$length' '%s' ",
-                (string)\strlen($string), (string)$length
+                \strlen($string), $length
             );
             \Logger::getLogger(__CLASS__)
                    ->error(\sprintf($method . " '%s'", $msg));
@@ -263,7 +262,7 @@ abstract class AAuditFile
     /**
      * Format a float with grouped thousands
      *
-     * @param float  $float        The float to be format
+     * @param float  $float        The float to be formatted
      * @param int    $decimals     Number of decimals
      * @param string $decPoint     The decimal separator
      * @param string $thousandsSep the thousends separator

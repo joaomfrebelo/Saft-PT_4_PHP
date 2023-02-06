@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -135,7 +135,6 @@ class en_GB extends AI18n
         $this->stack["WorkStatusDate_not_valid"]                                 = "'WorkStatusDate' is not valid";
         $this->stack["SourceBilling_not_valid"]                                  = "'SourceBilling' is not valid";
         $this->stack["DocumentNumber_not_valid"]                                 = "'DocumentNumber' is not valid";
-        $this->stack["Atcud_not_valid"]                                          = "'Atcud' is not valid";
         $this->stack["DocumentStatus_not_valid"]                                 = "'DocumentStatus' is not valid";
         $this->stack["DocumentTotals_not_valid"]                                 = "'DocumentTotals' is not valid";
         $this->stack["WorkDate_not_valid"]                                       = "'WorkDate' is not valid";
@@ -263,7 +262,6 @@ class en_GB extends AI18n
         $this->stack["doc_date_not_cheked_start_end_header_date"]                = "Can not check if the document date '%s' is out of range of the start and end date defined in the 'Header'";
         $this->stack["doc_date_earlier_previous_doc"]                            = "The document '%s' has date earlier than the previous document of the same serie";
         $this->stack["signature_not_valid"]                                      = "The digital signature hash of document '%s' is not valid";
-        $this->stack["doc_systementrydate_earlier_previous_doc"]                 = "The 'SystemEntryDate' of document '%s' is earlier than precious document";
         $this->stack["document_without_lines"]                                   = "The document '%s' has no lines";
         $this->stack["shipfrom_delivery_date_later_shipto_delivery_date"]        = "The 'DeliveryDate' of document '%s' is later";
         $this->stack["stockmov_must_have_mov_start_time"]                        = "Stock movement document '%s' must have to have the 'MovementStartTime' defined";

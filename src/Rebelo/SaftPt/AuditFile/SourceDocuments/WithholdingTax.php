@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
@@ -37,7 +38,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
  * @author João Rebelo
  * @since 1.0.0
  */
-class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class WithholdingTax extends AAuditFile
 {
     /**
      * Node name
@@ -65,7 +66,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * &lt;xs:element ref="WithholdingTaxType" minOccurs="0"/&gt;
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTaxType|null
      * @since 1.0.0
      */
     private ?WithholdingTaxType $withholdingTaxType = null;
@@ -95,7 +96,6 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *         &lt;xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/&gt;
      *     &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -118,7 +118,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->withholdingTaxType === null ?
                     "null" : $this->withholdingTaxType->get()
                 )
@@ -164,7 +164,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->withholdingTaxDescription === null ?
                     "null" : $this->withholdingTaxDescription
                 )
@@ -179,7 +179,6 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="WithholdingTaxDescription" type="SAFPTtextTypeMandatoryMax60Car" minOccurs="0"/&gt;
      * @param string|null $withholdingTaxDescription
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setWithholdingTaxDescription(?string $withholdingTaxDescription): bool
@@ -221,7 +220,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->withholdingTaxAmount)
                 )
             );
@@ -244,8 +243,7 @@ class WithholdingTax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="WithholdingTaxAmount" type="SAFmonetaryType"/&gt;
      * @param float $withholdingTaxAmount
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @since 1.0.0
+	 * @since 1.0.0
      */
     public function setWithholdingTaxAmount(float $withholdingTaxAmount): bool
     {

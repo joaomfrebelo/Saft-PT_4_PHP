@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 
@@ -35,7 +36,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class CustomsInformation extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class CustomsInformation extends AAuditFile
 {
     /**
      * Node name
@@ -105,7 +106,7 @@ class CustomsInformation extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getArcNo(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->arcNo;
     }
 
@@ -155,7 +156,7 @@ class CustomsInformation extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->iecAmount === null ? "null" :
                     \strval($this->iecAmount)
                 )
@@ -170,7 +171,6 @@ class CustomsInformation extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * in the document with the "ProductType" = E.
      * @param float|null $iecAmount
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setIecAmount(?float $iecAmount): bool

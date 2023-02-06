@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 
@@ -34,7 +35,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  *
  * @author João Rebelo
  */
-abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class ACustomerSupplier extends AAuditFile
 {
     /**
      * Node name
@@ -159,7 +160,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * Gets as accountID<br>
      * The respective current account must be indicated in the general
-     * accounting plan, if it is defined. Otherwise the field shall be filled
+     * accounting plan, if it is defined. Otherwise, the field shall be filled
      * in with the designation “Desconhecido” (Unknown).
      *
      * <pre>
@@ -182,7 +183,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getAccountID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->accountID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->accountID));
         return $this->accountID;
     }
 
@@ -199,7 +200,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * Sets AccountID<br>
      * The respective current account must be indicated in the general
-     * accounting plan, if it is defined. Otherwise the field shall be filled
+     * accounting plan, if it is defined. Otherwise, the field shall be filled
      * in with the designation “Desconhecido” (Unknown).
      * <pre>
      * &lt;xs:element ref="AccountID"/&gt;
@@ -261,7 +262,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getCompanyName(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->companyName));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->companyName));
         return $this->companyName;
     }
 
@@ -320,7 +321,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->contact === null ? "null" : $this->contact
                 )
             );
@@ -374,7 +375,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->telephone === null ? "null" : $this->telephone
                 )
             );
@@ -424,7 +425,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->fax === null ? "null" : $this->fax
                 )
             );
@@ -475,7 +476,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->email === null ? "null" : $this->email
                 )
             );
@@ -531,7 +532,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->website === null ? "null" : $this->website
                 )
             );
@@ -545,7 +546,6 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *
      * @param string|null $website
      * @return bool true if the value is valid
-     * @throws AuditFileException
      * @since 1.0.0
      */
     public function setWebsite(?string $website): bool
@@ -598,7 +598,7 @@ abstract class ACustomerSupplier extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->website ? "true" : "false"
                 )
             );

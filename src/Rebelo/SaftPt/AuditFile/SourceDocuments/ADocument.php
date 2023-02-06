@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\TransactionID;
@@ -38,7 +39,7 @@ use Rebelo\SaftPt\Validate\DocTotalCalc;
  * @author João Rebelo
  * @since 1.0.0
  */
-abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class ADocument extends AAuditFile
 {
     /**
      * Node name
@@ -96,7 +97,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * The calulated values made by the validation classes
-     * @var \Rebelo\SaftPt\Validate\DocTotalCalc
+     * @var \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
     protected ?DocTotalCalc $docTotalcal = null;
@@ -230,7 +231,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getAtcud(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->atcud));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->atcud));
         return $this->atcud;
     }
 
@@ -290,7 +291,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getHash(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->hash));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->hash));
         return $this->hash;
     }
 
@@ -355,7 +356,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getHashControl(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->hashControl));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->hashControl));
         return $this->hashControl;
     }
 
@@ -392,7 +393,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setHashControl(string $hashControl): bool
     {
         $pattern = "/[0-9]+|[0-9]+[.][0-9]+|[0-9]+-[A-Z]{2}(M )"
-            ."([^ ]+[\/][0-9]+)|[0-9]+-[A-Z]{2}(D )([^ ]+ [^\/^ ]+[\/][0-9]+)/";
+            ."([^ ]+\/[0-9]+)|[0-9]+-[A-Z]{2}(D )([^ ]+ [^\/^ ]+\/[0-9]+)/";
         if (\strlen($hashControl) < 1 ||
             \strlen($hashControl) > 70 ||
             \preg_match($pattern, $hashControl) !== 1) {
@@ -431,7 +432,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getPeriod(): ?int
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->period));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->period));
         return $this->period;
     }
 
@@ -490,7 +491,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getSourceID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->sourceID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
@@ -557,7 +558,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->eacCode === null ? "null" : $this->eacCode
                 )
             );
@@ -584,7 +585,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setEacCode(?string $eacCode): bool
     {
         if ($eacCode !== null &&
-            (\strlen($eacCode) !== 5 || \preg_match("/(([0-9]*))/", $eacCode) !== 1)) {
+            (\strlen($eacCode) !== 5 || \preg_match("/([0-9]*)/", $eacCode) !== 1)) {
             $msg    = "EacCode must be null or have a length 5 and respect the regexp";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -610,7 +611,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Shall include hour, minute and second. Date and time type: “YYYY–MM–DDThh:mm:ss”.<br>
      * &lt;xs:element ref = "SystemEntryDate"/&gt;
      * @return \Rebelo\Date\Date
-     * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getSystemEntryDate(): RDate
@@ -618,7 +619,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->systemEntryDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -642,6 +643,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref = "SystemEntryDate"/&gt;
      * @param \Rebelo\Date\Date $systemEntryDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setSystemEntryDate(RDate $systemEntryDate): void
@@ -662,11 +664,12 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * an integrated accounting and invoicing system,
      * even if the file type (TaxAccountingBasis) shall not
      * contain tables relating accounting.<br>
-     * If $create is true and a inatnce wasn't created previous a new instance will be created
+     * If $create is true and an instance wasn't created previous a new instance will be created
      * &lt;xs:element ref = "TransactionID" minOccurs = "0"/&gt;
-     * @param bool $create If is true and a inatnce wasn't created previous a new instance will be created
+     * @param bool $create If is true and an instance wasn't created previous a new instance will be created
      * @return \Rebelo\SaftPt\AuditFile\TransactionID|null
      * @since 1.0.0
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
     public function getTransactionID(bool $create = true): ?TransactionID
     {
@@ -676,7 +679,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->transactionID === null ? "null" : "TransactionID"
                 )
             );
@@ -707,7 +710,7 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getCustomerID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->customerID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->customerID));
         return $this->customerID;
     }
 
@@ -757,6 +760,9 @@ abstract class ADocument extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse the xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

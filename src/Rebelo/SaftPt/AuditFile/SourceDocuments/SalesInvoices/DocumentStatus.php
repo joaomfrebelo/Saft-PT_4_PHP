@@ -2,6 +2,8 @@
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Rebelo\Date\DateFormatException;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -26,7 +28,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class DocumentStatus extends AAuditFile
 {
     /**
      * Node Name
@@ -143,8 +145,8 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    \strval($this->invoiceStatus->get())
+                    __METHOD__." get '%s'",
+                    $this->invoiceStatus->get()
                 )
             );
         return $this->invoiceStatus;
@@ -191,6 +193,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="InvoiceStatusDate"/&gt;
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws DateFormatException
      * @since 1.0.0
      */
     public function getInvoiceStatusDate(): RDate
@@ -198,7 +201,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->invoiceStatusDate->format(
                         RDate::DATE_T_TIME
                     )
@@ -222,6 +225,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="InvoiceStatusDate"/&gt;
      * @param \Rebelo\Date\Date $invoiceStatusDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setInvoiceStatusDate(RDate $invoiceStatusDate): void
@@ -248,8 +252,8 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    $this->reason === null ? "null" : $this->reason 
+                    __METHOD__." get '%s'",
+                    $this->reason === null ? "null" : $this->reason
                 )
             );
         return $this->reason;
@@ -297,7 +301,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getSourceID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->sourceID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
@@ -351,7 +355,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->sourceBilling->get()
                 )
             );
@@ -392,6 +396,7 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -460,6 +465,8 @@ class DocumentStatus extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse Xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

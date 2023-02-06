@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -53,14 +53,14 @@ abstract class AValidate
 
     /**
      * The last type of document that has been the signature validated
-     * @var string
+     * @var string|null
      * @since 1.0.0
      */
     protected ?string $lastType = null;
 
     /**
      * The last serie of document that has been the signature validated
-     * @var string
+     * @var string|null
      * @since 1.0.0
      */
     protected ?string $lastSerie = null;
@@ -77,7 +77,7 @@ abstract class AValidate
      * The SystemEntryDate of the last document of the same serie,
      * if is the first of the serie will be null
      *
-     * @var \Rebelo\Date\Date
+     * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     protected ?RDate $lastDocDate = null;
@@ -86,14 +86,14 @@ abstract class AValidate
      * The SystemEntryDate of the last document of the same serie,
      * if is the first of the serie will be null
      *
-     * @var \Rebelo\Date\Date
+     * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     protected ?RDate $lastSystemEntryDate = null;
 
     /**
      * The last number of the document of the same serie, to check if the numeration is continues
-     * @var int
+     * @var int|null
      */
     protected ?int $lastDocNumber = null;
 

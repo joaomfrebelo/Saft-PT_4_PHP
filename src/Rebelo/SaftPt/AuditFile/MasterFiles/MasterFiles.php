@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -28,12 +28,10 @@ namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\AuditFile\Country;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\AuditFile\MasterFiles\Customer;
-use Rebelo\SaftPt\AuditFile\MasterFiles\Supplier;
-use Rebelo\SaftPt\AuditFile\MasterFiles\Product;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\NotImplemented;
 
 /**
  * MasterFiles<br>
@@ -143,7 +141,7 @@ class MasterFiles extends AAuditFile
     protected array $taxTableEntry = array();
 
     /**
-     * Stores if the final consumer has add to the customer table or not
+     * Stores if the final consumer has added to the customer table or not
      * @var bool
      * @since 1.0.0
      */
@@ -190,7 +188,7 @@ class MasterFiles extends AAuditFile
         $msg = "GeneralLedgerAccounts not implemented";
         \Logger::getLogger(\get_class($this))
             ->error(\sprintf(__METHOD__." '%s'", $msg));
-        throw new \Rebelo\SaftPt\AuditFile\NotImplemented($msg);
+        throw new NotImplemented($msg);
     }
 
     /**
@@ -240,7 +238,6 @@ class MasterFiles extends AAuditFile
         \Logger::getLogger(\get_class($this))->info(__METHOD__);
         if (\count($this->customerID) === 0) {
             foreach ($this->getCustomer() as $customer) {
-                /* @var $customer \Rebelo\SaftPt\AuditFile\MasterFiles\Customer */
                 if ($customer->issetCustomerID()) {
                     $this->customerID[] = $customer->getCustomerID();
                 }
@@ -274,7 +271,6 @@ class MasterFiles extends AAuditFile
         \Logger::getLogger(\get_class($this))->info(__METHOD__);
         if (\count($this->supplierID) === 0) {
             foreach ($this->getSupplier() as $supplier) {
-                /* @var $supplier \Rebelo\SaftPt\AuditFile\MasterFiles\Supplier */
                 if ($supplier->issetSupplierID()) {
                     $this->supplierID[] = $supplier->getSupplierID();
                 }
@@ -304,7 +300,7 @@ class MasterFiles extends AAuditFile
     /**
      * Get all Product stack<br>
      * Every time that this method is invoked a new Supplier instance is created
-     * and add to Supplier stack and than is returned to be populated with values.<br>
+     * and add to Supplier stack and then is returned to be populated with values.<br>
      * This table shall present the catalogue of products and types of services
      * used in the invoicing system, which have been operated, and also the records,
      * which are implicit in the operations and do not exist in the table of
@@ -337,7 +333,6 @@ class MasterFiles extends AAuditFile
         \Logger::getLogger(\get_class($this))->info(__METHOD__);
         if (\count($this->productCode) === 0) {
             foreach ($this->getProduct() as $k => $product) {
-                /* @var $product \Rebelo\SaftPt\AuditFile\MasterFiles\Product */
                 if ($product->issetProductCode()) {
                     $this->productCode[$k] = $product->getProductCode();
                 }
@@ -349,7 +344,7 @@ class MasterFiles extends AAuditFile
     /**
      * Create a Product instance and add stack<br>
      * Every time that this method is invoked a new Product instance is created
-     * and add to Product stack and than is returned to be populated with values.<br>
+     * and add to Product stack and then is returned to be populated with values.<br>
      * This table shall present the catalogue of products and types of services
      * used in the invoicing system, which have been operated, and also the records,
      * which are implicit in the operations and do not exist in the table of
@@ -403,7 +398,7 @@ class MasterFiles extends AAuditFile
     /**
      * Create a new TaxTableEntry instance and add to stack  (TaxTable)<br>
      * Every time that this method is invoked a new TaxTableEntry instance is created
-     * and add to TaxTableEntry stack and than is returned to be populated with values.<br>
+     * and add to TaxTableEntry stack and then is returned to be populated with values.<br>
      * 2.5. – TaxTable [Table of taxes].<br>
      * This table shows the VAT regimes applied in each fiscal area and the
      * different types of stamp duty to be paid,
@@ -458,8 +453,7 @@ class MasterFiles extends AAuditFile
             array_map(
                 function($customer) use ($masterNode)
                 {
-                                /* @var $customer Customer */
-                                $customer->createXmlNode($masterNode);
+                    $customer->createXmlNode($masterNode);
                 }, $this->getCustomer()
             );
         }
@@ -469,8 +463,7 @@ class MasterFiles extends AAuditFile
             array_map(
                 function($supplier) use ($masterNode)
                 {
-                                /* @var $supplier Supplier */
-                                $supplier->createXmlNode($masterNode);
+                    $supplier->createXmlNode($masterNode);
                 }, $this->getSupplier()
             );
         }
@@ -480,8 +473,7 @@ class MasterFiles extends AAuditFile
             array_map(
                 function($product) use ($masterNode)
                 {
-                                /* @var $product Product */
-                                $product->createXmlNode($masterNode);
+                    $product->createXmlNode($masterNode);
                 }, $this->getProduct()
             );
         }
@@ -493,8 +485,7 @@ class MasterFiles extends AAuditFile
             array_map(
                 function($taxTableEntry) use ($taxTableNode)
                 {
-                                /* @var $taxTableEntry TaxTableEntry */
-                                $taxTableEntry->createXmlNode($taxTableNode);
+                    $taxTableEntry->createXmlNode($taxTableNode);
                 }, $this->getTaxTableEntry()
             );
         }
@@ -506,6 +497,7 @@ class MasterFiles extends AAuditFile
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
@@ -560,10 +552,10 @@ class MasterFiles extends AAuditFile
             }
         }
     }
-    
+
     /**
-     * Short hand to add the final consumer to the Consumers table,
-     * Only add if you has document issued to the “Final Consumer”, 
+     * Shorthand to add the final consumer to the Consumers table,
+     * Only add if you have document issued to the “Final Consumer”,
      * the CustomerID to be issued in the document’s CustomerID is
      *  \Rebelo\SaftPt\AuditFile\AuditFile::CONSUMIDOR_FINAL_ID
      * @return void
@@ -574,23 +566,23 @@ class MasterFiles extends AAuditFile
         if($this->isFinalConsumerAdd === true){
             return;
         }
-        
+
         $customer = $this->addCustomer();
         $customer->setCustomerID(AuditFile::CONSUMIDOR_FINAL_ID);
         $customer->setAccountID(AuditFile::DESCONHECIDO);
         $customer->setCustomerTaxID(AuditFile::CONSUMIDOR_FINAL_TAX_ID);
         $customer->setCompanyName(AuditFile::CONSUMIDOR_FINAL);
         $customer->setSelfBillingIndicator(false);
-        
+
         $addr = $customer->getBillingAddress();
         $addr->setAddressDetail(AuditFile::DESCONHECIDO);
         $addr->setCity(AuditFile::DESCONHECIDO);
         $addr->setPostalCode(AuditFile::DESCONHECIDO);
-        $addr->setCountry(\Rebelo\SaftPt\AuditFile\Country::DESCONHECIDO());
-        
+        $addr->setCountry(Country::DESCONHECIDO());
+
         $this->isFinalConsumerAdd = true;
     }
-    
+
     /**
      * Get if the final consumer is already add to the Customer table
      * @return bool

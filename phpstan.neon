@@ -8,12 +8,12 @@ parameters:
 	bootstrapFiles:
 		- tests/bootstrap.php
 	ignoreErrors:
-		- 
+		-
 		    message: '#Call to an undefined method ([\.a-zA-Z0-9\(\) \\:])+#'
 		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
-		- 
+		-
 		    message: '#Call to protected method ([\.a-zA-Z0-9\(\) \\:])+#'
 		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
-	excludes_analyse:
+	excludePaths:
 		- tests/bootstrap.php
 		- tests/Rebelo/Test/SaftPt/Bin/StyleTest.php

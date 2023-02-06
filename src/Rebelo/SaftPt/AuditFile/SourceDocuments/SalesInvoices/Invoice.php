@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,14 +27,13 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\{
-    AAuditFile,
+use Rebelo\SaftPt\AuditFile\{AAuditFile,
     AuditFileException,
     ErrorRegister,
+    SourceDocuments\ADocument,
     SourceDocuments\ShipFrom,
     SourceDocuments\ShipTo,
-    SourceDocuments\WithholdingTax
-};
+    SourceDocuments\WithholdingTax};
 
 /**
  * Invoice
@@ -42,7 +41,7 @@ use Rebelo\SaftPt\AuditFile\{
  * @author João Rebelo
  * @since 1.0.0
  */
-class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
+class Invoice extends ADocument
 {
     /**
      * Node Name
@@ -221,7 +220,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", $this->invoiceNo
+                    __METHOD__." get '%s'", $this->invoiceNo
                 )
             );
         return $this->invoiceNo;
@@ -284,7 +283,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->documentStatus;
     }
 
@@ -304,6 +303,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element ref="InvoiceDate"/&gt;
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getInvoiceDate(): RDate
@@ -311,7 +311,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->invoiceDate->format(RDate::SQL_DATE)
                 )
             );
@@ -334,6 +334,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element ref="InvoiceDate"/&gt;
      * @param \Rebelo\Date\Date $invoiceDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setInvoiceDate(RDate $invoiceDate): void
@@ -377,7 +378,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", $this->invoiceType->get()
+                    __METHOD__." get '%s'", $this->invoiceType->get()
                 )
             );
         return $this->invoiceType;
@@ -442,7 +443,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
             $this->specialRegimes = new SpecialRegimes($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->specialRegimes;
     }
 
@@ -477,7 +478,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", "ShipTo"
+                    __METHOD__." get '%s'", "ShipTo"
                 )
             );
         return $this->shipTo;
@@ -513,7 +514,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", "ShipFrom"
+                    __METHOD__." get '%s'", "ShipFrom"
                 )
             );
         return $this->shipFrom;
@@ -537,6 +538,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementEndTime(): ?RDate
@@ -544,7 +546,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementEndTime === null ?
                         "null" :
                         $this->movementEndTime->format(RDate::DATE_T_TIME)
@@ -562,6 +564,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date|null $movementEndTime
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementEndTime(?RDate $movementEndTime): void
@@ -590,6 +593,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element ref="MovementStartTime" minOccurs="0"  maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementStartTime(): ?RDate
@@ -597,7 +601,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->movementStartTime === null ? "null" :
                         $this->movementStartTime->format(RDate::DATE_T_TIME)
                 )
@@ -617,6 +621,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
      * @param \Rebelo\Date\Date|null $movementStartTime
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementStartTime(?RDate $movementStartTime): void
@@ -643,7 +648,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted stack with '%s' elements",
+                    __METHOD__." get stack with '%s' elements",
                     \count($this->line)
                 )
             );
@@ -670,7 +675,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     /**
      * Set DocumentTotals<br>
      * When this method is invoked a new instance of DocumentTotals is created
-     * if wasn't previous and than returned to be populated<br>
+     * if wasn't previous and then returned to be populated<br>
      * &lt;xs:element name="DocumentTotals">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals
      * @since 1.0.0
@@ -701,6 +706,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * add to the stack  and returned to be populated<br>
      * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addWithholdingTax(): WithholdingTax
@@ -722,7 +728,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
     public function getWithholdingTax(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "WithholdingTax"));
+            ->info(\sprintf(__METHOD__." get '%s'", "WithholdingTax"));
         return $this->withholdingTax;
     }
 
@@ -732,6 +738,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -786,7 +793,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         if ($this->getPeriod() !== null) {
-            $invNode->addChild(static ::N_PERIOD, \strval($this->getPeriod()));
+            $invNode->addChild(static::N_PERIOD, \strval($this->getPeriod()));
         }
 
         if (isset($this->invoiceDate)) {
@@ -837,7 +844,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         $this->getTransactionID(false)?->createXmlNode($invNode);
-        
+
         if (isset($this->customerID)) {
             $invNode->addChild(static:: N_CUSTOMERID, $this->getCustomerID());
         } else {
@@ -847,7 +854,7 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
 
         $this->getShipTo(false)?->createXmlNode($invNode);
         $this->getShipFrom(false)?->createXmlNode($invNode);
-        
+
         if ($this->getMovementEndTime() !== null) {
             $invNode->addChild(
                 static::N_MOVEMENTENDTIME,
@@ -870,7 +877,6 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         foreach ($this->getLine() as $line) {
-            /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line */
             $line->createXmlNode($invNode);
         }
 
@@ -882,7 +888,6 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
         }
 
         foreach ($this->getWithholdingTax() as $tax) {
-            /* @var $tax WithholdingTax */
             $tax->createXmlNode($invNode);
         }
 
@@ -893,6 +898,9 @@ class Invoice extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

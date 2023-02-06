@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -258,7 +258,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="BusinessName" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&gt;<br>
-     * @var string $businessName
+     * @var string|null $businessName
      * @since 1.0.0
      */
     private ?string $businessName = null;
@@ -303,7 +303,7 @@ class Header extends AAuditFile
      * @var \Rebelo\Date\Date $startDate
      * @since 1.0.0
      */
-    private \Rebelo\Date\Date $startDate;
+    private RDate $startDate;
 
     /**
      * <pre>
@@ -319,7 +319,7 @@ class Header extends AAuditFile
      * @var \Rebelo\Date\Date $endDate
      * @since 1.0.0
      */
-    private \Rebelo\Date\Date $endDate;
+    private RDate $endDate;
 
     /**
      * &lt;xs:element name="CurrencyCode" fixed="EUR"/&gt;
@@ -333,7 +333,7 @@ class Header extends AAuditFile
      * @var \Rebelo\Date\Date $dateCreated
      * @since 1.0.0
      */
-    private \Rebelo\Date\Date $dateCreated;
+    private RDate $dateCreated;
 
     /**
      *
@@ -398,7 +398,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
-     * @var string $telephone
+     * @var string|null $telephone
      * @since 1.0.0
      */
     private ?string $telephone = null;
@@ -406,7 +406,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="Fax" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
-     * @var string $fax
+     * @var string|null $fax
      * @since 1.0.0
      */
     private ?string $fax = null;
@@ -414,7 +414,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&gt;<br>
      * &lt;xs:element ref="Email" minOccurs="0"/&gt;<br>
-     * @var string $email
+     * @var string|null $email
      * @since 1.0.0
      */
     private ?string $email = null;
@@ -439,7 +439,7 @@ class Header extends AAuditFile
     public function __construct(ErrorRegister $errorRegister)
     {
         parent::__construct($errorRegister);
-        $this->dateCreated = new \Rebelo\Date\Date();
+        $this->dateCreated = new RDate();
     }
 
     /**
@@ -479,7 +479,7 @@ class Header extends AAuditFile
     public function getCompanyID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", \strval($this->companyID)));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->companyID));
         return $this->companyID;
     }
 
@@ -558,7 +558,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->taxRegistrationNumber)
                 )
             );
@@ -587,7 +587,7 @@ class Header extends AAuditFile
     public function setTaxRegistrationNumber(int $taxRegistrationNumber): bool
     {
         if (!static::valPortugueseVatNumber($taxRegistrationNumber)) {
-            $msg    = strval($taxRegistrationNumber)." is not a valid PT nif";
+            $msg    = $taxRegistrationNumber ." is not a valid PT nif";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("TaxRegistrationNumber_not_valid_header");
@@ -629,7 +629,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxAccountingBasis->get()
                 )
             );
@@ -689,7 +689,7 @@ class Header extends AAuditFile
     public function getCompanyName(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->companyName));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->companyName));
         return $this->companyName;
     }
 
@@ -748,7 +748,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->businessName === null ? "null" : $this->businessName
                 )
             );
@@ -842,7 +842,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->fiscalYear)
                 )
             );
@@ -886,7 +886,7 @@ class Header extends AAuditFile
     {
         $ano = \intval(\Date("Y"));
         if ($fiscalYear < 2000 || $fiscalYear > $ano) {
-            $msg    = \strval($fiscalYear)." is not a valid year";
+            $msg    = $fiscalYear ." is not a valid year";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("FiscalYear_not_valid");
@@ -898,7 +898,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->fiscalYear)
                 )
             );
@@ -924,12 +924,12 @@ class Header extends AAuditFile
      * @throws \Error
      * @since 1.0.0
      */
-    public function getStartDate(): \Rebelo\Date\Date
+    public function getStartDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->startDate->getTimestamp())
                 )
             );
@@ -963,12 +963,13 @@ class Header extends AAuditFile
      *
      * @param \Rebelo\Date\Date $startDate
      * @return bool
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public function setStartDate(\Rebelo\Date\Date $startDate): bool
+    public function setStartDate(RDate $startDate): bool
     {
-        $year    = \intval($startDate->format(\Rebelo\Date\Date::YAER));
-        $yearNow = \intval((new \Rebelo\Date\Date())->format(\Rebelo\Date\Date::YAER))
+        $year    = \intval($startDate->format(RDate::YAER));
+        $yearNow = \intval((new RDate())->format(RDate::YAER))
             + 1;
         if ($year < 2000 || $year > $yearNow) {
             $msg    = \sprintf(
@@ -987,7 +988,7 @@ class Header extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->startDate->format(\Rebelo\Date\Date::SQL_DATE)
+                    $this->startDate->format(RDate::SQL_DATE)
                 )
             );
         return $return;
@@ -1008,16 +1009,16 @@ class Header extends AAuditFile
      * <br>
      * The max date allow is the next year<br>
      * @return \Rebelo\Date\Date
-     * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public function getEndDate(): \Rebelo\Date\Date
+    public function getEndDate(): RDate
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)
+                    __METHOD__." get '%s'",
+                    $this->endDate->format(RDate::SQL_DATE)
                 )
             );
         return $this->endDate;
@@ -1047,12 +1048,13 @@ class Header extends AAuditFile
      * </pre>
      * @param \Rebelo\Date\Date $endDate
      * @return bool true if the value is valid
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public function setEndDate(\Rebelo\Date\Date $endDate): bool
+    public function setEndDate(RDate $endDate): bool
     {
-        $year    = \intval($endDate->format(\Rebelo\Date\Date::YAER));
-        $yearNow = \intval((new \Rebelo\Date\Date())->format(\Rebelo\Date\Date::YAER))
+        $year    = \intval($endDate->format(RDate::YAER));
+        $yearNow = \intval((new RDate())->format(RDate::YAER))
             + 1;
         if ($year < 2000 || $year > $yearNow) {
             $msg    = \sprintf(
@@ -1071,7 +1073,7 @@ class Header extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->endDate->format(\Rebelo\Date\Date::SQL_DATE)
+                    $this->endDate->format(RDate::SQL_DATE)
                 )
             );
         return $return;
@@ -1088,7 +1090,7 @@ class Header extends AAuditFile
     public function getCurrencyCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->currencyCode));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->currencyCode));
         return $this->currencyCode;
     }
 
@@ -1108,15 +1110,16 @@ class Header extends AAuditFile
      * &lt;xs:element ref="DateCreated"/&gt;
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public function getDateCreated(): \Rebelo\Date\Date
+    public function getDateCreated(): RDate
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
-                    $this->dateCreated->format(\Rebelo\Date\Date::ATOM)
+                    __METHOD__." get '%s'",
+                    $this->dateCreated->format(RDate::ATOM)
                 )
             );
         return $this->dateCreated;
@@ -1136,20 +1139,21 @@ class Header extends AAuditFile
      * Sets a new dateCreated<br>
      * Date of creation of file XML of SAF-T (PT)<br>
      * &lt;xs:element ref="DateCreated"/&gt;<br>
-     * Tthe creation date is setten when the object is created,
-     * use this if you wont a diferent date from that one in the OS<br>
+     * Tthe creation date is setter when the object is created,
+     * use this if you won't a different date from that one in the OS<br>
      * @param \Rebelo\Date\Date $dateCreated
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public function setDateCreated(\Rebelo\Date\Date $dateCreated): void
+    public function setDateCreated(RDate $dateCreated): void
     {
         $this->dateCreated = $dateCreated;
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->dateCreated->format(\Rebelo\Date\Date::ATOM)
+                    $this->dateCreated->format(RDate::ATOM)
                 )
             );
     }
@@ -1170,7 +1174,7 @@ class Header extends AAuditFile
     public function getTaxEntity(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxEntity));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxEntity));
         return $this->taxEntity;
     }
 
@@ -1233,7 +1237,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->productCompanyTaxID
                 )
             );
@@ -1288,7 +1292,7 @@ class Header extends AAuditFile
     /**
      * Get SoftwareCertificateNumber<br>
      * Number of the software certificate allocated to the entity that
-     * created the software, pursuant to Ordinance No. 363/2010, of 23th June.
+     * created the software, pursuant to Ordinance No. 363/2010, of 23rd June.
      * it doesn’t apply, the field must be filled in with “0” (zero).<br>
      * &lt;xs:element ref="SoftwareCertificateNumber"/&gt;<br>
      * &lt;xs:element name="SoftwareCertificateNumber" type="xs:nonNegativeInteger"/&gt;<br>
@@ -1302,7 +1306,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->softwareCertificateNumber
                 )
             );
@@ -1322,7 +1326,7 @@ class Header extends AAuditFile
     /**
      * Sets a new softwareCertificateNumber<br><br>
      * Number of the software certificate allocated to the entity that
-     * created the software, pursuant to Ordinance No. 363/2010, of 23th June.
+     * created the software, pursuant to Ordinance No. 363/2010, of 23rd June.
      * it doesn’t apply, the field must be filled in with “0” (zero).<br>
      * &lt;xs:element ref="SoftwareCertificateNumber"/&gt;<br>
      * &lt;xs:element name="SoftwareCertificateNumber" type="xs:nonNegativeInteger"/&gt;<br>
@@ -1376,7 +1380,7 @@ class Header extends AAuditFile
     public function getProductID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productID));
         return $this->productID;
     }
 
@@ -1445,7 +1449,7 @@ class Header extends AAuditFile
     public function getProductVersion(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productVersion));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productVersion));
         return $this->productVersion;
     }
 
@@ -1502,7 +1506,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->headerComment === null ? "null" : $this->headerComment
                 )
             );
@@ -1556,7 +1560,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->telephone === null ? "null" : $this->telephone
                 )
             );
@@ -1608,7 +1612,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->fax === null ? "null" : $this->fax
                 )
             );
@@ -1660,7 +1664,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->email === null ? "null" : $this->email
                 )
             );
@@ -1716,7 +1720,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->website === null ? "null" : $this->website
                 )
             );
@@ -1759,6 +1763,8 @@ class Header extends AAuditFile
      * Create XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -1923,6 +1929,9 @@ class Header extends AAuditFile
      * @param \SimpleXMLElement $node
      * @return void
      * @throws AuditFileException
+     * @throws \Rebelo\Enum\EnumException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

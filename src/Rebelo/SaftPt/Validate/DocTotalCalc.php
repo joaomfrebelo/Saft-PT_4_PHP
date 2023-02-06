@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 /**
- * Recalcuted document values
+ * Recalculated document values
  *
  * @author João Rebelo
  * @since 1.0.0
@@ -35,25 +35,25 @@ namespace Rebelo\SaftPt\Validate;
 class DocTotalCalc
 {
     /**
-     * @var float $taxPayable
+     * @var float|null $taxPayable
      * @since 1.0.0
      */
     protected ?float $taxPayable = null;
 
     /**
-     * @var float $netTotal
+     * @var float|null $netTotal
      * @since 1.0.0
      */
     protected ?float $netTotal = null;
 
     /**
-     * @var float $grossTotal
+     * @var float|null $grossTotal
      * @since 1.0.0
      */
     protected ?float $grossTotal = null;
 
     /**
-     * @var float $grossTotal
+     * @var float|null $grossTotal
      * @since 1.0.0
      */
     protected ?float $grossTotalFromCurrency = null;
@@ -137,7 +137,7 @@ class DocTotalCalc
     }
 
     /**
-     * Set the calculated Grosstotal
+     * Set the calculated Gross total
      * @param float|null $grossTotal
      * @return void
      * @since 1.0.0
@@ -159,7 +159,7 @@ class DocTotalCalc
     }
 
     /**
-     * The calculate total of each line, the arrey keys are the
+     * To calculate total of each line, the array keys are the
      * line number
      * @return float[]
      * @since 1.0.0

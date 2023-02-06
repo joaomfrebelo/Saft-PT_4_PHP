@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
@@ -48,7 +49,7 @@ use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Tax extends AAuditFile
 {
     /**
      * Node name
@@ -157,7 +158,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getTaxType(): TaxType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->get()));
         return $this->taxType;
     }
 
@@ -204,7 +205,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxCountryRegion->get()
                 )
             );
@@ -264,7 +265,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getTaxCode(): TaxCode
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxCode->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->get()));
         return $this->taxCode;
     }
 
@@ -316,7 +317,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxPercentage === null ?
                     "null" : \strval($this->taxPercentage)
                 )
@@ -372,7 +373,7 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxAmount === null ?
                     "null" : \strval($this->taxAmount)
                 )
@@ -480,7 +481,9 @@ class Tax extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Exception
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

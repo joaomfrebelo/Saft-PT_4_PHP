@@ -17,7 +17,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -29,6 +29,7 @@ namespace Rebelo\SaftPt\Validate;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\Sign\Sign;
 use Rebelo\Decimal\UDecimal;
 use Rebelo\Decimal\Decimal;
@@ -48,10 +49,11 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
 /**
  * Validate MovementOfGoods table.<br>
  * This class will validate the values of MovementOfGoods, the
- * signtuare hash and dates
+ * signature hash and dates
  *
  * @author João Rebelo
  * @since 1.0.0
+ *
  */
 class MovementOfGoods extends ADocuments
 {
@@ -71,9 +73,10 @@ class MovementOfGoods extends ADocuments
     /**
      * Validate MovementOfGoods table.<br>
      * This class will validate the values of MovementOfGoods, the
-     * signtuare hash and dates
+     * signature hash and dates
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile The AuditFile to be validated
      * @param \Rebelo\SaftPt\Sign\Sign $sign The sign class to be used to validate the hash, must have the public key defined
+     * @throws \Rebelo\Decimal\DecimalException
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
@@ -86,11 +89,9 @@ class MovementOfGoods extends ADocuments
         $sourceDoc = $auditFile->getSourceDocuments(false);
         if ($sourceDoc !== null) {
             $movementOfGoods = $sourceDoc->getMovementOfGoods(false);
-            if ($movementOfGoods !== null) {
-                $movementOfGoods->setMovOfGoodsTableTotalCalc(
-                    new \Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc()
-                );
-            }
+            $movementOfGoods?->setMovOfGoodsTableTotalCalc(
+                new MovOfGoodsTableTotalCalc()
+            );
         }
     }
 
@@ -102,11 +103,11 @@ class MovementOfGoods extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $progreBar = null;
+        $progressBar = null;
         try {
             if(null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods(false)){
                 \Logger::getLogger(\get_class($this))
-                        ->debug(__METHOD__ . " no movement of goods documents to be vaidated");
+                        ->debug(__METHOD__ . " no movement of goods documents to be validated");
                 return $this->isValid;
             }
 
@@ -120,7 +121,7 @@ class MovementOfGoods extends ADocuments
                 $nDoc = \count($movementOfGoods->getStockMovement());
                 /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
                 $section = null;
-                $progreBar = $this->getStyle()->addProgressBar($section);
+                $progressBar = $this->getStyle()->addProgressBar($section);
                 $section->writeln("");
                 $section->writeln(
                     \sprintf(
@@ -128,18 +129,15 @@ class MovementOfGoods extends ADocuments
                         "StockMovement"
                     )
                 );
-                $progreBar?->start($nDoc);
+                $progressBar?->start($nDoc);
             }
 
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
 
-                        if ($progreBar !== null) {
-                            $progreBar->advance();
-                        }
+                        $progressBar?->advance();
 
-                        /* @var $stockMovDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
                         $stockMovDocument = $order[$type][$serie][$no];
                         list(, $no) = \explode("/", $stockMovDocument->getDocumentNumber());
                         if ((string) $type !== $this->lastType || (string) $serie !== $this->lastSerie) {
@@ -171,9 +169,7 @@ class MovementOfGoods extends ADocuments
                 }
             }
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progressBar?->finish();
 
             $this->numberOfLinesAndTotalQuantity();
 
@@ -207,9 +203,7 @@ class MovementOfGoods extends ADocuments
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
                     ->addExceptionErrors($e->getMessage());
@@ -314,12 +308,14 @@ class MovementOfGoods extends ADocuments
     /**
      * Validate if the NumberOfLines and TotalQuantity is equal to the number of StockMovements
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function numberOfLinesAndTotalQuantity(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        
+
         if(null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods()){
             return;
         }
@@ -374,6 +370,7 @@ class MovementOfGoods extends ADocuments
      * Validate the Document Status
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(StockMovement $stockMovDocument): void
@@ -420,7 +417,6 @@ class MovementOfGoods extends ADocuments
             $stockMovDocument->addError($msg, DocumentStatus::N_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
-            return;
         }
     }
 
@@ -536,6 +532,9 @@ class MovementOfGoods extends ADocuments
      * validate each line of the StockMovement
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function lines(StockMovement $stockMovDocument): void
@@ -651,7 +650,7 @@ class MovementOfGoods extends ADocuments
             $lineValue->plusThis($lineAmount);
 
             if (null !== $lineTax = $line->getTax(false)) {
-                
+
                 if ($lineTax->issetTaxPercentage()) {
 
                     $lineFactor = $lineTax->getTaxPercentage() / 100;
@@ -738,7 +737,7 @@ class MovementOfGoods extends ADocuments
                 return;
             }
 
-            $this->producCode($line, $stockMovDocument);
+            $this->productCode($line, $stockMovDocument);
 
             $this->numberOfMovementLines++;
 
@@ -773,13 +772,13 @@ class MovementOfGoods extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function orderReferences(Line $line, StockMovement $stockMovDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         foreach ($line->getOrderReferences() as $orderRef) {
-            /* @var $orderRef \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences */
             if ($orderRef->getOriginatingON() === null) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get(
@@ -843,7 +842,7 @@ class MovementOfGoods extends ADocuments
      * @return void
      * @since 1.0.0
      */
-    protected function producCode(Line $line, StockMovement $stockMovDocument): void
+    protected function productCode(Line $line, StockMovement $stockMovDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
 
@@ -881,7 +880,6 @@ class MovementOfGoods extends ADocuments
         $product = $master->getProduct()[
                 \array_search($line->getProductCode(), $master->getAllProductCode())
         ];
-        /* @var $product \Rebelo\SaftPt\AuditFile\MasterFiles\Product */
         if ($product->issetProductType() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("mov_of_goods_product_do_not_have_type"),
@@ -917,6 +915,7 @@ class MovementOfGoods extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, StockMovement $stockMovDocument): void
@@ -1023,7 +1022,7 @@ class MovementOfGoods extends ADocuments
         }
 
 
-        if ($lineTax->getTaxCode() !== TaxCode::ISE &&
+        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
                 $lineTax->getTaxPercentage() !== 0.0 &&
                 ($line->getTaxExemptionCode() !== null ||
                 $line->getTaxExemptionReason() !== null)
@@ -1077,9 +1076,11 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Validate the document total, only can be invoked after
-     * validate lines (Because total controls are getted from that validation)
+     * validate lines (Because total controls are get from that validation)
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(StockMovement $stockMovDocument): void
@@ -1162,7 +1163,7 @@ class MovementOfGoods extends ADocuments
         if(null === $currency = $stockMovDocument->getDocumentTotals()->getCurrency()){
             return;
         }
-        
+
         $currAmou = new UDecimal(
             $currency->getCurrencyAmount(), static::CALC_PRECISION
         );
@@ -1183,7 +1184,7 @@ class MovementOfGoods extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError(
                 $msg,
-                \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency::N_EXCHANGERATE
+                Currency::N_EXCHANGERATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -1194,6 +1195,8 @@ class MovementOfGoods extends ADocuments
      * Test if the signature is valide or not
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
     protected function sign(StockMovement $stockMovDocument): void
@@ -1270,6 +1273,7 @@ class MovementOfGoods extends ADocuments
      * Verify the Start and en time of movement
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function movementStartAndEndTime(StockMovement $stockMovDocument): void
@@ -1329,6 +1333,7 @@ class MovementOfGoods extends ADocuments
      * Validate the StockMovement date nad SystemEntrydate
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function stockMovementDateAndSystemEntryDate(StockMovement $stockMovDocument): void
@@ -1399,6 +1404,7 @@ class MovementOfGoods extends ADocuments
      * Validate shipement data
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMov
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function shipement(StockMovement $stockMov): void
@@ -1553,7 +1559,7 @@ class MovementOfGoods extends ADocuments
                 $msgStack[] = $msg;
                 $stockMov->addError($msg, StockMovement::N_SHIPTO);
             } else if(null !== $shipToAddr = $shipTo->getAddress(false)){
-                
+
                 if (($shipToAddr->getStreetName() === null ||
                         $shipToAddr->getStreetName() === "") &&
                         ($shipToAddr->getAddressDetail() === null ||

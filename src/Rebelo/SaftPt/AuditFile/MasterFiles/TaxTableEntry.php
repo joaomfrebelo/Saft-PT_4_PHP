@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,10 +27,9 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 
 /**
@@ -55,7 +54,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class TaxTableEntry extends AAuditFile
 {
     /**
      * Node Name
@@ -139,10 +138,10 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      *  &lt;xs:element ref="TaxExpirationDate" minOccurs="0"/&gt;
      *
-     * @var \Rebelo\Date\Date $taxExpirationDate
+     * @var \Rebelo\Date\Date|null $taxExpirationDate
      * @since 1.0.0
      */
-    private ?\Rebelo\Date\Date $taxExpirationDate = null;
+    private ?RDate $taxExpirationDate = null;
 
     /**
      * <pre>
@@ -210,7 +209,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getTaxType(): TaxType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->get()));
         return $this->taxType;
     }
 
@@ -263,7 +262,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxCountryRegion->get()
                 )
             );
@@ -329,7 +328,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getTaxCode(): TaxCode
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxCode->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->get()));
         return $this->taxCode;
     }
 
@@ -384,7 +383,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getDescription(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->description));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->description));
         return $this->description;
     }
 
@@ -407,7 +406,6 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param string $description
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setDescription(string $description): bool
@@ -425,12 +423,12 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $return            = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." getted '%s'", $this->description));
+            ->debug(\sprintf(__METHOD__." get '%s'", $this->description));
         return $return;
     }
 
     /**
-     * Generate the tax entry field, how ever is only works for TaxType IVA
+     * Generate the tax entry field, however is only works for TaxType IVA
      * and TaxCode ISE, RED, INT, NOR. Only use this method after the
      * TaxType,  TaxCode and TaxCountryRegion are setted
      * @return bool
@@ -473,22 +471,18 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 return $this->setDescription("");
         }
 
-        switch ($this->getTaxCountryRegion()->get()) {
-            case TaxCountryRegion::PT_AC:
-                return $this->setDescription(
-                    $this->getDescription()." Região autónoma dos Açores"
-                );
-            case TaxCountryRegion::PT_MA:
-                return $this->setDescription(
-                    $this->getDescription()." Região autónoma da Madaeira"
-                );
-            case TaxCountryRegion::ISO_PT:
-                return $this->setDescription(
-                    $this->getDescription()." Portugal continental"
-                );
-            default :
-                return $this->setDescription("");
-        }
+        return match ($this->getTaxCountryRegion()->get()) {
+            TaxCountryRegion::PT_AC => $this->setDescription(
+                $this->getDescription() . " Região autónoma dos Açores"
+            ),
+            TaxCountryRegion::PT_MA => $this->setDescription(
+                $this->getDescription() . " Região autónoma da Madaeira"
+            ),
+            TaxCountryRegion::ISO_PT => $this->setDescription(
+                $this->getDescription() . " Portugal continental"
+            ),
+            default => $this->setDescription(""),
+        };
     }
 
     /**
@@ -499,6 +493,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="TaxExpirationDate" minOccurs="0"/&gt;
      * </pre>
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getTaxExpirationDate(): ?RDate
@@ -506,7 +501,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxExpirationDate === null ?
                     "null" : $this->taxExpirationDate->format(RDate::SQL_DATE)
                 )
@@ -523,6 +518,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param \Rebelo\Date\Date|null $taxExpirationDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setTaxExpirationDate(?RDate $taxExpirationDate): void
@@ -531,7 +527,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxExpirationDate === null ?
                     "null" : $this->taxExpirationDate->format(RDate::SQL_DATE)
                 )
@@ -557,7 +553,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxPercentage === null ? "null" :
                     \strval($this->taxPercentage)
                 )
@@ -606,7 +602,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxPercentage === null ?
                     "null" : \strval($this->taxPercentage)
                 )
@@ -630,7 +626,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxAmount === null ?
                     "null" : \strval($this->taxAmount)
                 )
@@ -678,7 +674,7 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxAmount === null ?
                     "null" : \strval($this->taxAmount)
                 )
@@ -690,6 +686,8 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create the TaxTableEntry node in the TaxTable node
      * @param \SimpleXMLElement $node The TaxTable node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -782,6 +780,10 @@ class TaxTableEntry extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Exception
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

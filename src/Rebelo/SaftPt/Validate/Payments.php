@@ -17,7 +17,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,10 +27,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Rebelo\Decimal\DecimalException;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\Decimal\UDecimal;
 use Rebelo\Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line;
@@ -57,7 +59,8 @@ class Payments extends ADocuments
     /**
      * Validate Payments table.<br>
      * This class will validate the values of Payments and dates
-     * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile The AuditFile to be validated
+     * @param AuditFile $auditFile The AuditFile to be validated
+     * @throws DecimalException
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile)
@@ -68,11 +71,9 @@ class Payments extends ADocuments
         $sourceDoc = $auditFile->getSourceDocuments(false);
         if ($sourceDoc !== null) {
             $payments = $sourceDoc->getPayments(false);
-            if ($payments !== null) {
-                $payments->setDocTableTotalCalc(
-                    new \Rebelo\SaftPt\Validate\DocTableTotalCalc()
-                );
-            }
+            $payments?->setDocTableTotalCalc(
+                new DocTableTotalCalc()
+            );
         }
     }
 
@@ -84,7 +85,7 @@ class Payments extends ADocuments
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $progreBar = null;
+        $progressBar = null;
         try {
             if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments(false)){
                 \Logger::getLogger(\get_class($this))
@@ -133,7 +134,7 @@ class Payments extends ADocuments
                 $nDoc = \count($payments->getPayment());
                 /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
                 $section = null;
-                $progreBar = $this->getStyle()->addProgressBar($section);
+                $progressBar = $this->getStyle()->addProgressBar($section);
                 $section->writeln("");
                 $section->writeln(
                     \sprintf(
@@ -141,18 +142,15 @@ class Payments extends ADocuments
                         "Payments"
                     )
                 );
-                $progreBar?->start($nDoc);
+                $progressBar?->start($nDoc);
             }
 
             foreach (\array_keys($order) as $type) {
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
 
-                        if ($progreBar !== null) {
-                            $progreBar->advance();
-                        }
+                        $progressBar?->advance();
 
-                        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
                         $payment = $order[$type][$serie][$no];
                         list(, $no) = \explode("/", $payment->getPaymentRefNo());
                         if ((string) $type !== $this->lastType || (string) $serie !== $this->lastSerie) {
@@ -184,18 +182,14 @@ class Payments extends ADocuments
                 }
             }
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progressBar?->finish();
 
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
                     ->addExceptionErrors($e->getMessage());
@@ -302,7 +296,7 @@ class Payments extends ADocuments
     protected function numberOfEntries(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        
+
         if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()){
             return;
         }
@@ -329,6 +323,8 @@ class Payments extends ADocuments
     /**
      * Validate Payments TotalDebit
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalDebit(): void
@@ -363,12 +359,14 @@ class Payments extends ADocuments
     /**
      * Validate Payments TotalCredit
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalCredit(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        
+
         if(null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()){
             return;
         }
@@ -398,6 +396,7 @@ class Payments extends ADocuments
      * Validate the Document Status
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(Payment $payment): void
@@ -415,7 +414,6 @@ class Payments extends ADocuments
             return;
         }
 
-        /* @var $status \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentStatus */
         $status = $payment->getDocumentStatus();
 
         if ($status->getPaymentStatusDate()->isEarlier($payment->getTransactionDate())) {
@@ -443,7 +441,6 @@ class Payments extends ADocuments
             $payment->addError($msg, DocumentStatus::N_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
-            return;
         }
     }
 
@@ -487,6 +484,9 @@ class Payments extends ADocuments
      * validate each line of the Payment
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function lines(Payment $payment): void
@@ -509,8 +509,7 @@ class Payments extends ADocuments
         $lineNoStack = array();
         $lineNoError = false;
         //$hasDebit and $hasCredit is to check if the document as both debit and credit lines
-        $hasDebit = false;
-        $hasCredit = false;
+
         $totalSettlement = new UDecimal(0.0, static::CALC_PRECISION);
 
         $lineSumNetTotal = new Decimal(0.0, static::CALC_PRECISION);
@@ -629,8 +628,6 @@ class Payments extends ADocuments
                 if (\in_array($docStat, $notForTotal) === false) {
                     $this->credit->plusThis($credit);
                 }
-
-                $hasCredit = true;
             }
 
             if ($line->getDebitAmount() !== null) {
@@ -643,8 +640,6 @@ class Payments extends ADocuments
                 if (\in_array($docStat, $notForTotal) === false) {
                     $this->debit->plusThis($debit);
                 }
-
-                $hasDebit = true;
             }
 
             //The validation if is CashVatScheme is made in tax method
@@ -704,6 +699,7 @@ class Payments extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function sourceDocumentID(Line $line, Payment $payment): void
@@ -723,7 +719,6 @@ class Payments extends ADocuments
 
         $originStack = array();
         foreach ($line->getSourceDocumentID() as $source) {
-            /* @var $source \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID */
             if ($source->issetOriginatingON() === false) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get(
@@ -788,6 +783,7 @@ class Payments extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, Payment $payment): void
@@ -900,7 +896,7 @@ class Payments extends ADocuments
         }
 
 
-        if ($lineTax->getTaxCode() !== TaxCode::ISE &&
+        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
                 $lineTax->getTaxPercentage() !== 0.0 &&
                 ($line->getTaxExemptionCode() !== null ||
                 $line->getTaxExemptionReason() !== null)
@@ -955,9 +951,11 @@ class Payments extends ADocuments
 
     /**
      * Validate the document total, only can be invoked after
-     * validate lines (Because total controls are getted from that validation)
+     * validate lines (Because total controls are get from that validation)
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(Payment $payment): void
@@ -1038,7 +1036,7 @@ class Payments extends ADocuments
         if(null === $currency = $payment->getDocumentTotals()->getCurrency()){
             return;
         }
-        
+
         $currAmou = new UDecimal(
             $currency->getCurrencyAmount(), static::CALC_PRECISION
         );
@@ -1058,7 +1056,7 @@ class Payments extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError(
                 $msg,
-                \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency::N_EXCHANGERATE
+                Currency::N_EXCHANGERATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -1069,6 +1067,7 @@ class Payments extends ADocuments
      * Validate the Payment date nad SystemEntrydate
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function paymentDateAndSystemEntryDate(Payment $payment): void
@@ -1137,10 +1136,14 @@ class Payments extends ADocuments
      * Validate the PaymentMethods
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function paymentMethod(Payment $payment): void
     {
+        $payMet = null;
+
         if (\count($payment->getPaymentMethod()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get(
@@ -1155,7 +1158,6 @@ class Payments extends ADocuments
 
         $totalPayMeth = new UDecimal(0.0, static::CALC_PRECISION);
 
-        /* @var $payMet \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod */
         foreach ($payment->getPaymentMethod() as $payMet) {
             if ($payMet->issetPaymentAmount()) {
                 $totalPayMeth->plusThis($payMet->getPaymentAmount());
@@ -1192,7 +1194,6 @@ class Payments extends ADocuments
                 $diff = $totalPayMeth->signedSubtract($gross);
 
                 foreach ($payment->getWithholdingTax() as $withholding) {
-                    /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
                     if ($withholding->issetWithholdingTaxAmount()) {
                         $diff->plusThis($withholding->getWithholdingTaxAmount());
                     }
@@ -1208,7 +1209,6 @@ class Payments extends ADocuments
                     $payMet->addError($msg);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
-                    return;
                 }
             }
         }
@@ -1218,13 +1218,13 @@ class Payments extends ADocuments
      * Validate the withholdingTax
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment $payment
      * @return void
+     * @throws DecimalException
      * @since 1.0.0
      */
     protected function withholdingTax(Payment $payment): void
     {
         $totalTax = new UDecimal(0.0, static::CALC_PRECISION);
         foreach ($payment->getWithholdingTax() as $withholding) {
-            /* @var $withholding \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax */
             if ($withholding->issetWithholdingTaxAmount() === false) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get(
@@ -1268,7 +1268,6 @@ class Payments extends ADocuments
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $payment->addWarning($msg);
                     \Logger::getLogger(\get_class($this))->info($msg);
-                    return;
                 }
             }
         }

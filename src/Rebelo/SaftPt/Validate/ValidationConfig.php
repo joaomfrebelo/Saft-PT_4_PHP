@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -37,7 +37,7 @@ use Rebelo\SaftPt\Bin\Style;
 class ValidationConfig
 {
     /**
-     * If allow Debit an Credit line in the same document
+     * If allow Debit a Credit line in the same document
      * @var bool
      * @since 1.0.0
      */
@@ -51,21 +51,21 @@ class ValidationConfig
     protected bool $continuesLines = true;
 
     /**
-     * The maximum delta in the currency calculation to be consider valid
+     * The maximum delta in the currency calculation to be considered valid
      * @var float
      * @since 1.0.0
      */
     protected float $deltaCurrency = 0.01;
 
     /**
-     * The maximum delta in the lines to be conider valid
+     * The maximum delta in the lines to be considered valid
      * @var float
      * @since 1.0.0
      */
     protected float $deltaLine = 0.01;
 
     /**
-     * The maximum delta in the table's sums calculation to be consider valid
+     * The maximum delta in the table's sums calculation to be considered valid
      * @var float
      * @since 1.0.0
      */
@@ -79,14 +79,14 @@ class ValidationConfig
     protected float $deltaTotalDoc = 0.01;
 
     /**
-     * Defifine if performes the signatures validation
+     * Define if performs the signatures validation
      * @var bool
      * @since 1.0.0
      */
     protected bool $signValidation = true;
 
     /**
-     * The output writer, to be use in concolde application
+     * The output writer, to be use in console application
      * @var \Rebelo\SaftPt\Bin\Style|null
      * @since 1.0.0
      */
@@ -110,7 +110,7 @@ class ValidationConfig
     }
 
     /**
-     * If allow Debit an Credit line in the same document
+     * If allow Debit a Credit line in the same document
      * @return bool
      * @since 1.0.0
      */
@@ -130,7 +130,7 @@ class ValidationConfig
     }
 
     /**
-     * The maximum delta in the currency calculation to be consider valid
+     * The maximum delta in the currency calculation to be considered valid
      * @return float
      * @since 1.0.0
      */
@@ -140,7 +140,7 @@ class ValidationConfig
     }
 
     /**
-     * The maximum delta in the line calculation to be consider valid
+     * The maximum delta in the line calculation to be considered valid
      * @return float
      * @since 1.0.0
      */
@@ -150,7 +150,7 @@ class ValidationConfig
     }
 
     /**
-     * The maximum delta in the table's sums calculation to be consider valid
+     * The maximum delta in the table's sums calculation to be considered valid
      * @return float
      * @since 1.0.0
      */
@@ -170,7 +170,7 @@ class ValidationConfig
     }
 
     /**
-     * If performes signature validation
+     * If performs signature validation
      * @return bool
      * @since 1.0.0
      */
@@ -200,7 +200,7 @@ class ValidationConfig
     }
 
     /**
-     * If allow Debit an Credit line in the same document
+     * If allow Debit a Credit line in the same document
      * @param bool $allowDebitAndCredit
      * @return void
      * @since 1.0.0
@@ -222,7 +222,7 @@ class ValidationConfig
     }
 
     /**
-     * The maximum delta in the currency calculation to be consider valid
+     * The maximum delta in the currency calculation to be considered valid
      * @param float $deltaCurrency
      * @return void
      * @since 1.0.0
@@ -233,7 +233,7 @@ class ValidationConfig
     }
 
     /**
-     * The maximum delta in the line calculation to be consider valid
+     * The maximum delta in the line calculation to be considered valid
      * @param float $deltaLine
      * @return void
      * @since 1.0.0
@@ -244,7 +244,7 @@ class ValidationConfig
     }
 
     /**
-     * The maximum delta in the table's sums calculation to be consider valid
+     * The maximum delta in the table's sums calculation to be considered valid
      * @param float $deltaTable
      * @return void
      * @since 1.0.0
@@ -266,7 +266,7 @@ class ValidationConfig
     }
 
     /**
-     * If performes signature validation
+     * If performs signature validation
      * @param bool $signValidation
      * @return void
      * @since 1.0.0

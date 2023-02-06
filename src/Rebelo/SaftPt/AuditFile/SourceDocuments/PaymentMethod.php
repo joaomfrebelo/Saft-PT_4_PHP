@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,10 +27,9 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMechanism;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 
@@ -52,7 +51,7 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * @author João Rebelo
  * @since 1.0.0
  */
-class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class PaymentMethod extends AAuditFile
 {
     /**
      * Node name
@@ -143,7 +142,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->paymentMechanism === null ? "null" : $this->paymentMechanism->get()
                 )
             );
@@ -200,7 +199,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->paymentAmount)
                 )
             );
@@ -213,7 +212,6 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="PaymentAmount" type="SAFmonetaryType"/&gt;
      * @param float $paymentAmount
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setPaymentAmount(float $paymentAmount): bool
@@ -247,12 +245,12 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         return isset($this->paymentAmount);
     }
-    
+
     /**
      * Gets PaymentDate<br>
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;
      * @return \Rebelo\Date\Date
-     * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getPaymentDate(): RDate
@@ -260,7 +258,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->paymentDate->format(RDate::SQL_DATE)
                 )
             );
@@ -272,6 +270,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;
      * @param \Rebelo\Date\Date $paymentDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setPaymentDate(RDate $paymentDate): void
@@ -295,11 +294,12 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         return isset($this->paymentDate);
     }
-    
+
     /**
      * Create the XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -321,7 +321,7 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $nodePayMethod = $node->getName() === Payment::N_PAYMENT ?
             $node->addChild(static::N_PAYMENTMETHOD) :
-            $nodePayMethod = $node->addChild(SalesInvoices\DocumentTotals::N_PAYMENT);
+            $node->addChild(SalesInvoices\DocumentTotals::N_PAYMENT);
 
 
         if ($this->getPaymentMechanism() !== null) {
@@ -357,6 +357,9 @@ class PaymentMethod extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse the XML node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

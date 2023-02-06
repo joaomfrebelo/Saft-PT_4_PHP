@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Address;
@@ -37,7 +38,7 @@ use Rebelo\Date\Date as RDate;
  * @author João Rebelo
  * @since 1.0.0
  */
-abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class AShippingPoint extends AAuditFile
 {
     /**
      * Node name
@@ -68,7 +69,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
-     * @var \Rebelo\Date\Date
+     * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
     private ?RDate $deliveryDate = null;
@@ -82,7 +83,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
     /**
      * &lt;xs:element ref="Address" minOccurs="0"/&gt;
-     * @var \Rebelo\SaftPt\AuditFile\Address
+     * @var \Rebelo\SaftPt\AuditFile\Address|null
      * @since 1.0.0
      */
     private ?Address $address = null;
@@ -122,7 +123,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted with '%s' elements in stack",
+                    __METHOD__." get with '%s' elements in stack",
                     \count($this->deliveryID)
                 )
             );
@@ -137,7 +138,6 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/&gt;
      * @param string $deliveryID
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addDeliveryID(string $deliveryID): bool
@@ -168,6 +168,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getDeliveryDate(): ?RDate
@@ -175,7 +176,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->deliveryDate === null ?
                         "null" :
                         $this->deliveryDate->format(RDate::SQL_DATE)
@@ -192,6 +193,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
      * @param \Rebelo\Date\Date|null $deliveryDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setDeliveryDate(?RDate $deliveryDate): void
@@ -217,7 +219,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted with '%s' elements in stack",
+                    __METHOD__." get with '%s' elements in stack",
                     \count($this->warehouse)
                 )
             );
@@ -254,7 +256,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
         if (isset($this->address) === false && $create) {
             $this->address = new Address($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
         return $this->address;
     }
 
@@ -276,6 +278,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -305,7 +308,6 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         if (\count($this->getWarehouse()) > 0) {
             foreach ($this->getWarehouse() as $warehouse) {
-                /* @var $warehouse \Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse */
                 $warehouse->createXmlNode($node);
             }
         }
@@ -340,7 +342,7 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
         $nodeXml = $node->asXML();
         if ($nodeXml === false) {
-            $msg = \sprintf("Error generating xml of node");
+            $msg = "Error generating xml of node";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
@@ -382,7 +384,6 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
                             $warehouse   = $this->addWarehouse();
                             $warehouse->setLocationID($domNode->nodeValue);
                             $stack[$n]   = $warehouse;
-                            $lastWhNode  = Warehouse::N_LOCATIONID;
                             $lastWhIndex = $n;
                             $n++;
                         } else {
@@ -396,14 +397,14 @@ abstract class AShippingPoint extends \Rebelo\SaftPt\AuditFile\AAuditFile
                         continue 2;
                     default :
                         $msg        = \sprintf(
-                            "Unknow node name '%s'", $domNode->nodeName
+                            "Unknown node name '%s'", $domNode->nodeName
                         );
                         \Logger::getLogger(\get_class($this))
                             ->error(\sprintf(__METHOD__." '%s'", $msg));
                         throw new AuditFileException($msg);
                 }
-            } catch (\Exception $e) {
-                $msg = $e->getMessage();
+            } catch (\Exception) {
+
             }
         }
     }

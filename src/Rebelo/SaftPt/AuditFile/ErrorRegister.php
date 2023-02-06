@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,9 +27,9 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 /**
- * File where is registed the error when create the xml node and export as xml.
- * This is because by teh Portuguese tax law the SAFT-PT file must exported even if as error.
- * So the best option is when the SAFT-PT file is exported if has errors dond't throw a
+ * File where is register the error when create the xml node and export as xml.
+ * This is because by teh Portuguese tax law the SAFT-PT file must export even if as error.
+ * So the best option is when the SAFT-PT file is exported if it has errors don't throw an
  * error but generate the file and show the errors to the user.
  * @author João Rebelo
  * @since 1.0.0
@@ -99,13 +99,13 @@ class ErrorRegister
 
     /**
      * Add error to stack
-     * @param string $settedValError
+     * @param string $setValError
      * @return void
      * @since 1.0.0
      */
-    public function addOnCreateXmlNode(string $settedValError): void
+    public function addOnCreateXmlNode(string $setValError): void
     {
-        $trans = AAuditFile::getI18n()->get($settedValError);
+        $trans = AAuditFile::getI18n()->get($setValError);
         if (\in_array($trans, $this->onCreateXmlNode) === false) {
             $this->onCreateXmlNode[] = $trans;
         }
@@ -239,7 +239,7 @@ class ErrorRegister
     }
 
     /**
-     * Check if has errors
+     * Check if it has errors
      * @return bool
      * @since 1.0.0
      */

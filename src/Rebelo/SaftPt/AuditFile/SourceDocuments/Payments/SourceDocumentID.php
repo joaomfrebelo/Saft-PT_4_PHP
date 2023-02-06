@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
@@ -40,7 +41,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class SourceDocumentID extends AAuditFile
 {
     /**
      * Node name
@@ -134,7 +135,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getOriginatingON(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->originatingON));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->originatingON));
         return $this->originatingON;
     }
 
@@ -187,6 +188,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="InvoiceDate"/&gt;
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getInvoiceDate(): RDate
@@ -194,7 +196,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->invoiceDate->format(RDate::SQL_DATE)
                 )
             );
@@ -217,6 +219,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="InvoiceDate"/&gt;
      * @param \Rebelo\Date\Date $invoiceDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setInvoiceDate(RDate $invoiceDate): void
@@ -246,7 +249,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->description === null ? "null" : $this->description
                 )
             );
@@ -292,6 +295,7 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -342,6 +346,8 @@ class SourceDocumentID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse XML node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

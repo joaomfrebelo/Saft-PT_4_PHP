@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -37,7 +38,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
+class Line extends ALine
 {
     /**
      * Node name
@@ -185,7 +186,6 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         }
 
         foreach ($this->getSourceDocumentID() as $sourceDocumentID) {
-            /* @var $sourceDocumentID SourceDocumentID */
             $sourceDocumentID->createXmlNode($lineNode);
         }
 
@@ -199,7 +199,7 @@ class Line extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ALine
         $this->createXmlNodeDebitCreditNode($lineNode);
 
         $this->getTax(false)?->createXmlNode($lineNode);
-        
+
         if ($this->getTaxExemptionReason() !== null) {
             $lineNode->addChild(
                 static::N_TAXEXEMPTIONREASON,

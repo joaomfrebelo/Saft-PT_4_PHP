@@ -17,7 +17,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,6 +27,8 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Bin;
 
+use Rebelo\SaftPt\AuditFile\i18n\en_GB;
+use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -112,46 +114,46 @@ class Validate extends Command
     public const OPT_LANG_SHORT = "g";
 
     /**
-     * Argument name of the configuration option if 
+     * Argument name of the configuration option if
      * accepts Debit and Credit lines in the same document
      * @since 1.0.0
      */
     public const OPT_DEBIT_CREDIT = "debcre";
 
     /**
-     * Argument name of the configuration option 
-     * of the delta in currency calculation to be consider valid
+     * Argument name of the configuration option
+     * of the delta in currency calculation to be considered valid
      * @since 1.0.0
      */
     public const OPT_DELTA_CURRENCY = "dc";
 
     /**
-     * Argument name of the configuration option 
-     * of the delta in lines calculation to be consider valid
+     * Argument name of the configuration option
+     * of the delta in lines calculation to be considered valid
      * @since 1.0.0
      */
     public const OPT_DELTA_LINES = "dl";
 
     /**
-     * Argument name of the configuration option 
-     * of the delta in tables (sum of all documents) 
-     * calculation to be consider valid
+     * Argument name of the configuration option
+     * of the delta in tables (sum of all documents)
+     * calculation to be considered valid
      * @since 1.0.0
      */
     public const OPT_DELTA_TABLE = "dt";
 
     /**
-     * Argument name of the configuration option 
-     * of the delta in document totals 
-     * calculation to be consider valid
+     * Argument name of the configuration option
+     * of the delta in document totals
+     * calculation to be considered valid
      * @since 1.0.0
      */
     public const OPT_DELTA_TOTAL_DOC = "ddt";
 
     /**
-     * Argument name of the configuration option 
-     * if validates continues lines numeration in documents   
-     * calculation to be consider valid
+     * Argument name of the configuration option
+     * if validates continues lines numeration in documents
+     * calculation to be considered valid
      * @since 1.0.0
      */
     public const OPT_CONTINUES_LINES = "cl";
@@ -170,7 +172,7 @@ class Validate extends Command
     public static int $start;
 
     /**
-     * 
+     *
      * @param mixed $name
      * @since 1.0.0
      */
@@ -279,8 +281,8 @@ class Validate extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /* @phpstan-ignore-next-line */
-        $io = new Style($input, $output);
+
+        $io = new Style($input, $output);/* @phpstan-ignore-line */
         $io->title("SAFT-PT 4 PHP by João M F Rebelo");
         try {
 
@@ -288,10 +290,9 @@ class Validate extends Command
             $this->setLang($io, $input);
 
             $showWarningsOpt = $input->getOption(self::OPT_SHOW_WARNINGS);
-            $showWarnings = $showWarningsOpt === null ? true :
-                    $this->parseBool(
-                        $showWarningsOpt, self::OPT_SHOW_WARNINGS
-                    );
+            $showWarnings = $showWarningsOpt === null || $this->parseBool(
+                $showWarningsOpt, self::OPT_SHOW_WARNINGS
+            );
 
             $saft = $input->getArgument(static::ARG_SAFT_FILE_PATH);
             if (\is_string($saft) === false) {
@@ -301,27 +302,27 @@ class Validate extends Command
             $pubKey = $this->getPubKeyPath($input);
             $config = $this->getValidationConfig($input);
             $config->setSignValidation($pubKey !== null);
-            $config->setStyle($io);            
+            $config->setStyle($io);
             // The AuditFile::loadFile always validate schema so
             // is not necessary to validate twice
             $config->setSchemaValidate(false);
-            
+
             $io->writeln(
                 "<info>" . \sprintf(
                     AuditFile::getI18n()->get("loading_file"), $saft
                 ) . "</info>"
             );
-            
+
             $audit = AuditFile::loadFile($saft);
-            
+
             $io->writeln(
                 "<info>" . \sprintf(
                     AuditFile::getI18n()->get("validating_file"), $saft
                 ) . "</info>"
             );
-            
+
             $audit->validate($pubKey, $config);
-            
+
             $io->newLine();
 
             $nWar = \count($audit->getErrorRegistor()->getWarnings());
@@ -396,8 +397,8 @@ class Validate extends Command
                 );
                 $io->listing($audit->getErrorRegistor()->getExceptionErrors());
             }
-            
-            
+
+
             $this->printStatistic($io, $saft);
 
             return Command::SUCCESS;
@@ -413,6 +414,7 @@ class Validate extends Command
      * @param \Symfony\Component\Console\Style\SymfonyStyle $io
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @return void
+     * @throws \Exception
      * @since 1.0.0
      */
     protected function setLang(SymfonyStyle $io, InputInterface $input): void
@@ -429,12 +431,12 @@ class Validate extends Command
                 case 'en':
                 case 'en_gb':
                 case 'engb':
-                    AuditFile::setI18n(new \Rebelo\SaftPt\AuditFile\i18n\en_GB());
+                    AuditFile::setI18n(new en_GB());
                     break;
                 case 'pt':
                 case 'pt_pt':
                 case 'ptpt':
-                    AuditFile::setI18n(new \Rebelo\SaftPt\AuditFile\i18n\pt_PT());
+                    AuditFile::setI18n(new pt_PT());
                     break;
                 default :
                     $io->writeln(
@@ -443,7 +445,7 @@ class Validate extends Command
                             $lang, self::DEFAULT_LANG
                         )
                     );
-                    AuditFile::setI18n(new \Rebelo\SaftPt\AuditFile\i18n\en_GB());
+                    AuditFile::setI18n(new en_GB());
             }
         }
     }
@@ -453,6 +455,7 @@ class Validate extends Command
      * @param \Symfony\Component\Console\Style\SymfonyStyle $io
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @return void
+     * @throws \Exception
      * @since 1.0.0
      */
     protected function setLog(SymfonyStyle $io, InputInterface $input): void
@@ -482,14 +485,11 @@ class Validate extends Command
         }
 
         $default = __DIR__;
-        for ($n = 0; $n <= 3; $n++) {
-            $default .= DIRECTORY_SEPARATOR . "..";
-        }
+        $default .= str_repeat(DIRECTORY_SEPARATOR . "..", 3 + 1);
         $logFileDef = $default . DIRECTORY_SEPARATOR . "log4php.xml";
         AuditFile::$log4phpConfigFilePath = $logFileDef;
         \Logger::configure($logFileDef);
         $this->log = \Logger::getLogger(\get_class($this));
-        return;
     }
 
     /**
@@ -529,6 +529,7 @@ class Validate extends Command
      * Get the validation config set by the input options
      * @param InputInterface $input
      * @return ValidationConfig
+     * @throws \Exception
      * @since 1.0.0
      */
     public function getValidationConfig(InputInterface $input): ValidationConfig
@@ -537,10 +538,9 @@ class Validate extends Command
 
         $debcred = $input->getOption(self::OPT_DEBIT_CREDIT);
         $config->setAllowDebitAndCredit(
-            $debcred === null ? true :
-                        $this->parseBool(
-                            $debcred, self::OPT_DEBIT_CREDIT
-                        )
+            $debcred === null || $this->parseBool(
+                $debcred, self::OPT_DEBIT_CREDIT
+            )
         );
 
         $config->setDeltaCurrency(
@@ -571,24 +571,23 @@ class Validate extends Command
 
         $clopt = $input->getOption(self::OPT_CONTINUES_LINES);
         $config->setContinuesLines(
-            $clopt === null ? true :
-                        $this->parseBool(
-                            $clopt, self::OPT_CONTINUES_LINES
-                        )
+            $clopt === null || $this->parseBool(
+                $clopt, self::OPT_CONTINUES_LINES
+            )
         );
-        
+
         return $config;
     }
 
     /**
-     * 
+     *
      * @param mixed $value
      * @param string $name
      * @return bool
      * @throws \Exception
      * @since 1.0.0
      */
-    public function parseBool($value, $name): bool
+    public function parseBool(mixed $value, string $name): bool
     {
         if (\is_bool($value)) {
             return $value;
@@ -621,14 +620,14 @@ class Validate extends Command
     }
 
     /**
-     * 
+     *
      * @param mixed $value
      * @param string $name
      * @return float
      * @throws \Exception
      * @since 1.0.0
      */
-    public function parseFloat($value, $name): float
+    public function parseFloat(mixed $value, string $name): float
     {
         if (\is_string($value)) {
             $valueClean = \preg_replace("/^=/", "", $value);

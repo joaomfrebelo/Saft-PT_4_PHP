@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -42,7 +43,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\{
  * @author João Rebelo
  * @since 1.0.0
  */
-class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class SourceDocuments extends AAuditFile
 {
     /**
      * Node name
@@ -103,7 +104,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->salesInvoices = new SalesInvoices($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->salesInvoices;
     }
 
@@ -133,7 +134,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->movementOfGoods = new MovementOfGoods($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->movementOfGoods;
     }
 
@@ -163,7 +164,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->workingDocuments = new WorkingDocuments($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->workingDocuments;
     }
 
@@ -194,7 +195,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->payments = new Payments($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->payments;
     }
 
@@ -215,6 +216,7 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -237,15 +239,17 @@ class SourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
         $this->getMovementOfGoods(false)?->createXmlNode($souDocNode);
         $this->getWorkingDocuments(false)?->createXmlNode($souDocNode);
         $this->getPayments(false)?->createXmlNode($souDocNode);
-        
+
         return $souDocNode;
     }
 
     /**
      * Parse XML node
      * @param \SimpleXMLElement $node
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

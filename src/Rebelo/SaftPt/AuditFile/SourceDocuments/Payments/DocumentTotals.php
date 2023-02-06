@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 
 /**
  * DocumentTotals
@@ -35,7 +36,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals
+class DocumentTotals extends ADocumentTotals
 {
     /**
      * Node name
@@ -107,7 +108,7 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->settlementAmount === null ? "null" :
                     \strval($this->settlementAmount)
                 )
@@ -128,7 +129,6 @@ class DocumentTotals extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentT
      *  &lt;/xs:element&gt;
      * </pre>
      * @param float|null $settlementAmount
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @return bool true if the value is valid
      * @since 1.0.0
      */

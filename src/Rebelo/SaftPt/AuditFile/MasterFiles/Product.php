@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
@@ -58,7 +59,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * </pre>
  * @since 1.0.0
  */
-class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Product extends AAuditFile
 {
     /**
      * Node name
@@ -240,7 +241,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getProductType(): ProductType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productType->get()));
         return $this->productType;
     }
 
@@ -295,7 +296,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getProductCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productCode));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productCode));
         return $this->productCode;
     }
 
@@ -318,7 +319,6 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param string $productCode
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setProductCode(string $productCode): bool
@@ -353,7 +353,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getProductGroup(): ?string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productGroup));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productGroup));
         return $this->productGroup;
     }
 
@@ -365,7 +365,6 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param string|null $productGroup
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setProductGroup(?string $productGroup): bool
@@ -406,7 +405,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getProductDescription(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productDescription));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productDescription));
         return $this->productDescription;
     }
 
@@ -430,7 +429,6 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param string $productDescription
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setProductDescription(string $productDescription): bool
@@ -478,7 +476,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getProductNumberCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productNumberCode));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productNumberCode));
         return $this->productNumberCode;
     }
 
@@ -502,7 +500,6 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param string $productNumberCode
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setProductNumberCode(string $productNumberCode): bool
@@ -539,7 +536,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
         if (isset($this->customsDetails) === false) {
             $this->customsDetails = new CustomsDetails($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(\sprintf(__METHOD__));
+        \Logger::getLogger(\get_class($this))->info(__METHOD__);
         return $this->customsDetails;
     }
 
@@ -626,6 +623,7 @@ class Product extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

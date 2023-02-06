@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,8 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Rebelo\Date\DateFormatException;
+use Rebelo\Date\DateParseException;
+use Rebelo\Decimal\DecimalException;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\Sign\Sign;
 use Rebelo\Decimal\UDecimal;
 use Rebelo\Decimal\Decimal;
@@ -61,8 +65,9 @@ class WorkingDocuments extends ADocuments
      * Validate WorkingDocuments table.<br>
      * This class will validate the values of WorkingDocuments, the
      * signtuare hash and dates
-     * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile The AuditFile to be validated
-     * @param \Rebelo\SaftPt\Sign\Sign $sign The sign class to be used to validate the hash, must have the public key defined
+     * @param AuditFile $auditFile The AuditFile to be validated
+     * @param Sign $sign The sign class to be used to validate the hash, must have the public key defined
+     * @throws DecimalException
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
@@ -73,11 +78,9 @@ class WorkingDocuments extends ADocuments
         $sourceDoc = $auditFile->getSourceDocuments(false);
         if ($sourceDoc !== null) {
             $workingDocuments = $sourceDoc->getWorkingDocuments(false);
-            if ($workingDocuments !== null) {
-                $workingDocuments->setDocTableTotalCalc(
-                    new \Rebelo\SaftPt\Validate\DocTableTotalCalc()
-                );
-            }
+            $workingDocuments?->setDocTableTotalCalc(
+                new DocTableTotalCalc()
+            );
         }
     }
 
@@ -138,7 +141,6 @@ class WorkingDocuments extends ADocuments
 
             if ($this->getStyle() !== null) {
                 $nDoc      = \count($workingDocuments->getWorkDocument());
-                /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
                 $section   = null;
                 $progreBar = $this->getStyle()->addProgressBar($section);
                 $section->writeln("");
@@ -155,11 +157,8 @@ class WorkingDocuments extends ADocuments
                 foreach (\array_keys($order[$type]) as $serie) {
                     foreach (\array_keys($order[$type][$serie]) as $no) {
 
-                        if ($progreBar !== null) {
-                            $progreBar->advance();
-                        }
+                        $progreBar?->advance();
 
-                        /* @var $workDocument \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
                         $workDocument = $order[$type][$serie][$no];
                         list(, $no) = \explode(
                             "/",
@@ -196,18 +195,14 @@ class WorkingDocuments extends ADocuments
                 }
             }
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progreBar?->finish();
 
             $this->totalCredit();
             $this->totalDebit();
         } catch (\Exception | \Error $e) {
             $this->isValid = false;
 
-            if ($progreBar !== null) {
-                $progreBar->finish();
-            }
+            $progreBar?->finish();
 
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());
@@ -346,6 +341,8 @@ class WorkingDocuments extends ADocuments
     /**
      * Validate WorkingDocuments TotalDebit
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalDebit(): void
@@ -380,6 +377,8 @@ class WorkingDocuments extends ADocuments
     /**
      * Validate WorkingDocuments TotalCredit
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalCredit(): void
@@ -416,6 +415,7 @@ class WorkingDocuments extends ADocuments
      * Validate the Document Status
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(WorkDocument $workDocument): void
@@ -460,7 +460,6 @@ class WorkingDocuments extends ADocuments
             $workDocument->addError($msg, DocumentStatus::N_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
-            return;
         }
     }
 
@@ -507,6 +506,9 @@ class WorkingDocuments extends ADocuments
      * validate each line of the WorkDocument
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function lines(WorkDocument $workDocument): void
@@ -843,7 +845,6 @@ class WorkingDocuments extends ADocuments
         $hasRef    = false;
         $hasReason = false;
         foreach ($line->getReferences() as $reference) {
-            /* @var $reference \Rebelo\SaftPt\AuditFile\SourceDocuments\References */
             if ($reference->getReference() !== null) {
                 $hasRef = true;
                 if (AAuditFile::validateDocNumber($reference->getReference()) === false) {
@@ -888,7 +889,6 @@ class WorkingDocuments extends ADocuments
             $line->addError($msg, References::N_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
-            return;
         }
     }
 
@@ -897,13 +897,13 @@ class WorkingDocuments extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function orderReferences(Line $line, WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         foreach ($line->getOrderReferences() as $orderRef) {
-            /* @var $orderRef \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences */
             if ($orderRef->getOriginatingON() === null) {
                 $msg           = \sprintf(
                     AAuditFile::getI18n()->get(
@@ -1006,6 +1006,7 @@ class WorkingDocuments extends ADocuments
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, WorkDocument $workDocument): void
@@ -1113,7 +1114,7 @@ class WorkingDocuments extends ADocuments
         }
 
 
-        if ($lineTax->getTaxCode() !== TaxCode::ISE &&
+        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
             $lineTax->getTaxPercentage() !== 0.0 &&
             ($line->getTaxExemptionCode() !== null ||
             $line->getTaxExemptionReason() !== null)
@@ -1168,9 +1169,11 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate the document total, only can be invoked after
-     * validate lines (Because total controls are getted from that validation)
+     * validate lines (Because total controls are get from that validation)
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Decimal\DecimalException
+     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(WorkDocument $workDocument): void
@@ -1273,7 +1276,7 @@ class WorkingDocuments extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError(
                 $msg,
-                \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency::N_EXCHANGERATE
+                Currency::N_EXCHANGERATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -1284,6 +1287,8 @@ class WorkingDocuments extends ADocuments
      * Test if the signature is valide or not
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
     protected function sign(WorkDocument $workDocument): void
@@ -1358,6 +1363,7 @@ class WorkingDocuments extends ADocuments
      * Validate the WorkDocument date nad SystemEntrydate
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function workDocumentDateAndSystemEntryDate(WorkDocument $workDocument): void
@@ -1428,6 +1434,8 @@ class WorkingDocuments extends ADocuments
      * Validate if exists workdoc types out of date
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
      * @return void
+     * @throws DateFormatException
+     * @throws DateParseException
      * @since 1.0.0
      */
     protected function outOfDateInvoiceTypes(WorkDocument $workDocument): void

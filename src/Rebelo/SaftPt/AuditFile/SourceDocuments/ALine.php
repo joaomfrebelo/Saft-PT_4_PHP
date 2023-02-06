@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
@@ -35,7 +36,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class ALine extends AAuditFile
 {
     /**
      * Node name
@@ -151,7 +152,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->lineNumber)
                 )
             );
@@ -207,7 +208,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->debitAmount === null ? "null" : \strval($this->debitAmount)
                 )
             );
@@ -228,13 +229,13 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         try {
             if ($debitAmount < 0.0) {
-                $msg = "Debit Amout can not be less than 0.0";
+                $msg = "Debit Amount can not be less than 0.0";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             if ($this->getCreditAmount() !== null && $debitAmount !== null) {
-                $msg = "Debit Amout onlu can be set if Credit Amount is null";
+                $msg = "Debit Amount only can be set if Credit Amount is null";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
@@ -271,7 +272,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->creditAmount === null ? "null" : \strval($this->creditAmount)
                 )
             );
@@ -292,13 +293,13 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         try {
             if ($creditAmount < 0.0) {
-                $msg = "Credit Amout can not be less than 0.0";
+                $msg = "Credit Amount can not be less than 0.0";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             if ($this->getDebitAmount() !== null && $creditAmount !== null) {
-                $msg = "Credit Amout onlu can be set if Debit Amount is null";
+                $msg = "Credit Amount only can be set if Debit Amount is null";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
@@ -346,7 +347,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxExemptionReason === null ? "null" :
                     $this->taxExemptionReason
                 )
@@ -379,7 +380,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     {
         try {
             if ($taxExemptionReason !== null && \strlen($taxExemptionReason) < 6) {
-                $msg = "Tax Exemption Reason can not have less than 6 caracters";
+                $msg = "Tax Exemption Reason can not have less than 6 characters";
                 \Logger::getLogger(\get_class($this))
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
@@ -417,7 +418,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->taxExemptionCode === null ? "null" :
                     $this->taxExemptionCode->get()
                 )
@@ -467,7 +468,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->settlementAmount === null ? "null" :
                     \strval($this->settlementAmount)
                 )
@@ -488,7 +489,7 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setSettlementAmount(?float $settlementAmount): bool
     {
         if ($settlementAmount !== null && $settlementAmount < 0.0) {
-            $msg    = "Settlement Amout can not be less than 0.0";
+            $msg    = "Settlement Amount can not be less than 0.0";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
@@ -512,7 +513,6 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create common xml node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -536,7 +536,6 @@ abstract class ALine extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *
      * @param \SimpleXMLElement $node
      * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     protected function createXmlNodeDebitCreditNode(\SimpleXMLElement $node): void

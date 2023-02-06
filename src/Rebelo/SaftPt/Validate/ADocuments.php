@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -47,14 +47,14 @@ class ADocuments extends AValidate
     const CALC_PRECISION = 9;
 
     /**
-     * The output writer, to be use in concolde application
+     * The output writer, to be use in console application
      * @var \Rebelo\SaftPt\Bin\Style|null
      * @since 1.0.0
      */
     protected ?Style $style = null;
 
     /**
-     * The total debit calculated from all docmunts of the table
+     * The total debit calculated from all documents of the table
      * @var \Rebelo\Decimal\UDecimal
      * @since 1.0.0
      */
@@ -110,28 +110,28 @@ class ADocuments extends AValidate
     protected Sign $sign;
 
     /**
-     * The delta that can be consider valid for total documents calculation
+     * The delta that can be considered valid for total documents calculation
      * @var float
      * @since 1.0.0
      */
     protected float $deltaTotalDoc = 0.0;
 
     /**
-     * The delta that can be consider valid for the product of UnitPRice and Quantity
+     * The delta that can be considered valid for the product of UnitPRice and Quantity
      * @var float
      * @since 1.0.0
      */
     protected float $deltaLine = 0.0;
 
     /**
-     * The delta that can be consider valid for total documents currency
+     * The delta that can be considered valid for total documents currency
      * @var float
      * @since 1.0.0
      */
     protected float $deltaCurrency = 0.0;
 
     /**
-     * The delta that can be consider valid for total tables
+     * The delta that can be considered valid for total tables
      * @var float
      * @since 1.0.0
      */
@@ -140,13 +140,13 @@ class ADocuments extends AValidate
     /**
      * Set if the lines number are to be verified continues or not. If you set to
      * true all lines numbers have to be continues and starting from 1, else only
-     * check if ther are repeated line numbers.<br>
+     * check if there are repeated line numbers.<br>
      * The AT ordinance is not very clear how should be done, only says that the lines
-     * are to be exported in the same order as in the document and non fiscal lines
-     * aren't to be exported. So there are two situation if you have some non fiscal
-     * lines and you are exporting with the ordr and same number line or database document
-     * will miss the numbers of non fiscal lines, if you export with the continues
-     * numeration, the numeration in the saft will be not equal to the line numebr
+     * are to be exported in the same order as in the document and non-fiscal lines
+     * aren't to be exported. So there are two situation if you have some non-fiscal
+     * lines, and you are exporting with the order and same number line or database document
+     * will miss the numbers of non-fiscal lines, if you export with the continues
+     * numeration, the numeration in the saft will be not equal to the line number
      * in the database.
      * @var bool
      * @since 1.0.0
@@ -164,7 +164,7 @@ class ADocuments extends AValidate
     protected bool $allowDebitAndCredit = false;
 
     /**
-     * Defifine if performes the signatures validation
+     * Define if performs the signatures validation
      * @var bool
      * @since 1.0.0
      */
@@ -174,6 +174,7 @@ class ADocuments extends AValidate
      *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile
      * @param \Rebelo\SaftPt\Sign\Sign|null $sign
+     * @throws \Rebelo\Decimal\DecimalException
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign = null)
@@ -187,7 +188,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for total documents calculation
+     * The delta that can be considered valid for total documents calculation
      * @return float
      * @since 1.0.0
      */
@@ -198,7 +199,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for total documents currency
+     * The delta that can be considered valid for total documents currency
      * @return float
      * @since 1.0.0
      */
@@ -209,7 +210,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for total tables
+     * The delta that can be considered valid for total tables
      * @return float
      * @since 1.0.0
      */
@@ -220,7 +221,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for UnitPrice * Quantity
+     * The delta that can be considered valid for UnitPrice * Quantity
      * @return float
      * @since 1.0.0
      */
@@ -231,7 +232,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for total documents calculation
+     * The delta that can be considered valid for total documents calculation
      * @param float $deltaTotalDoc
      * @return void
      * @since 1.0.0
@@ -247,7 +248,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for total documents currency
+     * The delta that can be considered valid for total documents currency
      * @param float $deltaCurrency
      * @return void
      * @since 1.0.0
@@ -263,7 +264,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for total tables
+     * The delta that can be considered valid for total tables
      * @param float $deltaTable
      * @return void
      * @since 1.0.0
@@ -279,7 +280,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * The delta that can be consider valid for Quantity * UnitPrice
+     * The delta that can be considered valid for Quantity * UnitPrice
      * @param float $deltaLine
      * @return void
      * @since 1.0.0
@@ -295,7 +296,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * Check if the line numbers are to be check as continues or only
+     * Check if the line numbers are to be checked as continues or only
      * if there are repeated line numbers
      * @return bool
      * @since 1.0.0
@@ -306,7 +307,7 @@ class ADocuments extends AValidate
             ->info(
                 __METHOD__.
                 \sprintf(
-                    "ContinuesLine getted as '%s'",
+                    "ContinuesLine get as '%s'",
                     $this->continuesLines ? "true" : "false"
                 )
             );
@@ -314,7 +315,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * Check if the line numbers are to be check as continues or only
+     * Check if the line numbers are to be checked as continues or only
      * if there are repeated line numbers
      * @param bool $continuesLines If true the validation will check if the line number are continues, false will check only id there are repeated values
      * @return void
@@ -338,7 +339,7 @@ class ADocuments extends AValidate
      * however there are two situation where is possible to have debit and
      * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true.<br>
-     * Point 2.2.6 of Ordinance 8632/2014, of 3th of July
+     * Point 2.2.6 of Ordinance 8632/2014, of 3rd of July
      * @return bool
      * @since 1.0.0
      */
@@ -348,7 +349,7 @@ class ADocuments extends AValidate
             ->info(
                 __METHOD__.
                 \sprintf(
-                    "AllowDebitAndCredit getted as '%s'",
+                    "AllowDebitAndCredit get as '%s'",
                     $this->allowDebitAndCredit ? "true" : "false"
                 )
             );
@@ -360,7 +361,7 @@ class ADocuments extends AValidate
      * however there are two situation where is possible to have debit and
      * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true.<br>
-     * Point 2.2.6 of Ordinance 8632/2014, of 3th of July
+     * Point 2.2.6 of Ordinance 8632/2014, of 3rd of July
      * @param bool $allowDebitAndCredit
      * @return void
      * @since 1.0.0
@@ -379,7 +380,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * If performes signature validation
+     * If performs signature validation
      * @param bool $signValidation
      * @return void
      * @since 1.0.0
@@ -398,7 +399,7 @@ class ADocuments extends AValidate
     }
 
     /**
-     * If performes signature validation
+     * If performs signature validation
      * @return bool
      * @since 1.0.0
      */
@@ -408,7 +409,7 @@ class ADocuments extends AValidate
             ->info(
                 __METHOD__.
                 \sprintf(
-                    "SignValidation getted as '%s'",
+                    "SignValidation get as '%s'",
                     $this->signValidation ? "true" : "false"
                 )
             );

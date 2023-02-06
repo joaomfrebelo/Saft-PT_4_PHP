@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -43,7 +43,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
 
     /**
      * Will it be escape by \SimpleXMLElement lib<br>
-     * Afer the string being escaped the string length it will be grater
+     * After the string being escaped the string length it will be grater
      * and can overload the max size for that node, in this case the
      * exportation of the xml will throw an Exception
      * @since 1.0.0
@@ -52,7 +52,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
 
     /**
      * Only some entities will be escaped<br>
-     * Afer the string being escaped the string length it will be grater
+     * After the string being escaped the string length it will be grater
      * and can overload the max size for that node, in this case the
      * exportation of the xml will throw an Exception
      * @since 1.0.0
@@ -67,8 +67,8 @@ class RSimpleXmlElement extends \SimpleXMLElement
     public static int $escapeHtml = self::PARTIAL_ESCAPE_HTML;
 
     /**
-     * Creates a new SimpleXMLElement child object with encoding converter to UTF-8. 
-     * Possibility of escape html and resolve the issue of some character 
+     * Creates a new SimpleXMLElement child object with encoding converter to UTF-8.
+     * Possibility of escape html and resolve the issue of some character
      * in add child in SimpleXMLElement native class
      * <p>Creates a new SimpleXMLElement object.</p>
      * @param string $data <p>A well-formed XML string or the path or URL to an XML document if <code>data_is_url</code> is <b><code>TRUE</code></b>.</p>
@@ -77,47 +77,54 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * @param string $ns <p>Namespace prefix or URI.</p>
      * @param bool $isPrefix <p><b><code>TRUE</code></b> if <code>ns</code> is a prefix, <b><code>FALSE</code></b> if it's a URI; defaults to <b><code>FALSE</code></b>.</p>
      * @return self <p>Returns a <code>SimpleXMLElement</code> object representing <code>data</code>.</p>
+     * @throws AuditFileException
+     * @throws \Exception
      * @link http://php.net/manual/en/simplexmlelement.construct.php
      * @see simplexml_load_string(), simplexml_load_file(), libxml_use_internal_errors()
      * @link https://stackoverflow.com/a/4347610/6397645 based on this example
      * @since 1.0.0
      */
-    public static function getInstance($data, $options = 0,
-                                       $dataIsUrl = FALSE,
-                                       $ns = "", $isPrefix = FALSE) : self
+    public static function getInstance(
+        string $data,
+        int    $options = 0,
+        bool   $dataIsUrl = FALSE,
+        string $ns = "",
+        bool   $isPrefix = FALSE
+    ): self
     {
-        
+
         if (false === $encode = \mb_detect_encoding(
             $data,
             ["UTF-8", "Windows-1252", "ISO-8859-1", ...\mb_list_encodings()],
             true
         )) {
-            throw new \Rebelo\SaftPt\AuditFile\AuditFileException("Data encodede not detected");
+            throw new AuditFileException("Data encoded not detected");
         }
 
         $dataUtf8 = ("UTF-8" !== $encode) ?
             \mb_convert_encoding($data, "UTF-8", $encode) : $data;
-        
+
         return new self($dataUtf8, $options, $dataIsUrl, $ns, $isPrefix);
     }
 
     /**
      * Adds a child element to the XML node
      * <p>Adds a child element to the node and returns a SimpleXMLElement of the child.</p>
-     * @param string $name <p>The name of the child element to add.</p>
+     * @param string $qualifiedName <p>The name of the child element to add.</p>
      * @param string $value <p>If specified, the value of the child element.</p>
-     * @param string $ns <p>Namespace (Not implemented)</p>
+     * @param string $namespace <p>Namespace (Not implemented)</p>
      * @return \SimpleXMLElement
-     * @link http://php.net/manual/en/simplexmlelement.addchild.php
+     * @throws NotImplemented
      * @since 1.0.0
+     * @link http://php.net/manual/en/simplexmlelement.addchild.php
      */
-    public function addChild($name, $value = null, $ns = null)
+    public function addChild(string $qualifiedName, $value = null, $namespace = null): \SimpleXMLElement
     {
-        if ($ns !== null) {
+        if ($namespace !== null) {
             throw new NotImplemented("Namespace not implemented in addChild");
         }
         if ($value === null || static::$escapeHtml === static::NO_ESCAPE_HTML) {
-            return parent::addChild($name, $value);
+            return parent::addChild($qualifiedName, $value);
         }
 
         if (static::$escapeHtml === static::PARTIAL_ESCAPE_HTML) {
@@ -138,10 +145,10 @@ class RSimpleXmlElement extends \SimpleXMLElement
             $to[5] = '&#92;';
 
             $esacped = str_replace($from, $to, $value);
-            return parent::addChild($name, $esacped);
+            return parent::addChild($qualifiedName, $esacped);
         }
 
-        $this->{$name}[] = $value;
-        return $this->{$name};
+        $this->{$qualifiedName}[] = $value;
+        return $this->{$qualifiedName};
     }
 }

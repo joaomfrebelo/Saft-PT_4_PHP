@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Sign;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\DateFormatException;
 
 /**
  * Create/verify the hash of signature
@@ -73,14 +74,14 @@ class Sign
 
     /**
      * Set the private key to create the hash sign
-     * @param string $privatekey
+     * @param string $privateKey
      * @return void
      * @since 1.0.0
      */
-    public function setPrivateKey(string $privatekey): void
+    public function setPrivateKey(string $privateKey): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $this->private = $privatekey;
+        $this->private = $privateKey;
     }
 
     /**
@@ -99,6 +100,7 @@ class Sign
      * Set the private key file path to create the hash sign
      * @param string $path
      * @return void
+     * @throws SignException
      * @since 1.0.0
      */
     public function setPrivateKeyFilePath(string $path): void
@@ -120,6 +122,7 @@ class Sign
      * Set the public key file path to verify the hash sign
      * @param string $path
      * @return void
+     * @throws SignException
      * @since 1.0.0
      */
     public function setPublicKeyFilePath(string $path): void
@@ -145,6 +148,7 @@ class Sign
      * @param float $grossTotal The document gross total
      * @param string|null $lastHash The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string
      * @return string
+     * @throws DateFormatException
      * @since 1.0.0
      */
     protected function creatString2Sign(RDate $docDate, RDate $systemEntryDate,
@@ -167,16 +171,21 @@ class Sign
      * @param float $grossTotal The document gross total
      * @param string|null $lastHash The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string
      * @return string
+     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
-    public function createSignature(RDate $docDate, RDate $systemEntryDate,
-                                    string $doc, float $grossTotal,
-                                    ?string $lastHash = null): string
+    public function createSignature(
+        RDate $docDate,
+        RDate $systemEntryDate,
+        string $doc,
+        float $grossTotal,
+        ?string $lastHash = null
+    ): string
     {
 
         if (isset($this->private) === false) {
-            $msg = "Private key not setted";
+            $msg = "Private key not set";
             \Logger::getLogger(\get_class($this))
                 ->error(
                     \sprintf(__METHOD__." '%s'", $msg)
@@ -216,6 +225,7 @@ class Sign
      * @param string|null $lastHash The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string
      * @return bool
      * @throws \Rebelo\SaftPt\Sign\SignException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function verifySignature(string $hash, RDate $docDate,

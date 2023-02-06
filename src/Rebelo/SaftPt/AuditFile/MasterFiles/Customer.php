@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -171,7 +171,7 @@ class Customer extends ACustomerSupplier
     public function getCustomerID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->customerID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->customerID));
         return $this->customerID;
     }
 
@@ -235,7 +235,7 @@ class Customer extends ACustomerSupplier
     public function getCustomerTaxID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->customerTaxID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->customerTaxID));
         return $this->customerTaxID;
     }
 
@@ -264,7 +264,6 @@ class Customer extends ACustomerSupplier
      */
     public function setCustomerTaxID(string $customerTaxID): bool
     {
-        $msg    = null;
         $length = \strlen($customerTaxID);
         if ($length < 1 || $length > 30) {
             $msg    = sprintf(
@@ -288,7 +287,7 @@ class Customer extends ACustomerSupplier
      * Gets as billingAddress<br>
      * Head office address or the fixed /permanent establishment address,
      * located on Portuguese territory.<br>
-     * The Address instance will be create once you get this method<br>
+     * The Address instance will be created once you get this method<br>
      * &lt;xs:element ref="BillingAddress"/&gt;<br>
      * &lt;xs:element name="BillingAddress" type="AddressStructure"/&gt;
      *
@@ -323,7 +322,7 @@ class Customer extends ACustomerSupplier
      * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
      * &lt;xs:element name="ShipToAddress" type="AddressStructure"/&gt;
      *
-     * @return \Rebelo\SaftPt\AuditFile\Address The new Address instance that was add and must be populated
+     * @return \Rebelo\SaftPt\AuditFile\Address The new Address instance that was added and must be populated
      * @since 1.0.0
      */
     public function addShipToAddress(): Address
@@ -352,6 +351,7 @@ class Customer extends ACustomerSupplier
      * Create the xml node for Customer
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -386,7 +386,7 @@ class Customer extends ACustomerSupplier
 
         if (isset($this->customerTaxID)) {
             $customerNode->addChild(
-                static::N_CUSTOMERTAXID, \strval($this->getCustomerTaxID())
+                static::N_CUSTOMERTAXID, $this->getCustomerTaxID()
             );
         } else {
             $customerNode->addChild(static::N_CUSTOMERTAXID);
@@ -414,7 +414,6 @@ class Customer extends ACustomerSupplier
         }
 
         foreach ($this->getShipToAddress() as $shipAddr) {
-            /* @var $shipAddr Address */
             $shipAddr->createXmlNode($customerNode->addChild(static::N_SHIPTOADDRESS));
         }
 
@@ -486,8 +485,7 @@ class Customer extends ACustomerSupplier
         }
 
         $this->setSelfBillingIndicator(
-            ((int) $node->{static::N_SELFBILLINGINDICATOR})
-            === 1 ? true : false 
+            ((int) $node->{static::N_SELFBILLINGINDICATOR}) === 1
         );
         if ($node->{static::N_TELEPHONE}->count() > 0) {
             $this->setTelephone((string) $node->{static::N_TELEPHONE});

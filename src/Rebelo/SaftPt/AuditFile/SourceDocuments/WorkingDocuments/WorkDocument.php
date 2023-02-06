@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -132,7 +132,7 @@ class WorkDocument extends ADocument
     public function getDocumentNumber(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->documentNumber));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->documentNumber));
         return $this->documentNumber;
     }
 
@@ -196,7 +196,7 @@ class WorkDocument extends ADocument
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "DocumentSatus"));
+            ->info(\sprintf(__METHOD__." get '%s'", "DocumentSatus"));
         return $this->documentStatus;
     }
 
@@ -216,7 +216,7 @@ class WorkDocument extends ADocument
      * Date and time type: “YYYY-MM-DDThh:mm:ss”.<br>
      * &lt;xs:element ref="WorkDate"/&gt;
      * @return \Rebelo\Date\Date
-     * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getWorkDate(): RDate
@@ -224,7 +224,7 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->workDate->format(RDate::SQL_DATE)
                 )
             );
@@ -248,6 +248,7 @@ class WorkDocument extends ADocument
      * &lt;xs:element ref="WorkDate"/&gt;
      * @param \Rebelo\Date\Date $workDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setWorkDate(RDate $workDate): void
@@ -290,7 +291,7 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", $this->workType->get()
+                    __METHOD__." get '%s'", $this->workType->get()
                 )
             );
         return $this->workType;
@@ -342,8 +343,8 @@ class WorkDocument extends ADocument
 
     /**
      * Add Line<br>
-     * This method when is invoke will create a new Line instace and add to satck
-     * then will be returned to be populated. The line number is set automatacly
+     * This method when is invoked will create a new Line instace and add to satck
+     * then will be returned to be populated. The line number is set automatically,
      * but you can set other.
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line
      * @since 1.0.0
@@ -387,7 +388,7 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", "DocumentTotals"
+                    __METHOD__." get '%s'", "DocumentTotals"
                 )
             );
         return $this->documentTotals;
@@ -408,6 +409,7 @@ class WorkDocument extends ADocument
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -506,7 +508,7 @@ class WorkDocument extends ADocument
         }
 
         $this->getTransactionID(false)?->createXmlNode($workNode);
-        
+
         if (isset($this->customerID)) {
             $workNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
         } else {
@@ -540,6 +542,8 @@ class WorkDocument extends ADocument
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

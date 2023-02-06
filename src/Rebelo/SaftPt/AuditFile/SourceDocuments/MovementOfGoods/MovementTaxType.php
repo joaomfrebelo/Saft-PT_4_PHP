@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -25,6 +25,9 @@
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
+
+use Rebelo\Enum\AEnum;
+use Rebelo\Enum\EnumException;
 
 /**
  * MovementTaxType<br>
@@ -36,7 +39,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
  * @author João Rebelo
  * @since 1.0.0
  */
-class MovementTaxType extends \Rebelo\Enum\AEnum
+class MovementTaxType extends AEnum
 {
     /**
      *
@@ -64,6 +67,7 @@ class MovementTaxType extends \Rebelo\Enum\AEnum
      *   &lt;/xs:simpleType&gt;
      * @param string $value
      * </pre>
+     * @throws EnumException
      * @since 1.0.0
      */
     public function __construct(string $value)

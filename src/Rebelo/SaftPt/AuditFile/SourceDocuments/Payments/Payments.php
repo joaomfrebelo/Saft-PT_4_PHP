@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,9 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Rebelo\Date\DateFormatException;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 
 /**
@@ -40,7 +42,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
+class Payments extends ASourceDocuments
 {
     /**
      * Node name
@@ -140,7 +142,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", \strval($this->numberOfEntries)
+                    __METHOD__." get '%s'", \strval($this->numberOfEntries)
                 )
             );
         return $this->numberOfEntries;
@@ -200,7 +202,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", \strval($this->totalDebit)
+                    __METHOD__." get '%s'", \strval($this->totalDebit)
                 )
             );
         return $this->totalDebit;
@@ -258,7 +260,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'", \strval($this->totalCredit)
+                    __METHOD__." get '%s'", \strval($this->totalCredit)
                 )
             );
         return $this->totalCredit;
@@ -310,8 +312,7 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
      */
     public function addPayment(): Payment
     {
-        // Every time that a payment is add the order is reseted and is
-        // contructed when called
+        // Every time that a payment is added the order is reset and is constructed when called
         $this->order     = array();
         $payment         = new Payment($this->getErrorRegistor());
         $this->payment[] = $payment;
@@ -330,14 +331,14 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
     public function getPayment(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "Payment"));
+            ->info(\sprintf(__METHOD__." get '%s'", "Payment"));
         return $this->payment;
     }
 
     /**
      * Get payment order by type/serie/number<br>
      * Ex: $stack[type][serie][InvoiceNo] = Payment<br>
-     * If a error exist, th error is add to ValidationErrors stack
+     * If a error exist, th error is added to ValidationErrors stack
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment>>>
      * @since 1.0.0
      */
@@ -348,7 +349,6 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         }
 
         foreach ($this->getPayment() as $k => $payment) {
-            /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
             if ($payment->issetPaymentRefNo() === false) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get("payment_at_index_no_number"), $k
@@ -364,9 +364,6 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
                 \str_replace("/", " ", $payment->getPaymentRefNo())
             );
 
-            $type = \strval($type);
-            $serie = \strval($serie);
-            
             if (\array_key_exists($type, $this->order)) {
                 if (\array_key_exists($serie, $this->order[$type])) {
                     if (\array_key_exists(\intval($no), $this->order[$type][$serie])) {
@@ -395,13 +392,13 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
 
         return $this->order;
     }
-    
+
     /**
      *
      * @param \SimpleXMLElement $node
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @return \SimpleXMLElement
-     * @since 1.0.0
+     * @throws DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException*@since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
@@ -447,7 +444,6 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
         }
 
         foreach ($this->getPayment() as $payment) {
-            /* @var $payment Payment */
             $payment->createXmlNode($payNode);
         }
 
@@ -457,8 +453,10 @@ class Payments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
     /**
      *
      * @param \SimpleXMLElement $node
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

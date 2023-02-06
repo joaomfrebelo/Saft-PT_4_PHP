@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
@@ -35,7 +36,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-class ProductSerialNumber extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class ProductSerialNumber extends AAuditFile
 {
     /**
      * Node name
@@ -94,7 +95,7 @@ class ProductSerialNumber extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getSerialNumber(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->serialNumber;
     }
 
@@ -113,7 +114,6 @@ class ProductSerialNumber extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * </pre>
      * @param string $serialNumber
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addSerialNumber(string $serialNumber): bool
@@ -138,6 +138,7 @@ class ProductSerialNumber extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create the xml node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -164,6 +165,7 @@ class ProductSerialNumber extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Parse the xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

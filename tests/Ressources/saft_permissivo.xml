@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <!-- Estrutura do ficheiro SAFT-PT-->
 <AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 .\SAFTPT1.04_01.xsd"
+           xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/master/src/Rebelo/SaftPt/Validate/Schema/SAFTPT_1_04_01.xsd"
            xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01">
     <Header>
         <AuditFileVersion>1.04_01</AuditFileVersion>
@@ -1645,6 +1645,6 @@
                     <GrossTotal>1312.50</GrossTotal>
                 </DocumentTotals>
             </Invoice>
-        </SalesInvoices>        
+        </SalesInvoices>
     </SourceDocuments>
 </AuditFile>

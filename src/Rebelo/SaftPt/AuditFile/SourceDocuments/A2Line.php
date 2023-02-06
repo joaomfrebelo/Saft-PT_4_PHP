@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -30,7 +30,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Function and properties
- * comumn to Invoice, Movement of Goods
+ * common to Invoice, Movement of Goods
  * and Working Documents
  * @author João Rebelo
  * @since 1.0.0
@@ -172,7 +172,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
-     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation
+     * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation|null
      * @since 1.0.0
      */
     protected ?CustomsInformation $customsInformation = null;
@@ -198,7 +198,7 @@ abstract class A2Line extends ALine
     public function getOrderReferences(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted '%s'");
+            ->info(__METHOD__." get '%s'");
         return $this->orderReferences;
     }
 
@@ -235,7 +235,7 @@ abstract class A2Line extends ALine
     public function getProductCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productCode));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productCode));
         return $this->productCode;
     }
 
@@ -298,7 +298,7 @@ abstract class A2Line extends ALine
     public function getProductDescription(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->productDescription));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productDescription));
         return $this->productDescription;
     }
 
@@ -372,7 +372,7 @@ abstract class A2Line extends ALine
     public function getQuantity(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", \strval($this->quantity)));
+            ->info(\sprintf(__METHOD__." get '%s'", \strval($this->quantity)));
         return $this->quantity;
     }
 
@@ -420,7 +420,7 @@ abstract class A2Line extends ALine
     public function getUnitOfMeasure(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->unitOfMeasure));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->unitOfMeasure));
         return $this->unitOfMeasure;
     }
 
@@ -474,7 +474,7 @@ abstract class A2Line extends ALine
     public function getUnitPrice(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", \strval($this->unitPrice)));
+            ->info(\sprintf(__METHOD__." get '%s'", \strval($this->unitPrice)));
         return $this->unitPrice;
     }
 
@@ -528,7 +528,7 @@ abstract class A2Line extends ALine
     public function getDescription(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->description));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->description));
         return $this->description;
     }
 
@@ -549,7 +549,6 @@ abstract class A2Line extends ALine
      * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @param string $description
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setDescription(string $description): bool
@@ -591,7 +590,7 @@ abstract class A2Line extends ALine
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->productSerialNumber === null ? "null" : "ProductSerialNumber getted"
                 )
             );
@@ -630,7 +629,7 @@ abstract class A2Line extends ALine
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->customsInformation === null ? "null" :
                     "CustomsInformation"
                 )
@@ -653,6 +652,7 @@ abstract class A2Line extends ALine
      * Create the XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -661,7 +661,6 @@ abstract class A2Line extends ALine
 
         if ($this->getOrderReferences() !== null) {
             foreach ($this->getOrderReferences() as $orderReferences) {
-                /* @var $orderReferences \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences */
                 $orderReferences->createXmlNode($lineNode);
             }
         }
@@ -716,6 +715,7 @@ abstract class A2Line extends ALine
      * Create xml nodefor Credit and Debit
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     protected function createXmlNodeDebitCreditNode(\SimpleXMLElement $node): void
@@ -728,6 +728,7 @@ abstract class A2Line extends ALine
      * SettlementAmount, CustomsInformation nodes
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     protected function createXmlNodeTaxExcSettAndCustoms(\SimpleXMLElement $node): void
@@ -761,6 +762,7 @@ abstract class A2Line extends ALine
      * Parse xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

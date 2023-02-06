@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  *
@@ -54,7 +53,7 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class TransactionID extends AAuditFile
 {
     /**
      * Node name
@@ -102,7 +101,6 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *   &lt;/xs:restriction&gt;
      *  &lt;/xs:simpleType&gt;
      * </pre>
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -113,7 +111,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * Get transaction date
      * @return \Rebelo\Date\Date
-     * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getDate(): RDate
@@ -121,7 +119,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->date->format(RDate::SQL_DATE)
                 )
             );
@@ -132,6 +130,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Set transaction date
      * @param \Rebelo\Date\Date $date
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setDate(RDate $date): void
@@ -156,7 +155,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getJournalID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->journalID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->journalID));
         return $this->journalID;
     }
 
@@ -165,7 +164,6 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Regexp [^ ]{1,30}
      * @param string $journalID
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setJournalID(string $journalID): bool
@@ -194,7 +192,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getDocArchivalNumber(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->docArchivalNumber));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->docArchivalNumber));
         return $this->docArchivalNumber;
     }
 
@@ -203,7 +201,6 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * [^ ]{1,20}
      * @param string $docArchivalNumber
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setDocArchivalNumber(string $docArchivalNumber): bool
@@ -232,7 +229,7 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create the XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -257,6 +254,8 @@ class TransactionID extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @return void
      * @throws AuditFileException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

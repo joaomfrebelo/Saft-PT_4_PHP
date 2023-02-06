@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,8 +27,6 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -141,7 +139,7 @@ class Payment extends AAuditFile
 
     /**
      * The calulated values made by the validation classes
-     * @var \Rebelo\SaftPt\Validate\DocTotalCalc
+     * @var \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
     protected ?DocTotalCalc $docTotalcal = null;
@@ -427,7 +425,7 @@ class Payment extends AAuditFile
     public function getPaymentRefNo(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->paymentRefNo));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->paymentRefNo));
         return $this->paymentRefNo;
     }
 
@@ -502,7 +500,7 @@ class Payment extends AAuditFile
     public function getATCUD(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->atcud));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->atcud));
         return $this->atcud;
     }
 
@@ -569,7 +567,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->period === null ? "null" : \strval($this->period)
                 )
             );
@@ -637,6 +635,7 @@ class Payment extends AAuditFile
      * @param bool $create If true a new instance will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\TransactionID|null
      * @since 1.0.0
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
     public function getTransactionID(bool $create = true): ?TransactionID
     {
@@ -646,7 +645,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->transactionID === null ? "null" : "TransactionID"
                 )
             );
@@ -672,6 +671,7 @@ class Payment extends AAuditFile
      *
      * @return \Rebelo\Date\Date
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getTransactionDate(): RDate
@@ -679,7 +679,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->transactionDate->format(RDate::SQL_DATE)
                 )
             );
@@ -704,6 +704,7 @@ class Payment extends AAuditFile
      *
      * @param \Rebelo\Date\Date $transactionDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setTransactionDate(RDate $transactionDate): void
@@ -728,7 +729,7 @@ class Payment extends AAuditFile
     public function getPaymentType(): PaymentType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->paymentType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->paymentType->get()));
         return $this->paymentType;
     }
 
@@ -772,7 +773,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->description === null ?
                     "null" : $this->description
                 )
@@ -786,7 +787,6 @@ class Payment extends AAuditFile
      * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
      * @param string|null $description
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setDescription(?string $description): bool
@@ -826,7 +826,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->systemID === null ?
                     "null" : $this->systemID
                 )
@@ -873,7 +873,7 @@ class Payment extends AAuditFile
      * Gets as documentStatus<br>
      * &lt;xs:element name="DocumentStatus">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentStatus
-     * @param bool $create If true a new instance will be create if wasn't previous
+     * @param bool $create If true a new instance will be created if wasn't previous
      * @since 1.0.0
      */
     public function getDocumentStatus(bool $create = true): DocumentStatus
@@ -882,7 +882,7 @@ class Payment extends AAuditFile
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "DocumentStatus"));
+            ->info(\sprintf(__METHOD__." get '%s'", "DocumentStatus"));
         return $this->documentStatus;
     }
 
@@ -895,7 +895,7 @@ class Payment extends AAuditFile
     {
         return isset($this->documentStatus);
     }
-    
+
     /**
      * Adds to paymentMethod stack<br>
      * Indicate the payment method. In case of mixed payments, the amounts
@@ -927,7 +927,7 @@ class Payment extends AAuditFile
     public function getPaymentMethod(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "PaymentMethod stack"));
+            ->info(\sprintf(__METHOD__." get '%s'", "PaymentMethod stack"));
         return $this->paymentMethod;
     }
 
@@ -942,7 +942,7 @@ class Payment extends AAuditFile
     public function getSourceID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->sourceID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
@@ -962,7 +962,6 @@ class Payment extends AAuditFile
      * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;<br>
      * @param string $sourceID
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setSourceID(string $sourceID): bool
@@ -987,7 +986,7 @@ class Payment extends AAuditFile
      * &lt;xs:element ref="SystemEntryDate"/&gt;<br>
      * &lt;xs:element name="SystemEntryDate" type="SAFdateTimeType"/&gt;
      * @return \Rebelo\Date\Date
-     * @throws \Error
+     * @throws \Error|\Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getSystemEntryDate(): RDate
@@ -995,7 +994,7 @@ class Payment extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->systemEntryDate->format(RDate::DATE_T_TIME)
                 )
             );
@@ -1018,6 +1017,7 @@ class Payment extends AAuditFile
      * &lt;xs:element name="SystemEntryDate" type="SAFdateTimeType"/&gt;     *
      * @param \Rebelo\Date\Date $systemEntryDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setSystemEntryDate(RDate $systemEntryDate): void
@@ -1043,7 +1043,7 @@ class Payment extends AAuditFile
     public function getCustomerID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->customerID));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->customerID));
         return $this->customerID;
     }
 
@@ -1112,7 +1112,7 @@ class Payment extends AAuditFile
     public function getLine(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "Line stack"));
+            ->info(\sprintf(__METHOD__." get '%s'", "Line stack"));
         return $this->line;
     }
 
@@ -1130,7 +1130,7 @@ class Payment extends AAuditFile
             $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "Document Totals"));
+            ->info(\sprintf(__METHOD__." get '%s'", "Document Totals"));
         return $this->documentTotals;
     }
 
@@ -1150,6 +1150,7 @@ class Payment extends AAuditFile
      * and returned to be populated
      * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addWithholdingTax(): WithholdingTax
@@ -1171,7 +1172,7 @@ class Payment extends AAuditFile
     public function getWithholdingTax(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "WithholdingTax"));
+            ->info(\sprintf(__METHOD__." get '%s'", "WithholdingTax"));
         return $this->withholdingTax;
     }
 
@@ -1180,6 +1181,7 @@ class Payment extends AAuditFile
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -1217,7 +1219,7 @@ class Payment extends AAuditFile
         }
 
         $this->getTransactionID(false)?->createXmlNode($payNode);
-        
+
         if (isset($this->transactionDate)) {
             $payNode->addChild(
                 static::N_TRANSACTIONDATE,
@@ -1257,7 +1259,6 @@ class Payment extends AAuditFile
         }
 
         foreach ($this->getPaymentMethod() as $payMeth) {
-            /* @var $payMeth PaymentMethod */
             $payMeth->createXmlNode($payNode);
         }
 
@@ -1288,7 +1289,6 @@ class Payment extends AAuditFile
         }
 
         foreach ($this->getLine() as $line) {
-            /* @var $line Line */
             $line->createXmlNode($payNode);
         }
 
@@ -1300,7 +1300,6 @@ class Payment extends AAuditFile
         }
 
         foreach ($this->getWithholdingTax() as $tax) {
-            /* @var $tax WithholdingTax */
             $tax->createXmlNode($payNode);
         }
 
@@ -1311,6 +1310,9 @@ class Payment extends AAuditFile
      * Parse XML node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

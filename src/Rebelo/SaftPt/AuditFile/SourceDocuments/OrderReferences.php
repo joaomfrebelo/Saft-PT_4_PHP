@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -27,9 +27,9 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
 /**
  * OrderReferences<br>
@@ -39,7 +39,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
  * @author João Rebelo
  * @since 1.0.0
  */
-class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class OrderReferences extends AAuditFile
 {
     /**
      * Node name
@@ -110,7 +110,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->originatingON === null ?
                     "null" : $this->originatingON
                 )
@@ -158,6 +158,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Get OrderDate<br>
      * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getOrderDate(): ?RDate
@@ -165,7 +166,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->orderDate === null ?
                     "null" : $this->orderDate->format(RDate::SQL_DATE)
                 )
@@ -179,6 +180,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
      * @param \Rebelo\Date\Date|null $orderDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setOrderDate(?RDate $orderDate): void
@@ -198,6 +200,7 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create the XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -215,20 +218,20 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $ordeRefNode = $node->addChild(static::N_ORDERREFERENCES);
+        $orderRefNode = $node->addChild(static::N_ORDERREFERENCES);
 
         if ($this->getOriginatingON() !== null) {
-            $ordeRefNode->addChild(
+            $orderRefNode->addChild(
                 static::N_ORIGINATINGON, $this->getOriginatingON()
             );
         }
         if ($this->getOrderDate() !== null) {
-            $ordeRefNode->addChild(
+            $orderRefNode->addChild(
                 static::N_ORDERDATE,
                 $this->getOrderDate()->format(RDate::SQL_DATE)
             );
         }
-        return $ordeRefNode;
+        return $orderRefNode;
     }
 
     /**
@@ -236,6 +239,8 @@ class OrderReferences extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

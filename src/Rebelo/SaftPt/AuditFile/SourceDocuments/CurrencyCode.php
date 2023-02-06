@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -25,6 +25,9 @@
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
+
+use Rebelo\Enum\AEnum;
+use Rebelo\Enum\EnumException;
 
 /**
  * CurrencyCode
@@ -216,11 +219,11 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
  * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode ISO_TMM()
  * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode ISO_ZMK()
  * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode ISO_ZWD()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode ISO_ZWR() 
- * 
+ * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode ISO_ZWR()
+ *
  * @author João Rebelo
  */
-class CurrencyCode extends \Rebelo\Enum\AEnum
+class CurrencyCode extends AEnum
 {
     /**
      * Iso code
@@ -1371,6 +1374,7 @@ class CurrencyCode extends \Rebelo\Enum\AEnum
      *   &lt;/xs:element&gt;
      * </pre>
      * @param string $value
+     * @throws EnumException
      * @since 1.0.0
      */
     public function __construct(string $value)

@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,11 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
-use Rebelo\SaftPt\AuditFile\PostalCodePT;
 
 /**
  * AddressPT<br>
- * Portuguese address structur<br>
+ * Portuguese address structure<br>
  * &lt;xs:complexType name="AddressStructurePT">
  * @author João Rebelo
  * @since 1.0.0
@@ -64,7 +63,7 @@ class AddressPT extends AAddress
     public function getCountry(): Country
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->country->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->country->get()));
         return $this->country;
     }
 
@@ -79,7 +78,7 @@ class AddressPT extends AAddress
     public function getPostalCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->postalCodePT));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->postalCodePT));
         return $this->postalCodePT;
     }
 
@@ -121,11 +120,10 @@ class AddressPT extends AAddress
      * Create the child nodes to the address<br>
      * In the case of this nodeXml, address only will create the address
      * child node, the address root node will be created by the invoker
-     * because cane be CompanyAddress or SupplierAddres or CustomerAddress, etc
+     * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-     * @throws AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement

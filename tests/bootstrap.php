@@ -17,20 +17,13 @@ require_once __DIR__
     .DIRECTORY_SEPARATOR."vendor"
     .DIRECTORY_SEPARATOR."autoload.php";
 
-require __DIR__
-    .DIRECTORY_SEPARATOR.'Rebelo'
-    .DIRECTORY_SEPARATOR.'Test'
-    .DIRECTORY_SEPARATOR.'CommnunTest.php';
-
-require __DIR__
-    .DIRECTORY_SEPARATOR.'Rebelo'
-    .DIRECTORY_SEPARATOR.'Test'
-    .DIRECTORY_SEPARATOR.'TXmlTest.php';
+require \join(DIRECTORY_SEPARATOR, [__DIR__, 'Rebelo', 'SaftPt', 'CommuneTest.php']);
+require \join(DIRECTORY_SEPARATOR, [__DIR__, 'Rebelo', 'SaftPt', 'TXmlTest.php']);
 
 spl_autoload_register(
     function ($class)
     {
-        if (\strpos("\\", $class) === 0) {
+        if (str_starts_with("\\", $class)) {
             /** @var string Class name Striped of the first blackslash */
             $class = \substr($class, 1, \strlen($class) - 1);
         }
@@ -45,14 +38,13 @@ spl_autoload_register(
         $pathTests = $pathBase."tests".DIRECTORY_SEPARATOR.$class.".php";
         if (is_file($pathTests)) {
             require_once $pathTests;
-            return;
         }
     }
 );
 
-define("IS_UNIT_TEST", true);
+const IS_UNIT_TEST = true;
 
 /**
  * The tests resources directory
  */
-define("SAFT4PHP_TEST_RESSOURCES_DIR", __DIR__.DIRECTORY_SEPARATOR."Ressources");
+const SAFT4PHP_TEST_RESSOURCES_DIR = __DIR__ . DIRECTORY_SEPARATOR . "Ressources";

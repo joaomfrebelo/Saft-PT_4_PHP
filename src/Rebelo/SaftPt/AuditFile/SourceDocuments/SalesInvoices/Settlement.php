@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
@@ -50,7 +51,7 @@ use Rebelo\Date\Date as RDate;
  * @author João Rebelo
  * @since 1.0.0
  */
-class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class Settlement extends AAuditFile
 {
     /**
      * Node name
@@ -151,7 +152,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->settlementDiscount === null ? "null" : $this->settlementDiscount
                 )
             );
@@ -204,7 +205,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
                 )
             );
@@ -248,6 +249,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * To fill in the date agreed for the payment with discount<br>
      * &lt;xs:element name="SettlementDate" type="SAFdateType" minOccurs="0"/&gt;
      * @return \Rebelo\Date\Date|null
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getSettlementDate(): ?RDate
@@ -255,7 +257,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->settlementDate === null ? "null" : $this->settlementDate->format(RDate::SQL_DATE)
                 )
             );
@@ -269,6 +271,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name="SettlementDate" type="SAFdateType" minOccurs="0"/&gt;
      * @param \Rebelo\Date\Date|null $settlementDate
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setSettlementDate(?RDate $settlementDate): void
@@ -295,7 +298,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->paymentTerms === null ? "null" : $this->paymentTerms
                 )
             );
@@ -339,6 +342,7 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * Create the XML node
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
+     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -394,6 +398,8 @@ class Settlement extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * @param \SimpleXMLElement $node
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void

@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\Validate\DocTableTotalCalc;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
@@ -35,11 +36,11 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * @author João Rebelo
  * @since 1.0.0
  */
-abstract class ASourceDocuments extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class ASourceDocuments extends AAuditFile
 {
     /**
      *
-     * @var \Rebelo\SaftPt\Validate\DocTableTotalCalc
+     * @var \Rebelo\SaftPt\Validate\DocTableTotalCalc|null
      * @since 1.0.0
      */
     protected ?DocTableTotalCalc $docTableTotalCalc = null;

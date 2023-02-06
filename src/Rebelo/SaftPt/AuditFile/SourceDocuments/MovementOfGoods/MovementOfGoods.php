@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -46,7 +46,7 @@ use Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc;
  * @author João Rebelo
  * @since 1.0.0
  */
-class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class MovementOfGoods extends AAuditFile
 {
     /**
      * &lt;xs:element name="MovementOfGoods" minOccurs="0">
@@ -90,20 +90,20 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     private array $stockMovement = array();
 
-     /**
+    /**
      *
-     * @var \Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc
+     * @var \Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc|null
      * @since 1.0.0
      */
     protected ?MovOfGoodsTableTotalCalc $movOfGoodsTableTotalCalc = null;
-    
+
     /**
      * $array[type][serie][number] = $stockMovement
      * \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement[]
      * @var array
      */
     protected array $order = array();
-    
+
     /**
      * MovementOfGoods<br>
      * The documents to be exported are any transport documents or delivery
@@ -142,7 +142,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $this->movOfGoodsTableTotalCalc = $movOfGoodsTableTotalCalc;
     }
-    
+
     /**
      * Get NumberOfMovementLines<br>
      * The field shall contain the total number of lines relevant for tax purposes,
@@ -158,7 +158,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->numberOfMovementLines
                 )
             );
@@ -188,9 +188,9 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function setNumberOfMovementLines(int $numberOfMovementLines): bool
     {
         if ($numberOfMovementLines < 0) {
-            $msg    = "NumberOfMovementLines can not be negative";
+            $msg = "NumberOfMovementLines can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("NumberOfMovementLines_not_valid");
         } else {
@@ -200,7 +200,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'", $this->numberOfMovementLines
+                    __METHOD__ . " set to '%s'", $this->numberOfMovementLines
                 )
             );
         return $return;
@@ -221,7 +221,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->totalQuantityIssued
                 )
             );
@@ -246,15 +246,14 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="TotalQuantityIssued"/&gt;
      * @param float $totalQuantityIssued
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setTotalQuantityIssued(float $totalQuantityIssued): bool
     {
         if ($totalQuantityIssued < 0) {
-            $msg    = "TotalQuantityIssued can not be negative";
+            $msg = "TotalQuantityIssued can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalQuantityIssued_not_valid");
         } else {
@@ -264,7 +263,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'", $this->totalQuantityIssued
+                    __METHOD__ . " set to '%s'", $this->totalQuantityIssued
                 )
             );
         return $return;
@@ -280,7 +279,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted with '%s' elements",
+                    __METHOD__ . " get with '%s' elements",
                     \count($this->stockMovement)
                 )
             );
@@ -295,13 +294,13 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
      */
     public function addStockMovement(): StockMovement
     {
-        // Every time that a stockMovement is add the order is reseted and is
-        // contructed when called
-        $this->order     = array();
+        // Every time that a stockMovement is added the order is reset and is
+        // contracted when called
+        $this->order           = array();
         $stockMovement         = new StockMovement($this->getErrorRegistor());
         $this->stockMovement[] = $stockMovement;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." Line add to stack"
+            __METHOD__ . " Line add to stack"
         );
         return $stockMovement;
     }
@@ -324,7 +323,7 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 SourceDocuments::N_SOURCEDOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -351,7 +350,6 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         foreach ($this->getStockMovement() as $stkMv) {
-            /* @var $stkMv \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
             $stkMv->createXmlNode($mogNode);
         }
 
@@ -375,16 +373,16 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 static::N_MOVEMENTOFGOODS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setNumberOfMovementLines(
-            (int) $node->{static::N_NUMBEROFMOVEMENTLINES}
+            (int)$node->{static::N_NUMBEROFMOVEMENTLINES}
         );
 
         $this->setTotalQuantityIssued(
-            (float) $node->{static::N_TOTALQUANTITYISSUED}
+            (float)$node->{static::N_TOTALQUANTITYISSUED}
         );
 
         $stkMovCount = $node->{StockMovement::N_STOCKMOVEMENT}->count();
@@ -394,11 +392,11 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
             );
         }
     }
-    
+
     /**
      * Get StockMovement order by type/serie/number<br>
      * Ex: $stack[type][serie][InvoiceNo] = StockMovement<br>
-     * If a error exist, th error is add to ValidationErrors stack
+     * If an error exist, th error is added to ValidationErrors stack
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement>>>
      * @since 1.0.0
      */
@@ -409,7 +407,6 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         }
 
         foreach ($this->getStockMovement() as $k => $stkMv) {
-            /* @var $stkMv \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement */
             if ($stkMv->issetDocumentNumber() === false) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get("stock_move_at_index_no_number"), $k
@@ -425,9 +422,6 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 \str_replace("/", " ", $stkMv->getDocumentNumber())
             );
 
-            $type = \strval($type);
-            $serie = \strval($serie);
-            
             if (\array_key_exists($type, $this->order)) {
                 if (\array_key_exists($serie, $this->order[$type])) {
                     if (\array_key_exists(
@@ -459,5 +453,5 @@ class MovementOfGoods extends \Rebelo\SaftPt\AuditFile\AAuditFile
         ksort($this->order, SORT_STRING);
 
         return $this->order;
-    }    
+    }
 }

@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 
@@ -43,7 +44,7 @@ use Rebelo\SaftPt\AuditFile\AuditFile;
  * @author João Rebelo
  * @since 1.0.0
  */
-class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments
+class WorkingDocuments extends ASourceDocuments
 {
     /**
      * Node name
@@ -146,7 +147,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->numberOfEntries)
                 )
             );
@@ -209,7 +210,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->totalDebit)
                 )
             );
@@ -273,7 +274,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     \strval($this->totalCredit)
                 )
             );
@@ -331,7 +332,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
     public function getWorkDocument(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", "WorkDocument stack"));
+            ->info(\sprintf(__METHOD__." get '%s'", "WorkDocument stack"));
         return $this->workDocument;
     }
 
@@ -344,8 +345,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
      */
     public function addWorkDocument(): WorkDocument
     {
-        // Every time that a workdocument is add the order is reseted and is
-        // contructed when called
+        // Every time that a workdocument is added the order is reset and is constructed when called
         $this->order          = array();
         $workDocument         = new WorkDocument($this->getErrorRegistor());
         $this->workDocument[] = $workDocument;
@@ -359,7 +359,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
     /**
      * Get invoices order by type/serie/number<br>
      * Ex: $stack[type][serie][InvoiceNo] = Invvoice<br>
-     * If a error exist, th error is add to ValidationErrors stack
+     * If a error exist, th error is added to ValidationErrors stack
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument>>>
      * @since 1.0.0
      */
@@ -370,7 +370,6 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         }
 
         foreach ($this->getWorkDocument() as $k => $workDoc) {
-            /* @var $workDoc \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument */
             if ($workDoc->issetDocumentNumber() === false) {
                 $msg = \sprintf(
                     AuditFile::getI18n()->get("workdoc_at_index_no_number"), $k
@@ -385,9 +384,6 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
                 " ", \str_replace("/", " ", $workDoc->getDocumentNumber())
             );
 
-            $type = \strval($type);
-            $serie = \strval($serie);
-            
             if (\array_key_exists($type, $this->order)) {
                 if (\array_key_exists($serie, $this->order[$type])) {
                     if (\array_key_exists(
@@ -426,6 +422,7 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
+     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -473,7 +470,6 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
         }
 
         foreach ($this->getWorkDocument() as $workDocument) {
-            /* @var $workDocument WorkDocument */
             $workDocument->createXmlNode($workingNode);
         }
 
@@ -484,6 +480,8 @@ class WorkingDocuments extends \Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceD
      * Parse xml node
      * @param \SimpleXMLElement $node
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

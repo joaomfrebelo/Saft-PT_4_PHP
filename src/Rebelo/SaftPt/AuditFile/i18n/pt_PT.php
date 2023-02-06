@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -118,12 +118,10 @@ class pt_PT extends AI18n
         $this->stack["Description_not_valid"]                                    = "'Description' não é válido";
         $this->stack["TaxPayable_not_valid"]                                     = "'TaxPayable' não é válido";
         $this->stack["NetTotal_not_valid"]                                       = "'NetTotal' não é válido";
-        $this->stack["Atcud_not_valid"]                                          = "'Atcud' não é válido";
         $this->stack["Hash_not_valid"]                                           = "'Hash' não é válido";
         $this->stack["Period_not_valid"]                                         = "'Period' não é válido";
         $this->stack["EacCode_not_valid"]                                        = "'EacCode' não é válido";
         $this->stack["Quantity_not_valid"]                                       = "'Quantity' não é válido";
-        $this->stack["UnitOfMeasure_not_valid"]                                  = "'UnitOfMeasure' não é válido";
         $this->stack["UnitOfMeasure_not_valid"]                                  = "'UnitPrice' não é válido";
         $this->stack["LineNumber_not_valid"]                                     = "'LineNumber' não é válido";
         $this->stack["DebitAmount_not_valid"]                                    = "'DebitAmount' não é válido";
@@ -207,7 +205,6 @@ class pt_PT extends AI18n
         $this->stack["invoicetype_not_defined"]                                  = "A 'Invoice' '%s' não tem o tipo definido";
         $this->stack["paymenttype_not_defined"]                                  = "O 'Payment' '%s' não tem o tipo definido";
         $this->stack["workdoctype_not_defined"]                                  = "O 'WorkDocument' '%s' não tem o tipo definido";
-        $this->stack["stock_mov_number_not_defined"]                             = "O 'StockMovement' '%s' não tem o tipo definido";
         $this->stack["customerID_not_exits"]                                     = "O 'CustomerID' '%s' do documento '%s' não existe na tabela de clientes";
         $this->stack["supplierID_not_exits"]                                     = "O 'SupplierID' '%s' do documento '%s' não existe na tabela de fornecedores";
         $this->stack["invoicetno_not_defined"]                                   = "Número de 'Invoice' não definido";
@@ -267,7 +264,6 @@ class pt_PT extends AI18n
         $this->stack["doc_date_not_cheked_start_end_header_date"]                = "Não é possivel verificar se a data do documento '%s' está fora do intervalo de inicio e fim definido no 'Header'";
         $this->stack["doc_date_earlier_previous_doc"]                            = "O documento '%s' tem data anterior ao documento anterior da mesma série";
         $this->stack["signature_not_valid"]                                      = "O hash da assinatura digital do documnto'%s' não é válida";
-        $this->stack["doc_systementrydate_earlier_previous_doc"]                 = "O 'SystemEntryDate' d documento '%s' é anterior ao do último documento";
         $this->stack["document_without_lines"]                                   = "O documento '%s' não tem linhas";
         $this->stack["shipfrom_delivery_date_later_shipto_delivery_date"]        = "O 'DeliveryDate' do documento '%s' é posterior";
         $this->stack["stockmov_must_have_mov_start_time"]                        = "O documento de transporte '%s' têm que ter o campo 'MovementStartTime' definido";

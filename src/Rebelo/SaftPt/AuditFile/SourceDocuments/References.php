@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,9 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
 /**
  * References<br>
@@ -39,7 +39,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
  * @author João Rebelo
  * @since 1.0.0
  */
-class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
+class References extends AAuditFile
 {
     /**
      * &lt;xs:complexType name="References">
@@ -112,7 +112,7 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->reference === null ? "null" : $this->reference
                 )
             );
@@ -129,7 +129,6 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
      *
      * @param string|null $reference
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setReference(?string $reference): bool
@@ -168,7 +167,7 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." getted '%s'",
+                    __METHOD__." get '%s'",
                     $this->reason === null ? "null" : $this->reason
                 )
             );
@@ -182,7 +181,6 @@ class References extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
      * @param string|null $reason
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setReason(?string $reason): bool

@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -26,15 +26,17 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals;
 
 /**
  * Description of ADocumentTotals
  *
  * @author João Rebelo
  */
-abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
+abstract class ADocumentTotals extends AAuditFile
 {
     /**
      * Node name
@@ -114,7 +116,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getTaxPayable(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->taxPayable));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxPayable));
         return $this->taxPayable;
     }
 
@@ -167,7 +169,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getNetTotal(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->netTotal));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->netTotal));
         return $this->netTotal;
     }
 
@@ -217,7 +219,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     public function getGrossTotal(): float
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." getted '%s'", $this->grossTotal));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->grossTotal));
         return $this->grossTotal;
     }
 
@@ -238,7 +240,6 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
      * &lt;xs:element ref="GrossTotal"/&gt;
      * @param float $grossTotal
      * @return bool true if the value is valid
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function setGrossTotal(float $grossTotal): bool
@@ -261,10 +262,10 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     /**
      * Gets as currency<br>
      * It shall not be generated if the document is issued in euros.<br>
-     * If $create is true and a intance wasn't created a new instance
+     * If $create is true and an instance wasn't created a new instance
      * will be created when you get this method.
      * &lt;xs:element name="Currency" type="Currency" minOccurs="0"/&gt;
-     * @param bool $create If true a instance of Currency will be created if wasn't previous
+     * @param bool $create If true an instance of Currency will be created if wasn't previous
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null
      * @since 1.0.0
      */
@@ -273,7 +274,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
         if ($create && $this->currency === null) {
             $this->currency = new Currency($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
         return $this->currency;
     }
 
@@ -289,7 +290,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
     }
 
     /**
-     * Create the commun XML nodes
+     * Create the common XML nodes
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
@@ -321,7 +322,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
 
 
         if (isset($this->grossTotal)) {
-            // GrossTotal is allways with 2 decimals, and the GrossTotal value to the
+            // GrossTotal is always with 2 decimals, and the GrossTotal value to the
             // digital signature hash must be with 2 decimals too
             $docTotalNode->addChild(
                 static::N_GROSSTOTAL,
@@ -332,9 +333,9 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
             $this->getErrorRegistor()->addOnCreateXmlNode("GrossTotal_not_valid");
         }
 
-        // In the Payment the Currency is in diferent order,
+        // In the Payment the Currency is in different order,
         // must be created in the Payments\DocumentTotals
-        if (false === ($this instanceof \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\DocumentTotals)) {
+        if (false === ($this instanceof DocumentTotals)) {
             $this->createCurrencyNode($docTotalNode);
         }
         return $docTotalNode;
@@ -398,7 +399,7 @@ abstract class ADocumentTotals extends \Rebelo\SaftPt\AuditFile\AAuditFile
                 (float) $node->{static::N_CURRENCY}->{Currency::N_EXCHANGERATE}
             );
             $currency?->setCurrencyCode(
-                new \Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode(
+                new CurrencyCode(
                     (string) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYCODE}
                 )
             );

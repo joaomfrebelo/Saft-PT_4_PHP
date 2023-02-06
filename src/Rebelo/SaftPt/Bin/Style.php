@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -33,7 +33,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 
 /**
- * This class extends SynfonyStyle adding a method to facilitate the use of
+ * This class extends SymfonyStyle adding a method to facilitate the use of
  * multiple ProgressBar
  *
  * @author João Rebelo
@@ -47,7 +47,7 @@ class Style extends SymfonyStyle
      * @since 1.0.0
      */
     protected InputInterface $in;
-    
+
     /**
      *
      * @var \Symfony\Component\Console\Output\ConsoleOutput
@@ -56,7 +56,7 @@ class Style extends SymfonyStyle
     protected ConsoleOutput $out;
 
     /**
-     * This class extends SynfonyStyle adding a method to facilitate the use of
+     * This class extends SymfonyStyle adding a method to facilitate the use of
      * multiple ProgressBar
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\ConsoleOutput $output
@@ -70,25 +70,24 @@ class Style extends SymfonyStyle
     }
 
     /**
-     * Add a Progess bar to a OutputSection. The section argument is passed
-     * as refrence to be possible to pass the Output console or to get it into.
-     * This method is to be possible the use of multiple ProgessBar
+     * Add a Progress bar to a OutputSection. The section argument is passed
+     * as reference to be possible to pass the Output console or to get it into.
+     * This method is to be possible the use of multiple ProgressBar
      * @param \Symfony\Component\Console\Output\ConsoleSectionOutput|null $section
-     * @return \Symfony\Component\Console\Helper\ProgressBar
+     * @return \Symfony\Component\Console\Helper\ProgressBar|null
      * @since 1.0.0
      */
-    public function addProgressBar(?ConsoleSectionOutput &$section = null) : ?ProgressBar 
+    public function addProgressBar(?ConsoleSectionOutput &$section = null) : ?ProgressBar
     {
         if ($section === null) {
             $section = $this->out->section();
         }
-        
-        $progBar = new ProgressBar($section);
-        return $progBar;
+
+        return new ProgressBar($section);
     }
 
     /**
-     * Get the Console Input 
+     * Get the Console Input
      * @return \Symfony\Component\Console\Input\InputInterface
      * @since 1.0.0
      */
