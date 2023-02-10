@@ -71,9 +71,8 @@ if ($jsonStr === false) {
     die(1);
 }
 
-$comp = \json_decode($jsonStr);
 try {
-    $application = new Application("saft4php", $comp->version);
+    $application = new Application("saft4php", "");
     \Rebelo\SaftPt\Bin\Validate::$start = \time();
     $application->add(new \Rebelo\SaftPt\Bin\Validate());
     $application->run();
