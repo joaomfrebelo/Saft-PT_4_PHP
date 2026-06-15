@@ -26,15 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Decimal\UDecimal;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Line;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 
 /**
- * Class APaymentsBaseTeste
+ * Class APaymentsBaseTest
  *
  * @author João Rebelo
  */
@@ -73,10 +73,9 @@ abstract class APaymentsBase extends TestCase
                 parent::__construct(
                     new AuditFile()
                 );
-                $this->auditFile->getSourceDocuments()->getPayments()
-                    ->setDocTableTotalCalc(
-                        new DocTableTotalCalc()
-                    );
+                $this->auditFile->getSourceDocuments()?->getPayments()?->setDocTableTotalCalc(
+                    new DocTableTotalCalc()
+                );
             }
 
             public function getAuditFile(): AuditFile
@@ -90,71 +89,71 @@ abstract class APaymentsBase extends TestCase
             }
 
             /**
-             * The total debit calculated from all docmunts of the table
-             * @param \Rebelo\Decimal\UDecimal $debit
+             * The total debit calculated from all documents of the table
+             * @param \Decimal\Decimal $debit
              * @return void
              */
-            public function setDebit(UDecimal $debit): void
+            public function setDebit(Decimal $debit): void
             {
                 $this->debit = $debit;
             }
 
             /**
              * The total credit calculated from all documents of the table
-             * @param \Rebelo\Decimal\UDecimal $credit
+             * @param \Decimal\Decimal $credit
              * @return void
              */
-            public function setCredit(UDecimal $credit): void
+            public function setCredit(Decimal $credit): void
             {
                 $this->credit = $credit;
             }
 
             /**
              * The total debit calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $docDebit
+             * @param \Decimal\Decimal $docDebit
              * @return void
              */
-            public function setDocDebit(UDecimal $docDebit): void
+            public function setDocDebit(Decimal $docDebit): void
             {
                 $this->docDebit = $docDebit;
             }
 
             /**
              * The total credit calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $docCredit
+             * @param \Decimal\Decimal $docCredit
              * @return void
              */
-            public function setDocCredit(UDecimal $docCredit): void
+            public function setDocCredit(Decimal $docCredit): void
             {
                 $this->docCredit = $docCredit;
             }
 
             /**
              * The net total calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $netTotal
+             * @param \Decimal\Decimal $netTotal
              * @return void
              */
-            public function setNetTotal(UDecimal $netTotal): void
+            public function setNetTotal(Decimal $netTotal): void
             {
                 $this->netTotal = $netTotal;
             }
 
             /**
              *  The total tax calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $taxPayable
+             * @param \Decimal\Decimal $taxPayable
              * @return void
              */
-            public function setTaxPayable(UDecimal $taxPayable): void
+            public function setTaxPayable(Decimal $taxPayable): void
             {
                 $this->taxPayable = $taxPayable;
             }
 
             /**
              * The Gross total calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $grossTotal
+             * @param \Decimal\Decimal $grossTotal
              * @return void
              */
-            public function setGrossTotal(UDecimal $grossTotal): void
+            public function setGrossTotal(Decimal $grossTotal): void
             {
                 $this->grossTotal = $grossTotal;
             }
@@ -194,6 +193,7 @@ abstract class APaymentsBase extends TestCase
                 parent::lines($payment);
             }
 
+            /** @noinspection PhpRedundantMethodOverrideInspection */
             public function sourceDocumentID(Line $line, Payment $payment): void
             {
                 parent::sourceDocumentID($line, $payment);

@@ -26,12 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -45,22 +45,21 @@ class ProductTest extends TestCase
     use TXmlTest;
 
     /**
-     * @author João Rebelo
-     * @test
+     * @throws \ReflectionException
+     * @author       João Rebelo
+     * @noinspection PhpExpressionResultUnusedInspection
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(
-                Product::class
-            );
-        $this->assertTrue(true);
+        $this->doesNotPerformAssertions();
+        (new Commune(Product::class))->testReflection(Product::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $product = new Product(new ErrorRegister());
@@ -80,48 +79,47 @@ class ProductTest extends TestCase
         try {
             $product->getProductCode();
             $this->fail("Get ProductCode without initialize should throw Error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         try {
             $product->getProductDescription();
             $this->fail("Get ProductDescription without initialize should throw Error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         try {
             $product->getProductNumberCode();
             $this->fail("Get ProductNumberCode without initialize should throw Error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         try {
             $product->getProductType();
             $this->fail("Get ProductType without initialize should throw Error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductType(): void
     {
         $product = new Product(new ErrorRegister());
 
         $type = ProductType::P;
-        $product->setProductType(new ProductType($type));
-        $this->assertEquals($type, $product->getProductType()->get());
+        $product->setProductType($type);
+        $this->assertEquals($type, $product->getProductType());
         $this->assertTrue($product->issetProductType());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductCode(): void
     {
         $product = new Product(new ErrorRegister());
@@ -140,8 +138,8 @@ class ProductTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductGroup(): void
     {
         $product = new Product(new ErrorRegister());
@@ -151,7 +149,8 @@ class ProductTest extends TestCase
         $this->assertTrue($product->setProductGroup(null));
         $this->assertNull($product->getProductGroup());
         $this->assertTrue($product->setProductGroup(str_pad("A", 61, "9")));
-        $this->assertEquals(50, \strlen($product->getProductGroup()));
+        /** @phpstan-ignore-next-line */
+        $this->assertEquals(50, \strlen($product->getProductGroup() ?? ""));
 
         $product->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($product->setProductGroup(""));
@@ -161,8 +160,8 @@ class ProductTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductDescription(): void
     {
         $product = new Product(new ErrorRegister());
@@ -181,8 +180,8 @@ class ProductTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductNumberCode(): void
     {
         $product = new Product(new ErrorRegister());
@@ -198,10 +197,10 @@ class ProductTest extends TestCase
         $this->assertSame("", $product->getProductNumberCode());
         $this->assertNotEmpty($product->getErrorRegistor()->getOnSetValue());
 
-        $CNCode     = "12345678";
-        $custDetail = $product->getCustomsDetails();
+        $CNCode        = "12345678";
+        $customsDetail = $product->getCustomsDetails();
         $this->assertTrue($product->issetCustomsDetails());
-        $custDetail->addCNCode($CNCode);
+        $customsDetail->addCNCode($CNCode);
         $this->assertEquals(
             $CNCode, $product->getCustomsDetails()->getCNCode()[0]
         );
@@ -213,12 +212,12 @@ class ProductTest extends TestCase
      */
     public function createProduct(): Product
     {
-        $prod           = new Product(new ErrorRegister());
+        $prod = new Product(new ErrorRegister());
         $prod->setProductCode("COD999");
         $prod->setProductDescription("Description of the product");
         $prod->setProductGroup("The group");
         $prod->setProductNumberCode("A9999999");
-        $prod->setProductType(new ProductType(ProductType::P));
+        $prod->setProductType(ProductType::P);
         $customsDetails = $prod->getCustomsDetails();
         $customsDetails->addCNCode("12345678");
         $customsDetails->addUNNumber("4321");
@@ -228,63 +227,63 @@ class ProductTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $prod = $this->createProduct();
 
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
 
         $prodNode = $prod->createXmlNode($node);
 
-        $custDetailNode = $prodNode->{Product::N_CUSTOMSDETAILS};
+        $customsDetailNode = $prodNode->{Product::N_CUSTOMS_DETAILS};
 
-        for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_CNCODE}->count(); $n++) {
+        for ($n = 0; $n < $customsDetailNode->{CustomsDetails::N_CN_CODE}->count(); $n++) {
             $this->assertEquals(
                 $prod->getCustomsDetails()->getCNCode()[$n],
-                (string) $custDetailNode->{CustomsDetails::N_CNCODE}[$n]
+                (string)$customsDetailNode->{CustomsDetails::N_CN_CODE}[$n]
             );
         }
 
-        for ($n = 0; $n < $custDetailNode->{CustomsDetails::N_UNNUMBER}->count(); $n++) {
+        for ($n = 0; $n < $customsDetailNode->{CustomsDetails::N_UN_NUMBER}->count(); $n++) {
             $this->assertEquals(
                 $prod->getCustomsDetails()->getUNNumber()[$n],
-                (string) $custDetailNode->{CustomsDetails::N_UNNUMBER}[$n]
+                (string)$customsDetailNode->{CustomsDetails::N_UN_NUMBER}[$n]
             );
         }
 
         $this->assertEquals(
             $prod->getProductCode(),
-            (string) $prodNode->{Product::N_PRODUCTCODE}
+            (string)$prodNode->{Product::N_PRODUCT_CODE}
         );
 
         $this->assertEquals(
             $prod->getProductDescription(),
-            (string) $prodNode->{Product::N_PRODUCTDESCRIPTION}
+            (string)$prodNode->{Product::N_PRODUCT_DESCRIPTION}
         );
 
         $this->assertEquals(
             $prod->getProductGroup(),
-            (string) $prodNode->{Product::N_PRODUCTGROUP}
+            (string)$prodNode->{Product::N_PRODUCT_GROUP}
         );
 
         $this->assertEquals(
             $prod->getProductNumberCode(),
-            (string) $prodNode->{Product::N_PRODUCTNUMBERCODE}
+            (string)$prodNode->{Product::N_PRODUCT_NUMBER_CODE}
         );
 
         $this->assertEquals(
-            $prod->getProductType()->get(),
-            (string) $prodNode->{Product::N_PRODUCTTYPE}
+            $prod->getProductType()->value,
+            (string)$prodNode->{Product::N_PRODUCT_TYPE}
         );
 
         $prod->setProductGroup(null);
         $xmlNull = $prod->createXmlNode($node);
-        $this->assertEquals(0, $xmlNull->{Product::N_PRODUCTGROUP}->count());
-        $this->assertEquals(1, $xmlNull->{Product::N_CUSTOMSDETAILS}->count());
+        $this->assertEquals(0, $xmlNull->{Product::N_PRODUCT_GROUP}->count());
+        $this->assertEquals(1, $xmlNull->{Product::N_CUSTOMS_DETAILS}->count());
 
         $this->assertEmpty($prod->getErrorRegistor()->getLibXmlError());
         $this->assertEmpty($prod->getErrorRegistor()->getOnCreateXmlNode());
@@ -294,12 +293,12 @@ class ProductTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $node    = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $product = $this->createProduct();
         $xml     = $product->createXmlNode($node)->asXML();
@@ -327,7 +326,7 @@ class ProductTest extends TestCase
         );
 
         $this->assertEquals(
-            $product->getProductType()->get(), $parsed->getProductType()->get()
+            $product->getProductType(), $parsed->getProductType()
         );
 
         $this->assertEquals(
@@ -362,8 +361,8 @@ class ProductTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $product = new Product(new ErrorRegister());
@@ -374,9 +373,9 @@ class ProductTest extends TestCase
             $product->createXmlNode($node);
             $this->fail(
                 "Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -385,8 +384,8 @@ class ProductTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $product = new Product(new ErrorRegister());
@@ -397,9 +396,9 @@ class ProductTest extends TestCase
             $product->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -410,20 +409,21 @@ class ProductTest extends TestCase
      * Reads all Products from the Demo SAFT in Test\Resources
      * and parse then to Product class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     *
      * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $productStack = $saftDemoXml
-            ->{MasterFiles::N_MASTERFILES}
+            ->{MasterFiles::N_MASTER_FILES}
             ->{Product::N_PRODUCT};
 
         if ($productStack->count() === 0) {
@@ -437,12 +437,13 @@ class ProductTest extends TestCase
             $product = new Product(new ErrorRegister());
             try {
                 $product->parseXmlNode($productXml);
-            } catch (EnumException|AuditFileException) {
+                /** @phpstan-ignore-next-line */
+            } catch (\ValueError|AuditFileException) {
             }
 
 
             $xmlRootNode     = (new AuditFile())->createRootElement();
-            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTERFILES);
+            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTER_FILES);
 
             $xml = $product->createXmlNode($masterFilesNode);
 
@@ -452,14 +453,14 @@ class ProductTest extends TestCase
                     $assertXml,
                     \sprintf(
                         "Fail on Product '%s' with error '%s'",
-                        $productXml->{Product::N_PRODUCTCODE}, $assertXml
+                        $productXml->{Product::N_PRODUCT_CODE}, $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $productXml->{Product::N_PRODUCTCODE}, $e->getMessage()
+                        $productXml->{Product::N_PRODUCT_CODE}, $e->getMessage()
                     )
                 );
             }
@@ -473,12 +474,12 @@ class ProductTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $productNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $product     = new Product(new ErrorRegister());
         $xml         = $product->createXmlNode($productNode)->asXML();
@@ -498,12 +499,12 @@ class ProductTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $productNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $product     = new Product(new ErrorRegister());
         $product->setProductCode("");

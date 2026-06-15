@@ -26,13 +26,14 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\Address;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Country;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -46,22 +47,21 @@ class CustomerTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(
-                Customer::class
-            );
-        $this->assertTrue(true);
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        $this->doesNotPerformAssertions();
+        (new Commune(Customer::class))->testReflection(Customer::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -82,8 +82,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCustomerID(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -91,7 +91,7 @@ class CustomerTest extends TestCase
         try {
             $customer->getCustomerID();
             $this->fail("Get customer id without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $customerId = "Costumer 1209";
@@ -107,8 +107,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetAccountID(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -116,7 +116,7 @@ class CustomerTest extends TestCase
         try {
             $customer->getAccountID();
             $this->fail("Get Account id without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $accountId = "AccountID999";
@@ -140,8 +140,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCustomerTaxID(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -149,7 +149,7 @@ class CustomerTest extends TestCase
         try {
             $customer->getCustomerTaxID();
             $this->fail("Get Customer tax id without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $customerTaxId = "CustomerTaxID999";
@@ -171,8 +171,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCompanyName(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -180,7 +180,7 @@ class CustomerTest extends TestCase
         try {
             $customer->getCompanyName();
             $this->fail("Get CompanyName without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
         $name = "CompanyName FACTURACAO";
@@ -198,8 +198,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testContact(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -210,7 +210,7 @@ class CustomerTest extends TestCase
         $this->assertTrue($customer->setContact($name));
         $this->assertEquals($name, $customer->getContact());
         $this->assertTrue($customer->setContact(\str_pad("_", 51, "_")));
-        $this->assertEquals(50, \strlen($customer->getContact()));
+        $this->assertEquals(50, \strlen($customer->getContact())); // @phpstan-ignore argument.type
 
         $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setContact(""));
@@ -223,8 +223,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testBillingAddress(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -235,8 +235,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testShipToAddress(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -258,8 +258,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTelephone(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -271,7 +271,7 @@ class CustomerTest extends TestCase
         $this->assertEquals($telephone, $customer->getTelephone());
 
         $this->assertTrue($customer->setTelephone(\str_pad("_", 300, "_")));
-        $this->assertEquals(20, \strlen($customer->getTelephone()));
+        $this->assertEquals(20, \strlen($customer->getTelephone())); // @phpstan-ignore argument.type
 
         $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setTelephone(""));
@@ -284,8 +284,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testFax(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -297,7 +297,7 @@ class CustomerTest extends TestCase
         $this->assertEquals($fax, $customer->getFax());
 
         $this->assertTrue($customer->setFax(\str_pad("_", 300, "_")));
-        $this->assertEquals(20, \strlen($customer->getFax()));
+        $this->assertEquals(20, \strlen($customer->getFax())); // @phpstan-ignore argument.type
 
         $customer->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($customer->setFax(""));
@@ -310,8 +310,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testEmail(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -345,8 +345,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWebsite(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -374,6 +374,7 @@ class CustomerTest extends TestCase
 
     /**
      * Create and populate an instance of Customer to be used in tests
+     *
      * @return Customer
      */
     public function createCustomer(): Customer
@@ -384,14 +385,14 @@ class CustomerTest extends TestCase
         $address->setCity("Sintra");
         $address->setPostalCode("1999-999");
         $address->setRegion("Lisbon");
-        $address->setCountry(new Country(Country::ISO_BR));
+        $address->setCountry(Country::ISO_BR);
 
         $shToAdd = $customer->addShipToAddress();
         $shToAdd->setAddressDetail("Ship to address test");
         $shToAdd->setCity("Sintra");
         $shToAdd->setPostalCode("1999-999");
         $shToAdd->setRegion("Lisbon");
-        $shToAdd->setCountry(new Country(Country::ISO_BR));
+        $shToAdd->setCountry(Country::ISO_BR);
 
         $customer->setCustomerID("ID999999990");
         $customer->setAccountID("Account id test");
@@ -408,6 +409,7 @@ class CustomerTest extends TestCase
 
     /**
      * Set the properties that can have nulll to null
+     *
      * @param Customer $customer
      */
     public function setNullsCustomer(Customer $customer): void
@@ -422,12 +424,12 @@ class CustomerTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
 
         $customer = $this->createCustomer();
@@ -440,58 +442,58 @@ class CustomerTest extends TestCase
 
         $this->assertEquals(
             $customer->getCustomerID(),
-            (string) $customerNode->{Customer::N_CUSTOMERID}
+            (string)$customerNode->{Customer::N_CUSTOMER_ID}
         );
 
         $this->assertEquals(
             $customer->getAccountID(),
-            (string) $customerNode->{Customer::N_ACCOUNTID}
+            (string)$customerNode->{Customer::N_ACCOUNT_ID}
         );
 
         $this->assertEquals(
             $customer->getCustomerTaxID(),
-            (int) $customerNode->{Customer::N_CUSTOMERTAXID}
+            (int)$customerNode->{Customer::N_CUSTOMER_TAX_ID}
         );
 
         $this->assertEquals(
             $customer->getCompanyName(),
-            (string) $customerNode->{Customer::N_COMPANYNAME}
+            (string)$customerNode->{Customer::N_COMPANY_NAME}
         );
 
         $this->assertEquals(
             $customer->getContact(),
-            (string) $customerNode->{Customer::N_CONTACT}
+            (string)$customerNode->{Customer::N_CONTACT}
         );
 
         $this->assertEquals(
             $customer->getBillingAddress()->getAddressDetail(),
-            (string) $customerNode
-            ->{Customer::N_BILLINGADDRESS}->{Address::N_ADDRESSDETAIL}
+            (string)$customerNode
+                ->{Customer::N_BILLING_ADDRESS}->{Address::N_ADDRESS_DETAIL}
         );
 
         $shToAddr = $customer->getShipToAddress();
         $this->assertEquals(
             $shToAddr[0]->getAddressDetail(),
-            (string) $customerNode
-            ->{Customer::N_SHIPTOADDRESS}->{Address::N_ADDRESSDETAIL}
+            (string)$customerNode
+                ->{Customer::N_SHIP_TO_ADDRESS}->{Address::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals(
             $customer->getTelephone(),
-            (string) $customerNode->{Customer::N_TELEPHONE}
+            (string)$customerNode->{Customer::N_TELEPHONE}
         );
 
         $this->assertEquals(
-            $customer->getFax(), (string) $customerNode->{Customer::N_FAX}
+            $customer->getFax(), (string)$customerNode->{Customer::N_FAX}
         );
 
         $this->assertEquals(
-            $customer->getEmail(), (string) $customerNode->{Customer::N_EMAIL}
+            $customer->getEmail(), (string)$customerNode->{Customer::N_EMAIL}
         );
 
         $this->assertEquals(
             $customer->getWebsite(),
-            (string) $customerNode->{Customer::N_WEBSITE}
+            (string)$customerNode->{Customer::N_WEBSITE}
         );
 
         $this->assertEmpty($customer->getErrorRegistor()->getLibXmlError());
@@ -502,7 +504,7 @@ class CustomerTest extends TestCase
 
         unset($node);
         $nodeNull = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
 
         $customer->createXmlNode($nodeNull);
@@ -511,7 +513,7 @@ class CustomerTest extends TestCase
 
         $this->assertEquals(0, $customerNodeNull->{Customer::N_CONTACT}->count());
         $this->assertEquals(
-            1, $customerNodeNull->{Customer::N_SHIPTOADDRESS}->count()
+            1, $customerNodeNull->{Customer::N_SHIP_TO_ADDRESS}->count()
         );
         $this->assertEquals(
             0, $customerNodeNull->{Customer::N_TELEPHONE}->count()
@@ -528,12 +530,12 @@ class CustomerTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
 
         $customer = $this->createCustomer();
@@ -543,7 +545,7 @@ class CustomerTest extends TestCase
             $this->fail("Fail to generate xml string");
         }
 
-        $parsed      = new Customer(new ErrorRegister());
+        $parsed = new Customer(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals($customer->getCustomerID(), $parsed->getCustomerID());
         $this->assertEquals($customer->getAccountID(), $parsed->getAccountID());
@@ -593,20 +595,21 @@ class CustomerTest extends TestCase
      * Reads all Customers from the Demo SAFT in Test\Resources
      * and parse then to Customer class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     *
      * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $customerStack = $saftDemoXml
-            ->{MasterFiles::N_MASTERFILES}
+            ->{MasterFiles::N_MASTER_FILES}
             ->{Customer::N_CUSTOMER};
 
         if ($customerStack->count() === 0) {
@@ -622,7 +625,7 @@ class CustomerTest extends TestCase
 
 
             $xmlRootNode     = (new AuditFile)->createRootElement();
-            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTERFILES);
+            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTER_FILES);
 
             $xml = $customer->createXmlNode($masterFilesNode);
 
@@ -632,14 +635,14 @@ class CustomerTest extends TestCase
                     $assertXml,
                     \sprintf(
                         "Fail on Customer '%s' with error '%s'",
-                        $customerXml->{Customer::N_CUSTOMERID}, $assertXml
+                        $customerXml->{Customer::N_CUSTOMER_ID}, $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $customerXml->{Customer::N_CUSTOMERID}, $e->getMessage()
+                        $customerXml->{Customer::N_CUSTOMER_ID}, $e->getMessage()
                     )
                 );
             }
@@ -652,8 +655,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -664,9 +667,10 @@ class CustomerTest extends TestCase
             $customer->createXmlNode($node);
             $this->fail(
                 "Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+            // @phpstan-ignore-next-line
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -675,8 +679,8 @@ class CustomerTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $customer = new Customer(new ErrorRegister());
@@ -687,9 +691,10 @@ class CustomerTest extends TestCase
             $customer->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+            // @phpstan-ignore-next-line
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -699,12 +704,12 @@ class CustomerTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $customerNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $customer     = new Customer(new ErrorRegister());
         $xml          = $customer->createXmlNode($customerNode)->asXML();
@@ -724,12 +729,12 @@ class CustomerTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $custNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $customer = new Customer(new ErrorRegister());
         $customer->setAccountID("");

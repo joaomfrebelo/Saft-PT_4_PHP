@@ -26,47 +26,51 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+
 /**
  * Recalculated document values
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class DocTotalCalc
 {
     /**
-     * @var float|null $taxPayable
+     * @var Decimal|null $taxPayable
      * @since 1.0.0
      */
-    protected ?float $taxPayable = null;
+    protected Decimal|null $taxPayable = null;
 
     /**
-     * @var float|null $netTotal
+     * @var Decimal|null $netTotal
      * @since 1.0.0
      */
-    protected ?float $netTotal = null;
+    protected Decimal|null $netTotal = null;
 
     /**
-     * @var float|null $grossTotal
+     * @var Decimal|null $grossTotal
      * @since 1.0.0
      */
-    protected ?float $grossTotal = null;
+    protected Decimal|null $grossTotal = null;
 
     /**
-     * @var float|null $grossTotal
+     * @var Decimal|null $grossTotal
      * @since 1.0.0
      */
-    protected ?float $grossTotalFromCurrency = null;
+    protected Decimal|null $grossTotalFromCurrency = null;
 
     /**
      * The calculated total line (credit/debit),
      * ini format [lineNumber=>totalLine]
-     * @var float[]
+     *
+     * @var array<int ,Decimal>
      */
-    protected array $lineTotal = array();
+    protected array $lineTotal = [];
 
     /**
      * The Calculate values
+     *
      * @since 1.0.0
      */
     public function __construct()
@@ -76,84 +80,96 @@ class DocTotalCalc
 
     /**
      * get the calculated TaxPayable
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTaxPayable(): ?float
+    public function getTaxPayable(): Decimal|null
     {
         return $this->taxPayable;
     }
 
     /**
      * Get the Calculated NetTotal
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getNetTotal(): ?float
+    public function getNetTotal(): Decimal|null
     {
         return $this->netTotal;
     }
 
     /**
      * Get the GrossTotal calculated
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getGrossTotal(): ?float
+    public function getGrossTotal(): Decimal|null
     {
         return $this->grossTotal;
     }
 
     /**
      * Get the calculated GrossTotal from the currency
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getGrossTotalFromCurrency(): ?float
+    public function getGrossTotalFromCurrency(): Decimal|null
     {
         return $this->grossTotalFromCurrency;
     }
 
     /**
      * Set the calculated TaxPayable
-     * @param float|null $taxPayable
+     *
+     * @param Decimal|null $taxPayable
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setTaxPayable(?float $taxPayable): void
+    public function setTaxPayable(Decimal|null $taxPayable): void
     {
         $this->taxPayable = $taxPayable;
     }
 
     /**
      * Set the calculated NetTotal
-     * @param float|null $netTotal
+     *
+     * @param Decimal|null $netTotal
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setNetTotal(?float $netTotal): void
+    public function setNetTotal(Decimal|null $netTotal): void
     {
         $this->netTotal = $netTotal;
     }
 
     /**
      * Set the calculated Gross total
-     * @param float|null $grossTotal
+     *
+     * @param Decimal|null $grossTotal
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setGrossTotal(?float $grossTotal): void
+    public function setGrossTotal(Decimal|null $grossTotal): void
     {
         $this->grossTotal = $grossTotal;
     }
 
     /**
      * Set the calculated Gross total from Currency
-     * @param float|null $grossFromCurrency
+     *
+     * @param Decimal|null $grossFromCurrency
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setGrossTotalFromCurrency(?float $grossFromCurrency): void
+    public function setGrossTotalFromCurrency(Decimal|null $grossFromCurrency): void
     {
         $this->grossTotalFromCurrency = $grossFromCurrency;
     }
@@ -161,7 +177,8 @@ class DocTotalCalc
     /**
      * To calculate total of each line, the array keys are the
      * line number
-     * @return float[]
+     *
+     * @return array<int, Decimal>
      * @since 1.0.0
      */
     public function getLineTotal(): array
@@ -171,12 +188,14 @@ class DocTotalCalc
 
     /**
      * Add a total for a line
-     * @param int $lineNumber
-     * @param float $value
+     *
+     * @param int     $lineNumber
+     * @param Decimal $value
+     *
      * @return void
      * @since 1.0.0
      */
-    public function addLineTotal(int $lineNumber, float $value): void
+    public function addLineTotal(int $lineNumber, Decimal $value): void
     {
         $this->lineTotal[$lineNumber] = $value;
     }

@@ -1,59 +1,58 @@
 {
-  "name": "joaomfrebelo/saft-pt_4_php",
-  "description": "PHP core lib to work with SAF-T (PT). A library/framework to generate, parse, import and validate programmatically or cli the Portuguese Tax Audit file SAF-T (PT)",
-  "homepage": "https://github.com/joaomfrebelo/saft-pt_4_php",
-  "keywords": [
-	"SAFT-PT",
-	"AT",
-	"Autoridade tributaria",
-	"e-fatura",
-	"Portuguese Tax Authority",
-	"Portuguese tax file audit"
-  ],
-  "authors": [
-	{
-	  "name": "João M F Rebelo",
-	  "email": "joaomfrebelo@gmail.com"
-	}
-  ],
-  "autoload": {
-	"classmap": [
-	  "src/",
-	  "tests/"
+	"name": "joaomfrebelo/saft-pt_4_php",
+	"description": "PHP core lib to work with SAF-T (PT). A library/framework to generate, parse, import and validate programmatically or cli the Portuguese Tax Audit file SAF-T (PT)",
+	"homepage": "https://github.com/joaomfrebelo/saft-pt_4_php",
+	"keywords": [
+		"SAFT-PT",
+		"AT",
+		"Autoridade tributaria",
+		"e-fatura",
+		"Portuguese Tax Authority",
+		"Portuguese tax file audit"
 	],
-	"files": [
-	  "bootstrap.php"
-	]
-  },
-  "license": "MIT",
-  "prefer-stable": true,
-  "require": {
-	"php": "8.0.* || 8.1.* || 8.2.*",
-	"joaomfrebelo/log4php": "3.0.0-BETA2 || ^3.0.0",
-	"joaomfrebelo/date": "^2.2",
-	"joaomfrebelo/decimal": "^4.0.0",
-	"joaomfrebelo/enum": "^3.0.0",
-	"symfony/console": "^5.1",
-	"spatie/async": "^1.5",
-	"symfony/process": "^5.1",
-	"joaomfrebelo/composer-revision-plugin": "^2.0.1",
-	"ext-simplexml": "*",
-    "ext-dom": "*",
-	"ext-libxml": "*",
-	"ext-openssl": "*"
-  },
-  "require-dev": {
-	"phpunit/phpunit": "^9.6",
-	"phpstan/phpstan": "^1.9.17",
-	"squizlabs/php_codesniffer": "^3.7.1"
-  },
-  "type": "library",
-  "bin": [
-	"saft4php"
-  ],
-  "config": {
-	"allow-plugins": {
-	  "joaomfrebelo/composer-revision-plugin": true
+	"authors": [
+		{
+			"name": "João M F Rebelo",
+			"email": "joaomfrebelo@gmail.com"
+		}
+	],
+	"autoload": {
+		"classmap": [
+			"src/",
+			"tests/"
+		],
+		"files": [
+			"bootstrap.php"
+		]
+	},
+	"license": "MIT",
+	"prefer-stable": true,
+	"require": {
+		"php": "8.3.*",
+		"joaomfrebelo/log4php": "3.0.0-BETA2 || ^3.0.0",
+		"joaomfrebelo/date": "^3.0.0",
+		"symfony/console": "^v7.4.13",
+		"spatie/async": "^1.5",
+		"symfony/process": "^v7.4.13",
+		"joaomfrebelo/composer-revision-plugin": "^2.0.1",
+		"ext-simplexml": "*",
+		"ext-dom": "*",
+		"ext-libxml": "*",
+		"ext-openssl": "*",
+		"ext-decimal": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^12.5.28",
+		"phpstan/phpstan": "^2.2.1",
+		"squizlabs/php_codesniffer": "^4.0.1"
+	},
+	"type": "library",
+	"bin": [
+		"saft4php"
+	],
+	"config": {
+		"allow-plugins": {
+			"joaomfrebelo/composer-revision-plugin": true
+		}
 	}
-  }
 }

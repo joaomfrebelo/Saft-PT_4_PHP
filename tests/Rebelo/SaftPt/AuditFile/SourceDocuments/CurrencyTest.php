@@ -26,11 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class CurrencyTest
@@ -41,21 +42,19 @@ class CurrencyTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Currency::class);
-        $this->assertTrue(true);
+        (new Commune(Currency::class))->testReflection(Currency::class);
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceGetSet(): void
     {
         $currency = new Currency(new ErrorRegister());
@@ -75,7 +74,7 @@ class CurrencyTest extends TestCase
         try {
             $currency->getCurrencyAmount();
             $this->fail(
-                "Get Ammount without be set should throw "
+                "Get Amount without be set should throw "
                 ."\Error"
             );
         } catch (\Exception | \Error $e) {
@@ -97,20 +96,20 @@ class CurrencyTest extends TestCase
         }
 
         $code = CurrencyCode::ISO_GBP;
-        $currency->setCurrencyCode(new CurrencyCode($code));
-        $this->assertSame($code, $currency->getCurrencyCode()->get());
+        $currency->setCurrencyCode($code);
+        $this->assertSame($code, $currency->getCurrencyCode());
 
-        $amount = 459.95;
+        $amount = new Decimal("459.95");
         $this->assertTrue($currency->setCurrencyAmount($amount));
         $this->assertSame($amount, $currency->getCurrencyAmount());
 
-        $wrong = -1.9;
+        $wrong = new Decimal("-1.9");
         $currency->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($currency->setCurrencyAmount($wrong));
         $this->assertSame($wrong, $currency->getCurrencyAmount());
         $this->assertNotEmpty($currency->getErrorRegistor()->getOnSetValue());
 
-        $rate = 1.59;
+        $rate = new Decimal("1.59");
         $this->assertTrue($currency->setExchangeRate($rate));
         $this->assertSame($rate, $currency->getExchangeRate());
 
@@ -122,8 +121,8 @@ class CurrencyTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $currency = new Currency(new ErrorRegister());
@@ -134,7 +133,7 @@ class CurrencyTest extends TestCase
                 "Create a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -143,8 +142,8 @@ class CurrencyTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $currency = new Currency(new ErrorRegister());
@@ -155,7 +154,7 @@ class CurrencyTest extends TestCase
                 "Parse a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -169,22 +168,22 @@ class CurrencyTest extends TestCase
     public function createCurrency(): Currency
     {
         $currency = new Currency(new ErrorRegister());
-        $currency->setCurrencyCode(new CurrencyCode(CurrencyCode::ISO_GBP));
-        $currency->setCurrencyAmount(259.99);
-        $currency->setExchangeRate(0.99);
+        $currency->setCurrencyCode(CurrencyCode::ISO_GBP);
+        $currency->setCurrencyAmount(new Decimal("259.99"));
+        $currency->setExchangeRate(new Decimal("0.99"));
         return $currency;
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $currency = $this->createCurrency();
         $node     = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+            "<".ADocumentTotals::N_DOCUMENT_TOTALS."></".ADocumentTotals::N_DOCUMENT_TOTALS.">"
         );
 
         $currencyNode = $currency->createXmlNode($node);
@@ -195,21 +194,18 @@ class CurrencyTest extends TestCase
         );
 
         $this->assertSame(
-            $currency->getCurrencyCode()->get(),
-            (string) $node->{Currency::N_CURRENCY}
-            ->{Currency::N_CURRENCYCODE}
+            $currency->getCurrencyCode()->value,
+            (string) $node->{Currency::N_CURRENCY}->{Currency::N_CURRENCY_CODE}
         );
 
         $this->assertSame(
-            $currency->getCurrencyAmount(),
-            (float) $node->{Currency::N_CURRENCY}
-            ->{Currency::N_CURRENCYAMOUNT}
+            $currency->getCurrencyAmount()->toFloat(),
+            (float) $node->{Currency::N_CURRENCY}->{Currency::N_CURRENCY_AMOUNT}
         );
 
         $this->assertSame(
-            $currency->getExchangeRate(),
-            (float) $node->{Currency::N_CURRENCY}
-            ->{Currency::N_EXCHANGERATE}
+            $currency->getExchangeRate()->toFloat(),
+            (float) $node->{Currency::N_CURRENCY}->{Currency::N_EXCHANGE_RATE}
         );
 
         $this->assertEmpty($currency->getErrorRegistor()->getLibXmlError());
@@ -221,13 +217,13 @@ class CurrencyTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXml(): void
     {
         $currency = $this->createCurrency();
         $node     = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+            "<".ADocumentTotals::N_DOCUMENT_TOTALS."></".ADocumentTotals::N_DOCUMENT_TOTALS.">"
         );
         $xml      = $currency->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -238,16 +234,16 @@ class CurrencyTest extends TestCase
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
-            $currency->getCurrencyCode()->get(),
-            $parsed->getCurrencyCode()->get()
+            $currency->getCurrencyCode(),
+            $parsed->getCurrencyCode()
         );
 
         $this->assertSame(
-            $currency->getCurrencyAmount(), $parsed->getCurrencyAmount()
+            $currency->getCurrencyAmount()->toFloat(), $parsed->getCurrencyAmount()->toFloat()
         );
 
         $this->assertSame(
-            $currency->getExchangeRate(), $parsed->getExchangeRate()
+            $currency->getExchangeRate()->toFloat(), $parsed->getExchangeRate()->toFloat()
         );
 
         $this->assertEmpty($currency->getErrorRegistor()->getLibXmlError());
@@ -259,12 +255,12 @@ class CurrencyTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $currencyNode = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+            "<".ADocumentTotals::N_DOCUMENT_TOTALS."></".ADocumentTotals::N_DOCUMENT_TOTALS.">"
         );
         $currency     = new Currency(new ErrorRegister());
         $xml          = $currency->createXmlNode($currencyNode)->asXML();
@@ -284,16 +280,16 @@ class CurrencyTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $currencyNode = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+            "<".ADocumentTotals::N_DOCUMENT_TOTALS."></".ADocumentTotals::N_DOCUMENT_TOTALS.">"
         );
         $currency     = new Currency(new ErrorRegister());
-        $currency->setCurrencyAmount(-1.0);
-        $currency->setExchangeRate(-1.0);
+        $currency->setCurrencyAmount(new Decimal("-1.0"));
+        $currency->setExchangeRate(new Decimal("-1.0"));
 
         $xml = $currency->createXmlNode($currencyNode)->asXML();
         if ($xml === false) {

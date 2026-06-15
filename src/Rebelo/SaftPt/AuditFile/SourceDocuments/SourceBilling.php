@@ -26,18 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * SourceBilling<br>
  * To fill in with:<br>
  * “P” – Document created in the invoicing program;<br>
  * “I” – Document integrated and produced in a different invoicing program;<br>
  * “M” – Recovered or manually issued document.<br>
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling P()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling I()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling M()
  * <pre>
  * &lt;xs:simpleType name="SAFTPTSourceBilling"&gt;
  *  &lt;xs:annotation&gt;
@@ -51,48 +45,32 @@ use Rebelo\Enum\EnumException;
  *      &lt;xs:enumeration value="M"/&gt;
  *  &lt;/xs:restriction&gt;
  * </pre>
+ *
+ * @since 3.0.0
  * @author João Rebelo
  */
-class SourceBilling extends AEnum
+enum SourceBilling : string
 {
     /**
      * “P” – Document created in the invoicing program;<br>
      * &lt;xs:enumeration value="P"/&gt;
+     *
+     * @since 3.0.0
      */
-    const P = "P";
+    case P = "P";
 
     /**
      * I -> “I” – Document integrated and produced in a different invoicing program;<br>
      * &lt;xs:enumeration value="I"/&gt;
+     *
+     * @since 3.0.0
      */
-    const I = "I";
+    case I = "I";
 
     /**
      * “M” – Recovered or manually issued document.<br>
      * &lt;xs:enumeration value="M"/&gt;
      */
-    const M = "M";
+    case M = "M";
 
-    /**
-     * To fill in with:<br>
-     * “P” – Document created in the invoicing program;<br>
-     * “I” – Document integrated and produced in a different invoicing program;<br>
-     * “M” – Recovered or manually issued document.<br>
-     * @param string $value
-     * @throws EnumException
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get the value as string
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

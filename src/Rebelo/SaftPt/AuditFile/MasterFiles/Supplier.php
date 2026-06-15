@@ -65,25 +65,25 @@ class Supplier extends ACustomerSupplier
      * Node name
      * @since 1.0.0
      */
-    const N_SUPPLIER = "Supplier";
+    const string N_SUPPLIER = "Supplier";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SUPPLIERID = "SupplierID";
+    const string N_SUPPLIER_ID = "SupplierID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SUPPLIERTAXID = "SupplierTaxID";
+    const string N_SUPPLIER_TAX_ID = "SupplierTaxID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SHIPTOADDRESS = "ShipFromAddress";
+    const string N_SHIP_TO_ADDRESS = "ShipFromAddress";
 
     /**
      * &lt;xs:element ref="SupplierID"/&gt;
@@ -187,7 +187,7 @@ class Supplier extends ACustomerSupplier
     public function setSupplierID(string $supplierID): bool
     {
         try {
-            $this->supplierID = static::valTextMandMaxCar(
+            $this->supplierID = static::valTextMandatoryMaxCar(
                 $supplierID, 30,
                 __METHOD__
             );
@@ -271,8 +271,6 @@ class Supplier extends ACustomerSupplier
      * &lt;xs:element name="BillingAddress" type="AddressStructure"/&gt;
      *
      * @return \Rebelo\SaftPt\AuditFile\SupplierAddress
-     * @throws \Error
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function getBillingAddress(): SupplierAddress
@@ -297,14 +295,13 @@ class Supplier extends ACustomerSupplier
     /**
      * Adds ShipFromAddress<br>
      * This method every time that is invoked will return a new Instance
-     * of 'Address' that shal must be populated with the correct values.<br>
+     * of 'Address' that shall, must be populated with the correct values.<br>
      * If there is a need to make more than one reference,
      * this structure can be generated as many times as necessary.<br>
      * &lt;xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
      * &lt;xs:element name="ShipFromAddress" type="SupplierAddressStructure"/&gt;
      *
      * @return \Rebelo\SaftPt\AuditFile\SupplierAddress The new SupplierAddress instance that was added and must be populated
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addShipFromAddress(): SupplierAddress
@@ -340,10 +337,10 @@ class Supplier extends ACustomerSupplier
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== MasterFiles::N_MASTERFILES) {
+        if ($node->getName() !== MasterFiles::N_MASTER_FILES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                MasterFiles::N_MASTERFILES, $node->getName()
+                MasterFiles::N_MASTER_FILES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -353,35 +350,35 @@ class Supplier extends ACustomerSupplier
         $supplierNode = $node->addChild(static::N_SUPPLIER);
 
         if (isset($this->supplierID)) {
-            $supplierNode->addChild(static::N_SUPPLIERID, $this->getSupplierID());
+            $supplierNode->addChild(static::N_SUPPLIER_ID, $this->getSupplierID());
         } else {
-            $supplierNode->addChild(static::N_SUPPLIERID);
+            $supplierNode->addChild(static::N_SUPPLIER_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SupplierID_not_valid");
         }
 
 
         if (isset($this->accountID)) {
-            $supplierNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
+            $supplierNode->addChild(static::N_ACCOUNT_ID, $this->getAccountID());
         } else {
-            $supplierNode->addChild(static::N_ACCOUNTID);
+            $supplierNode->addChild(static::N_ACCOUNT_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("AccountID_not_valid");
         }
 
         if (isset($this->supplierTaxID)) {
             $supplierNode->addChild(
-                static::N_SUPPLIERTAXID, $this->getSupplierTaxID()
+                static::N_SUPPLIER_TAX_ID, $this->getSupplierTaxID()
             );
         } else {
-            $supplierNode->addChild(static::N_SUPPLIERTAXID);
+            $supplierNode->addChild(static::N_SUPPLIER_TAX_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SupplierTaxID_not_valid");
         }
 
         if (isset($this->companyName)) {
             $supplierNode->addChild(
-                static::N_COMPANYNAME, $this->getCompanyName()
+                static::N_COMPANY_NAME, $this->getCompanyName()
             );
         } else {
-            $supplierNode->addChild(static::N_COMPANYNAME);
+            $supplierNode->addChild(static::N_COMPANY_NAME);
             $this->getErrorRegistor()->addOnCreateXmlNode("CompanyName_not_valid");
         }
 
@@ -390,7 +387,7 @@ class Supplier extends ACustomerSupplier
             $supplierNode->addChild(static::N_CONTACT, $this->getContact());
         }
 
-        $billAddr = $supplierNode->addChild(static::N_BILLINGADDRESS);
+        $billAddr = $supplierNode->addChild(static::N_BILLING_ADDRESS);
         if (isset($this->billingAddress)) {
             $this->getBillingAddress()->createXmlNode($billAddr);
         } else {
@@ -398,7 +395,7 @@ class Supplier extends ACustomerSupplier
         }
 
         foreach ($this->getShipFromAddress() as $shipAddr) {
-            $shipAddr->createXmlNode($supplierNode->addChild(static::N_SHIPTOADDRESS));
+            $shipAddr->createXmlNode($supplierNode->addChild(static::N_SHIP_TO_ADDRESS));
         }
 
         if ($this->getTelephone() !== null) {
@@ -419,18 +416,18 @@ class Supplier extends ACustomerSupplier
 
         if (isset($this->selfBillingIndicator)) {
             $supplierNode->addChild(
-                static::N_SELFBILLINGINDICATOR,
+                static::N_SELF_BILLING_INDICATOR,
                 $this->getSelfBillingIndicator() ? "1" : "0"
             );
         } else {
-            $supplierNode->addChild(static::N_SELFBILLINGINDICATOR);
+            $supplierNode->addChild(static::N_SELF_BILLING_INDICATOR);
             $this->getErrorRegistor()->addOnCreateXmlNode("SelfBillingIndicator_not_valid");
         }
         return $supplierNode;
     }
 
     /**
-     * Pasrse the xml node
+     * Parse the xml node
      * @param \SimpleXMLElement $node
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
@@ -450,26 +447,26 @@ class Supplier extends ACustomerSupplier
             throw new AuditFileException($msg);
         }
 
-        $this->setSupplierID((string) $node->{static::N_SUPPLIERID});
-        $this->setAccountID((string) $node->{static::N_ACCOUNTID});
-        $this->setSupplierTaxID((string) $node->{static::N_SUPPLIERTAXID});
-        $this->setCompanyName((string) $node->{static::N_COMPANYNAME});
+        $this->setSupplierID((string) $node->{static::N_SUPPLIER_ID});
+        $this->setAccountID((string) $node->{static::N_ACCOUNT_ID});
+        $this->setSupplierTaxID((string) $node->{static::N_SUPPLIER_TAX_ID});
+        $this->setCompanyName((string) $node->{static::N_COMPANY_NAME});
         if ($node->{static::N_CONTACT}->count() > 0) {
             $this->setContact((string) $node->{static::N_CONTACT});
         } else {
             $this->setContact(null);
         }
 
-        $this->getBillingAddress()->parseXmlNode($node->{static::N_BILLINGADDRESS});
+        $this->getBillingAddress()->parseXmlNode($node->{static::N_BILLING_ADDRESS});
 
-        $count = $node->{static::N_SHIPTOADDRESS}->count();
+        $count = $node->{static::N_SHIP_TO_ADDRESS}->count();
         for ($i = 0; $i <= $count - 1; $i++) {
             $this->addShipFromAddress()
-                ->parseXmlNode($node->{static::N_SHIPTOADDRESS}[$i]);
+                ->parseXmlNode($node->{static::N_SHIP_TO_ADDRESS}[$i]);
         }
 
         $this->setSelfBillingIndicator(
-            ((int) $node->{static::N_SELFBILLINGINDICATOR}) === 1
+            ((int) $node->{static::N_SELF_BILLING_INDICATOR}) === 1
         );
 
         if ($node->{static::N_TELEPHONE}->count() > 0) {

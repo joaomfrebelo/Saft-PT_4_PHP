@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -44,13 +45,13 @@ class Line extends ALine
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEDOCUMENTID = "SourceDocumentID";
+    const string N_SOURCE_DOCUMENT_ID = "SourceDocumentID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TAX = "Tax";
+    const string N_TAX = "Tax";
 
     /**
      * SourceDocumentID, must have at least one element
@@ -160,7 +161,10 @@ class Line extends ALine
 
     /**
      * Create XML node
+     *
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -191,7 +195,7 @@ class Line extends ALine
 
         if ($this->getSettlementAmount() !== null) {
             $lineNode->addChild(
-                static::N_SETTLEMENTAMOUNT,
+                static::N_SETTLEMENT_AMOUNT,
                 \strval($this->getSettlementAmount())
             );
         }
@@ -202,15 +206,15 @@ class Line extends ALine
 
         if ($this->getTaxExemptionReason() !== null) {
             $lineNode->addChild(
-                static::N_TAXEXEMPTIONREASON,
+                static::N_TAX_EXEMPTION_REASON,
                 $this->getTaxExemptionReason()
             );
         }
 
         if ($this->getTaxExemptionCode() !== null) {
             $lineNode->addChild(
-                static::N_TAXEXEMPTIONCODE,
-                $this->getTaxExemptionCode()->get()
+                static::N_TAX_EXEMPTION_CODE,
+                $this->getTaxExemptionCode()->value
             );
         }
 
@@ -219,8 +223,12 @@ class Line extends ALine
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -230,31 +238,31 @@ class Line extends ALine
 
         parent::parseXmlNode($node);
 
-        $sourceCount = $node->{static::N_SOURCEDOCUMENTID}->count();
+        $sourceCount = $node->{static::N_SOURCE_DOCUMENT_ID}->count();
         if ($sourceCount === 0) {
             throw new AuditFileException("SourceDocumentID must have at least one node");
         }
 
         for ($n = 0; $n < $sourceCount; $n++) {
             $this->addSourceDocumentID()->parseXmlNode(
-                $node->{static::N_SOURCEDOCUMENTID}[$n]
+                $node->{static::N_SOURCE_DOCUMENT_ID}[$n]
             );
         }
 
-        if ($node->{static::N_SETTLEMENTAMOUNT}->count() > 0) {
-            $this->setSettlementAmount((float) $node->{static::N_SETTLEMENTAMOUNT});
+        if ($node->{static::N_SETTLEMENT_AMOUNT}->count() > 0) {
+            $this->setSettlementAmount(new Decimal((string) $node->{static::N_SETTLEMENT_AMOUNT}));
         }
 
         if ($node->{static::N_TAX}->count() > 0) {
             $this->getTax()?->parseXmlNode($node->{static::N_TAX});
         }
 
-        if ($node->{static::N_TAXEXEMPTIONREASON}->count() > 0) {
-            $this->setTaxExemptionReason((string) $node->{static::N_TAXEXEMPTIONREASON});
+        if ($node->{static::N_TAX_EXEMPTION_REASON}->count() > 0) {
+            $this->setTaxExemptionReason((string) $node->{static::N_TAX_EXEMPTION_REASON});
         }
 
-        if ($node->{static::N_TAXEXEMPTIONCODE}->count() > 0) {
-            $taxCode = new TaxExemptionCode((string) $node->{static::N_TAXEXEMPTIONCODE});
+        if ($node->{static::N_TAX_EXEMPTION_CODE}->count() > 0) {
+            $taxCode = TaxExemptionCode::from((string) $node->{static::N_TAX_EXEMPTION_CODE});
             $this->setTaxExemptionCode($taxCode);
         }
     }

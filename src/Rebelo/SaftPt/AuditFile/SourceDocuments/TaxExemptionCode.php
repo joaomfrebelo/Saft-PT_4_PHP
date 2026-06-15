@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * TaxExemptionCode<br>
  *  It shall be filled in with the code of the reason for exemption or non-settlement,
@@ -39,82 +36,64 @@ use Rebelo\Enum\EnumException;
  * This field shall also be filled in, for the cases not to subject to the
  * taxes mentioned in table 2.5. - TaxTable.
  *
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M01()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M03()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M04()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M05()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M06()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M07()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M08()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M09()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M10()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M11()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M12()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M13()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M14()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M15()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M16()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M20()
- *  @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode M99()
- *
  * @author João Rebelo
  */
-class TaxExemptionCode extends AEnum
+enum TaxExemptionCode : string
 {
     /**
      * Mensção: Artigo 16.º n.º 6 do CIVA(ou similar<br>
      * Norma: Artigo 16.º  n.º  6 alíneas a) a d) do  CIVA
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M01 = "M01";
+    case M01 = "M01";
 
     /**
      * Mensção: Artigo  6.º  do  Decreto-Lei  n.º  198/90,  de19  de Junho<br>
      * Norma: Artigo  6.º  do  Decreto‐Lei  n.º  198/90,  de  19  de  junho
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M02 = "M02";
+    case M02 = "M02";
 
     /**
      * Mensção: Exigibilidade de caixa<br>
      * Norma: Decreto‐Lei n.º 204/97, de 9 de agosto,
      * Decreto-Lei n.º 418/99, de 21 de outubro,
      * Lei n.º 15/2009, de 1 de abril
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M03 = "M03";
+    case M03 = "M03";
 
     /**
      * Mensção: Isento Artigo 13.º do CIVA(ou similar)<br>
      * Norma: Artigo 13.º do CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M04 = "M04";
+    case M04 = "M04";
 
     /**
      * Mensção: Isento Artigo 14.º do CIVA(ou similar)<br>
      * Norma: Artigo 14.º do CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M05 = "M05";
+    case M05 = "M05";
 
     /**
      * Mensção: sento Artigo 15.º do CIVA(ou similar)<br>
      * Norma: Artigo 15.º do CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M06 = "M06";
+    case M06 = "M06";
 
     /**
      * Mensção: Isento Artigo 9.º do CIVA(ou similar)<br>
      * Norma: Artigo 9.º do CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M07 = "M07";
+    case M07 = "M07";
 
     /**
      * Mensção: IVA –autoliquidação<br>
@@ -122,81 +101,81 @@ class TaxExemptionCode extends AEnum
      * Artigo 6.º do CIVA, Decreto-Lei n.º 21/2007, de 29 de janeiro,
      * Decreto-Lei n.º 362/99, de 16 de setembro, Artigo 8.º do RITI
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M08 = "M08";
+    case M08 = "M08";
 
     /**
      * Mensção: IVA -não confere direito a dedução<br>
      * Norma: Artigo 60.º CIVA, Artigo 72.º n.º 4 do CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M09 = "M09";
+    case M09 = "M09";
 
     /**
      * Mensção: IVA –Regime de isenção<br>
      * Norma: Artigo 53.ºdo CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M10 = "M10";
+    case M10 = "M10";
 
     /**
      * Mensção: Regime particular do tabaco<br>
      * Norma: Decreto-Lei n.º 346/85, de 23 de agosto
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M11 = "M11";
+    case M11 = "M11";
 
     /**
      * Mensção: Regime  da  margem  de  lucro –Agências  de viagens<br>
      * Norma: Decreto-Lei n.º 221/85, de 3 de julho
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M12 = "M12";
+    case M12 = "M12";
 
     /**
      * Mensção: Regime da margem de lucro –Bens em segunda mão<br>
      * Norma: Decreto-Lei n.º 199/96, de 18 de outubro
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M13 = "M13";
+    case M13 = "M13";
 
     /**
      * Mensção: Regime da margem de lucro –Objetos de arte<br>
      * Norma: Decreto-Lei n.º 199/96, de 18 de outubro
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M14 = "M14";
+    case M14 = "M14";
 
     /**
      * Mensção: Regime   da   margem   de   lucro –Objetos   de coleção e antiguidades<br>
      * Norma: Decreto-Lei n.º 199/96, de 18 de outubro
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M15 = "M15";
+    case M15 = "M15";
 
     /**
      * Mensção: Isento Artigo 14.º do RITI (ou similar)<br>
      * Norma: Artigo 14.º do RITI
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M16 = "M16";
+    case M16 = "M16";
 
     /**
      * Mensção: IVA -Regime forfetário<br>
      * Norma: Artigo 59.º-B do CIVA
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M20 = "M20";
+    case M20 = "M20";
 
     /**
      * Mensção: Não sujeito; não tributado (ou similar) <br>
@@ -204,35 +183,8 @@ class TaxExemptionCode extends AEnum
      * (Exemplos: artigo 2.º, n.º 2 ;
      *  artigo 3.º, n.ºs 4, 6 e 7; artigo 4.º, n.º 5, todos do CIVA)
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const M99 = "M99";
+    case M99 = "M99";
 
-    /**
-     * It shall be filled in with the code of the reason for exemption or non-settlement,
-     * which is included in the "Manual de Integração de Software – Comunicação das Faturas à AT"
-     * [Software Integration Manual - Communication of the Invoices to Tax and Customs Authority].
-     * The filling is required when fields 4.1.4.19.15.4. - TaxPercentage
-     * or 4.1.4.19.15.5. - TaxAmount are equal to zero.
-     * This field shall also be filled in, for the cases not to subject to the
-     * taxes mentioned in table 2.5. - TaxTable.
-     *
-     * @param string $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get the value as string
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

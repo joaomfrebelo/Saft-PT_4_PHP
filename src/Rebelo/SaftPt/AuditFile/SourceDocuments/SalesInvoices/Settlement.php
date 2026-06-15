@@ -26,11 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
-use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
+use Decimal\Decimal;
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 
 /**
  * Settlement<br>
@@ -48,8 +50,9 @@ use Rebelo\Date\Date as RDate;
  *       &lt;/xs:sequence&gt;
  *   &lt;/xs:complexType&gt;
  * <pre>
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Settlement extends AAuditFile
 {
@@ -58,38 +61,39 @@ class Settlement extends AAuditFile
      *
      * @since 1.0.0
      */
-    const N_SETTLEMENT = "Settlement";
+    const string N_SETTLEMENT = "Settlement";
 
     /**
      * Node name
      *
      * @since 1.0.0
      */
-    const N_SETTLEMENTDISCOUNT = "SettlementDiscount";
+    const string N_SETTLEMENT_DISCOUNT = "SettlementDiscount";
 
     /**
      * Node name
      *
      * @since 1.0.0
      */
-    const N_SETTLEMENTAMOUNT = "SettlementAmount";
+    const string N_SETTLEMENT_AMOUNT = "SettlementAmount";
 
     /**
      * Node name
      *
      * @since 1.0.0
      */
-    const N_SETTLEMENTDATE = "SettlementDate";
+    const string N_SETTLEMENT_DATE = "SettlementDate";
 
     /**
      * Node name
      *
      * @since 1.0.0
      */
-    const N_PAYMENTTERMS = "PaymentTerms";
+    const string N_PAYMENT_TERMS = "PaymentTerms";
 
     /**
      * &lt;xs:element name="SettlementDiscount" type="SAFPTtextTypeMandatoryMax30Car" minOccurs="0"/&gt;
+     *
      * @var string|null $settlementDiscount
      * @since 1.0.0
      */
@@ -97,13 +101,15 @@ class Settlement extends AAuditFile
 
     /**
      * &lt;xs:element name="SettlementAmount" type="SAFmonetaryType" minOccurs="0"/&gt;
-     * @var float|null $settlementAmount
+     *
+     * @var \Decimal\Decimal|null $settlementAmount
      * @since 1.0.0
      */
-    private ?float $settlementAmount = null;
+    private ?Decimal $settlementAmount = null;
 
     /**
      * &lt;xs:element name="SettlementDate" type="SAFdateType" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\Date\Date|null $settlementDate
      * @since 1.0.0
      */
@@ -111,6 +117,7 @@ class Settlement extends AAuditFile
 
     /**
      * &lt;xs:element name="PaymentTerms" type="SAFPTtextTypeMandatoryMax100Car" minOccurs="0"/&gt;
+     *
      * @var string|null $paymentTerms
      * @since 1.0.0
      */
@@ -132,7 +139,9 @@ class Settlement extends AAuditFile
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -144,6 +153,7 @@ class Settlement extends AAuditFile
      * Gets as settlementDiscount<br>
      * To fill in with the discount agreements to apply in the future on the current value.<br>
      * &lt;xs:element name="SettlementDiscount" type="SAFPTtextTypeMandatoryMax30Car" minOccurs="0"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
@@ -152,7 +162,7 @@ class Settlement extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->settlementDiscount === null ? "null" : $this->settlementDiscount
                 )
             );
@@ -165,6 +175,7 @@ class Settlement extends AAuditFile
      * &lt;xs:element name="SettlementDiscount" type="SAFPTtextTypeMandatoryMax30Car" minOccurs="0"/&gt;
      *
      * @param string|null $settlementDiscount
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -173,19 +184,19 @@ class Settlement extends AAuditFile
         try {
             $this->settlementDiscount = $settlementDiscount === null ?
                 $settlementDiscount :
-                $this->valTextMandMaxCar($settlementDiscount, 30, __METHOD__);
+                $this->valTextMandatoryMaxCar($settlementDiscount, 30, __METHOD__);
             $return                   = true;
         } catch (AuditFileException $e) {
             $this->settlementDiscount = $settlementDiscount;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("SettlementDiscount_not_valid");
-            $return                   = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->settlementDiscount === null ? "null" : $this->settlementDiscount
                 )
             );
@@ -197,15 +208,16 @@ class Settlement extends AAuditFile
      * Represents the agreed value for future discount without affecting
      * the present value of the document indicated in field 4.1.4.20.3. - GrossTotal.<br>
      * &lt;xs:element name="SettlementAmount" type="SAFmonetaryType" minOccurs="0"/&gt;
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getSettlementAmount(): ?float
+    public function getSettlementAmount(): ?Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
                 )
             );
@@ -218,16 +230,18 @@ class Settlement extends AAuditFile
      * Represents the agreed value for future discount without affecting
      * the present value of the document indicated in field 4.1.4.20.3. - GrossTotal.<br>
      * &lt;xs:element name="SettlementAmount" type="SAFmonetaryType" minOccurs="0"/&gt;
-     * @param float|null $settlementAmount
+     *
+     * @param Decimal|null $settlementAmount
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setSettlementAmount(?float $settlementAmount): bool
+    public function setSettlementAmount(?Decimal $settlementAmount): bool
     {
-        if ($settlementAmount < 0.0) {
-            $msg    = "SettlementAmount can not be negative";
+        if (($settlementAmount?->compareTo("0.0") ?? 0) < 0) {
+            $msg = "SettlementAmount can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("SettlementAmount_not_valid");
         } else {
@@ -237,7 +251,7 @@ class Settlement extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
                 )
             );
@@ -248,8 +262,8 @@ class Settlement extends AAuditFile
      * Gets as settlementDate<br>
      * To fill in the date agreed for the payment with discount<br>
      * &lt;xs:element name="SettlementDate" type="SAFdateType" minOccurs="0"/&gt;
+     *
      * @return \Rebelo\Date\Date|null
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getSettlementDate(): ?RDate
@@ -257,8 +271,8 @@ class Settlement extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->settlementDate === null ? "null" : $this->settlementDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " get '%s'",
+                    $this->settlementDate === null ? "null" : $this->settlementDate->format(Pattern::SQL_DATE)
                 )
             );
 
@@ -269,9 +283,10 @@ class Settlement extends AAuditFile
      * Sets a new settlementDate<br>     *
      * To fill in the date agreed for the payment with discount<br>
      * &lt;xs:element name="SettlementDate" type="SAFdateType" minOccurs="0"/&gt;
+     *
      * @param \Rebelo\Date\Date|null $settlementDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setSettlementDate(?RDate $settlementDate): void
@@ -280,8 +295,8 @@ class Settlement extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->settlementDate === null ? "null" : $this->settlementDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " set to '%s'",
+                    $this->settlementDate === null ? "null" : $this->settlementDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -290,6 +305,7 @@ class Settlement extends AAuditFile
      * Gets as paymentTerms<br>
      * Agreements or payment deadlines.<br>
      * &lt;xs:element name="PaymentTerms" type="SAFPTtextTypeMandatoryMax100Car" minOccurs="0"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
@@ -298,7 +314,7 @@ class Settlement extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->paymentTerms === null ? "null" : $this->paymentTerms
                 )
             );
@@ -310,7 +326,9 @@ class Settlement extends AAuditFile
      * Sets a new paymentTerms<br>     *
      * Agreements or payment deadlines.<br>
      * &lt;xs:element name="PaymentTerms" type="SAFPTtextTypeMandatoryMax100Car" minOccurs="0"/&gt;
+     *
      * @param string|null $paymentTerms
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -319,19 +337,19 @@ class Settlement extends AAuditFile
         try {
             $this->paymentTerms = $paymentTerms === null ?
                 $paymentTerms :
-                $this->valTextMandMaxCar($paymentTerms, 100, __METHOD__);
+                $this->valTextMandatoryMaxCar($paymentTerms, 100, __METHOD__);
             $return             = true;
         } catch (AuditFileException $e) {
             $this->paymentTerms = $paymentTerms;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("PaymentTerms_not_valid");
-            $return             = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->paymentTerms === null ? "null" : $this->paymentTerms
                 )
             );
@@ -340,9 +358,10 @@ class Settlement extends AAuditFile
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -350,56 +369,58 @@ class Settlement extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
+        if ($node->getName() !== ADocumentTotals::N_DOCUMENT_TOTALS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+                ADocumentTotals::N_DOCUMENT_TOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $settlNode = $node->addChild(static::N_SETTLEMENT);
+        $settlementNode = $node->addChild(static::N_SETTLEMENT);
 
         if ($this->getSettlementDiscount() !== null) {
-            $settlNode->addChild(
-                static::N_SETTLEMENTDISCOUNT,
+            $settlementNode->addChild(
+                static::N_SETTLEMENT_DISCOUNT,
                 $this->getSettlementDiscount()
             );
         }
 
         if ($this->getSettlementAmount() !== null) {
-            $settlNode->addChild(
-                static::N_SETTLEMENTAMOUNT,
+            $settlementNode->addChild(
+                static::N_SETTLEMENT_AMOUNT,
                 $this->floatFormat($this->getSettlementAmount())
             );
         }
 
         if ($this->getSettlementDate() !== null) {
-            $settlNode->addChild(
-                static::N_SETTLEMENTDATE,
-                $this->getSettlementDate()->format(RDate::SQL_DATE)
+            $settlementNode->addChild(
+                static::N_SETTLEMENT_DATE,
+                $this->getSettlementDate()->format(Pattern::SQL_DATE)
             );
         }
 
         if ($this->getPaymentTerms() !== null) {
-            $settlNode->addChild(
-                static::N_PAYMENTTERMS,
+            $settlementNode->addChild(
+                static::N_PAYMENT_TERMS,
                 $this->getPaymentTerms()
             );
         }
 
-        return $settlNode;
+        return $settlementNode;
     }
 
     /**
      * Parse the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
@@ -412,34 +433,34 @@ class Settlement extends AAuditFile
                 static::N_SETTLEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setSettlementDiscount(
-            $node->{static::N_SETTLEMENTDISCOUNT}->count() > 0 ?
-                (string) $node->{static::N_SETTLEMENTDISCOUNT} :
+            $node->{static::N_SETTLEMENT_DISCOUNT}->count() > 0 ?
+                (string)$node->{static::N_SETTLEMENT_DISCOUNT} :
                 null
         );
 
         $this->setSettlementAmount(
-            $node->{static::N_SETTLEMENTAMOUNT}->count() > 0 ?
-                (float) $node->{static::N_SETTLEMENTAMOUNT} :
-                null
+            $node->{static::N_SETTLEMENT_AMOUNT}->count() > 0
+                ? new Decimal((string)$node->{static::N_SETTLEMENT_AMOUNT})
+                : null
         );
 
         $this->setSettlementDate(
-            $node->{static::N_SETTLEMENTDATE}->count() > 0 ?
+            $node->{static::N_SETTLEMENT_DATE}->count() > 0 ?
                 RDate::parse(
-                    RDate::SQL_DATE,
-                    (string) $node->{static::N_SETTLEMENTDATE}
+                    Pattern::SQL_DATE,
+                    (string)$node->{static::N_SETTLEMENT_DATE}
                 ) :
                 null
         );
 
         $this->setPaymentTerms(
-            $node->{static::N_PAYMENTTERMS}->count() > 0 ?
-                (string) $node->{static::N_PAYMENTTERMS} :
+            $node->{static::N_PAYMENT_TERMS}->count() > 0 ?
+                (string)$node->{static::N_PAYMENT_TERMS} :
                 null
         );
     }

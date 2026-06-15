@@ -26,9 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class TaxTest
@@ -39,20 +40,19 @@ class WarehouseTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Warehouse::class);
-        $this->assertTrue(true);
+        (new Commune(Warehouse::class))->testReflection(Warehouse::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $warehouse = new Warehouse(new ErrorRegister());
@@ -60,35 +60,35 @@ class WarehouseTest extends TestCase
         $this->assertNull($warehouse->getWarehouseID());
         $this->assertNull($warehouse->getLocationID());
 
-        $warehouseid = "C999";
-        $this->assertTrue($warehouse->setWarehouseID($warehouseid));
-        $this->assertSame($warehouseid, $warehouse->getWarehouseID());
+        $warehouseID = "C999";
+        $this->assertTrue($warehouse->setWarehouseID($warehouseID));
+        $this->assertSame($warehouseID, $warehouse->getWarehouseID());
         $this->assertTrue($warehouse->setWarehouseID(null));
         $this->assertNull($warehouse->getWarehouseID());
         $this->assertTrue(
             $warehouse->setWarehouseID(
                 \str_pad(
-                    $warehouseid, 99,
+                    $warehouseID, 99,
                     "A"
                 )
             )
         );
-        $this->assertSame(50, \strlen($warehouse->getWarehouseID() ?? ""));
+        $this->assertSame(50, \strlen($warehouse->getWarehouseID()));
 
         $warehouse->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($warehouse->setWarehouseID(""));
         $this->assertSame("", $warehouse->getWarehouseID());
         $this->assertNotEmpty($warehouse->getErrorRegistor()->getOnSetValue());
 
-        $locationid = "A999";
-        $this->assertTrue($warehouse->setLocationID($locationid));
-        $this->assertSame($locationid, $warehouse->getLocationID());
+        $locationID = "A999";
+        $this->assertTrue($warehouse->setLocationID($locationID));
+        $this->assertSame($locationID, $warehouse->getLocationID());
         $this->assertTrue($warehouse->setLocationID(null));
         $this->assertNull($warehouse->getLocationID());
         $this->assertTrue(
-            $warehouse->setLocationID(\str_pad($locationid, 99, "A"))
+            $warehouse->setLocationID(\str_pad($locationID, 99, "A"))
         );
-        $this->assertSame(30, \strlen($warehouse->getLocationID() ?? ""));
+        $this->assertSame(30, \strlen($warehouse->getLocationID()));
 
         $warehouse->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($warehouse->setLocationID(""));
@@ -99,42 +99,42 @@ class WarehouseTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $warehouse = new Warehouse(new ErrorRegister());
         $node      = new \SimpleXMLElement(
-            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+            "<" . ShipFrom::N_SHIP_FROM . "></" . ShipFrom::N_SHIP_FROM . ">"
         );
 
-        $warehouseid = "A999";
-        $locationid  = "C999";
+        $warehouseID = "A999";
+        $locationID  = "C999";
 
-        $warehouse->setWarehouseID($warehouseid);
-        $warehouse->setLocationID($locationid);
+        $warehouse->setWarehouseID($warehouseID);
+        $warehouse->setLocationID($locationID);
 
         $warehouse->createXmlNode($node);
 
         $this->assertSame(
             $warehouse->getWarehouseID(),
-            (string) $node->{Warehouse::N_WAREHOUSEID}
+            (string)$node->{Warehouse::N_WAREHOUSE_ID}
         );
 
         $this->assertSame(
             $warehouse->getLocationID(),
-            (string) $node->{Warehouse::N_LOCATIONID}
+            (string)$node->{Warehouse::N_LOCATION_ID}
         );
 
         $nullNode = new \SimpleXMLElement(
-            "<".ShipTo::N_SHIPTO."></".ShipTo::N_SHIPTO.">"
+            "<" . ShipTo::N_SHIP_TO . "></" . ShipTo::N_SHIP_TO . ">"
         );
 
         $warehouse->setLocationID(null);
         $warehouse->setWarehouseID(null);
         $warehouse->createXmlNode($nullNode);
-        $this->assertSame(0, $nullNode->{Warehouse::N_WAREHOUSEID}->count());
-        $this->assertSame(0, $nullNode->{Warehouse::N_LOCATIONID}->count());
+        $this->assertSame(0, $nullNode->{Warehouse::N_WAREHOUSE_ID}->count());
+        $this->assertSame(0, $nullNode->{Warehouse::N_LOCATION_ID}->count());
 
         $this->assertEmpty($warehouse->getErrorRegistor()->getLibXmlError());
         $this->assertEmpty($warehouse->getErrorRegistor()->getOnCreateXmlNode());
@@ -144,20 +144,20 @@ class WarehouseTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
-    public function testeParseXml(): void
+    #[Test]
+    public function testParseXml(): void
     {
         $warehouse = new Warehouse(new ErrorRegister());
         $node      = new \SimpleXMLElement(
-            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+            "<" . ShipFrom::N_SHIP_FROM . "></" . ShipFrom::N_SHIP_FROM . ">"
         );
 
-        $warehouseid = "A999";
-        $locationid  = "C999";
+        $warehouseID = "A999";
+        $locationID  = "C999";
 
-        $warehouse->setWarehouseID($warehouseid);
-        $warehouse->setLocationID($locationid);
+        $warehouse->setWarehouseID($warehouseID);
+        $warehouse->setLocationID($locationID);
 
         $xml = $warehouse->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -175,11 +175,11 @@ class WarehouseTest extends TestCase
         );
 
         $nodeNull = new \SimpleXMLElement(
-            "<".ShipTo::N_SHIPTO."></".ShipTo::N_SHIPTO.">"
+            "<" . ShipTo::N_SHIP_TO . "></" . ShipTo::N_SHIP_TO . ">"
         );
         $warehouse->setWarehouseID(null);
         $warehouse->setLocationID(null);
-        $xmlNull  = $warehouse->createXmlNode($nodeNull)->asXML();
+        $xmlNull = $warehouse->createXmlNode($nodeNull)->asXML();
         if ($xmlNull === false) {
             $this->fail("Fail to generate xml string");
         }
@@ -198,12 +198,12 @@ class WarehouseTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $warehouseNode = new \SimpleXMLElement(
-            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+            "<" . ShipFrom::N_SHIP_FROM . "></" . ShipFrom::N_SHIP_FROM . ">"
         );
         $warehouse     = new Warehouse(new ErrorRegister());
         $xml           = $warehouse->createXmlNode($warehouseNode)->asXML();
@@ -223,12 +223,12 @@ class WarehouseTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $warehouseNode = new \SimpleXMLElement(
-            "<".ShipFrom::N_SHIPFROM."></".ShipFrom::N_SHIPFROM.">"
+            "<" . ShipFrom::N_SHIP_FROM . "></" . ShipFrom::N_SHIP_FROM . ">"
         );
         $warehouse     = new Warehouse(new ErrorRegister());
         $warehouse->setWarehouseID("");

@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -48,63 +49,63 @@ class Payment extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENT = "Payment";
+    const string N_PAYMENT = "Payment";
 
     /**
      * &lt;xs:element ref="ATCUD"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_ATCUD = "ATCUD";
+    const string N_AT_CUD = "ATCUD";
 
     /**
      * &lt;xs:element ref="PaymentRefNo"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTREFNO = "PaymentRefNo";
+    const string N_PAYMENT_REF_NO = "PaymentRefNo";
 
     /**
      * &lt;xs:element ref="Period" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_PERIOD = "Period";
+    const string N_PERIOD = "Period";
 
     /**
      * &lt;xs:element ref="TransactionID" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_TRANSACTIONID = "TransactionID";
+    const string N_TRANSACTION_ID = "TransactionID";
 
     /**
      * &lt;xs:element ref="TransactionDate"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_TRANSACTIONDATE = "TransactionDate";
+    const string N_TRANSACTION_DATE = "TransactionDate";
 
     /**
      * &lt;xs:element name="PaymentType" type="SAFTPTPaymentType"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTTYPE = "PaymentType";
+    const string N_PAYMENT_TYPE = "PaymentType";
 
     /**
      * &lt;xs:element ref="Description" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_DESCRIPTION = "Description";
+    const string N_DESCRIPTION = "Description";
 
     /**
      * &lt;xs:element ref="SystemID" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_SYSTEMID = "SystemID";
+    const string N_SYSTEM_ID = "SystemID";
 
     /**
      * &lt;xs:element name="PaymentMethod" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/&gt;
@@ -112,7 +113,7 @@ class Payment extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTMETHOD = "PaymentMethod";
+    const string N_PAYMENT_METHOD = "PaymentMethod";
 
     /**
      * &lt;xs:element ref="SourceID"/&gt;<br>
@@ -120,29 +121,29 @@ class Payment extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEID = "SourceID";
+    const string N_SOURCE_ID = "SourceID";
 
     /**
      * &lt;xs:element ref="SystemEntryDate"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_SYSTEMENTRYDATE = "SystemEntryDate";
+    const string N_SYSTEM_ENTRY_DATE = "SystemEntryDate";
 
     /**
      * &lt;xs:element ref="CustomerID"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMERID = "CustomerID";
+    const string N_CUSTOMER_ID = "CustomerID";
 
 
     /**
-     * The calulated values made by the validation classes
+     * The calculated values made by the validation classes
      * @var \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
-    protected ?DocTotalCalc $docTotalcal = null;
+    protected ?DocTotalCalc $docTotalCal = null;
 
     /**
      *
@@ -527,7 +528,7 @@ class Payment extends AAuditFile
     public function setATCUD(string $atcud): bool
     {
         try {
-            $this->atcud = $this->valTextMandMaxCar(
+            $this->atcud = $this->valTextMandatoryMaxCar(
                 $atcud, 100, __METHOD__, false
             );
             $return      = true;
@@ -632,10 +633,11 @@ class Payment extends AAuditFile
      *   &lt;/xs:restriction&gt;
      *  &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @param bool $create If true a new instance will be created if wasn't previous
+     *
      * @return \Rebelo\SaftPt\AuditFile\TransactionID|null
      * @since 1.0.0
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
     public function getTransactionID(bool $create = true): ?TransactionID
     {
@@ -670,8 +672,6 @@ class Payment extends AAuditFile
      * &lt;xs:element name="TransactionDate" type="SAFdateType"/&gt;
      *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getTransactionDate(): RDate
@@ -680,7 +680,7 @@ class Payment extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->transactionDate->format(RDate::SQL_DATE)
+                    $this->transactionDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->transactionDate;
@@ -703,8 +703,8 @@ class Payment extends AAuditFile
      * &lt;xs:element name="TransactionDate" type="SAFdateType"/&gt;
      *
      * @param \Rebelo\Date\Date $transactionDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setTransactionDate(RDate $transactionDate): void
@@ -714,7 +714,7 @@ class Payment extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->transactionDate->format(RDate::SQL_DATE)
+                    $this->transactionDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -729,7 +729,7 @@ class Payment extends AAuditFile
     public function getPaymentType(): PaymentType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->paymentType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->paymentType->value));
         return $this->paymentType;
     }
 
@@ -757,7 +757,7 @@ class Payment extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->paymentType->get()
+                    $this->paymentType->value
                 )
             );
     }
@@ -793,7 +793,7 @@ class Payment extends AAuditFile
     {
         try {
             $this->description = $description === null ? null :
-                $this->valTextMandMaxCar($description, 200, __METHOD__);
+                $this->valTextMandatoryMaxCar($description, 200, __METHOD__);
             $return            = true;
         } catch (AuditFileException $e) {
             $this->description = $description;
@@ -848,7 +848,7 @@ class Payment extends AAuditFile
     {
         try {
             $this->systemID = $systemID === null ? null :
-                $this->valTextMandMaxCar(
+                $this->valTextMandatoryMaxCar(
                     $systemID, 60, __METHOD__
                 );
             $return         = true;
@@ -913,7 +913,7 @@ class Payment extends AAuditFile
         $paymentMethod         = new PaymentMethod($this->getErrorRegistor());
         $this->paymentMethod[] = $paymentMethod;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." PaymentMethos add to index"
+            __METHOD__." PaymentMethods add to index"
         );
         return $paymentMethod;
     }
@@ -967,7 +967,7 @@ class Payment extends AAuditFile
     public function setSourceID(string $sourceID): bool
     {
         try {
-            $this->sourceID = $this->valTextMandMaxCar($sourceID, 30, __METHOD__);
+            $this->sourceID = $this->valTextMandatoryMaxCar($sourceID, 30, __METHOD__);
             $return         = true;
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
@@ -985,8 +985,8 @@ class Payment extends AAuditFile
      * Gets as systemEntryDate<br>
      * &lt;xs:element ref="SystemEntryDate"/&gt;<br>
      * &lt;xs:element name="SystemEntryDate" type="SAFdateTimeType"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error|\Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getSystemEntryDate(): RDate
@@ -995,7 +995,7 @@ class Payment extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->systemEntryDate->format(RDate::DATE_T_TIME)
+                    $this->systemEntryDate->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->systemEntryDate;
@@ -1015,9 +1015,10 @@ class Payment extends AAuditFile
      * Sets a new systemEntryDate<br>
      * &lt;xs:element ref="SystemEntryDate"/&gt;<br>
      * &lt;xs:element name="SystemEntryDate" type="SAFdateTimeType"/&gt;     *
+     *
      * @param \Rebelo\Date\Date $systemEntryDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setSystemEntryDate(RDate $systemEntryDate): void
@@ -1027,7 +1028,7 @@ class Payment extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->systemEntryDate->format(RDate::DATE_T_TIME)
+                    $this->systemEntryDate->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -1068,7 +1069,7 @@ class Payment extends AAuditFile
     public function setCustomerID(string $customerID): bool
     {
         try {
-            $this->customerID = $this->valTextMandMaxCar(
+            $this->customerID = $this->valTextMandatoryMaxCar(
                 $customerID, 30, __METHOD__, true
             );
             $return           = true;
@@ -1149,8 +1150,8 @@ class Payment extends AAuditFile
      * When this method is invoked a new instance is created, add to the stack
      * and returned to be populated
      * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addWithholdingTax(): WithholdingTax
@@ -1158,7 +1159,7 @@ class Payment extends AAuditFile
         $withholdingTax         = new WithholdingTax($this->getErrorRegistor());
         $this->withholdingTax[] = $withholdingTax;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." WithholdingTax add to indexs"
+            __METHOD__." WithholdingTax add to index"
         );
         return $withholdingTax;
     }
@@ -1178,10 +1179,11 @@ class Payment extends AAuditFile
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -1200,16 +1202,16 @@ class Payment extends AAuditFile
         $payNode = $node->addChild(static::N_PAYMENT);
 
         if (isset($this->paymentRefNo)) {
-            $payNode->addChild(static::N_PAYMENTREFNO, $this->getPaymentRefNo());
+            $payNode->addChild(static::N_PAYMENT_REF_NO, $this->getPaymentRefNo());
         } else {
-            $payNode->addChild(static::N_PAYMENTREFNO);
+            $payNode->addChild(static::N_PAYMENT_REF_NO);
             $this->getErrorRegistor()->addOnCreateXmlNode("PaymentRefNo_not_valid");
         }
 
         if (isset($this->atcud)) {
-            $payNode->addChild(static::N_ATCUD, $this->getATCUD());
+            $payNode->addChild(static::N_AT_CUD, $this->getATCUD());
         } else {
-            $payNode->addChild(static::N_ATCUD);
+            $payNode->addChild(static::N_AT_CUD);
             $this->getErrorRegistor()->addOnCreateXmlNode("ATCUD_not_valid");
         }
 
@@ -1222,20 +1224,20 @@ class Payment extends AAuditFile
 
         if (isset($this->transactionDate)) {
             $payNode->addChild(
-                static::N_TRANSACTIONDATE,
-                $this->getTransactionDate()->format(RDate::SQL_DATE)
+                static::N_TRANSACTION_DATE,
+                $this->getTransactionDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $payNode->addChild(static::N_TRANSACTIONDATE);
+            $payNode->addChild(static::N_TRANSACTION_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TransactionDate_not_valid");
         }
 
         if (isset($this->paymentType)) {
             $payNode->addChild(
-                static::N_PAYMENTTYPE, $this->getPaymentType()->get()
+                static::N_PAYMENT_TYPE, $this->getPaymentType()->value
             );
         } else {
-            $payNode->addChild(static::N_PAYMENTTYPE);
+            $payNode->addChild(static::N_PAYMENT_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("PaymentType_not_valid");
         }
 
@@ -1247,14 +1249,14 @@ class Payment extends AAuditFile
 
         if ($this->getSystemID() !== null) {
             $payNode->addChild(
-                static::N_SYSTEMID, $this->getSystemID()
+                static::N_SYSTEM_ID, $this->getSystemID()
             );
         }
 
         if (isset($this->documentStatus)) {
             $this->getDocumentStatus()->createXmlNode($payNode);
         } else {
-            $payNode->addChild(DocumentStatus::N_DOCUMENTSTATUS);
+            $payNode->addChild(DocumentStatus::N_DOCUMENT_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentStatus_not_valid");
         }
 
@@ -1264,27 +1266,27 @@ class Payment extends AAuditFile
 
         if (isset($this->sourceID)) {
             $payNode->addChild(
-                static::N_SOURCEID, $this->getSourceID()
+                static::N_SOURCE_ID, $this->getSourceID()
             );
         } else {
-            $payNode->addChild(static::N_SOURCEID);
+            $payNode->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
         }
 
         if (isset($this->systemEntryDate)) {
             $payNode->addChild(
-                static::N_SYSTEMENTRYDATE,
-                $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
+                static::N_SYSTEM_ENTRY_DATE,
+                $this->getSystemEntryDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $payNode->addChild(static::N_SYSTEMENTRYDATE);
+            $payNode->addChild(static::N_SYSTEM_ENTRY_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
         if (isset($this->customerID)) {
-            $payNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
+            $payNode->addChild(static::N_CUSTOMER_ID, $this->getCustomerID());
         } else {
-            $payNode->addChild(static::N_CUSTOMERID);
+            $payNode->addChild(static::N_CUSTOMER_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
         }
 
@@ -1295,7 +1297,7 @@ class Payment extends AAuditFile
         if (isset($this->documentTotals)) {
             $this->getDocumentTotals()->createXmlNode($payNode);
         } else {
-            $payNode->addChild(DocumentTotals::N_DOCUMENTTOTALS);
+            $payNode->addChild(DocumentTotals::N_DOCUMENT_TOTALS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentTotals_not_valid");
         }
 
@@ -1308,11 +1310,13 @@ class Payment extends AAuditFile
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
@@ -1329,95 +1333,97 @@ class Payment extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $this->setPaymentRefNo((string) $node->{static::N_PAYMENTREFNO});
-        $this->setATCUD((string) $node->{static::N_ATCUD});
+        $this->setPaymentRefNo((string) $node->{static::N_PAYMENT_REF_NO});
+        $this->setATCUD((string) $node->{static::N_AT_CUD});
 
         if ($node->{static::N_PERIOD}->count() > 0) {
             $this->setPeriod((int) $node->{static::N_PERIOD});
         }
 
-        if ($node->{static::N_TRANSACTIONID}->count() > 0) {
+        if ($node->{static::N_TRANSACTION_ID}->count() > 0) {
             $this->getTransactionID()?->parseXmlNode(
-                $node->{static::N_TRANSACTIONID}
+                $node->{static::N_TRANSACTION_ID}
             );
         }
 
         $this->setTransactionDate(
             RDate::parse(
-                RDate::SQL_DATE,
-                (string) $node->{static::N_TRANSACTIONDATE}
+                Pattern::SQL_DATE,
+                (string) $node->{static::N_TRANSACTION_DATE}
             )
         );
 
         $this->setPaymentType(
-            new PaymentType((string) $node->{static::N_PAYMENTTYPE})
+            PaymentType::from((string) $node->{static::N_PAYMENT_TYPE})
         );
 
         if ($node->{static::N_DESCRIPTION}->count() > 0) {
             $this->setDescription((string) $node->{static::N_DESCRIPTION});
         }
 
-        if ($node->{static::N_SYSTEMID}->count() > 0) {
-            $this->setSystemID((string) $node->{static::N_SYSTEMID});
+        if ($node->{static::N_SYSTEM_ID}->count() > 0) {
+            $this->setSystemID((string) $node->{static::N_SYSTEM_ID});
         }
 
         $this->getDocumentStatus()->parseXmlNode(
-            $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            $node->{DocumentStatus::N_DOCUMENT_STATUS}
         );
 
-        for ($n = 0; $n < $node->{static::N_PAYMENTMETHOD}->count(); $n++) {
+        for ($n = 0; $n < $node->{static::N_PAYMENT_METHOD}->count(); $n++) {
             $this->addPaymentMethod()->parseXmlNode(
-                $node->{static::N_PAYMENTMETHOD}[$n]
+                $node->{static::N_PAYMENT_METHOD}[$n]
             );
         }
 
-        $this->setSourceID((string) $node->{static::N_SOURCEID});
+        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
 
         $this->setSystemEntryDate(
             RDate::parse(
-                RDate::DATE_T_TIME,
-                (string) $node->{static::N_SYSTEMENTRYDATE}
+                Pattern::DATE_T_TIME,
+                (string) $node->{static::N_SYSTEM_ENTRY_DATE}
             )
         );
 
-        $this->setCustomerID((string) $node->{static::N_CUSTOMERID});
+        $this->setCustomerID((string) $node->{static::N_CUSTOMER_ID});
 
         for ($n = 0; $n < $node->{Line::N_LINE}->count(); $n++) {
             $this->addLine()->parseXmlNode($node->{Line::N_LINE}[$n]);
         }
 
         $this->getDocumentTotals()->parseXmlNode(
-            $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENT_TOTALS}
         );
 
-        $whtCount = $node->{WithholdingTax::N_WITHHOLDINGTAX}->count();
+        $whtCount = $node->{WithholdingTax::N_WITHHOLDING_TAX}->count();
         for ($n = 0; $n < $whtCount; $n++) {
             $this->addWithholdingTax()->parseXmlNode(
-                $node->{WithholdingTax::N_WITHHOLDINGTAX}[$n]
+                $node->{WithholdingTax::N_WITHHOLDING_TAX}[$n]
             );
         }
     }
 
     /**
-     * Get the caluleted values of the validation classes
+     * Get the calculated values of the validation classes
      * @return \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
-    public function getDocTotalcal(): ?DocTotalCalc
+    public function getDocTotalCal(): ?DocTotalCalc
     {
         \Logger::getLogger(\get_class($this))->info(__METHOD__);
-        return $this->docTotalcal;
+        return $this->docTotalCal;
     }
 
     /**
-     * Set the caluleted values of the validation classes
-     * @param \Rebelo\SaftPt\Validate\DocTotalCalc|null $docTotalcal
+     * Set the calculated values of the validation classes
+     *
+     * @param \Rebelo\SaftPt\Validate\DocTotalCalc|null $docTotalCal
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDocTotalcal(?DocTotalCalc $docTotalcal): void
+    public function setDocTotalCal(?DocTotalCalc $docTotalCal): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $this->docTotalcal = $docTotalcal;
+        $this->docTotalCal = $docTotalCal;
     }
 }

@@ -26,14 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Sign;
 
+use Decimal\Decimal;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 
 /**
  * Create/verify the hash of signature
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Sign
 {
@@ -59,6 +60,7 @@ class Sign
      *
      * @param string|null $privateKey
      * @param string|null $publicKey
+     *
      * @since 1.0.0
      */
     public function __construct(?string $privateKey = null,
@@ -74,7 +76,9 @@ class Sign
 
     /**
      * Set the private key to create the hash sign
+     *
      * @param string $privateKey
+     *
      * @return void
      * @since 1.0.0
      */
@@ -86,7 +90,9 @@ class Sign
 
     /**
      * Set the public key to verify the hash sign
+     *
      * @param string $publicKey
+     *
      * @return void
      * @since 1.0.0
      */
@@ -98,7 +104,9 @@ class Sign
 
     /**
      * Set the private key file path to create the hash sign
+     *
      * @param string $path
+     *
      * @return void
      * @throws SignException
      * @since 1.0.0
@@ -111,7 +119,7 @@ class Sign
             $msg = \sprintf("Private key file path error: '%s'", $path);
             \Logger::getLogger(\get_class($this))
                 ->error(
-                    \sprintf(__METHOD__." '%s'", $msg)
+                    \sprintf(__METHOD__ . " '%s'", $msg)
                 );
             throw new SignException($msg);
         }
@@ -120,7 +128,9 @@ class Sign
 
     /**
      * Set the public key file path to verify the hash sign
+     *
      * @param string $path
+     *
      * @return void
      * @throws SignException
      * @since 1.0.0
@@ -133,7 +143,7 @@ class Sign
             $msg = \sprintf("Public key file path error: '%s'", $path);
             \Logger::getLogger(\get_class($this))
                 ->error(
-                    \sprintf(__METHOD__." '%s'", $msg)
+                    \sprintf(__METHOD__ . " '%s'", $msg)
                 );
             throw new SignException($msg);
         }
@@ -142,44 +152,49 @@ class Sign
 
     /**
      * Create the string to be sign or verified
-     * @param RDate $docDate The document date
-     * @param RDate $systemEntryDate The System Entry Date of the document
-     * @param string $doc The document identifier EX: FT FT/1
-     * @param float $grossTotal The document gross total
-     * @param string|null $lastHash The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string
+     *
+     * @param RDate       $docDate         The document date
+     * @param RDate       $systemEntryDate The System Entry Date of the document
+     * @param string      $doc             The document identifier EX: FT FT/1
+     * @param Decimal     $grossTotal      The document gross total
+     * @param string|null $lastHash        The hash of the last document of the same serial, if this is the first document in the serial pass null or empty string
+     *
      * @return string
-     * @throws DateFormatException
      * @since 1.0.0
      */
-    protected function creatString2Sign(RDate $docDate, RDate $systemEntryDate,
-                                        string $doc, float $grossTotal,
-                                        ?string $lastHash = null): string
+    protected function creatString2Sign(
+        RDate   $docDate,
+        RDate   $systemEntryDate,
+        string  $doc,
+        Decimal $grossTotal,
+        ?string $lastHash = null
+    ): string
     {
         return \sprintf(
-            "%s;%s;%s;%s;%s", $docDate->format(RDate::SQL_DATE),
-            $systemEntryDate->format(RDate::DATE_T_TIME), $doc,
-            \number_format($grossTotal, 2, ".", ""),
+            "%s;%s;%s;%s;%s", $docDate->format(Pattern::SQL_DATE),
+            $systemEntryDate->format(Pattern::DATE_T_TIME), $doc,
+            $grossTotal->toFixed(2, false, Decimal::ROUND_TRUNCATE),
             $lastHash === null ? "" : $lastHash
         );
     }
 
     /**
      *
-     * @param RDate $docDate The document date
-     * @param RDate $systemEntryDate The System Entry Date of the document
-     * @param string $doc The document identifier EX: FT FT/1
-     * @param float $grossTotal The document gross total
-     * @param string|null $lastHash The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string
+     * @param RDate       $docDate         The document date
+     * @param RDate       $systemEntryDate The System Entry Date of the document
+     * @param string      $doc             The document identifier EX: FT FT/1
+     * @param Decimal     $grossTotal      The document gross total
+     * @param string|null $lastHash        The hash of the last document of the same serial, if this is the first document in the serial pass null or empty string
+     *
      * @return string
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
     public function createSignature(
-        RDate $docDate,
-        RDate $systemEntryDate,
-        string $doc,
-        float $grossTotal,
+        RDate   $docDate,
+        RDate   $systemEntryDate,
+        string  $doc,
+        Decimal $grossTotal,
         ?string $lastHash = null
     ): string
     {
@@ -188,7 +203,7 @@ class Sign
             $msg = "Private key not set";
             \Logger::getLogger(\get_class($this))
                 ->error(
-                    \sprintf(__METHOD__." '%s'", $msg)
+                    \sprintf(__METHOD__ . " '%s'", $msg)
                 );
             throw new SignException($msg);
         }
@@ -199,7 +214,7 @@ class Sign
 
         \Logger::getLogger(\get_class($this))
             ->debug(
-                \sprintf(__METHOD__." create sign hash for '%s'", $str2sign)
+                \sprintf(__METHOD__ . " create sign hash for '%s'", $str2sign)
             );
 
         $signature = "";
@@ -217,27 +232,33 @@ class Sign
 
     /**
      * Verify is the signature is valid
-     * @param string $hash The hash signature to be verified
-     * @param RDate $docDate The document date
-     * @param RDate $systemEntryDate The System Entry Date of the document
-     * @param string $doc The document identifier EX: FT FT/1
-     * @param float $grossTotal The document gross total
-     * @param string|null $lastHash The hash of the last document of the same serie, if this is the first document in the serie pass null or empty string
+     *
+     * @param string      $hash            The hash signature to be verified
+     * @param RDate       $docDate         The document date
+     * @param RDate       $systemEntryDate The System Entry Date of the document
+     * @param string      $doc             The document identifier EX: FT FT/1
+     * @param Decimal     $grossTotal      The document gross total
+     * @param string|null $lastHash        The hash of the last document of the same serial, if this is the first document in the serial pass null or empty string
+     *
      * @return bool
      * @throws \Rebelo\SaftPt\Sign\SignException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    public function verifySignature(string $hash, RDate $docDate,
-                                    RDate $systemEntryDate, string $doc,
-                                    float $grossTotal, ?string $lastHash = null): bool
+    public function verifySignature(
+        string  $hash,
+        RDate   $docDate,
+        RDate   $systemEntryDate,
+        string  $doc,
+        Decimal $grossTotal,
+        ?string $lastHash = null
+    ): bool
     {
 
         if (isset($this->public) === false) {
-            $msg = "Public key not setted";
+            $msg = "Public key not set";
             \Logger::getLogger(\get_class($this))
                 ->error(
-                    \sprintf(__METHOD__." '%s'", $msg)
+                    \sprintf(__METHOD__ . " '%s'", $msg)
                 );
             throw new SignException($msg);
         }
@@ -248,7 +269,7 @@ class Sign
 
         \Logger::getLogger(\get_class($this))
             ->debug(
-                \sprintf(__METHOD__." verify sign hash for '%s'", $str2sign)
+                \sprintf(__METHOD__ . " verify sign hash for '%s'", $str2sign)
             );
 
         $resPubKey = \openssl_get_publickey($this->public);

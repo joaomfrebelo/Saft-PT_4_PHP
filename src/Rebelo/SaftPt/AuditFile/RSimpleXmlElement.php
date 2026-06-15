@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 /*
  * The MIT License
  *
@@ -26,9 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use ReturnTypeWillChange;
+
 /**
  * Description of RSimpleXmlElement
  * This class exists to resolve this 'feature' documented in:
+ *
  * @link https://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda
  * @author João Rebelo
  * @since 1.0.0
@@ -39,7 +42,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * Will be not escaped, you have to escape when set the properties in class
      * @since 1.0.0
      */
-    const NO_ESCAPE_HTML = 0;
+    const int NO_ESCAPE_HTML = 0;
 
     /**
      * Will it be escape by \SimpleXMLElement lib<br>
@@ -48,7 +51,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * exportation of the xml will throw an Exception
      * @since 1.0.0
      */
-    const FULL_ESCAPE_HTML = 1;
+    const int FULL_ESCAPE_HTML = 1;
 
     /**
      * Only some entities will be escaped<br>
@@ -57,7 +60,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * exportation of the xml will throw an Exception
      * @since 1.0.0
      */
-    const PARTIAL_ESCAPE_HTML = 2;
+    const int PARTIAL_ESCAPE_HTML = 2;
 
     /**
      * The type of escape to be used
@@ -72,7 +75,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * in add child in SimpleXMLElement native class
      * <p>Creates a new SimpleXMLElement object.</p>
      * @param string $data <p>A well-formed XML string or the path or URL to an XML document if <code>data_is_url</code> is <b><code>TRUE</code></b>.</p>
-     * @param int $options <p>Optionally used to specify additional Libxml parameters.</p> <p><b>Note</b>:</p><p>It may be necessary to pass <b><code>LIBXML_PARSEHUGE</code></b> to be able to process deeply nested XML or very large text nodes.</p>
+     * @param int $options <p>Optionally used to specify additional Libxml parameters.</p> <p><b>Note</b>:</p><p>It may be necessary to pass <b><code>LIBXML_PARSE_HUGE</code></b> to be able to process deeply nested XML or very large text nodes.</p>
      * @param bool $dataIsUrl <p>By default, <code>data_is_url</code> is <b><code>FALSE</code></b>. Use <b><code>TRUE</code></b> to specify that <code>data</code> is a path or URL to an XML document instead of <code>string</code> data.</p>
      * @param string $ns <p>Namespace prefix or URI.</p>
      * @param bool $isPrefix <p><b><code>TRUE</code></b> if <code>ns</code> is a prefix, <b><code>FALSE</code></b> if it's a URI; defaults to <b><code>FALSE</code></b>.</p>
@@ -104,6 +107,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
         $dataUtf8 = ("UTF-8" !== $encode) ?
             \mb_convert_encoding($data, "UTF-8", $encode) : $data;
 
+        /** @phpstan-ignore-next-line */
         return new self($dataUtf8, $options, $dataIsUrl, $ns, $isPrefix);
     }
 
@@ -118,6 +122,7 @@ class RSimpleXmlElement extends \SimpleXMLElement
      * @since 1.0.0
      * @link http://php.net/manual/en/simplexmlelement.addchild.php
      */
+    #[ReturnTypeWillChange]
     public function addChild(string $qualifiedName, $value = null, $namespace = null): \SimpleXMLElement
     {
         if ($namespace !== null) {
@@ -144,8 +149,8 @@ class RSimpleXmlElement extends \SimpleXMLElement
             $to[4] = '&gt;';
             $to[5] = '&#92;';
 
-            $esacped = str_replace($from, $to, $value);
-            return parent::addChild($qualifiedName, $esacped);
+            $escaped = str_replace($from, $to, $value);
+            return parent::addChild($qualifiedName, $escaped);
         }
 
         $this->{$qualifiedName}[] = $value;

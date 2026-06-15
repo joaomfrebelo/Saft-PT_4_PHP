@@ -31,7 +31,7 @@ use Rebelo\SaftPt\AuditFile\AuditFile;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
- * Class ASalesWorkDocumentTeste
+ * Class ASalesWorkDocumentTest
  *
  * @author João Rebelo
  */
@@ -65,15 +65,16 @@ abstract class AOtherValidationsBase extends TestCase
                 $this->auditFile = $auditFile;
             }
 
-            public function checkInvoicesType(array       &$invoices, array &$type,
-                                              ProgressBar $progressBar = null): void
+            public function checkInvoicesType(
+                array &$invoices, array &$type, ProgressBar|null $progressBar = null
+            ): void
             {
                 parent::checkInvoicesType($invoices, $type, $progressBar);
             }
 
-            public function checkStockMovementType(array       &$stockMovements,
-                                                   array       &$type,
-                                                   ProgressBar $progressBar = null): void
+            public function checkStockMovementType(
+                array &$stockMovements, array &$type, ProgressBar|null $progressBar = null
+            ): void
             {
                 parent::checkStockMovementType(
                     $stockMovements, $type,
@@ -81,15 +82,16 @@ abstract class AOtherValidationsBase extends TestCase
                 );
             }
 
-            public function checkWorkDocumentType(array       &$workDocs,
-                                                  array       &$type,
-                                                  ProgressBar $progressBar = null): void
+            public function checkWorkDocumentType(
+                array &$workDocs, array &$type, ProgressBar|null $progressBar = null
+            ): void
             {
                 parent::checkWorkDocumentType($workDocs, $type, $progressBar);
             }
 
-            public function checkPaymentType(array       &$payments, array &$type,
-                                             ProgressBar $progressBar = null): void
+            public function checkPaymentType(
+                array  &$payments, array &$type, ProgressBar|null $progressBar = null
+            ): void
             {
                 parent::checkPaymentType($payments, $type, $progressBar);
             }

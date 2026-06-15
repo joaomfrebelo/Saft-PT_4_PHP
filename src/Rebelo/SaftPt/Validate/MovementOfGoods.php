@@ -1,5 +1,4 @@
 <?php
-
 /*
  * The MIT License
  *
@@ -27,24 +26,23 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
-use Rebelo\SaftPt\Sign\Sign;
-use Rebelo\Decimal\UDecimal;
-use Rebelo\Decimal\Decimal;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods as SaftMovementOfGoods;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
+use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentStatus;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\DocumentTotals;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods as SaftMovementOfGoods;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementStatus;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
+use Rebelo\SaftPt\Sign\Sign;
 
 /**
  * Validate MovementOfGoods table.<br>
@@ -52,7 +50,7 @@ use Rebelo\SaftPt\AuditFile\MasterFiles\ProductType;
  * signature hash and dates
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  *
  */
 class MovementOfGoods extends ADocuments
@@ -60,33 +58,34 @@ class MovementOfGoods extends ADocuments
 
     /**
      * The calculated number of movement lines
+     *
      * @var int
      */
     protected int $numberOfMovementLines = 0;
 
     /**
      * The calculated total quantity issued
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      */
-    protected UDecimal $totalQuantityIssued;
+    protected Decimal $totalQuantityIssued;
 
     /**
      * Validate MovementOfGoods table.<br>
      * This class will validate the values of MovementOfGoods, the
      * signature hash and dates
+     *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile The AuditFile to be validated
-     * @param \Rebelo\SaftPt\Sign\Sign $sign The sign class to be used to validate the hash, must have the public key defined
-     * @throws \Rebelo\Decimal\DecimalException
+     * @param \Rebelo\SaftPt\Sign\Sign           $sign      The sign class to be used to validate the hash, must have the public key defined
+     *
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         parent::__construct($auditFile, $sign);
-        $this->totalQuantityIssued = new UDecimal(
-            0.0, ADocuments::CALC_PRECISION
-        );
-        $sourceDoc = $auditFile->getSourceDocuments(false);
+        $this->totalQuantityIssued = new Decimal("0.00");
+        $sourceDoc                 = $auditFile->getSourceDocuments(false);
         if ($sourceDoc !== null) {
             $movementOfGoods = $sourceDoc->getMovementOfGoods(false);
             $movementOfGoods?->setMovOfGoodsTableTotalCalc(
@@ -97,6 +96,7 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Validate the StockMovement
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -105,9 +105,9 @@ class MovementOfGoods extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $progressBar = null;
         try {
-            if(null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods(false)){
+            if (null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods(false)) {
                 \Logger::getLogger(\get_class($this))
-                        ->debug(__METHOD__ . " no movement of goods documents to be validated");
+                       ->debug(__METHOD__ . " no movement of goods documents to be validated");
                 return $this->isValid;
             }
 
@@ -120,10 +120,10 @@ class MovementOfGoods extends ADocuments
             if ($this->getStyle() !== null) {
                 $nDoc = \count($movementOfGoods->getStockMovement());
                 /* @var $section \Symfony\Component\Console\Output\ConsoleSectionOutput */
-                $section = null;
+                $section     = null;
                 $progressBar = $this->getStyle()->addProgressBar($section);
-                $section->writeln("");
-                $section->writeln(
+                $section?->writeln("");
+                $section?->writeln(
                     \sprintf(
                         AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
                         "StockMovement"
@@ -133,16 +133,16 @@ class MovementOfGoods extends ADocuments
             }
 
             foreach (\array_keys($order) as $type) {
-                foreach (\array_keys($order[$type]) as $serie) {
-                    foreach (\array_keys($order[$type][$serie]) as $no) {
+                foreach (\array_keys($order[$type]) as $serial) {
+                    foreach (\array_keys($order[$type][$serial]) as $no) {
 
                         $progressBar?->advance();
 
-                        $stockMovDocument = $order[$type][$serie][$no];
+                        $stockMovDocument = $order[$type][$serial][$no];
                         list(, $no) = \explode("/", $stockMovDocument->getDocumentNumber());
-                        if ((string) $type !== $this->lastType || (string) $serie !== $this->lastSerie) {
-                            $this->lastHash = "";
-                            $this->lastDocDate = null;
+                        if ((string)$type !== $this->lastType || (string)$serial !== $this->lastSerial) {
+                            $this->lastHash            = "";
+                            $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
                         } else {
                             $noExpected = $this->lastDocNumber + 1;
@@ -150,7 +150,7 @@ class MovementOfGoods extends ADocuments
                                 do {
                                     $msg = \sprintf(
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
-                                        $type, $serie, $noExpected
+                                        $type, $serial, $noExpected
                                     );
                                     \Logger::getLogger(\get_class($this))->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -160,11 +160,11 @@ class MovementOfGoods extends ADocuments
                             }
                         }
 
-                        $this->lastDocNumber = (int) $no;
-                        $stockMovDocument->setDocTotalcal(new DocTotalCalc());
+                        $this->lastDocNumber = (int)$no;
+                        $stockMovDocument->setDocTotalCalc(new DocTotalCalc());
                         $this->stockMovement($stockMovDocument);
-                        $this->lastType = (string) $type;
-                        $this->lastSerie = (string) $serie;
+                        $this->lastType   = (string)$type;
+                        $this->lastSerial = (string)$serial;
                     }
                 }
             }
@@ -182,12 +182,12 @@ class MovementOfGoods extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $movementOfGoods->addError(
-                        $msg, SaftMovementOfGoods::N_NUMBEROFMOVEMENTLINES
+                        $msg, SaftMovementOfGoods::N_NUMBER_OF_MOVEMENT_LINES
                     );
                     $this->isValid = false;
                 }
 
-                if ($movementOfGoods->getTotalQuantityIssued() !== 0.0) {
+                if (!$movementOfGoods->getTotalQuantityIssued()->equals(0.0)) {
                     $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "mv_goods_total_qt_should_be_zero"
@@ -195,32 +195,34 @@ class MovementOfGoods extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $movementOfGoods->addError(
-                        $msg, SaftMovementOfGoods::N_TOTALQUANTITYISSUED
+                        $msg, SaftMovementOfGoods::N_TOTAL_QUANTITY_ISSUED
                     );
                     $this->isValid = false;
                 }
             }
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->isValid = false;
 
             $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
-                    ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
 
             \Logger::getLogger(\get_class($this))
-                    ->debug(
-                        \sprintf(
-                            __METHOD__ . " validate error '%s'", $e->getMessage()
-                        )
-                    );
+                ->debug(
+                    \sprintf(
+                        __METHOD__ . " validate error '%s'", $e->getMessage()
+                    )
+                );
         }
         return $this->isValid;
     }
 
     /**
      * Validate StockMovement
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
      * @since 1.0.0
      */
@@ -228,11 +230,11 @@ class MovementOfGoods extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         try {
-            $this->docCredit = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->docDebit = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->netTotal = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->taxPayable = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->grossTotal = new UDecimal(0.0, static::CALC_PRECISION);
+            $this->docCredit  = new Decimal("0.0");
+            $this->docDebit   = new Decimal("0.0");
+            $this->netTotal   = new Decimal("0.0");
+            $this->taxPayable = new Decimal("0.0");
+            $this->grossTotal = new Decimal("0.0");
 
             if ($stockMovDocument->issetDocumentNumber() === false) {
                 $msg = AAuditFile::getI18n()->get("stock_mov_number_not_defined");
@@ -249,7 +251,7 @@ class MovementOfGoods extends ADocuments
                     ), $stockMovDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $stockMovDocument->addError($msg, StockMovement::N_MOVEMENTTYPE);
+                $stockMovDocument->addError($msg, StockMovement::N_MOVEMENT_TYPE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
@@ -262,7 +264,7 @@ class MovementOfGoods extends ADocuments
                     ), $stockMovDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $stockMovDocument->addError($msg, StockMovement::N_MOVEMENTDATE);
+                $stockMovDocument->addError($msg, StockMovement::N_MOVEMENT_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
@@ -271,12 +273,12 @@ class MovementOfGoods extends ADocuments
             if ($stockMovDocument->issetSystemEntryDate() === false) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "document_systementrydate_not_defined"
+                        "document_system_entry_date_not_defined"
                     ), $stockMovDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError(
-                    $msg, StockMovement::N_SYSTEMENTRYDATE
+                    $msg, StockMovement::N_SYSTEM_ENTRY_DATE
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -290,16 +292,16 @@ class MovementOfGoods extends ADocuments
             $this->documentStatus($stockMovDocument);
             $this->lines($stockMovDocument);
             $this->totals($stockMovDocument);
-            $this->shipement($stockMovDocument);
-        } catch (\Exception | \Error $e) {
+            $this->shipment($stockMovDocument);
+        } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
-                    ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
             \Logger::getLogger(\get_class($this))
-                    ->debug(
-                        \sprintf(
-                            __METHOD__ . " validate error '%s'", $e->getMessage()
-                        )
-                    );
+                ->debug(
+                    \sprintf(
+                        __METHOD__ . " validate error '%s'", $e->getMessage()
+                    )
+                );
             $stockMovDocument->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -307,35 +309,34 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Validate if the NumberOfLines and TotalQuantity is equal to the number of StockMovements
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function numberOfLinesAndTotalQuantity(): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
 
-        if(null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods()){
+        if (null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods()) {
             return;
         }
 
-        $testNlines = $this->numberOfMovementLines === $movementOfGoods->getNumberOfMovementLines();
-        $testQt = $this->totalQuantityIssued->signedSubtract(
-            $movementOfGoods->getTotalQuantityIssued()
-        )->abs()->valueOf() <= $this->getDeltaTable();
+        $testNLines = $this->numberOfMovementLines === $movementOfGoods->getNumberOfMovementLines();
+        $testQt     = $this->totalQuantityIssued->sub(
+            (string)$movementOfGoods->getTotalQuantityIssued()
+        )->abs()->compareTo($this->getDeltaTable()) <= 0;
 
-        $this->auditFile->getSourceDocuments()?->getMovementOfGoods()
-                ?->getMovOfGoodsTableTotalCalc()?->setNumberOfMovementLines(
-                    $this->numberOfMovementLines
-                );
+        $this->auditFile->getSourceDocuments()
+                        ->getMovementOfGoods()
+                        ->getMovOfGoodsTableTotalCalc()
+                        ?->setNumberOfMovementLines($this->numberOfMovementLines);
 
-        $this->auditFile->getSourceDocuments()?->getMovementOfGoods()
-                ?->getMovOfGoodsTableTotalCalc()?->setTotalQuantityIssued(
-                    $this->totalQuantityIssued->valueOf()
-                );
+        $this->auditFile->getSourceDocuments()
+                        ->getMovementOfGoods()
+                        ->getMovOfGoodsTableTotalCalc()
+                        ?->setTotalQuantityIssued($this->totalQuantityIssued);
 
-        if ($testNlines === false) {
+        if ($testNLines === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_number_of_movement_lines"
@@ -344,7 +345,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $movementOfGoods->addError(
-                $msg, SaftMovementOfGoods::N_NUMBEROFMOVEMENTLINES
+                $msg, SaftMovementOfGoods::N_NUMBER_OF_MOVEMENT_LINES
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -359,7 +360,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $movementOfGoods->addError(
-                $msg, SaftMovementOfGoods::N_TOTALQUANTITYISSUED
+                $msg, SaftMovementOfGoods::N_TOTAL_QUANTITY_ISSUED
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -368,9 +369,10 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Validate the Document Status
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(StockMovement $stockMovDocument): void
@@ -382,7 +384,7 @@ class MovementOfGoods extends ADocuments
                 ), $stockMovDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $stockMovDocument->addError($msg, DocumentStatus::N_DOCUMENTSTATUS);
+            $stockMovDocument->addError($msg, DocumentStatus::N_DOCUMENT_STATUS);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -398,16 +400,14 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError(
-                $msg, DocumentStatus::N_MOVEMENTSTATUSDATE
+                $msg, DocumentStatus::N_MOVEMENT_STATUS_DATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($status->getMovementStatus()->isEqual(MovementStatus::A) &&
-                $status->getReason() === null) {
-
+        if ($status->getMovementStatus() === MovementStatus::A && $status->getReason() === null) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_cancel_no_reason"
@@ -423,7 +423,9 @@ class MovementOfGoods extends ADocuments
     /**
      * validate if the customerID or SupplierID of the StockMovement if is set and if exits in
      * the customer table
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
      * @since 1.0.0
      */
@@ -438,12 +440,12 @@ class MovementOfGoods extends ADocuments
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $stockMovDocument->addError($msg, StockMovement::N_CUSTOMERID);
+            $stockMovDocument->addError($msg, StockMovement::N_CUSTOMER_ID);
             $this->isValid = false;
             return;
         }
 
-        switch ($stockMovDocument->getMovementType()->get()) {
+        switch ($stockMovDocument->getMovementType()) {
             case MovementType::GC:
             case MovementType::GR:
                 if ($stockMovDocument->issetCustomerID() === false) {
@@ -454,7 +456,7 @@ class MovementOfGoods extends ADocuments
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $stockMovDocument->addError(
-                        $msg, StockMovement::N_CUSTOMERID
+                        $msg, StockMovement::N_CUSTOMER_ID
                     );
                     $this->isValid = false;
                     return;
@@ -469,21 +471,22 @@ class MovementOfGoods extends ADocuments
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $stockMovDocument->addError(
-                        $msg, StockMovement::N_SUPPLIERID
+                        $msg, StockMovement::N_SUPPLIER_ID
                     );
                     $this->isValid = false;
                     return;
                 }
+                break;
             default :
                 if ($stockMovDocument->issetCustomerID() === false &&
-                        $stockMovDocument->issetSupplierID() === false) {
+                    $stockMovDocument->issetSupplierID() === false) {
                     $msg = \sprintf(
                         AAuditFile::getI18n()->get("customerID_SupplierID_not_defined_in_document"),
                         $stockMovDocument->getDocumentNumber()
                     );
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $stockMovDocument->addError(
-                        $msg, StockMovement::N_CUSTOMERID
+                        $msg, StockMovement::N_CUSTOMER_ID
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $this->isValid = false;
@@ -503,7 +506,7 @@ class MovementOfGoods extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError(
-                    $msg, StockMovement::N_CUSTOMERID
+                    $msg, StockMovement::N_CUSTOMER_ID
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -520,7 +523,7 @@ class MovementOfGoods extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError(
-                    $msg, StockMovement::N_CUSTOMERID
+                    $msg, StockMovement::N_CUSTOMER_ID
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -530,11 +533,10 @@ class MovementOfGoods extends ADocuments
 
     /**
      * validate each line of the StockMovement
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function lines(StockMovement $stockMovDocument): void
@@ -546,7 +548,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $stockMovDocument->addError($msg, StockMovement::N_DOCUMENTNUMBER);
+            $stockMovDocument->addError($msg, StockMovement::N_DOCUMENT_NUMBER);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -557,7 +559,7 @@ class MovementOfGoods extends ADocuments
         $lineNoStack = array();
         $lineNoError = false;
         //$hasDebit and $hasCredit is to check if the document as both debit and credit lines
-        $hasDebit = false;
+        $hasDebit  = false;
         $hasCredit = false;
 
         foreach ($stockMovDocument->getLine() as $line) {
@@ -570,20 +572,20 @@ class MovementOfGoods extends ADocuments
                             $stockMovDocument->getDocumentNumber()
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                        $line->addError($msg, Line::N_LINENUMBER);
+                        $line->addError($msg, Line::N_LINE_NUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
-                        $lineNoError = true;
+                        $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
                         $msg = \sprintf(
                             AAuditFile::getI18n()->get("document_line_duplicated"),
                             $stockMovDocument->getDocumentNumber()
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                        $line->addError($msg, Line::N_LINENUMBER);
+                        $line->addError($msg, Line::N_LINE_NUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
-                        $lineNoError = true;
+                        $lineNoError   = true;
                     }
                     $lineNoStack[] = $line->getLineNumber();
                 } else {
@@ -592,10 +594,10 @@ class MovementOfGoods extends ADocuments
                         $stockMovDocument->getDocumentNumber()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $line->addError($msg, Line::N_LINENUMBER);
+                    $line->addError($msg, Line::N_LINE_NUMBER);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
-                    $lineNoError = true;
+                    $lineNoError   = true;
                     continue;
                 }
             }
@@ -618,17 +620,17 @@ class MovementOfGoods extends ADocuments
                     $stockMovDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_UNITPRICE);
+                $line->addError($msg, Line::N_UNIT_PRICE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 continue;
             }
 
-            $lineValue = new Decimal(0.0, static::CALC_PRECISION);
-            $lineTaxCal = new UDecimal(0.0, static::CALC_PRECISION);
+            $lineValue  = new Decimal("0.0");
+            $lineTaxCal = new Decimal("0.0");
 
             if ($line->getCreditAmount() === null &&
-                    $line->getDebitAmount() === null) {
+                $line->getDebitAmount() === null) {
 
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get("document_no_debit_or_credit"),
@@ -642,22 +644,21 @@ class MovementOfGoods extends ADocuments
                 continue;
             }
 
+            /** @var Decimal $lineAmount */
             $lineAmount = $line->getCreditAmount() === null ?
-                    $line->getDebitAmount() * -1.0 :
-                    $line->getCreditAmount();
+                $line->getDebitAmount()?->mul("-1.0") :
+                $line->getCreditAmount();
 
             // Get value for total validation
-            $lineValue->plusThis($lineAmount);
+            $lineValue = $lineValue->add((string)$lineAmount);
 
             if (null !== $lineTax = $line->getTax(false)) {
 
                 if ($lineTax->issetTaxPercentage()) {
 
-                    $lineFactor = $lineTax->getTaxPercentage() / 100;
+                    $lineFactor = $lineTax->getTaxPercentage()->div("100.0");
+                    $lineTaxCal = $lineFactor->mul($lineAmount->abs());
 
-                    $lineTaxCal = new UDecimal(
-                        $lineFactor * \abs($lineAmount), static::CALC_PRECISION
-                    );
                 } else {
                     $msg = \sprintf(
                         AAuditFile::getI18n()->get("document_line_no_tax_defined"),
@@ -672,20 +673,16 @@ class MovementOfGoods extends ADocuments
                 }
             }
 
-            // validate unit price and quantuty
-            $unitPrice = new UDecimal(
-                $line->getUnitPrice(), static::CALC_PRECISION
+            // validate unit price and quantity
+            $unitPrice = new Decimal((string)$line->getUnitPrice());
+
+            $uniQt = $unitPrice->mul((string)$line->getQuantity());
+
+            $stockMovDocument->getDocTotalCalc()?->addLineTotal(
+                $line->getLineNumber(), $uniQt
             );
 
-            $uniQt = $unitPrice->multiply(
-                new UDecimal($line->getQuantity(), static::CALC_PRECISION)
-            );
-
-            $stockMovDocument->getDocTotalcal()?->addLineTotal(
-                $line->getLineNumber(), $uniQt->valueOf()
-            );
-
-            if ($uniQt->signedSubtract($lineValue->abs())->abs()->valueOf() > $this->getDeltaLine()) {
+            if ($uniQt->sub($lineValue->abs())->abs()->compareTo((string)$this->getDeltaLine()) > 0) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get("document_line_value_not_quantity_price"),
                     $stockMovDocument->getDocumentNumber(),
@@ -695,7 +692,7 @@ class MovementOfGoods extends ADocuments
                 $line->addError(
                     $msg,
                     $line->getCreditAmount() === null ?
-                                Line::N_DEBITAMOUNT : Line::N_CREDITAMOUNT
+                        Line::N_DEBIT_AMOUNT : Line::N_CREDIT_AMOUNT
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -703,26 +700,21 @@ class MovementOfGoods extends ADocuments
 
             $docStat = $stockMovDocument->getDocumentStatus()->getMovementStatus();
 
-            if ($docStat->isNotEqual(MovementStatus::A)) {
-                $this->totalQuantityIssued->plusThis($line->getQuantity());
+            if ($docStat !== MovementStatus::A) {
+                $this->totalQuantityIssued = $this->totalQuantityIssued->add((string)$line->getQuantity());
             }
 
 
             if ($line->getCreditAmount() !== null) {
-                $credit = new UDecimal(
-                    $line->getCreditAmount(), static::CALC_PRECISION
-                );
-                $this->docCredit->plusThis($credit);
-
-                $hasCredit = true;
+                $credit          = new Decimal((string)$line->getCreditAmount());
+                $this->docCredit = $this->docCredit->add($credit);
+                $hasCredit       = true;
             }
 
             if ($line->getDebitAmount() !== null) {
-                $debit = new UDecimal(
-                    $line->getDebitAmount(), static::CALC_PRECISION
-                );
-                $this->docDebit->plusThis($debit);
-                $hasDebit = true;
+                $debit          = new Decimal((string)$line->getDebitAmount());
+                $this->docDebit = $this->docDebit->add($debit);
+                $hasDebit       = true;
             }
 
             if ($hasCredit && $hasDebit) {
@@ -755,24 +747,25 @@ class MovementOfGoods extends ADocuments
                 $this->isValid = false;
                 return;
             }
-            $this->netTotal->plusThis($lineValue->abs());
 
-            $this->taxPayable->plusThis($lineTaxCal);
+            $this->netTotal   = $this->netTotal->add($lineValue->abs());
+            $this->taxPayable = $this->taxPayable->add($lineTaxCal);
 
             if (\count($line->getOrderReferences()) > 0) {
                 $this->orderReferences($line, $stockMovDocument);
             }
         }
 
-        $this->grossTotal = $this->netTotal->plus($this->taxPayable);
+        $this->grossTotal = $this->netTotal->add($this->taxPayable);
     }
 
     /**
      * Validate the Order References
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line          $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function orderReferences(Line $line, StockMovement $stockMovDocument): void
@@ -782,12 +775,12 @@ class MovementOfGoods extends ADocuments
             if ($orderRef->getOriginatingON() === null) {
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "order_reference_document_not_incicated"
+                        "order_reference_document_not_indicated"
                     ), $stockMovDocument->getDocumentNumber(),
                     $line->getLineNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $orderRef->addError($msg, OrderReferences::N_ORIGINATINGON);
+                $orderRef->addError($msg, OrderReferences::N_ORIGINATING_ON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             } else {
@@ -807,15 +800,15 @@ class MovementOfGoods extends ADocuments
 
             if ($orderRef->getOrderDate() === null) {
                 $docStatus = $stockMovDocument->getDocumentStatus()->getMovementStatus();
-                if ($docStatus->isNotEqual(MovementStatus::A)) {
+                if ($docStatus !== MovementStatus::A) {
                     $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "order_reference_date_not_incicated"
+                            "order_reference_date_not_initiated"
                         ), $stockMovDocument->getDocumentNumber(),
                         $line->getLineNumber()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $orderRef->addError($msg, OrderReferences::N_ORDERDATE);
+                    $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
                 }
@@ -828,7 +821,7 @@ class MovementOfGoods extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $orderRef->addError($msg, OrderReferences::N_ORDERDATE);
+                $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
@@ -837,8 +830,10 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Validate if Product CodeExist
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line          $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
      * @since 1.0.0
      */
@@ -855,7 +850,7 @@ class MovementOfGoods extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_PRODUCTCODE);
+            $line->addError($msg, Line::N_PRODUCT_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -870,16 +865,14 @@ class MovementOfGoods extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_PRODUCTCODE);
+            $line->addError($msg, Line::N_PRODUCT_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
         // If productCode is set and exists
-        $product = $master->getProduct()[
-                \array_search($line->getProductCode(), $master->getAllProductCode())
-        ];
+        $product = $master->getProduct()[\array_search($line->getProductCode(), $master->getAllProductCode())];
         if ($product->issetProductType() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("mov_of_goods_product_do_not_have_type"),
@@ -893,16 +886,19 @@ class MovementOfGoods extends ADocuments
             return;
         }
 
-        $type = $product->getProductType()->get();
+        $type         = $product->getProductType();
         $warningTypes = [
             ProductType::S,
             ProductType::O
         ];
+
         if (\in_array($type, $warningTypes)) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("mov_of_goods_product_is_of_type"),
-                $line->getLineNumber(), $stockMovDocument->getDocumentNumber(),
-                $line->getProductCode(), $type
+                $line->getLineNumber(),
+                $stockMovDocument->getDocumentNumber(),
+                $line->getProductCode(),
+                $type->value
             );
             $this->auditFile->getErrorRegistor()->addWarning($msg);
             $line->addWarning($msg);
@@ -912,10 +908,11 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Validate the line Tax
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line          $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, StockMovement $stockMovDocument): void
@@ -942,7 +939,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXTYPE);
+            $lineTax->addError($msg, Tax::N_TAX_TYPE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -954,7 +951,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXCODE);
+            $lineTax->addError($msg, Tax::N_TAX_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -966,7 +963,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXCOUNTRYREGION);
+            $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -981,15 +978,15 @@ class MovementOfGoods extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXPERCENTAGE);
+            $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($lineTax->getTaxPercentage() === 0.0) {
+        if ($lineTax->getTaxPercentage()->equals("0.0")) {
             if ($line->getTaxExemptionCode() === null ||
-                    $line->getTaxExemptionReason() === null) {
+                $line->getTaxExemptionReason() === null) {
 
                 $msg = \sprintf(
                     AAuditFile:: getI18n()->get("tax_zero_must_have_code_and_reason"),
@@ -997,16 +994,16 @@ class MovementOfGoods extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-                $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         }
 
-        if ($lineTax->getTaxCode()->isEqual(TaxCode::ISE)) {
+        if ($lineTax->getTaxCode()->value === (TaxCode::ISE)->value) {
             if ($line->getTaxExemptionCode() === null ||
-                    $line->getTaxExemptionReason() === null) {
+                $line->getTaxExemptionReason() === null) {
 
                 $msg = \sprintf(
                     AAuditFile::getI18n()->get("tax_iva_code_ise_must_have_code_and_reason"),
@@ -1014,27 +1011,27 @@ class MovementOfGoods extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-                $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         }
 
 
-        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
-                $lineTax->getTaxPercentage() !== 0.0 &&
-                ($line->getTaxExemptionCode() !== null ||
+        if ($lineTax->getTaxCode()->value !== (TaxCode::ISE)->value &&
+            !$lineTax->getTaxPercentage()->equals("0.0") &&
+            ($line->getTaxExemptionCode() !== null ||
                 $line->getTaxExemptionReason() !== null)
         ) {
 
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_isent"),
+                AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_for_tax_zero"),
                 $stockMovDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-            $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+            $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+            $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1043,15 +1040,17 @@ class MovementOfGoods extends ADocuments
         foreach ($this->auditFile->getMasterFiles()->getTaxTableEntry() as $taxEntry) {
             /* @var $taxEntry \Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry */
             if ($taxEntry->issetTaxType() === false ||
-                    $taxEntry->issetTaxCode() === false ||
-                    $taxEntry->issetTaxCountryRegion() === false
+                $taxEntry->issetTaxCode() === false ||
+                $taxEntry->issetTaxCountryRegion() === false
             ) {
                 continue;
             }
 
-            if ($taxEntry->getTaxType()->isNotEqual($lineTax->getTaxType()) ||
-                    $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage() ||
-                    $taxEntry->getTaxCountryRegion()->isNotEqual($lineTax->getTaxCountryRegion())) {
+            if($taxEntry->getTaxPercentage() === null ) continue;
+
+            if ($taxEntry->getTaxType()->value !== $lineTax->getTaxType()->value ||
+                $taxEntry->getTaxPercentage()->compareTo($lineTax->getTaxPercentage()) !== 0 ||
+                $taxEntry->getTaxCountryRegion() !== $lineTax->getTaxCountryRegion()) {
                 continue;
             }
 
@@ -1064,7 +1063,7 @@ class MovementOfGoods extends ADocuments
         }
 
         $this->isValid = false; // No table tax entry
-        $msg = \sprintf(
+        $msg           = \sprintf(
             AAuditFile::getI18n()->get("no_tax_entry_for_line_document"),
             $line->getLineNumber(), $stockMovDocument->getDocumentNumber()
         );
@@ -1077,10 +1076,10 @@ class MovementOfGoods extends ADocuments
     /**
      * Validate the document total, only can be invoked after
      * validate lines (Because total controls are get from that validation)
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(StockMovement $stockMovDocument): void
@@ -1100,11 +1099,11 @@ class MovementOfGoods extends ADocuments
         }
 
         $totals = $stockMovDocument->getDocumentTotals();
-        $gross = new UDecimal($totals->getGrossTotal(), 2);
-        $net = new UDecimal($totals->getNetTotal(), static::CALC_PRECISION);
-        $tax = new UDecimal($totals->getTaxPayable(), static::CALC_PRECISION);
+        $gross  = $totals->getGrossTotal();
+        $net    = $totals->getNetTotal();
+        $tax    = $totals->getTaxPayable();
 
-        if ($gross->equals($net->plus($tax)) === false) {
+        if ($gross->equals($net->add($tax)) === false) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_tax_plus_net"),
@@ -1117,35 +1116,35 @@ class MovementOfGoods extends ADocuments
             $this->isValid = false;
         }
 
-        if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
+        if ($gross->sub($this->grossTotal)->abs()->compareTo($this->deltaTotalDoc) > 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $this->grossTotal, $stockMovDocument->getDocumentNumber(), $gross->valueOf()
+                $this->grossTotal, $stockMovDocument->getDocumentNumber(), $gross
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
+            $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
+        if ($net->sub($this->netTotal)->abs()->compareTo($this->deltaTotalDoc) > 0) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $this->netTotal, $stockMovDocument->getDocumentNumber(), $net->valueOf()
+                AAuditFile::getI18n()->get("document_net_total_not_equal_calc_net_total"),
+                $this->netTotal, $stockMovDocument->getDocumentNumber(), $net
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_NETTOTAL);
+            $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
+        if ($tax->sub($this->taxPayable)->abs()->compareTo($this->deltaTotalDoc) > 0) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
-                $this->taxPayable, $stockMovDocument->getDocumentNumber(), $tax->valueOf()
+                AAuditFile::getI18n()->get("document_tax_payable_not_equal_calc_tax_payable"),
+                $this->taxPayable, $stockMovDocument->getDocumentNumber(), $tax->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);
+            $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1160,21 +1159,17 @@ class MovementOfGoods extends ADocuments
             return;
         }
 
-        if(null === $currency = $stockMovDocument->getDocumentTotals()->getCurrency()){
+        if (null === $currency = $stockMovDocument->getDocumentTotals()->getCurrency()) {
             return;
         }
 
-        $currAmou = new UDecimal(
-            $currency->getCurrencyAmount(), static::CALC_PRECISION
-        );
-        $rate = new UDecimal(
-            $currency->getExchangeRate(), static::CALC_PRECISION
-        );
-        $grossExchange = $currAmou->multiply($rate);
-        $stockMovDocument->getDocTotalcal()?->setGrossTotalFromCurrency($grossExchange->valueOf());
-        $calcCambio = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
+        $currAmount      = new Decimal($currency->getCurrencyAmount());
+        $rate          = new Decimal($currency->getExchangeRate());
+        $grossExchange = $currAmount->mul($rate);
+        $stockMovDocument->getDocTotalCalc()?->setGrossTotalFromCurrency($grossExchange);
+        $calcExchange = $gross->sub($grossExchange)->abs();
 
-        if ($calcCambio > $this->deltaCurrency) {
+        if ($calcExchange > $this->deltaCurrency) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_currency_rate"),
@@ -1184,7 +1179,7 @@ class MovementOfGoods extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError(
                 $msg,
-                Currency::N_EXCHANGERATE
+                Currency::N_EXCHANGE_RATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -1192,10 +1187,11 @@ class MovementOfGoods extends ADocuments
     }
 
     /**
-     * Test if the signature is valide or not
+     * Test if the signature is valid or not
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
@@ -1216,11 +1212,11 @@ class MovementOfGoods extends ADocuments
         }
 
         if ($this->getSignValidation() === false) {
-            \Logger::getLogger(\get_class($this))->debug("Skiping test sign as ValidationConfig");
+            \Logger::getLogger(\get_class($this))->debug("Skipping test sign as ValidationConfig");
             return;
         }
 
-        if ($stockMovDocument->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::I)) {
+        if ($stockMovDocument->getDocumentStatus()->getSourceBilling() === SourceBilling::I) {
             $validate = true;
         } else {
             $validate = $this->sign->verifySignature(
@@ -1235,14 +1231,14 @@ class MovementOfGoods extends ADocuments
 
         if ($validate === false && $this->lastHash === "") {
 
-            list(,, $no) = \explode(
+            list(, , $no) = \explode(
                 " ",
                 \str_replace("/", " ", $stockMovDocument->getDocumentNumber())
             );
 
             if ($no !== "1") {
                 $msg = \sprintf(
-                    AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serie"),
+                    AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serial"),
                     $stockMovDocument->getDocumentNumber()
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
@@ -1271,20 +1267,21 @@ class MovementOfGoods extends ADocuments
 
     /**
      * Verify the Start and en time of movement
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function movementStartAndEndTime(StockMovement $stockMovDocument): void
     {
         if ($stockMovDocument->issetMovementStartTime() === false) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("stockmov_must_have_mov_start_time"),
+                AAuditFile::getI18n()->get("stock_mov_must_have_mov_start_time"),
                 $stockMovDocument->getDocumentNumber()
             );
             $stockMovDocument->addError(
-                $msg, StockMovement::N_MOVEMENTSTARTTIME
+                $msg, StockMovement::N_MOVEMENT_START_TIME
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
         }
@@ -1292,22 +1289,22 @@ class MovementOfGoods extends ADocuments
         $startTime = $stockMovDocument->getMovementStartTime();
         if ($startTime->isEarlier($stockMovDocument->getMovementDate())) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("stockmov_mov_start_time_earlier_doc_date"),
+                AAuditFile::getI18n()->get("stock_mov_mov_start_time_earlier_doc_date"),
                 $stockMovDocument->getDocumentNumber()
             );
             $stockMovDocument->addError(
-                $msg, StockMovement::N_MOVEMENTSTARTTIME
+                $msg, StockMovement::N_MOVEMENT_START_TIME
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
         }
 
         if ($startTime->isEarlier($stockMovDocument->getSystemEntryDate())) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("stockmov_mov_start_time_earlier_systementrydate"),
+                AAuditFile::getI18n()->get("stock_mov_mov_start_time_earlier_system_entry_date"),
                 $stockMovDocument->getDocumentNumber()
             );
             $stockMovDocument->addError(
-                $msg, StockMovement::N_MOVEMENTSTARTTIME
+                $msg, StockMovement::N_MOVEMENT_START_TIME
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
         }
@@ -1319,42 +1316,43 @@ class MovementOfGoods extends ADocuments
 
         if ($endTime->isEarlier($stockMovDocument->getMovementStartTime())) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("stockmov_end_time_earlier_start_time"),
+                AAuditFile::getI18n()->get("stock_mov_end_time_earlier_start_time"),
                 $stockMovDocument->getDocumentNumber()
             );
             $stockMovDocument->addError(
-                $msg, StockMovement::N_MOVEMENTENDTIME
+                $msg, StockMovement::N_MOVEMENT_END_TIME
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
         }
     }
 
     /**
-     * Validate the StockMovement date nad SystemEntrydate
+     * Validate the StockMovement date nad SystemEntryDate
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMovDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function stockMovementDateAndSystemEntryDate(StockMovement $stockMovDocument): void
     {
-        $docDate = $stockMovDocument->getMovementDate();
-        $systemDate = $stockMovDocument->getSystemEntryDate();
-        $msgStack = [];
+        $docDate           = $stockMovDocument->getMovementDate();
+        $systemDate        = $stockMovDocument->getSystemEntryDate();
+        $msgStack          = [];
         $headerDateChecked = false;
         if ($this->auditFile->issetHeader()) {
             $header = $this->auditFile->getHeader();
             if ($header->issetStartDate() && $header->issetEndDate()) {
                 if ($header->getStartDate()->isLater($docDate) ||
-                        $header->getEndDate()->isEarlier($docDate)) {
-                    $msg = \sprintf(
+                    $header->getEndDate()->isEarlier($docDate)) {
+                    $msg        = \sprintf(
                         AAuditFile::getI18n()
-                                    ->get("doc_date_out_of_range_start_end_header_date"),
+                                  ->get("doc_date_out_of_range_start_end_header_date"),
                         $stockMovDocument->getDocumentNumber()
                     );
                     $msgStack[] = $msg;
                     $stockMovDocument->addError(
-                        $msg, StockMovement::N_SYSTEMENTRYDATE
+                        $msg, StockMovement::N_SYSTEM_ENTRY_DATE
                     );
                 }
                 $headerDateChecked = true;
@@ -1362,35 +1360,35 @@ class MovementOfGoods extends ADocuments
         }
 
         if ($headerDateChecked === false) {
-            $msg = \sprintf(
+            $msg        = \sprintf(
                 AAuditFile::getI18n()
-                            ->get("doc_date_not_cheked_start_end_header_date"),
+                          ->get("doc_date_not_checked_start_end_header_date"),
                 $stockMovDocument->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $stockMovDocument->addError($msg, StockMovement::N_MOVEMENTDATE);
+            $stockMovDocument->addError($msg, StockMovement::N_MOVEMENT_DATE);
         }
 
         if ($this->lastDocDate !== null &&
-                $this->lastDocDate->isLater($docDate)) {
-            $msg = \sprintf(
+            $this->lastDocDate->isLater($docDate)) {
+            $msg        = \sprintf(
                 AAuditFile::getI18n()
-                            ->get("doc_date_eaarlier_previous_doc"),
+                          ->get("doc_date_earlier_previous_doc"),
                 $stockMovDocument->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $stockMovDocument->addError($msg, StockMovement::N_MOVEMENTDATE);
+            $stockMovDocument->addError($msg, StockMovement::N_MOVEMENT_DATE);
         }
 
         if ($this->lastSystemEntryDate !== null &&
-                $this->lastSystemEntryDate->isLater($systemDate)) {
-            $msg = \sprintf(
+            $this->lastSystemEntryDate->isLater($systemDate)) {
+            $msg        = \sprintf(
                 AAuditFile::getI18n()
-                            ->get("doc_systementrydate_earlier_previous_doc"),
+                          ->get("doc_system_entry_date_earlier_previous_doc"),
                 $stockMovDocument->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $stockMovDocument->addError($msg, StockMovement::N_SYSTEMENTRYDATE);
+            $stockMovDocument->addError($msg, StockMovement::N_SYSTEM_ENTRY_DATE);
         }
 
         foreach ($msgStack as $msg) {
@@ -1401,61 +1399,63 @@ class MovementOfGoods extends ADocuments
     }
 
     /**
-     * Validate shipement data
+     * Validate shipment data
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement $stockMov
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @since 1.0.0
      */
-    protected function shipement(StockMovement $stockMov): void
+    protected function shipment(StockMovement $stockMov): void
     {
-        $shipFrom = $stockMov->getShipFrom(false);
-        $shipTo = $stockMov->getShipTo(false);
+        $shipFrom   = $stockMov->getShipFrom(false);
+        $shipTo     = $stockMov->getShipTo(false);
         $movEndTime = $stockMov->getMovementEndTime();
-        $msgStack = [];
+        $msgStack   = [];
 
         if ($shipFrom === null &&
-                $stockMov->getDocumentStatus()->getMovementStatus()->isEqual(MovementStatus::R)) {
+            $stockMov->getDocumentStatus()->getMovementStatus() === MovementStatus::R) {
             return;
         }
 
         if ($shipFrom === null) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("shipfrom_not_defined_in_stock_mov"),
+                AAuditFile::getI18n()->get("ship_from_not_defined_in_stock_mov"),
                 $stockMov->getDocumentNumber()
             );
 
             \Logger::getLogger(\get_class($this))->info($msg);
-            $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($shipTo === null && $stockMov->getMovementType()->isNotEqual(MovementType::GT)) {
+        if ($shipTo === null && $stockMov->getMovementType() !== MovementType::GT) {
             $msg = \sprintf(
-                AAuditFile::getI18n()->get("no_shipto_only_in_global_doc_and_must_be_GT"),
+                AAuditFile::getI18n()->get("no_ship_to_only_in_global_doc_and_must_be_GT"),
                 $stockMov->getDocumentNumber(),
-                $stockMov->getMovementType()->get()
+                $stockMov->getMovementType()->value
             );
             \Logger::getLogger(\get_class($this))->info($msg);
-            $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $this->isValid = false;
             return;
         }
 
         if ($shipTo !== null &&
-                $stockMov->getDocumentStatus()->getMovementStatus()->isNotEqual(MovementStatus::R)) {
+            $stockMov->getDocumentStatus()->getMovementStatus() !== MovementStatus::R) {
             if ($shipFrom->getDeliveryDate() !== null &&
-                    $shipTo->getDeliveryDate() !== null) {
+                $shipTo->getDeliveryDate() !== null) {
                 if ($shipFrom->getDeliveryDate()->isLater($shipTo->getDeliveryDate())) {
-                    $msg = \sprintf(
-                        AAuditFile::getI18n()->get("shipfrom_delivery_date_later_shipto_delivery_date"),
+                    $msg        = \sprintf(
+                        AAuditFile::getI18n()->get("ship_from_delivery_date_later_ship_to_delivery_date"),
                         $stockMov->getDocumentNumber()
                     );
                     $msgStack[] = $msg;
-                    $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+                    $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
                 }
             }
         }
@@ -1463,11 +1463,11 @@ class MovementOfGoods extends ADocuments
         if ($stockMov->issetMovementStartTime() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()
-                            ->get("document_to_be_stockMovement_must_heve_start_time"),
+                          ->get("document_to_be_stockMovement_must_have_start_time"),
                 $stockMov->getDocumentNumber()
             );
             \Logger::getLogger(\get_class($this))->info($msg);
-            $stockMov->addError($msg, StockMovement::N_MOVEMENTSTARTTIME);
+            $stockMov->addError($msg, StockMovement::N_MOVEMENT_START_TIME);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $this->isValid = false;
             return;
@@ -1476,141 +1476,142 @@ class MovementOfGoods extends ADocuments
         $movStartTime = $stockMov->getMovementStartTime();
 
         if ($movStartTime->isEarlier($stockMov->getMovementDate())) {
-            $msg = \sprintf(
-                AAuditFile::getI18n()->get("start_movement_can_not_be earliar_doc_date"),
+            $msg        = \sprintf(
+                AAuditFile::getI18n()->get("start_movement_can_not_be earlier_doc_date"),
                 $stockMov->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $stockMov->addError($msg, StockMovement::N_MOVEMENTSTARTTIME);
+            $stockMov->addError($msg, StockMovement::N_MOVEMENT_START_TIME);
         }
 
-        if ($stockMov->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::P)) {
+        if ($stockMov->getDocumentStatus()->getSourceBilling() === SourceBilling::P) {
             if ($stockMov->issetSystemEntryDate() &&
-                    $movStartTime->isEarlier($stockMov->getSystemEntryDate())) {
+                $movStartTime->isEarlier($stockMov->getSystemEntryDate())) {
 
                 $msg = \sprintf(
                     AAuditFile::getI18n()
-                                ->get("start_movement_can_not_be earliar_system_entry_date"),
+                              ->get("start_movement_can_not_be earlier_system_entry_date"),
                     $stockMov->getDocumentNumber()
                 );
 
                 $msgStack[] = $msg;
-                $stockMov->addError($msg, StockMovement::N_MOVEMENTSTARTTIME);
+                $stockMov->addError($msg, StockMovement::N_MOVEMENT_START_TIME);
             }
         }
 
         if ($movEndTime !== null && $movEndTime->isEarlier($movStartTime)) {
-            $msg = \sprintf(
+            $msg        = \sprintf(
                 AAuditFile::getI18n()
-                            ->get("end_movement_can_not_be earliar_start_movement"),
+                          ->get("end_movement_can_not_be earlier_start_movement"),
                 $stockMov->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $stockMov->addError($msg, StockMovement::N_MOVEMENTENDTIME);
+            $stockMov->addError($msg, StockMovement::N_MOVEMENT_END_TIME);
         }
 
 
         $shipFromAddr = $shipFrom->getAddress(false);
         if ($shipFromAddr === null ||
-                ($shipFromAddr->getStreetName() === null ||
+            ($shipFromAddr->getStreetName() === null ||
                 $shipFromAddr->getStreetName() === "") && (
                 $shipFromAddr->getAddressDetail() === null ||
                 $shipFromAddr->getAddressDetail() === "")) {
 
-            $msg = \sprintf(
+            $msg        = \sprintf(
                 AAuditFile::getI18n()
-                            ->get("document_to_be_stockMovement_must_have_shipfrom"),
+                          ->get("document_to_be_stockMovement_must_have_ship_from"),
                 $stockMov->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+            $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
         } else {
 
             if ($shipFromAddr->issetCity() === false || $shipFromAddr->getCity() === "") {
 
-                $msg = \sprintf(
+                $msg        = \sprintf(
                     AAuditFile::getI18n()
-                                ->get("shipement_address_from_must_heve_city"),
+                              ->get("shipment_address_from_must_have_city"),
                     $stockMov->getDocumentNumber()
                 );
                 $msgStack[] = $msg;
-                $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+                $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
             }
 
             if ($shipFromAddr->issetCountry() === false) {
 
-                $msg = \sprintf(
+                $msg        = \sprintf(
                     AAuditFile::getI18n()
-                                ->get("shipement_address_from_must_heve_country"),
+                              ->get("shipment_address_from_must_have_country"),
                     $stockMov->getDocumentNumber()
                 );
                 $msgStack[] = $msg;
-                $stockMov->addError($msg, StockMovement::N_SHIPFROM);
+                $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
             }
         }
 
         if ($shipTo !== null) {
             if ($shipTo->getAddress(false) === null) {
-                $msg = \sprintf(
+                $msg        = \sprintf(
                     AAuditFile::getI18n()
-                                ->get("document_to_be_stockMovement_must_heve_shipto"),
+                              ->get("document_to_be_stockMovement_must_have_ship_to"),
                     $stockMov->getDocumentNumber()
                 );
                 $msgStack[] = $msg;
-                $stockMov->addError($msg, StockMovement::N_SHIPTO);
-            } else if(null !== $shipToAddr = $shipTo->getAddress(false)){
+                $stockMov->addError($msg, StockMovement::N_SHIP_TO);
+                /** @phpstan-ignore-next-line */
+            } else if (null !== $shipToAddr = $shipTo->getAddress(false)) {
 
                 if (($shipToAddr->getStreetName() === null ||
                         $shipToAddr->getStreetName() === "") &&
-                        ($shipToAddr->getAddressDetail() === null ||
+                    ($shipToAddr->getAddressDetail() === null ||
                         $shipToAddr->getAddressDetail() === "")) {
 
-                    $msg = \sprintf(
+                    $msg        = \sprintf(
                         AAuditFile::getI18n()
-                                    ->get("document_to_be_stockMovement_must_heve_shipto"),
+                                  ->get("document_to_be_stockMovement_must_have_ship_to"),
                         $stockMov->getDocumentNumber()
                     );
                     $msgStack[] = $msg;
-                    $stockMov->addError($msg, StockMovement::N_SHIPTO);
+                    $stockMov->addError($msg, StockMovement::N_SHIP_TO);
                 } else {
 
                     if ($shipToAddr->issetCity() === false || $shipToAddr->getCity() === "") {
-                        $msg = \sprintf(
-                            AAuditFile::getI18n()->get("shipement_address_to_must_heve_city"),
+                        $msg        = \sprintf(
+                            AAuditFile::getI18n()->get("shipment_address_to_must_have_city"),
                             $stockMov->getDocumentNumber()
                         );
                         $msgStack[] = $msg;
-                        $stockMov->addError($msg, StockMovement::N_SHIPTO);
+                        $stockMov->addError($msg, StockMovement::N_SHIP_TO);
                     }
 
                     if ($shipToAddr->issetCountry() === false) {
-                        $msg = \sprintf(
+                        $msg        = \sprintf(
                             AAuditFile::getI18n()
-                                        ->get("shipement_address_to_must_heve_country"),
+                                      ->get("shipment_address_to_must_have_country"),
                             $stockMov->getDocumentNumber()
                         );
                         $msgStack[] = $msg;
-                        $stockMov->addError($msg, StockMovement::N_SHIPTO);
+                        $stockMov->addError($msg, StockMovement::N_SHIP_TO);
                     }
                 }
             }
         }
 
-        if ($stockMov->getDocumentStatus()->getMovementStatus()->isEqual(MovementStatus::A)) {
+        if ($stockMov->getDocumentStatus()->getMovementStatus() === MovementStatus::A) {
             $cancelDate = clone $stockMov->getDocumentStatus()->getMovementStatusDate();
-            $startMov = clone $stockMov->getMovementStartTime();
+            $startMov   = clone $stockMov->getMovementStartTime();
 
             $cancelDate->setSeconds(0);
             $startMov->setSeconds(0);
 
             if ($cancelDate->isLater($startMov)) {
-                $msg = \sprintf(
-                    AAuditFile::getI18n()->get("stockmov_can_not_be_cancel_after_movement_start"),
+                $msg        = \sprintf(
+                    AAuditFile::getI18n()->get("stock_mov_can_not_be_cancel_after_movement_start"),
                     $stockMov->getDocumentNumber()
                 );
                 $msgStack[] = $msg;
                 $stockMov->getDocumentStatus()->addError(
-                    $msg, DocumentStatus::N_MOVEMENTSTATUSDATE
+                    $msg, DocumentStatus::N_MOVEMENT_STATUS_DATE
                 );
             }
         }

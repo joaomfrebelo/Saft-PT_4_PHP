@@ -26,8 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class AuditFileTest
@@ -38,37 +40,36 @@ class ValidationConfigTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(ValidationConfig::class);
-        $this->assertTrue(true);
+        (new Commune(ValidationConfig::class))->testReflection(ValidationConfig::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $conf = new ValidationConfig();
         $this->assertInstanceOf(ValidationConfig::class, $conf);
         $this->assertFalse($conf->getAllowDebitAndCredit());
         $this->assertTrue($conf->getContinuesLines());
-        $this->assertSame(0.01, $conf->getDeltaCurrency());
-        $this->assertSame(0.01, $conf->getDeltaTable());
-        $this->assertSame(0.01, $conf->getDeltaTotalDoc());
+        $this->assertSame(0.01, $conf->getDeltaCurrency()->toFloat());
+        $this->assertSame(0.01, $conf->getDeltaTable()->toFloat());
+        $this->assertSame(0.01, $conf->getDeltaTotalDoc()->toFloat());
         $this->assertTrue($conf->getSignValidation());
         $this->assertTrue($conf->getSchemaValidate());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testAllowDebitAndCredit(): void
     {
         $conf = new ValidationConfig();
@@ -80,8 +81,8 @@ class ValidationConfigTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testContinuesLines(): void
     {
         $conf = new ValidationConfig();
@@ -93,68 +94,68 @@ class ValidationConfigTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDeltaCurrency(): void
     {
         $conf  = new ValidationConfig();
-        $delta = 0.99;
+        $delta = new Decimal("0.99");
         $conf->setDeltaCurrency($delta);
-        $this->assertSame($delta, $conf->getDeltaCurrency());
+        $this->assertSame($delta->toFloat(), $conf->getDeltaCurrency()->toFloat());
 
-        $conf->setDeltaCurrency($delta * -1);
-        $this->assertSame($delta, $conf->getDeltaCurrency());
+        $conf->setDeltaCurrency($delta->mul(-1));
+        $this->assertSame($delta->toFloat(), $conf->getDeltaCurrency()->toFloat());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDeltaLine(): void
     {
         $conf  = new ValidationConfig();
-        $delta = 0.99;
+        $delta = new Decimal("0.99");
         $conf->setDeltaLine($delta);
-        $this->assertSame($delta, $conf->getDeltaLine());
+        $this->assertSame($delta->toFloat(), $conf->getDeltaLine()->toFloat());
 
-        $conf->setDeltaLine($delta * -1);
-        $this->assertSame($delta, $conf->getDeltaLine());
+        $conf->setDeltaLine($delta->mul(-1));
+        $this->assertSame($delta->toFloat(), $conf->getDeltaLine()->toFloat());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDeltaTable(): void
     {
         $conf  = new ValidationConfig();
-        $delta = 0.99;
+        $delta = new Decimal("0.99");
         $conf->setDeltaTable($delta);
-        $this->assertSame($delta, $conf->getDeltaTable());
+        $this->assertSame($delta->toFloat(), $conf->getDeltaTable()->toFloat());
 
-        $conf->setDeltaTable($delta * -1);
-        $this->assertSame($delta, $conf->getDeltaTable());
+        $conf->setDeltaTable($delta->mul(-1));
+        $this->assertSame($delta->toFloat(), $conf->getDeltaTable()->toFloat());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDeltaTotalDoc(): void
     {
         $conf  = new ValidationConfig();
-        $delta = 0.99;
+        $delta = new Decimal("0.99");
         $conf->setDeltaTotalDoc($delta);
-        $this->assertSame($delta, $conf->getDeltaTotalDoc());
+        $this->assertSame($delta->toFloat(), $conf->getDeltaTotalDoc()->toFloat());
 
-        $conf->setDeltaTotalDoc($delta * -1);
-        $this->assertSame($delta, $conf->getDeltaTotalDoc());
+        $conf->setDeltaTotalDoc($delta->mul(-1));
+        $this->assertSame($delta->toFloat(), $conf->getDeltaTotalDoc()->toFloat());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSignValidation(): void
     {
         $conf = new ValidationConfig();
@@ -166,8 +167,8 @@ class ValidationConfigTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSchemaValidate(): void
     {
         $conf = new ValidationConfig();

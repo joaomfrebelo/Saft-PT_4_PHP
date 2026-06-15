@@ -27,6 +27,8 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +37,10 @@ use PHPUnit\Framework\TestCase;
 class TinPTTest extends TestCase
 {
 
-    public function validDataProvider(): array
+    /**
+     * @return array<int, int[]>
+     */
+    public static function validDataProvider(): array
     {
         $stack = [];
 
@@ -62,7 +67,10 @@ class TinPTTest extends TestCase
         return $stack;
     }
 
-    public function notValidDataProvider(): array
+    /**
+     * @return array<int, int[]>
+     */
+    public static function notValidDataProvider(): array
     {
         $stack = [];
 
@@ -75,9 +83,10 @@ class TinPTTest extends TestCase
 
     /**
      * @param int $tin
-     * @dataProvider validDataProvider
      * @return void
      */
+    #[Test]
+    #[DataProvider("validDataProvider")]
     public function testValidationAsValid(int $tin): void
     {
         Assert::assertTrue(AAuditFile::valPortugueseVatNumber($tin));
@@ -85,9 +94,10 @@ class TinPTTest extends TestCase
 
     /**
      * @param int $tin
-     * @dataProvider notValidDataProvider
      * @return void
      */
+    #[Test]
+    #[DataProvider("notValidDataProvider")]
     public function testValidationAsNotValid(int $tin): void
     {
         Assert::assertFalse(AAuditFile::valPortugueseVatNumber($tin));

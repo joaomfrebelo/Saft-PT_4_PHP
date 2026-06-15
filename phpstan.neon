@@ -1,7 +1,5 @@
 parameters:
 	level: 8
-	checkMissingIterableValueType: false
-	checkGenericClassInNonGenericObjectType: false
 	paths:
 		- src
 		- tests
@@ -13,7 +11,7 @@ parameters:
 		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
 		-
 		    message: '#Call to protected method ([\.a-zA-Z0-9\(\) \\:])+#'
-		    path: tests/Rebelo/Test/SaftPt/Validate/*Test.php
+		    path: tests/Rebelo/SaftPt/Validate/*Test.php
 	excludePaths:
 		- tests/bootstrap.php
-		- tests/Rebelo/Test/SaftPt/Bin/StyleTest.php
+		- tests/Rebelo/SaftPt/Bin/StyleTest.php

@@ -26,13 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -47,17 +49,17 @@ class LineTest extends TestCase
 
     /**
      *
+     * @throws \ReflectionException
      */
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Line::class);
-        $this->assertTrue(true);
+        (new Commune(Line::class))->testReflection(Line::class);
     }
 
     /**
      *
      */
+    #[Test]
     public function testInstance(): void
     {
         $line = new Line(new ErrorRegister());
@@ -76,6 +78,7 @@ class LineTest extends TestCase
     /**
      *
      */
+    #[Test]
     public function testSetGetLineNumber(): void
     {
         $line = new Line(new ErrorRegister());
@@ -93,6 +96,7 @@ class LineTest extends TestCase
     /**
      *
      */
+    #[Test]
     public function testSetSourceDocumentID(): void
     {
         $line = new Line(new ErrorRegister());
@@ -110,6 +114,7 @@ class LineTest extends TestCase
     /**
      *
      */
+    #[Test]
     public function testSetGetTax(): void
     {
         $line = new Line(new ErrorRegister());
@@ -119,6 +124,7 @@ class LineTest extends TestCase
     /**
      *
      */
+    #[Test]
     public function testSetGetTaxExemptionReason(): void
     {
         $line   = new Line(new ErrorRegister());
@@ -143,10 +149,11 @@ class LineTest extends TestCase
     /**
      *
      */
+    #[Test]
     public function testSetGetTaxExemptionCode(): void
     {
         $line = new Line(new ErrorRegister());
-        $line->setTaxExemptionCode(new TaxExemptionCode(TaxExemptionCode::M01));
+        $line->setTaxExemptionCode(TaxExemptionCode::M01);
         $this->assertInstanceOf(
             TaxExemptionCode::class, $line->getTaxExemptionCode()
         );
@@ -157,21 +164,23 @@ class LineTest extends TestCase
     /**
      *
      */
+    #[Test]
     public function testSettlementAmount(): void
     {
         $line = new Line(new ErrorRegister());
-        $sett = 9.09;
+        $sett = new Decimal("9.09");
         $this->assertTrue($line->setSettlementAmount($sett));
         $this->assertSame($sett, $line->getSettlementAmount());
         $line->setSettlementAmount(null);
         $this->assertNull($line->getSettlementAmount());
     }
 
+    #[Test]
     public function testSetGetDebitCredit(): void
     {
         $line = new Line(new ErrorRegister());
-        $deb  = 9.09;
-        $cre  = 19.49;
+        $deb  = new Decimal("9.09");
+        $cre  = new Decimal("19.49");
 
         $this->assertTrue($line->setDebitAmount($deb));
         $this->assertSame($deb, $line->getDebitAmount());
@@ -204,11 +213,15 @@ class LineTest extends TestCase
     }
 
     /**
-     * Reads all Payment's lines from the Demo SAFT in Test\Ressources
+     * Reads all Payment's lines from the Demo SAFT in Test\Resources
      * and parse then to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
@@ -218,7 +231,7 @@ class LineTest extends TestCase
         }
 
         $paymentsStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
             ->{Payments::N_PAYMENTS}
             ->{Payment::N_PAYMENT};
 
@@ -242,7 +255,7 @@ class LineTest extends TestCase
 
 
                 $xmlRootNode   = (new AuditFile())->createRootElement();
-                $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+                $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
                 $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
                 $payNode       = $paymentsNode->addChild(Payment::N_PAYMENT);
 
@@ -254,16 +267,16 @@ class LineTest extends TestCase
                         $assertXml,
                         \sprintf(
                             "Fail on Payment '%s' Line '%s' with error '%s'",
-                            $paymentXml->{Payment::N_PAYMENTREFNO},
-                            $lineXml->{Line::N_LINENUMBER}, $assertXml
+                            $paymentXml->{Payment::N_PAYMENT_REF_NO},
+                            $lineXml->{Line::N_LINE_NUMBER}, $assertXml
                         )
                     );
                 } catch (\Exception | \Error $e) {
                     $this->fail(
                         \sprintf(
                             "Fail on Document '%s' Line '%s' with error '%s'",
-                            $paymentXml->{Payment::N_PAYMENTREFNO},
-                            $lineXml->{Line::N_LINENUMBER}, $e->getMessage()
+                            $paymentXml->{Payment::N_PAYMENT_REF_NO},
+                            $lineXml->{Line::N_LINE_NUMBER}, $e->getMessage()
                         )
                     );
                 }
@@ -277,8 +290,9 @@ class LineTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
+     *
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $lineNode = new \SimpleXMLElement(
@@ -302,18 +316,18 @@ class LineTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $lineNode = new \SimpleXMLElement(
             "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
         );
         $line     = new Line(new ErrorRegister());
-        $line->setCreditAmount(-9.09);
-        $line->setDebitAmount(-9.49);
+        $line->setCreditAmount(new Decimal("-9.09"));
+        $line->setDebitAmount(new Decimal("-9.49"));
         $line->setLineNumber(-1);
-        $line->setSettlementAmount(-4.49);
+        $line->setSettlementAmount(new Decimal("-4.49"));
         $line->setTaxExemptionReason("");
 
         $xml = $line->createXmlNode($lineNode)->asXML();

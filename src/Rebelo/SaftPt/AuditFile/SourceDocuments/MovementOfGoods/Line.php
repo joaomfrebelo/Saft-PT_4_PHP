@@ -41,7 +41,7 @@ class Line extends A2Line
      * Node name
      * @since 1.0.0
      */
-    const N_TAX = "Tax";
+    const string N_TAX = "Tax";
 
     /**
      *
@@ -102,13 +102,15 @@ class Line extends A2Line
         if ($create && $this->tax === null) {
             $this->tax = new MovementTax($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
         return $this->tax;
     }
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -139,7 +141,10 @@ class Line extends A2Line
      * Parse XML node
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */

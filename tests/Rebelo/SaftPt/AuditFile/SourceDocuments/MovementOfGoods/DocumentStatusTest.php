@@ -26,17 +26,14 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -51,19 +48,19 @@ class DocumentStatusTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())->testReflection(DocumentStatus::class);
-        $this->assertTrue(true);
+        (new Commune(DocumentStatus::class))->testReflection(DocumentStatus::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -76,24 +73,22 @@ class DocumentStatusTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetMovementStatus(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
         $status    = MovementStatus::N;
-        $docStatus->setMovementStatus(new MovementStatus($status));
-        $this->assertSame($status, $docStatus->getMovementStatus()->get());
+        $docStatus->setMovementStatus($status);
+        $this->assertSame($status, $docStatus->getMovementStatus());
         $this->assertTrue($docStatus->issetMovementStatus());
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetMovementStatusDate(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -105,8 +100,8 @@ class DocumentStatusTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetReason(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -125,8 +120,8 @@ class DocumentStatusTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSourceID(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -143,16 +138,15 @@ class DocumentStatusTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSourceBilling(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
         $srcBill   = SourceBilling::M;
-        $docStatus->setSourceBilling(new SourceBilling($srcBill));
-        $this->assertSame($srcBill, $docStatus->getSourceBilling()->get());
+        $docStatus->setSourceBilling($srcBill);
+        $this->assertSame($srcBill, $docStatus->getSourceBilling());
         $this->assertTrue($docStatus->issetSourceBilling());
     }
 
@@ -160,12 +154,13 @@ class DocumentStatusTest extends TestCase
      * Reads all work status from the Demo SAFT in Test\Resources
      * and parse then to work status class, after that generate a xml from the
      * Line class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $docStatus = null;
@@ -176,9 +171,9 @@ class DocumentStatusTest extends TestCase
         }
 
         $stockMovDocStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{MovementOfGoods::N_MOVEMENTOFGOODS}
-            ->{StockMovement::N_STOCKMOVEMENT};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{MovementOfGoods::N_MOVEMENT_OF_GOODS}
+            ->{StockMovement::N_STOCK_MOVEMENT};
 
         if ($stockMovDocStack->count() === 0) {
             $this->fail("No StockMovements in XML");
@@ -186,7 +181,7 @@ class DocumentStatusTest extends TestCase
 
         for ($i = 0; $i < $stockMovDocStack->count(); $i++) {
             $stockMovDocStackXml = $stockMovDocStack[$i];
-            $statusStack         = $stockMovDocStackXml->{DocumentStatus::N_DOCUMENTSTATUS};
+            $statusStack         = $stockMovDocStackXml->{DocumentStatus::N_DOCUMENT_STATUS};
 
             if ($statusStack->count() === 0) {
                 $this->fail("No document status in StockMov");
@@ -199,9 +194,9 @@ class DocumentStatusTest extends TestCase
                 $docStatus->parseXmlNode($statusXml);
 
                 $xmlRootNode       = (new AuditFile())->createRootElement();
-                $sourceDocNode     = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-                $movOfGoodsNode    = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
-                $stockMovStackNode = $movOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
+                $sourceDocNode     = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+                $movOfGoodsNode    = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENT_OF_GOODS);
+                $stockMovStackNode = $movOfGoodsNode->addChild(StockMovement::N_STOCK_MOVEMENT);
 
                 $xml = $docStatus->createXmlNode($stockMovStackNode);
 
@@ -211,7 +206,7 @@ class DocumentStatusTest extends TestCase
                         $assertXml,
                         \sprintf(
                             "Fail on Document '%s' with error '%s'",
-                            $stockMovDocStackXml->{StockMovement::N_DOCUMENTNUMBER},
+                            $stockMovDocStackXml->{StockMovement::N_DOCUMENT_NUMBER},
                             $assertXml
                         )
                     );
@@ -219,7 +214,7 @@ class DocumentStatusTest extends TestCase
                     $this->fail(
                         \sprintf(
                             "Fail on Document '%s' with error '%s'",
-                            $stockMovDocStackXml->{StockMovement::N_DOCUMENTNUMBER},
+                            $stockMovDocStackXml->{StockMovement::N_DOCUMENT_NUMBER},
                             $e->getMessage()
                         )
                     );
@@ -227,23 +222,20 @@ class DocumentStatusTest extends TestCase
             }
         }
 
-        /* @phpstan-ignore-next-line */
         $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
-        /* @phpstan-ignore-next-line */
         $this->assertEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
-        /* @phpstan-ignore-next-line */
         $this->assertEmpty($docStatus->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $productNode = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<".StockMovement::N_STOCK_MOVEMENT."></".StockMovement::N_STOCK_MOVEMENT.">"
         );
         $docStatus   = new DocumentStatus(new ErrorRegister());
         $xml         = $docStatus->createXmlNode($productNode)->asXML();
@@ -263,12 +255,12 @@ class DocumentStatusTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $docStatusNode = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<".StockMovement::N_STOCK_MOVEMENT."></".StockMovement::N_STOCK_MOVEMENT.">"
         );
         $docStatus     = new DocumentStatus(new ErrorRegister());
         $docStatus->setReason("");

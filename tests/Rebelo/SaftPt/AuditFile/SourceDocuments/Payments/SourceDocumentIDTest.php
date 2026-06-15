@@ -26,12 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * SourceDocumentIDTest
@@ -42,20 +43,19 @@ class SourceDocumentIDTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(SourceDocumentID::class);
-        $this->assertTrue(true);
+        (new Commune(SourceDocumentID::class))->testReflection(SourceDocumentID::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $source = new SourceDocumentID(new ErrorRegister());
@@ -81,8 +81,8 @@ class SourceDocumentIDTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceSetGetOriginatingON(): void
     {
         $source  = new SourceDocumentID(new ErrorRegister());
@@ -97,10 +97,9 @@ class SourceDocumentIDTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceSetGetInvoiceDate(): void
     {
         $source = new SourceDocumentID(new ErrorRegister());
@@ -112,8 +111,8 @@ class SourceDocumentIDTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceSetGetDescription(): void
     {
         $source = new SourceDocumentID(new ErrorRegister());
@@ -134,7 +133,6 @@ class SourceDocumentIDTest extends TestCase
     /**
      *
      * @return SourceDocumentID
-     * @throws DateFormatException
      */
     public function createSourceDocumentID(): SourceDocumentID
     {
@@ -147,8 +145,8 @@ class SourceDocumentIDTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $source = new SourceDocumentID(new ErrorRegister());
@@ -161,7 +159,7 @@ class SourceDocumentIDTest extends TestCase
                 "Creat a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -170,8 +168,8 @@ class SourceDocumentIDTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $source = new SourceDocumentID(new ErrorRegister());
@@ -184,7 +182,7 @@ class SourceDocumentIDTest extends TestCase
                 "Parse a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -192,11 +190,10 @@ class SourceDocumentIDTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $source     = $this->createSourceDocumentID();
@@ -206,23 +203,23 @@ class SourceDocumentIDTest extends TestCase
         $sourceNode = $source->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $sourceNode);
         $this->assertSame(
-            SourceDocumentID::N_SOURCEDOCUMENTID, $sourceNode->getName()
+            SourceDocumentID::N_SOURCE_DOCUMENT_ID, $sourceNode->getName()
         );
 
         $this->assertSame(
             $source->getOriginatingON(),
-            (string) $node->{SourceDocumentID::N_SOURCEDOCUMENTID}
-            ->{SourceDocumentID::N_ORIGINATINGON}
+            (string) $node->{SourceDocumentID::N_SOURCE_DOCUMENT_ID}
+            ->{SourceDocumentID::N_ORIGINATING_ON}
         );
 
         $this->assertSame(
-            $source->getInvoiceDate()->format(RDate::SQL_DATE),
-            (string) $node->{SourceDocumentID::N_SOURCEDOCUMENTID}
-            ->{SourceDocumentID::N_INVOICEDATE}
+            $source->getInvoiceDate()->format(Pattern::SQL_DATE),
+            (string) $node->{SourceDocumentID::N_SOURCE_DOCUMENT_ID}
+            ->{SourceDocumentID::N_INVOICE_DATE}
         );
         $this->assertSame(
             $source->getDescription(),
-            (string) $node->{SourceDocumentID::N_SOURCEDOCUMENTID}
+            (string) $node->{SourceDocumentID::N_SOURCE_DOCUMENT_ID}
             ->{SourceDocumentID::N_DESCRIPTION}
         );
 
@@ -234,8 +231,8 @@ class SourceDocumentIDTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeNull(): void
     {
         $source = $this->createSourceDocumentID();
@@ -251,19 +248,19 @@ class SourceDocumentIDTest extends TestCase
         $this->assertInstanceOf(\SimpleXMLElement::class, $sourceNode);
 
         $this->assertSame(
-            SourceDocumentID::N_SOURCEDOCUMENTID, $sourceNode->getName()
+            SourceDocumentID::N_SOURCE_DOCUMENT_ID, $sourceNode->getName()
         );
 
         $this->assertSame(
             $source->getOriginatingON(),
-            (string) $node->{SourceDocumentID::N_SOURCEDOCUMENTID}
-            ->{SourceDocumentID::N_ORIGINATINGON}
+            (string) $node->{SourceDocumentID::N_SOURCE_DOCUMENT_ID}
+            ->{SourceDocumentID::N_ORIGINATING_ON}
         );
 
         $this->assertSame(
-            $source->getInvoiceDate()->format(RDate::SQL_DATE),
-            (string) $node->{SourceDocumentID::N_SOURCEDOCUMENTID}
-            ->{SourceDocumentID::N_INVOICEDATE}
+            $source->getInvoiceDate()->format(Pattern::SQL_DATE),
+            (string) $node->{SourceDocumentID::N_SOURCE_DOCUMENT_ID}
+            ->{SourceDocumentID::N_INVOICE_DATE}
         );
 
         $this->assertNull(
@@ -278,8 +275,8 @@ class SourceDocumentIDTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXml(): void
     {
         $node = new \SimpleXMLElement(
@@ -302,8 +299,8 @@ class SourceDocumentIDTest extends TestCase
         );
 
         $this->assertSame(
-            $source->getInvoiceDate()->format(RDate::SQL_DATE),
-            $parsed->getInvoiceDate()->format(RDate::SQL_DATE)
+            $source->getInvoiceDate()->format(Pattern::SQL_DATE),
+            $parsed->getInvoiceDate()->format(Pattern::SQL_DATE)
         );
 
         $this->assertSame($source->getDescription(), $parsed->getDescription());
@@ -319,8 +316,8 @@ class SourceDocumentIDTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNull(): void
     {
         $node   = new \SimpleXMLElement(
@@ -341,8 +338,8 @@ class SourceDocumentIDTest extends TestCase
         );
 
         $this->assertSame(
-            $source->getInvoiceDate()->format(RDate::SQL_DATE),
-            $parsed->getInvoiceDate()->format(RDate::SQL_DATE)
+            $source->getInvoiceDate()->format(Pattern::SQL_DATE),
+            $parsed->getInvoiceDate()->format(Pattern::SQL_DATE)
         );
 
         $this->assertNull($parsed->getDescription());
@@ -358,8 +355,8 @@ class SourceDocumentIDTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $sourceNode = new \SimpleXMLElement(
@@ -383,8 +380,8 @@ class SourceDocumentIDTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $sourceNode = new \SimpleXMLElement(

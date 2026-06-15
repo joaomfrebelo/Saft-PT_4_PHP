@@ -26,69 +26,28 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * PaymentStatus<br>
  * To fill in with:
  * “N” – Normal receipt in force;<br>
  * “A” – Cancelled receipt.<br>
  *
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus N()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentStatus A()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class PaymentStatus extends AEnum
+enum PaymentStatus : string
 {
     /**
      * “N” – Normal receipt in force
      * “A” – Cancelled receipt.
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const N = "N";
+    case N = "N";
 
     /**
-     * A para Anulado
-     * @since 1.0.0
+     * A canceled document
+     * @since 3.0.0
      */
-    const A = "A";
+    case A = "A";
 
-    /**
-     * PaymentStatus<br>
-     * To fill in with:<br>
-     * “N” – Normal receipt in force;<br>
-     * “A” – Cancelled receipt.<br>
-     * <pre>
-     *  &lt;xs:element name="PaymentStatus"&gt;
-     *      &lt;xs:annotation&gt;
-     *          &lt;xs:documentation&gt;N para normal, A para Anulado &lt;/xs:documentation&gt;
-     *      &lt;/xs:annotation&gt;
-     *      &lt;xs:simpleType&gt;
-     *          &lt;xs:restriction base="xs:string"&gt;
-     *              &lt;xs:enumeration value="N"/&gt;
-     *              &lt;xs:enumeration value="A"/&gt;
-     *          &lt;/xs:restriction&gt;
-     *      &lt;/xs:simpleType&gt;
-     *  &lt;/xs:element&gt;
-     * </pre>
-     * @param string $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get enum value
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

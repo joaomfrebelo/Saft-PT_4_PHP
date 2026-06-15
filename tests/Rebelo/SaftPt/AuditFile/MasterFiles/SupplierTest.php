@@ -26,13 +26,14 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SupplierAddress;
 use Rebelo\SaftPt\AuditFile\SupplierCountry;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -46,19 +47,19 @@ class SupplierTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())->testReflection(Supplier::class);
-        $this->assertTrue(true);
+        (new Commune(Supplier::class))->testReflection(Supplier::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -80,8 +81,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSestGetSupplierID(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -89,7 +90,7 @@ class SupplierTest extends TestCase
         try {
             $supplier->getSupplierID();
             $this->fail("Get supplier id without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -106,8 +107,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSestGetAccountID(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -115,7 +116,7 @@ class SupplierTest extends TestCase
         try {
             $supplier->getAccountID();
             $this->fail("Get Account id without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -140,8 +141,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSestGetSupplierTaxID(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -149,7 +150,7 @@ class SupplierTest extends TestCase
         try {
             $supplier->getSupplierTaxID();
             $this->fail("Get Customer tax id without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -172,8 +173,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCompanyName(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -181,7 +182,7 @@ class SupplierTest extends TestCase
         try {
             $supplier->getCompanyName();
             $this->fail("Get CompanyName without initialize should throw error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
 
@@ -200,8 +201,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testContact(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -212,7 +213,7 @@ class SupplierTest extends TestCase
         $this->assertTrue($supplier->setContact($name));
         $this->assertEquals($name, $supplier->getContact());
         $this->assertTrue($supplier->setContact(\str_pad("_", 51, "_")));
-        $this->assertEquals(50, \strlen($supplier->getContact()));
+        $this->assertEquals(50, \strlen($supplier->getContact() ?? "")); /** @phpstan-ignore-line */
 
         $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setContact(""));
@@ -224,10 +225,9 @@ class SupplierTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
-*@author João Rebelo
-     * @test
+     * @author João Rebelo
      */
+    #[Test]
     public function testBillingSupplierAddress(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -240,10 +240,9 @@ class SupplierTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testShipFromAddress(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -260,13 +259,13 @@ class SupplierTest extends TestCase
             SupplierAddress::class, $supplier->addShipFromAddress()
         );
 
-        $this->assertEquals(3, \count($supplier->getShipFromAddress()));
+        $this->assertCount(3, $supplier->getShipFromAddress());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTelephone(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -278,7 +277,7 @@ class SupplierTest extends TestCase
         $this->assertEquals($telephone, $supplier->getTelephone());
 
         $this->assertTrue($supplier->setTelephone(\str_pad("_", 300, "_")));
-        $this->assertEquals(20, \strlen($supplier->getTelephone()));
+        $this->assertEquals(20, \strlen($supplier->getTelephone() ?? "")); /** @phpstan-ignore-line */
 
         $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setTelephone(""));
@@ -291,8 +290,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testFax(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -304,7 +303,7 @@ class SupplierTest extends TestCase
         $this->assertEquals($fax, $supplier->getFax());
 
         $this->assertTrue($supplier->setFax(\str_pad("_", 300, "_")));
-        $this->assertEquals(20, \strlen($supplier->getFax()));
+        $this->assertEquals(20, \strlen($supplier->getFax() ?? "")); /** @phpstan-ignore-line */
 
         $supplier->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($supplier->setFax(""));
@@ -317,8 +316,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testEmail(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -352,8 +351,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWebsite(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -381,8 +380,8 @@ class SupplierTest extends TestCase
 
     /**
      * Create and populate an instance of Supplier to be used in tests
+     *
      * @return Supplier
-     * @throws AuditFileException
      */
     public function createSupplier(): Supplier
     {
@@ -392,14 +391,14 @@ class SupplierTest extends TestCase
         $address->setCity("Sintra");
         $address->setPostalCode("1999-999");
         $address->setRegion("Lisbon");
-        $address->setCountry(new SupplierCountry(SupplierCountry::ISO_BR));
+        $address->setCountry(SupplierCountry::ISO_BR);
 
         $shToAdd = $supplier->addShipFromAddress();
         $shToAdd->setAddressDetail("Ship Street test 999");
         $shToAdd->setCity("Sintra");
         $shToAdd->setPostalCode("1999-999");
         $shToAdd->setRegion("Lisbon");
-        $shToAdd->setCountry(new SupplierCountry(SupplierCountry::ISO_BR));
+        $shToAdd->setCountry(SupplierCountry::ISO_BR);
 
         $supplier->setSupplierID("ID999999990");
         $supplier->setAccountID("Account id test");
@@ -416,6 +415,7 @@ class SupplierTest extends TestCase
 
     /**
      * Set the properties that can have nulll to null
+     *
      * @param Supplier $supplier
      */
     public function setNullsSupplier(Supplier $supplier): void
@@ -431,12 +431,12 @@ class SupplierTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
 
         $supplier = $this->createSupplier();
@@ -449,59 +449,59 @@ class SupplierTest extends TestCase
 
         $this->assertEquals(
             $supplier->getSupplierID(),
-            (string) $supplierNode->{Supplier::N_SUPPLIERID}
+            (string)$supplierNode->{Supplier::N_SUPPLIER_ID}
         );
 
         $this->assertEquals(
             $supplier->getAccountID(),
-            (string) $supplierNode->{Supplier::N_ACCOUNTID}
+            (string)$supplierNode->{Supplier::N_ACCOUNT_ID}
         );
         $this->assertEquals(
             $supplier->getSupplierTaxID(),
-            (int) $supplierNode->{Supplier::N_SUPPLIERTAXID}
+            (int)$supplierNode->{Supplier::N_SUPPLIER_TAX_ID}
         );
 
         $this->assertEquals(
             $supplier->getCompanyName(),
-            (string) $supplierNode->{Supplier::N_COMPANYNAME}
+            (string)$supplierNode->{Supplier::N_COMPANY_NAME}
         );
 
         $this->assertEquals(
             $supplier->getContact(),
-            (string) $supplierNode->{Supplier::N_CONTACT}
+            (string)$supplierNode->{Supplier::N_CONTACT}
         );
 
         $this->assertEquals(
             $supplier->getBillingAddress()->getAddressDetail(),
-            (string) $supplierNode
-            ->{Supplier::N_BILLINGADDRESS}->{SupplierAddress::N_ADDRESSDETAIL}
+            (string)$supplierNode
+                ->{Supplier::N_BILLING_ADDRESS}->{SupplierAddress::N_ADDRESS_DETAIL}
         );
 
         $shToAddr = $supplier->getShipFromAddress();
 
         $this->assertEquals(
             $shToAddr[0]->getAddressDetail(),
-            (string) $supplierNode
-            ->{Supplier::N_SHIPTOADDRESS}->{SupplierAddress::N_ADDRESSDETAIL}
+            (string)$supplierNode
+                ->{Supplier::N_SHIP_TO_ADDRESS}->{SupplierAddress::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals(
             $supplier->getTelephone(),
-            (string) $supplierNode->{Supplier::N_TELEPHONE}
+            (string)$supplierNode->{Supplier::N_TELEPHONE}
         );
 
         $this->assertEquals(
             $supplier->getFax(),
-            (string) $supplierNode->{Supplier::N_FAX}
+            (string)$supplierNode->{Supplier::N_FAX}
         );
 
         $this->assertEquals(
             $supplier->getEmail(),
-            (string) $supplierNode->{Supplier::N_EMAIL}
+            (string)$supplierNode->{Supplier::N_EMAIL}
         );
         $this->assertEquals(
             $supplier->getWebsite(),
-            (string) $supplierNode->{Supplier::N_WEBSITE}
+            (string)$supplierNode->{Supplier::N_WEBSITE}
         );
 
         $this->assertEmpty($supplier->getErrorRegistor()->getLibXmlError());
@@ -511,15 +511,15 @@ class SupplierTest extends TestCase
         $this->setNullsSupplier($supplier);
 
         unset($node);
-        $nodeNull         = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+        $nodeNull = new \SimpleXMLElement(
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $supplier->createXmlNode($nodeNull);
         $supplierNodeNull = $nodeNull->{Supplier::N_SUPPLIER};
         $this->assertEquals(0, $supplierNodeNull->{Supplier::N_CONTACT}->count());
 
         $this->assertEquals(
-            1, $supplierNodeNull->{Supplier::N_SHIPTOADDRESS}->count()
+            1, $supplierNodeNull->{Supplier::N_SHIP_TO_ADDRESS}->count()
         );
 
         $this->assertEquals(
@@ -539,12 +539,12 @@ class SupplierTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
 
         $supplier = $this->createSupplier();
@@ -554,7 +554,7 @@ class SupplierTest extends TestCase
             $this->fail("Fail to generate xml string");
         }
 
-        $parsed      = new Supplier(new ErrorRegister());
+        $parsed = new Supplier(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
         $this->assertEquals($supplier->getSupplierID(), $parsed->getSupplierID());
         $this->assertEquals($supplier->getAccountID(), $parsed->getAccountID());
@@ -601,9 +601,9 @@ class SupplierTest extends TestCase
             $supplier->createXmlNode($node);
             $this->fail(
                 "Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -612,8 +612,8 @@ class SupplierTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $supplier = new Supplier(new ErrorRegister());
@@ -622,9 +622,9 @@ class SupplierTest extends TestCase
             $supplier->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -635,20 +635,21 @@ class SupplierTest extends TestCase
      * Reads all Suppliers from the Demo SAFT in Test\Resources
      * and parse then to Supplier class, after that generate a xml from the
      * Line class and test if the xml strings are equal
+     *
      * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $supplierStack = $saftDemoXml
-            ->{MasterFiles::N_MASTERFILES}
+            ->{MasterFiles::N_MASTER_FILES}
             ->{Supplier::N_SUPPLIER};
 
         if ($supplierStack->count() === 0) {
@@ -664,7 +665,7 @@ class SupplierTest extends TestCase
 
 
             $xmlRootNode     = (new AuditFile())->createRootElement();
-            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTERFILES);
+            $masterFilesNode = $xmlRootNode->addChild(MasterFiles::N_MASTER_FILES);
 
             $xml = $supplier->createXmlNode($masterFilesNode);
 
@@ -674,14 +675,14 @@ class SupplierTest extends TestCase
                     $assertXml,
                     \sprintf(
                         "Fail on supplier '%s' with error '%s'",
-                        $supplierXml->{Supplier::N_SUPPLIERID}, $assertXml
+                        $supplierXml->{Supplier::N_SUPPLIER_ID}, $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $supplierXml->{Supplier::N_SUPPLIERID}, $e->getMessage()
+                        $supplierXml->{Supplier::N_SUPPLIER_ID}, $e->getMessage()
                     )
                 );
             }
@@ -695,12 +696,12 @@ class SupplierTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $supplierNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $supplier     = new Supplier(new ErrorRegister());
         $xml          = $supplier->createXmlNode($supplierNode)->asXML();
@@ -720,12 +721,12 @@ class SupplierTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $supplierNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_MASTERFILES."></".MasterFiles::N_MASTERFILES.">"
+            "<" . MasterFiles::N_MASTER_FILES . "></" . MasterFiles::N_MASTER_FILES . ">"
         );
         $supplier     = new Supplier(new ErrorRegister());
         $supplier->setAccountID("");

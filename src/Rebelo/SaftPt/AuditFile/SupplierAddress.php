@@ -40,7 +40,7 @@ class SupplierAddress extends AAddress
      * @var \Rebelo\SaftPt\AuditFile\SupplierCountry
      * @since 1.0.0
      */
-    protected SupplierCountry $suplierCountry;
+    protected SupplierCountry $supplierCountry;
 
     /**
      * &lt;xs:element ref="PostalCode"/&gt;
@@ -95,7 +95,7 @@ class SupplierAddress extends AAddress
     public function setPostalCode(string $postalCode): bool
     {
         try {
-            $this->postalCode = static::valTextMandMaxCar(
+            $this->postalCode = static::valTextMandatoryMaxCar(
                 $postalCode, 20, __METHOD__
             );
             $return           = true;
@@ -120,12 +120,12 @@ class SupplierAddress extends AAddress
      */
     public function setCountry(SupplierCountry $country): void
     {
-        $this->suplierCountry = $country;
+        $this->supplierCountry = $country;
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->suplierCountry->get()
+                    $this->supplierCountry->value
                 )
             );
     }
@@ -143,10 +143,10 @@ class SupplierAddress extends AAddress
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->suplierCountry->get()
+                    $this->supplierCountry->value
                 )
             );
-        return $this->suplierCountry;
+        return $this->supplierCountry;
     }
 
     /**
@@ -156,14 +156,14 @@ class SupplierAddress extends AAddress
      */
     public function issetCountry(): bool
     {
-        return isset($this->suplierCountry);
+        return isset($this->supplierCountry);
     }
 
     /**
      * Create the child nodes to the address<br>
      * In the case of this nodeXml, address only will create the address
      * child node, the address root node will be created by the invoker
-     * because cane be CompanyAddress or SupplierAddres or CustomerAddress, etc
+     * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
@@ -174,8 +174,8 @@ class SupplierAddress extends AAddress
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::createXmlNode($node);
 
-        if (isset($this->suplierCountry)) {
-            $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+        if (isset($this->supplierCountry)) {
+            $node->addChild(static::N_COUNTRY, $this->getCountry()->value);
         } else {
             $node->addChild(static::N_COUNTRY);
             $this->getErrorRegistor()->addOnCreateXmlNode("Country_not_valid");
@@ -193,7 +193,7 @@ class SupplierAddress extends AAddress
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::parseXmlNode($node);
-        $this->setPostalCode((string) $node->{static::N_POSTALCODE});
-        $this->setCountry(new SupplierCountry((string) $node->{static::N_COUNTRY}));
+        $this->setPostalCode((string) $node->{static::N_POSTAL_CODE});
+        $this->setCountry(SupplierCountry::from((string) $node->{static::N_COUNTRY}));
     }
 }

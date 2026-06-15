@@ -2,7 +2,7 @@
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\Date\Date as RDate;
@@ -34,37 +34,37 @@ class DocumentStatus extends AAuditFile
      * Node Name
      * @since 1.0.0
      */
-    const N_DOCUMENTSTATUS = "DocumentStatus";
+    const string N_DOCUMENT_STATUS = "DocumentStatus";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_INVOICESTATUS = "InvoiceStatus";
+    const string N_INVOICE_STATUS = "InvoiceStatus";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_INVOICESTATUSDATE = "InvoiceStatusDate";
+    const string N_INVOICE_STATUS_DATE = "InvoiceStatusDate";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_REASON = "Reason";
+    const string N_REASON = "Reason";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SOURCEID = "SourceID";
+    const string N_SOURCE_ID = "SourceID";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SOURCEBILLING = "SourceBilling";
+    const string N_SOURCE_BILLING = "SourceBilling";
 
     /**
      * &lt;xs:element ref="InvoiceStatus"/&gt;
@@ -146,7 +146,7 @@ class DocumentStatus extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->invoiceStatus->get()
+                    $this->invoiceStatus->value
                 )
             );
         return $this->invoiceStatus;
@@ -183,7 +183,7 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->invoiceStatus->get()
+                    $this->invoiceStatus->value
                 )
             );
     }
@@ -191,9 +191,8 @@ class DocumentStatus extends AAuditFile
     /**
      * Gets InvoiceStatusDate
      * &lt;xs:element ref="InvoiceStatusDate"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws DateFormatException
      * @since 1.0.0
      */
     public function getInvoiceStatusDate(): RDate
@@ -203,7 +202,7 @@ class DocumentStatus extends AAuditFile
                 \sprintf(
                     __METHOD__." get '%s'",
                     $this->invoiceStatusDate->format(
-                        RDate::DATE_T_TIME
+                        Pattern::DATE_T_TIME
                     )
                 )
             );
@@ -223,9 +222,10 @@ class DocumentStatus extends AAuditFile
     /**
      * Sets InvoiceStatusDate
      * &lt;xs:element ref="InvoiceStatusDate"/&gt;
+     *
      * @param \Rebelo\Date\Date $invoiceStatusDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setInvoiceStatusDate(RDate $invoiceStatusDate): void
@@ -235,7 +235,7 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->invoiceStatusDate->format(RDate::DATE_T_TIME)
+                    $this->invoiceStatusDate->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -271,7 +271,7 @@ class DocumentStatus extends AAuditFile
     {
         try {
             $this->reason = $reason === null ? null :
-                static::valTextMandMaxCar($reason, 50, __METHOD__);
+                static::valTextMandatoryMaxCar($reason, 50, __METHOD__);
             $return       = true;
         } catch (AuditFileException $e) {
             $this->reason = $reason;
@@ -326,7 +326,7 @@ class DocumentStatus extends AAuditFile
     public function setSourceID(string $sourceID): bool
     {
         try {
-            $this->sourceID = static::valTextMandMaxCar(
+            $this->sourceID = static::valTextMandatoryMaxCar(
                 $sourceID, 30,
                 __METHOD__
             );
@@ -356,7 +356,7 @@ class DocumentStatus extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->sourceBilling->get()
+                    $this->sourceBilling->value
                 )
             );
         return $this->sourceBilling;
@@ -386,17 +386,18 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->sourceBilling->get()
+                    $this->sourceBilling->value
                 )
             );
     }
 
     /**
      * Create Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -413,24 +414,24 @@ class DocumentStatus extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $nodeDocStatus = $node->addChild(static::N_DOCUMENTSTATUS);
+        $nodeDocStatus = $node->addChild(static::N_DOCUMENT_STATUS);
 
         if (isset($this->invoiceStatus)) {
             $nodeDocStatus->addChild(
-                static::N_INVOICESTATUS, $this->getInvoiceStatus()->get()
+                static::N_INVOICE_STATUS, $this->getInvoiceStatus()->value
             );
         } else {
-            $nodeDocStatus->addChild(static::N_INVOICESTATUS);
+            $nodeDocStatus->addChild(static::N_INVOICE_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceStatus_not_valid");
         }
 
         if (isset($this->invoiceStatusDate)) {
             $nodeDocStatus->addChild(
-                static::N_INVOICESTATUSDATE,
-                $this->getInvoiceStatusDate()->format(RDate::DATE_T_TIME)
+                static::N_INVOICE_STATUS_DATE,
+                $this->getInvoiceStatusDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $nodeDocStatus->addChild(static::N_INVOICESTATUSDATE);
+            $nodeDocStatus->addChild(static::N_INVOICE_STATUS_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceStatusDate_not_valid");
         }
 
@@ -442,19 +443,19 @@ class DocumentStatus extends AAuditFile
 
         if (isset($this->sourceID)) {
             $nodeDocStatus->addChild(
-                static::N_SOURCEID, $this->getSourceID()
+                static::N_SOURCE_ID, $this->getSourceID()
             );
         } else {
-            $nodeDocStatus->addChild(static::N_SOURCEID);
+            $nodeDocStatus->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
         }
 
         if (isset($this->sourceBilling)) {
             $nodeDocStatus->addChild(
-                static::N_SOURCEBILLING, $this->getSourceBilling()->get()
+                static::N_SOURCE_BILLING, $this->getSourceBilling()->value
             );
         } else {
-            $nodeDocStatus->addChild(static::N_SOURCEBILLING);
+            $nodeDocStatus->addChild(static::N_SOURCE_BILLING);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceBilling_not_valid");
         }
 
@@ -463,9 +464,11 @@ class DocumentStatus extends AAuditFile
 
     /**
      * Parse Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -474,10 +477,10 @@ class DocumentStatus extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTSTATUS) {
+        if ($node->getName() !== static::N_DOCUMENT_STATUS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_DOCUMENTSTATUS, $node->getName()
+                static::N_DOCUMENT_STATUS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -485,24 +488,24 @@ class DocumentStatus extends AAuditFile
         }
 
         $this->setInvoiceStatus(
-            new InvoiceStatus(
-                (string) $node->{static::N_INVOICESTATUS}
+            InvoiceStatus::from(
+                (string) $node->{static::N_INVOICE_STATUS}
             )
         );
         $this->setInvoiceStatusDate(
             RDate::parse(
-                RDate::DATE_T_TIME,
-                (string) $node->{static::N_INVOICESTATUSDATE}
+                Pattern::DATE_T_TIME,
+                (string) $node->{static::N_INVOICE_STATUS_DATE}
             )
         );
 
         $this->setSourceBilling(
-            new SourceBilling(
-                (string) $node->{static::N_SOURCEBILLING}
+            SourceBilling::from(
+                (string) $node->{static::N_SOURCE_BILLING}
             )
         );
 
-        $this->setSourceID((string) $node->{static::N_SOURCEID});
+        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
 
         if ($node->{static::N_REASON}->count() > 0) {
             $this->setReason((string) $node->{static::N_REASON});

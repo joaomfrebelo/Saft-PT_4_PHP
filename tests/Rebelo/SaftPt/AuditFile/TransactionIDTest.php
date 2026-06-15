@@ -26,11 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\Commune;
 
 /**
  * TransactionIDTest
@@ -41,27 +41,26 @@ class TransactionIDTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(TransactionID::class);
-        $this->assertTrue(true);
+        (new Commune(TransactionID::class))->testReflection(TransactionID::class);
     }
 
     /**
-     * @throws DateParseException
-     * @throws DateFormatException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceSetsAndGets(): void
     {
         $transactionID = new TransactionID(new ErrorRegister());
         $this->assertInstanceOf(TransactionID::class, $transactionID);
-        $transDate    = RDate::parse(RDate::SQL_DATE, "2019-10-05");
+        $transDate    = RDate::parse(Pattern::SQL_DATE, "2019-10-05");
         $transactionID->setDate($transDate);
         $this->assertSame($transDate, $transactionID->getDate());
 
@@ -76,8 +75,8 @@ class TransactionIDTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testExceptions(): void
     {
         $transactionID = new TransactionID(new ErrorRegister());
@@ -103,22 +102,18 @@ class TransactionIDTest extends TestCase
         $this->assertSame($wrong, $transactionID->getDocArchivalNumber());
         $this->assertNotEmpty($transactionID->getErrorRegistor()->getOnSetValue());
     }
-    /**
-     * @author João Rebelo
-     * @test
-     */
 
     /**
-     * @throws DateParseException
-     * @throws DateFormatException
-     * @throws AuditFileException
-     * @author João Rebelo
-     * @test
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
+    #[Test]
     public function testCreateAndParseXML(): void
     {
         $transactionID = new TransactionID(new ErrorRegister());
-        $transDate    = RDate::parse(RDate::SQL_DATE, "2019-10-05");
+        $transDate    = RDate::parse(Pattern::SQL_DATE, "2019-10-05");
         $transactionID->setDate($transDate);
         $journal      = "AAA999";
         $transactionID->setJournalID($journal);
@@ -128,14 +123,14 @@ class TransactionIDTest extends TestCase
         $rootNode = new \SimpleXMLElement("<root></root>");
         $tranNode = $transactionID->createXmlNode($rootNode);
         $this->assertSame(
-            TransactionID::N_TRANSACTIONID,
-            $rootNode->{TransactionID::N_TRANSACTIONID}->getName()
+            TransactionID::N_TRANSACTION_ID,
+            $rootNode->{TransactionID::N_TRANSACTION_ID}->getName()
         );
 
-        $this->assertSame(TransactionID::N_TRANSACTIONID, $tranNode->getName());
+        $this->assertSame(TransactionID::N_TRANSACTION_ID, $tranNode->getName());
 
         $this->assertSame(
-            $transDate->format(RDate::SQL_DATE)." ".$journal." ".$doc,
+            $transDate->format(Pattern::SQL_DATE)." ".$journal." ".$doc,
             (string) $tranNode
         );
 
@@ -143,8 +138,8 @@ class TransactionIDTest extends TestCase
         $parsed->parseXmlNode($tranNode);
 
         $this->assertSame(
-            $transDate->format(RDate::SQL_DATE),
-            $parsed->getDate()->format(RDate::SQL_DATE)
+            $transDate->format(Pattern::SQL_DATE),
+            $parsed->getDate()->format(Pattern::SQL_DATE)
         );
 
         $this->assertSame($journal, $parsed->getJournalID());
@@ -156,11 +151,10 @@ class TransactionIDTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $customerNode  = new \SimpleXMLElement(
@@ -182,11 +176,10 @@ class TransactionIDTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $supplierNode = new \SimpleXMLElement(

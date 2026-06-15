@@ -65,43 +65,43 @@ class Product extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCT = "Product";
+    const string N_PRODUCT = "Product";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCTTYPE = "ProductType";
+    const string N_PRODUCT_TYPE = "ProductType";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCTCODE = "ProductCode";
+    const string N_PRODUCT_CODE = "ProductCode";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCTGROUP = "ProductGroup";
+    const string N_PRODUCT_GROUP = "ProductGroup";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCTDESCRIPTION = "ProductDescription";
+    const string N_PRODUCT_DESCRIPTION = "ProductDescription";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCTNUMBERCODE = "ProductNumberCode";
+    const string N_PRODUCT_NUMBER_CODE = "ProductNumberCode";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMSDETAILS = "CustomsDetails";
+    const string N_CUSTOMS_DETAILS = "CustomsDetails";
 
     /**
      * <pre>
@@ -241,7 +241,7 @@ class Product extends AAuditFile
     public function getProductType(): ProductType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->productType->value));
         return $this->productType;
     }
 
@@ -277,7 +277,7 @@ class Product extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->productType->get()
+                    $this->productType->value
                 )
             );
     }
@@ -324,7 +324,7 @@ class Product extends AAuditFile
     public function setProductCode(string $productCode): bool
     {
         try {
-            $this->productCode = static::valTextMandMaxCar(
+            $this->productCode = static::valTextMandatoryMaxCar(
                 $productCode, 60, __METHOD__
             );
             $return            = true;
@@ -371,7 +371,7 @@ class Product extends AAuditFile
     {
         try {
             $this->productGroup = $productGroup === null ?
-                null : static::valTextMandMaxCar($productGroup, 50, __METHOD__);
+                null : static::valTextMandatoryMaxCar($productGroup, 50, __METHOD__);
             $return             = true;
         } catch (AuditFileException $e) {
             $this->productGroup = $productGroup;
@@ -440,7 +440,7 @@ class Product extends AAuditFile
                     ->error(\sprintf(__METHOD__." '%s'", $msg));
                 throw new AuditFileException($msg);
             }
-            $this->productDescription = static::valTextMandMaxCar(
+            $this->productDescription = static::valTextMandatoryMaxCar(
                 $productDescription, 200, __METHOD__
             );
             $return                   = true;
@@ -505,7 +505,7 @@ class Product extends AAuditFile
     public function setProductNumberCode(string $productNumberCode): bool
     {
         try {
-            $this->productNumberCode = static::valTextMandMaxCar(
+            $this->productNumberCode = static::valTextMandatoryMaxCar(
                 $productNumberCode, 60, __METHOD__
             );
             $return                  = true;
@@ -561,10 +561,10 @@ class Product extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== MasterFiles::N_MASTERFILES) {
+        if ($node->getName() !== MasterFiles::N_MASTER_FILES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                MasterFiles::N_MASTERFILES, $node->getName()
+                MasterFiles::N_MASTER_FILES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -575,42 +575,42 @@ class Product extends AAuditFile
 
         if (isset($this->productType)) {
             $prodNode->addChild(
-                static::N_PRODUCTTYPE, $this->getProductType()->get()
+                static::N_PRODUCT_TYPE, $this->getProductType()->value
             );
         } else {
-            $node->addChild(static::N_PRODUCTTYPE);
+            $node->addChild(static::N_PRODUCT_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductType_not_valid");
         }
 
         if (isset($this->productCode)) {
-            $prodNode->addChild(static::N_PRODUCTCODE, $this->getProductCode());
+            $prodNode->addChild(static::N_PRODUCT_CODE, $this->getProductCode());
         } else {
-            $prodNode->addChild(static::N_PRODUCTCODE);
+            $prodNode->addChild(static::N_PRODUCT_CODE);
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductCode_not_valid");
         }
 
         if ($this->getProductGroup() !== null) {
-            $prodNode->addChild(static::N_PRODUCTGROUP, $this->getProductGroup());
+            $prodNode->addChild(static::N_PRODUCT_GROUP, $this->getProductGroup());
         }
 
         if (isset($this->productDescription)) {
             $prodNode->addChild(
-                static::N_PRODUCTDESCRIPTION, $this->getProductDescription()
+                static::N_PRODUCT_DESCRIPTION, $this->getProductDescription()
             );
         } else {
-            $prodNode->addChild(static::N_PRODUCTDESCRIPTION);
+            $prodNode->addChild(static::N_PRODUCT_DESCRIPTION);
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductDescription_not_valid");
         }
 
         if (isset($this->productNumberCode)) {
             $prodNode->addChild(
-                static::N_PRODUCTNUMBERCODE, $this->getProductNumberCode()
+                static::N_PRODUCT_NUMBER_CODE, $this->getProductNumberCode()
             );
         } else {
-            $prodNode->addChild(static::N_PRODUCTNUMBERCODE);
+            $prodNode->addChild(static::N_PRODUCT_NUMBER_CODE);
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductNumberCode_not_valid");
         }
-
+        /** @phpstan-ignore-next-line */
         if ($this->getCustomsDetails() !== null) {
             $this->getCustomsDetails()->createXmlNode($prodNode);
         }
@@ -623,7 +623,6 @@ class Product extends AAuditFile
      * @param \SimpleXMLElement $node
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
@@ -640,21 +639,21 @@ class Product extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $this->setProductType(new ProductType((string) $node->{static::N_PRODUCTTYPE}));
-        $this->setProductCode((string) $node->{static::N_PRODUCTCODE});
+        $this->setProductType(ProductType::from((string) $node->{static::N_PRODUCT_TYPE}));
+        $this->setProductCode((string) $node->{static::N_PRODUCT_CODE});
 
-        if ($node->{static::N_PRODUCTGROUP}->count() > 0) {
-            $this->setProductGroup((string) $node->{static::N_PRODUCTGROUP});
+        if ($node->{static::N_PRODUCT_GROUP}->count() > 0) {
+            $this->setProductGroup((string) $node->{static::N_PRODUCT_GROUP});
         } else {
             $this->setProductGroup(null);
         }
 
-        $this->setProductDescription((string) $node->{static::N_PRODUCTDESCRIPTION});
+        $this->setProductDescription((string) $node->{static::N_PRODUCT_DESCRIPTION});
 
-        $this->setProductNumberCode((string) $node->{static::N_PRODUCTNUMBERCODE});
+        $this->setProductNumberCode((string) $node->{static::N_PRODUCT_NUMBER_CODE});
 
-        if ($node->{static::N_CUSTOMSDETAILS}->count() > 0) {
-            $this->getCustomsDetails()->parseXmlNode($node->{static::N_CUSTOMSDETAILS});
+        if ($node->{static::N_CUSTOMS_DETAILS}->count() > 0) {
+            $this->getCustomsDetails()->parseXmlNode($node->{static::N_CUSTOMS_DETAILS});
         }
     }
 }

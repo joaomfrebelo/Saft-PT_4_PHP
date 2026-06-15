@@ -26,10 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class newPHPClassTest
@@ -41,14 +42,18 @@ class ReferencesTest extends TestCase
 
     /**
      *
+     * @throws \ReflectionException
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(References::class);
-        $this->assertTrue(true);
+        (new Commune(References::class))->testReflection(References::class);
     }
 
+    /**
+     * @return void
+     */
+    #[Test]
     public function testInstanceSetGet(): void
     {
         $ref = new References(new ErrorRegister());
@@ -86,7 +91,7 @@ class ReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\References
      */
     public function createReferences(): References
     {
@@ -98,8 +103,9 @@ class ReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @return void
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $ref  = new References(new ErrorRegister());
@@ -108,9 +114,9 @@ class ReferencesTest extends TestCase
             $ref->createXmlNode($node);
             $this->fail(
                 "Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -118,8 +124,9 @@ class ReferencesTest extends TestCase
     }
 
     /**
-     *
+     * @return void
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $ref  = new References(new ErrorRegister());
@@ -128,9 +135,9 @@ class ReferencesTest extends TestCase
             $ref->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -142,11 +149,12 @@ class ReferencesTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $ref  = $this->createReferences();
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
 
         $refNode = $ref->createXmlNode($node);
@@ -158,12 +166,12 @@ class ReferencesTest extends TestCase
 
         $this->assertSame(
             $ref->getReference(),
-            (string) $node->{References::N_REFERENCES}->{References::N_REFERENCE}
+            (string)$node->{References::N_REFERENCES}->{References::N_REFERENCE}
         );
 
         $this->assertSame(
             $ref->getReason(),
-            (string) $node->{References::N_REFERENCES}->{References::N_REASON}
+            (string)$node->{References::N_REFERENCES}->{References::N_REASON}
         );
 
         $this->assertEmpty($ref->getErrorRegistor()->getLibXmlError());
@@ -175,11 +183,12 @@ class ReferencesTest extends TestCase
      *
      * @throws \Exception
      */
+    #[Test]
     public function testCreateXmlNodeNull(): void
     {
         $ref  = new References(new ErrorRegister());
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
 
         $refNode = $ref->createXmlNode($node);
@@ -208,11 +217,12 @@ class ReferencesTest extends TestCase
      *
      * @throws \Exception
      */
+    #[Test]
     public function testParseXml(): void
     {
         $ref  = $this->createReferences();
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $xml  = $ref->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -239,11 +249,12 @@ class ReferencesTest extends TestCase
      *
      * @throws \Exception
      */
+    #[Test]
     public function testParseXmlNull(): void
     {
         $ref  = new References(new ErrorRegister());
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $xml  = $ref->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -269,12 +280,12 @@ class ReferencesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $refNode = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $ref     = new References(new ErrorRegister());
         $xml     = $ref->createXmlNode($refNode)->asXML();
@@ -294,12 +305,12 @@ class ReferencesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $refNode = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $ref     = new References(new ErrorRegister());
         $ref->setReference("");

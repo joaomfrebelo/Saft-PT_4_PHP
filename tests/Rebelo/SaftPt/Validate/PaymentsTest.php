@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 /*
  * The MIT License
  *
@@ -26,14 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Test;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\Decimal\DecimalException;
-use Rebelo\Decimal\UDecimal;
-use Rebelo\Enum\EnumException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\CurrencyCode;
@@ -45,7 +43,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourcePayment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class SalesInvoiceTest
@@ -61,413 +59,433 @@ class PaymentsTest extends APaymentsBase
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
+     * @throws \ReflectionException
+     * @author João Rebelo
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Payments::class);
-        $this->assertTrue(true);
+        (new Commune(Payments::class))->testReflection(Payments::class);
     }
 
-	/**
-	 * @return void
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalDebit(): void
     {
-        $debit     = 909.99;
+        $debit = new Decimal("909.99");
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $auditFile->getSourceDocuments()->getPayments()
-            ->setTotalDebit($debit);
+        $auditFile->getSourceDocuments()?->getPayments()?->setTotalDebit($debit);
 
-        $this->payments->setDebit(
-            new UDecimal($debit, Payments::CALC_PRECISION)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setDebit($debit);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totalDebit();
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 *
-	 * @return void
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     *
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalDebitGreaterDeltaZero(): void
     {
-        $debit     = 909.99;
+        $debit = new Decimal("909.99");
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $auditFile->getSourceDocuments()->getPayments()
-            ->setTotalDebit($debit);
+        $auditFile->getSourceDocuments()?->getPayments()?->setTotalDebit($debit);
 
-        $this->payments->setDebit(
-            (new UDecimal($debit, Payments::CALC_PRECISION))->plus(0.09)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setDebit($debit->add("0.09"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totalDebit();
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 *
-	 * @return void
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     *
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalDebitLowerDeltaZero(): void
     {
-        $debit     = 909.99;
+        $debit = new Decimal("909.99");
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $auditFile->getSourceDocuments()->getPayments()
-            ->setTotalDebit($debit);
+        $auditFile->getSourceDocuments()?->getPayments()?->setTotalDebit($debit);
 
-        $this->payments->setDebit(
-            (new UDecimal($debit, Payments::CALC_PRECISION))->subtract(0.09)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setDebit($debit->sub("0.09"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totalDebit();
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalCredit(): void
     {
-        $credit    = 909.99;
+        $credit = new Decimal("909.99");
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $auditFile->getSourceDocuments()->getPayments()
-            ->setTotalCredit($credit);
+        $auditFile->getSourceDocuments()?->getPayments()?->setTotalCredit($credit);
 
-        $this->payments->setCredit(
-            new UDecimal($credit, Payments::CALC_PRECISION)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setCredit($credit);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totalCredit();
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 *
-	 * @return void
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     *
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalCreditGreaterDeltaZero(): void
     {
-        $credit    = 909.99;
+        $credit = new Decimal("909.99");
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $auditFile->getSourceDocuments()->getPayments()
-            ->setTotalCredit($credit);
+        $auditFile->getSourceDocuments()?->getPayments()?->setTotalCredit($credit);
 
-        $this->payments->setCredit(
-            (new UDecimal($credit, Payments::CALC_PRECISION))->plus(0.09)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setCredit($credit->add("0.09"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totalCredit();
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 *
-	 * @return void
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     *
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalCreditLowerDeltaZero(): void
     {
-        $credit    = 909.99;
+        $credit = new Decimal("909.99");
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $auditFile->getSourceDocuments()->getPayments()
-            ->setTotalCredit($credit);
+        $auditFile->getSourceDocuments()?->getPayments()?->setTotalCredit($credit);
 
-        $this->payments->setCredit(
-            (new UDecimal($credit, Payments::CALC_PRECISION))->subtract(0.09)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setCredit($credit->sub("0.09"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totalCredit();
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws DateFormatException
-	 * @throws DateParseException
-	 * @throws AuditFileException
-	 * @author João Rebelo@author João Rebelo
-	 * @depends testPayment
-	 * @depends testNumberOfEntries
-	 * @depends testTotalDebit
-	 * @depends testTotalCredit
-	 * @depends testLines
-	 * @test
-	 */
-    public function testValidate(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testTotalCredit')]
+    #[Depends('testTotalDebit')]
+    #[Depends('testNumberOfEntries')]
+    #[Depends('testPayment')] public function testValidate(): void
     {
         $xml = \simplexml_load_file(SAFT_DEMO_PATH);
         if ($xml === false) {
-            $this->fail(\sprintf("Failling load file '%s'", SAFT_DEMO_PATH));
+            $this->fail(\sprintf("Failing load file '%s'", SAFT_DEMO_PATH));
         }
 
         $auditFile = new AuditFile();
         $auditFile->parseXmlNode($xml);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
-        $this->payments->setDeltaLine(0.005);
-        $this->payments->setDeltaCurrency(0.005);
-        $this->payments->setDeltaTable(0.005);
-        $this->payments->setDeltaTotalDoc(0.005);
+        $this->payments->setDeltaLine(new Decimal("0.005"));
+        $this->payments->setDeltaCurrency(new Decimal("0.005"));
+        $this->payments->setDeltaTable(new Decimal("0.005"));
+        $this->payments->setDeltaTotalDoc(new Decimal("0.005"));
 
-        $valide = $this->payments->validate();
-        $this->assertTrue($valide);
+        $valid = $this->payments->validate();
+        $this->assertTrue($valid);
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws AuditFileException
-	 * @throws DateFormatException
-	 * @throws DateParseException
-	 * @author João Rebelo@author João Rebelo
-	 * @depends testPayment
-	 * @depends testNumberOfEntries
-	 * @depends testTotalDebit
-	 * @depends testTotalCredit
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     *
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testTotalCredit')]
+    #[Depends('testTotalDebit')]
+    #[Depends('testNumberOfEntries')]
+    #[Depends('testPayment')]
     public function testValidateNcDebit(): void
     {
         $xml = \simplexml_load_file(SAFT_DEBIT_NC);
         if ($xml === false) {
-            $this->fail(\sprintf("Failling load file '%s'", SAFT_DEBIT_NC));
+            $this->fail(\sprintf("Failing load file '%s'", SAFT_DEBIT_NC));
         }
 
         $auditFile = new AuditFile();
         $auditFile->parseXmlNode($xml);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
-        $this->payments->setDeltaLine(0.005);
-        $this->payments->setDeltaCurrency(0.005);
-        $this->payments->setDeltaTable(0.005);
-        $this->payments->setDeltaTotalDoc(0.005);
+        $this->payments->setDeltaLine(new Decimal("0.005"));
+        $this->payments->setDeltaCurrency(new Decimal("0.005"));
+        $this->payments->setDeltaTable(new Decimal("0.005"));
+        $this->payments->setDeltaTotalDoc(new Decimal("0.005"));
 
-        $valide = $this->payments->validate();
-        $this->assertFalse($valide);
+        $valid = $this->payments->validate();
+        $this->assertFalse($valid);
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws AuditFileException
-	 * @throws DateFormatException
-	 * @throws DateParseException
-	 * @author João Rebelo@author João Rebelo
-	 * @depends testPayment
-	 * @depends testNumberOfEntries
-	 * @depends testTotalDebit
-	 * @depends testTotalCredit
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo@author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testTotalCredit')]
+    #[Depends('testTotalDebit')]
+    #[Depends('testNumberOfEntries')]
+    #[Depends('testPayment')]
     public function testValidateNcCreditAndDebit(): void
     {
         $xml = \simplexml_load_file(SAFT_CREDIT_AND_DEBIT_NC);
         if ($xml === false) {
-            $this->fail(\sprintf("Failling load file '%s'", SAFT_CREDIT_AND_DEBIT_NC));
+            $this->fail(\sprintf("Failing load file '%s'", SAFT_CREDIT_AND_DEBIT_NC));
         }
 
         $auditFile = new AuditFile();
         $auditFile->parseXmlNode($xml);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
-        $this->payments->setDeltaLine(0.005);
-        $this->payments->setDeltaCurrency(0.005);
-        $this->payments->setDeltaTable(0.005);
-        $this->payments->setDeltaTotalDoc(0.005);
+        $this->payments->setDeltaLine(new Decimal("0.005"));
+        $this->payments->setDeltaCurrency(new Decimal("0.005"));
+        $this->payments->setDeltaTable(new Decimal("0.005"));
+        $this->payments->setDeltaTotalDoc(new Decimal("0.005"));
 
-        $valide = $this->payments->validate();
-        $this->assertTrue($valide);
+        $valid = $this->payments->validate();
+        $this->assertTrue($valid);
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws AuditFileException
-	 * @throws DateFormatException
-	 * @throws DateParseException
-	 * @author João Rebelo@author João Rebelo
-	 * @depends testPayment
-	 * @depends testNumberOfEntries
-	 * @depends testTotalDebit
-	 * @depends testTotalCredit
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo@author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testTotalCredit')]
+    #[Depends('testTotalDebit')]
+    #[Depends('testNumberOfEntries')]
+    #[Depends('testPayment')]
     public function testValidateMissingPayments(): void
     {
         $xml = \simplexml_load_file(SAFT_MISSING_PAYMENTS);
         if ($xml === false) {
-            $this->fail(\sprintf("Failling load file '%s'", SAFT_MISSING_PAYMENTS));
+            $this->fail(\sprintf("Failing load file '%s'", SAFT_MISSING_PAYMENTS));
         }
 
         $auditFile = new AuditFile();
         $auditFile->parseXmlNode($xml);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
-        $this->payments->setDeltaLine(0.005);
-        $this->payments->setDeltaCurrency(0.005);
-        $this->payments->setDeltaTable(0.005);
-        $this->payments->setDeltaTotalDoc(0.005);
+        $this->payments->setDeltaLine(new Decimal("0.005"));
+        $this->payments->setDeltaCurrency(new Decimal("0.005"));
+        $this->payments->setDeltaTable(new Decimal("0.005"));
+        $this->payments->setDeltaTotalDoc(new Decimal("0.005"));
 
-        $valide = $this->payments->validate();
-        $this->assertFalse($valide);
+        $valid = $this->payments->validate();
+        $this->assertFalse($valid);
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateNoPayments(): void
     {
 
         $auditFile = new AuditFile();
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
 
-        $valide = $this->payments->validate();
-        $this->assertTrue($valide);
+        $valid = $this->payments->validate();
+        $this->assertTrue($valid);
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
+     * @throws \Exception
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateNoPaymentCreditNotZero(): void
     {
 
         $auditFile = new AuditFile();
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payments->setTotalCredit(999.09);
-        $payments->setTotalDebit(0.0);
+        $payments  = $auditFile->getSourceDocuments()?->getPayments()
+                ?? throw new \Exception("Payments is null");
+
+        $payments->setTotalCredit(new Decimal("999.09"));
+        $payments->setTotalDebit(new Decimal("0.0"));
         $payments->setNumberOfEntries(0);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
 
-        $valide = $this->payments->validate();
-        $this->assertFalse($valide);
+        $valid = $this->payments->validate();
+        $this->assertFalse($valid);
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
+     * @throws \Exception
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateNoPaymentDebitNotZero(): void
     {
 
         $auditFile = new AuditFile();
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payments->setTotalCredit(0.0);
-        $payments->setTotalDebit(999.0);
+        $payments  = $auditFile->getSourceDocuments()?->getPayments()
+            ?? throw new \Exception("Payments is null");
+
+        $payments->setTotalCredit(new Decimal("0.0"));
+        $payments->setTotalDebit(new Decimal("999.0"));
         $payments->setNumberOfEntries(0);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setAuditFile($auditFile);
 
-        $valide = $this->payments->validate();
-        $this->assertFalse($valide);
+        $valid = $this->payments->validate();
+        $this->assertFalse($valid);
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws DateFormatException
-	 * @throws DecimalException
-	 * @throws EnumException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
     public function testPayment(): void
     {
-        $now       = new RDate();
+        $now = new RDate();
         $this->iniPaymentsForLineTest();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $header    = $auditFile->getHeader();
         $header->setDateCreated(clone $now);
         $header->setStartDate($now->addDays(-1));
         $header->setEndDate($now->addDays(1));
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
         $payment->setAtcud("0");
         $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
         $payment->setSourceID("Rebelo");
         $payment->setSystemEntryDate(clone $now);
         $this->iniPaymentLinesForLinesTest($payment);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(PaymentStatus::N());
+        $docStatus->setPaymentStatus(PaymentStatus::N);
         $docStatus->setPaymentStatusDate(clone $now);
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
 
-        $taxPayable = new UDecimal(0.0, Payments::CALC_PRECISION);
-        $netValue   = new UDecimal(0.0, Payments::CALC_PRECISION);
+        $taxPayable = new Decimal("0.0");
+        $netValue   = new Decimal("0.0");
 
         foreach ($payment->getLine() as $line) {
-			$netValue->plusThis($line->getCreditAmount());
-            $taxPerc = $line->getTax()->getTaxPercentage();
-            $taxPayable->plusThis($taxPerc / 100 * $line->getCreditAmount());
+            $netValue   = $netValue->add(
+                $line->getCreditAmount() ?? throw new \Exception("Credit amount is null")
+            );
+            $taxPerc    = $line->getTax()?->getTaxPercentage();
+            $taxPayable = $taxPayable->add(
+                $taxPerc?->div(100)->mul($line->getCreditAmount())
+                    ?? throw new \Exception("Tax percentage is null")
+            );
         }
 
         $docTotals = $payment->getDocumentTotals();
-        $docTotals->setNetTotal($netValue->valueOf());
-        $docTotals->setTaxPayable($taxPayable->valueOf());
-        $docTotals->setGrossTotal($netValue->plus($taxPayable)->valueOf());
+        $docTotals->setNetTotal($netValue);
+        $docTotals->setTaxPayable($taxPayable);
+        $docTotals->setGrossTotal($netValue->add($taxPayable));
 
         $customer = $auditFile->getMasterFiles()->addCustomer();
         $customer->setAccountID(AuditFile::DESCONHECIDO);
@@ -476,137 +494,157 @@ class PaymentsTest extends APaymentsBase
         $customer->setCustomerTaxID("999999990");
         $customer->setSelfBillingIndicator(false);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->payment($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
-    public function testpaymentWrongCustomerID(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
+    public function testPaymentWrongCustomerID(): void
     {
-        $now       = new RDate();
+        $now = new RDate();
         $this->iniPaymentsForLineTest();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $header    = $auditFile->getHeader();
         $header->setDateCreated(clone $now);
         $header->setStartDate($now->addDays(-1));
         $header->setEndDate($now->addDays(1));
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
         $payment->setAtcud("0");
         $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
         $payment->setSourceID("Rebelo");
         $payment->setSystemEntryDate(clone $now);
         $this->iniPaymentLinesForLinesTest($payment);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(PaymentStatus::N());
+        $docStatus->setPaymentStatus(PaymentStatus::N);
         $docStatus->setPaymentStatusDate(clone $now);
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
 
-        $taxPayable = new UDecimal(0.0, Payments::CALC_PRECISION);
-        $netValue   = new UDecimal(0.0, Payments::CALC_PRECISION);
+        $taxPayable = new Decimal("0.0");
+        $netValue   = new Decimal("0.0");
 
         foreach ($payment->getLine() as $line) {
-			$netValue->plusThis($line->getCreditAmount());
-            $taxPerc = $line->getTax()->getTaxPercentage();
-            $taxPayable->plusThis($taxPerc / 100 * $line->getCreditAmount());
+            $netValue   = $netValue->add(
+                $line->getCreditAmount() ?? throw new \Exception("Credit amount is null")
+            );
+            $taxPerc    = $line->getTax()?->getTaxPercentage();
+            $taxPayable = $taxPayable->add(
+                $taxPerc?->div(100)->mul($line->getCreditAmount())
+                    ?? throw new \Exception("Tax percentage is null")
+            );
         }
 
         $docTotals = $payment->getDocumentTotals();
-        $docTotals->setNetTotal($netValue->valueOf());
-        $docTotals->setTaxPayable($taxPayable->valueOf());
-        $docTotals->setGrossTotal($netValue->plus($taxPayable)->valueOf());
+        $docTotals->setNetTotal($netValue);
+        $docTotals->setTaxPayable($taxPayable);
+        $docTotals->setGrossTotal($netValue->add($taxPayable));
 
         $customer = $auditFile->getMasterFiles()->addCustomer();
         $customer->setAccountID(AuditFile::DESCONHECIDO);
         $customer->setCompanyName("Rebelo SAFT");
-        $customer->setCustomerID($payment->getCustomerID()."A");
+        $customer->setCustomerID($payment->getCustomerID() . "A");
         $customer->setCustomerTaxID("999999990");
         $customer->setSelfBillingIndicator(false);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->payment($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
     public function testPaymentWrongTotals(): void
     {
-        $now       = new RDate();
+        $now = new RDate();
         $this->iniPaymentsForLineTest();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $header    = $auditFile->getHeader();
         $header->setDateCreated(clone $now);
         $header->setStartDate($now->addDays(-1));
         $header->setEndDate($now->addDays(1));
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
         $payment->setAtcud("0");
         $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
         $payment->setSourceID("Rebelo");
         $payment->setSystemEntryDate(clone $now);
         $this->iniPaymentLinesForLinesTest($payment);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(PaymentStatus::N());
+        $docStatus->setPaymentStatus(PaymentStatus::N);
         $docStatus->setPaymentStatusDate(clone $now);
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
 
-        $taxPayable = new UDecimal(0.0, Payments::CALC_PRECISION);
-        $netValue   = new UDecimal(0.0, Payments::CALC_PRECISION);
+        $taxPayable = new Decimal("0.0");
+        $netValue   = new Decimal("0.0");
 
         foreach ($payment->getLine() as $line) {
-			$netValue->plusThis($line->getCreditAmount());
-            $taxPerc = $line->getTax()->getTaxPercentage();
-            $taxPayable->plusThis($taxPerc / 100 * $line->getCreditAmount());
+            $netValue   = $netValue->add(
+                $line->getCreditAmount() ?? throw new \Exception("Credit amount is null")
+            );
+            $taxPerc    = $line->getTax()?->getTaxPercentage();
+            $taxPayable = $taxPayable->add(
+                $taxPerc?->div("100.0")->mul($line->getCreditAmount())
+                    ?? throw new \Exception("Tax percentage is null")
+            );
         }
 
         $docTotals = $payment->getDocumentTotals();
-        $docTotals->setNetTotal($netValue->valueOf());
-        $docTotals->setTaxPayable($taxPayable->valueOf());
-        $docTotals->setGrossTotal($netValue->plus($taxPayable)->valueOf() + 1);
+        $docTotals->setNetTotal($netValue);
+        $docTotals->setTaxPayable($taxPayable);
+        $docTotals->setGrossTotal($netValue->add($taxPayable)->add(1));
 
         $customer = $auditFile->getMasterFiles()->addCustomer();
         $customer->setAccountID(AuditFile::DESCONHECIDO);
@@ -615,227 +653,254 @@ class PaymentsTest extends APaymentsBase
         $customer->setCustomerTaxID("999999990");
         $customer->setSelfBillingIndicator(false);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->payment($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getDocumentTotals()->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
     public function testPaymentRefNoPaymentRefNo(): void
     {
-        $now       = new RDate();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $now = new RDate();
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
         $payment->setTransactionDate(clone $now);
         //$payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
         $payment->setAtcud("0");
         $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
         $payment->setSourceID("Rebelo");
         $payment->setSystemEntryDate(clone $now);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->payment($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
     public function testPaymentRefNoPaymentType(): void
     {
-        $now       = new RDate();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        $now = new RDate();
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/1");
         //$payment->setPaymentType(PaymentType::RG());
         $payment->setAtcud("0");
         $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
         $payment->setSourceID("Rebelo");
         $payment->setSystemEntryDate(clone $now);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->payment($payment);
 
-        $this->assertFalse($this->payments->isValid());
-        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
-        $this->assertNotEmpty($payment->getError());
-    }
-
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
-    public function testPaymentRefNoTransactionDate(): void
-    {
-        $now       = new RDate();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
-        $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
-        //$payment->setTransactionDate(clone $now);
-        $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
-        $payment->setAtcud("0");
-        $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
-        $payment->setSourceID("Rebelo");
-        $payment->setSystemEntryDate(clone $now);
-
-        $this->payments->payment($payment);
-
-        $this->assertFalse($this->payments->isValid());
-        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
-        $this->assertNotEmpty($payment->getError());
-    }
-
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @depends testDocumentStatus
-	 * @depends testCustomerId
-	 * @depends testLines
-	 * @test
-	 */
-    public function testPaymentRefNoInvoiceSystemEntryDate(): void
-    {
-        $now       = new RDate();
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
-        $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
-        $payment->setDocTotalcal(new DocTotalCalc());
-        $payment->setTransactionDate(clone $now);
-        $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
-        $payment->setAtcud("0");
-        $payment->setCustomerID("CODE_A");
-        $payment->setPeriod((int) $now->format(RDate::MONTH_SHORT));
-        $payment->setSourceID("Rebelo");
-        //$payment->setSystemEntryDate(clone $now);
-
-        $this->payments->payment($payment);
-
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
     /**
-     * @author João Rebelo
-     * @depends testPayment
-     * @test
      * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
      */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
+    public function testPaymentRefNoTransactionDate(): void
+    {
+        $now = new RDate();
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
+        $auditFile = $this->payments->getAuditFile();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
+        //$payment->setTransactionDate(clone $now);
+        $payment->setPaymentRefNo("RC RC/1");
+        $payment->setPaymentType(PaymentType::RG);
+        $payment->setAtcud("0");
+        $payment->setCustomerID("CODE_A");
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
+        $payment->setSourceID("Rebelo");
+        $payment->setSystemEntryDate(clone $now);
+
+        /** @phpstan-ignore-next-line */
+        $this->payments->payment($payment);
+
+        /** @phpstan-ignore-next-line */
+        $this->assertFalse($this->payments->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($payment->getError());
+    }
+
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testLines')]
+    #[Depends('testCustomerId')]
+    #[Depends('testDocumentStatus')]
+    public function testPaymentRefNoInvoiceSystemEntryDate(): void
+    {
+        $now = new RDate();
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
+        $auditFile = $this->payments->getAuditFile();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payment  = $payments->addPayment();
+        $payment->setDocTotalCal(new DocTotalCalc());
+        $payment->setTransactionDate(clone $now);
+        $payment->setPaymentRefNo("RC RC/1");
+        $payment->setPaymentType(PaymentType::RG);
+        $payment->setAtcud("0");
+        $payment->setCustomerID("CODE_A");
+        $payment->setPeriod((int)$now->format(Pattern::MONTH_SHORT));
+        $payment->setSourceID("Rebelo");
+        //$payment->setSystemEntryDate(clone $now);
+
+        /** @phpstan-ignore-next-line */
+        $this->payments->payment($payment);
+
+        /** @phpstan-ignore-next-line */
+        $this->assertFalse($this->payments->isValid());
+        $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
+        $this->assertNotEmpty($payment->getError());
+    }
+
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testPayment')]
     public function testNumberOfEntries(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
 
         $nMax = 9;
         for ($n = 1; $n <= $nMax; $n++) {
-            $payments->addPayment();
+            $payments?->addPayment();
         }
 
-        $payments->setNumberOfEntries($nMax);
+        $payments?->setNumberOfEntries($nMax);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->numberOfEntries();
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
+
         $this->assertSame(
-            $nMax, $payments->getDocTableTotalCalc()->getNumberOfEntries()
+            $nMax, $payments?->getDocTableTotalCalc()?->getNumberOfEntries()
         );
+
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
+     * @author João Rebelo
      */
+    #[Test]
     public function testWrongNumberOfEntries(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
 
         $nMax = 9;
         for ($n = 1; $n <= $nMax; $n++) {
-            $payments->addPayment();
+            $payments?->addPayment();
         }
 
-        $payments->setNumberOfEntries($nMax + 1);
+        $payments?->setNumberOfEntries($nMax + 1);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->numberOfEntries();
+
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
+
         $this->assertSame(
-            $nMax, $payments->getDocTableTotalCalc()->getNumberOfEntries()
+            $nMax, $payments?->getDocTableTotalCalc()?->getNumberOfEntries()
         );
+
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payments->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testDocumentStatus(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        /** @phpstan-ignore-next-line */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $now      = new RDate();
@@ -843,153 +908,167 @@ class PaymentsTest extends APaymentsBase
         $payment->setPaymentRefNo("RC RC/1");
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(new PaymentStatus(PaymentStatus::N));
+        $docStatus->setPaymentStatus(PaymentStatus::N);
         $docStatus->setPaymentStatusDate(clone $now);
-        $docStatus->setSourcePayment(new SourcePayment(SourcePayment::P));
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->documentStatus($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testDocumentStatusNotDefined(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $now      = new RDate();
         $payment->setTransactionDate($now);
         $payment->setPaymentRefNo("RC RC/1");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->documentStatus($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
         $this->assertSame(
-            DocumentStatus::N_PAYMENTSTATUS,
+            DocumentStatus::N_PAYMENT_STATUS,
             \array_key_first($payment->getError())
         );
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Date\DateParseException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testDocumentStatusStatusDateEalier(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testDocumentStatusStatusDateEarlier(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
-        $payment->setTransactionDate(RDate::parse(RDate::SQL_DATE, "2020-10-05"));
+        $payment->setTransactionDate(RDate::parse(Pattern::SQL_DATE, "2020-10-05"));
         $payment->setPaymentRefNo("RC RC/1");
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(new PaymentStatus(PaymentStatus::N));
+        $docStatus->setPaymentStatus(PaymentStatus::N);
         $docStatus->setPaymentStatusDate(
-            RDate::parse(RDate::SQL_DATE, "2020-10-04")
+            RDate::parse(Pattern::SQL_DATE, "2020-10-04")
         );
-        $docStatus->setSourcePayment(new SourcePayment(SourcePayment::P));
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->documentStatus($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
         $this->assertSame(
-            DocumentStatus::N_PAYMENTSTATUSDATE,
+            DocumentStatus::N_PAYMENT_STATUS_DATE,
             \array_key_first($payment->getError())
         );
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testDocumentStatusCancel(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $now      = new RDate();
         $payment->setTransactionDate($now);
         $payment->setPaymentRefNo("RC RC/1");
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(new PaymentStatus(PaymentStatus::A));
+        $docStatus->setPaymentStatus(PaymentStatus::A);
         $docStatus->setPaymentStatusDate(clone $now);
-        $docStatus->setSourcePayment(new SourcePayment(SourcePayment::P));
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
         $docStatus->setReason("Some reason");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->documentStatus($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testDocumentStatusStatusCancelNoReason(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $this->assertInstanceOf(
             AuditFile::class, $auditFile
         );
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setPaymentStatus(new PaymentStatus(PaymentStatus::A));
+        $docStatus->setPaymentStatus(PaymentStatus::A);
         $docStatus->setPaymentStatusDate(new RDate());
-        $docStatus->setSourcePayment(new SourcePayment(SourcePayment::P));
+        $docStatus->setSourcePayment(SourcePayment::P);
         $docStatus->setSourceID("Rebelo");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->documentStatus($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
@@ -998,331 +1077,347 @@ class PaymentsTest extends APaymentsBase
         );
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testCustomerId(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile  = $this->payments->getAuditFile();
         $customer   = $auditFile->getMasterFiles()->addCustomer();
         $customerID = "999G";
         $customer->setCustomerID($customerID);
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
         $payment->setCustomerID($customerID);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->customerId($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testCustomerIdCustomerNotExist(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
         $payment->setCustomerID("A999");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->customerId($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
         $this->assertSame(
-            Payment::N_CUSTOMERID, \array_key_first($payment->getError())
+            Payment::N_CUSTOMER_ID, \array_key_first($payment->getError())
         );
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testCustomerIdCustomerIsNotSet(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->customerId($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payments->getError());
         $this->assertSame(
-            Payment::N_CUSTOMERID, \array_key_first($payment->getError())
+            Payment::N_CUSTOMER_ID, \array_key_first($payment->getError())
         );
     }
 
-	/**
-	 * Init variables
-	 * @return void
-	 * @throws \Rebelo\Decimal\DecimalException
-	 */
+    /**
+     * Init variables
+     *
+     * @return void
+     */
     public function iniPaymentsForLineTest(): void
     {
-        $this->payments->setNetTotal(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
-
-        $this->payments->setGrossTotal(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
-
-        $this->payments->setTaxPayable(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
-
-        $this->payments->setDocCredit(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
-
-        $this->payments->setDocDebit(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
-
-        $this->payments->setCredit(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
-
-        $this->payments->setDebit(
-            new UDecimal(0.0, Payments::CALC_PRECISION)
-        );
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal("0.0"));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal("0.0"));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal("0.0"));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setDocCredit(new Decimal("0.0"));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setDocDebit(new Decimal("0.0"));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setCredit(new Decimal("0.0"));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setDebit(new Decimal("0.0"));
     }
 
-	/**
-	 *
-	 * @param Payment $payment
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 */
+    /**
+     *
+     * @param Payment $payment
+     *
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Exception
+     */
     public function iniPaymentLinesForLinesTest(Payment $payment): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile     = $this->payments->getAuditFile();
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
         $taxTableEntry->setDescription("IVA normal");
-        $taxTableEntry->setTaxPercentage(23.00);
-        $taxTableEntry->setTaxType(TaxType::IVA());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
-        $taxTableEntry->setTaxCode(TaxCode::NOR());
+        $taxTableEntry->setTaxPercentage(new Decimal("23.00"));
+        $taxTableEntry->setTaxType(TaxType::IVA);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
+        $taxTableEntry->setTaxCode(TaxCode::NOR);
         for ($n = 1; $n <= 9; $n++) {
-			$line     = $payment->addLine();
+            $line     = $payment->addLine();
             $sourceId = $line->addSourceDocumentID();
             $sourceId->setDescription(\sprintf("Description of line '%s'", $n));
             $sourceId->setInvoiceDate($payment->getTransactionDate()->addDays(-1));
             $sourceId->setOriginatingON(\sprintf("FT FT/%s", $n));
 
-            $line->setSettlementAmount(0.0);
-            $tax = $line->getTax();
+            $line->setSettlementAmount(new Decimal("0.0"));
+            $tax = $line->getTax() ?? throw new \Exception("Tax is null");
             $tax->setTaxCode($taxTableEntry->getTaxCode());
             $tax->setTaxCountryRegion($taxTableEntry->getTaxCountryRegion());
             $tax->setTaxPercentage($taxTableEntry->getTaxPercentage());
             $tax->setTaxType($taxTableEntry->getTaxType());
 
-            $line->setCreditAmount(10 * $n);
+            $line->setCreditAmount((new Decimal("10.0"))->mul((string)$n));
         }
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testLinesNoContinuesNumber(): void
     {
         $now = new RDate();
         $this->payments->setContinuesLines(true);
         $this->iniPaymentsForLineTest();
 
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
+        $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
-        $payment->setDocTotalcal(new DocTotalCalc());
-        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N());
+        $payment->setPaymentType(PaymentType::RG);
+        $payment->setDocTotalCal(new DocTotalCalc());
+        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N);
         $this->iniPaymentLinesForLinesTest($payment);
 
-		$lineStack = $payment->getLine();
+        $lineStack = $payment->getLine();
         $lastLine  = $lineStack[\count($lineStack) - 1];
         $lastLine->setLineNumber($lastLine->getLineNumber() + 1);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->lines($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($lastLine->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testLinesRepetedLineNumber(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testLinesRepeatedLineNumber(): void
     {
         $now = new RDate();
         $this->payments->setContinuesLines(false);
         $this->iniPaymentsForLineTest();
 
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
+        $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
-        $payment->setDocTotalcal(new DocTotalCalc());
+        $payment->setPaymentType(PaymentType::RG);
+        $payment->setDocTotalCal(new DocTotalCalc());
 
-        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N());
+        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N);
 
         $this->iniPaymentLinesForLinesTest($payment);
 
-		$lineStack = $payment->getLine();
+        $lineStack = $payment->getLine();
         $lastLine  = $lineStack[\count($lineStack) - 1];
         $lastLine->setLineNumber($lastLine->getLineNumber() - 1);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->lines($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($lastLine->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testLinesNoCreditAndDebitSetted(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testLinesNoCreditAndDebitSet(): void
     {
         $now = new RDate();
         $this->iniPaymentsForLineTest();
 
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
+        $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
-        $payment->setDocTotalcal(new DocTotalCalc());
-        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N());
+        $payment->setPaymentType(PaymentType::RG);
+        $payment->setDocTotalCal(new DocTotalCalc());
+        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N);
 
-		$line     = $payment->addLine();
+        $line     = $payment->addLine();
         $sourceID = $line->addSourceDocumentID();
         $sourceID->setDescription("Desc of line '1'");
         $sourceID->setInvoiceDate($payment->getTransactionDate()->addDays(-1));
         $sourceID->setOriginatingON("FT FT/1");
 
+        /** @phpstan-ignore-next-line */
         $this->payments->lines($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @depends testSourceDocumentID
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
+    #[Depends('testSourceDocumentID')]
     public function testLines(): void
     {
         $now = new RDate();
         $this->iniPaymentsForLineTest();
 
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
+        $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
-        $payment->setDocTotalcal(new DocTotalCalc());
-        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N());
+        $payment->setPaymentType(PaymentType::RG);
+        $payment->setDocTotalCal(new DocTotalCalc());
+        $payment->getDocumentStatus()->setPaymentStatus(PaymentStatus::N);
         $this->iniPaymentLinesForLinesTest($payment);
 
-        // add a line diferent of init lines
+        // add a line different of init lines
         $n    = \count($payment->getLine());
         $line = $payment->addLine();
-        $line->setCreditAmount(999.99);
+        $line->setCreditAmount(new Decimal("999.99"));
 
         $sourceId = $line->addSourceDocumentID();
         $sourceId->setDescription(\sprintf("Description of line '%s'", $n));
         $sourceId->setInvoiceDate($payment->getTransactionDate()->addDays(-1));
         $sourceId->setOriginatingON(\sprintf("FT FT/%s", $n));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->lines($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testSourceDocumentID(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC A/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line   = $payment->addLine();
         $source = $line->addSourceDocumentID();
@@ -1332,28 +1427,32 @@ class PaymentsTest extends APaymentsBase
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($source->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testMultipleSourceDocumentID(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line    = $payment->addLine();
         $srStack = array();
@@ -1369,6 +1468,7 @@ class PaymentsTest extends APaymentsBase
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         foreach ($srStack as $source) {
@@ -1376,23 +1476,26 @@ class PaymentsTest extends APaymentsBase
         }
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testSourceDocumentIDRepeatedOriginatingOn(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line    = $payment->addLine();
         $srStack = array();
@@ -1408,6 +1511,7 @@ class PaymentsTest extends APaymentsBase
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         foreach ($srStack as $source) {
@@ -1416,50 +1520,53 @@ class PaymentsTest extends APaymentsBase
         $this->assertNotEmpty($srStack[2]->getWarning());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testNoSourceDocumentID(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC A/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testSourceDocumentIDNoDate(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile $payment */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC A/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line   = $payment->addLine();
         $source = $line->addSourceDocumentID();
@@ -1469,28 +1576,32 @@ class PaymentsTest extends APaymentsBase
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($source->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testSourceDocumentIDOriginDateLater(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC A/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line   = $payment->addLine();
         $source = $line->addSourceDocumentID();
@@ -1500,28 +1611,32 @@ class PaymentsTest extends APaymentsBase
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($source->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testSourceDocumentIDOriginDocNotValid(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC A/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line   = $payment->addLine();
         $source = $line->addSourceDocumentID();
@@ -1531,1554 +1646,1727 @@ class PaymentsTest extends APaymentsBase
 
         $this->payments->sourceDocumentID($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($source->getError());
         $this->assertNotEmpty($source->getWarning());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testTaxNotSettedOnNonCashVatScheme(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testTaxNotSetOnNonCashVatScheme(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testTaxNotSettedOnCashVatScheme(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testTaxNotSetOnCashVatScheme(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RC());
+        $payment->setPaymentType(PaymentType::RC);
 
         $line = $payment->addLine();
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testTaxTypeNotSetted(): void
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testTaxTypeNotSet(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($tax->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxTypeIvaPercentageNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxAmount(999.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxAmount(new Decimal("999.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($tax->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxAmountZeroExceptionCodeNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
         $line->setTaxExemptionReason("reason");
 
-        $tax = $line->getTax();
-        $tax->setTaxAmount(0.00);
-        $tax->setTaxCode(TaxCode::OUT());
-        $tax->setTaxType(TaxType::IS());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxAmount(new Decimal("0.00"));
+        $tax->setTaxCode(TaxCode::OUT);
+        $tax->setTaxType(TaxType::IS);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxAmountZeroExceptionReasonNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $line->setTaxExemptionCode(TaxExemptionCode::M99());
+        $line->setTaxExemptionCode(TaxExemptionCode::M99);
 
-        $tax = $line->getTax();
-        $tax->setTaxAmount(0.00);
-        $tax->setTaxCode(TaxCode::OUT());
-        $tax->setTaxType(TaxType::IS());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxAmount(new Decimal("0.00"));
+        $tax->setTaxCode(TaxCode::OUT);
+        $tax->setTaxType(TaxType::IS);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxPercentageZeroExceptionCodeNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
         $line->setTaxExemptionReason("reason");
 
-        $tax = $line->getTax();
-        $tax->setTaxPercentage(0.00);
-        $tax->setTaxCode(TaxCode::OUT());
-        $tax->setTaxType(TaxType::IS());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("0.00"));
+        $tax->setTaxCode(TaxCode::OUT);
+        $tax->setTaxType(TaxType::IS);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxPercentageZeroExceptionReasonNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $line->setTaxExemptionCode(TaxExemptionCode::M99());
+        $line->setTaxExemptionCode(TaxExemptionCode::M99);
 
-        $tax = $line->getTax();
-        $tax->setTaxPercentage(0.00);
-        $tax->setTaxCode(TaxCode::OUT());
-        $tax->setTaxType(TaxType::IS());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("0.00"));
+        $tax->setTaxCode(TaxCode::OUT);
+        $tax->setTaxType(TaxType::IS);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxCodeIseExceptionReasonNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $line->setTaxExemptionCode(TaxExemptionCode::M99());
+        $line->setTaxExemptionCode(TaxExemptionCode::M99);
 
-        $tax = $line->getTax();
-        // The percentage is not set to zero in a ISE for exceprion test
-        $tax->setTaxPercentage(9.00);
-        $tax->setTaxCode(TaxCode::ISE());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        // The percentage is not set to zero in a ISE for exception test
+        $tax->setTaxPercentage(new Decimal("9.00"));
+        $tax->setTaxCode(TaxCode::ISE);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxCodeIseExceptionCodeNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
         $line->setTaxExemptionReason("reason");
 
-        $tax = $line->getTax();
-        // The percentage is not set to zero in a ISE for exceprion test
-        $tax->setTaxPercentage(9.00);
-        $tax->setTaxCode(TaxCode::ISE());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        // The percentage is not set to zero in a ISE for exception test
+        $tax->setTaxPercentage(new Decimal("9.00"));
+        $tax->setTaxCode(TaxCode::ISE);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxCodeIsePercentageNotZero(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
         $line->setTaxExemptionReason("reason");
-        $line->setTaxExemptionCode(TaxExemptionCode::M99());
+        $line->setTaxExemptionCode(TaxExemptionCode::M99);
 
-        $tax = $line->getTax();
-        $tax->setTaxPercentage(9.00);
-        $tax->setTaxCode(TaxCode::ISE());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("9.00"));
+        $tax->setTaxCode(TaxCode::ISE);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxTableTaxEmpty(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxWrongTableTaxEntry(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $auditFile->getMasterFiles()->addTaxTableEntry();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxCodeNoTaxCode(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(13.00);
-        $taxTableEntry->setTaxCode(TaxCode::RED());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("13.00"));
+        $taxTableEntry->setTaxCode(TaxCode::RED);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate(new RDate());
-        $taxTableEntry->setTaxType(TaxType::IVA());
+        $taxTableEntry->setTaxType(TaxType::IVA);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($tax->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testTaxCodeNoTaxCoountryRegion(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testTaxCodeNoTaxCountryRegion(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(13.00);
-        $taxTableEntry->setTaxCode(TaxCode::RED());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("13.00"));
+        $taxTableEntry->setTaxCode(TaxCode::RED);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate(new RDate());
-        $taxTableEntry->setTaxType(TaxType::IVA());
+        $taxTableEntry->setTaxType(TaxType::IVA);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($tax->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxCodeNotExistInTable(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(13.00);
-        $taxTableEntry->setTaxCode(TaxCode::RED());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("13.00"));
+        $taxTableEntry->setTaxCode(TaxCode::RED);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate(new RDate());
-        $taxTableEntry->setTaxType(TaxType::IVA());
+        $taxTableEntry->setTaxType(TaxType::IVA);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testTaxCodeDateExpierd(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testTaxCodeDateExpired(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(23.00);
-        $taxTableEntry->setTaxCode(TaxCode::NOR());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("23.00"));
+        $taxTableEntry->setTaxCode(TaxCode::NOR);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate((new RDate())->addDays(-1));
-        $taxTableEntry->setTaxType(TaxType::IVA());
+        $taxTableEntry->setTaxType(TaxType::IVA);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxTaxExpirationDateLater(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(23.00);
-        $taxTableEntry->setTaxCode(TaxCode::NOR());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("23.00"));
+        $taxTableEntry->setTaxCode(TaxCode::NOR);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate((new RDate())->addDays(1));
-        $taxTableEntry->setTaxType(TaxType::IVA());
+        $taxTableEntry->setTaxType(TaxType::IVA);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxTaxExpirationDateNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(23.00);
-        $taxTableEntry->setTaxCode(TaxCode::NOR());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("23.00"));
+        $taxTableEntry->setTaxCode(TaxCode::NOR);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate(null);
-        $taxTableEntry->setTaxType(TaxType::IVA());
+        $taxTableEntry->setTaxType(TaxType::IVA);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::NOR());
-        $tax->setTaxType(TaxType::IVA());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::NOR);
+        $tax->setTaxType(TaxType::IVA);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTaxTaxIS(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
         $taxTableEntry = $auditFile->getMasterFiles()->addTaxTableEntry();
-        $taxTableEntry->setTaxPercentage(23.00);
-        $taxTableEntry->setTaxCode(TaxCode::OUT());
-        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $taxTableEntry->setTaxPercentage(new Decimal("23.00"));
+        $taxTableEntry->setTaxCode(TaxCode::OUT);
+        $taxTableEntry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $taxTableEntry->setTaxExpirationDate(null);
-        $taxTableEntry->setTaxType(TaxType::IS());
+        $taxTableEntry->setTaxType(TaxType::IS);
         $taxTableEntry->setDescription("Tax description");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $line = $payment->addLine();
-        $tax  = $line->getTax();
-        $tax->setTaxPercentage(23.00);
-        $tax->setTaxCode(TaxCode::OUT());
-        $tax->setTaxType(TaxType::IS());
-        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT());
+        $tax  = $line->getTax() ?? throw new \Exception("Tax is null");
+        $tax->setTaxPercentage(new Decimal("23.00"));
+        $tax->setTaxCode(TaxCode::OUT);
+        $tax->setTaxType(TaxType::IS);
+        $tax->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->tax($line, $payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($line->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testTotalsDocumentTotalsNotSetted(): void
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testTotalsDocumentTotalsNotSet(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongGross(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 122.99;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("122.99");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
-        $totals->setNetTotal(100.00);
-        $totals->setTaxPayable(23.00);
-        $totals->setGrossTotal(122.99);
+        $totals->setNetTotal(new Decimal("100.00"));
+        $totals->setTaxPayable(new Decimal("23.00"));
+        $totals->setGrossTotal(new Decimal("122.99"));
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal($net);
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable($tax);
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal($gross);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedGross(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
-        $totals->setNetTotal(100.00);
-        $totals->setTaxPayable(23.00);
-        $totals->setGrossTotal(122.99);
+        $totals->setNetTotal(new Decimal("100.00"));
+        $totals->setTaxPayable(new Decimal("23.00"));
+        $totals->setGrossTotal(new Decimal("122.99"));
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal(123.00, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal($net);
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable($tax);
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal("123.00"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedGrossDelta(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross - 0.01, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal($tax));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross->sub("0.01")));
 
-        $this->payments->setDeltaTotalDoc(0.01);
+        $this->payments->setDeltaTotalDoc(new Decimal("0.01"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedNet(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $delta     = 0.01;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $delta     = new Decimal("0.01");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
 
-        $this->payments->setNetTotal(new UDecimal($net - $delta, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net->sub($delta)));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal($tax));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedNetDelta(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $delta     = 0.01;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $delta     = new Decimal("0.01");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
 
-        $this->payments->setNetTotal(new UDecimal($net - $delta, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal($net->sub($delta));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal($tax));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
         $this->payments->setDeltaTotalDoc($delta);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedTaxPayable(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $delta     = 0.01;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $delta     = new Decimal("0.01");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax - $delta, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable($tax->sub($delta));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedTaxPayableDelta(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $delta     = 0.01;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $delta     = new Decimal("0.01");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
         $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax - $delta, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable($tax->sub($delta));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
         $this->payments->setDeltaTotalDoc($delta);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedCurrency(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $delta     = 0.02;
-        $rate      = 0.5;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $delta     = new Decimal("0.02");
+        $rate      = new Decimal("0.5");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
-        $totals   = $payment->getDocumentTotals();
+        $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
-        $currency = $totals->getCurrency();
-        $currency->setCurrencyAmount(($gross / $rate) + $delta);
+        $currency = $totals->getCurrency() ?? throw new \Exception("Currency is null");
+        $currency->setCurrencyAmount($gross->div($rate)->add($delta));
         $currency->setExchangeRate($rate);
-        $currency->setCurrencyCode(CurrencyCode::ISO_AED());
+        $currency->setCurrencyCode(CurrencyCode::ISO_AED);
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal($tax));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
-        $docTotalcal = new DocTotalCalc();
-        $docTotalcal->setGrossTotal($gross);
-        $docTotalcal->setNetTotal($net);
-        $docTotalcal->setTaxPayable($tax);
-        $docTotalcal->setGrossTotalFromCurrency($gross / $rate);
-        $payment->setDocTotalcal($docTotalcal);
+        $docTotalCal = new DocTotalCalc();
+        $docTotalCal->setGrossTotal($gross);
+        $docTotalCal->setNetTotal($net);
+        $docTotalCal->setTaxPayable($tax);
+        $docTotalCal->setGrossTotalFromCurrency($gross->div($rate));
+        $payment->setDocTotalCal($docTotalCal);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotalsWrongCalculatedCurrencyDelta(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $delta     = 0.01;
-        $rate      = 0.5;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $delta     = new Decimal("0.01");
+        $rate      = new Decimal("0.5");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
-        $totals   = $payment->getDocumentTotals();
+        $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
-        $currency = $totals->getCurrency();
-        $currency->setCurrencyAmount(($gross / $rate) + $delta);
+        $currency = $totals->getCurrency() ?? throw new \Exception("Currency is null");
+        $currency->setCurrencyAmount($gross->div($rate)->add($delta));
         $currency->setExchangeRate($rate);
-        $currency->setCurrencyCode(CurrencyCode::ISO_AED());
+        $currency->setCurrencyCode(CurrencyCode::ISO_AED);
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal($tax));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
-        $docTotalcal = new DocTotalCalc();
-        $docTotalcal->setGrossTotal($gross);
-        $docTotalcal->setNetTotal($net);
-        $docTotalcal->setTaxPayable($tax);
-        $docTotalcal->setGrossTotalFromCurrency($gross / $rate);
-        $payment->setDocTotalcal($docTotalcal);
+        $docTotalCal = new DocTotalCalc();
+        $docTotalCal->setGrossTotal($gross);
+        $docTotalCal->setNetTotal($net);
+        $docTotalCal->setTaxPayable($tax);
+        $docTotalCal->setGrossTotalFromCurrency($gross->div($rate));
+        $payment->setDocTotalCal($docTotalCal);
 
         $this->payments->setDeltaCurrency($delta);
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Exception
+     * @author João Rebelo
+     */
+    #[Test]
     public function testTotals(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
-        $net       = 100.00;
-        $tax       = 23.00;
-        $gross     = 123.00;
-        $rate      = 0.5;
+        $net       = new Decimal("100.00");
+        $tax       = new Decimal("23.00");
+        $gross     = new Decimal("123.00");
+        $rate      = new Decimal("0.5");
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(new RDate());
         $payment->setPaymentRefNo("RC RC/1");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
-        $totals   = $payment->getDocumentTotals();
+        $totals = $payment->getDocumentTotals();
         $totals->setNetTotal($net);
         $totals->setTaxPayable($tax);
         $totals->setGrossTotal($gross);
-        $currency = $totals->getCurrency();
-        $currency->setCurrencyAmount($gross / $rate);
+        $currency = $totals->getCurrency() ?? throw new \Exception("Currency is null");
+        $currency->setCurrencyAmount($gross->div($rate));
         $currency->setExchangeRate($rate);
-        $currency->setCurrencyCode(CurrencyCode::ISO_AED());
+        $currency->setCurrencyCode(CurrencyCode::ISO_AED);
 
-        $this->payments->setNetTotal(new UDecimal($net, 4));
-        $this->payments->setTaxPayable(new UDecimal($tax, 4));
-        $this->payments->setGrossTotal(new UDecimal($gross, 4));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setNetTotal(new Decimal($net));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setTaxPayable(new Decimal($tax));
+        /** @phpstan-ignore-next-line */
+        $this->payments->setGrossTotal(new Decimal($gross));
 
-        $docTotalcal = new DocTotalCalc();
-        $docTotalcal->setGrossTotal($gross);
-        $docTotalcal->setNetTotal($net);
-        $docTotalcal->setTaxPayable($tax);
-        $docTotalcal->setGrossTotalFromCurrency($gross / $rate);
-        $payment->setDocTotalcal($docTotalcal);
+        $docTotalCal = new DocTotalCalc();
+        $docTotalCal->setGrossTotal($gross);
+        $docTotalCal->setNetTotal($net);
+        $docTotalCal->setTaxPayable($tax);
+        $docTotalCal->setGrossTotalFromCurrency($gross->div($rate));
+        $payment->setDocTotalCal($docTotalCal);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->totals($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($totals->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateNoHeader(): void
     {
+        /** @var AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments  = $auditFile->getSourceDocuments()->getPayments();
-        $payment   = $payments->addPayment();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
+        $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateNoHeaderStartDate(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setEndDate((clone $now)->addDays(1));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateNoHeaderEndDate(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(-1));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateHeaderStartDateLater(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(1));
         $header->setEndDate((clone $now)->addDays(2));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateHeaderEndDateEarlier(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(-2));
         $header->setEndDate((clone $now)->addDays(-1));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateLastDocDateAnsSystemNull(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(-1));
         $header->setEndDate((clone $now)->addDays(1));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateLastDocDateIsLater(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(-1));
         $header->setEndDate((clone $now)->addDays(2));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastDocDate((clone $now)->addDays(1));
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateLastSysEntDateIsLater(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(-1));
         $header->setEndDate((clone $now)->addDays(2));
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastDocDate(clone $now);
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastSystemEntryDate((clone $now)->addSeconds(1));
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDateAllDatesEqual(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate(clone $now);
         $header->setEndDate(clone $now);
 
-        /* @var $payments \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastDocDate(clone $now);
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastSystemEntryDate(clone $now);
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateIntervalException
+     * @throws \Rebelo\Date\DateParseException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentDateAndSyEntryDate(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
         $header    = $auditFile->getHeader();
         $header->setStartDate((clone $now)->addDays(-9));
         $header->setEndDate((clone $now)->addDays(9));
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $docStatus = $payment->getDocumentStatus();
-        $docStatus->setSourcePayment(SourcePayment::P());
+        $docStatus->setSourcePayment(SourcePayment::P);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastDocDate((clone $now)->addDays(-1));
+        /** @phpstan-ignore-next-line */
         $this->payments->setLastSystemEntryDate((clone $now)->addSeconds(-1));
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentDateAndSystemEntryDate($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentMethod(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3088,44 +3376,44 @@ class PaymentsTest extends APaymentsBase
         $payMeth = $payment->addPaymentMethod();
         $payMeth->setPaymentAmount($gross);
         $payMeth->setPaymentDate(clone $now);
-        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentMethodWithWithholdingTax(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $withholdingTax = $payment->addWithholdingTax();
-        $withholdingTax->setWithholdingTaxAmount(10.0);
+        $withholdingTax->setWithholdingTaxAmount(new Decimal("10.0"));
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3133,81 +3421,82 @@ class PaymentsTest extends APaymentsBase
         $totals->setTaxPayable($taxPayable);
 
         $payMeth = $payment->addPaymentMethod();
-        $payMeth->setPaymentAmount($gross - $withholdingTax->getWithholdingTaxAmount());
+        $payMeth->setPaymentAmount($gross->sub($withholdingTax->getWithholdingTaxAmount()));
         $payMeth->setPaymentDate(clone $now);
-        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testWithoutPaymentMethod(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
         $totals->setNetTotal($net);
         $totals->setTaxPayable($taxPayable);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
         $this->assertNotEmpty($payment->getWarning());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testMultiplePaymentMethod(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3217,43 +3506,44 @@ class PaymentsTest extends APaymentsBase
         $nMax = 2;
         for ($n = 1; $n <= $nMax; $n++) {
             $payMeth = $payment->addPaymentMethod();
-            $payMeth->setPaymentAmount($gross / $nMax);
+            $payMeth->setPaymentAmount($gross->div($nMax));
             $payMeth->setPaymentDate(clone $now);
-            $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+            $payMeth->setPaymentMechanism(PaymentMechanism::NU);
         }
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
-    public function testPaymentMethodWithoutAmout(): void
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
+    public function testPaymentMethodWithoutAmount(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3263,40 +3553,41 @@ class PaymentsTest extends APaymentsBase
         $payMeth = $payment->addPaymentMethod();
         //$payMeth->setPaymentAmount($gross);
         $payMeth->setPaymentDate(clone $now);
-        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payMeth->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\Date\DateFormatException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentMethodWithoutDate(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3306,87 +3597,87 @@ class PaymentsTest extends APaymentsBase
         $payMeth = $payment->addPaymentMethod();
         $payMeth->setPaymentAmount($gross);
         //$payMeth->setPaymentDate(clone $now);
-        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payMeth->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentMethodGrossDiffPayMeth(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
-        $totals->setGrossTotal($gross - 1.00);
+        $totals->setGrossTotal($gross->sub("1.00"));
         $totals->setNetTotal($net);
         $totals->setTaxPayable($taxPayable);
 
         $payMeth = $payment->addPaymentMethod();
         $payMeth->setPaymentAmount($gross);
         $payMeth->setPaymentDate(clone $now);
-        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payMeth->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\Enum\EnumException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testPaymentMethodGrossDiffPayMethWithholdingTax(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
         $withholdingTax = $payment->addWithholdingTax();
-        $withholdingTax->setWithholdingTaxAmount(10.0);
+        $withholdingTax->setWithholdingTaxAmount(new Decimal("10.0"));
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3396,40 +3687,41 @@ class PaymentsTest extends APaymentsBase
         $payMeth = $payment->addPaymentMethod();
         $payMeth->setPaymentAmount($gross);
         $payMeth->setPaymentDate(clone $now);
-        $payMeth->setPaymentMechanism(PaymentMechanism::NU());
+        $payMeth->setPaymentMechanism(PaymentMechanism::NU);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->paymentMethod($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payMeth->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testWithholdingTax(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3437,40 +3729,41 @@ class PaymentsTest extends APaymentsBase
         $totals->setTaxPayable($taxPayable);
 
         $withholdingTax = $payment->addWithholdingTax();
-        $withholdingTax->setWithholdingTaxAmount(10.0);
+        $withholdingTax->setWithholdingTaxAmount(new Decimal("10.0"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->withholdingTax($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testMultipleWithholdingTax(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3479,41 +3772,42 @@ class PaymentsTest extends APaymentsBase
 
         for ($n = 0; $n <= 0; $n++) {
             $withholdingTax = $payment->addWithholdingTax();
-            $withholdingTax->setWithholdingTaxAmount(10.0);
+            $withholdingTax->setWithholdingTaxAmount(new Decimal("10.0"));
         }
 
+        /** @phpstan-ignore-next-line */
         $this->payments->withholdingTax($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testWithholdingTaxWithoutAmount(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var \Rebelo\SaftPt\AuditFile\AuditFile $auditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3524,38 +3818,39 @@ class PaymentsTest extends APaymentsBase
         $payment->addWithholdingTax();
         //$withholdingTax->setWithholdingTaxAmount(10.0);
 
+        /** @phpstan-ignore-next-line */
         $this->payments->withholdingTax($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testWithholdingTaxGreaterThanGross(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3564,40 +3859,41 @@ class PaymentsTest extends APaymentsBase
 
 
         $withholdingTax = $payment->addWithholdingTax();
-        $withholdingTax->setWithholdingTaxAmount($gross + 0.10);
+        $withholdingTax->setWithholdingTaxAmount($gross->add("0.10"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->withholdingTax($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testMultipleWithholdingTaxGreaterThanGross(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
-        $payments = $auditFile->getSourceDocuments()->getPayments();
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
+        $payments = $auditFile->getSourceDocuments()?->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3607,41 +3903,42 @@ class PaymentsTest extends APaymentsBase
         $nMax = 2;
         for ($n = 1; $n <= $nMax; $n++) {
             $withholdingTax = $payment->addWithholdingTax();
-            $withholdingTax->setWithholdingTaxAmount(($gross / $nMax) + 0.1);
+            $withholdingTax->setWithholdingTaxAmount($gross->div($nMax)->add("0.1"));
         }
 
+        /** @phpstan-ignore-next-line */
         $this->payments->withholdingTax($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertFalse($this->payments->isValid());
         $this->assertTrue($auditFile->getErrorRegistor()->hasErrors());
         $this->assertNotEmpty($payment->getError());
     }
 
-	/**
-	 * @return void
-	 * @throws \Rebelo\Date\DateFormatException
-	 * @throws \Rebelo\Decimal\DecimalException
-	 * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-	 * @author João Rebelo
-	 * @test
-	 */
+    /**
+     * @return void
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
+     */
+    #[Test]
     public function testWithholdingTaxGreaterThanHalfGross(): void
     {
-        /* @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @var $auditFile \Rebelo\SaftPt\AuditFile\AuditFile */
+        /** @phpstan-ignore-next-line */
         $auditFile = $this->payments->getAuditFile();
         $now       = new RDate();
 
-        /* @var $payment \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment */
+        /** @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments $payments */
         $payments = $auditFile->getSourceDocuments()->getPayments();
         $payment  = $payments->addPayment();
         $payment->setTransactionDate(clone $now);
         $payment->setSystemEntryDate(clone $now);
         $payment->setPaymentRefNo("RC RC/2");
-        $payment->setPaymentType(PaymentType::RG());
+        $payment->setPaymentType(PaymentType::RG);
 
-        $gross      = 123.00;
-        $net        = 100.00;
-        $taxPayable = 23.00;
+        $gross      = new Decimal("123.00");
+        $net        = new Decimal("100.00");
+        $taxPayable = new Decimal("23.00");
 
         $totals = $payment->getDocumentTotals();
         $totals->setGrossTotal($gross);
@@ -3649,10 +3946,12 @@ class PaymentsTest extends APaymentsBase
         $totals->setTaxPayable($taxPayable);
 
         $withholdingTax = $payment->addWithholdingTax();
-        $withholdingTax->setWithholdingTaxAmount(($gross / 2) + 0.1);
+        $withholdingTax->setWithholdingTaxAmount($gross->div(2)->add("0.1"));
 
+        /** @phpstan-ignore-next-line */
         $this->payments->withholdingTax($payment);
 
+        /** @phpstan-ignore-next-line */
         $this->assertTrue($this->payments->isValid());
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
         $this->assertEmpty($payment->getError());

@@ -44,18 +44,18 @@ class Schema
     /**
      * Xsd without assert but with tagl all, xml v 1.0
      */
-    const XSD_V_1_0 = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_NO_ASSERT.xsd";
+    const string XSD_V_1_0 = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_NO_ASSERT.xsd";
 
     /**
      * The complete xsd validation, because of the libxml do not validade assert
      * of xml 1.1 and because a xsd error with tag all, we have to use this
      * modified xsd file
      */
-    const GLOBAL_XSD = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_NO_ASSERT_NO_ALL.xsd";
+    const string GLOBAL_XSD = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_NO_ASSERT_NO_ALL.xsd";
 
     /**
      * The permissive xsd validation
      */
-    const PERMISSIVE_XSD = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_permissivo.xsd";
+    const string PERMISSIVE_XSD = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_permissivo.xsd";
 
 }

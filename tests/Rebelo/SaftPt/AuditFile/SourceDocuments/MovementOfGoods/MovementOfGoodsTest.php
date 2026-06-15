@@ -26,12 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc;
 
@@ -39,7 +40,7 @@ use Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc;
  * MovementOfGoodsTest
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class MovementOfGoodsTest extends TestCase
 {
@@ -47,20 +48,19 @@ class MovementOfGoodsTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(MovementOfGoods::class);
-        $this->assertTrue(true);
+        (new Commune(MovementOfGoods::class))->testReflection(MovementOfGoods::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $movOfGo = new MovementOfGoods(new ErrorRegister());
@@ -73,8 +73,8 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNumberOfMovementLines(): void
     {
         $movOfGo = new MovementOfGoods(new ErrorRegister());
@@ -93,20 +93,20 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalQuantityIssued(): void
     {
         $movOfGo = new MovementOfGoods(new ErrorRegister());
-        $stack   = [0.0, 9.99];
+        $stack   = [new Decimal("0.0"), new Decimal("9.99")];
 
         foreach ($stack as $num) {
             $this->assertTrue($movOfGo->setTotalQuantityIssued($num));
-            $this->assertSame($num, $movOfGo->getTotalQuantityIssued());
+            $this->assertSame($num->toFloat(), $movOfGo->getTotalQuantityIssued()->toFloat());
             $this->assertTrue($movOfGo->issetTotalQuantityIssued());
         }
 
-        $wrong = -1.0;
+        $wrong = new Decimal("-1.0");
         $this->assertFalse($movOfGo->setTotalQuantityIssued($wrong));
         $this->assertSame($wrong, $movOfGo->getTotalQuantityIssued());
         $this->assertNotEmpty($movOfGo->getErrorRegistor()->getOnSetValue());
@@ -114,8 +114,8 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testStockMovement(): void
     {
         $movOfGo = new MovementOfGoods(new ErrorRegister());
@@ -135,21 +135,24 @@ class MovementOfGoodsTest extends TestCase
      * Reads MovementOfGoods from the Demo SAFT in Test\Resources
      * and parse then to MovementOfGoods class, after that generate a xml from the
      * class and test if the xml strings are equal
-     * @throws AuditFileException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $movStkDocsXml = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{MovementOfGoods::N_MOVEMENTOFGOODS};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{MovementOfGoods::N_MOVEMENT_OF_GOODS};
 
         if ($movStkDocsXml->count() === 0) {
             $this->fail("No StockMovement in XML");
@@ -159,7 +162,7 @@ class MovementOfGoodsTest extends TestCase
         $movStkDoc->parseXmlNode($movStkDocsXml);
 
         $xmlRootNode   = (new AuditFile())->createRootElement();
-        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
 
         $xml = $movStkDoc->createXmlNode($sourceDocNode);
 
@@ -168,7 +171,7 @@ class MovementOfGoodsTest extends TestCase
             $this->assertTrue(
                 $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
 
@@ -180,12 +183,12 @@ class MovementOfGoodsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $movOfGoodsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $movOfGoods     = new MovementOfGoods(new ErrorRegister());
         $xml            = $movOfGoods->createXmlNode($movOfGoodsNode)->asXML();
@@ -205,16 +208,16 @@ class MovementOfGoodsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $movOfGoodsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $movOfGoods     = new MovementOfGoods(new ErrorRegister());
         $movOfGoods->setNumberOfMovementLines(-1);
-        $movOfGoods->setTotalQuantityIssued(-9.0);
+        $movOfGoods->setTotalQuantityIssued(new Decimal("-9.0"));
 
         $xml = $movOfGoods->createXmlNode($movOfGoodsNode)->asXML();
         if ($xml === false) {
@@ -232,9 +235,9 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function movOfGoodsTableTotalCalc() : void
+    #[Test]
+    public function movOfGoodsTableTotalCalc(): void
     {
         $movOfGoods = new MovementOfGoods(new ErrorRegister());
         $this->assertNull($movOfGoods->getMovOfGoodsTableTotalCalc());
@@ -248,12 +251,12 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetOrder(): void
     {
         $movementOfGoods = new MovementOfGoods(new ErrorRegister());
-        $docNo      = array(
+        $docNo           = array(
             "GT GT/1",
             "GD GD/4",
             "GT GT/5",
@@ -283,11 +286,11 @@ class MovementOfGoodsTest extends TestCase
         $this->assertSame(array(1, 2, 3), \array_keys($order["GT"]["B"]));
         $this->assertSame(array(1, 2, 3, 4), \array_keys($order["GD"]["GD"]));
 
-        foreach ($order as $type => $serieStack) {
-            foreach ($serieStack as $serie => $noStack) {
+        foreach ($order as $type => $serialStack) {
+            foreach ($serialStack as $serial => $noStack) {
                 foreach ($noStack as $no => $stkMv) {
                     $this->assertSame(
-                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        \sprintf("%s %s/%s", $type, $serial, $no),
                         $stkMv->getDocumentNumber()
                     );
                 }
@@ -297,12 +300,12 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDuplicateNumber(): void
     {
         $stkMv = new MovementOfGoods(new ErrorRegister());
-        $stkNo      = array(
+        $stkNo = array(
             "GT GT/1",
             "GD GD/4",
             "GT GT/1",
@@ -328,12 +331,12 @@ class MovementOfGoodsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNoNumber(): void
     {
-        $stkMov = new MovementOfGoods(new ErrorRegister());
-        $stkMvNo      = array(
+        $stkMov  = new MovementOfGoods(new ErrorRegister());
+        $stkMvNo = array(
             "GT GT/1",
             "GT B/2"
         );

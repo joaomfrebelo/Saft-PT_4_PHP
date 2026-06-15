@@ -26,15 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\Enum\EnumException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Description of TaxTableEntryTest
@@ -45,22 +45,19 @@ class TaxTableEntryTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(
-                TaxTableEntry::class
-            );
-        $this->assertTrue(true);
+        (new Commune(TaxTableEntry::class))->testReflection(TaxTableEntry::class);
     }
 
     /**
      *
-     * @throws DateFormatException
      */
+    #[Test]
     public function testInstance(): void
     {
         $taxTabEnt = new TaxTableEntry(new ErrorRegister());
@@ -78,8 +75,8 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetDescription(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
@@ -105,8 +102,8 @@ class TaxTableEntryTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxCode(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
@@ -118,20 +115,19 @@ class TaxTableEntryTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxCode = TaxCode::NOR;
-        $taxEntTab->setTaxCode(new TaxCode($taxCode));
-        $this->assertEquals($taxCode, $taxEntTab->getTaxCode()->get());
+        $taxEntTab->setTaxCode($taxCode);
+        $this->assertEquals($taxCode, $taxEntTab->getTaxCode());
         $this->assertTrue($taxEntTab->issetTaxCode());
 
         $taxRegExp = "A999";
-        $taxEntTab->setTaxCode(new TaxCode($taxRegExp));
-        $this->assertEquals($taxRegExp, $taxEntTab->getTaxCode()->get());
+        $taxEntTab->setTaxCode($taxRegExp);
+        $this->assertEquals($taxRegExp, $taxEntTab->getTaxCode());
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxCountryRegion(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
@@ -143,16 +139,15 @@ class TaxTableEntryTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxCouReg = TaxCountryRegion::ISO_PT;
-        $taxEntTab->setTaxCountryRegion(new TaxCountryRegion($taxCouReg));
-        $this->assertEquals($taxCouReg, $taxEntTab->getTaxCountryRegion()->get());
+        $taxEntTab->setTaxCountryRegion($taxCouReg);
+        $this->assertEquals($taxCouReg, $taxEntTab->getTaxCountryRegion());
         $this->assertTrue($taxEntTab->issetTaxCountryRegion());
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxType(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
@@ -164,27 +159,27 @@ class TaxTableEntryTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $taxType = TaxType::IVA;
-        $taxEntTab->setTaxType(new TaxType($taxType));
-        $this->assertEquals($taxType, $taxEntTab->getTaxType()->get());
+        $taxEntTab->setTaxType($taxType);
+        $this->assertEquals($taxType, $taxEntTab->getTaxType());
         $this->assertTrue($taxEntTab->issetTaxType());
     }
 
     /**
-     * @throws DateParseException
-     * @throws DateFormatException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxExpirationDate(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
 
-        $date = RDate::parse(RDate::SQL_DATE, "2019-10-05");
+        $date = RDate::parse(Pattern::SQL_DATE, "2019-10-05");
 
         $taxEntTab->setTaxExpirationDate($date);
         $this->assertEquals(
-            $date->format(RDate::SQL_DATE),
-            $taxEntTab->getTaxExpirationDate()->format(RDate::SQL_DATE)
+            $date->format(Pattern::SQL_DATE),
+            $taxEntTab->getTaxExpirationDate()?->format(Pattern::SQL_DATE)
         );
 
         $taxEntTab->setTaxExpirationDate(null);
@@ -193,25 +188,25 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxPercentage(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
 
-        $percent = 23.00;
+        $percent = new Decimal("23.00");
 
         $taxEntTab->setTaxPercentage($percent);
         $this->assertEquals($percent, $taxEntTab->getTaxPercentage());
 
         // false because Percentage was set
-        $amount = 999.00;
+        $amount = new Decimal("999.00");
         $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxAmount($amount));
         $this->assertSame($amount, $taxEntTab->getTaxAmount());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());
 
-        $wrong = -23.00;
+        $wrong = new Decimal("-23.00");
         $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxPercentage($wrong));
         $this->assertSame($wrong, $taxEntTab->getTaxPercentage());
@@ -223,24 +218,24 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxAmount(): void
     {
         $taxEntTab = new TaxTableEntry(new ErrorRegister());
 
-        $amount = 999.09;
+        $amount = new Decimal("999.09");
 
         $taxEntTab->setTaxAmount($amount);
         $this->assertEquals($amount, $taxEntTab->getTaxAmount());
 
-        $percentage = 23.00;
+        $percentage = new Decimal("23.00");
         $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxPercentage($percentage));
         $this->assertSame($percentage, $taxEntTab->getTaxPercentage());
         $this->assertNotEmpty($taxEntTab->getErrorRegistor()->getOnSetValue());
 
-        $wrong = -230.99;
+        $wrong = new Decimal("-230.99");
         $taxEntTab->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($taxEntTab->setTaxAmount($wrong));
         $this->assertSame($wrong, $taxEntTab->getTaxAmount());
@@ -252,20 +247,21 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * Create and populate a TaxTableEntry to perform test
+     *
      * @return TaxTableEntry
-     * @throws DateFormatException
-     * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      */
     public function createTaxTableEntry(): TaxTableEntry
     {
         $entry = new TaxTableEntry(new ErrorRegister());
         $entry->setDescription("IVA test");
         $entry->setTaxAmount(null);
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::ISO_PT));
-        $entry->setTaxExpirationDate(RDate::parse(RDate::SQL_DATE, "2019-10-05"));
-        $entry->setTaxPercentage(23.00);
-        $entry->setTaxType(new TaxType(TaxType::IVA));
-        $entry->setTaxCode(new TaxCode(TaxCode::NOR));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
+        $entry->setTaxExpirationDate(RDate::parse(Pattern::SQL_DATE, "2019-10-05"));
+        $entry->setTaxPercentage(new Decimal("23.00"));
+        $entry->setTaxType(TaxType::IVA);
+        $entry->setTaxCode(TaxCode::NOR);
         return $entry;
     }
 
@@ -276,13 +272,13 @@ class TaxTableEntryTest extends TestCase
     public function changeTaxPercentageToAmount(TaxTableEntry $taxTableEntry): void
     {
         $taxTableEntry->setTaxPercentage(null);
-        $taxTableEntry->setTaxAmount(999.00);
+        $taxTableEntry->setTaxAmount(new Decimal("999.00"));
     }
 
     /**
      * Set the Tax Table entry Nullables to null
+     *
      * @param TaxTableEntry $taxTableEntry
-     * @throws DateFormatException
      */
     public function setNullTaxTableEntry(TaxTableEntry $taxTableEntry): void
     {
@@ -292,12 +288,12 @@ class TaxTableEntryTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
+            "<".MasterFiles::N_TAX_TABLE."></".MasterFiles::N_TAX_TABLE.">"
         );
 
         $entry = $this->createTaxTableEntry();
@@ -307,7 +303,7 @@ class TaxTableEntryTest extends TestCase
             $entry->createXmlNode($node)
         );
 
-        $entryNode = $node->{TaxTableEntry::N_TAXTABLEENTRY};
+        $entryNode = $node->{TaxTableEntry::N_TAX_TABLE_ENTRY};
 
         $this->assertEquals(
             $entry->getDescription(),
@@ -315,37 +311,36 @@ class TaxTableEntryTest extends TestCase
         );
 
         $this->assertEquals(
-            $entry->getTaxCode()->get(),
-            (string) $entryNode->{TaxTableEntry::N_TAXCODE}
+            is_string($entry->getTaxCode()) ? $entry->getTaxCode() : $entry->getTaxCode()->value,
+            (string) $entryNode->{TaxTableEntry::N_TAX_CODE}
         );
 
         $this->assertEquals(
-            $entry->getTaxCountryRegion()->get(),
-            (string) $entryNode->{TaxTableEntry::N_TAXCOUNTRYREGION}
+            $entry->getTaxCountryRegion()->value,
+            (string) $entryNode->{TaxTableEntry::N_TAX_COUNTRY_REGION}
         );
 
         $this->assertEquals(
-            $entry->getTaxExpirationDate()
-                ->format(RDate::SQL_DATE),
-            (string) $entryNode->{TaxTableEntry::N_TAXEXPIRATIONDATE}
+            $entry->getTaxExpirationDate()?->format(Pattern::SQL_DATE),
+            (string) $entryNode->{TaxTableEntry::N_TAX_EXPIRATION_DATE}
         );
 
         $this->assertEquals(
             $entry->getTaxPercentage(),
-            (float) $entryNode->{TaxTableEntry::N_TAXPERCENTAGE}
+            new Decimal((string) $entryNode->{TaxTableEntry::N_TAX_PERCENTAGE})
         );
 
         $this->assertEquals(
-            $entry->getTaxType()->get(),
-            (string) $entryNode->{TaxTableEntry::N_TAXTYPE}
+            $entry->getTaxType()->value,
+            (string) $entryNode->{TaxTableEntry::N_TAX_TYPE}
         );
 
-        $this->assertEquals(0, $entryNode->{TaxTableEntry::N_TAXAMOUNT}->count());
+        $this->assertEquals(0, $entryNode->{TaxTableEntry::N_TAX_AMOUNT}->count());
 
         unset($entryNode);
 
         $nodeAmount = new \SimpleXMLElement(
-            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
+            "<".MasterFiles::N_TAX_TABLE."></".MasterFiles::N_TAX_TABLE.">"
         );
 
         $this->changeTaxPercentageToAmount($entry);
@@ -353,12 +348,12 @@ class TaxTableEntryTest extends TestCase
         $entry->createXmlNode($nodeAmount);
         $this->assertEquals(
             0,
-            $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXPERCENTAGE}->count()
+            $nodeAmount->{TaxTableEntry::N_TAX_TABLE_ENTRY}->{TaxTableEntry::N_TAX_PERCENTAGE}->count()
         );
 
         $this->assertEquals(
             $entry->getTaxAmount(),
-            (float) $nodeAmount->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXAMOUNT}
+            new Decimal((string) $nodeAmount->{TaxTableEntry::N_TAX_TABLE_ENTRY}->{TaxTableEntry::N_TAX_AMOUNT})
         );
 
         $this->assertEmpty($entry->getErrorRegistor()->getLibXmlError());
@@ -368,14 +363,14 @@ class TaxTableEntryTest extends TestCase
         unset($nodeAmount);
 
         $nodeNull = new \SimpleXMLElement(
-            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
+            "<".MasterFiles::N_TAX_TABLE."></".MasterFiles::N_TAX_TABLE.">"
         );
 
         $this->setNullTaxTableEntry($entry);
         $entry->createXmlNode($nodeNull);
         $this->assertEquals(
             0,
-            $nodeNull->{TaxTableEntry::N_TAXTABLEENTRY}->{TaxTableEntry::N_TAXEXPIRATIONDATE}->count()
+            $nodeNull->{TaxTableEntry::N_TAX_TABLE_ENTRY}->{TaxTableEntry::N_TAX_EXPIRATION_DATE}->count()
         );
 
         $this->assertEmpty($entry->getErrorRegistor()->getLibXmlError());
@@ -384,15 +379,14 @@ class TaxTableEntryTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $node = new \SimpleXMLElement(
-            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
+            "<".MasterFiles::N_TAX_TABLE."></".MasterFiles::N_TAX_TABLE.">"
         );
 
         $entry = $this->createTaxTableEntry();
@@ -407,27 +401,18 @@ class TaxTableEntryTest extends TestCase
 
         $this->assertEquals($entry->getDescription(), $parsed->getDescription());
 
-        $this->assertEquals(
-            $entry->getTaxCode()->get(), $parsed->getTaxCode()->get()
-        );
+        $this->assertEquals($entry->getTaxCode(), $parsed->getTaxCode());
+
+        $this->assertEquals($entry->getTaxCountryRegion(), $parsed->getTaxCountryRegion());
 
         $this->assertEquals(
-            $entry->getTaxCountryRegion()->get(),
-            $parsed->getTaxCountryRegion()->get()
+            $entry->getTaxExpirationDate()?->format(Pattern::SQL_DATE),
+            $parsed->getTaxExpirationDate()?->format(Pattern::SQL_DATE)
         );
 
-        $this->assertEquals(
-            $entry->getTaxExpirationDate()->format(RDate::SQL_DATE),
-            $parsed->getTaxExpirationDate()->format(RDate::SQL_DATE)
-        );
+        $this->assertEquals($entry->getTaxPercentage(), $parsed->getTaxPercentage());
 
-        $this->assertEquals(
-            $entry->getTaxPercentage(), $parsed->getTaxPercentage()
-        );
-
-        $this->assertEquals(
-            $entry->getTaxType()->get(), $parsed->getTaxType()->get()
-        );
+        $this->assertEquals($entry->getTaxType(), $parsed->getTaxType());
 
         $this->assertNull($parsed->getTaxAmount());
 
@@ -474,8 +459,8 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $taxTableEntry = new TaxTableEntry(new ErrorRegister());
@@ -488,7 +473,7 @@ class TaxTableEntryTest extends TestCase
                 "Creat a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -497,8 +482,8 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $taxTableEntry = new TaxTableEntry(new ErrorRegister());
@@ -511,7 +496,7 @@ class TaxTableEntryTest extends TestCase
                 "Parse a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -520,107 +505,107 @@ class TaxTableEntryTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testAutoGenerateDescription(): void
     {
 
         $entry = new TaxTableEntry(new ErrorRegister());
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::ISO_PT));
-        $entry->setTaxType(new TaxType(TaxType::IVA));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
+        $entry->setTaxType(TaxType::IVA);
 
-        $entry->setTaxCode(new TaxCode(TaxCode::ISE));
+        $entry->setTaxCode(TaxCode::ISE);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Isento - Portugal continental", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::RED));
+        $entry->setTaxCode(TaxCode::RED);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Reduzido - Portugal continental", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::INT));
+        $entry->setTaxCode(TaxCode::INT);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Intermédio - Portugal continental", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::NOR));
+        $entry->setTaxCode(TaxCode::NOR);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Normal - Portugal continental", $entry->getDescription()
         );
 
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::PT_MA));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT_MA);
 
-        $entry->setTaxCode(new TaxCode(TaxCode::ISE));
+        $entry->setTaxCode(TaxCode::ISE);
         $entry->autoGenerateDescription();
         $this->assertSame(
-            "Isento - Região autónoma da Madaeira", $entry->getDescription()
+            "Isento - Região autónoma da Madeira", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::RED));
+        $entry->setTaxCode(TaxCode::RED);
         $entry->autoGenerateDescription();
         $this->assertSame(
-            "Reduzido - Região autónoma da Madaeira", $entry->getDescription()
+            "Reduzido - Região autónoma da Madeira", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::INT));
+        $entry->setTaxCode(TaxCode::INT);
         $entry->autoGenerateDescription();
         $this->assertSame(
-            "Intermédio - Região autónoma da Madaeira", $entry->getDescription()
+            "Intermédio - Região autónoma da Madeira", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::NOR));
+        $entry->setTaxCode(TaxCode::NOR);
         $entry->autoGenerateDescription();
         $this->assertSame(
-            "Normal - Região autónoma da Madaeira", $entry->getDescription()
+            "Normal - Região autónoma da Madeira", $entry->getDescription()
         );
 
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::PT_AC));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT_AC);
 
-        $entry->setTaxCode(new TaxCode(TaxCode::ISE));
+        $entry->setTaxCode(TaxCode::ISE);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Isento - Região autónoma dos Açores", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::RED));
+        $entry->setTaxCode(TaxCode::RED);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Reduzido - Região autónoma dos Açores", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::INT));
+        $entry->setTaxCode(TaxCode::INT);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Intermédio - Região autónoma dos Açores", $entry->getDescription()
         );
 
-        $entry->setTaxCode(new TaxCode(TaxCode::NOR));
+        $entry->setTaxCode(TaxCode::NOR);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Normal - Região autónoma dos Açores", $entry->getDescription()
         );
 
-        $entry->setTaxType(new TaxType(TaxType::NS));
+        $entry->setTaxType(TaxType::NS);
 
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::ISO_PT));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Não sujeição - Portugal continental", $entry->getDescription()
         );
 
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::PT_MA));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT_MA);
         $entry->autoGenerateDescription();
         $this->assertSame(
-            "Não sujeição - Região autónoma da Madaeira",
+            "Não sujeição - Região autónoma da Madeira",
             $entry->getDescription()
         );
 
-        $entry->setTaxCountryRegion(new TaxCountryRegion(TaxCountryRegion::PT_AC));
+        $entry->setTaxCountryRegion(TaxCountryRegion::ISO_PT_AC);
         $entry->autoGenerateDescription();
         $this->assertSame(
             "Não sujeição - Região autónoma dos Açores",
@@ -635,12 +620,12 @@ class TaxTableEntryTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $customerNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
+            "<".MasterFiles::N_TAX_TABLE."></".MasterFiles::N_TAX_TABLE.">"
         );
         $entry        = new TaxTableEntry(new ErrorRegister());
         $xml          = $entry->createXmlNode($customerNode)->asXML();
@@ -660,17 +645,17 @@ class TaxTableEntryTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $supplierNode = new \SimpleXMLElement(
-            "<".MasterFiles::N_TAXTABLE."></".MasterFiles::N_TAXTABLE.">"
+            "<".MasterFiles::N_TAX_TABLE."></".MasterFiles::N_TAX_TABLE.">"
         );
         $entry        = new TaxTableEntry(new ErrorRegister());
         $entry->setDescription("");
-        $entry->setTaxAmount(-0.99);
-        $entry->setTaxPercentage(120);
+        $entry->setTaxAmount(new Decimal("-0.99"));
+        $entry->setTaxPercentage(new Decimal("120"));
 
         $xml = $entry->createXmlNode($supplierNode)->asXML();
         if ($xml === false) {

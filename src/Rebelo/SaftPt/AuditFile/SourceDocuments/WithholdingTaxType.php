@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * WithholdingTaxType<br>
  * Indicate the type of withholding tax in this field, filling in:<br>
@@ -38,61 +35,24 @@ use Rebelo\Enum\EnumException;
  *
  * @author João Rebelo
  */
-class WithholdingTaxType extends AEnum
+enum WithholdingTaxType : string
 {
     /**
      * IRS para Imposto Sobre o Rendimento das Pessoas Singulares
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const IRS = "IRS";
+    case IRS = "IRS";
 
     /**
      * IRC para Imposto Sobre o Rendimento das Pessoas colectivas
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const IRC = "IRC";
+    case IRC = "IRC";
 
     /**
      * IS para Imposto do selo
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const IS = "IS";
+    case IS = "IS";
 
-    /**
-     * Indicate the type of withholding tax in this field, filling in:<br>
-     * “IRS” – Personal income tax;<br>
-     * “IRC” – Corporate income tax;<br>
-     * “IS” – Stamp Duty.<br>
-     * <pre>
-     * &lt;xs:element name="WithholdingTaxType"&gt;
-     *     &lt;xs:annotation&gt;
-     *         &lt;xs:documentation&gt;Restricao: IRS para Imposto Sobre o Rendimento das Pessoas Singulares,
-     *             IRC para Imposto Sobre o Rendimento das Pessoas colectivas, IS para Imposto do selo
-     *         &lt;/xs:documentation&gt;
-     *     &lt;/xs:annotation&gt;
-     *     &lt;xs:simpleType&gt;
-     *         &lt;xs:restriction base="xs:string"&gt;
-     *             &lt;xs:enumeration value="IRS"/&gt;
-     *             &lt;xs:enumeration value="IRC"/&gt;
-     *             &lt;xs:enumeration value="IS"/&gt;
-     *         &lt;/xs:restriction&gt;
-     *     &lt;/xs:simpleType&gt;
-     * &lt;/xs:element&gt;
-     * </pre>
-     * @param string $value
-     * @throws EnumException
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get the value as string
-     * @return string
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

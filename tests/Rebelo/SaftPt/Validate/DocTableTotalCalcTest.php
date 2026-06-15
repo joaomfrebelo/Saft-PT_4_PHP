@@ -26,8 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * DocTotalCalcTest
@@ -38,20 +40,19 @@ class DocTableTotalCalcTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(DocTableTotalCalc::class);
-        $this->assertTrue(true);
+        (new Commune(DocTableTotalCalc::class))->testReflection(DocTableTotalCalc::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $docCalc = new DocTableTotalCalc();
@@ -66,8 +67,8 @@ class DocTableTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNumberOfEntries(): void
     {
         $docCalc = new DocTableTotalCalc();
@@ -82,13 +83,13 @@ class DocTableTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalCredit(): void
     {
         $docCalc = new DocTableTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setTotalCredit($value);
         $this->assertSame($value, $docCalc->getTotalCredit());
 
@@ -98,13 +99,13 @@ class DocTableTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalDebit(): void
     {
         $docCalc = new DocTableTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setTotalDebit($value);
         $this->assertSame($value, $docCalc->getTotalDebit());
 

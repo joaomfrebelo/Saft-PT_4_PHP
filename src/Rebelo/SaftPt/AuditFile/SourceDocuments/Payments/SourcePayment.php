@@ -26,8 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
-
 /**
  * SourcePayment<br>
  * “P” – Receipt created in the application;<br>
@@ -41,20 +39,31 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
  *      &lt;xs:enumeration value="M"/&gt;
  *  &lt;/xs:restriction&gt;
  * </pre>
+ *
  * @author João Rebelo
  */
-class SourcePayment extends SourceBilling
+enum SourcePayment: string
 {
 
     /**
-     * To be filled in with:<br>
-     * “P” – Receipt created in the application;<br>
-     * “I” – Receipt integrated and produced in a different application;<br>
-     * “M” – Recovered or manually issued receipt.<br>
-     * @param string $value
+     * “P” – Document created in the invoicing program;<br>
+     * &lt;xs:enumeration value="P"/&gt;
+     *
+     * @since 3.0.0
      */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
+    case P = "P";
+
+    /**
+     * I -> “I” – Document integrated and produced in a different invoicing program;<br>
+     * &lt;xs:enumeration value="I"/&gt;
+     *
+     * @since 3.0.0
+     */
+    case I = "I";
+
+    /**
+     * “M” – Recovered or manually issued document.<br>
+     * &lt;xs:enumeration value="M"/&gt;
+     */
+    case M = "M";
 }

@@ -26,16 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\TransactionID;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
 
@@ -50,21 +49,19 @@ class PaymentTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Payment::class);
-        $this->assertTrue(true);
+        (new Commune(Payment::class))->testReflection(Payment::class);
     }
 
     /**
-     * @throws AuditFileException
-*@author João Rebelo
-     * @test
+     * @author João Rebelo
      */
+    #[Test]
     public function testInstance(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -88,8 +85,8 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetPaymentRefNo(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -123,8 +120,8 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetAtcud(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -146,8 +143,8 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetPeriod(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -173,10 +170,9 @@ class PaymentTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTransactionID(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -188,10 +184,9 @@ class PaymentTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTransactionDate(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -202,24 +197,24 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetPaymentType(): void
     {
         $payment = new Payment(new ErrorRegister());
-        $type    = new PaymentType(PaymentType::RC);
+        $type    = PaymentType::RC;
         $payment->setPaymentType($type);
-        $this->assertSame($type->get(), $payment->getPaymentType()->get());
+        $this->assertSame(PaymentType::RC, $payment->getPaymentType());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetDescription(): void
     {
         $payment = new Payment(new ErrorRegister());
-        $desc    = "Descriptin of payment";
+        $desc    = "Description of payment";
         $this->assertTrue($payment->setDescription($desc));
         $this->assertSame($desc, $payment->getDescription());
 
@@ -236,9 +231,9 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testSetGetSystmeId(): void
+    #[Test]
+    public function testSetGetSystemId(): void
     {
         $payment  = new Payment(new ErrorRegister());
         $systemID = "System ID";
@@ -258,8 +253,8 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetDocumentStatus(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -270,25 +265,25 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testPymentMethod(): void
+    #[Test]
+    public function testPaymentMethod(): void
     {
         $payment = new Payment(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
             $method = $payment->addPaymentMethod();
-            $method->setPaymentAmount($n + 0.99);
+            $method->setPaymentAmount((new Decimal((string)$n))->add("0.99"));
             $this->assertSame(
-                $n + 0.99, $payment->getPaymentMethod()[$n]->getPaymentAmount()
+                $n + 0.99, $payment->getPaymentMethod()[$n]->getPaymentAmount()->toFloat()
             );
         }
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSourceId(): void
     {
         $payment  = new Payment(new ErrorRegister());
@@ -306,10 +301,9 @@ class PaymentTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSystemEntryDate(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -321,8 +315,8 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testLine(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -337,8 +331,8 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetDocumentTotals(): void
     {
         $payment = new Payment(new ErrorRegister());
@@ -349,45 +343,44 @@ class PaymentTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWithholdingTax(): void
     {
         $payment = new Payment(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
             $tax = $payment->addWithholdingTax();
-            $tax->setWithholdingTaxAmount($n + 0.99);
+            $tax->setWithholdingTaxAmount((new Decimal((string)$n))->add("0.99"));
             $this->assertSame(
                 $n + 0.99,
-                $payment->getWithholdingTax()[$n]->getWithholdingTaxAmount()
+                $payment->getWithholdingTax()[$n]->getWithholdingTaxAmount()->toFloat()
             );
         }
     }
 
     /**
-     * Reads all Payments  from the Demo SAFT in Test\Ressources
+     * Reads all Payments  from the Demo SAFT in Test\Resources
      * and parse then to Payment class, after that generate a xml from the
      * Payment class and test if the xml strings are equal
      *
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $paymentsStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
             ->{Payments::N_PAYMENTS}
             ->{Payment::N_PAYMENT};
 
@@ -402,7 +395,7 @@ class PaymentTest extends TestCase
             $payment->parseXmlNode($paymentXml);
 
             $xmlRootNode   = (new AuditFile())->createRootElement();
-            $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+            $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
             $paymentsNode  = $sourceDocNode->addChild(Payments::N_PAYMENTS);
 
             $xml = $payment->createXmlNode($paymentsNode);
@@ -413,14 +406,14 @@ class PaymentTest extends TestCase
                 $this->assertTrue(
                     $assertXml,
                     \sprintf(
-                        "Fail on Payment index '%s' with mwssage '%s'",
+                        "Fail on Payment index '%s' with message '%s'",
                         $i + 1, $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
-                        "Fail on Payment index '%s' with mwssage '%s'",
+                        "Fail on Payment index '%s' with message '%s'",
                         $i + 1, $e->getMessage()
                     )
                 );
@@ -435,12 +428,12 @@ class PaymentTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $paymentNode = new \SimpleXMLElement(
-            "<".Payments::N_PAYMENTS."></".Payments::N_PAYMENTS.">"
+            "<" . Payments::N_PAYMENTS . "></" . Payments::N_PAYMENTS . ">"
         );
         $payment     = new Payment(new ErrorRegister());
         $xml         = $payment->createXmlNode($paymentNode)->asXML();
@@ -460,12 +453,12 @@ class PaymentTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $paymentNode = new \SimpleXMLElement(
-            "<".Payments::N_PAYMENTS."></".Payments::N_PAYMENTS.">"
+            "<" . Payments::N_PAYMENTS . "></" . Payments::N_PAYMENTS . ">"
         );
         $payment     = new Payment(new ErrorRegister());
         $payment->setATCUD("");
@@ -492,15 +485,15 @@ class PaymentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testDocTotalcal(): void
+    #[Test]
+    public function testDocTotalCalculation(): void
     {
         $payment = new Payment(new ErrorRegister());
-        $payment->setDocTotalcal(new DocTotalCalc());
+        $payment->setDocTotalCal(new DocTotalCalc());
         $this->assertInstanceOf(
             DocTotalCalc::class,
-            $payment->getDocTotalcal()
+            $payment->getDocTotalCal()
         );
     }
 }

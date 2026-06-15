@@ -26,14 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\DocTableTotalCalc;
 
@@ -41,7 +40,7 @@ use Rebelo\SaftPt\Validate\DocTableTotalCalc;
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class WorkingDocumentsTest extends TestCase
 {
@@ -49,20 +48,19 @@ class WorkingDocumentsTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(WorkingDocuments::class);
-        $this->assertTrue(true);
+        (new Commune(WorkingDocuments::class))->testReflection(WorkingDocuments::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $workingDocs = new WorkingDocuments(new ErrorRegister());
@@ -77,8 +75,8 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNumberOfEntries(): void
     {
         $workingDocs = new WorkingDocuments(new ErrorRegister());
@@ -97,19 +95,19 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalDebit(): void
     {
         $workingDocs = new WorkingDocuments(new ErrorRegister());
-        $debitStack  = [0.0, 9.99];
+        $debitStack  = [new Decimal("0.0"), new Decimal("9.99")];
         foreach ($debitStack as $debit) {
             $this->assertTrue($workingDocs->setTotalDebit($debit));
             $this->assertSame($debit, $workingDocs->getTotalDebit());
             $this->assertTrue($workingDocs->issetTotalDebit());
         }
 
-        $wrong = -19.9;
+        $wrong = new Decimal("-19.9");
         $this->assertFalse($workingDocs->setTotalDebit($wrong));
         $this->assertSame($wrong, $workingDocs->getTotalDebit());
         $this->assertNotEmpty($workingDocs->getErrorRegistor()->getOnSetValue());
@@ -117,19 +115,19 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalCredit(): void
     {
         $workingDocs = new WorkingDocuments(new ErrorRegister());
-        $creditStack = [0.0, 9.99];
+        $creditStack = [new Decimal("0.0"), new Decimal("9.99")];
         foreach ($creditStack as $credit) {
             $this->assertTrue($workingDocs->setTotalCredit($credit));
             $this->assertSame($credit, $workingDocs->getTotalCredit());
             $this->assertTrue($workingDocs->issetTotalCredit());
         }
 
-        $wrong = -19.9;
+        $wrong = new Decimal("-19.9");
         $this->assertFalse($workingDocs->setTotalCredit($wrong));
         $this->assertSame($wrong, $workingDocs->getTotalCredit());
         $this->assertNotEmpty($workingDocs->getErrorRegistor()->getOnSetValue());
@@ -137,8 +135,8 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWorkDocument(): void
     {
         $workingDocs = new WorkingDocuments(new ErrorRegister());
@@ -155,26 +153,28 @@ class WorkingDocumentsTest extends TestCase
     }
 
     /**
-     * Reads WorkingDocuments from the Demo SAFT in Test\Ressources
+     * Reads WorkingDocuments from the Demo SAFT in Test\Resources
      * and parse then to WorkDocument class, after that generate a xml from the
      * class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $workingDocsXml = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{WorkingDocuments::N_WORKINGDOCUMENTS};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{WorkingDocuments::N_WORKING_DOCUMENTS};
 
         if ($workingDocsXml->count() === 0) {
             $this->fail("No WorkingDocs in XML");
@@ -184,7 +184,7 @@ class WorkingDocumentsTest extends TestCase
         $workingDoc->parseXmlNode($workingDocsXml);
 
         $xmlRootNode   = (new AuditFile())->createRootElement();
-        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
 
         $xml = $workingDoc->createXmlNode($sourceDocNode);
 
@@ -194,7 +194,7 @@ class WorkingDocumentsTest extends TestCase
                 $assertXml,
                 \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
 
@@ -206,12 +206,12 @@ class WorkingDocumentsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $workingDocsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $workingDocs     = new WorkingDocuments(new ErrorRegister());
         $xml             = $workingDocs->createXmlNode($workingDocsNode)->asXML();
@@ -231,17 +231,17 @@ class WorkingDocumentsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $workingDocsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $workingDocs     = new WorkingDocuments(new ErrorRegister());
         $workingDocs->setNumberOfEntries(-1);
-        $workingDocs->setTotalCredit(-0.99);
-        $workingDocs->setTotalDebit(-0.95);
+        $workingDocs->setTotalCredit(new Decimal("-0.99"));
+        $workingDocs->setTotalDebit(new Decimal("-0.95"));
 
         $xml = $workingDocs->createXmlNode($workingDocsNode)->asXML();
         if ($xml === false) {
@@ -259,8 +259,8 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetOrder(): void
     {
         $workingDoc = new WorkingDocuments(new ErrorRegister());
@@ -280,7 +280,7 @@ class WorkingDocumentsTest extends TestCase
             "FO B/1",
             "FO B/2",
         );
-        foreach ($docNumber   as $no) {
+        foreach ($docNumber as $no) {
             $workingDoc->addWorkDocument()->setDocumentNumber($no);
         }
 
@@ -294,11 +294,11 @@ class WorkingDocumentsTest extends TestCase
         $this->assertSame(array(1, 2, 3), \array_keys($order["FO"]["B"]));
         $this->assertSame(array(1, 2, 3, 4), \array_keys($order["CM"]["CM"]));
 
-        foreach ($order as $type => $serieStack) {
-            foreach ($serieStack as $serie => $noStack) {
+        foreach ($order as $type => $serialStack) {
+            foreach ($serialStack as $serial => $noStack) {
                 foreach ($noStack as $no => $workDoc) {
                     $this->assertSame(
-                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        \sprintf("%s %s/%s", $type, $serial, $no),
                         $workDoc->getDocumentNumber()
                     );
                 }
@@ -308,8 +308,8 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDuplicateNumber(): void
     {
         $workingDoc = new WorkingDocuments(new ErrorRegister());
@@ -339,8 +339,8 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNoNumber(): void
     {
         $workDocs = new WorkingDocuments(new ErrorRegister());
@@ -358,8 +358,8 @@ class WorkingDocumentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocTableTotalCalc(): void
     {
         $workingDoc = new WorkingDocuments(new ErrorRegister());

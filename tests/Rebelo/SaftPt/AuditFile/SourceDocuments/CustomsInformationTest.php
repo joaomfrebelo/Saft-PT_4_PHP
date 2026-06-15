@@ -26,10 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class CustomsInformationTest
@@ -40,25 +41,23 @@ class CustomsInformationTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(CustomsInformation::class);
-        $this->assertTrue(true);
+        (new Commune(CustomsInformation::class))->testReflection(CustomsInformation::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceSetGet(): void
     {
         $ci = new CustomsInformation(new ErrorRegister());
         $this->assertInstanceOf(CustomsInformation::class, $ci);
-        $this->assertTrue(\is_array($ci->getArcNo()));
         $this->assertSame(0, \count($ci->getArcNo()));
         $this->assertNull($ci->getIecAmount());
 
@@ -107,8 +106,8 @@ class CustomsInformationTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $ci   = new CustomsInformation(new ErrorRegister());
@@ -117,9 +116,9 @@ class CustomsInformationTest extends TestCase
             $ci->createXmlNode($node);
             $this->fail(
                 "Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -128,8 +127,8 @@ class CustomsInformationTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $ci   = new CustomsInformation(new ErrorRegister());
@@ -138,9 +137,9 @@ class CustomsInformationTest extends TestCase
             $ci->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -150,34 +149,34 @@ class CustomsInformationTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $ci   = $this->createCustomsInformation();
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
 
         $ciNode = $ci->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $ciNode);
 
         $this->assertSame(
-            CustomsInformation::N_CUSTOMSINFORMATION, $ciNode->getName()
+            CustomsInformation::N_CUSTOMS_INFORMATION, $ciNode->getName()
         );
 
         for ($n = 0; $n < \count($ci->getArcNo()); $n++) {
             $this->assertSame(
                 $ci->getArcNo()[$n],
-                (string) $node->{CustomsInformation::N_CUSTOMSINFORMATION}
-                ->{CustomsInformation::N_ARCNO}[$n]
+                (string)$node->{CustomsInformation::N_CUSTOMS_INFORMATION}
+                            ->{CustomsInformation::N_ARC_NO}[$n]
             );
         }
 
         $this->assertSame(
             $ci->getIecAmount(),
-            (float) $node->{CustomsInformation::N_CUSTOMSINFORMATION}
-            ->{CustomsInformation::N_IECAMOUNT}
+            (float)$node->{CustomsInformation::N_CUSTOMS_INFORMATION}
+                ->{CustomsInformation::N_IEC_AMOUNT}
         );
 
         $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
@@ -188,32 +187,32 @@ class CustomsInformationTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeNull(): void
     {
         $ci   = new CustomsInformation(new ErrorRegister());
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
 
         $ciNode = $ci->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $ciNode);
 
         $this->assertSame(
-            CustomsInformation::N_CUSTOMSINFORMATION, $ciNode->getName()
+            CustomsInformation::N_CUSTOMS_INFORMATION, $ciNode->getName()
         );
 
         $this->assertSame(
             0,
-            $node->{CustomsInformation::N_CUSTOMSINFORMATION}
-            ->{CustomsInformation::N_ARCNO}->count()
+            $node->{CustomsInformation::N_CUSTOMS_INFORMATION}
+                ->{CustomsInformation::N_ARC_NO}->count()
         );
 
         $this->assertSame(
             0,
-            $node->{CustomsInformation::N_CUSTOMSINFORMATION}
-            ->{CustomsInformation::N_IECAMOUNT}->count()
+            $node->{CustomsInformation::N_CUSTOMS_INFORMATION}
+                ->{CustomsInformation::N_IEC_AMOUNT}->count()
         );
 
         $this->assertEmpty($ci->getErrorRegistor()->getLibXmlError());
@@ -224,13 +223,13 @@ class CustomsInformationTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXml(): void
     {
         $ci   = $this->createCustomsInformation();
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $xml  = $ci->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -256,13 +255,13 @@ class CustomsInformationTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlEmpty(): void
     {
         $ci   = new CustomsInformation(new ErrorRegister());
         $node = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $xml  = $ci->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -289,12 +288,12 @@ class CustomsInformationTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $ciNode = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $ci     = new CustomsInformation(new ErrorRegister());
         $xml    = $ci->createXmlNode($ciNode)->asXML();
@@ -314,12 +313,12 @@ class CustomsInformationTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $ciNode = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $ci     = new CustomsInformation(new ErrorRegister());
         $ci->addARCNo("");

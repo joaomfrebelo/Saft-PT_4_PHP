@@ -6,6 +6,7 @@
         <cache>
           <versions>
             <info id="Local" version="9.5.11" />
+            <info id="Local/home/rebelo/Repos/Saft-PT_4_PHP/vendor/autoload.php" version="12.5.28" />
           </versions>
         </cache>
       </tool>

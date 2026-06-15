@@ -26,17 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{MovementOfGoods\MovementOfGoods,
     Payments\Payments,
     SalesInvoices\SalesInvoices,
     WorkingDocuments\WorkingDocuments};
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -51,14 +49,18 @@ class SourceDocumentsTest extends TestCase
 
     /**
      *
+     * @throws \ReflectionException
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(SourceDocuments::class);
-        $this->assertTrue(true);
+        (new Commune(SourceDocuments::class))->testReflection(SourceDocuments::class);
     }
 
+    /**
+     * @return void
+     */
+    #[Test]
     public function testInstance(): void
     {
         $sourceDoc = new SourceDocuments(new ErrorRegister());
@@ -68,6 +70,10 @@ class SourceDocumentsTest extends TestCase
         $this->assertNull($sourceDoc->getPayments(false));
     }
 
+    /**
+     * @return void
+     */
+    #[Test]
     public function testInstanceAndSetGet(): void
     {
         $sourceDoc = new SourceDocuments(new ErrorRegister());
@@ -103,23 +109,26 @@ class SourceDocumentsTest extends TestCase
     }
 
     /**
-     * Reads SourceDocuments from the Demo SAFT in Test\Ressources
+     * Reads SourceDocuments from the Demo SAFT in Test\Resources
      * and parse then to SourceDocuments class, after that generate a xml from the
      * class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $sourceDocsXml = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS};
 
         if ($sourceDocsXml->count() === 0) {
             $this->fail("No SourceDocs in XML");
@@ -131,7 +140,7 @@ class SourceDocumentsTest extends TestCase
         $xmlRootNode = (new AuditFile())->createRootElement();
 
         $auditNode = $xmlRootNode->addChild(
-            AuditFile::N_AUDITFILE
+            AuditFile::N_AUDIT_FILE
         );
 
         $xml = $sourceDoc->createXmlNode($auditNode);
@@ -142,7 +151,7 @@ class SourceDocumentsTest extends TestCase
                 $assertXml,
                 \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
     }

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -51,7 +51,7 @@ class ErrorRegister
     protected array $libXmlError = array();
 
     /**
-     * Errors when the value is setted
+     * Errors when the value is set
      * @var string[]
      * @since 1.0.0
      */
@@ -88,7 +88,7 @@ class ErrorRegister
     }
 
     /**
-     * Get the onCreateXmlNode values error statck
+     * Get the onCreateXmlNode values error stack
      * @return string[]
      * @since 1.0.0
      */
@@ -113,7 +113,7 @@ class ErrorRegister
 
     /**
      * Get on set values errors stack
-     * @return array
+     * @return mixed[]
      * @since 1.0.0
      */
     public function getOnSetValue(): array

@@ -41,43 +41,43 @@ abstract class AAddress extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_BUILDINGNUMBER = "BuildingNumber";
+    const string N_BUILDING_NUMBER = "BuildingNumber";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_STREETNAME = "StreetName";
+    const string N_STREET_NAME = "StreetName";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ADDRESSDETAIL = "AddressDetail";
+    const string N_ADDRESS_DETAIL = "AddressDetail";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CITY = "City";
+    const string N_CITY = "City";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_POSTALCODE = "PostalCode";
+    const string N_POSTAL_CODE = "PostalCode";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_REGION = "Region";
+    const string N_REGION = "Region";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_COUNTRY = "Country";
+    const string N_COUNTRY = "Country";
 
     /**
      * &lt;xs:element ref="BuildingNumber" minOccurs="0"/&gt;
@@ -251,7 +251,7 @@ abstract class AAddress extends AAuditFile
     {
         try {
             $this->buildingNumber = $buildingNumber === null ?
-                null : static::valTextMandMaxCar($buildingNumber, 10, __METHOD__);
+                null : static::valTextMandatoryMaxCar($buildingNumber, 10, __METHOD__);
             $return               = true;
         } catch (AuditFileException $e) {
             $this->buildingNumber = $buildingNumber;
@@ -281,7 +281,7 @@ abstract class AAddress extends AAuditFile
     {
         try {
             $this->streetName = $streetName === null ?
-                null : static::valTextMandMaxCar($streetName, 200, __METHOD__);
+                null : static::valTextMandatoryMaxCar($streetName, 200, __METHOD__);
             $return           = true;
         } catch (AuditFileException $e) {
             $this->streetName = $streetName;
@@ -312,7 +312,7 @@ abstract class AAddress extends AAuditFile
     {
         try {
             $this->addressDetail = $addressDetail === null ?
-                null : static::valTextMandMaxCar($addressDetail, 210, __METHOD__);
+                null : static::valTextMandatoryMaxCar($addressDetail, 210, __METHOD__);
             $return              = true;
         } catch (AuditFileException $e) {
             $this->addressDetail = $addressDetail;
@@ -342,7 +342,7 @@ abstract class AAddress extends AAuditFile
     public function setCity(string $city): bool
     {
         try {
-            $this->city = static::valTextMandMaxCar($city, 50, __METHOD__);
+            $this->city = static::valTextMandatoryMaxCar($city, 50, __METHOD__);
             $return     = true;
         } catch (AuditFileException $e) {
             $this->city = $city;
@@ -368,7 +368,7 @@ abstract class AAddress extends AAuditFile
     {
         try {
             $this->region = $region === null ?
-                null : static::valTextMandMaxCar($region, 50, __METHOD__);
+                null : static::valTextMandatoryMaxCar($region, 50, __METHOD__);
             $return       = true;
         } catch (AuditFileException $e) {
             $this->region = $region;
@@ -401,20 +401,20 @@ abstract class AAddress extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         if ($this->getAddressDetail() !== null) {
-            $node->addChild(static::N_ADDRESSDETAIL, $this->getAddressDetail());
+            $node->addChild(static::N_ADDRESS_DETAIL, $this->getAddressDetail());
         } elseif ($this->getStreetName() !== null) {
-            $node->addChild(static::N_STREETNAME, $this->getStreetName());
+            $node->addChild(static::N_STREET_NAME, $this->getStreetName());
             $addr = $this->getStreetName();
             if ($this->getBuildingNumber() !== null) {
                 $node->addChild(
-                    static::N_BUILDINGNUMBER,
+                    static::N_BUILDING_NUMBER,
                     $this->getBuildingNumber()
                 );
                 $addr .= " ".$this->getBuildingNumber();
             }
-            $node->addChild(static::N_ADDRESSDETAIL, $addr);
+            $node->addChild(static::N_ADDRESS_DETAIL, $addr);
         } else {
-            $node->addChild(static::N_ADDRESSDETAIL);
+            $node->addChild(static::N_ADDRESS_DETAIL);
             $this->getErrorRegistor()->addOnCreateXmlNode("AddressDetail_not_valid");
         }
 
@@ -427,9 +427,9 @@ abstract class AAddress extends AAuditFile
 
         try {
             if ($this instanceof Address || $this instanceof SupplierAddress) {
-                $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
+                $node->addChild(static::N_POSTAL_CODE, $this->getPostalCode());
             } elseif ($this instanceof AddressPT) {
-                $node->addChild(static::N_POSTALCODE, $this->getPostalCode());
+                $node->addChild(static::N_POSTAL_CODE, $this->getPostalCode());
             } else {
                 $msg = "unknown address class instance to get the postal code";
                 throw new AuditFileException($msg);
@@ -437,7 +437,7 @@ abstract class AAddress extends AAuditFile
         } catch (\Exception | \Error $e) {
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
-            $node->addChild(static::N_POSTALCODE);
+            $node->addChild(static::N_POSTAL_CODE);
             $this->getErrorRegistor()->addOnCreateXmlNode("PostalCode_not_valid");
         }
 
@@ -456,13 +456,13 @@ abstract class AAddress extends AAuditFile
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if ($node->{static::N_STREETNAME}->count() > 0) {
-            $this->setStreetName((string) $node->{static::N_STREETNAME});
+        if ($node->{static::N_STREET_NAME}->count() > 0) {
+            $this->setStreetName((string) $node->{static::N_STREET_NAME});
         }
-        if ($node->{static::N_BUILDINGNUMBER}->count() > 0) {
-            $this->setBuildingNumber((string) $node->{static::N_BUILDINGNUMBER});
+        if ($node->{static::N_BUILDING_NUMBER}->count() > 0) {
+            $this->setBuildingNumber((string) $node->{static::N_BUILDING_NUMBER});
         }
-        $this->setAddressDetail((string) $node->{static::N_ADDRESSDETAIL});
+        $this->setAddressDetail((string) $node->{static::N_ADDRESS_DETAIL});
         $this->setCity((string) $node->{static::N_CITY});
         if ($node->{static::N_REGION}->count() > 0) {
             $this->setRegion((string) $node->{static::N_REGION});

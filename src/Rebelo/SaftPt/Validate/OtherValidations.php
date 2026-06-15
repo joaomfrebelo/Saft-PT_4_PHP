@@ -26,7 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
-use Rebelo\Decimal\DecimalException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -34,15 +33,16 @@ use Symfony\Component\Console\Helper\ProgressBar;
  * Generic and commune validations
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class OtherValidations extends ADocuments
 {
 
     /**
      * Generic and commune validations
+     *
      * @param AuditFile $auditFile The AuditFile to be validated
-     * @throws DecimalException
+     *
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile)
@@ -53,6 +53,7 @@ class OtherValidations extends ADocuments
 
     /**
      * Validate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -82,8 +83,8 @@ class OtherValidations extends ADocuments
             if ($this->getStyle() !== null) {
                 $section     = null;
                 $progressBar = $this->getStyle()->addProgressBar($section);
-                $section->writeln("");
-                $section->writeln(
+                $section?->writeln("");
+                $section?->writeln(
                     \sprintf(
                         AuditFile::getI18n()->get("other_validation_n_doc"),
                         $nDoc
@@ -103,10 +104,11 @@ class OtherValidations extends ADocuments
         } catch (\Exception|\Error $e) {
             $this->isValid = false;
 
+            /** @phpstan-ignore-next-line */
             $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
 
             \Logger::getLogger(\get_class($this))
                 ->debug(
@@ -120,16 +122,18 @@ class OtherValidations extends ADocuments
 
     /**
      * Verify the single invoice internal code per all document type
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice[] $invoices
-     * @param array<string, string> $type The accumulated documents types and internal codes
-     * @param \Symfony\Component\Console\Helper\ProgressBar|null $progressBar
+     * @param array<string, string>                                            $type The accumulated documents types and internal codes
+     * @param \Symfony\Component\Console\Helper\ProgressBar|null               $progressBar
+     *
      * @return void
      * @since 1.0.0
      */
     protected function checkInvoicesType(
-        array       &$invoices,
-        array       &$type,
-        ProgressBar $progressBar = null
+        array            &$invoices,
+        array            &$type,
+        ProgressBar|null $progressBar = null
     ): void
     {
         foreach ($invoices as $inv) {
@@ -138,37 +142,39 @@ class OtherValidations extends ADocuments
             list($code,) = \explode(" ", $inv->getInvoiceNo());
 
             if (\array_key_exists($code, $type)) {
-                if ($type[$code] !== $inv->getInvoiceType()->get()) {
+                if ($type[$code] !== $inv->getInvoiceType()->value) {
                     $this->isValid = false;
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code, $type[$code], $inv->getInvoiceType()->get()
+                        $code, $type[$code], $inv->getInvoiceType()->value
                     );
 
                     $this->auditFile->getErrorRegistor()
-                        ->addValidationErrors($msg);
+                                    ->addValidationErrors($msg);
 
                     \Logger::getLogger(\get_class($this))->info($msg);
                 }
             } else {
-                $type[$code] = $inv->getInvoiceType()->get();
+                $type[$code] = $inv->getInvoiceType()->value;
             }
         }
     }
 
     /**
      * Verify the single StockMovement internal code per all document type
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement[] $stockMovements
-     * @param array<string, string> $type The accumulated documents types and internal codes
-     * @param \Symfony\Component\Console\Helper\ProgressBar|null $progressBar
+     * @param array<string, string>                                                    $type The accumulated documents types and internal codes
+     * @param \Symfony\Component\Console\Helper\ProgressBar|null                       $progressBar
+     *
      * @return void
      * @since 1.0.0
      */
     protected function checkStockMovementType(
-        array       &$stockMovements,
-        array       &$type,
-        ProgressBar $progressBar = null): void
+        array            &$stockMovements,
+        array            &$type,
+        ProgressBar|null $progressBar = null): void
     {
         foreach ($stockMovements as $stockMov) {
             $progressBar?->advance();
@@ -176,37 +182,39 @@ class OtherValidations extends ADocuments
             list($code,) = \explode(" ", $stockMov->getDocumentNumber());
 
             if (\array_key_exists($code, $type)) {
-                if ($type[$code] !== $stockMov->getMovementType()->get()) {
+                if ($type[$code] !== $stockMov->getMovementType()->value) {
                     $this->isValid = false;
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code, $type[$code], $stockMov->getMovementType()->get()
+                        $code, $type[$code], $stockMov->getMovementType()->value
                     );
 
                     $this->auditFile->getErrorRegistor()
-                        ->addValidationErrors($msg);
+                                    ->addValidationErrors($msg);
 
                     \Logger::getLogger(\get_class($this))->info($msg);
                 }
             } else {
-                $type[$code] = $stockMov->getMovementType()->get();
+                $type[$code] = $stockMov->getMovementType()->value;
             }
         }
     }
 
     /**
      * Verify the single WorkDocument internal code per all document type
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument[] $workDocs
-     * @param array<string, string> $type The accumulated documents types and internal codes
-     * @param \Symfony\Component\Console\Helper\ProgressBar|null $progressBar
+     * @param array<string, string>                                                    $type The accumulated documents types and internal codes
+     * @param \Symfony\Component\Console\Helper\ProgressBar|null                       $progressBar
+     *
      * @return void
      * @since 1.0.0
      */
     protected function checkWorkDocumentType(
-        array       &$workDocs,
-        array       &$type,
-        ProgressBar $progressBar = null
+        array            &$workDocs,
+        array            &$type,
+        ProgressBar|null $progressBar = null
     ): void
     {
         foreach ($workDocs as $work) {
@@ -216,37 +224,39 @@ class OtherValidations extends ADocuments
             list($code,) = \explode(" ", $work->getDocumentNumber());
 
             if (\array_key_exists($code, $type)) {
-                if ($type[$code] !== $work->getWorkType()->get()) {
+                if ($type[$code] !== $work->getWorkType()->value) {
                     $this->isValid = false;
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code, $type[$code], $work->getWorkType()->get()
+                        $code, $type[$code], $work->getWorkType()->value
                     );
 
                     $this->auditFile->getErrorRegistor()
-                        ->addValidationErrors($msg);
+                                    ->addValidationErrors($msg);
 
                     \Logger::getLogger(\get_class($this))->info($msg);
                 }
             } else {
-                $type[$code] = $work->getWorkType()->get();
+                $type[$code] = $work->getWorkType()->value;
             }
         }
     }
 
     /**
      * Verify the single Payment internal code per all document type
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment[] $payments
-     * @param array<string, string> $type The accumulated documents types and internal codes
-     * @param \Symfony\Component\Console\Helper\ProgressBar|null $progressBar
+     * @param array<string, string>                                       $type The accumulated documents types and internal codes
+     * @param \Symfony\Component\Console\Helper\ProgressBar|null          $progressBar
+     *
      * @return void
      * @since 1.0.0
      */
     protected function checkPaymentType(
-        array       &$payments,
-        array       &$type,
-        ProgressBar $progressBar = null
+        array            &$payments,
+        array            &$type,
+        ProgressBar|null $progressBar = null
     ): void
     {
         foreach ($payments as $pay) {
@@ -255,21 +265,21 @@ class OtherValidations extends ADocuments
             list($code,) = \explode(" ", $pay->getPaymentRefNo());
 
             if (\array_key_exists($code, $type)) {
-                if ($type[$code] !== $pay->getPaymentType()->get()) {
+                if ($type[$code] !== $pay->getPaymentType()->value) {
                     $this->isValid = false;
 
                     $msg = \sprintf(
                         AuditFile::getI18n()->get("doc_code_with_more_one_type"),
-                        $code, $type[$code], $pay->getPaymentType()->get()
+                        $code, $type[$code], $pay->getPaymentType()->value
                     );
 
                     $this->auditFile->getErrorRegistor()
-                        ->addValidationErrors($msg);
+                                    ->addValidationErrors($msg);
 
                     \Logger::getLogger(\get_class($this))->info($msg);
                 }
             } else {
-                $type[$code] = $pay->getPaymentType()->get();
+                $type[$code] = $pay->getPaymentType()->value;
             }
         }
     }

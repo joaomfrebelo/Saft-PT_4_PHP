@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -45,19 +46,19 @@ class OrderReferences extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_ORDERREFERENCES = "OrderReferences";
+    const string N_ORDER_REFERENCES = "OrderReferences";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ORIGINATINGON = "OriginatingON";
+    const string N_ORIGINATING_ON = "OriginatingON";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ORDERDATE = "OrderDate";
+    const string N_ORDER_DATE = "OrderDate";
 
     /**
      * &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;
@@ -134,7 +135,7 @@ class OrderReferences extends AAuditFile
         try {
             $this->originatingON = $originatingON === null ?
                 null :
-                $this->valTextMandMaxCar($originatingON, 60, __METHOD__);
+                $this->valTextMandatoryMaxCar($originatingON, 60, __METHOD__);
             $return              = true;
         } catch (AuditFileException $e) {
             $this->originatingON = $originatingON;
@@ -157,8 +158,8 @@ class OrderReferences extends AAuditFile
     /**
      * Get OrderDate<br>
      * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
+     *
      * @return \Rebelo\Date\Date|null
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getOrderDate(): ?RDate
@@ -168,7 +169,7 @@ class OrderReferences extends AAuditFile
                 \sprintf(
                     __METHOD__." get '%s'",
                     $this->orderDate === null ?
-                    "null" : $this->orderDate->format(RDate::SQL_DATE)
+                    "null" : $this->orderDate->format(Pattern::SQL_DATE)
                 )
             );
 
@@ -178,9 +179,10 @@ class OrderReferences extends AAuditFile
     /**
      * Set OrderDate<br>
      * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;
+     *
      * @param \Rebelo\Date\Date|null $orderDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setOrderDate(?RDate $orderDate): void
@@ -191,16 +193,17 @@ class OrderReferences extends AAuditFile
                 \sprintf(
                     __METHOD__." set to '%s'",
                     $this->orderDate === null ?
-                    "null" : $this->orderDate->format(RDate::SQL_DATE)
+                    "null" : $this->orderDate->format(Pattern::SQL_DATE)
                 )
             );
     }
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -218,17 +221,17 @@ class OrderReferences extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $orderRefNode = $node->addChild(static::N_ORDERREFERENCES);
+        $orderRefNode = $node->addChild(static::N_ORDER_REFERENCES);
 
         if ($this->getOriginatingON() !== null) {
             $orderRefNode->addChild(
-                static::N_ORIGINATINGON, $this->getOriginatingON()
+                static::N_ORIGINATING_ON, $this->getOriginatingON()
             );
         }
         if ($this->getOrderDate() !== null) {
             $orderRefNode->addChild(
-                static::N_ORDERDATE,
-                $this->getOrderDate()->format(RDate::SQL_DATE)
+                static::N_ORDER_DATE,
+                $this->getOrderDate()->format(Pattern::SQL_DATE)
             );
         }
         return $orderRefNode;
@@ -238,8 +241,9 @@ class OrderReferences extends AAuditFile
      * Parse XML node
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -248,28 +252,28 @@ class OrderReferences extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_ORDERREFERENCES) {
+        if ($node->getName() !== static::N_ORDER_REFERENCES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_ORDERREFERENCES, $node->getName()
+                static::N_ORDER_REFERENCES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($node->{static::N_ORIGINATINGON}->count() > 0) {
+        if ($node->{static::N_ORIGINATING_ON}->count() > 0) {
             $this->setOriginatingON(
-                (string) $node->{static::N_ORIGINATINGON}
+                (string) $node->{static::N_ORIGINATING_ON}
             );
         } else {
             $this->setOriginatingON(null);
         }
 
-        if ($node->{static::N_ORDERDATE}->count() > 0) {
+        if ($node->{static::N_ORDER_DATE}->count() > 0) {
             $this->setOrderDate(
                 RDate::parse(
-                    RDate::SQL_DATE, (string) $node->{static::N_ORDERDATE}
+                    Pattern::SQL_DATE, (string) $node->{static::N_ORDER_DATE}
                 )
             );
         } else {

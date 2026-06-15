@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -51,25 +52,25 @@ class Currency extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_CURRENCY = "Currency";
+    const string N_CURRENCY = "Currency";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CURRENCYCODE = "CurrencyCode";
+    const string N_CURRENCY_CODE = "CurrencyCode";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CURRENCYAMOUNT = "CurrencyAmount";
+    const string N_CURRENCY_AMOUNT = "CurrencyAmount";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_EXCHANGERATE = "ExchangeRate";
+    const string N_EXCHANGE_RATE = "ExchangeRate";
 
     /**
      * &lt;xs:element ref="CurrencyCode"/&gt;
@@ -80,17 +81,17 @@ class Currency extends AAuditFile
 
     /**
      * &lt;xs:element ref="CurrencyAmount"/&gt;
-     * @var float $currencyAmount
+     * @var \Decimal\Decimal $currencyAmount
      * @since 1.0.0
      */
-    private float $currencyAmount;
+    private Decimal $currencyAmount;
 
     /**
      * &lt;xs:element ref="ExchangeRate"/&gt;
-     * @var float $exchangeRate
+     * @var Decimal $exchangeRate
      * @since 1.0.0
      */
-    private float $exchangeRate;
+    private Decimal $exchangeRate;
 
     /**
      * Currency<br>
@@ -127,7 +128,7 @@ class Currency extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->currencyCode->get()
+                    $this->currencyCode->value
                 )
             );
         return $this->currencyCode;
@@ -149,7 +150,7 @@ class Currency extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->currencyCode->get()
+                    $this->currencyCode->value
                 )
             );
     }
@@ -158,11 +159,11 @@ class Currency extends AAuditFile
      * Gets CurrencyAmount<br>
      * Value of field 4.1.4.20.3. – GrossTotal in the original currency of the document.<br>
      * &lt;xs:element ref="CurrencyAmount"/&gt;
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getCurrencyAmount(): float
+    public function getCurrencyAmount(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -178,13 +179,13 @@ class Currency extends AAuditFile
      * Sets CurrencyAmount<br>
      * Value of field 4.1.4.20.3. – GrossTotal in the original currency of the document.<br>
      * &lt;xs:element ref="CurrencyAmount"/&gt;
-     * @param float $currencyAmount
+     * @param Decimal $currencyAmount
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setCurrencyAmount(float $currencyAmount): bool
+    public function setCurrencyAmount(Decimal $currencyAmount): bool
     {
-        if ($currencyAmount < 0.0) {
+        if ($currencyAmount->compareTo(new Decimal("0.0")) < 0) {
             $msg    = "CurrencyAmount can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -208,11 +209,11 @@ class Currency extends AAuditFile
      * Gets ExchangeRate<br>
      * The exchange rate used in the conversion into EUR shall be mentioned.<br>
      * &lt;xs:element ref="ExchangeRate"/&gt;
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getExchangeRate(): float
+    public function getExchangeRate(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -228,13 +229,13 @@ class Currency extends AAuditFile
      * Sets a new exchangeRate<br>
      * The exchange rate used in the conversion into EUR shall be mentioned.<br>
      * &lt;xs:element ref="ExchangeRate"/&gt;
-     * @param float $exchangeRate
+     * @param Decimal $exchangeRate
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setExchangeRate(float $exchangeRate): bool
+    public function setExchangeRate(Decimal $exchangeRate): bool
     {
-        if ($exchangeRate < 0.0) {
+        if ($exchangeRate->compareTo(new Decimal("0.0")) < 0) {
             $msg    = "ExchangeRate can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -265,10 +266,10 @@ class Currency extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
+        if ($node->getName() !== ADocumentTotals::N_DOCUMENT_TOTALS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                ADocumentTotals::N_DOCUMENTTOTALS, $node->getName()
+                ADocumentTotals::N_DOCUMENT_TOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -279,30 +280,30 @@ class Currency extends AAuditFile
 
         if (isset($this->currencyCode)) {
             $currencyNode->addChild(
-                static::N_CURRENCYCODE, $this->getCurrencyCode()->get()
+                static::N_CURRENCY_CODE, $this->getCurrencyCode()->value
             );
         } else {
-            $currencyNode->addChild(static::N_CURRENCYCODE);
+            $currencyNode->addChild(static::N_CURRENCY_CODE);
             $this->getErrorRegistor()->addOnCreateXmlNode("CurrencyCode_not_valid");
         }
 
         if (isset($this->currencyAmount)) {
             $currencyNode->addChild(
-                static::N_CURRENCYAMOUNT,
+                static::N_CURRENCY_AMOUNT,
                 $this->floatFormat($this->getCurrencyAmount())
             );
         } else {
-            $currencyNode->addChild(static::N_CURRENCYAMOUNT);
+            $currencyNode->addChild(static::N_CURRENCY_AMOUNT);
             $this->getErrorRegistor()->addOnCreateXmlNode("CurrencyAmount_not_valid");
         }
 
         if (isset($this->exchangeRate)) {
             $currencyNode->addChild(
-                static::N_EXCHANGERATE,
+                static::N_EXCHANGE_RATE,
                 $this->floatFormat($this->getExchangeRate())
             );
         } else {
-            $currencyNode->addChild(static::N_EXCHANGERATE);
+            $currencyNode->addChild(static::N_EXCHANGE_RATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("ExchangeRate_not_valid");
         }
 
@@ -331,9 +332,9 @@ class Currency extends AAuditFile
         }
 
         $this->setCurrencyCode(
-            new CurrencyCode((string) $node->{static::N_CURRENCYCODE})
+            CurrencyCode::from((string) $node->{static::N_CURRENCY_CODE})
         );
-        $this->setCurrencyAmount((float) $node->{static::N_CURRENCYAMOUNT});
-        $this->setExchangeRate((float) $node->{static::N_EXCHANGERATE});
+        $this->setCurrencyAmount(new Decimal((string)$node->{static::N_CURRENCY_AMOUNT}));
+        $this->setExchangeRate(new Decimal((string)$node->{static::N_EXCHANGE_RATE}));
     }
 }

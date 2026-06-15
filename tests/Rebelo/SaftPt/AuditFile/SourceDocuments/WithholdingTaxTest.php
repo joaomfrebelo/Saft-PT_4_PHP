@@ -26,12 +26,14 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * WithholdingTaxTest
@@ -42,20 +44,19 @@ class WithholdingTaxTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(WithholdingTax::class);
-        $this->assertTrue(true);
+        (new Commune(WithholdingTax::class))->testReflection(WithholdingTax::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $withHolTax = new WithholdingTax(new ErrorRegister());
@@ -67,20 +68,20 @@ class WithholdingTaxTest extends TestCase
         try {
             $withHolTax->getWithholdingTaxAmount();
             $this->fail("Get WithholdingTaxAmount without initialization Should throw \Error");
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(\Error::class, $e);
         }
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetWithholdingTaxType(): void
     {
         $withHolTax = new WithholdingTax(new ErrorRegister());
 
-        $taxType = new WithholdingTaxType(WithholdingTaxType::IRS);
+        $taxType = WithholdingTaxType::IRS;
         $withHolTax->setWithholdingTaxType($taxType);
         $this->assertSame($taxType, $withHolTax->getWithholdingTaxType());
         $withHolTax->setWithholdingTaxType(null);
@@ -89,8 +90,8 @@ class WithholdingTaxTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetWithholdingTaxDescription(): void
     {
         $withHolTax = new WithholdingTax(new ErrorRegister());
@@ -117,18 +118,18 @@ class WithholdingTaxTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetWithholdingTaxAmount(): void
     {
         $withHolTax = new WithholdingTax(new ErrorRegister());
 
-        $amount = 0.99;
+        $amount = new Decimal("0.99");
         $withHolTax->setWithholdingTaxAmount($amount);
         $this->assertSame($amount, $withHolTax->getWithholdingTaxAmount());
         $this->assertTrue($withHolTax->issetWithholdingTaxAmount());
 
-        $wrong = -0.01;
+        $wrong = new Decimal("-0.01");
         $withHolTax->getErrorRegistor()->clearAllErrors();
         $withHolTax->setWithholdingTaxAmount($wrong);
         $this->assertSame($wrong, $withHolTax->getWithholdingTaxAmount());
@@ -142,18 +143,16 @@ class WithholdingTaxTest extends TestCase
     public function createWithholdingTax(): WithholdingTax
     {
         $withholdingTax = new WithholdingTax(new ErrorRegister());
-        $withholdingTax->setWithholdingTaxAmount(9.45);
+        $withholdingTax->setWithholdingTaxAmount(new Decimal("9.45"));
         $withholdingTax->setWithholdingTaxDescription("Test tax");
-        $withholdingTax->setWithholdingTaxType(
-            new WithholdingTaxType(WithholdingTaxType::IRS)
-        );
+        $withholdingTax->setWithholdingTaxType(WithholdingTaxType::IRS);
         return $withholdingTax;
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $withholdingTax = new WithholdingTax(new ErrorRegister());
@@ -162,9 +161,9 @@ class WithholdingTaxTest extends TestCase
             $withholdingTax->createXmlNode($node);
             $this->fail(
                 "Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -173,8 +172,8 @@ class WithholdingTaxTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $withholdingTax = new WithholdingTax(new ErrorRegister());
@@ -183,9 +182,9 @@ class WithholdingTaxTest extends TestCase
             $withholdingTax->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -195,38 +194,37 @@ class WithholdingTaxTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $withholdingTax = $this->createWithholdingTax();
         $node           = new \SimpleXMLElement(
-            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
         );
 
         $withHolTaxNode = $withholdingTax->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $withHolTaxNode);
 
         $this->assertSame(
-            WithholdingTax::N_WITHHOLDINGTAX, $withHolTaxNode->getName()
+            WithholdingTax::N_WITHHOLDING_TAX, $withHolTaxNode->getName()
         );
 
         $this->assertSame(
-            $withholdingTax->getWithholdingTaxType()->get(),
-            (string) $node->{WithholdingTax::N_WITHHOLDINGTAX}
-            ->{WithholdingTax::N_WITHHOLDINGTAXTYPE}
+            $withholdingTax->getWithholdingTaxType()?->value,
+            (string)$node->{WithholdingTax::N_WITHHOLDING_TAX}->{WithholdingTax::N_WITHHOLDING_TAX_TYPE}
         );
 
         $this->assertSame(
             $withholdingTax->getWithholdingTaxDescription(),
-            (string) $node->{WithholdingTax::N_WITHHOLDINGTAX}
-            ->{WithholdingTax::N_WITHHOLDINGTAXDESCRIPTION}
+            (string)$node->{WithholdingTax::N_WITHHOLDING_TAX}
+                ->{WithholdingTax::N_WITHHOLDING_TAX_DESCRIPTION}
         );
 
         $this->assertSame(
-            $withholdingTax->getWithholdingTaxAmount(),
-            (float) $node->{WithholdingTax::N_WITHHOLDINGTAX}
-            ->{WithholdingTax::N_WITHHOLDINGTAXAMOUNT}
+            $withholdingTax->getWithholdingTaxAmount()->toFloat(),
+            (float)$node->{WithholdingTax::N_WITHHOLDING_TAX}
+                ->{WithholdingTax::N_WITHHOLDING_TAX_AMOUNT}
         );
 
         $this->assertEmpty($withholdingTax->getErrorRegistor()->getLibXmlError());
@@ -237,40 +235,40 @@ class WithholdingTaxTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeNull(): void
     {
         $withholdingTax = $this->createWithholdingTax();
         $withholdingTax->setWithholdingTaxType(null);
         $withholdingTax->setWithholdingTaxDescription(null);
-        $node           = new \SimpleXMLElement(
-            "<".Payment::N_PAYMENT."></".Payment::N_PAYMENT.">"
+        $node = new \SimpleXMLElement(
+            "<" . Payment::N_PAYMENT . "></" . Payment::N_PAYMENT . ">"
         );
 
         $withHolTaxNode = $withholdingTax->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $withHolTaxNode);
 
         $this->assertSame(
-            WithholdingTax::N_WITHHOLDINGTAX, $withHolTaxNode->getName()
+            WithholdingTax::N_WITHHOLDING_TAX, $withHolTaxNode->getName()
         );
 
         $this->assertSame(
             0,
-            $node->{WithholdingTax::N_WITHHOLDINGTAX}
-            ->{WithholdingTax::N_WITHHOLDINGTAXTYPE}->count()
+            $node->{WithholdingTax::N_WITHHOLDING_TAX}
+                ->{WithholdingTax::N_WITHHOLDING_TAX_TYPE}->count()
         );
 
         $this->assertSame(
             0,
-            $node->{WithholdingTax::N_WITHHOLDINGTAX}
-            ->{WithholdingTax::N_WITHHOLDINGTAXDESCRIPTION}->count()
+            $node->{WithholdingTax::N_WITHHOLDING_TAX}
+                ->{WithholdingTax::N_WITHHOLDING_TAX_DESCRIPTION}->count()
         );
 
         $this->assertSame(
-            $withholdingTax->getWithholdingTaxAmount(),
-            (float) $node->{WithholdingTax::N_WITHHOLDINGTAX}
-            ->{WithholdingTax::N_WITHHOLDINGTAXAMOUNT}
+            $withholdingTax->getWithholdingTaxAmount()->toFloat(),
+            (float)$node->{WithholdingTax::N_WITHHOLDING_TAX}
+                ->{WithholdingTax::N_WITHHOLDING_TAX_AMOUNT}
         );
 
         $this->assertEmpty($withholdingTax->getErrorRegistor()->getLibXmlError());
@@ -281,13 +279,13 @@ class WithholdingTaxTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXml(): void
     {
         $withholdingTax = $this->createWithholdingTax();
         $node           = new \SimpleXMLElement(
-            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
         );
         $xml            = $withholdingTax->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -298,16 +296,16 @@ class WithholdingTaxTest extends TestCase
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
-            $withholdingTax->getWithholdingTaxType()->get(),
-            $parsed->getWithholdingTaxType()->get()
+            $withholdingTax->getWithholdingTaxType(),
+            $parsed->getWithholdingTaxType()
         );
         $this->assertSame(
             $withholdingTax->getWithholdingTaxDescription(),
             $parsed->getWithholdingTaxDescription()
         );
         $this->assertSame(
-            $withholdingTax->getWithholdingTaxAmount(),
-            $parsed->getWithholdingTaxAmount()
+            $withholdingTax->getWithholdingTaxAmount()->toFloat(),
+            $parsed->getWithholdingTaxAmount()->toFloat()
         );
 
         $this->assertEmpty($withholdingTax->getErrorRegistor()->getLibXmlError());
@@ -318,17 +316,17 @@ class WithholdingTaxTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNull(): void
     {
         $withholdingTax = $this->createWithholdingTax();
         $withholdingTax->setWithholdingTaxType(null);
         $withholdingTax->setWithholdingTaxDescription(null);
-        $node           = new \SimpleXMLElement(
-            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+        $node = new \SimpleXMLElement(
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
         );
-        $xml            = $withholdingTax->createXmlNode($node)->asXML();
+        $xml  = $withholdingTax->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
         }
@@ -339,8 +337,8 @@ class WithholdingTaxTest extends TestCase
         $this->assertNull($parsed->getWithholdingTaxType());
         $this->assertNull($parsed->getWithholdingTaxDescription());
         $this->assertSame(
-            $withholdingTax->getWithholdingTaxAmount(),
-            $parsed->getWithholdingTaxAmount()
+            $withholdingTax->getWithholdingTaxAmount()->toFloat(),
+            $parsed->getWithholdingTaxAmount()->toFloat()
         );
 
         $this->assertEmpty($withholdingTax->getErrorRegistor()->getLibXmlError());
@@ -351,12 +349,12 @@ class WithholdingTaxTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $withholdingTaxNode = new \SimpleXMLElement(
-            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
         );
         $withholdingTax     = new WithholdingTax(new ErrorRegister());
         $xml                = $withholdingTax->createXmlNode($withholdingTaxNode)->asXML();
@@ -376,15 +374,15 @@ class WithholdingTaxTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $withholdingTaxNode = new \SimpleXMLElement(
-            "<".Invoice::N_INVOICE."></".Invoice::N_INVOICE.">"
+            "<" . Invoice::N_INVOICE . "></" . Invoice::N_INVOICE . ">"
         );
         $withholdingTax     = new WithholdingTax(new ErrorRegister());
-        $withholdingTax->setWithholdingTaxAmount(-0.01);
+        $withholdingTax->setWithholdingTaxAmount(new Decimal("-0.01"));
         $withholdingTax->setWithholdingTaxDescription("");
 
         $xml = $withholdingTax->createXmlNode($withholdingTaxNode)->asXML();

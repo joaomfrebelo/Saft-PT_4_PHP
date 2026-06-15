@@ -46,21 +46,21 @@ class References extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_REFERENCES = "References";
+    const string N_REFERENCES = "References";
 
     /**
      * &lt;xs:element ref="Reference" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_REFERENCE = "Reference";
+    const string N_REFERENCE = "Reference";
 
     /**
      * &lt;xs:element ref="Reason" minOccurs="0"/&gt;
      * Node name
      * @since 1.0.0
      */
-    const N_REASON = "Reason";
+    const string N_REASON = "Reason";
 
     /**
      * &lt;xs:element ref = "Reference" minOccurs = "0"/&gt;<br>
@@ -135,7 +135,7 @@ class References extends AAuditFile
     {
         try {
             $this->reference = $reference === null ? null :
-                $this->valTextMandMaxCar($reference, 60, __METHOD__);
+                $this->valTextMandatoryMaxCar($reference, 60, __METHOD__);
             $return          = true;
         } catch (AuditFileException $e) {
             $this->reference = $reference;
@@ -187,7 +187,7 @@ class References extends AAuditFile
     {
         try {
             $this->reason = $reason === null ? null :
-                $this->valTextMandMaxCar($reason, 50, __METHOD__);
+                $this->valTextMandatoryMaxCar($reason, 50, __METHOD__);
             $return       = true;
         } catch (AuditFileException $e) {
             $this->reason = $reason;

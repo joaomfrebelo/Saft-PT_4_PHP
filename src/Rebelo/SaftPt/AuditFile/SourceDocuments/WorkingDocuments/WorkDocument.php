@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\Date\Date as RDate;
@@ -44,25 +45,25 @@ class WorkDocument extends ADocument
      * Node Name
      * @since 1.0.0
      */
-    const N_WORKDOCUMENT = "WorkDocument";
+    const string N_WORK_DOCUMENT = "WorkDocument";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_DOCUMENTNUMBER = "DocumentNumber";
+    const string N_DOCUMENT_NUMBER = "DocumentNumber";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_WORKDATE = "WorkDate";
+    const string N_WORK_DATE = "WorkDate";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_WORKTYPE = "WorkType";
+    const string N_WORK_TYPE = "WorkType";
 
     /**
      * &lt;xs:element ref="DocumentNumber"/&gt;
@@ -196,7 +197,7 @@ class WorkDocument extends ADocument
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", "DocumentSatus"));
+            ->info(\sprintf(__METHOD__." get '%s'", "DocumentStatus"));
         return $this->documentStatus;
     }
 
@@ -215,8 +216,8 @@ class WorkDocument extends ADocument
      * Date of the last storage of the document status to the second.
      * Date and time type: “YYYY-MM-DDThh:mm:ss”.<br>
      * &lt;xs:element ref="WorkDate"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getWorkDate(): RDate
@@ -225,7 +226,7 @@ class WorkDocument extends ADocument
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->workDate->format(RDate::SQL_DATE)
+                    $this->workDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->workDate;
@@ -246,9 +247,10 @@ class WorkDocument extends ADocument
      * Date of the last storage of the document status to the second.
      * Date and time type: “YYYY-MM-DDThh:mm:ss”.<br>
      * &lt;xs:element ref="WorkDate"/&gt;
+     *
      * @param \Rebelo\Date\Date $workDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setWorkDate(RDate $workDate): void
@@ -258,7 +260,7 @@ class WorkDocument extends ADocument
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->workDate->format(RDate::SQL_DATE)
+                    $this->workDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -291,7 +293,7 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'", $this->workType->get()
+                    __METHOD__." get '%s'", $this->workType->value
                 )
             );
         return $this->workType;
@@ -336,14 +338,14 @@ class WorkDocument extends ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'", $this->workType->get()
+                    __METHOD__." set to '%s'", $this->workType->value
                 )
             );
     }
 
     /**
      * Add Line<br>
-     * This method when is invoked will create a new Line instace and add to satck
+     * This method when is invoked will create a new Line instance and add to stack
      * then will be returned to be populated. The line number is set automatically,
      * but you can set other.
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line
@@ -416,24 +418,24 @@ class WorkDocument extends ADocument
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== WorkingDocuments::N_WORKINGDOCUMENTS) {
+        if ($node->getName() !== WorkingDocuments::N_WORKING_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                WorkingDocuments::N_WORKINGDOCUMENTS, $node->getName()
+                WorkingDocuments::N_WORKING_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $workNode = $node->addChild(static::N_WORKDOCUMENT);
+        $workNode = $node->addChild(static::N_WORK_DOCUMENT);
 
         if (isset($this->documentNumber)) {
             $workNode->addChild(
-                static::N_DOCUMENTNUMBER, $this->getDocumentNumber()
+                static::N_DOCUMENT_NUMBER, $this->getDocumentNumber()
             );
         } else {
-            $workNode->addChild(static::N_DOCUMENTNUMBER);
+            $workNode->addChild(static::N_DOCUMENT_NUMBER);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentNumber_not_valid");
         }
 
@@ -447,7 +449,7 @@ class WorkDocument extends ADocument
         if (isset($this->documentStatus)) {
             $this->getDocumentStatus()->createXmlNode($workNode);
         } else {
-            $workNode->addChild(DocumentStatus::N_DOCUMENTSTATUS);
+            $workNode->addChild(DocumentStatus::N_DOCUMENT_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentStatus_not_valid");
         }
 
@@ -459,9 +461,9 @@ class WorkDocument extends ADocument
         }
 
         if (isset($this->hashControl)) {
-            $workNode->addChild(static::N_HASHCONTROL, $this->getHashControl());
+            $workNode->addChild(static::N_HASH_CONTROL, $this->getHashControl());
         } else {
-            $workNode->addChild(static::N_HASHCONTROL);
+            $workNode->addChild(static::N_HASH_CONTROL);
             $this->getErrorRegistor()->addOnCreateXmlNode("HashControl_not_valid");
         }
 
@@ -471,48 +473,48 @@ class WorkDocument extends ADocument
 
         if (isset($this->workDate)) {
             $workNode->addChild(
-                static::N_WORKDATE,
-                $this->getWorkDate()->format(RDate::SQL_DATE)
+                static::N_WORK_DATE,
+                $this->getWorkDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $workNode->addChild(static::N_WORKDATE);
+            $workNode->addChild(static::N_WORK_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("WorkDate_not_valid");
         }
 
         if (isset($this->workType)) {
-            $workNode->addChild(static::N_WORKTYPE, $this->getWorkType()->get());
+            $workNode->addChild(static::N_WORK_TYPE, $this->getWorkType()->value);
         } else {
-            $workNode->addChild(static::N_WORKTYPE);
+            $workNode->addChild(static::N_WORK_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("WorkType_not_valid");
         }
 
         if (isset($this->sourceID)) {
-            $workNode->addChild(static::N_SOURCEID, $this->getSourceID());
+            $workNode->addChild(static::N_SOURCE_ID, $this->getSourceID());
         } else {
-            $workNode->addChild(static::N_SOURCEID);
+            $workNode->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
         }
 
         if ($this->getEacCode() !== null) {
-            $workNode->addChild(static::N_EACCODE, $this->getEacCode());
+            $workNode->addChild(static::N_EAC_CODE, $this->getEacCode());
         }
 
         if (isset($this->systemEntryDate)) {
             $workNode->addChild(
-                static::N_SYSTEMENTRYDATE,
-                $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
+                static::N_SYSTEM_ENTRY_DATE,
+                $this->getSystemEntryDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $workNode->addChild(static::N_SYSTEMENTRYDATE);
+            $workNode->addChild(static::N_SYSTEM_ENTRY_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
         $this->getTransactionID(false)?->createXmlNode($workNode);
 
         if (isset($this->customerID)) {
-            $workNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
+            $workNode->addChild(static::N_CUSTOMER_ID, $this->getCustomerID());
         } else {
-            $workNode->addChild(static::N_CUSTOMERID);
+            $workNode->addChild(static::N_CUSTOMER_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
         }
 
@@ -531,7 +533,7 @@ class WorkDocument extends ADocument
         if (isset($this->documentTotals)) {
             $this->getDocumentTotals()->createXmlNode($workNode);
         } else {
-            $workNode->addChild(DocumentTotals::N_DOCUMENTTOTALS);
+            $workNode->addChild(DocumentTotals::N_DOCUMENT_TOTALS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentTotals_not_valid");
         }
 
@@ -541,8 +543,9 @@ class WorkDocument extends ADocument
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -551,10 +554,10 @@ class WorkDocument extends ADocument
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_WORKDOCUMENT) {
+        if ($node->getName() !== static::N_WORK_DOCUMENT) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_WORKDOCUMENT, $node->getName()
+                static::N_WORK_DOCUMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -562,24 +565,24 @@ class WorkDocument extends ADocument
         }
         parent::parseXmlNode($node);
 
-        $this->setDocumentNumber((string) $node->{static::N_DOCUMENTNUMBER});
+        $this->setDocumentNumber((string) $node->{static::N_DOCUMENT_NUMBER});
 
         $this->getDocumentStatus()->parseXmlNode(
-            $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            $node->{DocumentStatus::N_DOCUMENT_STATUS}
         );
 
         $this->setWorkDate(
-            RDate::parse(RDate::SQL_DATE, (string) $node->{static::N_WORKDATE})
+            RDate::parse(Pattern::SQL_DATE, (string) $node->{static::N_WORK_DATE})
         );
 
-        $this->setWorkType(new WorkType((string) $node->{static::N_WORKTYPE}));
+        $this->setWorkType(WorkType::from((string) $node->{static::N_WORK_TYPE}));
 
         for ($n = 0; $n < $node->{Line::N_LINE}->count(); $n++) {
             $this->addLine()->parseXmlNode($node->{Line::N_LINE}[$n]);
         }
 
         $this->getDocumentTotals()->parseXmlNode(
-            $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENT_TOTALS}
         );
     }
 }

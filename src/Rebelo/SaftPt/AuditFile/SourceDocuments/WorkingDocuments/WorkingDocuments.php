@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ASourceDocuments;
@@ -50,25 +51,25 @@ class WorkingDocuments extends ASourceDocuments
      * Node name
      * @since 1.0.0
      */
-    const N_WORKINGDOCUMENTS = "WorkingDocuments";
+    const string N_WORKING_DOCUMENTS = "WorkingDocuments";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_NUMBEROFENTRIES = "NumberOfEntries";
+    const string N_NUMBER_OF_ENTRIES = "NumberOfEntries";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TOTALDEBIT = "TotalDebit";
+    const string N_TOTAL_DEBIT = "TotalDebit";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TOTALCREDIT = "TotalCredit";
+    const string N_TOTAL_CREDIT = "TotalCredit";
 
     /**
      * &lt;xs:element ref="NumberOfEntries"/&gt;
@@ -79,17 +80,17 @@ class WorkingDocuments extends ASourceDocuments
 
     /**
      * &lt;xs:element ref="TotalDebit"/&gt;
-     * @var float
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $totalDebit;
+    protected Decimal $totalDebit;
 
     /**
      * &lt;xs:element ref="TotalCredit"/&gt;
-     * @var float
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $totalCredit;
+    protected Decimal $totalCredit;
 
     /**
      * &lt;xs:element name="WorkDocument" minOccurs="0" maxOccurs="unbounded">
@@ -99,11 +100,11 @@ class WorkingDocuments extends ASourceDocuments
     protected array $workDocument = array();
 
     /**
-     * $array[type][serie][number] = $workDocument
+     * $array[type][serial][number] = $workDocument
      * \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument[]
-     * @var array
+     * @var mixed[]
      */
-    protected array $order = array();
+    protected array $order = [];
 
     /**
      *
@@ -201,11 +202,11 @@ class WorkingDocuments extends ASourceDocuments
      * sum of the field 4.3.4.14.13. -DebitAmount, excluding the documents
      * which content in field 4.3.4.3.1. - WorkStatus is “A”.<br>
      * &lt;xs:element ref="TotalDebit"/&gt;
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalDebit(): float
+    public function getTotalDebit(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -233,13 +234,13 @@ class WorkingDocuments extends ASourceDocuments
      * sum of the field 4.3.4.14.13. -DebitAmount, excluding the documents
      * which content in field 4.3.4.3.1. - WorkStatus is “A”.<br>
      * &lt;xs:element ref="TotalDebit"/&gt;
-     * @param float $totalDebit
+     * @param Decimal $totalDebit
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalDebit(float $totalDebit): bool
+    public function setTotalDebit(Decimal $totalDebit): bool
     {
-        if ($totalDebit < 0) {
+        if ($totalDebit->compareTo("0.0") < 0) {
             $msg    = "TotalDebit can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -265,11 +266,11 @@ class WorkingDocuments extends ASourceDocuments
      * field 4.3.4.14.14. -CreditAmount, excluding the documents which
      * content in field 4.3.4.3.1. - WorkStatus is “A”.<br>
      * &lt;xs:element ref="TotalCredit"/&gt;
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalCredit(): float
+    public function getTotalCredit(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -297,13 +298,13 @@ class WorkingDocuments extends ASourceDocuments
      * field 4.3.4.14.14. -CreditAmount, excluding the documents which
      * content in field 4.3.4.3.1. - WorkStatus is “A”.<br>
      * &lt;xs:element ref="TotalCredit"/&gt;
-     * @param float $totalCredit
+     * @param Decimal $totalCredit
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalCredit(float $totalCredit): bool
+    public function setTotalCredit(Decimal $totalCredit): bool
     {
-        if ($totalCredit < 0) {
+        if ($totalCredit->compareTo("0.0") < 0) {
             $msg    = "TotalCredit can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -338,14 +339,14 @@ class WorkingDocuments extends ASourceDocuments
 
     /**
      * When this method is invoked a new instance of WorkDocument will be created
-     * and returned to be populate<br>
+     * and returned to be populated<br>
      * &lt;xs:element name="WorkDocument" minOccurs="0" maxOccurs="unbounded">
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument
      * @since 1.0.0
      */
     public function addWorkDocument(): WorkDocument
     {
-        // Every time that a workdocument is added the order is reset and is constructed when called
+        // Every time that a work document is added the order is reset and is constructed when called
         $this->order          = array();
         $workDocument         = new WorkDocument($this->getErrorRegistor());
         $this->workDocument[] = $workDocument;
@@ -357,9 +358,9 @@ class WorkingDocuments extends ASourceDocuments
 
 
     /**
-     * Get invoices order by type/serie/number<br>
-     * Ex: $stack[type][serie][InvoiceNo] = Invvoice<br>
-     * If a error exist, th error is added to ValidationErrors stack
+     * Get invoices order by type/serial/number<br>
+     * Ex: $stack[type][serial][InvoiceNo] = Invoice<br>
+     * If an error exist, th error is added to ValidationErrors stack
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument>>>
      * @since 1.0.0
      */
@@ -372,42 +373,42 @@ class WorkingDocuments extends ASourceDocuments
         foreach ($this->getWorkDocument() as $k => $workDoc) {
             if ($workDoc->issetDocumentNumber() === false) {
                 $msg = \sprintf(
-                    AuditFile::getI18n()->get("workdoc_at_index_no_number"), $k
+                    AuditFile::getI18n()->get("work_document_at_index_no_number"), $k
                 );
                 $this->getErrorRegistor()->addValidationErrors($msg);
-                $workDoc->addError($msg, WorkDocument::N_DOCUMENTNUMBER);
+                $workDoc->addError($msg, WorkDocument::N_DOCUMENT_NUMBER);
                 \Logger::getLogger(\get_class($this))->error($msg);
                 continue;
             }
 
-            list($type, $serie, $no) = \explode(
+            list($type, $serial, $no) = \explode(
                 " ", \str_replace("/", " ", $workDoc->getDocumentNumber())
             );
 
             if (\array_key_exists($type, $this->order)) {
-                if (\array_key_exists($serie, $this->order[$type])) {
+                if (\array_key_exists($serial, $this->order[$type])) {
                     if (\array_key_exists(
-                        \intval($no), $this->order[$type][$serie]
+                        \intval($no), $this->order[$type][$serial]
                     )
                     ) {
                         $msg = \sprintf(
-                            AuditFile::getI18n()->get("duplicated_workdoc"),
+                            AuditFile::getI18n()->get("duplicated_work_document"),
                             $workDoc->getDocumentNumber()
                         );
                         $this->getErrorRegistor()->addValidationErrors($msg);
-                        $workDoc->addError($msg, WorkDocument::N_DOCUMENTNUMBER);
+                        $workDoc->addError($msg, WorkDocument::N_DOCUMENT_NUMBER);
                         \Logger::getLogger(\get_class($this))->error($msg);
                     }
                 }
             }
-            $this->order[$type][$serie][\intval($no)] = $workDoc;
+            $this->order[$type][$serial][\intval($no)] = $workDoc;
         }
 
         $cloneOrder = $this->order;
 
         foreach (\array_keys($cloneOrder) as $type) {
-            foreach (\array_keys($cloneOrder[$type]) as $serie) {
-                ksort($this->order[$type][$serie], SORT_NUMERIC);
+            foreach (\array_keys($cloneOrder[$type]) as $serial) {
+                ksort($this->order[$type][$serial], SORT_NUMERIC);
             }
             ksort($this->order[$type], SORT_STRING);
         }
@@ -429,43 +430,43 @@ class WorkingDocuments extends ASourceDocuments
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== SourceDocuments::N_SOURCEDOCUMENTS) {
+        if ($node->getName() !== SourceDocuments::N_SOURCE_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                SourceDocuments::N_SOURCEDOCUMENTS, $node->getName()
+                SourceDocuments::N_SOURCE_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $workingNode = $node->addChild(static::N_WORKINGDOCUMENTS);
+        $workingNode = $node->addChild(static::N_WORKING_DOCUMENTS);
 
         if (isset($this->numberOfEntries)) {
             $workingNode->addChild(
-                static::N_NUMBEROFENTRIES, \strval($this->getNumberOfEntries())
+                static::N_NUMBER_OF_ENTRIES, \strval($this->getNumberOfEntries())
             );
         } else {
-            $workingNode->addChild(static::N_NUMBEROFENTRIES);
+            $workingNode->addChild(static::N_NUMBER_OF_ENTRIES);
             $this->getErrorRegistor()->addOnCreateXmlNode("NumberOfEntries_not_valid");
         }
 
         if (isset($this->totalDebit)) {
             $workingNode->addChild(
-                static::N_TOTALDEBIT, $this->floatFormat($this->getTotalDebit())
+                static::N_TOTAL_DEBIT, $this->floatFormat($this->getTotalDebit())
             );
         } else {
-            $workingNode->addChild(static::N_TOTALDEBIT);
+            $workingNode->addChild(static::N_TOTAL_DEBIT);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalDebit_not_valid");
         }
 
         if (isset($this->totalCredit)) {
             $workingNode->addChild(
-                static::N_TOTALCREDIT,
+                static::N_TOTAL_CREDIT,
                 $this->floatFormat($this->getTotalCredit())
             );
         } else {
-            $workingNode->addChild(static::N_TOTALCREDIT);
+            $workingNode->addChild(static::N_TOTAL_CREDIT);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalCredit_not_valid");
         }
 
@@ -478,9 +479,11 @@ class WorkingDocuments extends ASourceDocuments
 
     /**
      * Parse xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -489,24 +492,25 @@ class WorkingDocuments extends ASourceDocuments
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_WORKINGDOCUMENTS) {
+        if ($node->getName() !== static::N_WORKING_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_WORKINGDOCUMENTS, $node->getName()
+                static::N_WORKING_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setNumberOfEntries((int) $node->{static::N_NUMBEROFENTRIES});
-        $this->setTotalDebit((float) $node->{static::N_TOTALDEBIT});
-        $this->setTotalCredit((float) $node->{static::N_TOTALCREDIT});
+        $this->setNumberOfEntries((int) $node->{static::N_NUMBER_OF_ENTRIES});
+        $this->setTotalDebit(new Decimal((string) $node->{static::N_TOTAL_DEBIT}));
+        $this->setTotalCredit(new Decimal((string) $node->{static::N_TOTAL_CREDIT}));
 
-        $nMax = $node->{WorkDocument::N_WORKDOCUMENT}->count();
+        $nMax = $node->{WorkDocument::N_WORK_DOCUMENT}->count();
+
         for ($n = 0; $n < $nMax; $n++) {
             $this->addWorkDocument()->parseXmlNode(
-                $node->{WorkDocument::N_WORKDOCUMENT}[$n]
+                $node->{WorkDocument::N_WORK_DOCUMENT}[$n]
             );
         }
     }

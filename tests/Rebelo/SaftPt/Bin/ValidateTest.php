@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,9 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Bin;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date;
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 use Symfony\Component\Process\Process;
 
 /**
@@ -49,7 +50,7 @@ class ValidateTest extends TestCase
         $scan = \scandir(SAFT4PHP_TMP_DIR);
         if ($scan === false) {
             throw new \Exception(
-                \sprintf("Error scanninig dir '%s'", SAFT4PHP_TMP_DIR)
+                \sprintf("Error scanning dir '%s'", SAFT4PHP_TMP_DIR)
             );
         }
         foreach ($scan as $file) {
@@ -64,7 +65,7 @@ class ValidateTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @return array
+     * @return array<int, string>
      */
     public function getBaseArgV(): array
     {
@@ -77,26 +78,25 @@ class ValidateTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
-    public function testParseFloat(): void
+    #[Test] public function testParseFloat(): void
     {
         $val = new Validate();
 
         $fValues = [0.01, "0.01", "=0.01"];
         foreach ($fValues as $float) {
-            $this->assertSame(0.01, $val->parseFloat($float, "option"));
+            $this->assertSame(0.01, $val->parseDecimal($float, "option")->toFloat());
         }
 
         $iValues = [1, "1", "=1", '=1'];
         foreach ($iValues as $int) {
-            $this->assertSame(\floatval(1), $val->parseFloat($int, "option"));
+            $this->assertSame(\floatval(1), $val->parseDecimal($int, "option")->toFloat());
         }
 
         try {
-            $val->parseFloat("A", "option");
+            $val->parseDecimal("A", "option");
             $this->fail("Parse float should throw Exception on no float value");
-        } catch (\Exception | \Error $ex) {
+        } catch (\Throwable $ex) {
             $this->assertInstanceOf(\Exception::class, $ex);
         }
     }
@@ -104,9 +104,8 @@ class ValidateTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
-    public function testParseBool(): void
+    #[Test] public function testParseBool(): void
     {
         $val = new Validate();
 
@@ -123,16 +122,16 @@ class ValidateTest extends TestCase
         try {
             $val->parseBool("2", "option");
             $this->fail("Parse bool should throw Exception on no bool value");
-        } catch (\Exception | \Error $ex) {
+        } catch (\Throwable $ex) {
             $this->assertInstanceOf(\Exception::class, $ex);
         }
     }
 
     /**
      * Register the output process command test
+     *
      * @param Process $proc
-     * @param string $method
-     * @throws DateFormatException
+     * @param string  $method
      */
     public function resultRegister(Process $proc, string $method): void
     {
@@ -146,7 +145,7 @@ class ValidateTest extends TestCase
             .\str_replace(["\\", "::"], ["_", "-"], $method)
             ."_STDERR.txt";
 
-        $now = (new Date())->format(Date::RFC3339_EXTENDED);
+        $now = (new Date())->format(Pattern::RFC3339_EXTENDED);
 
         \file_put_contents($fileOut, $now."\n");
         \file_put_contents($fileOut, "Command:\n", FILE_APPEND);
@@ -160,10 +159,10 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * Pass the option and argumensts, the method will prefix
-     * with the PHP Binary path, the commad file path and the command name
-     * @param array $argAndOpt
-     * @return array
+     * Pass the option and arguments, the method will prefix
+     * with the PHP Binary path, the command file path and the command name
+     * @param mixed[] $argAndOpt
+     * @return mixed[]
      */
     public function getBuildPrecessCommand(array $argAndOpt): array
     {
@@ -177,35 +176,25 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
-    public function testOnlySaftPath(): void
+    #[Test] public function testOnlySaftPath(): void
     {
-        $command = $this->getBuildPrecessCommand(
-            [
-            SAFT_DEMO_PATH
-            ]
-        );
+        $command = $this->getBuildPrecessCommand([SAFT_DEMO_PATH]);
 
         $proc = new Process($command);
         try {
             $proc->run();
-            $this->assertTrue($proc->isSuccessful());
-        } catch (\Exception | \Error $ex) {
-            $this->fail($ex->getMessage());
+            $this->assertTrue($proc->isSuccessful(), $proc->getErrorOutput());
         } finally {
             $this->resultRegister($proc, __METHOD__);
         }
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
-    public function testShort(): void
+    #[Test] public function testShort(): void
     {
         $command = $this->getBuildPrecessCommand(
             [
@@ -227,11 +216,9 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
-    public function testWrongLang(): void
+    #[Test] public function testWrongLang(): void
     {
         $command = $this->getBuildPrecessCommand(
             [
@@ -253,11 +240,9 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
-    public function testOptionLong(): void
+    #[Test] public function testOptionLong(): void
     {
         $command = $this->getBuildPrecessCommand(
             [
@@ -279,13 +264,11 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
-    public function testAllOption(): void
+    #[Test] public function testAllOption(): void
     {
-        $logConf = SAFT4PHP_TEST_RESSOURCES_DIR.DIRECTORY_SEPARATOR."log4php.php";
+        $logConf = SAFT4PHP_TEST_RESOURCES_DIR.DIRECTORY_SEPARATOR."log4php.php";
 
         $command = $this->getBuildPrecessCommand(
             [
@@ -315,13 +298,11 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
-    public function testShortLogAndBoolAndWarnings(): void
+    #[Test] public function testShortLogAndBoolAndWarnings(): void
     {
-        $logConf = SAFT4PHP_TEST_RESSOURCES_DIR.DIRECTORY_SEPARATOR."log4php.php";
+        $logConf = SAFT4PHP_TEST_RESOURCES_DIR.DIRECTORY_SEPARATOR."log4php.php";
 
         $command = $this->getBuildPrecessCommand(
             [

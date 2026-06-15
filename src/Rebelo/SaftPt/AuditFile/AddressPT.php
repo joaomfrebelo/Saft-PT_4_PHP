@@ -51,7 +51,7 @@ class AddressPT extends AAddress
     function __construct(ErrorRegister $errorRegister)
     {
         parent::__construct($errorRegister);
-        $this->country = new Country(Country::ISO_PT);
+        $this->country = Country::ISO_PT;
     }
 
     /**
@@ -63,7 +63,7 @@ class AddressPT extends AAddress
     public function getCountry(): Country
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->country->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->country->value));
         return $this->country;
     }
 
@@ -130,7 +130,7 @@ class AddressPT extends AAddress
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::createXmlNode($node);
-        $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+        $node->addChild(static::N_COUNTRY, $this->getCountry()->value);
         return $node;
     }
 
@@ -145,7 +145,7 @@ class AddressPT extends AAddress
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::parseXmlNode($node);
         $this->setPostalCode(
-            (string) $node->{static::N_POSTALCODE}
+            (string) $node->{static::N_POSTAL_CODE}
         );
     }
 }

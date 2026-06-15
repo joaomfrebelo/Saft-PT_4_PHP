@@ -26,14 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\Address;
 use Rebelo\SaftPt\AuditFile\Country;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class TaxTest
@@ -44,21 +45,19 @@ class ShipFromTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(ShipFrom::class);
-        $this->assertTrue(true);
+        (new Commune(ShipFrom::class))->testReflection(ShipFrom::class);
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $ship = new ShipFrom(new ErrorRegister());
@@ -102,28 +101,28 @@ class ShipFromTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $ship = new ShipFrom(new ErrorRegister());
         $node = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<" . StockMovement::N_STOCK_MOVEMENT . "></" . StockMovement::N_STOCK_MOVEMENT . ">"
         );
 
         $ids          = ["A", "B", "C"];
         $deliveryDate = new RDate();
         $address      = $ship->getAddress();
-        $address->setCity("Lisboa");
-        $address->setCountry(new Country(Country::ISO_PT));
-        $address->setAddressDetail("Rua das Escolas Gerais");
-        $address->setPostalCode("1999-999");
+        $address?->setCity("Lisboa");
+        $address?->setCountry(Country::ISO_PT);
+        $address?->setAddressDetail("Rua das Escolas Gerais");
+        $address?->setPostalCode("1999-999");
 
         foreach ($ids as $id) {
             $this->assertTrue($ship->addDeliveryID($id));
             $warehouse = $ship->addWarehouse();
-            $warehouse->setLocationID("L-".$id);
-            $warehouse->setWarehouseID("W-".$id);
+            $warehouse->setLocationID("L-" . $id);
+            $warehouse->setWarehouseID("W-" . $id);
         }
 
         $ship->setDeliveryDate($deliveryDate);
@@ -134,14 +133,14 @@ class ShipFromTest extends TestCase
 
         foreach ($ids as $k => $id) {
             $this->assertSame(
-                $id, (string) $shipNode->{ShipFrom::N_DELIVERYID}[$k]
+                $id, (string)$shipNode->{ShipFrom::N_DELIVERY_ID}[$k]
             );
             $this->assertSame(
-                "L-". $id, (string) $shipNode->{Warehouse::N_LOCATIONID}[$k]
+                "L-" . $id, (string)$shipNode->{Warehouse::N_LOCATION_ID}[$k]
             );
             $this->assertSame(
-                "W-". $id,
-                (string) $shipNode->{Warehouse::N_WAREHOUSEID}[$k]
+                "W-" . $id,
+                (string)$shipNode->{Warehouse::N_WAREHOUSE_ID}[$k]
             );
 
             $this->assertSame(
@@ -160,23 +159,23 @@ class ShipFromTest extends TestCase
         }
 
         $this->assertSame(
-            $deliveryDate->format(RDate::SQL_DATE),
-            (string) $shipNode->{ShipFrom::N_DELIVERYDATE}
+            $deliveryDate->format(Pattern::SQL_DATE),
+            (string)$shipNode->{ShipFrom::N_DELIVERY_DATE}
         );
 
         $this->assertSame(
-            $ship->getDeliveryDate()->format(RDate::SQL_DATE),
-            $parse->getDeliveryDate()->format(RDate::SQL_DATE)
+            $ship->getDeliveryDate()?->format(Pattern::SQL_DATE),
+            $parse->getDeliveryDate()?->format(Pattern::SQL_DATE)
         );
 
         $this->assertSame(
-            $address->getAddressDetail(),
-            (string) $shipNode->{ShipFrom::N_ADDRESS}->{Address::N_ADDRESSDETAIL}
+            $address?->getAddressDetail(),
+            (string)$shipNode->{ShipFrom::N_ADDRESS}->{Address::N_ADDRESS_DETAIL}
         );
 
         $this->assertSame(
-            $ship->getAddress()->getAddressDetail(),
-            $parse->getAddress()->getAddressDetail()
+            $ship->getAddress()?->getAddressDetail(),
+            $parse->getAddress()?->getAddressDetail()
         );
 
         $this->assertEmpty($ship->getErrorRegistor()->getLibXmlError());
@@ -187,12 +186,12 @@ class ShipFromTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $shipToNode = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<" . StockMovement::N_STOCK_MOVEMENT . "></" . StockMovement::N_STOCK_MOVEMENT . ">"
         );
         $ship       = new ShipFrom(new ErrorRegister());
         $xml        = $ship->createXmlNode($shipToNode)->asXML();
@@ -212,12 +211,12 @@ class ShipFromTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $shipToNode = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<" . StockMovement::N_STOCK_MOVEMENT . "></" . StockMovement::N_STOCK_MOVEMENT . ">"
         );
         $ship       = new ShipFrom(new ErrorRegister());
         $ship->addDeliveryID("");

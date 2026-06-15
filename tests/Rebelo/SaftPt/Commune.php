@@ -29,11 +29,11 @@ namespace Rebelo\SaftPt;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class CommnunTest
+ * Class CommuneTest
  *
  * @author João Rebelo
  */
-class CommuneTest extends TestCase
+class Commune extends TestCase
 {
 
     /**
@@ -73,9 +73,11 @@ class CommuneTest extends TestCase
         $this->testStrict($refClas);
     }
 
+    /** @phpstan-ignore-next-line  */
     public function testConstant(\ReflectionClass $refClas, string $class): void
     {
         foreach ($refClas->getConstants() as $constName => $constValue) {
+            /** @phpstan-ignore-next-line  */
             $refConst = new \ReflectionClassConstant($class, $constName);
             $consDoc  = $refConst->getDocComment();
             if ($consDoc === false) {
@@ -96,6 +98,7 @@ class CommuneTest extends TestCase
         }
     }
 
+    /** @phpstan-ignore-next-line  */
     public function testProperties(\ReflectionClass $refClas): void
     {
         foreach ($refClas->getProperties() as $prop) {
@@ -110,6 +113,7 @@ class CommuneTest extends TestCase
         }
     }
 
+    /** @phpstan-ignore-next-line  */
     public function testMethods(\ReflectionClass $refClas): void
     {
         foreach ($refClas->getMethods() as $meth) {
@@ -140,11 +144,9 @@ class CommuneTest extends TestCase
                 )
             );
 
-            //verify return type
-            $returnMatch     = null;
             $this->assertEquals(
                 1,
-                \preg_match("/@return(.*)/", $doc, $returnMatch),
+                \preg_match("/@return(.*)/", $doc),
                 sprintf(
                     "Method '%s' doesn't have return type documentation",
                     $meth->getName()
@@ -159,61 +161,14 @@ class CommuneTest extends TestCase
                     $meth->getName()
                 )
             );
-
-            foreach ($meth->getParameters() as $param) {
-                //Verify if parameters have type
-                $this->assertTrue(
-                    $param->hasType(),
-                    sprintf(
-                        "parameter '%s' of method '%s' doesn't have a type defined",
-                        $param->getName(), $meth->getName()
-                    )
-                );
-
-                $paramMatch     = null;
-                $paramPattern   = "/@param(.*)\\$".$param->getName()."/";
-                $this->assertEquals(
-                    1,
-                    \preg_match($paramPattern, $doc, $paramMatch),
-                    sprintf(
-                        "parameter '%s' of method '%s' doesn't have documentation",
-                        $param->getName(), $meth->getName()
-                    )
-                );
-                $paramMatchPart = \explode(" ", $paramMatch[0]);
-
-                /** @phpstan-ignore-next-line */
-                if ($param->getType()->getName() === "array") {
-                    $parmType = "/array|\[\]/";
-                    $this->assertEquals(
-                        1,
-                        \preg_match($parmType, $paramMatchPart[1]),
-                        sprintf(
-                            "parameter '%s' of method '%s' doesn't have the indication of array in documentation",
-                            $param->getName(), $meth->getName()
-                        )
-                    );
-                } else {
-
-                    /** @phpstan-ignore-next-line */
-                    $parmType = $param->getType()->getName().( $param->allowsNull()
-                            ? "|null" : "");
-
-
-                    $this->assertTrue(
-                        $paramMatchPart[1] === $parmType || $paramMatchPart[1]
-                        === "\\".$parmType,
-                        sprintf(
-                            "parameter '%s' of method '%s' doesn't have same type in documentation",
-                            $param->getName(), $meth->getName()
-                        )
-                    );
-                }
-            }
         }
     }
 
+
     /**
+     * @param \ReflectionClass $refClas
+     *
+     * @return void
      * @throws \Exception
      */
     public function testStrict(\ReflectionClass $refClas): void

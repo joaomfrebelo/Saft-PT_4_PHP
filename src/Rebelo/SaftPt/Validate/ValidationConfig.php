@@ -26,18 +26,20 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\Bin\Style;
 
 /**
  * The validation generic configuration
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class ValidationConfig
 {
     /**
      * If allow Debit a Credit line in the same document
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -45,6 +47,7 @@ class ValidationConfig
 
     /**
      * If allow only continues lines
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -52,34 +55,39 @@ class ValidationConfig
 
     /**
      * The maximum delta in the currency calculation to be considered valid
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaCurrency = 0.01;
+    protected Decimal $deltaCurrency;
 
     /**
      * The maximum delta in the lines to be considered valid
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaLine = 0.01;
+    protected Decimal $deltaLine;
 
     /**
      * The maximum delta in the table's sums calculation to be considered valid
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaTable = 0.01;
+    protected Decimal $deltaTable;
 
     /**
      * The maximum delta in the document totals calculation to be consider value
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaTotalDoc = 0.01;
+    protected Decimal $deltaTotalDoc;
 
     /**
      * Define if performs the signatures validation
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -87,6 +95,7 @@ class ValidationConfig
 
     /**
      * The output writer, to be use in console application
+     *
      * @var \Rebelo\SaftPt\Bin\Style|null
      * @since 1.0.0
      */
@@ -94,6 +103,7 @@ class ValidationConfig
 
     /**
      * Define if validates schema against XSD
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -102,15 +112,20 @@ class ValidationConfig
     /** The validation generic configuration
      *
      * @author João Rebelo
-     * @since 1.0.0
+     * @since  1.0.0
      */
     public function __construct()
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        $this->deltaCurrency = new Decimal("0.01");
+        $this->deltaLine     = new Decimal("0.01");
+        $this->deltaTable    = new Decimal("0.01");
+        $this->deltaTotalDoc = new Decimal("0.01");
     }
 
     /**
      * If allow Debit a Credit line in the same document
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -121,6 +136,7 @@ class ValidationConfig
 
     /**
      * If allow only continues lines
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -131,46 +147,51 @@ class ValidationConfig
 
     /**
      * The maximum delta in the currency calculation to be considered valid
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaCurrency(): float
+    public function getDeltaCurrency(): Decimal
     {
         return $this->deltaCurrency;
     }
 
     /**
      * The maximum delta in the line calculation to be considered valid
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaLine(): float
+    public function getDeltaLine(): Decimal
     {
         return $this->deltaLine;
     }
 
     /**
      * The maximum delta in the table's sums calculation to be considered valid
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaTable(): float
+    public function getDeltaTable(): Decimal
     {
         return $this->deltaTable;
     }
 
     /**
      * The maximum delta in the document totals calculation to be consider value
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaTotalDoc(): float
+    public function getDeltaTotalDoc(): Decimal
     {
         return $this->deltaTotalDoc;
     }
 
     /**
      * If performs signature validation
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -181,6 +202,7 @@ class ValidationConfig
 
     /**
      * The output writer for console applications
+     *
      * @return \Rebelo\SaftPt\Bin\Style|null
      * @since 1.0.0
      */
@@ -191,6 +213,7 @@ class ValidationConfig
 
     /**
      * Get if is to validate schema against XSD
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -201,7 +224,9 @@ class ValidationConfig
 
     /**
      * If allow Debit a Credit line in the same document
+     *
      * @param bool $allowDebitAndCredit
+     *
      * @return void
      * @since 1.0.0
      */
@@ -212,7 +237,9 @@ class ValidationConfig
 
     /**
      * If allow only continues lines
+     *
      * @param bool $continuesLines
+     *
      * @return void
      * @since 1.0.0
      */
@@ -223,51 +250,61 @@ class ValidationConfig
 
     /**
      * The maximum delta in the currency calculation to be considered valid
-     * @param float $deltaCurrency
+     *
+     * @param Decimal $deltaCurrency
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaCurrency(float $deltaCurrency): void
+    public function setDeltaCurrency(Decimal $deltaCurrency): void
     {
-        $this->deltaCurrency = \abs($deltaCurrency);
+        $this->deltaCurrency = $deltaCurrency->abs();
     }
 
     /**
      * The maximum delta in the line calculation to be considered valid
-     * @param float $deltaLine
+     *
+     * @param Decimal $deltaLine
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaLine(float $deltaLine): void
+    public function setDeltaLine(Decimal $deltaLine): void
     {
-        $this->deltaLine = \abs($deltaLine);
+        $this->deltaLine = $deltaLine->abs();
     }
 
     /**
      * The maximum delta in the table's sums calculation to be considered valid
-     * @param float $deltaTable
+     *
+     * @param Decimal $deltaTable
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaTable(float $deltaTable): void
+    public function setDeltaTable(Decimal $deltaTable): void
     {
-        $this->deltaTable = \abs($deltaTable);
+        $this->deltaTable = $deltaTable->abs();
     }
 
     /**
      * The maximum delta in the document totals calculation to be consider value
-     * @param float $deltaTotalDoc
+     *
+     * @param Decimal $deltaTotalDoc
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaTotalDoc(float $deltaTotalDoc): void
+    public function setDeltaTotalDoc(Decimal $deltaTotalDoc): void
     {
-        $this->deltaTotalDoc = \abs($deltaTotalDoc);
+        $this->deltaTotalDoc = $deltaTotalDoc->abs();
     }
 
     /**
      * If performs signature validation
+     *
      * @param bool $signValidation
+     *
      * @return void
      * @since 1.0.0
      */
@@ -279,7 +316,9 @@ class ValidationConfig
 
     /**
      * The output writer for console applications
+     *
      * @param \Rebelo\SaftPt\Bin\Style|null $style
+     *
      * @return void
      * @since 1.0.0
      */
@@ -290,7 +329,9 @@ class ValidationConfig
 
     /**
      * Set if is to validate schema against XSD
+     *
      * @param bool $schema
+     *
      * @return void
      * @since 1.0.0
      */
@@ -298,4 +339,6 @@ class ValidationConfig
     {
         $this->schema = $schema;
     }
+
+
 }

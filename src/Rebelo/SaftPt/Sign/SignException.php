@@ -42,7 +42,7 @@ class SignException extends \Exception
      * @param \Throwable|null $previous
      * @since 1.0.0
      */
-    public function __construct(string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(string $message = "", int $code = 0, \Throwable|null $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class AddressPT
@@ -38,19 +39,19 @@ class AddressPTTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())->testReflection(AddressPT::class);
-        $this->assertTrue(true);
+        (new Commune(AddressPT::class))->testReflection(AddressPT::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $addrPT = new AddressPT(new ErrorRegister());
@@ -62,8 +63,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetBuildingNumber(): void
     {
         $addrPT = new AddressPT(new ErrorRegister());
@@ -79,7 +80,7 @@ class AddressPTTest extends TestCase
         $this->assertNull($addrPT->getBuildingNumber());
 
         $this->assertTrue($addrPT->setBuildingNumber(\str_pad("_", 11, "_")));
-        $this->assertEquals(10, \strlen($addrPT->getBuildingNumber() ?? ""));
+        $this->assertEquals(10, \strlen($addrPT->getBuildingNumber() ?? "")); /** @phpstan-ignore-line */
 
         $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setBuildingNumber(""));
@@ -89,8 +90,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetStreetName(): void
     {
         $addrPT  = new AddressPT(new ErrorRegister());
@@ -101,7 +102,7 @@ class AddressPTTest extends TestCase
         $this->assertTrue($addrPT->setStreetName(null));
         $this->assertNull($addrPT->getStreetName());
         $addrPT->setStreetName(\str_pad("_", 209, "_"));
-        $this->assertEquals(200, \strlen($addrPT->getStreetName()));
+        $this->assertEquals(200, \strlen($addrPT->getStreetName() ?? "")); /** @phpstan-ignore-line */
 
         $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setStreetName(""));
@@ -111,8 +112,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetAddressDetail(): void
     {
         $addrPT     = new AddressPT(new ErrorRegister());
@@ -123,7 +124,7 @@ class AddressPTTest extends TestCase
         $this->assertTrue($addrPT->setAddressDetail(null));
         $this->assertNull($addrPT->getAddressDetail());
         $addrPT->setAddressDetail(\str_pad("_", 212, "_"));
-        $this->assertEquals(210, \strlen($addrPT->getAddressDetail() ?? ""));
+        $this->assertEquals(210, \strlen($addrPT->getAddressDetail() ?? "")); /** @phpstan-ignore-line */
 
         $addrPT->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($addrPT->setAddressDetail(""));
@@ -133,8 +134,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCity(): void
     {
         $addrPT = new AddressPT(new ErrorRegister());
@@ -160,8 +161,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetRegion(): void
     {
         $addrPT = new AddressPT(new ErrorRegister());
@@ -178,16 +179,13 @@ class AddressPTTest extends TestCase
         $this->assertSame("", $addrPT->getRegion());
         $this->assertNotEmpty($addrPT->getErrorRegistor()->getOnSetValue());
 
-        $this->assertEquals(
-            ACountry::ISO_PT,
-            $addrPT->getCountry()->get()
-        );
+        $this->assertEquals(Country::ISO_PT, $addrPT->getCountry());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetPostalCode(): void
     {
         $addrPT = new AddressPT(new ErrorRegister());
@@ -207,8 +205,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
@@ -226,26 +224,24 @@ class AddressPTTest extends TestCase
 
         $this->assertEquals(
             $address->getBuildingNumber(),
-            $addrNode->{AddressPT::N_BUILDINGNUMBER}
+            $addrNode->{AddressPT::N_BUILDING_NUMBER}
         );
 
         $this->assertEquals(
-            $address->getStreetName(), $addrNode->{AddressPT::N_STREETNAME}
+            $address->getStreetName(), $addrNode->{AddressPT::N_STREET_NAME}
         );
 
         $this->assertEquals(
             $address->getStreetName()." ".$address->getBuildingNumber(),
-            $addrNode->{AddressPT::N_ADDRESSDETAIL}
+            $addrNode->{AddressPT::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals($address->getCity(), $addrNode->{AddressPT::N_CITY});
 
-        $this->assertEquals(
-            $address->getCountry()->get(), $addrNode->{AddressPT::N_COUNTRY}
-        );
+        $this->assertEquals($address->getCountry()->value, $addrNode->{AddressPT::N_COUNTRY});
 
         $this->assertEquals(
-            $address->getPostalCode(), $addrNode->{AddressPT::N_POSTALCODE}
+            $address->getPostalCode(), $addrNode->{AddressPT::N_POSTAL_CODE}
         );
 
         $this->assertEquals(
@@ -267,24 +263,22 @@ class AddressPTTest extends TestCase
             $address->createXmlNode($node)
         );
 
-        $this->assertEquals(0, $node->{AddressPT::N_BUILDINGNUMBER}->count());
+        $this->assertEquals(0, $node->{AddressPT::N_BUILDING_NUMBER}->count());
 
-        $this->assertEquals(0, $node->{AddressPT::N_STREETNAME}->count());
+        $this->assertEquals(0, $node->{AddressPT::N_STREET_NAME}->count());
 
         $this->assertEquals(0, $node->{AddressPT::N_REGION}->count());
 
         $this->assertEquals(
-            $address->getAddressDetail(), $node->{AddressPT::N_ADDRESSDETAIL}
+            $address->getAddressDetail(), $node->{AddressPT::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals($address->getCity(), $node->{AddressPT::N_CITY});
 
-        $this->assertEquals(
-            $address->getCountry()->get(), $node->{AddressPT::N_COUNTRY}
-        );
+        $this->assertEquals($address->getCountry()->value, $node->{AddressPT::N_COUNTRY});
 
         $this->assertEquals(
-            $address->getPostalCode(), $node->{AddressPT::N_POSTALCODE}
+            $address->getPostalCode(), $node->{AddressPT::N_POSTAL_CODE}
         );
 
         $this->assertEmpty($address->getErrorRegistor()->getOnCreateXmlNode());
@@ -299,8 +293,8 @@ class AddressPTTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
@@ -324,15 +318,12 @@ class AddressPTTest extends TestCase
             $address->getBuildingNumber(),
             $parsed->getBuildingNumber()
         );
-        $this->assertEquals($address->getStreetName(), $parsed->getStreetName());
-        $this->assertEquals($address->getCity(), $parsed->getCity());
-        $this->assertEquals(
-            $address->getCountry()->get(),
-            $parsed->getCountry()->get()
-        );
-        $this->assertEquals($address->getPostalCode(), $parsed->getPostalCode());
-        $this->assertEquals($address->getRegion(), $parsed->getRegion());
-        $this->assertEquals(
+        $this->assertSame($address->getStreetName(), $parsed->getStreetName());
+        $this->assertSame($address->getCity(), $parsed->getCity());
+        $this->assertSame($address->getCountry(), $parsed->getCountry());
+        $this->assertSame($address->getPostalCode(), $parsed->getPostalCode());
+        $this->assertSame($address->getRegion(), $parsed->getRegion());
+        $this->assertSame(
             $address->getStreetName()." ".$address->getBuildingNumber(),
             $parsed->getAddressDetail()
         );
@@ -344,8 +335,8 @@ class AddressPTTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testClone(): void
     {
         $addr    = new AddressPT(new ErrorRegister());
@@ -361,8 +352,8 @@ class AddressPTTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");
@@ -385,8 +376,8 @@ class AddressPTTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $addrNode = new \SimpleXMLElement("<AddressPT></AddressPT>");

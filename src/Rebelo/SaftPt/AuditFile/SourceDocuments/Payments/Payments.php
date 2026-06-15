@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
-use Rebelo\Date\DateFormatException;
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -48,25 +48,25 @@ class Payments extends ASourceDocuments
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTS = "Payments";
+    const string N_PAYMENTS = "Payments";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_NUMBEROFENTRIES = "NumberOfEntries";
+    const string N_NUMBER_OF_ENTRIES = "NumberOfEntries";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TOTALDEBIT = "TotalDebit";
+    const string N_TOTAL_DEBIT = "TotalDebit";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TOTALCREDIT = "TotalCredit";
+    const string N_TOTAL_CREDIT = "TotalCredit";
 
     /**
      * <xs:element ref="NumberOfEntries"/>
@@ -77,17 +77,17 @@ class Payments extends ASourceDocuments
 
     /**
      * <xs:element ref="TotalDebit"/>
-     * @var float
+     * @var Decimal
      * @since 1.0.0
      */
-    private float $totalDebit;
+    private Decimal $totalDebit;
 
     /**
      * <xs:element ref="TotalCredit"/>
-     * @var float
+     * @var Decimal
      * @since 1.0.0
      */
-    private float $totalCredit;
+    private Decimal $totalCredit;
 
     /**
      * <xs:element name="Payment" minOccurs="0" maxOccurs="unbounded">
@@ -97,11 +97,11 @@ class Payments extends ASourceDocuments
     private array $payment = array();
 
     /**
-     * $array[type][serie][number] = $payment
+     * $array[type][serial][number] = $payment
      * \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment[]
-     * @var array
+     * @var mixed[]
      */
-    protected array $order = array();
+    protected array $order = [];
 
     /**
      * Payments<br>
@@ -193,11 +193,11 @@ class Payments extends ASourceDocuments
      * Get total debit<br>
      * The field shall contain the control sum of field 4.4.4.14.4. – DebitAmount,
      * excluding the documents which content in field.4.4.9.1. – PaymentStatus is “A”.
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalDebit(): float
+    public function getTotalDebit(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -222,13 +222,13 @@ class Payments extends ASourceDocuments
      * Set total debit<br>     *
      * The field shall contain the control sum of field 4.4.4.14.4. – DebitAmount,
      * excluding the documents which content in field.4.4.9.1. – PaymentStatus is “A”.
-     * @param float $totalDebit
+     * @param Decimal $totalDebit
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalDebit(float $totalDebit): bool
+    public function setTotalDebit(Decimal $totalDebit): bool
     {
-        if ($totalDebit < 0) {
+        if ($totalDebit->compareTo("0.0") < 0) {
             $msg    = "Total debit can not be less than zero";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -241,7 +241,7 @@ class Payments extends ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'", \strval($this->totalDebit)
+                    __METHOD__." set to '%s'", \strval($this->totalDebit->toFloat())
                 )
             );
         return $return;
@@ -251,11 +251,11 @@ class Payments extends ASourceDocuments
      * Get total Credit<br>
      * The field shall contain the control sum of field 4.4.4.14.5. – CreditAmount,
      * excluding the documents which content in field 4.4.4.9.1. – PaymentStatus is “A”.
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalCredit(): float
+    public function getTotalCredit(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -277,14 +277,14 @@ class Payments extends ASourceDocuments
     }
 
     /**
-     * Set total dredit
-     * @param float $totalCredit
+     * Set total debit
+     * @param Decimal $totalCredit
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalCredit(float $totalCredit): bool
+    public function setTotalCredit(Decimal $totalCredit): bool
     {
-        if ($totalCredit < 0.0) {
+        if ($totalCredit->compareTo("0.0") < 0.0) {
             $msg    = "Total credit can not be less than zero";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -297,7 +297,7 @@ class Payments extends ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'", \strval($this->totalCredit)
+                    __METHOD__." set to '%s'", \strval($this->totalCredit->toFloat())
                 )
             );
         return $return;
@@ -336,9 +336,9 @@ class Payments extends ASourceDocuments
     }
 
     /**
-     * Get payment order by type/serie/number<br>
-     * Ex: $stack[type][serie][InvoiceNo] = Payment<br>
-     * If a error exist, th error is added to ValidationErrors stack
+     * Get payment order by type/serial/number<br>
+     * Ex: $stack[type][serial][InvoiceNo] = Payment<br>
+     * If an error exist, th error is added to ValidationErrors stack
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment>>>
      * @since 1.0.0
      */
@@ -354,19 +354,19 @@ class Payments extends ASourceDocuments
                     AAuditFile::getI18n()->get("payment_at_index_no_number"), $k
                 );
                 $this->getErrorRegistor()->addValidationErrors($msg);
-                $payment->addError($msg, Payment::N_PAYMENTREFNO);
+                $payment->addError($msg, Payment::N_PAYMENT_REF_NO);
                 \Logger::getLogger(\get_class($this))->error($msg);
                 continue;
             }
 
-            list($type, $serie, $no) = \explode(
+            list($type, $serial, $no) = \explode(
                 " ",
                 \str_replace("/", " ", $payment->getPaymentRefNo())
             );
 
             if (\array_key_exists($type, $this->order)) {
-                if (\array_key_exists($serie, $this->order[$type])) {
-                    if (\array_key_exists(\intval($no), $this->order[$type][$serie])) {
+                if (\array_key_exists($serial, $this->order[$type])) {
+                    if (\array_key_exists(\intval($no), $this->order[$type][$serial])) {
                         $msg = \sprintf(
                             AAuditFile::getI18n()->get("duplicated_payment"),
                             $payment->getPaymentRefNo()
@@ -377,14 +377,14 @@ class Payments extends ASourceDocuments
                     }
                 }
             }
-            $this->order[$type][$serie][\intval($no)] = $payment;
+            $this->order[$type][$serial][\intval($no)] = $payment;
         }
 
         $cloneOrder = $this->order;
 
         foreach (\array_keys($cloneOrder) as $type) {
-            foreach (\array_keys($cloneOrder[$type]) as $serie) {
-                ksort($this->order[$type][$serie], SORT_NUMERIC);
+            foreach (\array_keys($cloneOrder[$type]) as $serial) {
+                ksort($this->order[$type][$serial], SORT_NUMERIC);
             }
             ksort($this->order[$type], SORT_STRING);
         }
@@ -396,18 +396,18 @@ class Payments extends ASourceDocuments
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws DateFormatException
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException*@since 1.0.0
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException *@since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== SourceDocuments::N_SOURCEDOCUMENTS) {
+        if ($node->getName() !== SourceDocuments::N_SOURCE_DOCUMENTS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                SourceDocuments::N_SOURCEDOCUMENTS, $node->getName()
+                SourceDocuments::N_SOURCE_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -418,28 +418,28 @@ class Payments extends ASourceDocuments
 
         if (isset($this->numberOfEntries)) {
             $payNode->addChild(
-                static::N_NUMBEROFENTRIES, strval($this->getNumberOfEntries())
+                static::N_NUMBER_OF_ENTRIES, strval($this->getNumberOfEntries())
             );
         } else {
-            $payNode->addChild(static::N_NUMBEROFENTRIES);
+            $payNode->addChild(static::N_NUMBER_OF_ENTRIES);
             $this->getErrorRegistor()->addOnCreateXmlNode("NumberOfEntries_not_valid");
         }
 
         if (isset($this->totalDebit)) {
             $payNode->addChild(
-                static::N_TOTALDEBIT, strval($this->getTotalDebit())
+                static::N_TOTAL_DEBIT, strval($this->getTotalDebit())
             );
         } else {
-            $payNode->addChild(static::N_TOTALDEBIT);
+            $payNode->addChild(static::N_TOTAL_DEBIT);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalDebit_not_valid");
         }
 
         if (isset($this->totalCredit)) {
             $payNode->addChild(
-                static::N_TOTALCREDIT, strval($this->getTotalCredit())
+                static::N_TOTAL_CREDIT, strval($this->getTotalCredit())
             );
         } else {
-            $payNode->addChild(static::N_TOTALCREDIT);
+            $payNode->addChild(static::N_TOTAL_CREDIT);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalCredit_not_valid");
         }
 
@@ -453,8 +453,9 @@ class Payments extends ASourceDocuments
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -473,9 +474,9 @@ class Payments extends ASourceDocuments
             throw new AuditFileException($msg);
         }
 
-        $this->setNumberOfEntries((int) $node->{static::N_NUMBEROFENTRIES});
-        $this->setTotalDebit((float) $node->{static::N_TOTALDEBIT});
-        $this->setTotalCredit((float) $node->{static::N_TOTALCREDIT});
+        $this->setNumberOfEntries((int) $node->{static::N_NUMBER_OF_ENTRIES});
+        $this->setTotalDebit(new Decimal((string) $node->{static::N_TOTAL_DEBIT}));
+        $this->setTotalCredit(new Decimal((string) $node->{static::N_TOTAL_CREDIT}));
 
         $pCount = $node->{Payment::N_PAYMENT}->count();
         for ($n = 0; $n < $pCount; $n++) {

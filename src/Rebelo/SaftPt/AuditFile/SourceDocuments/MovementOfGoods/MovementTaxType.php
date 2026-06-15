@@ -26,62 +26,26 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * MovementTaxType<br>
  * This field shall be filled in with:<br>
  * “IVA” – Value Added Tax;<br>
  * “NS” – Not subject to VAT.<br>
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType IVA()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxType NS()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class MovementTaxType extends AEnum
+enum MovementTaxType : string
 {
     /**
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const IVA = "IVA";
+    case IVA = "IVA";
 
     /**
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const NS = "NS";
+    case NS = "NS";
 
-    /**
-     * MovementTaxType<br>
-     * This field shall be filled in with:<br>
-     * “IVA” – Value Added Tax;<br>
-     * “NS” – Not subject to VAT.<br>
-     * <pre>
-     *   &lt;xs:simpleType name="SAFTPTMovementTaxType"&gt;
-     *       &lt;xs:restriction base="xs:string"&gt;
-     *           &lt;xs:enumeration value="IVA"/&gt;
-     *           &lt;xs:enumeration value="NS"/&gt;
-     *       &lt;/xs:restriction&gt;
-     *   &lt;/xs:simpleType&gt;
-     * @param string $value
-     * </pre>
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get enum value
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

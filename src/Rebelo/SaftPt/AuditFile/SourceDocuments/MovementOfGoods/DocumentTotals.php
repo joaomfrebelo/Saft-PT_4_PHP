@@ -73,10 +73,10 @@ class DocumentTotals extends ADocumentTotals
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== StockMovement::N_STOCKMOVEMENT) {
+        if ($node->getName() !== StockMovement::N_STOCK_MOVEMENT) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                StockMovement::N_STOCKMOVEMENT, $node->getName()
+                StockMovement::N_STOCK_MOVEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));

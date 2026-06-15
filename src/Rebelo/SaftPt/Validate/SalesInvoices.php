@@ -26,28 +26,27 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
-use Rebelo\Decimal\DecimalException;
+use Decimal\Decimal;
+use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
-use Rebelo\SaftPt\Sign\Sign;
-use Rebelo\Decimal\UDecimal;
-use Rebelo\Decimal\Decimal;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices as SaftSalesInvoices;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
+use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices as SaftSalesInvoices;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax;
-use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\Sign\Sign;
 
 /**
  * Validate SalesInvoices table.<br>
@@ -55,7 +54,7 @@ use Rebelo\Date\Date as RDate;
  * signature hash and dates
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class SalesInvoices extends ADocuments
 {
@@ -63,10 +62,11 @@ class SalesInvoices extends ADocuments
     /**
      * Validate SalesInvoices table.<br>
      * This class will validate the values of SalesInvoices, the
-     * signtuare hash and dates
+     * signature hash and dates
+     *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile The AuditFile to be validated
-     * @param \Rebelo\SaftPt\Sign\Sign $sign The sign class to be used to validate the hash, must have the public key defined
-     * @throws DecimalException
+     * @param \Rebelo\SaftPt\Sign\Sign           $sign      The sign class to be used to validate the hash, must have the public key defined
+     *
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
@@ -85,6 +85,7 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the invoices
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -93,9 +94,9 @@ class SalesInvoices extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $progressBar = null;
         try {
-            if(null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices(false)){
+            if (null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices(false)) {
                 \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." no sales invoices to be validated");
+                       ->debug(__METHOD__ . " no sales invoices to be validated");
                 return $this->isValid;
             }
 
@@ -105,28 +106,28 @@ class SalesInvoices extends ADocuments
 
             if (\count($salesInvoices->getInvoice()) === 0) {
 
-                if ($salesInvoices->getTotalCredit() !== 0.0) {
-                    $msg           = \sprintf(
+                if (!$salesInvoices->getTotalCredit()->equals("0.0")) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "salesinvoice_total_credit_should_be_zero"
+                            "sales_invoice_total_credit_should_be_zero"
                         ), $salesInvoices->getTotalCredit()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $salesInvoices->addError(
-                        $msg, SaftSalesInvoices::N_TOTALCREDIT
+                        $msg, SaftSalesInvoices::N_TOTAL_CREDIT
                     );
                     $this->isValid = false;
                 }
 
-                if ($salesInvoices->getTotalDebit() !== 0.0) {
-                    $msg           = \sprintf(
+                if (!$salesInvoices->getTotalDebit()->equals("0.0")) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "salesinvoice_total_debit_should_be_zero"
+                            "sales_invoice_total_debit_should_be_zero"
                         ), $salesInvoices->getTotalDebit()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $salesInvoices->addError(
-                        $msg, SaftSalesInvoices::N_TOTALDEBIT
+                        $msg, SaftSalesInvoices::N_TOTAL_DEBIT
                     );
                     $this->isValid = false;
                 }
@@ -137,11 +138,11 @@ class SalesInvoices extends ADocuments
             $order = $salesInvoices->getOrder();
 
             if ($this->getStyle() !== null) {
-                $nDoc      = \count($salesInvoices->getInvoice());
-                $section   = null;
+                $nDoc        = \count($salesInvoices->getInvoice());
+                $section     = null;
                 $progressBar = $this->getStyle()->addProgressBar($section);
-                $section->writeln("");
-                $section->writeln(
+                $section?->writeln("");
+                $section?->writeln(
                     \sprintf(
                         AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
                         "Invoice"
@@ -151,15 +152,15 @@ class SalesInvoices extends ADocuments
             }
 
             foreach (\array_keys($order) as $type) {
-                foreach (\array_keys($order[$type]) as $serie) {
-                    foreach (\array_keys($order[$type][$serie]) as $no) {
+                foreach (\array_keys($order[$type]) as $serial) {
+                    foreach (\array_keys($order[$type][$serial]) as $no) {
 
                         $progressBar?->advance();
 
-                        $invoice = $order[$type][$serie][$no];
+                        $invoice = $order[$type][$serial][$no];
                         list(, $no) = \explode("/", $invoice->getInvoiceNo());
-                        if ((string) $type !== $this->lastType || (string) $serie
-                            !== $this->lastSerie) {
+                        if ((string)$type !== $this->lastType || (string)$serial
+                            !== $this->lastSerial) {
                             $this->lastHash            = "";
                             $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
@@ -167,9 +168,9 @@ class SalesInvoices extends ADocuments
                             $noExpected = $this->lastDocNumber + 1;
                             if (\intval($no) !== $noExpected) {
                                 do {
-                                    $msg                 = \sprintf(
+                                    $msg = \sprintf(
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
-                                        $type, $serie, $noExpected
+                                        $type, $serial, $noExpected
                                     );
                                     \Logger::getLogger(\get_class($this))->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -179,11 +180,11 @@ class SalesInvoices extends ADocuments
                                 } while ($no !== \strval($noExpected));
                             }
                         }
-                        $this->lastDocNumber = (int) $no;
-                        $invoice->setDocTotalcal(new DocTotalCalc());
+                        $this->lastDocNumber = (int)$no;
+                        $invoice->setDocTotalCalc(new DocTotalCalc());
                         $this->invoice($invoice);
-                        $this->lastType      = (string) $type;
-                        $this->lastSerie     = (string) $serie;
+                        $this->lastType   = (string)$type;
+                        $this->lastSerial = (string)$serial;
                     }
                 }
             }
@@ -192,18 +193,18 @@ class SalesInvoices extends ADocuments
 
             $this->totalCredit();
             $this->totalDebit();
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->isValid = false;
 
             $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
 
             \Logger::getLogger(\get_class($this))
                 ->debug(
                     \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
+                        __METHOD__ . " validate error '%s'", $e->getMessage()
                     )
                 );
         }
@@ -212,7 +213,9 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate Invoice
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
      * @since 1.0.0
      */
@@ -220,14 +223,14 @@ class SalesInvoices extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         try {
-            $this->docCredit  = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->docDebit   = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->netTotal   = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->taxPayable = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->grossTotal = new UDecimal(0.0, static::CALC_PRECISION);
+            $this->docCredit  = new Decimal("0.0");
+            $this->docDebit   = new Decimal("0.0");
+            $this->netTotal   = new Decimal("0.0");
+            $this->taxPayable = new Decimal("0.0");
+            $this->grossTotal = new Decimal("0.0");
 
             if ($invoice->issetInvoiceNo() === false) {
-                $msg           = AAuditFile::getI18n()->get("invoicetno_not_defined");
+                $msg = AAuditFile::getI18n()->get("invoice_no_not_defined");
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg);
                 $this->isValid = false;
@@ -235,39 +238,39 @@ class SalesInvoices extends ADocuments
             }
 
             if ($invoice->issetInvoiceType() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "invoicetype_not_defined"
+                        "invoice_type_not_defined"
                     ), $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $invoice->addError($msg, Invoice::N_INVOICETYPE);
+                $invoice->addError($msg, Invoice::N_INVOICE_TYPE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
 
             if ($invoice->issetInvoiceDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_date_not_defined"
                     ), $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $invoice->addError($msg, Invoice::N_INVOICEDATE);
+                $invoice->addError($msg, Invoice::N_INVOICE_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
 
             if ($invoice->issetSystemEntryDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "document_systementrydate_not_defined"
+                        "document_system_entry_date_not_defined"
                     ), $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $invoice->addError($msg, Invoice::N_SYSTEMENTRYDATE);
+                $invoice->addError($msg, Invoice::N_SYSTEM_ENTRY_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
@@ -279,17 +282,17 @@ class SalesInvoices extends ADocuments
             $this->documentStatus($invoice);
             $this->lines($invoice);
             $this->totals($invoice);
-            $this->shipement($invoice);
+            $this->shipment($invoice);
             $this->payment($invoice);
             $this->withholdingTax($invoice);
             $this->outOfDateInvoiceTypes($invoice);
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
             \Logger::getLogger(\get_class($this))
                 ->debug(
                     \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
+                        __METHOD__ . " validate error '%s'", $e->getMessage()
                     )
                 );
             $invoice->addError($e->getMessage());
@@ -299,6 +302,7 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate if the NumberOfEntries is equal to the number of invoices
+     *
      * @return void
      * @since 1.0.0
      */
@@ -314,8 +318,10 @@ class SalesInvoices extends ADocuments
         $numberOfEntries        = $salesInvoices->getNumberOfEntries();
         $test                   = $numberOfEntries === $calculatedNumOfEntries;
 
-        $this->auditFile->getSourceDocuments()?->getSalesInvoices()
-            ?->getDocTableTotalCalc()?->setNumberOfEntries($calculatedNumOfEntries);
+        $this->auditFile->getSourceDocuments()
+                        ->getSalesInvoices()
+                        ->getDocTableTotalCalc()
+                        ?->setNumberOfEntries($calculatedNumOfEntries);
 
         if ($test === false) {
             $msg = \sprintf(
@@ -324,7 +330,7 @@ class SalesInvoices extends ADocuments
                 ), $numberOfEntries, $calculatedNumOfEntries
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $salesInvoices->addError($msg, SaftSalesInvoices::N_NUMBEROFENTRIES);
+            $salesInvoices->addError($msg, SaftSalesInvoices::N_NUMBER_OF_ENTRIES);
             \Logger::getLogger(\get_class($this))->info($msg);
         }
         if ($test === false) {
@@ -334,9 +340,8 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate SalesInvoices TotalDebit
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalDebit(): void
@@ -347,23 +352,18 @@ class SalesInvoices extends ADocuments
             return;
         }
 
-        $salesInvoices->getDocTableTotalCalc()
-            ?->setTotalDebit($this->debit->valueOf());
+        $salesInvoices->getDocTableTotalCalc()?->setTotalDebit($this->debit);
 
-        $diff = $this->debit->signedSubtract(
-            new Decimal(
-                $salesInvoices->getTotalDebit(), static::CALC_PRECISION
-            )
-        )->abs()->valueOf();
+        $diff = $this->debit->sub($salesInvoices->getTotalDebit())->abs();
 
         if ($diff > $this->deltaTable) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_total_debit_of_invoices"
-                ), $salesInvoices->getTotalDebit(), $this->debit->valueOf()
+                ), $salesInvoices->getTotalDebit(), $this->debit->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $salesInvoices->addError($msg, SaftSalesInvoices::N_TOTALDEBIT);
+            $salesInvoices->addError($msg, SaftSalesInvoices::N_TOTAL_DEBIT);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -371,9 +371,8 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate SalesInvoices TotalCredit
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalCredit(): void
@@ -383,22 +382,18 @@ class SalesInvoices extends ADocuments
             return;
         }
 
-        $salesInvoices->getDocTableTotalCalc()?->setTotalDebit($this->credit->valueOf());
+        $salesInvoices->getDocTableTotalCalc()?->setTotalDebit($this->credit);
 
-        $diff = $this->credit->signedSubtract(
-            new Decimal(
-                $salesInvoices->getTotalCredit(), static::CALC_PRECISION
-            )
-        )->abs()->valueOf();
+        $diff = $this->credit->sub($salesInvoices->getTotalCredit())->abs();
 
         if ($diff > $this->deltaTable) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "wrong_total_credit_of_invoices"
-                ), $salesInvoices->getTotalCredit(), $this->credit->valueOf()
+                ), $salesInvoices->getTotalCredit(), $this->credit->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $salesInvoices->addError($msg, SaftSalesInvoices::N_TOTALCREDIT);
+            $salesInvoices->addError($msg, SaftSalesInvoices::N_TOTAL_CREDIT);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -406,21 +401,22 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the Document Status
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(Invoice $invoice): void
     {
         if ($invoice->issetDocumentStatus() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_not_defined"
                 ), $invoice->getInvoiceNo()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $invoice->addError($msg, Invoice::N_DOCUMENTSTATUS);
+            $invoice->addError($msg, Invoice::N_DOCUMENT_STATUS);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -430,22 +426,21 @@ class SalesInvoices extends ADocuments
 
         if ($status->getInvoiceStatusDate() < $invoice->getSystemEntryDate()) {
 
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_date_earlier"
                 ), $invoice->getInvoiceNo()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $invoice->addError($msg, DocumentStatus::N_INVOICESTATUSDATE);
+            $invoice->addError($msg, DocumentStatus::N_INVOICE_STATUS_DATE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($status->getInvoiceStatus()->isEqual(InvoiceStatus::A) &&
-            $status->getReason() === null) {
+        if ($status->getInvoiceStatus() === InvoiceStatus::A && $status->getReason() === null) {
 
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_cancel_no_reason"
                 ), $invoice->getInvoiceNo()
@@ -460,7 +455,9 @@ class SalesInvoices extends ADocuments
     /**
      * validate if the customerID of the Invoice if is set and if exits in
      * the customer table
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
      * @since 1.0.0
      */
@@ -475,22 +472,22 @@ class SalesInvoices extends ADocuments
                     AAuditFile::getI18n()->get(
                         "customerID_not_exits"
                     ), $invoice->
-                        getCustomerID(), $invoice->getInvoiceNo()
+                    getCustomerID(), $invoice->getInvoiceNo()
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $invoice->addError($msg, Invoice::N_CUSTOMERID);
+                $invoice->addError($msg, Invoice::N_CUSTOMER_ID);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         } else {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "customerID_not_defined_in_document"
                 ), $invoice->getInvoiceNo()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $invoice->addError($msg, Invoice::N_CUSTOMERID);
+            $invoice->addError($msg, Invoice::N_CUSTOMER_ID);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -498,84 +495,83 @@ class SalesInvoices extends ADocuments
 
     /**
      * validate each line of the Invoice
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function lines(Invoice $invoice): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if (\count($invoice->getLine()) === 0) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
                 $invoice->getInvoiceNo()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $invoice->addError($msg, Invoice::N_INVOICENO);
+            $invoice->addError($msg, Invoice::N_INVOICE_NO);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        $n           = 0;
+        $n = 0;
         /* @var $lineNoStack int[] */
         $lineNoStack = array();
         $lineNoError = false;
         //$hasDebit and $hasCredit is to check if the document as both debit and credit lines
-        $hasDebit    = false;
-        $hasCredit   = false;
+        $hasDebit  = false;
+        $hasCredit = false;
 
-        // For the case that line anulation are use,
-        // validate if the anulation is bigger or not
+        // For the case that line cancellation are use,
+        // validate if the cancellation is bigger or not
 
-        /* @var $anulaDebitValue \Rebelo\Decimal\UDecimal[] */
-        $anulaDebitValue  = array();
-        /* @var $anulaCreditValue \Rebelo\Decimal\UDecimal[] */
-        $anulaCreditValue = array();
-        /* @var $anulaDebitQt \Rebelo\Decimal\UDecimal[] */
-        $anulaDebitQt     = array();
-        /* @var $anulaCreditQt \Rebelo\Decimal\UDecimal[] */
-        $anulaCreditQt    = array();
+        /* @var $canceledDebitValue \Decimal\Decimal[] */
+        $canceledDebitValue = array();
+        /* @var $canceledCreditValue \Decimal\Decimal[] */
+        $canceledCreditValue = array();
+        /* @var $canceledDebitQt \Decimal\Decimal[] */
+        $canceledDebitQt = array();
+        /* @var $canceledCreditQt \Decimal\Decimal[] */
+        $canceledCreditQt = array();
 
         foreach ($invoice->getLine() as $line) {
             /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line */
             if ($lineNoError === false) {
                 if ($line->issetLineNumber()) {
                     if ($this->getContinuesLines() && $line->getLineNumber() !== ++$n) {
-                        $msg           = \sprintf(
+                        $msg = \sprintf(
                             AAuditFile::getI18n()->get(
                                 "document_line_no_continues"
                             ), $invoice->getInvoiceNo()
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                        $line->addError($msg, Line::N_LINENUMBER);
+                        $line->addError($msg, Line::N_LINE_NUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
-                        $msg           = \sprintf(
+                        $msg = \sprintf(
                             AAuditFile::getI18n()->get(
                                 "document_line_duplicated"
                             ), $invoice->getInvoiceNo()
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                        $line->addError($msg, Line::N_LINENUMBER);
+                        $line->addError($msg, Line::N_LINE_NUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     }
                     $lineNoStack[] = $line->getLineNumber();
                 } else {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "document_line_no_number"
                         ), $invoice->getInvoiceNo()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $line->addError($msg, Line::N_LINENUMBER);
+                    $line->addError($msg, Line::N_LINE_NUMBER);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
                     $lineNoError   = true;
@@ -584,7 +580,7 @@ class SalesInvoices extends ADocuments
             }
 
             if ($line->issetQuantity() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_no_quantity"
                     ), $invoice->getInvoiceNo()
@@ -597,25 +593,24 @@ class SalesInvoices extends ADocuments
             }
 
             if ($line->issetUnitPrice() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_no_unit_price"
                     ), $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_UNITPRICE);
+                $line->addError($msg, Line::N_UNIT_PRICE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 continue;
             }
 
-            $lineValue  = new Decimal(0.0, static::CALC_PRECISION);
-            $lineTaxCal = new UDecimal(0.0, static::CALC_PRECISION);
+            $lineValue  = new Decimal("0.0");
+            $lineTaxCal = new Decimal("0.0");
 
-            if ($line->getCreditAmount() === null &&
-                $line->getDebitAmount() === null) {
+            if ($line->getCreditAmount() === null && $line->getDebitAmount() === null) {
 
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_no_debit_or_credit"
                     ), $invoice->getInvoiceNo(), $line->getLineNumber()
@@ -627,70 +622,58 @@ class SalesInvoices extends ADocuments
                 continue;
             }
 
+            /** @var Decimal $lineAmount */
             $lineAmount = $line->getCreditAmount() === null ?
-                $line->getDebitAmount() * -1.0 :
+                $line->getDebitAmount()?->mul("-1.0") :
                 $line->getCreditAmount();
 
             // Get value for total validation
-            $lineValue->plusThis($lineAmount);
+            $lineValue = $lineValue->add($lineAmount);
 
             if ($line->issetTax()) {
                 $lineTax = $line->getTax();
                 if ($lineTax->getTaxAmount() !== null) {
-                    $lineTaxCal = new UDecimal(
-                        $lineTax->getTaxAmount(), static::CALC_PRECISION
-                    );
+                    $lineTaxCal = new Decimal($lineTax->getTaxAmount());
                 }
 
-                if ($lineTax->getTaxPercentage() !== null &&
-                    $lineTax->getTaxPercentage() !== 0.0) {
-
-                    $lineFactor = $lineTax->getTaxPercentage() / 100;
+                if (
+                    $lineTax->getTaxPercentage() !== null &&
+                    $lineTax->getTaxPercentage()->compareTo("0.0") !== 0
+                ) {
+                    $lineFactor = $lineTax->getTaxPercentage()->div(100);
 
                     if ($line->getTaxBase() !== null) {
-                        $lineTaxCal = new UDecimal(
-                            $lineFactor * $line->getTaxBase(),
-                            static::CALC_PRECISION
-                        );
+                        $lineTaxCal = $lineFactor->mul($line->getTaxBase());
                     } else {
-                        $lineTaxCal = new UDecimal(
-                            $lineFactor * \abs($lineAmount),
-                            static::CALC_PRECISION
-                        );
+                        $lineTaxCal = $lineFactor->mul($lineAmount->abs());
                     }
                 }
             }
 
-            // validate unit price and quantuty
-            $unitPrice = new UDecimal(
-                $line->getUnitPrice(), static::CALC_PRECISION
-            );
+            // validate unit price and quantity
+            $unitPrice = new Decimal($line->getUnitPrice());
 
-            $uniQt = $unitPrice->multiply(
-                new UDecimal($line->getQuantity(), static::CALC_PRECISION)
-            );
+            $uniQt = $unitPrice->mul($line->getQuantity());
 
-            $invoice->getDocTotalcal()?->addLineTotal(
-                $line->getLineNumber(), $uniQt->valueOf()
-            );
+            $invoice->getDocTotalCalc()?->addLineTotal($line->getLineNumber(), $uniQt);
 
             if ($line->getTaxBase() !== null &&
-                ($unitPrice->valueOf() > 0.0 || $lineValue->valueOf() !== 0.0)
+                ($unitPrice->compareTo("0.0") > 0 || !$lineValue->equals("0.0"))
             ) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_have_tax_base_with_unit_price_credit_debit"
                     ), $invoice->getInvoiceNo(), $line->getLineNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXBASE);
+                $line->addError($msg, Line::N_TAX_BASE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
 
-            if ($uniQt->signedSubtract($lineValue->abs())->abs()->valueOf() > $this->getDeltaLine()) {
-                $msg           = \sprintf(
+            if ($uniQt->sub($lineValue->abs())->abs()->compareTo($this->getDeltaLine()) > 0) {
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_value_not_quantity_price"
                     ), $invoice->getInvoiceNo(), $line->getLineNumber()
@@ -699,7 +682,7 @@ class SalesInvoices extends ADocuments
                 $invoice->addError(
                     $msg,
                     $line->getCreditAmount() === null ?
-                        Line::N_DEBITAMOUNT : Line::N_CREDITAMOUNT
+                        Line::N_DEBIT_AMOUNT : Line::N_CREDIT_AMOUNT
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -710,68 +693,61 @@ class SalesInvoices extends ADocuments
                 InvoiceStatus::F
             );
 
-            $docStat = $invoice->getDocumentStatus()->getInvoiceStatus()->get();
+            $docStat = $invoice->getDocumentStatus()->getInvoiceStatus();
 
             if ($line->getCreditAmount() !== null) {
-                $credit = new UDecimal(
-                    $line->getCreditAmount(), static::CALC_PRECISION
-                );
-                $this->docCredit->plusThis($credit);
+
+                $credit = new Decimal($line->getCreditAmount());
+
+                $this->docCredit = $this->docCredit->add($credit);
 
                 if (\in_array($docStat, $notForTotal) === false) {
-                    $this->credit->plusThis($credit);
+                    $this->credit = $this->credit->add($credit);
                 }
 
                 $hasCredit = true;
 
-                if (\array_key_exists($line->getProductCode(), $anulaCreditQt)) {
-                    $anulaCreditQt[$line->getProductCode()]->plusThis(
-                        new UDecimal(
-                            $line->getQuantity(), static::CALC_PRECISION
-                        )
-                    );
-                    $anulaCreditValue[$line->getProductCode()]->plusThis($uniQt);
+                if (\array_key_exists($line->getProductCode(), $canceledCreditQt)) {
+                    $canceledCreditQt[$line->getProductCode()] = $canceledCreditQt[$line->getProductCode()]
+                        ->add($line->getQuantity());
+
+                    $canceledCreditValue[$line->getProductCode()] = $canceledCreditValue[$line->getProductCode()]
+                        ->add($uniQt);
+
                 } else {
-                    $anulaCreditQt[$line->getProductCode()]    = new UDecimal(
-                        $line->getQuantity(), static::CALC_PRECISION
-                    );
-                    $anulaCreditValue[$line->getProductCode()] = clone $uniQt;
+                    $canceledCreditQt[$line->getProductCode()]    = new Decimal($line->getQuantity());
+                    $canceledCreditValue[$line->getProductCode()] = new Decimal($uniQt);
                 }
             }
 
             if ($line->getDebitAmount() !== null) {
-                $debit = new UDecimal(
-                    $line->getDebitAmount(), static::CALC_PRECISION
-                );
-                $this->docDebit->plusThis($debit);
+                $debit          = new Decimal($line->getDebitAmount());
+                $this->docDebit = $this->docDebit->add($debit);
 
                 if (\in_array($docStat, $notForTotal) === false) {
-                    $this->debit->plusThis($debit);
+                    $this->debit = $this->debit->add($debit);
                 }
 
                 $hasDebit = true;
 
-                if (\array_key_exists($line->getProductCode(), $anulaDebitQt)) {
-                    $anulaDebitQt[$line->getProductCode()]->plusThis(
-                        new UDecimal(
-                            $line->getQuantity(), static::CALC_PRECISION
-                        )
-                    );
-                    $anulaDebitValue[$line->getProductCode()]->plusThis($uniQt);
+                if (\array_key_exists($line->getProductCode(), $canceledDebitQt)) {
+                    $canceledDebitQt[$line->getProductCode()] = $canceledDebitQt[$line->getProductCode()]
+                        ->add($line->getQuantity());
+
+                    $canceledDebitValue[$line->getProductCode()] = $canceledDebitValue[$line->getProductCode()]
+                        ->add($uniQt);
                 } else {
-                    $anulaDebitQt[$line->getProductCode()]    = new UDecimal(
-                        $line->getQuantity(), static::CALC_PRECISION
-                    );
-                    $anulaDebitValue[$line->getProductCode()] = clone $uniQt;
+                    $canceledDebitQt[$line->getProductCode()]    = new Decimal($line->getQuantity());
+                    $canceledDebitValue[$line->getProductCode()] = new Decimal($uniQt);
                 }
             }
 
-            $this->producCode($line, $invoice);
+            $this->productCode($line, $invoice);
 
             if ($line->issetTax()) {
                 $this->tax($line, $invoice);
             } elseif ($line->getTaxBase() === null) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get("tax_must_be_defined"),
                     $invoice->getInvoiceNo(), $line->getLineNumber()
                 );
@@ -781,53 +757,55 @@ class SalesInvoices extends ADocuments
                 $this->isValid = false;
                 return;
             }
-            $this->netTotal->plusThis($lineValue->abs());
 
-            $this->taxPayable->plusThis($lineTaxCal);
+            $this->netTotal   = $this->netTotal->add($lineValue->abs());
+            $this->taxPayable = $this->taxPayable->add($lineTaxCal);
 
             if (\count($line->getReferences()) > 0) {
                 $this->references($line, $invoice);
             }
+
             if (\count($line->getOrderReferences()) > 0) {
                 $this->orderReferences($line, $invoice);
             }
         }
 
-        $this->grossTotal = $this->netTotal->plus($this->taxPayable);
+        $this->grossTotal = $this->netTotal->add($this->taxPayable);
 
-        if ($invoice->getInvoiceType()->isEqual("NC") &&
-            $this->docDebit->isLess($this->docCredit)) {
+        if ($invoice->getInvoiceType()->value === "NC" &&
+            $this->docDebit->compareTo($this->docCredit) < 0) {
 
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_must_be_debit_but_credit"),
-                $invoice->getInvoiceNo(), $invoice->getInvoiceType()->get()
+                $invoice->getInvoiceNo(), $invoice->getInvoiceType()->value
             );
+
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($invoice->getInvoiceType()->isNotEqual("NC") &&
-            $this->docCredit->isLess($this->docDebit)) {
+        if ($invoice->getInvoiceType()->value !== "NC" && $this->docCredit->compareTo($this->docDebit) < 0) {
 
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get(
-                    "document_must_be_credit_but_debit"
-                ), $invoice->getInvoiceNo(), $invoice->getInvoiceType()->get()
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("document_must_be_credit_but_debit"),
+                $invoice->getInvoiceNo(),
+                $invoice->getInvoiceType()->value
             );
+
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        $invoice->getDocTotalcal()?->setGrossTotal($this->grossTotal->valueOf());
-        $invoice->getDocTotalcal()?->setNetTotal($this->netTotal->valueOf());
-        $invoice->getDocTotalcal()?->setTaxPayable($this->taxPayable->valueOf());
+        $invoice->getDocTotalCalc()?->setGrossTotal($this->grossTotal);
+        $invoice->getDocTotalCalc()?->setNetTotal($this->netTotal);
+        $invoice->getDocTotalCalc()?->setTaxPayable($this->taxPayable);
 
         if ($hasCredit && $hasDebit && $this->allowDebitAndCredit === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_has_credit_and_debit_lines"
                 ), $invoice->getInvoiceNo()
@@ -839,12 +817,13 @@ class SalesInvoices extends ADocuments
         }
 
         if ($hasCredit && $hasDebit && $this->allowDebitAndCredit) {
+            /** @noinspection PhpUnusedLocalVariableInspection */
             foreach ($invoice->getLine() as $line) {
-                if ($invoice->getInvoiceType()->isEqual("NC")) {
-                    foreach ($anulaCreditQt as $code => $qt) {
-                        if (\array_key_exists($code, $anulaDebitQt)) {
-                            if ($qt->isGreater($anulaDebitQt[$code])) {
-                                $msg           = \sprintf(
+                if ($invoice->getInvoiceType()->value === "NC") {
+                    foreach ($canceledCreditQt as $code => $qt) {
+                        if (\array_key_exists($code, $canceledDebitQt)) {
+                            if ($qt->compareTo($canceledDebitQt[$code]) > 0) {
+                                $msg = \sprintf(
                                     AAuditFile::getI18n()->get(
                                         "document_has_cancel_lines_with_greater_qt"
                                     ), $invoice->getInvoiceNo()
@@ -856,12 +835,12 @@ class SalesInvoices extends ADocuments
                                 return;
                             }
 
-                            if ($anulaCreditValue[$code]->isGreater($anulaDebitValue[$code])) {
-                                $msg           = \sprintf(
+                            if ($canceledCreditValue[$code]->compareTo($canceledDebitValue[$code]) > 0) {
+                                $msg = \sprintf(
                                     AAuditFile
-                                    ::getI18n()->get(
-                                        "document_has_cancel_lines_with_greater_value"
-                                    ), $invoice->getInvoiceNo()
+                                        ::getI18n()->get(
+                                            "document_has_cancel_lines_with_greater_value"
+                                        ), $invoice->getInvoiceNo()
                                 );
                                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                 $invoice->addError($msg);
@@ -871,7 +850,7 @@ class SalesInvoices extends ADocuments
                                 return;
                             }
                         } else {
-                            $msg           = \sprintf(
+                            $msg = \sprintf(
                                 AAuditFile::getI18n()->get(
                                     "document_has_cancel_lines_that_not_exist"
                                 ), $invoice->getInvoiceNo()
@@ -884,10 +863,10 @@ class SalesInvoices extends ADocuments
                         }
                     }
                 } else {
-                    foreach ($anulaDebitQt as $code => $qt) {
-                        if (\array_key_exists($code, $anulaCreditQt)) {
-                            if ($qt->isGreater($anulaCreditQt[$code])) {
-                                $msg           = \sprintf(
+                    foreach ($canceledDebitQt as $code => $qt) {
+                        if (\array_key_exists($code, $canceledCreditQt)) {
+                            if ($qt->compareTo($canceledCreditQt[$code]) > 0) {
+                                $msg = \sprintf(
                                     AAuditFile::getI18n()->get(
                                         "document_has_cancel_lines_with_greater_qt"
                                     ), $invoice->getInvoiceNo()
@@ -899,12 +878,12 @@ class SalesInvoices extends ADocuments
                                 return;
                             }
 
-                            if ($anulaDebitValue[$code]->isGreater($anulaCreditValue[$code])) {
-                                $msg           = \sprintf(
+                            if ($canceledDebitValue[$code]->compareTo($canceledCreditValue[$code]) > 0) {
+                                $msg = \sprintf(
                                     AAuditFile
-                                    ::getI18n()->get(
-                                        "document_has_cancel_lines_with_greater_value"
-                                    ), $invoice->getInvoiceNo()
+                                        ::getI18n()->get(
+                                            "document_has_cancel_lines_with_greater_value"
+                                        ), $invoice->getInvoiceNo()
                                 );
                                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                 $invoice->addError($msg);
@@ -913,7 +892,7 @@ class SalesInvoices extends ADocuments
                                 return;
                             }
                         } else {
-                            $msg           = \sprintf(
+                            $msg = \sprintf(
                                 AAuditFile::getI18n()->get(
                                     "document_has_cancel_lines_that_not_exist"
                                 ), $invoice->getInvoiceNo()
@@ -931,19 +910,21 @@ class SalesInvoices extends ADocuments
     }
 
     /**
-     * Validate refernces of NC (Credit note)
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
+     * Validate references of NC (Credit note)
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line    $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
      * @since 1.0.0
      */
     public function references(Line $line, Invoice $invoice): void
     {
-        if (\in_array($invoice->getInvoiceType()->get(), ["NC", "ND"]) === false) {
-            $msg           = \sprintf(
+        if (\in_array($invoice->getInvoiceType()->value, ["NC", "ND"]) === false) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "only_NC_and_ND_can_have_references"
-                ), $invoice->getInvoiceNo(), $invoice->getInvoiceType()->get()
+                ), $invoice->getInvoiceNo(), $invoice->getInvoiceType()->value
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
@@ -954,9 +935,9 @@ class SalesInvoices extends ADocuments
 
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if (\count($line->getReferences()) === 0) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "document_correcting_line_without_refernces"
+                    "document_correcting_line_without_references"
                 ), $invoice->getInvoiceNo(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -990,9 +971,9 @@ class SalesInvoices extends ADocuments
         }
 
         if ($hasRef === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "document_correcting_line_without_refernces"
+                    "document_correcting_line_without_references"
                 ), $invoice->getInvoiceNo(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -1003,7 +984,7 @@ class SalesInvoices extends ADocuments
         }
 
         if ($hasReason === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_correcting_line_without_reason"
                 ), $invoice->getInvoiceNo(), $line->getLineNumber()
@@ -1017,23 +998,24 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the Order References
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line    $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function orderReferences(Line $line, Invoice $invoice): void
     {
         if (\count($line->getOrderReferences()) > 0 &&
-            \in_array($invoice->getInvoiceType()->get(), ["NC", "ND"])) {
-            $msg           = \sprintf(
+            \in_array($invoice->getInvoiceType()->value, ["NC", "ND"])) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "order_reference_not_for_NC_ND"
-                ), $invoice->getInvoiceNo(), $invoice->getInvoiceType()->get(),
+                ), $invoice->getInvoiceNo(), $invoice->getInvoiceType()->value,
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, OrderReferences::N_ORDERREFERENCES);
+            $line->addError($msg, OrderReferences::N_ORDER_REFERENCES);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -1041,13 +1023,13 @@ class SalesInvoices extends ADocuments
 
         foreach ($line->getOrderReferences() as $orderRef) {
             if ($orderRef->getOriginatingON() === null) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "order_reference_document_not_incicated"
+                        "order_reference_document_not_indicated"
                     ), $invoice->getInvoiceNo(), $line->getLineNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $orderRef->addError($msg, OrderReferences::N_ORIGINATINGON);
+                $orderRef->addError($msg, OrderReferences::N_ORIGINATING_ON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             } else {
@@ -1066,14 +1048,14 @@ class SalesInvoices extends ADocuments
 
             if ($orderRef->getOrderDate() === null) {
                 $docStatus = $invoice->getDocumentStatus()->getInvoiceStatus();
-                if ($docStatus->isNotEqual(InvoiceStatus::R)) {
-                    $msg           = \sprintf(
+                if ($docStatus !== InvoiceStatus::R) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "order_reference_date_not_incicated"
+                            "order_reference_date_not_indicated"
                         ), $invoice->getInvoiceNo(), $line->getLineNumber()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $orderRef->addError($msg, OrderReferences::N_ORDERDATE);
+                    $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
                 }
@@ -1085,7 +1067,7 @@ class SalesInvoices extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $orderRef->addError($msg, OrderReferences::N_ORDERDATE);
+                $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
@@ -1094,12 +1076,14 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate if Product CodeExist
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line    $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
      * @since 1.0.0
      */
-    protected function producCode(Line $line, Invoice $invoice): void
+    protected function productCode(Line $line, Invoice $invoice): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($line->issetProductCode()) {
@@ -1116,7 +1100,7 @@ class SalesInvoices extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_PRODUCTCODE);
+                $line->addError($msg, Line::N_PRODUCT_CODE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
@@ -1128,7 +1112,7 @@ class SalesInvoices extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_PRODUCTCODE);
+            $line->addError($msg, Line::N_PRODUCT_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1136,10 +1120,11 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the line Tax
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line    $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, Invoice $invoice): void
@@ -1147,7 +1132,7 @@ class SalesInvoices extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
 
         if ($line->issetTax() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_be_defined"),
                 $invoice->getInvoiceNo(), $line->getLineNumber()
             );
@@ -1161,44 +1146,43 @@ class SalesInvoices extends ADocuments
         $lineTax = $line->getTax();
 
         if ($lineTax->issetTaxType() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_type"),
                 $invoice->getInvoiceNo(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXTYPE);
+            $lineTax->addError($msg, Tax::N_TAX_TYPE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($lineTax->issetTaxCode() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_code"),
                 $invoice->getInvoiceNo(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXCODE);
+            $lineTax->addError($msg, Tax::N_TAX_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($lineTax->issetTaxCountryRegion() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_region"),
                 $invoice->getInvoiceNo(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXCOUNTRYREGION);
+            $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
 
-        if ($lineTax->getTaxType()->isEqual(TaxType::IVA) &&
-            $lineTax->getTaxPercentage() === null) {
+        if ($lineTax->getTaxType() === TaxType::IVA && $lineTax->getTaxPercentage() === null) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_iva_must_have_percentage"),
@@ -1206,13 +1190,13 @@ class SalesInvoices extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXPERCENTAGE);
+            $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($lineTax->getTaxAmount() === 0.0 || $lineTax->getTaxPercentage() === 0.0) {
+        if ($lineTax->getTaxAmount()?->equals("0.0") || $lineTax->getTaxPercentage()?->equals("0.0")) {
             if ($line->getTaxExemptionCode() === null ||
                 $line->getTaxExemptionReason() === null) {
 
@@ -1222,14 +1206,14 @@ class SalesInvoices extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-                $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         }
 
-        if ($lineTax->getTaxCode()->isEqual(TaxCode::ISE)) {
+        if ($lineTax->getTaxCode() === TaxCode::ISE) {
             if ($line->getTaxExemptionCode() === null ||
                 $line->getTaxExemptionReason() === null) {
 
@@ -1239,32 +1223,32 @@ class SalesInvoices extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-                $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         }
 
 
-        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
-            $lineTax->getTaxPercentage() !== 0.0 &&
+        if ($lineTax->getTaxCode() !== TaxCode::ISE &&
+            !$lineTax->getTaxPercentage()?->equals("0.0") &&
             ($line->getTaxExemptionCode() !== null ||
-            $line->getTaxExemptionReason() !== null)
+                $line->getTaxExemptionReason() !== null)
         ) {
 
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_isent"),
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_for_tax_zero"),
                 $invoice->getInvoiceNo()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-            $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+            $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+            $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        // valiedate if exists in tax table
+        // validate if exists in tax table
         foreach ($this->auditFile->getMasterFiles()->getTaxTableEntry() as $taxEntry) {
             /* @var $taxEntry \Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry */
             if ($taxEntry->issetTaxType() === false ||
@@ -1274,10 +1258,10 @@ class SalesInvoices extends ADocuments
                 continue;
             }
 
-            if ($taxEntry->getTaxType()->isNotEqual($lineTax->getTaxType()) ||
+            if ($taxEntry->getTaxType()->value !== $lineTax->getTaxType()->value ||
                 ($taxEntry->getTaxAmount() !== $lineTax->getTaxAmount() &&
-                $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage()) ||
-                $taxEntry->getTaxCountryRegion()->isNotEqual($lineTax->getTaxCountryRegion())) {
+                    $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage()) ||
+                $taxEntry->getTaxCountryRegion() !== $lineTax->getTaxCountryRegion()) {
                 continue;
             }
 
@@ -1303,17 +1287,17 @@ class SalesInvoices extends ADocuments
     /**
      * Validate the document total, only can be invoked after
      * validate lines (Because total controls are get from that validation)
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(Invoice $invoice): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($invoice->issetDocumentTotals() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
                 $invoice->getInvoiceNo()
             );
@@ -1326,11 +1310,11 @@ class SalesInvoices extends ADocuments
         }
 
         $totals = $invoice->getDocumentTotals();
-        $gross  = new UDecimal($totals->getGrossTotal(), 2);
-        $net    = new UDecimal($totals->getNetTotal(), static::CALC_PRECISION);
-        $tax    = new UDecimal($totals->getTaxPayable(), static::CALC_PRECISION);
+        $gross  = new Decimal($totals->getGrossTotal());
+        $net    = new Decimal($totals->getNetTotal());
+        $tax    = new Decimal($totals->getTaxPayable());
 
-        if ($gross->equals($net->plus($tax)) === false) {
+        if ($gross->equals($net->add($tax)) === false) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_tax_plus_net"),
@@ -1343,35 +1327,37 @@ class SalesInvoices extends ADocuments
             $this->isValid = false;
         }
 
-        if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+        if ($gross->sub($this->grossTotal)->abs()->compareTo($this->deltaTotalDoc) > 0) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $this->grossTotal, $invoice->getInvoiceNo(), $gross->valueOf()
+                $this->grossTotal,
+                $invoice->getInvoiceNo(),
+                $gross->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
+            $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $this->netTotal, $invoice->getInvoiceNo(), $net->valueOf()
+        if ($net->sub($this->netTotal)->abs()->compareTo($this->deltaTotalDoc) > 0) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("document_net_total_not_equal_calc_net_total"),
+                $this->netTotal, $invoice->getInvoiceNo(), $net->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_NETTOTAL);
+            $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
-                $this->taxPayable, $invoice->getInvoiceNo(), $tax->valueOf()
+        if ($tax->sub($this->taxPayable)->abs()->compareTo($this->deltaTotalDoc) > 0) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("document_tax_payable_not_equal_calc_tax_payable"),
+                $this->taxPayable, $invoice->getInvoiceNo(), $tax->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);
+            $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1386,17 +1372,13 @@ class SalesInvoices extends ADocuments
             return;
         }
 
-        $currAmou      = new UDecimal(
-            $currency->getCurrencyAmount(), static::CALC_PRECISION
-        );
-        $rate          = new UDecimal(
-            $currency->getExchangeRate(), static::CALC_PRECISION
-        );
-        $grossExchange = $currAmou->multiply($rate);
-        $invoice->getDocTotalcal()?->setGrossTotalFromCurrency($grossExchange->valueOf());
-        $calcCambio    = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
+        $currAmount    = new Decimal($currency->getCurrencyAmount());
+        $rate          = new Decimal($currency->getExchangeRate());
+        $grossExchange = $currAmount->mul($rate);
+        $invoice->getDocTotalCalc()?->setGrossTotalFromCurrency($grossExchange);
+        $calcExchange = $gross->sub($grossExchange)->abs();
 
-        if ($calcCambio > $this->deltaCurrency) {
+        if ($calcExchange > $this->deltaCurrency) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_currency_rate"),
@@ -1404,18 +1386,18 @@ class SalesInvoices extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, Currency::N_EXCHANGERATE);
+            $totals->addError($msg, Currency::N_EXCHANGE_RATE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
     }
 
     /**
-     * Test if the signature is valide or not
+     * Test if the signature is validated or not
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
@@ -1424,7 +1406,7 @@ class SalesInvoices extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
 
         if ($invoice->issetHash() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_hash"),
                 $invoice->getInvoiceNo()
             );
@@ -1440,7 +1422,7 @@ class SalesInvoices extends ADocuments
             return;
         }
 
-        if ($invoice->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::I)) {
+        if ($invoice->getDocumentStatus()->getSourceBilling() === SourceBilling::I) {
             $validate = true;
         } else {
             $validate = $this->sign->verifySignature(
@@ -1452,13 +1434,13 @@ class SalesInvoices extends ADocuments
 
         if ($validate === false && $this->lastHash === "") {
 
-            list(,, $no) = \explode(
+            list(, , $no) = \explode(
                 " ", \str_replace("/", " ", $invoice->getInvoiceNo())
             );
 
             if ($no !== "1") {
-                $msg      = \sprintf(
-                    AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serie"),
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serial"),
                     $invoice->getInvoiceNo()
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
@@ -1469,7 +1451,7 @@ class SalesInvoices extends ADocuments
         }
 
         if ($validate === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("signature_not_valid"),
                 $invoice->getInvoiceNo()
             );
@@ -1486,13 +1468,14 @@ class SalesInvoices extends ADocuments
     }
 
     /**
-     * Validate shipement data
+     * Validate shipment data
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
-    protected function shipement(Invoice $invoice): void
+    protected function shipment(Invoice $invoice): void
     {
         $shipFrom     = $invoice->getShipFrom(false);
         $shipTo       = $invoice->getShipTo(false);
@@ -1505,20 +1488,20 @@ class SalesInvoices extends ADocuments
             return;
         }
 
-        $invoiceType = $invoice->getInvoiceType()->get();
+        $invoiceType = $invoice->getInvoiceType();
 
         if ($shipFrom !== null && $shipTo !== null) {
             if ($shipFrom->getDeliveryDate() !== null &&
                 $shipTo->getDeliveryDate() !== null) {
                 if ($shipFrom->getDeliveryDate()->isLater($shipTo->getDeliveryDate())) {
                     $msg        = \sprintf(
-                        AAuditFile::getI18n()
-                            ->get("shipfrom_delivery_date_later_shipto_delivery_date"),
+                        AAuditFile::getI18n()->get("ship_from_delivery_date_later_ship_to_delivery_date"),
                         $invoice->getInvoiceNo()
                     );
                     $msgStack[] = $msg;
-                    $invoice->addError($msg, Invoice::N_SHIPFROM);
+                    $invoice->addError($msg, Invoice::N_SHIP_FROM);
                 } else {
+                    /** @phpstan-ignore-next-line  */
                     if ($movStartTime === null && $movEndTime === null &&
                         $shipFrom->getAddress(false) === null &&
                         $shipTo->getAddress(false) === null) {
@@ -1528,10 +1511,10 @@ class SalesInvoices extends ADocuments
             }
         }
 
-        if (\in_array($invoiceType, ['FT', 'FR']) === false) {
-            $msg           = \sprintf(
+        if (\in_array($invoiceType->value, ['FT', 'FR']) === false) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("only_FR_FT_can_be_stockMovement"),
-                $invoice->getInvoiceNo(), $invoice->getInvoiceType()->get()
+                $invoice->getInvoiceNo(), $invoice->getInvoiceType()->value
             );
             $invoice->addError($msg);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -1544,70 +1527,70 @@ class SalesInvoices extends ADocuments
         if ($movStartTime === null) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("document_to_be_stockMovement_must_heve_start_time"),
+                          ->get("document_to_be_stockMovement_must_have_start_time"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
-            $invoice->addError($msg, Invoice::N_MOVEMENTSTARTTIME);
+            $invoice->addError($msg, Invoice::N_MOVEMENT_START_TIME);
         } else {
             if ($movStartTime->isEarlier($invoice->getInvoiceDate())) {
                 $msg        = \sprintf(
                     AAuditFile::getI18n()
-                        ->get("start_movement_can_not_be earliar_doc_date"),
+                              ->get("start_movement_can_not_be earlier_doc_date"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_MOVEMENTSTARTTIME);
+                $invoice->addError($msg, Invoice::N_MOVEMENT_START_TIME);
             }
 
-            if ($invoice->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::P)) {
+            if ($invoice->getDocumentStatus()->getSourceBilling() === SourceBilling::P) {
                 if ($invoice->issetSystemEntryDate() &&
                     $movStartTime->isEarlier($invoice->getSystemEntryDate())) {
 
                     $msg = \sprintf(
                         AAuditFile::getI18n()
-                            ->get("start_movement_can_not_be earliar_system_entry_date"),
+                                  ->get("start_movement_can_not_be earlier_system_entry_date"),
                         $invoice->getInvoiceNo()
                     );
 
                     $msgStack[] = $msg;
-                    $invoice->addError($msg, Invoice::N_MOVEMENTSTARTTIME);
+                    $invoice->addError($msg, Invoice::N_MOVEMENT_START_TIME);
                 }
             }
 
             if ($movEndTime !== null && $movEndTime->isEarlier($movStartTime)) {
                 $msg        = \sprintf(
                     AAuditFile::getI18n()
-                        ->get("end_movement_can_not_be earliar_start_movement"),
+                              ->get("end_movement_can_not_be earlier_start_movement"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_MOVEMENTENDTIME);
+                $invoice->addError($msg, Invoice::N_MOVEMENT_END_TIME);
             }
         }
 
         if ($shipFrom === null || $shipFrom->getAddress(false) === null) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("document_to_be_stockMovement_must_have_shipfrom"),
+                          ->get("document_to_be_stockMovement_must_have_ship_from"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
-            $invoice->addError($msg, Invoice::N_SHIPFROM);
+            $invoice->addError($msg, Invoice::N_SHIP_FROM);
         } elseif (null !== $shipFromAddr = $shipFrom->getAddress()) {
 
             if (($shipFromAddr->getStreetName() === null ||
-                $shipFromAddr->getStreetName() === "") && (
-                $shipFromAddr->getAddressDetail() === null ||
-                $shipFromAddr->getAddressDetail() === "")) {
+                    $shipFromAddr->getStreetName() === "") && (
+                    $shipFromAddr->getAddressDetail() === null ||
+                    $shipFromAddr->getAddressDetail() === "")) {
 
                 $msg        = \sprintf(
                     AAuditFile::getI18n()
-                        ->get("document_to_be_stockMovement_must_have_shipfrom"),
+                              ->get("document_to_be_stockMovement_must_have_ship_from"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_SHIPFROM);
+                $invoice->addError($msg, Invoice::N_SHIP_FROM);
             }
 
             if ($shipFromAddr->issetCity() === false ||
@@ -1615,68 +1598,65 @@ class SalesInvoices extends ADocuments
 
                 $msg        = \sprintf(
                     AAuditFile::getI18n()
-                        ->get("shipement_address_from_must_heve_city"),
+                              ->get("shipment_address_from_must_have_city"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_SHIPFROM);
+                $invoice->addError($msg, Invoice::N_SHIP_FROM);
             }
 
             if ($shipFromAddr->issetCountry() === false) {
 
                 $msg        = \sprintf(
                     AAuditFile::getI18n()
-                        ->get("shipement_address_from_must_heve_country"),
+                              ->get("shipment_address_from_must_have_country"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_SHIPFROM);
+                $invoice->addError($msg, Invoice::N_SHIP_FROM);
             }
         }
 
         if ($shipTo === null || $shipTo->getAddress(false) === null) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("document_to_be_stockMovement_must_have_shipto"),
+                          ->get("document_to_be_stockMovement_must_have_ship_to"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
-            $invoice->addError($msg, Invoice::N_SHIPTO);
+            $invoice->addError($msg, Invoice::N_SHIP_TO);
         } elseif (null !== $shipToAddr = $shipTo->getAddress()) {
             if (($shipToAddr->getStreetName() === null ||
-                $shipToAddr->getStreetName() === "") &&
+                    $shipToAddr->getStreetName() === "") &&
                 ($shipToAddr->getAddressDetail() === null ||
-                $shipToAddr->getAddressDetail() === "")) {
+                    $shipToAddr->getAddressDetail() === "")) {
 
                 $msg        = \sprintf(
-                    AAuditFile::getI18n()
-                        ->get("document_to_be_stockMovement_must_have_shipto"),
+                    AAuditFile::getI18n()->get("document_to_be_stockMovement_must_have_ship_to"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_SHIPTO);
+                $invoice->addError($msg, Invoice::N_SHIP_TO);
             }
 
             if ($shipToAddr->issetCity() === false || $shipToAddr->getCity() === "") {
 
                 $msg        = \sprintf(
-                    AAuditFile::getI18n()
-                        ->get("shipement_address_to_must_heve_city"),
+                    AAuditFile::getI18n()->get("shipment_address_to_must_have_city"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_SHIPTO);
+                $invoice->addError($msg, Invoice::N_SHIP_TO);
             }
 
             if ($shipToAddr->issetCountry() === false) {
 
                 $msg        = \sprintf(
-                    AAuditFile::getI18n()
-                        ->get("shipement_address_to_must_heve_country"),
+                    AAuditFile::getI18n()->get("shipment_address_to_must_have_country"),
                     $invoice->getInvoiceNo()
                 );
                 $msgStack[] = $msg;
-                $invoice->addError($msg, Invoice::N_SHIPTO);
+                $invoice->addError($msg, Invoice::N_SHIP_TO);
             }
         }
 
@@ -1688,10 +1668,11 @@ class SalesInvoices extends ADocuments
     }
 
     /**
-     * Validate the Invoice date nad SystemEntrydate
+     * Validate the Invoice date nad SystemEntryDate
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function invoiceDateAndSystemEntryDate(Invoice $invoice): void
@@ -1706,12 +1687,11 @@ class SalesInvoices extends ADocuments
                 if ($header->getStartDate()->isLater($docDate) ||
                     $header->getEndDate()->isEarlier($docDate)) {
                     $msg        = \sprintf(
-                        AAuditFile::getI18n()
-                            ->get("doc_date_out_of_range_start_end_header_date"),
+                        AAuditFile::getI18n()->get("doc_date_out_of_range_start_end_header_date"),
                         $invoice->getInvoiceNo()
                     );
                     $msgStack[] = $msg;
-                    $invoice->addError($msg, Invoice::N_SYSTEMENTRYDATE);
+                    $invoice->addError($msg, Invoice::N_SYSTEM_ENTRY_DATE);
                 }
                 $headerDateChecked = true;
             }
@@ -1719,34 +1699,31 @@ class SalesInvoices extends ADocuments
 
         if ($headerDateChecked === false) {
             $msg        = \sprintf(
-                AAuditFile::getI18n()
-                    ->get("doc_date_not_cheked_start_end_header_date"),
+                AAuditFile::getI18n()->get("doc_date_not_checked_start_end_header_date"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
-            $invoice->addError($msg, Invoice::N_INVOICEDATE);
+            $invoice->addError($msg, Invoice::N_INVOICE_DATE);
         }
 
         if ($this->lastDocDate !== null &&
             $this->lastDocDate->isLater($docDate)) {
             $msg        = \sprintf(
-                AAuditFile::getI18n()
-                    ->get("doc_date_eaarlier_previous_doc"),
+                AAuditFile::getI18n()->get("doc_date_earlier_previous_doc"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
-            $invoice->addError($msg, Invoice::N_INVOICEDATE);
+            $invoice->addError($msg, Invoice::N_INVOICE_DATE);
         }
 
         if ($this->lastSystemEntryDate !== null &&
             $this->lastSystemEntryDate->isLater($systemDate)) {
             $msg        = \sprintf(
-                AAuditFile::getI18n()
-                    ->get("doc_systementrydate_earlier_previous_doc"),
+                AAuditFile::getI18n()->get("doc_system_entry_date_earlier_previous_doc"),
                 $invoice->getInvoiceNo()
             );
             $msgStack[] = $msg;
-            $invoice->addError($msg, Invoice::N_SYSTEMENTRYDATE);
+            $invoice->addError($msg, Invoice::N_SYSTEM_ENTRY_DATE);
         }
 
         foreach ($msgStack as $msg) {
@@ -1758,18 +1735,18 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the Payment
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function payment(Invoice $invoice): void
     {
         if (\count($invoice->getDocumentTotals()->getPayment()) === 0) {
-            if ($invoice->getInvoiceType()->isEqual(InvoiceType::FR)) {
+            if ($invoice->getInvoiceType() === InvoiceType::FR) {
                 $msg = \sprintf(
-                    AAuditFile::getI18n()->get("fr_withou_payment_method"),
+                    AAuditFile::getI18n()->get("fr_without_payment_method"),
                     $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addWarning($msg);
@@ -1779,16 +1756,15 @@ class SalesInvoices extends ADocuments
             return;
         }
 
-        $totalPayMeth = new UDecimal(0.0, static::CALC_PRECISION);
+        $totalPayMeth = new Decimal("0.0");
 
         foreach ($invoice->getDocumentTotals()->getPayment() as $payMet) {
             if ($payMet->issetPaymentAmount()) {
-                $totalPayMeth->plusThis($payMet->getPaymentAmount());
+                $totalPayMeth = $totalPayMeth->add($payMet->getPaymentAmount());
             } else {
-                $msg           = \sprintf(
-                    AAuditFile::getI18n()->get(
-                        "paymentmethod_withou_payment_amout"
-                    ), $invoice->getInvoiceNo()
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("payment_method_without_payment_amount"),
+                    $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payMet->addError($msg);
@@ -1798,10 +1774,9 @@ class SalesInvoices extends ADocuments
             }
 
             if ($payMet->issetPaymentDate() === false) {
-                $msg           = \sprintf(
-                    AAuditFile::getI18n()->get(
-                        "paymentmethod_withou_payment_date"
-                    ), $invoice->getInvoiceNo()
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("payment_method_without_payment_date"),
+                    $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payMet->addError($msg);
@@ -1814,22 +1789,21 @@ class SalesInvoices extends ADocuments
         if ($invoice->issetDocumentTotals()) {
             if ($invoice->getDocumentTotals()->issetGrossTotal()) {
                 $gross          = $invoice->getDocumentTotals()->getGrossTotal();
-                $diff           = $totalPayMeth->signedSubtract($gross);
-                $sumWithholding = new UDecimal(0.0, static::CALC_PRECISION);
+                $diff           = $totalPayMeth->sub($gross);
+                $sumWithholding = new Decimal("0.0");
                 foreach ($invoice->getWithholdingTax() as $withholding) {
                     if ($withholding->issetWithholdingTaxAmount()) {
-                        $sumWithholding->plusThis($withholding->getWithholdingTaxAmount());
+                        $sumWithholding = $sumWithholding->add($withholding->getWithholdingTaxAmount());
                     }
                 }
 
-                $diff->plusThis($sumWithholding);
+                $diff = $diff->add($sumWithholding);
 
-                if ($invoice->getInvoiceType()->isEqual(InvoiceType::FR) &&
-                    $diff->abs()->isGreater($this->getDeltaTotalDoc())) {
-                    $msg           = \sprintf(
-                        AAuditFile::getI18n()->get(
-                            "paymentmethod_sum_not_equal_to_gross_less_tax"
-                        ), $invoice->getInvoiceNo()
+                if ($invoice->getInvoiceType() === InvoiceType::FR &&
+                    $diff->abs()->compareTo($this->getDeltaTotalDoc()) > 0) {
+                    $msg = \sprintf(
+                        AAuditFile::getI18n()->get("payment_method_sum_not_equal_to_gross_less_tax"),
+                        $invoice->getInvoiceNo()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $invoice->addError($msg);
@@ -1838,11 +1812,10 @@ class SalesInvoices extends ADocuments
                     return;
                 }
 
-                if ($totalPayMeth->isGreater($gross - $sumWithholding->valueOf())) {
-                    $msg           = \sprintf(
-                        AAuditFile::getI18n()->get(
-                            "paymentmethod_sum_greater_than_gross_lass_withholtax"
-                        ), $invoice->getInvoiceNo()
+                if ($totalPayMeth->compareTo($gross->sub($sumWithholding)) > 0) {
+                    $msg = \sprintf(
+                        AAuditFile::getI18n()->get("payment_method_sum_greater_than_gross_lass_withhold_tax"),
+                        $invoice->getInvoiceNo()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $invoice->addError($msg);
@@ -1855,54 +1828,52 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate the withholdingTax
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
      * @since 1.0.0
      */
     protected function withholdingTax(Invoice $invoice): void
     {
-        $totalTax = new UDecimal(0.0, static::CALC_PRECISION);
+        $totalTax = new Decimal("0.0");
         foreach ($invoice->getWithholdingTax() as $withholding) {
             if ($withholding->issetWithholdingTaxAmount() === false) {
-                $msg           = \sprintf(
-                    AAuditFile::getI18n()->get(
-                        "withholding_without_amout"
-                    ), $invoice->getInvoiceNo()
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("withholding_without_amount"),
+                    $invoice->getInvoiceNo()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $invoice->addError($msg, WithholdingTax::N_WITHHOLDINGTAX);
+                $invoice->addError($msg, WithholdingTax::N_WITHHOLDING_TAX);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
-            $totalTax->plusThis($withholding->getWithholdingTaxAmount());
+            $totalTax = $totalTax->add($withholding->getWithholdingTaxAmount());
         }
 
-        if ($totalTax->isEquals(0.0)) {
+        if ($totalTax->equals("0.0")) {
             return;
         }
 
         if ($invoice->issetDocumentTotals()) {
             if ($invoice->getDocumentTotals()->issetGrossTotal()) {
                 $gross = $invoice->getDocumentTotals()->getGrossTotal();
-                if ($totalTax->isGreater($gross) || $totalTax->isEquals($gross)) {
-                    $msg           = \sprintf(
-                        AAuditFile::getI18n()->get(
-                            "withholdingtax_greater_than_gross"
-                        ), $invoice->getInvoiceNo()
+                if ($totalTax->compareTo($gross) > 0 || $totalTax->equals($gross)) {
+                    $msg = \sprintf(
+                        AAuditFile::getI18n()->get("withholding_tax_greater_than_gross"),
+                        $invoice->getInvoiceNo()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $invoice->addError($msg, WithholdingTax::N_WITHHOLDINGTAX);
+                    $invoice->addError($msg, WithholdingTax::N_WITHHOLDING_TAX);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
                     return;
                 }
-                if ($totalTax->isGreater($gross / 2)) {
+                if ($totalTax->compareTo($gross->div("2")) > 0) {
                     $msg = \sprintf(
-                        AAuditFile::getI18n()->get(
-                            "withholdingtax_greater_than_half_gross"
-                        ), $invoice->getInvoiceNo()
+                        AAuditFile::getI18n()->get("withholding_tax_greater_than_half_gross"),
+                        $invoice->getInvoiceNo()
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $invoice->addWarning($msg);
@@ -1914,21 +1885,22 @@ class SalesInvoices extends ADocuments
 
     /**
      * Validate if exists invoice types out of date
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice $invoice
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @since 1.0.0
      */
     protected function outOfDateInvoiceTypes(Invoice $invoice): void
     {
-        if ($invoice->issetInvoiceType() === false || $invoice->issetInvoiceDate()
-            === false) {
+        if ($invoice->issetInvoiceType() === false || $invoice->issetInvoiceDate()=== false) {
             return;
         }
 
-        $type         = $invoice->getInvoiceType()->get();
-        $lastDay      = RDate::parse(RDate::SQL_DATE, "2012-12-31");
+        $type         = $invoice->getInvoiceType();
+        $lastDay      = RDate::parse(Pattern::SQL_DATE, "2012-12-31");
         $outDateTypes = [
             InvoiceType::VD,
             InvoiceType::TV,
@@ -1942,9 +1914,9 @@ class SalesInvoices extends ADocuments
         }
 
         if ($invoice->getInvoiceDate()->isLater($lastDay)) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AuditFile::getI18n()->get("document_type_last_date_later"),
-                $type, "2012-12-31", $invoice->getInvoiceNo()
+                $type->value, "2012-12-31", $invoice->getInvoiceNo()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);

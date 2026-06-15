@@ -26,28 +26,30 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
-use Rebelo\Decimal\UDecimal;
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\Sign\Sign;
 use Rebelo\SaftPt\Bin\Style;
+use Rebelo\SaftPt\Sign\Sign;
 
 /**
  * Base class of documents Validation
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class ADocuments extends AValidate
 {
     /**
      * The number of decimal to use in the UDecimal class for calculation
      * of documents values validation
+     *
      * @since 1.0.0
      */
-    const CALC_PRECISION = 9;
+    // const int CALC_PRECISION = 9;
 
     /**
      * The output writer, to be use in console application
+     *
      * @var \Rebelo\SaftPt\Bin\Style|null
      * @since 1.0.0
      */
@@ -55,55 +57,63 @@ class ADocuments extends AValidate
 
     /**
      * The total debit calculated from all documents of the table
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $debit;
+    protected Decimal $debit;
 
     /**
      * The total credit calculated from all documents of the table
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $credit;
+    protected Decimal $credit;
 
     /**
      * The total debit calculated of the current document
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $docDebit;
+    protected Decimal $docDebit;
 
     /**
      * The total credit calculated of the current document
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $docCredit;
+    protected Decimal $docCredit;
 
     /**
      * The total tax calculated of the current document
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $taxPayable;
+    protected Decimal $taxPayable;
 
     /**
      * The net total calculated of the current document
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $netTotal;
+    protected Decimal $netTotal;
 
     /**
      * The gross total calculated of the current document
-     * @var \Rebelo\Decimal\UDecimal
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected UDecimal $grossTotal;
+    protected Decimal $grossTotal;
 
     /**
      * The Sign instance with the public key defined
+     *
      * @var \Rebelo\SaftPt\Sign\Sign
      * @since 1.0.0
      */
@@ -111,31 +121,35 @@ class ADocuments extends AValidate
 
     /**
      * The delta that can be considered valid for total documents calculation
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaTotalDoc = 0.0;
+    protected Decimal $deltaTotalDoc;
 
     /**
      * The delta that can be considered valid for the product of UnitPRice and Quantity
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaLine = 0.0;
+    protected Decimal $deltaLine;
 
     /**
      * The delta that can be considered valid for total documents currency
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaCurrency = 0.0;
+    protected Decimal $deltaCurrency;
 
     /**
      * The delta that can be considered valid for total tables
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $deltaTable = 0.0;
+    protected Decimal $deltaTable;
 
     /**
      * Set if the lines number are to be verified continues or not. If you set to
@@ -148,6 +162,7 @@ class ADocuments extends AValidate
      * will miss the numbers of non-fiscal lines, if you export with the continues
      * numeration, the numeration in the saft will be not equal to the line number
      * in the database.
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -158,6 +173,7 @@ class ADocuments extends AValidate
      * however there are two situation where is possible to have debit and
      * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -165,6 +181,7 @@ class ADocuments extends AValidate
 
     /**
      * Define if performs the signatures validation
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -173,15 +190,25 @@ class ADocuments extends AValidate
     /**
      *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile
-     * @param \Rebelo\SaftPt\Sign\Sign|null $sign
-     * @throws \Rebelo\Decimal\DecimalException
+     * @param \Rebelo\SaftPt\Sign\Sign|null      $sign
+     *
      * @since 1.0.0
      */
-    public function __construct(AuditFile $auditFile, Sign $sign = null)
+    public function __construct(AuditFile $auditFile, Sign|null $sign = null)
     {
         parent::__construct($auditFile);
-        $this->debit  = new UDecimal(0.0, static::CALC_PRECISION);
-        $this->credit = new UDecimal(0.0, static::CALC_PRECISION);
+        $this->debit         = new Decimal("0.0");
+        $this->credit        = new Decimal("0.0");
+        $this->docDebit      = new Decimal("0.0");
+        $this->docCredit     = new Decimal("0.0");
+        $this->taxPayable    = new Decimal("0.0");
+        $this->netTotal      = new Decimal("0.0");
+        $this->grossTotal    = new Decimal("0.0");
+        $this->deltaTotalDoc = new Decimal("0.0");
+        $this->deltaLine     = new Decimal("0.0");
+        $this->deltaCurrency = new Decimal("0.0");
+        $this->deltaTable    = new Decimal("0.0");
+
         if ($sign !== null) {
             $this->sign = $sign;
         }
@@ -189,10 +216,11 @@ class ADocuments extends AValidate
 
     /**
      * The delta that can be considered valid for total documents calculation
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaTotalDoc(): float
+    public function getDeltaTotalDoc(): Decimal
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->deltaTotalDoc;
@@ -200,10 +228,11 @@ class ADocuments extends AValidate
 
     /**
      * The delta that can be considered valid for total documents currency
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaCurrency(): float
+    public function getDeltaCurrency(): Decimal
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->deltaCurrency;
@@ -211,10 +240,11 @@ class ADocuments extends AValidate
 
     /**
      * The delta that can be considered valid for total tables
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaTable(): float
+    public function getDeltaTable(): Decimal
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->deltaTable;
@@ -222,10 +252,11 @@ class ADocuments extends AValidate
 
     /**
      * The delta that can be considered valid for UnitPrice * Quantity
-     * @return float
+     *
+     * @return Decimal
      * @since 1.0.0
      */
-    public function getDeltaLine(): float
+    public function getDeltaLine(): Decimal
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         return $this->deltaLine;
@@ -233,71 +264,80 @@ class ADocuments extends AValidate
 
     /**
      * The delta that can be considered valid for total documents calculation
-     * @param float $deltaTotalDoc
+     *
+     * @param Decimal $deltaTotalDoc
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaTotalDoc(float $deltaTotalDoc): void
+    public function setDeltaTotalDoc(Decimal $deltaTotalDoc): void
     {
         $this->deltaTotalDoc = $deltaTotalDoc;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
-                \sprintf("DeltaTotalDoc set to '%s'", $this->deltaTotalDoc)
+                __METHOD__ .
+                   \sprintf("DeltaTotalDoc set to '%s'", $this->deltaTotalDoc)
             );
     }
 
     /**
      * The delta that can be considered valid for total documents currency
-     * @param float $deltaCurrency
+     *
+     * @param Decimal $deltaCurrency
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaCurrency(float $deltaCurrency): void
+    public function setDeltaCurrency(Decimal $deltaCurrency): void
     {
         $this->deltaCurrency = $deltaCurrency;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
-                \sprintf("DeltaCurrency set to '%s'", $this->deltaCurrency)
+                __METHOD__ .
+                   \sprintf("DeltaCurrency set to '%s'", $this->deltaCurrency)
             );
     }
 
     /**
      * The delta that can be considered valid for total tables
-     * @param float $deltaTable
+     *
+     * @param Decimal $deltaTable
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaTable(float $deltaTable): void
+    public function setDeltaTable(Decimal $deltaTable): void
     {
         $this->deltaTable = $deltaTable;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
-                \sprintf("DeltaTable set to '%s'", $this->deltaTable)
+                __METHOD__ .
+                   \sprintf("DeltaTable set to '%s'", $this->deltaTable)
             );
     }
 
     /**
      * The delta that can be considered valid for Quantity * UnitPrice
-     * @param float $deltaLine
+     *
+     * @param Decimal $deltaLine
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDeltaLine(float $deltaLine): void
+    public function setDeltaLine(Decimal $deltaLine): void
     {
         $this->deltaLine = $deltaLine;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
-                \sprintf("DeltaLine set to '%s'", $this->deltaLine)
+                __METHOD__ .
+                   \sprintf("DeltaLine set to '%s'", $this->deltaLine)
             );
     }
 
     /**
      * Check if the line numbers are to be checked as continues or only
      * if there are repeated line numbers
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -305,7 +345,7 @@ class ADocuments extends AValidate
     {
         \Logger::getLogger(\get_class($this))
             ->info(
-                __METHOD__.
+                __METHOD__ .
                 \sprintf(
                     "ContinuesLine get as '%s'",
                     $this->continuesLines ? "true" : "false"
@@ -317,7 +357,9 @@ class ADocuments extends AValidate
     /**
      * Check if the line numbers are to be checked as continues or only
      * if there are repeated line numbers
+     *
      * @param bool $continuesLines If true the validation will check if the line number are continues, false will check only id there are repeated values
+     *
      * @return void
      * @since 1.0.0
      */
@@ -326,7 +368,7 @@ class ADocuments extends AValidate
         $this->continuesLines = $continuesLines;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
+                __METHOD__ .
                 \sprintf(
                     "ContinuesLine set as '%s'",
                     $this->continuesLines ? "true" : "false"
@@ -340,6 +382,7 @@ class ADocuments extends AValidate
      * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true.<br>
      * Point 2.2.6 of Ordinance 8632/2014, of 3rd of July
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -347,7 +390,7 @@ class ADocuments extends AValidate
     {
         \Logger::getLogger(\get_class($this))
             ->info(
-                __METHOD__.
+                __METHOD__ .
                 \sprintf(
                     "AllowDebitAndCredit get as '%s'",
                     $this->allowDebitAndCredit ? "true" : "false"
@@ -362,7 +405,9 @@ class ADocuments extends AValidate
      * credit lines, by default this is set to not allow, if the saft
      * that are being test have that situations set this to true.<br>
      * Point 2.2.6 of Ordinance 8632/2014, of 3rd of July
+     *
      * @param bool $allowDebitAndCredit
+     *
      * @return void
      * @since 1.0.0
      */
@@ -371,7 +416,7 @@ class ADocuments extends AValidate
         $this->allowDebitAndCredit = $allowDebitAndCredit;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
+                __METHOD__ .
                 \sprintf(
                     "AllowDebitAndCredit set as '%s'",
                     $this->allowDebitAndCredit ? "true" : "false"
@@ -381,7 +426,9 @@ class ADocuments extends AValidate
 
     /**
      * If performs signature validation
+     *
      * @param bool $signValidation
+     *
      * @return void
      * @since 1.0.0
      */
@@ -390,7 +437,7 @@ class ADocuments extends AValidate
         $this->signValidation = $signValidation;
         \Logger::getLogger(\get_class($this))
             ->debug(
-                __METHOD__.
+                __METHOD__ .
                 \sprintf(
                     "SignValidation set as '%s'",
                     $this->signValidation ? "true" : "false"
@@ -400,6 +447,7 @@ class ADocuments extends AValidate
 
     /**
      * If performs signature validation
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -407,7 +455,7 @@ class ADocuments extends AValidate
     {
         \Logger::getLogger(\get_class($this))
             ->info(
-                __METHOD__.
+                __METHOD__ .
                 \sprintf(
                     "SignValidation get as '%s'",
                     $this->signValidation ? "true" : "false"
@@ -418,7 +466,9 @@ class ADocuments extends AValidate
 
     /**
      * Set the configuration
+     *
      * @param \Rebelo\SaftPt\Validate\ValidationConfig $config
+     *
      * @return void
      * @since 1.0.0
      */
@@ -436,6 +486,7 @@ class ADocuments extends AValidate
 
     /**
      * The output writer for console applications
+     *
      * @return \Rebelo\SaftPt\Bin\Style|null
      * @since 1.0.0
      */
@@ -446,7 +497,9 @@ class ADocuments extends AValidate
 
     /**
      * The output writer for console applications
+     *
      * @param \Rebelo\SaftPt\Bin\Style|null $style
+     *
      * @return void
      * @since 1.0.0
      */

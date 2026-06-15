@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,11 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Sign;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
 use Rebelo\Date\DateParseException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\Header;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class SignTest
@@ -43,29 +47,31 @@ class SignTest extends TestCase
     /**
      * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Header::class);
-        $this->assertTrue(true);
+        (new Commune(Header::class))->testReflection(Header::class);
     }
 
     /**
      *
-     * @return array
+     * @return mixed[]
      * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return array(
             array(
-                RDate::parse(RDate::SQL_DATE, "2020-10-05"), new RDate(), "FT FT/1",
-                999.09, null
+                RDate::parse(Pattern::SQL_DATE, "2020-10-05"),
+                new RDate(),
+                "FT FT/1",
+                new Decimal("999.09"),
+                null
             ),
-            array(new RDate(), new RDate(), "FT FT/2", 1999.09, ""),
-            array(new RDate(), new RDate(), "FT FT/2", 1999.09, "AnyHash"),
+            array(new RDate(), new RDate(), "FT FT/2", new Decimal("1999.09"), ""),
+            array(new RDate(), new RDate(), "FT FT/2", new Decimal("1999.09"), "AnyHash"),
         );
     }
 
@@ -73,21 +79,21 @@ class SignTest extends TestCase
      *
      * @param \Rebelo\Date\Date $docDate
      * @param \Rebelo\Date\Date $systemEntryDate
-     * @param string $doc
-     * @param float $grossTotal
-     * @param string|null $lastHash
+     * @param string            $doc
+     * @param Decimal           $grossTotal
+     * @param string|null       $lastHash
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @dataProvider dataProvider
-     * @test
      */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function testValidSignAndSignValidation(
         RDate   $docDate,
         RDate   $systemEntryDate,
         string  $doc,
-        float   $grossTotal,
+        Decimal $grossTotal,
         ?string $lastHash
     ): void
     {
@@ -131,21 +137,21 @@ class SignTest extends TestCase
      *
      * @param \Rebelo\Date\Date $docDate
      * @param \Rebelo\Date\Date $systemEntryDate
-     * @param string $doc
-     * @param float $grossTotal
-     * @param string|null $lastHash
+     * @param string            $doc
+     * @param Decimal           $grossTotal
+     * @param string|null       $lastHash
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @dataProvider dataProvider
-     * @test
      */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function testValidSignAndSignValidationKeyFilePath(
         RDate   $docDate,
         RDate   $systemEntryDate,
         string  $doc,
-        float   $grossTotal,
+        Decimal $grossTotal,
         ?string $lastHash
     ): void
     {
@@ -169,8 +175,8 @@ class SignTest extends TestCase
      *
      * @return void
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWrongFilePrivateKeyFilePath(): void
     {
         $this->expectException(SignException::class);
@@ -182,8 +188,8 @@ class SignTest extends TestCase
      *
      * @return void
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWrongFilePublicKeyFilePath(): void
     {
         $this->expectException(SignException::class);
@@ -195,21 +201,21 @@ class SignTest extends TestCase
      *
      * @param \Rebelo\Date\Date $docDate
      * @param \Rebelo\Date\Date $systemEntryDate
-     * @param string $doc
-     * @param float $grossTotal
-     * @param string|null $lastHash
+     * @param string            $doc
+     * @param Decimal           $grossTotal
+     * @param string|null       $lastHash
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @dataProvider dataProvider
-     * @test
      */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function testValidSignAndSignValidationSetKeyConstructor(
         RDate   $docDate,
         RDate   $systemEntryDate,
         string  $doc,
-        float   $grossTotal,
+        Decimal $grossTotal,
         ?string $lastHash
     ): void
     {
@@ -252,21 +258,21 @@ class SignTest extends TestCase
      *
      * @param \Rebelo\Date\Date $docDate
      * @param \Rebelo\Date\Date $systemEntryDate
-     * @param string $doc
-     * @param float $grossTotal
-     * @param string|null $lastHash
+     * @param string            $doc
+     * @param Decimal           $grossTotal
+     * @param string|null       $lastHash
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @dataProvider dataProvider
-     * @test
      */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function testWrongSignAndSignValidation(
         RDate   $docDate,
         RDate   $systemEntryDate,
         string  $doc,
-        float   $grossTotal,
+        Decimal $grossTotal,
         ?string $lastHash
     ): void
     {

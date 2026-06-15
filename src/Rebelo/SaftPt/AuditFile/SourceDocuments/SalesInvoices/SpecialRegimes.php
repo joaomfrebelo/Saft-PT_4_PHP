@@ -49,25 +49,25 @@ class SpecialRegimes extends AAuditFile
      * Node Name
      * @since 1.0.0
      */
-    const N_SPECIALREGIMES = "SpecialRegimes";
+    const string N_SPECIAL_REGIMES = "SpecialRegimes";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SELFBILLINGINDICATOR = "SelfBillingIndicator";
+    const string N_SELF_BILLING_INDICATOR = "SelfBillingIndicator";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_CASHVATSCHEMEINDICATOR = "CashVATSchemeIndicator";
+    const string N_CASH_VAT_SCHEME_INDICATOR = "CashVATSchemeIndicator";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_THIRDPARTIESBILLINGINDICATOR = "ThirdPartiesBillingIndicator";
+    const string N_THIRD_PARTIES_BILLING_INDICATOR = "ThirdPartiesBillingIndicator";
 
     /**
      * &lt;xs:element ref="SelfBillingIndicator"/&gt;
@@ -253,18 +253,18 @@ class SpecialRegimes extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $nodeSpeReg = $node->addChild(static::N_SPECIALREGIMES);
+        $nodeSpeReg = $node->addChild(static::N_SPECIAL_REGIMES);
 
         $nodeSpeReg->addChild(
-            static::N_SELFBILLINGINDICATOR,
+            static::N_SELF_BILLING_INDICATOR,
             $this->getSelfBillingIndicator() ? "1" : "0"
         );
         $nodeSpeReg->addChild(
-            static::N_CASHVATSCHEMEINDICATOR,
+            static::N_CASH_VAT_SCHEME_INDICATOR,
             $this->getCashVATSchemeIndicator() ? "1" : "0"
         );
         $nodeSpeReg->addChild(
-            static::N_THIRDPARTIESBILLINGINDICATOR,
+            static::N_THIRD_PARTIES_BILLING_INDICATOR,
             $this->getThirdPartiesBillingIndicator() ? "1" : "0"
         );
         return $nodeSpeReg;
@@ -281,10 +281,10 @@ class SpecialRegimes extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_SPECIALREGIMES) {
+        if ($node->getName() !== static::N_SPECIAL_REGIMES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_SPECIALREGIMES, $node->getName()
+                static::N_SPECIAL_REGIMES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -292,15 +292,15 @@ class SpecialRegimes extends AAuditFile
         }
 
         $this->setSelfBillingIndicator(
-            (string) $node->{static::N_SELFBILLINGINDICATOR} === "1"
+            (string) $node->{static::N_SELF_BILLING_INDICATOR} === "1"
         );
 
         $this->setCashVATSchemeIndicator(
-            (string) $node->{static::N_CASHVATSCHEMEINDICATOR} === "1"
+            (string) $node->{static::N_CASH_VAT_SCHEME_INDICATOR} === "1"
         );
 
         $this->setThirdPartiesBillingIndicator(
-            (string) $node->{static::N_THIRDPARTIESBILLINGINDICATOR} === "1"
+            (string) $node->{static::N_THIRD_PARTIES_BILLING_INDICATOR} === "1"
         );
     }
 }

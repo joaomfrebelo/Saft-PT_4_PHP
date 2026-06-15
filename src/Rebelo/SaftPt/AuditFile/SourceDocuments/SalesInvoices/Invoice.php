@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 /*
  * The MIT License
  *
@@ -34,6 +34,7 @@ use Rebelo\SaftPt\AuditFile\{AAuditFile,
     SourceDocuments\ShipFrom,
     SourceDocuments\ShipTo,
     SourceDocuments\WithholdingTax};
+use Rebelo\Date\Pattern;
 
 /**
  * Invoice
@@ -47,67 +48,67 @@ class Invoice extends ADocument
      * Node Name
      * @since 1.0.0
      */
-    const N_INVOICE = "Invoice";
+    const string N_INVOICE = "Invoice";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_INVOICENO = "InvoiceNo";
+    const string N_INVOICE_NO = "InvoiceNo";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_DOCUMENTSTATUS = "DocumentStatus";
+    const string N_DOCUMENT_STATUS = "DocumentStatus";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_INVOICEDATE = "InvoiceDate";
+    const string N_INVOICE_DATE = "InvoiceDate";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_INVOICETYPE = "InvoiceType";
+    const string N_INVOICE_TYPE = "InvoiceType";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SPECIALREGIMES = "SpecialRegimes";
+    const string N_SPECIAL_REGIMES = "SpecialRegimes";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SHIPTO = "ShipTo";
+    const string N_SHIP_TO = "ShipTo";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SHIPFROM = "ShipFrom";
+    const string N_SHIP_FROM = "ShipFrom";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_MOVEMENTENDTIME = "MovementEndTime";
+    const string N_MOVEMENT_END_TIME = "MovementEndTime";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_MOVEMENTSTARTTIME = "MovementStartTime";
+    const string N_MOVEMENT_START_TIME = "MovementStartTime";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_DOCUMENTTOTALS = "DocumentTotals";
+    const string N_DOCUMENT_TOTALS = "DocumentTotals";
 
     /**
      * &lt;xs:element ref="InvoiceNo"/&gt;
@@ -177,7 +178,7 @@ class Invoice extends ADocument
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line[]
      * @since 1.0.0
      */
-    private array $line = array();
+    private array $line = [];
 
     /**
      * &lt;xs:element name="DocumentTotals"><br>
@@ -191,7 +192,7 @@ class Invoice extends ADocument
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax[]
      * @since 1.0.0
      */
-    private array $withholdingTax = array();
+    private array $withholdingTax = [];
 
     /**
      * Invoice<br>
@@ -301,9 +302,8 @@ class Invoice extends ADocument
      * Get InvoiceDate<br>
      * Sale document’s issue date.<br>
      * &lt;xs:element ref="InvoiceDate"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getInvoiceDate(): RDate
@@ -312,7 +312,7 @@ class Invoice extends ADocument
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->invoiceDate->format(RDate::SQL_DATE)
+                    $this->invoiceDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->invoiceDate;
@@ -332,9 +332,10 @@ class Invoice extends ADocument
      * Set InvoiceDate<br>
      * Sale document’s issue date.<br>
      * &lt;xs:element ref="InvoiceDate"/&gt;
+     *
      * @param \Rebelo\Date\Date $invoiceDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setInvoiceDate(RDate $invoiceDate): void
@@ -344,7 +345,7 @@ class Invoice extends ADocument
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->invoiceDate->format(RDate::SQL_DATE)
+                    $this->invoiceDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -378,7 +379,7 @@ class Invoice extends ADocument
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'", $this->invoiceType->get()
+                    __METHOD__." get '%s'", $this->invoiceType->value
                 )
             );
         return $this->invoiceType;
@@ -424,7 +425,7 @@ class Invoice extends ADocument
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'", $this->invoiceType->get()
+                    __METHOD__." set to '%s'", $this->invoiceType->value
                 )
             );
     }
@@ -537,8 +538,8 @@ class Invoice extends ADocument
      * if no specific information is available.<br>
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
+     *
      * @return \Rebelo\Date\Date|null
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementEndTime(): ?RDate
@@ -549,7 +550,7 @@ class Invoice extends ADocument
                     __METHOD__." get '%s'",
                     $this->movementEndTime === null ?
                         "null" :
-                        $this->movementEndTime->format(RDate::DATE_T_TIME)
+                        $this->movementEndTime->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->movementEndTime;
@@ -562,9 +563,10 @@ class Invoice extends ADocument
      * if no specific information is available.<br>
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
+     *
      * @param \Rebelo\Date\Date|null $movementEndTime
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementEndTime(?RDate $movementEndTime): void
@@ -576,7 +578,7 @@ class Invoice extends ADocument
                     __METHOD__." set to '%s'",
                     $this->movementEndTime === null ?
                         "null" :
-                        $this->movementEndTime->format(RDate::DATE_T_TIME)
+                        $this->movementEndTime->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -592,8 +594,8 @@ class Invoice extends ADocument
      * [Goods Circulation Regime], approved by Decree No. 147/2003 of 11th July.
      * &lt;xs:element ref="MovementStartTime" minOccurs="0"  maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
+     *
      * @return \Rebelo\Date\Date|null
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementStartTime(): ?RDate
@@ -603,7 +605,7 @@ class Invoice extends ADocument
                 \sprintf(
                     __METHOD__." get '%s'",
                     $this->movementStartTime === null ? "null" :
-                        $this->movementStartTime->format(RDate::DATE_T_TIME)
+                        $this->movementStartTime->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->movementStartTime;
@@ -619,9 +621,10 @@ class Invoice extends ADocument
      * the “Regime de bens em Circulação”<br>
      * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
+     *
      * @param \Rebelo\Date\Date|null $movementStartTime
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementStartTime(?RDate $movementStartTime): void
@@ -632,7 +635,7 @@ class Invoice extends ADocument
                 \sprintf(
                     __METHOD__." set to '%s'",
                     $this->movementStartTime === null ? "null" :
-                        $this->movementStartTime->format(RDate::DATE_T_TIME)
+                        $this->movementStartTime->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -686,7 +689,7 @@ class Invoice extends ADocument
             $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
         }
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->documentTotals;
     }
 
@@ -705,8 +708,8 @@ class Invoice extends ADocument
      * When this method is invoked a new instance of WithholdingTax is created,
      * add to the stack  and returned to be populated<br>
      * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function addWithholdingTax(): WithholdingTax
@@ -738,17 +741,16 @@ class Invoice extends ADocument
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== SalesInvoices::N_SALESINVOICES) {
+        if ($node->getName() !== SalesInvoices::N_SALES_INVOICES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                SalesInvoices::N_SALESINVOICES, $node->getName()
+                SalesInvoices::N_SALES_INVOICES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -758,9 +760,9 @@ class Invoice extends ADocument
         $invNode = $node->addChild(self::N_INVOICE);
 
         if (isset($this->invoiceNo)) {
-            $invNode->addChild(static::N_INVOICENO, $this->getInvoiceNo());
+            $invNode->addChild(static::N_INVOICE_NO, $this->getInvoiceNo());
         } else {
-            $invNode->addChild(static::N_INVOICENO);
+            $invNode->addChild(static::N_INVOICE_NO);
             $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceNo_not_valid");
         }
 
@@ -774,7 +776,7 @@ class Invoice extends ADocument
         if (isset($this->documentStatus)) {
             $this->getDocumentStatus()->createXmlNode($invNode);
         } else {
-            $invNode->addChild(DocumentStatus::N_INVOICESTATUS);
+            $invNode->addChild(DocumentStatus::N_INVOICE_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentStatus_not_valid");
         }
 
@@ -786,9 +788,9 @@ class Invoice extends ADocument
         }
 
         if (isset($this->hashControl)) {
-            $invNode->addChild(static::N_HASHCONTROL, $this->getHashControl());
+            $invNode->addChild(static::N_HASH_CONTROL, $this->getHashControl());
         } else {
-            $invNode->addChild(static::N_HASHCONTROL);
+            $invNode->addChild(static::N_HASH_CONTROL);
             $this->getErrorRegistor()->addOnCreateXmlNode("HashControl_not_valid");
         }
 
@@ -798,57 +800,57 @@ class Invoice extends ADocument
 
         if (isset($this->invoiceDate)) {
             $invNode->addChild(
-                static::N_INVOICEDATE,
-                $this->getInvoiceDate()->format(RDate::SQL_DATE)
+                static::N_INVOICE_DATE,
+                $this->getInvoiceDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $invNode->addChild(static::N_INVOICEDATE);
+            $invNode->addChild(static::N_INVOICE_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceDate_not_valid");
         }
 
         if (isset($this->invoiceType)) {
             $invNode->addChild(
-                static:: N_INVOICETYPE, $this->getInvoiceType()->get()
+                static:: N_INVOICE_TYPE, $this->getInvoiceType()->value
             );
         } else {
-            $invNode->addChild(static::N_INVOICETYPE);
+            $invNode->addChild(static::N_INVOICE_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceType_not_valid");
         }
 
         if (isset($this->specialRegimes)) {
             $this->getSpecialRegimes()->createXmlNode($invNode);
         } else {
-            $invNode->addChild(static::N_SPECIALREGIMES);
+            $invNode->addChild(static::N_SPECIAL_REGIMES);
             $this->getErrorRegistor()->addOnCreateXmlNode("SpecialRegimes_not_valid");
         }
 
         if (isset($this->sourceID)) {
-            $invNode->addChild(static:: N_SOURCEID, $this->getSourceID());
+            $invNode->addChild(static:: N_SOURCE_ID, $this->getSourceID());
         } else {
-            $invNode->addChild(static::N_SOURCEID);
+            $invNode->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SpecialRegimes_not_valid");
         }
 
         if ($this->getEacCode() !== null) {
-            $invNode->addChild(static:: N_EACCODE, $this->getEacCode());
+            $invNode->addChild(static:: N_EAC_CODE, $this->getEacCode());
         }
 
         if (isset($this->systemEntryDate)) {
             $invNode->addChild(
-                static::N_SYSTEMENTRYDATE,
-                $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
+                static::N_SYSTEM_ENTRY_DATE,
+                $this->getSystemEntryDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $invNode->addChild(static::N_SYSTEMENTRYDATE);
+            $invNode->addChild(static::N_SYSTEM_ENTRY_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
         $this->getTransactionID(false)?->createXmlNode($invNode);
 
         if (isset($this->customerID)) {
-            $invNode->addChild(static:: N_CUSTOMERID, $this->getCustomerID());
+            $invNode->addChild(static:: N_CUSTOMER_ID, $this->getCustomerID());
         } else {
-            $invNode->addChild(static::N_CUSTOMERID);
+            $invNode->addChild(static::N_CUSTOMER_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
         }
 
@@ -857,15 +859,15 @@ class Invoice extends ADocument
 
         if ($this->getMovementEndTime() !== null) {
             $invNode->addChild(
-                static::N_MOVEMENTENDTIME,
-                $this->getMovementEndTime()->format(RDate::DATE_T_TIME)
+                static::N_MOVEMENT_END_TIME,
+                $this->getMovementEndTime()->format(Pattern::DATE_T_TIME)
             );
         }
 
         if ($this->getMovementStartTime() !== null) {
             $invNode->addChild(
-                static::N_MOVEMENTSTARTTIME,
-                $this->getMovementStartTime()->format(RDate::DATE_T_TIME)
+                static::N_MOVEMENT_START_TIME,
+                $this->getMovementStartTime()->format(Pattern::DATE_T_TIME)
             );
         }
 
@@ -883,7 +885,7 @@ class Invoice extends ADocument
         if (isset($this->documentTotals)) {
             $this->getDocumentTotals()->createXmlNode($invNode);
         } else {
-            $invNode->addChild(DocumentTotals::N_DOCUMENTTOTALS);
+            $invNode->addChild(DocumentTotals::N_DOCUMENT_TOTALS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentTotals_not_valid");
         }
 
@@ -897,10 +899,11 @@ class Invoice extends ADocument
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
@@ -919,42 +922,42 @@ class Invoice extends ADocument
 
         parent::parseXmlNode($node);
 
-        $this->setInvoiceNo((string) $node->{static::N_INVOICENO});
-        $this->setInvoiceType(new InvoiceType((string) $node->{static::N_INVOICETYPE}));
-        $this->getDocumentStatus()->parseXmlNode($node->{DocumentStatus::N_DOCUMENTSTATUS});
+        $this->setInvoiceNo((string) $node->{static::N_INVOICE_NO});
+        $this->setInvoiceType(InvoiceType::from((string) $node->{static::N_INVOICE_TYPE}));
+        $this->getDocumentStatus()->parseXmlNode($node->{DocumentStatus::N_DOCUMENT_STATUS});
 
         $this->setInvoiceDate(
             RDate::parse(
-                RDate::SQL_DATE, (string) $node->{static::N_INVOICEDATE}
+                Pattern::SQL_DATE, (string) $node->{static::N_INVOICE_DATE}
             )
         );
 
-        if ($node->{static::N_SPECIALREGIMES}->count() > 0) {
-            $this->getSpecialRegimes()->parseXmlNode($node->{static::N_SPECIALREGIMES});
+        if ($node->{static::N_SPECIAL_REGIMES}->count() > 0) {
+            $this->getSpecialRegimes()->parseXmlNode($node->{static::N_SPECIAL_REGIMES});
         }
 
-        if ($node->{static::N_SHIPTO}->count() > 0) {
-            $this->getShipTo()?->parseXmlNode($node->{static::N_SHIPTO});
+        if ($node->{static::N_SHIP_TO}->count() > 0) {
+            $this->getShipTo()?->parseXmlNode($node->{static::N_SHIP_TO});
         }
 
-        if ($node->{static::N_SHIPFROM}->count() > 0) {
-            $this->getShipFrom()?->parseXmlNode($node->{static::N_SHIPFROM});
+        if ($node->{static::N_SHIP_FROM}->count() > 0) {
+            $this->getShipFrom()?->parseXmlNode($node->{static::N_SHIP_FROM});
         }
 
-        if ($node->{static::N_MOVEMENTENDTIME}->count() > 0) {
+        if ($node->{static::N_MOVEMENT_END_TIME}->count() > 0) {
             $this->setMovementEndTime(
                 RDate::parse(
-                    RDate::DATE_T_TIME,
-                    (string) $node->{static::N_MOVEMENTENDTIME}
+                    Pattern::DATE_T_TIME,
+                    (string) $node->{static::N_MOVEMENT_END_TIME}
                 )
             );
         }
 
-        if ($node->{static::N_MOVEMENTSTARTTIME}->count() > 0) {
+        if ($node->{static::N_MOVEMENT_START_TIME}->count() > 0) {
             $this->setMovementStartTime(
                 RDate::parse(
-                    RDate::DATE_T_TIME,
-                    (string) $node->{static::N_MOVEMENTSTARTTIME}
+                    Pattern::DATE_T_TIME,
+                    (string) $node->{static::N_MOVEMENT_START_TIME}
                 )
             );
         }
@@ -965,13 +968,13 @@ class Invoice extends ADocument
         }
 
         $this->getDocumentTotals()->parseXmlNode(
-            $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENT_TOTALS}
         );
 
-        $whtCount = $node->{WithholdingTax::N_WITHHOLDINGTAX}->count();
+        $whtCount = $node->{WithholdingTax::N_WITHHOLDING_TAX}->count();
         for ($n = 0; $n < $whtCount; $n++) {
             $this->addWithholdingTax()->parseXmlNode(
-                $node->{WithholdingTax::N_WITHHOLDINGTAX}[$n]
+                $node->{WithholdingTax::N_WITHHOLDING_TAX}[$n]
             );
         }
     }

@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * MovementTaxCode<br>
  * Tax rate code in the table of taxes.<br>
@@ -39,87 +36,44 @@ use Rebelo\Enum\EnumException;
  * “ISE” - Exempted;<br>
  * “OUT” - Other, applicable to the special VAT regimes.<br>
  * In case of not subject to tax, to fill in with “NS”.<br>
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode RED()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode INT()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode NOR()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode ISE()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementTaxCode OUT()
  * @author João Rebelo
  */
-class MovementTaxCode extends AEnum
+enum MovementTaxCode : string
 {
     /**
      * “RED” - Reduced tax rate
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const RED = "RED";
+    case RED = "RED";
 
     /**
      * “INT” - Intermediate tax rate
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const INT = "INT";
+    case INT = "INT";
 
     /**
      * “NOR” - Normal tax rate
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const NOR = "NOR";
+    case NOR = "NOR";
 
     /**
      * Exempted
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const ISE = "ISE";
+    case ISE = "ISE";
 
     /**
      * “OUT” - Other, applicable to the special VAT regimes
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const OUT = "OUT";
+    case OUT = "OUT";
 
     /**
      * In case of not subject to tax, to fill in with “NS”
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const NS = "NS";
+    case NS = "NS";
 
-    /**
-     * MovementTaxCode
-     * <br>
-     * Tax rate code in the table of taxes.<br>
-     * Shall be filled in with:<br>
-     * “RED” - Reduced tax rate;<br>
-     * “INT” - Intermediate tax rate;<br>
-     * “NOR” - Normal tax rate;<br>
-     * “ISE” - Exempted;<br>
-     * “OUT” - Other, applicable to the special VAT regimes.<br>
-     * In case of not subject to tax, to fill in with “NS”.<br>
-     * <pre>
-     *  &lt;xs:simpleType name="SAFTPTMovementTaxCode"&gt;
-     *  &lt;xs:restriction base="xs:string"&gt;
-     *       &lt;xs:pattern value="RED|INT|NOR|ISE|OUT|NS"/&gt;
-     *       &lt;xs:minLength value="1"/&gt;
-     *       &lt;xs:maxLength value="3"/&gt;
-     *      &lt;/xs:restriction&gt;
-     *  &lt;/xs:simpleType&gt;
-     * </pre>
-     * @param Mixed $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct($value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get enum value
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

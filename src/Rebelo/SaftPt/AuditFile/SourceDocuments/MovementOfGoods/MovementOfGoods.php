@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -32,6 +32,7 @@ use Rebelo\SaftPt\AuditFile\{
     SourceDocuments\SourceDocuments,
     AAuditFile
 };
+use Decimal\Decimal;
 use Rebelo\SaftPt\Validate\MovOfGoodsTableTotalCalc;
 
 /**
@@ -53,21 +54,21 @@ class MovementOfGoods extends AAuditFile
      * Node Name
      * @since 1.0.0
      */
-    const N_MOVEMENTOFGOODS = "MovementOfGoods";
+    const string N_MOVEMENT_OF_GOODS = "MovementOfGoods";
 
     /**
      * &lt;xs:element ref="NumberOfMovementLines"/&gt;
      * Node Name
      * @since 1.0.0
      */
-    const N_NUMBEROFMOVEMENTLINES = "NumberOfMovementLines";
+    const string N_NUMBER_OF_MOVEMENT_LINES = "NumberOfMovementLines";
 
     /**
      * &lt;xs:element ref="TotalQuantityIssued"/&gt;
      * Node Name
      * @since 1.0.0
      */
-    const N_TOTALQUANTITYISSUED = "TotalQuantityIssued";
+    const string N_TOTAL_QUANTITY_ISSUED = "TotalQuantityIssued";
 
     /**
      * &lt;xs:element ref="NumberOfMovementLines"/&gt;
@@ -78,10 +79,10 @@ class MovementOfGoods extends AAuditFile
 
     /**
      * &lt;xs:element ref="TotalQuantityIssued"/&gt;
-     * @var float
+     * @var Decimal
      * @since 1.0.0
      */
-    private float $totalQuantityIssued;
+    private Decimal $totalQuantityIssued;
 
     /**
      *
@@ -98,11 +99,11 @@ class MovementOfGoods extends AAuditFile
     protected ?MovOfGoodsTableTotalCalc $movOfGoodsTableTotalCalc = null;
 
     /**
-     * $array[type][serie][number] = $stockMovement
+     * $array[type][serial][number] = $stockMovement
      * \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement[]
-     * @var array
+     * @var mixed[]
      */
-    protected array $order = array();
+    protected array $order = [];
 
     /**
      * MovementOfGoods<br>
@@ -212,11 +213,11 @@ class MovementOfGoods extends AAuditFile
      * field 4.2.3.21.5 – Quantity, excluding the lines of the documents
      * which content in field 4.2.3.3.1. - MovementStatus, is type “A”.<br>
      * &lt;xs:element ref="TotalQuantityIssued"/&gt;
-     * @return float
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalQuantityIssued(): float
+    public function getTotalQuantityIssued(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -244,13 +245,13 @@ class MovementOfGoods extends AAuditFile
      * field 4.2.3.21.5 – Quantity, excluding the lines of the documents
      * which content in field 4.2.3.3.1. - MovementStatus, is type “A”.<br>
      * &lt;xs:element ref="TotalQuantityIssued"/&gt;
-     * @param float $totalQuantityIssued
+     * @param \Decimal\Decimal $totalQuantityIssued
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalQuantityIssued(float $totalQuantityIssued): bool
+    public function setTotalQuantityIssued(Decimal $totalQuantityIssued): bool
     {
-        if ($totalQuantityIssued < 0) {
+        if ($totalQuantityIssued->compareTo("0.0") < 0) {
             $msg = "TotalQuantityIssued can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
@@ -307,45 +308,46 @@ class MovementOfGoods extends AAuditFile
 
     /**
      * Create Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Error
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== SourceDocuments::N_SOURCEDOCUMENTS) {
+        if ($node->getName() !== SourceDocuments::N_SOURCE_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                SourceDocuments::N_SOURCEDOCUMENTS, $node->getName()
+                SourceDocuments::N_SOURCE_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $mogNode = $node->addChild(static::N_MOVEMENTOFGOODS);
+        $mogNode = $node->addChild(static::N_MOVEMENT_OF_GOODS);
 
         if (isset($this->numberOfMovementLines)) {
             $mogNode->addChild(
-                static::N_NUMBEROFMOVEMENTLINES,
+                static::N_NUMBER_OF_MOVEMENT_LINES,
                 \strval($this->getNumberOfMovementLines())
             );
         } else {
-            $mogNode->addChild(static::N_NUMBEROFMOVEMENTLINES);
+            $mogNode->addChild(static::N_NUMBER_OF_MOVEMENT_LINES);
             $this->getErrorRegistor()->addOnCreateXmlNode("NumberOfMovementLines_not_valid");
         }
 
         if (isset($this->totalQuantityIssued)) {
             $mogNode->addChild(
-                static::N_TOTALQUANTITYISSUED,
+                static::N_TOTAL_QUANTITY_ISSUED,
                 $this->floatFormat($this->getTotalQuantityIssued())
             );
         } else {
-            $mogNode->addChild(static::N_TOTALQUANTITYISSUED);
+            $mogNode->addChild(static::N_TOTAL_QUANTITY_ISSUED);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalQuantityIssued_not_valid");
         }
 
@@ -358,8 +360,12 @@ class MovementOfGoods extends AAuditFile
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -367,10 +373,10 @@ class MovementOfGoods extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_MOVEMENTOFGOODS) {
+        if ($node->getName() !== static::N_MOVEMENT_OF_GOODS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_MOVEMENTOFGOODS, $node->getName()
+                static::N_MOVEMENT_OF_GOODS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__ . " '%s'", $msg));
@@ -378,24 +384,24 @@ class MovementOfGoods extends AAuditFile
         }
 
         $this->setNumberOfMovementLines(
-            (int)$node->{static::N_NUMBEROFMOVEMENTLINES}
+            (int)$node->{static::N_NUMBER_OF_MOVEMENT_LINES}
         );
 
         $this->setTotalQuantityIssued(
-            (float)$node->{static::N_TOTALQUANTITYISSUED}
+            new Decimal((string)$node->{static::N_TOTAL_QUANTITY_ISSUED})
         );
 
-        $stkMovCount = $node->{StockMovement::N_STOCKMOVEMENT}->count();
+        $stkMovCount = $node->{StockMovement::N_STOCK_MOVEMENT}->count();
         for ($n = 0; $n < $stkMovCount; $n++) {
             $this->addStockMovement()->parseXmlNode(
-                $node->{StockMovement::N_STOCKMOVEMENT}[$n]
+                $node->{StockMovement::N_STOCK_MOVEMENT}[$n]
             );
         }
     }
 
     /**
-     * Get StockMovement order by type/serie/number<br>
-     * Ex: $stack[type][serie][InvoiceNo] = StockMovement<br>
+     * Get StockMovement order by type/serial/number<br>
+     * Ex: $stack[type][serial][InvoiceNo] = StockMovement<br>
      * If an error exist, th error is added to ValidationErrors stack
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement>>>
      * @since 1.0.0
@@ -412,21 +418,21 @@ class MovementOfGoods extends AAuditFile
                     AAuditFile::getI18n()->get("stock_move_at_index_no_number"), $k
                 );
                 $this->getErrorRegistor()->addValidationErrors($msg);
-                $stkMv->addError($msg, StockMovement::N_DOCUMENTNUMBER);
+                $stkMv->addError($msg, StockMovement::N_DOCUMENT_NUMBER);
                 \Logger::getLogger(\get_class($this))->error($msg);
                 continue;
             }
 
-            list($type, $serie, $no) = \explode(
+            list($type, $serial, $no) = \explode(
                 " ",
                 \str_replace("/", " ", $stkMv->getDocumentNumber())
             );
 
             if (\array_key_exists($type, $this->order)) {
-                if (\array_key_exists($serie, $this->order[$type])) {
+                if (\array_key_exists($serial, $this->order[$type])) {
                     if (\array_key_exists(
                         \intval($no),
-                        $this->order[$type][$serie]
+                        $this->order[$type][$serial]
                     )
                     ) {
                         $msg = \sprintf(
@@ -434,19 +440,19 @@ class MovementOfGoods extends AAuditFile
                             $stkMv->getDocumentNumber()
                         );
                         $this->getErrorRegistor()->addValidationErrors($msg);
-                        $stkMv->addError($msg, StockMovement::N_STOCKMOVEMENT);
+                        $stkMv->addError($msg, StockMovement::N_STOCK_MOVEMENT);
                         \Logger::getLogger(\get_class($this))->error($msg);
                     }
                 }
             }
-            $this->order[$type][$serie][\intval($no)] = $stkMv;
+            $this->order[$type][$serial][\intval($no)] = $stkMv;
         }
 
         $cloneOrder = $this->order;
 
         foreach (\array_keys($cloneOrder) as $type) {
-            foreach (\array_keys($cloneOrder[$type]) as $serie) {
-                ksort($this->order[$type][$serie], SORT_NUMERIC);
+            foreach (\array_keys($cloneOrder[$type]) as $serial) {
+                ksort($this->order[$type][$serial], SORT_NUMERIC);
             }
             ksort($this->order[$type], SORT_STRING);
         }

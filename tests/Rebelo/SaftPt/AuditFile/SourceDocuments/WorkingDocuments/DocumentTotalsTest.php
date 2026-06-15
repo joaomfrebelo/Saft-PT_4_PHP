@@ -26,12 +26,14 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -46,20 +48,19 @@ class DocumentTotalsTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(DocumentTotals::class);
-        $this->assertTrue(true);
+        (new Commune(DocumentTotals::class))->testReflection(DocumentTotals::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $docTotals = new DocumentTotals(new ErrorRegister());
@@ -73,17 +74,17 @@ class DocumentTotalsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTaxPayable(): void
     {
         $docTotals  = new DocumentTotals(new ErrorRegister());
-        $taxPayable = 9.49;
+        $taxPayable = new Decimal("9.49");
         $this->assertTrue($docTotals->setTaxPayable($taxPayable));
         $this->assertSame($taxPayable, $docTotals->getTaxPayable());
         $this->assertTrue($docTotals->issetTaxPayable());
 
-        $wrong = -0.01;
+        $wrong = new Decimal("-0.01");
         $this->assertFalse($docTotals->setTaxPayable($wrong));
         $this->assertSame($wrong, $docTotals->getTaxPayable());
         $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
@@ -91,16 +92,16 @@ class DocumentTotalsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNetTotal(): void
     {
         $docTotals = new DocumentTotals(new ErrorRegister());
-        $netTotal  = 9.49;
+        $netTotal  = new Decimal("9.49");
         $this->assertTrue($docTotals->setNetTotal($netTotal));
         $this->assertSame($netTotal, $docTotals->getNetTotal());
         $this->assertTrue($docTotals->issetNetTotal());
-        $wrong     = -0.01;
+        $wrong     = new Decimal("-0.01");
         $this->assertFalse($docTotals->setNetTotal($wrong));
         $this->assertSame($wrong, $docTotals->getNetTotal());
         $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
@@ -108,41 +109,41 @@ class DocumentTotalsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGrossTotal(): void
     {
         $docTotals  = new DocumentTotals(new ErrorRegister());
-        $grossTotal = 9.49;
+        $grossTotal = new Decimal("9.49");
         $this->assertTrue($docTotals->setGrossTotal($grossTotal));
         $this->assertSame($grossTotal, $docTotals->getGrossTotal());
         $this->assertTrue($docTotals->issetGrossTotal());
-        $wrong      = -0.01;
-        $this->assertFalse($docTotals->setGrossTotal(-0.01));
+        $wrong      = new Decimal("-0.01");
+        $this->assertFalse($docTotals->setGrossTotal($wrong));
         $this->assertSame($wrong, $docTotals->getGrossTotal());
         $this->assertNotEmpty($docTotals->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCurrency(): void
     {
-        $doctotals = new DocumentTotals(new ErrorRegister());
-        $this->assertInstanceOf(Currency::class, $doctotals->getCurrency());
+        $documentTotals = new DocumentTotals(new ErrorRegister());
+        $this->assertInstanceOf(Currency::class, $documentTotals->getCurrency());
     }
 
     /**
-     * Reads all DocumentTotals from the Demo SAFT in Test\Ressources
+     * Reads all DocumentTotals from the Demo SAFT in Test\Resources
      * and parse then to DocumentTotals class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      *
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $docTotals = null;
@@ -152,21 +153,21 @@ class DocumentTotalsTest extends TestCase
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
-        $workdocStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{WorkingDocuments::N_WORKINGDOCUMENTS}
-            ->{WorkDocument::N_WORKDOCUMENT};
+        $workDocumentStack = $saftDemoXml
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{WorkingDocuments::N_WORKING_DOCUMENTS}
+            ->{WorkDocument::N_WORK_DOCUMENT};
 
-        if ($workdocStack->count() === 0) {
-            $this->fail("No workdocuments in XML");
+        if ($workDocumentStack->count() === 0) {
+            $this->fail("No work documents in XML");
         }
 
-        for ($i = 0; $i < $workdocStack->count(); $i++) {
-            $workdocStackXml = $workdocStack[$i];
-            $totalsStack     = $workdocStackXml->{DocumentTotals::N_DOCUMENTTOTALS};
+        for ($i = 0; $i < $workDocumentStack->count(); $i++) {
+            $workDocumentStackXml = $workDocumentStack[$i];
+            $totalsStack     = $workDocumentStackXml->{DocumentTotals::N_DOCUMENT_TOTALS};
 
             if ($totalsStack->count() === 0) {
-                $this->fail("No DocumemntTotals in Workdoc");
+                $this->fail("No Document Totals in Work documents");
             }
 
             for ($l = 0; $l < $totalsStack->count(); $l++) {
@@ -175,16 +176,19 @@ class DocumentTotalsTest extends TestCase
                 $docTotals = new DocumentTotals(new ErrorRegister());
                 $docTotals->parseXmlNode($totalsXml);
 
+                /** @noinspection HtmlUnknownAttribute */
                 $xmlRootNode      = new \SimpleXMLElement(
                     '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01  https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/master/src/Rebelo/SaftPt/Validate/Schema/SAFTPT_1_04_01.xsd" '.
+                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01  '.
+                    'https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/master/src/Rebelo/'.
+                    'SaftPt/Validate/Schema/SAFTPT_1_04_01.xsd" '.
                     'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
                 );
-                $sourceDocNode    = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-                $workingdocsNode  = $sourceDocNode->addChild(WorkingDocuments::N_WORKINGDOCUMENTS);
-                $workdocStackNode = $workingdocsNode->addChild(WorkDocument::N_WORKDOCUMENT);
+                $sourceDocNode    = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+                $workingDocumentsNode  = $sourceDocNode->addChild(WorkingDocuments::N_WORKING_DOCUMENTS);
+                $workDocumentStackNode = $workingDocumentsNode->addChild(WorkDocument::N_WORK_DOCUMENT);
 
-                $xml = $docTotals->createXmlNode($workdocStackNode);
+                $xml = $docTotals->createXmlNode($workDocumentStackNode);
 
                 try {
                     $assertXml = $this->xmlIsEqual($totalsXml, $xml);
@@ -192,7 +196,7 @@ class DocumentTotalsTest extends TestCase
                         $assertXml,
                         \sprintf(
                             "Fail on Document '%s' with error '%s'",
-                            $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
+                            $workDocumentStackXml->{WorkDocument::N_DOCUMENT_NUMBER},
                             $assertXml
                         )
                     );
@@ -200,18 +204,15 @@ class DocumentTotalsTest extends TestCase
                     $this->fail(
                         \sprintf(
                             "Fail on Document '%s' with error '%s'",
-                            $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
+                            $workDocumentStackXml->{WorkDocument::N_DOCUMENT_NUMBER},
                             $e->getMessage()
                         )
                     );
                 }
             }
-            $this->assertNotNull($docTotals);
-            /* @phpstan-ignore-next-line */
+
             $this->assertEmpty($docTotals->getErrorRegistor()->getLibXmlError());
-            /* @phpstan-ignore-next-line */
             $this->assertEmpty($docTotals->getErrorRegistor()->getOnCreateXmlNode());
-            /* @phpstan-ignore-next-line */
             $this->assertEmpty($docTotals->getErrorRegistor()->getOnSetValue());
         }
     }
@@ -219,12 +220,12 @@ class DocumentTotalsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $docTotalsNode = new \SimpleXMLElement(
-            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+            "<".WorkDocument::N_WORK_DOCUMENT."></".WorkDocument::N_WORK_DOCUMENT.">"
         );
         $docTotals     = new DocumentTotals(new ErrorRegister());
         $xml           = $docTotals->createXmlNode($docTotalsNode)->asXML();
@@ -244,17 +245,17 @@ class DocumentTotalsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $docTotalsNode = new \SimpleXMLElement(
-            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+            "<".WorkDocument::N_WORK_DOCUMENT."></".WorkDocument::N_WORK_DOCUMENT.">"
         );
         $docTotals     = new DocumentTotals(new ErrorRegister());
-        $docTotals->setGrossTotal(-1.0);
-        $docTotals->setNetTotal(-2.0);
-        $docTotals->setTaxPayable(-0.5);
+        $docTotals->setGrossTotal(new Decimal(new Decimal("-1.0")));
+        $docTotals->setNetTotal(new Decimal(new Decimal("-2.0")));
+        $docTotals->setTaxPayable(new Decimal(new Decimal("-0.5")));
 
         $xml = $docTotals->createXmlNode($docTotalsNode)->asXML();
         if ($xml === false) {

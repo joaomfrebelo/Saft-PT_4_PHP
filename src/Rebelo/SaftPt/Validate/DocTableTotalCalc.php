@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+
 /**
  * Recalculated Doc table values for SalesInvoices, WorkingDocuments and Payments
  *
@@ -41,16 +43,16 @@ class DocTableTotalCalc
     protected ?int $numberOfEntries = null;
 
     /**
-     * @var float|null $totalDebit
+     * @var Decimal|null $totalDebit
      * @since 1.0.0
      */
-    protected ?float $totalDebit = null;
+    protected Decimal|null $totalDebit = null;
 
     /**
-     * @var float|null $totalCredit
+     * @var Decimal|null $totalCredit
      * @since 1.0.0
      */
-    protected ?float $totalCredit = null;
+    protected Decimal|null $totalCredit = null;
 
     /**
      * The Calculate values
@@ -73,20 +75,20 @@ class DocTableTotalCalc
 
     /**
      * Get the Calculated TotalDebit
-     * @return float|null
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTotalDebit(): ?float
+    public function getTotalDebit(): Decimal|null
     {
         return $this->totalDebit;
     }
 
     /**
      * Get the TotalCredit calculated
-     * @return float|null
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTotalCredit(): ?float
+    public function getTotalCredit(): Decimal|null
     {
         return $this->totalCredit;
     }
@@ -104,22 +106,22 @@ class DocTableTotalCalc
 
     /**
      * Set the calculated TotalDebit
-     * @param float|null $totalDebit
+     * @param Decimal|null $totalDebit
      * @return void
      * @since 1.0.0
      */
-    public function setTotalDebit(?float $totalDebit): void
+    public function setTotalDebit(Decimal|null $totalDebit): void
     {
         $this->totalDebit = $totalDebit;
     }
 
     /**
      * Set the calculated TotalCredit
-     * @param float|null $totalCredit
+     * @param Decimal|null $totalCredit
      * @return void
      * @since 1.0.0
      */
-    public function setTotalCredit(?float $totalCredit): void
+    public function setTotalCredit(Decimal|null $totalCredit): void
     {
         $this->totalCredit = $totalCredit;
     }

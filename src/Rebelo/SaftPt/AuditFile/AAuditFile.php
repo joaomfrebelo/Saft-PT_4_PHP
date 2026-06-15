@@ -26,9 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use Decimal\Decimal;
+use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\i18n\AI18n;
 use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
-use Rebelo\Date\Date as RDate;
 
 /**
  * Abstract of AAuditFile
@@ -40,27 +42,31 @@ abstract class AAuditFile
 {
     /**
      * Unknown word
+     *
      * @since 1.0.0
      */
-    const DESCONHECIDO = "Desconhecido";
+    const string DESCONHECIDO = "Desconhecido";
 
     /**
      * Unknown word
+     *
      * @since 1.0.0
      */
-    const CONSUMIDOR_FINAL_TAX_ID = "999999990";
+    const string CONSUMIDOR_FINAL_TAX_ID = "999999990";
 
     /**
      * Final Consumer, Consumidor final
+     *
      * @since 1.0.0
      */
-    const CONSUMIDOR_FINAL = "Consumidor final";
+    const string CONSUMIDOR_FINAL = "Consumidor final";
 
     /**
      * The ID in consumer table of the final Consumer, Consumidor final
+     *
      * @since 1.0.0
      */
-    const CONSUMIDOR_FINAL_ID = "CONSUMIDOR_FINAL";
+    const string CONSUMIDOR_FINAL_ID = "CONSUMIDOR_FINAL";
 
     /**
      *
@@ -71,6 +77,7 @@ abstract class AAuditFile
 
     /**
      * Error Register, to register global validation and errors
+     *
      * @var \Rebelo\SaftPt\AuditFile\ErrorRegister
      * @since 1.0.0
      */
@@ -79,6 +86,7 @@ abstract class AAuditFile
     /**
      * To register particular validation and errors of documents or tables,
      * the key must be the field name
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -86,6 +94,7 @@ abstract class AAuditFile
 
     /**
      * To register particular warnings of documents or tables
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -137,6 +146,7 @@ abstract class AAuditFile
 
     /**
      * Force to clone all object properties
+     *
      * @since 1.0.0
      */
     public function __clone()
@@ -144,6 +154,7 @@ abstract class AAuditFile
         $refClass = new \ReflectionClass($this);
 
         foreach ($refClass->getProperties() as $prop) {
+            /** @noinspection PhpExpressionResultUnusedInspection */
             $prop->setAccessible(true);
             try {
                 $value = $prop->getValue($this);
@@ -168,17 +179,20 @@ abstract class AAuditFile
      * @param string $string
      * @param int    $length
      * @param string $method
-     * @param bool   $trucate If truncate is set to <code>false</code> and the string is bigger will throw AuditFileException
+     * @param bool   $truncate If truncate is set to <code>false</code> and the string is bigger will throw AuditFileException
      *
      * @return string
      * @throws AuditFileException
      * @since 1.0.0
      */
-    public static function valTextMandMaxCar(string $string, int $length,
-                                             string $method,
-                                             bool   $trucate = true): string
+    public static function valTextMandatoryMaxCar(
+        string $string,
+        int    $length,
+        string $method,
+        bool   $truncate = true
+    ): string
     {
-        if ($trucate === false && \strlen($string) > $length) {
+        if ($truncate === false && \strlen($string) > $length) {
             $msg = \sprintf(
                 "string length '%s' is bigger than '\$length' '%s' ",
                 \strlen($string), $length
@@ -210,8 +224,8 @@ abstract class AAuditFile
         $regPreg = "/^(1|2|3|45|5|6|70|71|72|74|75|77|78|79|8|90|91|98|99)+[0-9]{7,8}$/";
 
         if ((preg_match($regPreg, \strval($nif)) &&
-             \strlen((string)$nif) === 9 &&
-             self::validateMod11auxFunction(\strval($nif))) ||
+                \strlen((string)$nif) === 9 &&
+                self::validateMod11auxFunction(\strval($nif))) ||
             $nif === 999999990) {
             return true;
         } else {
@@ -221,7 +235,7 @@ abstract class AAuditFile
 
     /**
      * validate Mod11 numbers
-     * (true whene the remaining of the division per 11 is 0)
+     * (true when the remaining of the division per 11 is 0)
      * number % 11 === 0
      *
      * @param string $nif
@@ -262,26 +276,31 @@ abstract class AAuditFile
     /**
      * Format a float with grouped thousands
      *
-     * @param float  $float        The float to be formatted
-     * @param int    $decimals     Number of decimals
-     * @param string $decPoint     The decimal separator
-     * @param string $thousandsSep the thousends separator
+     * @param float|\Decimal\Decimal $float        The float to be formatted
+     * @param int                    $decimals     Number of decimals
+     * @param string                 $decPoint     The decimal separator
+     * @param string                 $thousandsSep the thousands separator
      *
      * @return string
      * @since 1.0.0
      */
-    public function floatFormat(float  $float, int $decimals = 6,
-                                string $decPoint = ".",
-                                string $thousandsSep = ""): string
+    public function floatFormat(float|Decimal $float,
+                                int           $decimals = 6,
+                                string        $decPoint = ".",
+                                string        $thousandsSep = ""
+    ): string
     {
-//        if (IS_UNIT_TEST) {
-//            return \strval($float);
-//        }
-        return \number_format($float, $decimals, $decPoint, $thousandsSep);
+
+        return \number_format(
+            $float instanceof Decimal ? $float->toFloat() : $float,
+            $decimals,
+            $decPoint,
+            $thousandsSep
+        );
     }
 
     /**
-     * Convert the encoded caracters encoded by SimpleXmlElment
+     * Convert the encoded characters encoded by SimpleXmlElement
      *
      * @param string $string
      *
@@ -385,7 +404,8 @@ abstract class AAuditFile
             "&#xFC;" => "ü",
             "&#xFD;" => "ý",
             "&#xFE;" => "þ",
-            "&#xFF;" => "ÿ"];
+            "&#xFF;" => "ÿ"
+        ];
         $string = \str_replace(
             \array_keys($utf), $utf, $string
         );
@@ -411,6 +431,7 @@ abstract class AAuditFile
 
     /**
      * Get i18n class
+     *
      * @return \Rebelo\SaftPt\AuditFile\i18n\AI18n
      * @since 1.0.0
      */
@@ -424,6 +445,7 @@ abstract class AAuditFile
 
     /**
      * Get the ErrorRegistor instance
+     *
      * @return \Rebelo\SaftPt\AuditFile\ErrorRegister
      * @since 1.0.0
      */
@@ -434,6 +456,7 @@ abstract class AAuditFile
 
     /**
      * Get all particular error
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -444,6 +467,7 @@ abstract class AAuditFile
 
     /**
      * Get all particular warning
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -516,7 +540,7 @@ abstract class AAuditFile
      * @param \Rebelo\Date\Date $docDate
      *
      * @return int
-     * @throws CalcPeriodException|\Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\CalcPeriodException
      * @since 1.0.0
      */
     public static function calcPeriod(int $fiscalYearStartMonth, RDate $docDate): int
@@ -525,7 +549,7 @@ abstract class AAuditFile
             throw new CalcPeriodException("wrong fiscal year start month");
         }
 
-        $docMonth = (int)$docDate->format(RDate::MONTH_SHORT);
+        $docMonth = (int)$docDate->format(Pattern::MONTH_SHORT);
 
         if ($fiscalYearStartMonth === 1) {
             return $docMonth;

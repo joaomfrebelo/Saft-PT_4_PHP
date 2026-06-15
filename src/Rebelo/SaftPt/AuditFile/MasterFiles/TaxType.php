@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * TaxType<br>
  * This field shall be filled in with the tax type:<br>
@@ -46,64 +43,27 @@ use Rebelo\Enum\EnumException;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IVA()
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType IS()
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType NS()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class TaxType extends AEnum
+enum TaxType : string
 {
     /**
      * “IVA” – Value Added Tax;
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const IVA = "IVA";
+    case IVA = "IVA";
 
     /**
      * “IS” – Stamp Duty
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const IS = "IS";
+    case IS = "IS";
 
     /**
      * “NS” – Not subject to VAT or Stamp Duty
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const NS = "NS";
+    case NS = "NS";
 
-    /**
-     * This field shall be filled in with the tax type:<br>
-     * “IVA” – Value Added Tax;<br>
-     * “IS” – Stamp Duty;<br>
-     * “NS” – Not subject to VAT or Stamp Duty.<br>
-     * <pre>
-     *  &lt;xs:element name="TaxType"&gt;
-     *      &lt;xs:simpleType&gt;
-     *          &lt;xs:restriction base="xs:string"&gt;
-     *              &lt;xs:enumeration value="IVA"/&gt;
-     *              &lt;xs:enumeration value="IS"/&gt;
-     *              &lt;xs:enumeration value="NS"/&gt;
-     *          &lt;/xs:restriction&gt;
-     *      &lt;/xs:simpleType&gt;
-     *  &lt;/xs:element&gt;
-     * </pre>
-     *
-     * @param string $value a constant value from TaxType class
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get the value as string
-     * @return string
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

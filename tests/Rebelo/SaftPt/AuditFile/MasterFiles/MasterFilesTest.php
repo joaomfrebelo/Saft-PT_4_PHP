@@ -26,19 +26,21 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
-require_once __DIR__.DIRECTORY_SEPARATOR.'CustomerTest.php';
-require_once __DIR__.DIRECTORY_SEPARATOR.'CustomsDetailsTest.php';
-require_once __DIR__.DIRECTORY_SEPARATOR.'SupplierTest.php';
-require_once __DIR__.DIRECTORY_SEPARATOR.'TaxTableEntryTest.php';
-require_once __DIR__.DIRECTORY_SEPARATOR.'ProductTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'CustomerTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'CustomsDetailsTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'SupplierTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'TaxTableEntryTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'ProductTest.php';
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Country;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\NotImplemented;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -52,20 +54,21 @@ class MasterFilesTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(MasterFiles::class);
-        $this->assertTrue(true);
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        $this->doesNotPerformAssertions();
+        (new Commune(MasterFiles::class))->testReflection(MasterFiles::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -77,8 +80,10 @@ class MasterFilesTest extends TestCase
         $this->assertFalse($master->isFinalConsumerAdd());
         try {
             $master->getGeneralLedgerAccounts();
+            /** @noinspection PhpUnreachableStatementInspection */
             $this->fail("getGeneralLedgerAccounts should throw \Rebelo\SaftPt\AuditFile\NotImplemented");
-        } catch (\Exception | \Error $ex) {
+            /** @phpstan-ignore-next-line */
+        } catch (\Exception|\Error $ex) {
             $this->assertInstanceOf(
                 NotImplemented::class, $ex
             );
@@ -87,9 +92,9 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testCustomerSatck(): void
+    #[Test]
+    public function testCustomerStack(): void
     {
         $master = new MasterFiles(new ErrorRegister());
 
@@ -97,7 +102,7 @@ class MasterFilesTest extends TestCase
         for ($n = 0; $n < $nCount; $n++) {
             $customer = $master->addCustomer();
             $customer->setCustomerID(\strval($n));
-            $stack    = $master->getCustomer();
+            $stack = $master->getCustomer();
             $this->assertEquals(
                 \strval($n), $stack[$n]->getCustomerID()
             );
@@ -106,9 +111,9 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testSupplierSatck(): void
+    #[Test]
+    public function testSupplierStack(): void
     {
         $master = new MasterFiles(new ErrorRegister());
 
@@ -116,7 +121,7 @@ class MasterFilesTest extends TestCase
         for ($n = 0; $n < $nCount; $n++) {
             $supplier = $master->addSupplier();
             $supplier->setSupplierID(\strval($n));
-            $stack    = $master->getSupplier();
+            $stack = $master->getSupplier();
             $this->assertEquals(
                 \strval($n), $stack[$n]->getSupplierID()
             );
@@ -125,9 +130,9 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testProductSatck(): void
+    #[Test]
+    public function testProductStack(): void
     {
         $master = new MasterFiles(new ErrorRegister());
 
@@ -135,7 +140,7 @@ class MasterFilesTest extends TestCase
         for ($n = 0; $n < $nCount; $n++) {
             $product = $master->addProduct();
             $product->setProductNumberCode(\strval($n));
-            $stack   = $master->getProduct();
+            $stack = $master->getProduct();
             $this->assertEquals(
                 \strval($n), $stack[$n]->getProductNumberCode()
             );
@@ -144,26 +149,28 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testTaxTableEntrySatck(): void
+    #[Test]
+    public function testTaxTableEntryStack(): void
     {
         $master = new MasterFiles(new ErrorRegister());
 
         $nCount = 5;
         for ($n = 0; $n < $nCount; $n++) {
             $taxTableEntry = $master->addTaxTableEntry();
-            $taxTableEntry->setTaxPercentage((float) $n);
-            $stack         = $master->getTaxTableEntry();
+            $taxTableEntry->setTaxPercentage(new Decimal((string)$n));
+            $stack = $master->getTaxTableEntry();
             $this->assertEquals(
-                (float) $n, $stack[$n]->getTaxPercentage()
+                (float)$n, $stack[$n]->getTaxPercentage()?->toFloat()
             );
         }
     }
 
     /**
      * Create master file
+     *
      * @param int $nCount
+     *
      * @return MasterFiles
      */
     public function createMasterFile(int $nCount): MasterFiles
@@ -187,7 +194,7 @@ class MasterFilesTest extends TestCase
 
         for ($n = 0; $n < $nCount; $n++) {
             $taxTableEntry = $master->addTaxTableEntry();
-            $taxTableEntry->setTaxPercentage((float) $n);
+            $taxTableEntry->setTaxPercentage(new Decimal((string)$n));
         }
 
         return $master;
@@ -196,37 +203,37 @@ class MasterFilesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateEmptyXmlNode(): void
     {
         $master = new MasterFiles(new ErrorRegister());
         $node   = new \SimpleXMLElement(
-            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
+            "<" . AuditFile::N_AUDIT_FILE . "></" . AuditFile::N_AUDIT_FILE . ">"
         );
 
         $masterNode = $master->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $masterNode);
-        $this->assertEquals(MasterFiles::N_MASTERFILES, $masterNode->getName());
+        $this->assertEquals(MasterFiles::N_MASTER_FILES, $masterNode->getName());
 
         $this->assertEquals(
             0,
-            $node->{MasterFiles::N_MASTERFILES}->{Customer::N_CUSTOMER}->count()
+            $node->{MasterFiles::N_MASTER_FILES}->{Customer::N_CUSTOMER}->count()
         );
 
         $this->assertEquals(
             0,
-            $node->{MasterFiles::N_MASTERFILES}->{Supplier::N_SUPPLIER}->count()
+            $node->{MasterFiles::N_MASTER_FILES}->{Supplier::N_SUPPLIER}->count()
         );
 
         $this->assertEquals(
             0,
-            $node->{MasterFiles::N_MASTERFILES}->{Product::N_PRODUCT}->count()
+            $node->{MasterFiles::N_MASTER_FILES}->{Product::N_PRODUCT}->count()
         );
 
         $this->assertEquals(
             0,
-            $node->{MasterFiles::N_MASTERFILES}->{MasterFiles::N_TAXTABLE}->count()
+            $node->{MasterFiles::N_MASTER_FILES}->{MasterFiles::N_TAX_TABLE}->count()
         );
 
         $this->assertEmpty($master->getErrorRegistor()->getLibXmlError());
@@ -236,8 +243,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -248,9 +255,10 @@ class MasterFilesTest extends TestCase
             $master->createXmlNode($node);
             $this->fail(
                 "Creat a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+            /** @phpstan-ignore-next-line */
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -259,8 +267,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $master = new MasterFiles();
@@ -269,9 +277,10 @@ class MasterFilesTest extends TestCase
             $master->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+            /** @phpstan-ignore-next-line */
+        } catch (\Exception|\Error $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -281,13 +290,13 @@ class MasterFilesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeEmpty(): void
     {
         $master = new MasterFiles();
         $node   = new \SimpleXMLElement(
-            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
+            "<" . AuditFile::N_AUDIT_FILE . "></" . AuditFile::N_AUDIT_FILE . ">"
         );
 
         $xml = $master->createXmlNode($node)->asXML();
@@ -297,10 +306,10 @@ class MasterFilesTest extends TestCase
 
         $parsed = new MasterFiles(new ErrorRegister());
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
-        $this->assertEquals(0, \count($parsed->getCustomer()));
-        $this->assertEquals(0, \count($parsed->getSupplier()));
-        $this->assertEquals(0, \count($parsed->getProduct()));
-        $this->assertEquals(0, \count($parsed->getTaxTableEntry()));
+        $this->assertCount(0, $parsed->getCustomer());
+        $this->assertCount(0, $parsed->getSupplier());
+        $this->assertCount(0, $parsed->getProduct());
+        $this->assertCount(0, $parsed->getTaxTableEntry());
 
         $this->assertEmpty($master->getErrorRegistor()->getLibXmlError());
         $this->assertEmpty($master->getErrorRegistor()->getOnCreateXmlNode());
@@ -311,8 +320,12 @@ class MasterFilesTest extends TestCase
      * Reads MasterFiles from the Demo SAFT in Test\Resources
      * and parse then to MasterFiles class, after that generate a xml from the
      * class and test if the xml strings are equal
-     * @throws AuditFileException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
@@ -321,7 +334,7 @@ class MasterFilesTest extends TestCase
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
-        $sourceDocsXml = $saftDemoXml->{MasterFiles::N_MASTERFILES};
+        $sourceDocsXml = $saftDemoXml->{MasterFiles::N_MASTER_FILES};
 
         if ($sourceDocsXml->count() === 0) {
             $this->fail("No MasterFiles in XML");
@@ -333,7 +346,7 @@ class MasterFilesTest extends TestCase
         $xmlRootNode = (new AuditFile())->createRootElement();
 
         $auditNode = $xmlRootNode->addChild(
-            AuditFile::N_AUDITFILE
+            AuditFile::N_AUDIT_FILE
         );
 
         $xml = $masterFiles->createXmlNode($auditNode);
@@ -343,7 +356,7 @@ class MasterFilesTest extends TestCase
             $this->assertTrue(
                 $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
 
@@ -355,12 +368,12 @@ class MasterFilesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $customerNode = new \SimpleXMLElement(
-            "<".AuditFile::N_AUDITFILE."></".AuditFile::N_AUDITFILE.">"
+            "<" . AuditFile::N_AUDIT_FILE . "></" . AuditFile::N_AUDIT_FILE . ">"
         );
         $master       = new MasterFiles(new ErrorRegister());
         $xml          = $master->createXmlNode($customerNode)->asXML();
@@ -379,8 +392,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetAllProductCode(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -397,8 +410,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetAllProductCodeAfterAdd(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -424,8 +437,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetAllSupplierID(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -442,9 +455,9 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testGetAllSupplierIDAftertAdd(): void
+    #[Test]
+    public function testGetAllSupplierIDAfterAdd(): void
     {
         $master = new MasterFiles(new ErrorRegister());
         $ids    = ["AAA", "BBB", "CCC"];
@@ -469,8 +482,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetAllCustomerID(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -487,8 +500,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetAllCustomerIDAfterAdd(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -516,8 +529,8 @@ class MasterFilesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testAddCustomerFinalConsumer(): void
     {
         $master = new MasterFiles(new ErrorRegister());
@@ -565,7 +578,7 @@ class MasterFilesTest extends TestCase
 
         $this->assertSame(
             Country::DESCONHECIDO,
-            $addr->getCountry()->get()
+            $addr->getCountry()
         );
 
         $this->assertEmpty($customer->getShipToAddress());

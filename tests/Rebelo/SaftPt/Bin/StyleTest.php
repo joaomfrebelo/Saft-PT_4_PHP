@@ -60,44 +60,48 @@ class StyleTest extends TestCase
     {
         static::$input = new class implements InputInterface {
 
-            public function bind(InputDefinition $definition)
+            public function bind(InputDefinition $definition): void
             {
 
             }
 
-            public function getArgument(string $name)
+            public function getArgument(string $name): null
             {
-
+                return null;
             }
 
+            /** @phpstan-ignore-next-line */
             public function getArguments(): array
             {
                 return [];
             }
 
-            public function getFirstArgument()
+            public function getFirstArgument(): ?string
             {
-
+                return null;
             }
 
-            public function getOption(string $name)
+            public function getOption(string $name): null
             {
-
+                return null;
             }
 
+            /** @phpstan-ignore-next-line */
             public function getOptions(): array
             {
                 return [];
             }
 
+            /** @phpstan-ignore-next-line */
             public function getParameterOption(
                 $values, $default = false,
                 bool $onlyParams = false
-            )
+            ): null
             {
-
+                return null;
             }
 
+            /** @phpstan-ignore-next-line */
             public function hasArgument($name): bool
             {
                 return true;
@@ -108,6 +112,7 @@ class StyleTest extends TestCase
                 return true;
             }
 
+            /** @phpstan-ignore-next-line */
             public function hasParameterOption($values, bool $onlyParams = false): bool
             {
                 return true;
@@ -118,24 +123,31 @@ class StyleTest extends TestCase
                 return true;
             }
 
-            public function setArgument($name, $value)
+            /** @phpstan-ignore-next-line */
+            public function setArgument($name, $value): void
             {
 
             }
 
-            public function setInteractive(bool $interactive)
+            public function setInteractive(bool $interactive): void
             {
 
             }
 
-            public function setOption($name, $value)
+            /** @phpstan-ignore-next-line */
+            public function setOption($name, $value): void
             {
 
             }
 
-            public function validate()
+            public function validate(): void
             {
 
+            }
+
+            public function __toString(): string
+            {
+                return "";
             }
         };
 

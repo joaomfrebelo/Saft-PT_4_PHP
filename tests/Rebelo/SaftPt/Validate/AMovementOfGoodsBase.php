@@ -26,9 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Decimal\UDecimal;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\Line;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
@@ -77,10 +77,10 @@ abstract class AMovementOfGoodsBase extends TestCase
                         $private, $public
                     )
                 );
-                $this->auditFile->getSourceDocuments()->getMovementOfGoods()
-                    ->setMovOfGoodsTableTotalCalc(
-                        new MovOfGoodsTableTotalCalc()
-                    );
+
+                $this->auditFile->getSourceDocuments()?->getMovementOfGoods()?->setMovOfGoodsTableTotalCalc(
+                    new MovOfGoodsTableTotalCalc()
+                );
             }
 
             public function getAuditFile(): AuditFile
@@ -98,64 +98,64 @@ abstract class AMovementOfGoodsBase extends TestCase
                 $this->numberOfMovementLines = $num;
             }
 
-            public function setTotalQuantityIssued(UDecimal $qt) : void
+            public function setTotalQuantityIssued(Decimal $qt) : void
             {
                 $this->totalQuantityIssued = $qt;
             }
 
             /**
              * The total debit calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $docDebit
+             * @param \Decimal\Decimal $docDebit
              * @return void
              */
-            public function setDocDebit(UDecimal $docDebit): void
+            public function setDocDebit(Decimal $docDebit): void
             {
                 $this->docDebit = $docDebit;
             }
 
             /**
              * The total credit calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $docCredit
+             * @param \Decimal\Decimal $docCredit
              * @return void
              */
-            public function setDocCredit(UDecimal $docCredit): void
+            public function setDocCredit(Decimal $docCredit): void
             {
                 $this->docCredit = $docCredit;
             }
 
             /**
              * The net total calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $netTotal
+             * @param \Decimal\Decimal $netTotal
              * @return void
              */
-            public function setNetTotal(UDecimal $netTotal): void
+            public function setNetTotal(Decimal $netTotal): void
             {
                 $this->netTotal = $netTotal;
             }
 
             /**
              *  The total tax calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $taxPayable
+             * @param \Decimal\Decimal $taxPayable
              * @return void
              */
-            public function setTaxPayable(UDecimal $taxPayable): void
+            public function setTaxPayable(Decimal $taxPayable): void
             {
                 $this->taxPayable = $taxPayable;
             }
 
             /**
              * The Gross total calculated of the current document
-             * @param \Rebelo\Decimal\UDecimal $grossTotal
+             * @param \Decimal\Decimal $grossTotal
              * @return void
              */
-            public function setGrossTotal(UDecimal $grossTotal): void
+            public function setGrossTotal(Decimal $grossTotal): void
             {
                 $this->grossTotal = $grossTotal;
             }
 
             /**
              * The last hash of document that has been the signature validated
-             * in the same document serie
+             * in the same document serial
              * @param string $hash
              * @since 1.0.0
              */
@@ -229,9 +229,9 @@ abstract class AMovementOfGoodsBase extends TestCase
                 parent::stockMovement($stockMovDocument);
             }
 
-            public function shipement(StockMovement $stockMov) : void
+            public function shipment(StockMovement $stockMov) : void
             {
-                parent::shipement($stockMov);
+                parent::shipment($stockMov);
             }
 
         };

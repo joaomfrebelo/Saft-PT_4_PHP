@@ -26,22 +26,21 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\{SourceDocuments};
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\DocTableTotalCalc;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\{SourceDocuments};
 
 /**
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class SalesInvoicesTest extends TestCase
 {
@@ -49,20 +48,19 @@ class SalesInvoicesTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(SalesInvoices::class);
-        $this->assertTrue(true);
+        (new Commune(SalesInvoices::class))->testReflection(SalesInvoices::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
@@ -77,8 +75,8 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNumberOfEntries(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
@@ -97,19 +95,19 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalDebit(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
-        $debitStack    = [0.0, 9.99];
+        $debitStack    = [new Decimal("0.0"), new Decimal("9.99")];
         foreach ($debitStack as $debit) {
             $this->assertTrue($salesInvoices->setTotalDebit($debit));
             $this->assertSame($debit, $salesInvoices->getTotalDebit());
             $this->assertTrue($salesInvoices->issetTotalDebit());
         }
 
-        $wrong = -19.9;
+        $wrong = new Decimal("-19.9");
         $this->assertFalse($salesInvoices->setTotalDebit($wrong));
         $this->assertSame($wrong, $salesInvoices->getTotalDebit());
         $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
@@ -117,19 +115,19 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalCredit(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
-        $creditStack   = [0.0, 9.99];
+        $creditStack   = [new Decimal("0.0"), new Decimal("9.99")];
         foreach ($creditStack as $credit) {
             $this->assertTrue($salesInvoices->setTotalCredit($credit));
             $this->assertSame($credit, $salesInvoices->getTotalCredit());
             $this->assertTrue($salesInvoices->issetTotalCredit());
         }
 
-        $wrong = -19.9;
+        $wrong = new Decimal("-19.9");
         $this->assertFalse($salesInvoices->setTotalCredit($wrong));
         $this->assertSame($wrong, $salesInvoices->getTotalCredit());
         $this->assertNotEmpty($salesInvoices->getErrorRegistor()->getOnSetValue());
@@ -137,8 +135,8 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInvoice(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
@@ -155,38 +153,37 @@ class SalesInvoicesTest extends TestCase
     }
 
     /**
-     * Reads SalesInvoices from the Demo SAFT in Test\Ressources
+     * Reads SalesInvoices from the Demo SAFT in Test\Resources
      * and parse then to WorkDocument class, after that generate a xml from the
      * class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $salesInvoicesXml = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{SalesInvoices::N_SALESINVOICES};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{SalesInvoices::N_SALES_INVOICES};
 
         if ($salesInvoicesXml->count() === 0) {
             $this->fail("No SalesInvoices in XML");
         }
 
-
-
         $salesInvoices = new SalesInvoices(new ErrorRegister());
         $salesInvoices->parseXmlNode($salesInvoicesXml);
 
         $xmlRootNode   = (new AuditFile())->createRootElement();
-        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
 
         $xml = $salesInvoices->createXmlNode($sourceDocNode);
 
@@ -196,7 +193,7 @@ class SalesInvoicesTest extends TestCase
                 $assertXml,
                 \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
 
@@ -208,12 +205,12 @@ class SalesInvoicesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $workingDocsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $salesInvoices   = new SalesInvoices(new ErrorRegister());
         $xml             = $salesInvoices->createXmlNode($workingDocsNode)->asXML();
@@ -233,17 +230,17 @@ class SalesInvoicesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $workingDocsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $salesInvoices   = new SalesInvoices(new ErrorRegister());
         $salesInvoices->setNumberOfEntries(-1);
-        $salesInvoices->setTotalCredit(-0.99);
-        $salesInvoices->setTotalDebit(-0.95);
+        $salesInvoices->setTotalCredit(new Decimal("-0.99"));
+        $salesInvoices->setTotalDebit(new Decimal("-0.95"));
 
         $xml = $salesInvoices->createXmlNode($workingDocsNode)->asXML();
         if ($xml === false) {
@@ -261,12 +258,12 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetOrder(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
-        $inoiceNo      = array(
+        $invoiceNo     = array(
             "FT FT/1",
             "FS FS/4",
             "FT FT/5",
@@ -282,7 +279,7 @@ class SalesInvoicesTest extends TestCase
             "FT B/1",
             "FT B/2",
         );
-        foreach ($inoiceNo as $no) {
+        foreach ($invoiceNo as $no) {
             $salesInvoices->addInvoice()->setInvoiceNo($no);
         }
 
@@ -296,11 +293,11 @@ class SalesInvoicesTest extends TestCase
         $this->assertSame(array(1, 2, 3), \array_keys($order["FT"]["B"]));
         $this->assertSame(array(1, 2, 3, 4), \array_keys($order["FS"]["FS"]));
 
-        foreach ($order as $type => $serieStack) {
-            foreach ($serieStack as $serie => $noSatck) {
-                foreach ($noSatck as $no => $invoice) {
+        foreach ($order as $type => $serialStack) {
+            foreach ($serialStack as $serial => $noStack) {
+                foreach ($noStack as $no => $invoice) {
                     $this->assertSame(
-                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        \sprintf("%s %s/%s", $type, $serial, $no),
                         $invoice->getInvoiceNo()
                     );
                 }
@@ -310,12 +307,12 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDuplicateNumber(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
-        $invoiceNo      = array(
+        $invoiceNo     = array(
             "FT FT/1",
             "FS FS/4",
             "FT FT/1",
@@ -341,12 +338,12 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNoNumber(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());
-        $invoiceNo      = array(
+        $invoiceNo     = array(
             "FT FT/1",
             "FT B/2"
         );
@@ -360,8 +357,8 @@ class SalesInvoicesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocTableTotalCalc(): void
     {
         $salesInvoices = new SalesInvoices(new ErrorRegister());

@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 
 /**
  * Class representing Header
@@ -67,144 +68,168 @@ class Header extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_HEADER = "Header";
+    const string N_HEADER = "Header";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_AUDITFILEVERSION = "AuditFileVersion";
+    const string N_AUDIT_FILE_VERSION = "AuditFileVersion";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_COMPANYID = "CompanyID";
+    const string N_COMPANY_ID = "CompanyID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXREGISTRATIONNUMBER = "TaxRegistrationNumber";
+    const string N_TAX_REGISTRATION_NUMBER = "TaxRegistrationNumber";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXACCOUNTINGBASIS = "TaxAccountingBasis";
+    const string N_TAX_ACCOUNTING_BASIS = "TaxAccountingBasis";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_COMPANYNAME = "CompanyName";
+    const string N_COMPANY_NAME = "CompanyName";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_BUSINESSNAME = "BusinessName";
+    const string N_BUSINESS_NAME = "BusinessName";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_COMPANYADDRESS = "CompanyAddress";
+    const string N_COMPANY_ADDRESS = "CompanyAddress";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_FISCALYEAR = "FiscalYear";
+    const string N_FISCAL_YEAR = "FiscalYear";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_STARTDATE = "StartDate";
+    const string N_START_DATE = "StartDate";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_ENDDATE = "EndDate";
+    const string N_END_DATE = "EndDate";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_CURRENCYCODE = "CurrencyCode";
+    const string N_CURRENCY_CODE = "CurrencyCode";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_DATECREATED = "DateCreated";
+    const string N_DATE_CREATED = "DateCreated";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXENTITY = "TaxEntity";
+    const string N_TAX_ENTITY = "TaxEntity";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_PRODUCTCOMPANYTAXID = "ProductCompanyTaxID";
+    const string N_PRODUCT_COMPANY_TAX_ID = "ProductCompanyTaxID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_SOFTWARECERTIFICATENUMBER = "SoftwareCertificateNumber";
+    const string N_SOFTWARE_CERTIFICATE_NUMBER = "SoftwareCertificateNumber";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_PRODUCTID = "ProductID";
+    const string N_PRODUCT_ID = "ProductID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_PRODUCTVERSION = "ProductVersion";
+    const string N_PRODUCT_VERSION = "ProductVersion";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_HEADERCOMMENT = "HeaderComment";
+    const string N_HEADER_COMMENT = "HeaderComment";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TELEPHONE = "Telephone";
+    const string N_TELEPHONE = "Telephone";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_FAX = "Fax";
+    const string N_FAX = "Fax";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_EMAIL = "Email";
+    const string N_EMAIL = "Email";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_WEBSITE = "Website";
+    const string N_WEBSITE = "Website";
 
     /**
      * &lt;xs:element ref="AuditFileVersion"/&gt;
+     *
      * @var string $auditFileVersion
      * @since 1.0.0
      */
@@ -228,6 +253,7 @@ class Header extends AAuditFile
      *     &lt;/xs:simpleType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     *
      * @var string $companyID
      * @since 1.0.0
      */
@@ -235,6 +261,7 @@ class Header extends AAuditFile
 
     /**
      * &lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&gt;<br>
+     *
      * @var int $taxRegistrationNumber
      * @since 1.0.0
      */
@@ -242,6 +269,7 @@ class Header extends AAuditFile
 
     /**
      * &lt;xs:element ref="TaxAccountingBasis"/&gt;<br>
+     *
      * @var TaxAccountingBasis $taxAccountingBasis
      * @since 1.0.0
      */
@@ -250,6 +278,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="CompanyName"/&gt;<br>
      * &lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&gt;<br>
+     *
      * @var string $companyName
      * @since 1.0.0
      */
@@ -258,6 +287,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="BusinessName" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&gt;<br>
+     *
      * @var string|null $businessName
      * @since 1.0.0
      */
@@ -267,6 +297,7 @@ class Header extends AAuditFile
      *
      * &lt;xs:element ref="CompanyAddress"/&gt;<br>
      * &lt;xs:element name="CompanyAddress" type="AddressStructurePT"/&gt;
+     *
      * @var AddressPT $companyAddress
      * @since 1.0.0
      */
@@ -284,6 +315,7 @@ class Header extends AAuditFile
      *     &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @var int $fiscalYear
      * @since 1.0.0
      */
@@ -300,6 +332,7 @@ class Header extends AAuditFile
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var \Rebelo\Date\Date $startDate
      * @since 1.0.0
      */
@@ -316,6 +349,7 @@ class Header extends AAuditFile
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var \Rebelo\Date\Date $endDate
      * @since 1.0.0
      */
@@ -323,6 +357,7 @@ class Header extends AAuditFile
 
     /**
      * &lt;xs:element name="CurrencyCode" fixed="EUR"/&gt;
+     *
      * @var string $currencyCode
      * @since 1.0.0
      */
@@ -330,6 +365,7 @@ class Header extends AAuditFile
 
     /**
      * &lt;xs:element ref="DateCreated"/&gt;
+     *
      * @var \Rebelo\Date\Date $dateCreated
      * @since 1.0.0
      */
@@ -339,6 +375,7 @@ class Header extends AAuditFile
      *
      * &lt;xs:element ref="TaxEntity"/&gt;<br>
      * &lt;xs:element name="TaxEntity" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
+     *
      * @var string $taxEntity
      * @since 1.0.0
      */
@@ -374,6 +411,7 @@ class Header extends AAuditFile
      *     &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var string $productID
      * @since 1.0.0
      */
@@ -382,6 +420,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="ProductVersion"/&gt;<br>
      * &lt;xs:element name="ProductVersion" type="SAFPTtextTypeMandatoryMax30Car"/&gt;<br>
+     *
      * @var string $productVersion
      * @since 1.0.0
      */
@@ -390,6 +429,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="HeaderComment" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="HeaderComment" type="SAFPTtextTypeMandatoryMax255Car"/&gt;<br>
+     *
      * @var string|null $headerComment
      * @since 1.0.0
      */
@@ -398,6 +438,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
+     *
      * @var string|null $telephone
      * @since 1.0.0
      */
@@ -406,6 +447,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element ref="Fax" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
+     *
      * @var string|null $fax
      * @since 1.0.0
      */
@@ -414,6 +456,7 @@ class Header extends AAuditFile
     /**
      * &lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&gt;<br>
      * &lt;xs:element ref="Email" minOccurs="0"/&gt;<br>
+     *
      * @var string|null $email
      * @since 1.0.0
      */
@@ -433,7 +476,9 @@ class Header extends AAuditFile
      * The item Header contains the general information regarding the taxpayer,
      * whom the SAF-T (PT) refers to.<br>
      * &lt;xs:element name="Header"&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -446,6 +491,7 @@ class Header extends AAuditFile
      * Gets as auditFileVersion<br>
      * The version of XML scheme to be used is the one available
      * on http://www.portaldasfinancas.gov.pt
+     *
      * @return string
      * @since 1.0.0
      */
@@ -472,6 +518,7 @@ class Header extends AAuditFile
      *     &lt;/xs:simpleType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
@@ -479,12 +526,13 @@ class Header extends AAuditFile
     public function getCompanyID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->companyID));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->companyID));
         return $this->companyID;
     }
 
     /**
      * Get if is set CompanyID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -511,7 +559,9 @@ class Header extends AAuditFile
      *     &lt;/xs:simpleType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     *
      * @param string $companyID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -522,11 +572,11 @@ class Header extends AAuditFile
             if (\preg_match("/([0-9]{9})+|([^^]+ [0-9\/]+)/", $companyID) !== 1) {
                 $msg = "Value Not valid";
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 $this->getErrorRegistor()->addOnSetValue("company_id_not_valid");
                 throw new AuditFileException($msg);
             }
-            $this->companyID = static::valTextMandMaxCar(
+            $this->companyID = static::valTextMandatoryMaxCar(
                 $companyID, 50,
                 __METHOD__
             );
@@ -536,11 +586,11 @@ class Header extends AAuditFile
             $this->companyID = $companyID;
             $this->getErrorRegistor()->addOnSetValue("company_id_not_valid");
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
-            $return          = false;
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->companyID));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->companyID));
         return $return;
     }
 
@@ -549,6 +599,7 @@ class Header extends AAuditFile
      * To be filled in with the Portuguese Tax Identification Number/Tax
      * Registration Number without spaces and without country prefixes.<br>
      * &lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&gt;<br>
+     *
      * @return int
      * @throws \Error
      * @since 1.0.0
@@ -558,7 +609,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     \strval($this->taxRegistrationNumber)
                 )
             );
@@ -567,6 +618,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set TaxRegistrationNumber
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -580,16 +632,18 @@ class Header extends AAuditFile
      * To be filled in with the Portuguese Tax Identification Number/Tax
      * Registration Number without spaces and without country prefixes.<br>
      * &lt;xs:element name="TaxRegistrationNumber" type="SAFPTPortugueseVatNumber"/&gt;<br>
+     *
      * @param int $taxRegistrationNumber
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setTaxRegistrationNumber(int $taxRegistrationNumber): bool
     {
         if (!static::valPortugueseVatNumber($taxRegistrationNumber)) {
-            $msg    = $taxRegistrationNumber ." is not a valid PT nif";
+            $msg = $taxRegistrationNumber . " is not a valid PT nif";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("TaxRegistrationNumber_not_valid_header");
             $return = false;
         } else {
@@ -598,7 +652,7 @@ class Header extends AAuditFile
         $this->taxRegistrationNumber = $taxRegistrationNumber;
         \Logger::getLogger(\get_class($this))->debug(
             \sprintf(
-                __METHOD__." set to '%s'",
+                __METHOD__ . " set to '%s'",
                 \strval($this->taxRegistrationNumber)
             )
         );
@@ -618,8 +672,9 @@ class Header extends AAuditFile
      * “S” - Self-billing;<br>
      * “T” - Transport documents (a).<br>
      * (a) Type of program should be indicated, in case only this type of
-     * documents are issued. If not, fill in with type “C”, “F” or “I”.
+     * document are issued. If not, fill in with type “C”, “F” or “I”.
      * &lt;xs:element name="TaxAccountingBasis"&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\TaxAccountingBasis
      * @throws \Error
      * @since 1.0.0
@@ -629,8 +684,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxAccountingBasis->get()
+                    __METHOD__ . " get '%s'",
+                    $this->taxAccountingBasis->value
                 )
             );
         return $this->taxAccountingBasis;
@@ -638,6 +693,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set TaxAccountingBasis
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -659,9 +715,11 @@ class Header extends AAuditFile
      * “S” - Self-billing;<br>
      * “T” - Transport documents (a).<br>
      * (a) Type of program should be indicated, in case only this type of
-     * documents are issued. If not, fill in with type “C”, “F” or “I”.
+     * document are issued. If not, fill in with type “C”, “F” or “I”.
      * &lt;xs:element name="TaxAccountingBasis"&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\TaxAccountingBasis $taxAccountingBasis
+     *
      * @return void
      * @since 1.0.0
      */
@@ -671,8 +729,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->taxAccountingBasis->get()
+                    __METHOD__ . " set to '%s'",
+                    $this->taxAccountingBasis->value
                 )
             );
     }
@@ -682,6 +740,7 @@ class Header extends AAuditFile
      * Social designation of the company or taxpayer’s name.<br>
      * &lt;xs:element ref="CompanyName"/&gt;<br>
      * &lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&gt;<br>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
@@ -689,12 +748,13 @@ class Header extends AAuditFile
     public function getCompanyName(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->companyName));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->companyName));
         return $this->companyName;
     }
 
     /**
      * Get if is set CompanyName
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -708,14 +768,16 @@ class Header extends AAuditFile
      * Social designation of the company or taxpayer’s name.<br>
      * &lt;xs:element ref="CompanyName"/&gt;<br>
      * &lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&gt;<br>
+     *
      * @param string $companyName
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setCompanyName(string $companyName): bool
     {
         try {
-            $this->companyName = static::valTextMandMaxCar(
+            $this->companyName = static::valTextMandatoryMaxCar(
                 $companyName, 100,
                 __METHOD__
             );
@@ -724,13 +786,13 @@ class Header extends AAuditFile
         } catch (AuditFileException $e) {
             $this->companyName = $companyName;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
-            $this->getErrorRegistor()->addOnSetValue("invalid_header_companyname");
-            $return            = false;
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("invalid_header_company_name");
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
-                \sprintf(__METHOD__." set to '%s'", $this->companyName)
+                \sprintf(__METHOD__ . " set to '%s'", $this->companyName)
             );
         return $return;
     }
@@ -740,6 +802,7 @@ class Header extends AAuditFile
      * Commercial designation of the taxpayer<br>
      * &lt;xs:element ref="BusinessName" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&gt;<br>     *
+     *
      * @return string|null
      * @since 1.0.0
      */
@@ -748,7 +811,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->businessName === null ? "null" : $this->businessName
                 )
             );
@@ -760,7 +823,9 @@ class Header extends AAuditFile
      * Commercial designation of the taxpayer<br>
      * &lt;xs:element ref="BusinessName" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="BusinessName" type="SAFPTtextTypeMandatoryMax60Car"/&gt;<br>     *
+     *
      * @param string|null $businessName
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -768,20 +833,20 @@ class Header extends AAuditFile
     {
         try {
             $this->businessName = $businessName === null ?
-                null : static::valTextMandMaxCar($businessName, 60, __METHOD__);
+                null : static::valTextMandatoryMaxCar($businessName, 60, __METHOD__);
 
             $return = true;
         } catch (AuditFileException $e) {
             $this->businessName = $businessName;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("invalid_BusinessName");
-            $return             = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->businessName === null ? "null" : $this->businessName
                 )
             );
@@ -792,6 +857,7 @@ class Header extends AAuditFile
      * Gets as companyAddress<br>
      * &lt;xs:element ref="CompanyAddress"/&gt;<br>
      * &lt;xs:element name="CompanyAddress" type="AddressStructurePT"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\AddressPT
      * @since 1.0.0
      */
@@ -806,6 +872,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set CompanyAddress
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -833,6 +900,7 @@ class Header extends AAuditFile
      * </pre>
      * <br>
      * The max date allow is the next year<br>     *
+     *
      * @return int
      * @throws \Error
      * @since 1.0.0
@@ -842,7 +910,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     \strval($this->fiscalYear)
                 )
             );
@@ -851,6 +919,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set FiscalYear
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -878,7 +947,9 @@ class Header extends AAuditFile
      * </pre>
      * <br>
      * The max date allow is the next year<br>     *
+     *
      * @param int $fiscalYear
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -886,9 +957,9 @@ class Header extends AAuditFile
     {
         $ano = \intval(\Date("Y"));
         if ($fiscalYear < 2000 || $fiscalYear > $ano) {
-            $msg    = $fiscalYear ." is not a valid year";
+            $msg = $fiscalYear . " is not a valid year";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("FiscalYear_not_valid");
             $return = false;
         } else {
@@ -898,7 +969,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     \strval($this->fiscalYear)
                 )
             );
@@ -929,7 +1000,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     \strval($this->startDate->getTimestamp())
                 )
             );
@@ -938,6 +1009,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set StartDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -962,22 +1034,22 @@ class Header extends AAuditFile
      * The max date allow is the next year<br>
      *
      * @param \Rebelo\Date\Date $startDate
+     *
      * @return bool
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setStartDate(RDate $startDate): bool
     {
-        $year    = \intval($startDate->format(RDate::YAER));
-        $yearNow = \intval((new RDate())->format(RDate::YAER))
+        $year    = \intval($startDate->format(Pattern::YEAR));
+        $yearNow = \intval((new RDate())->format(Pattern::YEAR))
             + 1;
         if ($year < 2000 || $year > $yearNow) {
-            $msg    = \sprintf(
+            $msg = \sprintf(
                 "Date must be between '%s' and '%s'", $year,
                 $yearNow
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("StartDate_not_valid");
             $return = false;
         } else {
@@ -987,8 +1059,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->startDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " set to '%s'",
+                    $this->startDate->format(Pattern::SQL_DATE)
                 )
             );
         return $return;
@@ -1008,8 +1080,8 @@ class Header extends AAuditFile
      * </pre>
      * <br>
      * The max date allow is the next year<br>
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getEndDate(): RDate
@@ -1017,8 +1089,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->endDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " get '%s'",
+                    $this->endDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->endDate;
@@ -1026,6 +1098,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set EndDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -1046,23 +1119,24 @@ class Header extends AAuditFile
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @param \Rebelo\Date\Date $endDate
+     *
      * @return bool true if the value is valid
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setEndDate(RDate $endDate): bool
     {
-        $year    = \intval($endDate->format(RDate::YAER));
-        $yearNow = \intval((new RDate())->format(RDate::YAER))
+        $year    = \intval($endDate->format(Pattern::YEAR));
+        $yearNow = \intval((new RDate())->format(Pattern::YEAR))
             + 1;
         if ($year < 2000 || $year > $yearNow) {
-            $msg    = \sprintf(
+            $msg = \sprintf(
                 "Date must be between '%s' and '%s'", $year,
                 $yearNow
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("EndDate_not_valid");
             $return = false;
         } else {
@@ -1072,8 +1146,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->endDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " set to '%s'",
+                    $this->endDate->format(Pattern::SQL_DATE)
                 )
             );
         return $return;
@@ -1084,23 +1158,26 @@ class Header extends AAuditFile
      * Identifies the default currency to use in the monetary type
      * fields in the file. Fill in with "EUR".<br>
      * &lt;xs:element name="CurrencyCode" fixed="EUR"/&gt;
+     *
      * @return string
      * @since 1.0.0
      */
     public function getCurrencyCode(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->currencyCode));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->currencyCode));
         return $this->currencyCode;
     }
 
     /**
      * Get if is set CurrencyCode
+     *
      * @return bool
      * @since 1.0.0
      */
     public function issetCurrencyCode(): bool
     {
+        /** @phpstan-ignore-next-line */
         return isset($this->currencyCode);
     }
 
@@ -1108,9 +1185,8 @@ class Header extends AAuditFile
      * Gets as dateCreated<br>
      * Date of creation of file XML of SAF-T (PT)<br>
      * &lt;xs:element ref="DateCreated"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getDateCreated(): RDate
@@ -1118,8 +1194,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->dateCreated->format(RDate::ATOM)
+                    __METHOD__ . " get '%s'",
+                    $this->dateCreated->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->dateCreated;
@@ -1127,11 +1203,13 @@ class Header extends AAuditFile
 
     /**
      * Get if is set DateCreated
+     *
      * @return bool
      * @since 1.0.0
      */
     public function issetDateCreated(): bool
     {
+        /** @phpstan-ignore-next-line */
         return isset($this->dateCreated);
     }
 
@@ -1139,11 +1217,12 @@ class Header extends AAuditFile
      * Sets a new dateCreated<br>
      * Date of creation of file XML of SAF-T (PT)<br>
      * &lt;xs:element ref="DateCreated"/&gt;<br>
-     * Tthe creation date is setter when the object is created,
+     * The creation date is setter when the object is created,
      * use this if you won't a different date from that one in the OS<br>
+     *
      * @param \Rebelo\Date\Date $dateCreated
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setDateCreated(RDate $dateCreated): void
@@ -1152,8 +1231,8 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->dateCreated->format(RDate::ATOM)
+                    __METHOD__ . " set to '%s'",
+                    $this->dateCreated->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -1167,6 +1246,7 @@ class Header extends AAuditFile
      * field must be filled in with the specification “Sede”. <br>
      * &lt;xs:element ref="TaxEntity"/&gt;<br>
      * &lt;xs:element name="TaxEntity" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
@@ -1174,12 +1254,13 @@ class Header extends AAuditFile
     public function getTaxEntity(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxEntity));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->taxEntity));
         return $this->taxEntity;
     }
 
     /**
      * Get if is set TaxEntity
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -1199,25 +1280,26 @@ class Header extends AAuditFile
      * &lt;xs:element name="TaxEntity" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
      *
      * @param string $taxEntity
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setTaxEntity(string $taxEntity): bool
     {
         try {
-            $this->taxEntity = static::valTextMandMaxCar(
+            $this->taxEntity = static::valTextMandatoryMaxCar(
                 $taxEntity, 20, __METHOD__
             );
             $return          = true;
         } catch (AuditFileException $e) {
             $this->taxEntity = $taxEntity;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("TaxEntity_not_valid");
-            $return          = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxEntity));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxEntity));
         return $return;
     }
 
@@ -1237,7 +1319,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->productCompanyTaxID
                 )
             );
@@ -1246,6 +1328,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set ProductCompanyTaxID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -1262,27 +1345,28 @@ class Header extends AAuditFile
      * &lt;xs:element name="ProductCompanyTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;<br>
      *
      * @param string $productCompanyTaxID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setProductCompanyTaxID(string $productCompanyTaxID): bool
     {
         try {
-            $this->productCompanyTaxID = static::valTextMandMaxCar(
+            $this->productCompanyTaxID = static::valTextMandatoryMaxCar(
                 $productCompanyTaxID, 30, __METHOD__
             );
             $return                    = true;
         } catch (AuditFileException $e) {
             $this->productCompanyTaxID = $productCompanyTaxID;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductCompanyTaxID_not_valid");
-            $return                    = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->productCompanyTaxID
                 )
             );
@@ -1293,7 +1377,7 @@ class Header extends AAuditFile
      * Get SoftwareCertificateNumber<br>
      * Number of the software certificate allocated to the entity that
      * created the software, pursuant to Ordinance No. 363/2010, of 23rd June.
-     * it doesn’t apply, the field must be filled in with “0” (zero).<br>
+     * it doesn't apply, the field must be filled in with “0” (zero).<br>
      * &lt;xs:element ref="SoftwareCertificateNumber"/&gt;<br>
      * &lt;xs:element name="SoftwareCertificateNumber" type="xs:nonNegativeInteger"/&gt;<br>
      *
@@ -1306,7 +1390,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->softwareCertificateNumber
                 )
             );
@@ -1315,6 +1399,7 @@ class Header extends AAuditFile
 
     /**
      * Get if is set SoftwareCertificateNumber
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -1327,20 +1412,21 @@ class Header extends AAuditFile
      * Sets a new softwareCertificateNumber<br><br>
      * Number of the software certificate allocated to the entity that
      * created the software, pursuant to Ordinance No. 363/2010, of 23rd June.
-     * it doesn’t apply, the field must be filled in with “0” (zero).<br>
+     * it doesn't apply, the field must be filled in with “0” (zero).<br>
      * &lt;xs:element ref="SoftwareCertificateNumber"/&gt;<br>
      * &lt;xs:element name="SoftwareCertificateNumber" type="xs:nonNegativeInteger"/&gt;<br>
      *
      * @param int $softwareCertificateNumber
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setSoftwareCertificateNumber(int $softwareCertificateNumber): bool
     {
         if ($softwareCertificateNumber < 0) {
-            $msg    = "certification number must be non negative integer";
+            $msg = "certification number must be non negative integer";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("SoftwareCertificateNumber_not_valid");
             $return = false;
         } else {
@@ -1350,7 +1436,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->softwareCertificateNumber
                 )
             );
@@ -1380,12 +1466,13 @@ class Header extends AAuditFile
     public function getProductID(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productID));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->productID));
         return $this->productID;
     }
 
     /**
      * Get if is set ProductID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -1409,7 +1496,9 @@ class Header extends AAuditFile
      *     &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @param string $productID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -1424,7 +1513,7 @@ class Header extends AAuditFile
         }
         if ($msg !== null) {
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("ProductID_not_valid");
             $return = false;
         } else {
@@ -1432,7 +1521,7 @@ class Header extends AAuditFile
         }
         $this->productID = $productID;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productID));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productID));
         return $return;
     }
 
@@ -1449,12 +1538,13 @@ class Header extends AAuditFile
     public function getProductVersion(): string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productVersion));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->productVersion));
         return $this->productVersion;
     }
 
     /**
      * Get if is set ProductVersion
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -1470,13 +1560,14 @@ class Header extends AAuditFile
      * &lt;xs:element name="ProductVersion" type="SAFPTtextTypeMandatoryMax30Car"/&gt;<br>
      *
      * @param string $productVersion
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setProductVersion(string $productVersion): bool
     {
         try {
-            $this->productVersion = static::valTextMandMaxCar(
+            $this->productVersion = static::valTextMandatoryMaxCar(
                 $productVersion,
                 30, __METHOD__
             );
@@ -1484,12 +1575,12 @@ class Header extends AAuditFile
         } catch (AuditFileException $e) {
             $this->productVersion = $productVersion;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductVersion_not_valid");
-            $return               = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productVersion));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productVersion));
         return $return;
     }
 
@@ -1506,7 +1597,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->headerComment === null ? "null" : $this->headerComment
                 )
             );
@@ -1519,6 +1610,7 @@ class Header extends AAuditFile
      * &lt;xs:element name="HeaderComment" type="SAFPTtextTypeMandatoryMax255Car"/&gt;<br>
      *
      * @param string|null $headerComment
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -1526,21 +1618,21 @@ class Header extends AAuditFile
     {
         try {
             $this->headerComment = $headerComment === null ?
-                null : static::valTextMandMaxCar(
+                null : static::valTextMandatoryMaxCar(
                     $headerComment, 255, __METHOD__
                 );
             $return              = true;
         } catch (AuditFileException $e) {
             $this->headerComment = $headerComment;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("HeaderComment_not_valid");
-            $return              = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->headerComment === null ? "null" : $this->headerComment
                 )
             );
@@ -1560,7 +1652,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->telephone === null ? "null" : $this->telephone
                 )
             );
@@ -1573,6 +1665,7 @@ class Header extends AAuditFile
      * &lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
      *
      * @param string|null $telephone
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -1580,19 +1673,19 @@ class Header extends AAuditFile
     {
         try {
             $this->telephone = $telephone === null ?
-                null : static::valTextMandMaxCar($telephone, 20, __METHOD__);
+                null : static::valTextMandatoryMaxCar($telephone, 20, __METHOD__);
             $return          = true;
         } catch (AuditFileException $e) {
             $this->telephone = $telephone;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Telephone_Header_not_valid");
-            $return          = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->telephone === null ? "null" : $this->telephone
                 )
             );
@@ -1612,7 +1705,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->fax === null ? "null" : $this->fax
                 )
             );
@@ -1625,6 +1718,7 @@ class Header extends AAuditFile
      * &lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
      *
      * @param string|null $fax
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -1632,19 +1726,19 @@ class Header extends AAuditFile
     {
         try {
             $this->fax = $fax === null ?
-                null : static::valTextMandMaxCar($fax, 20, __METHOD__);
+                null : static::valTextMandatoryMaxCar($fax, 20, __METHOD__);
             $return    = true;
         } catch (AuditFileException $e) {
             $this->fax = $fax;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Fax_Header_not_valid");
-            $return    = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->fax === null ? "null" : $this->fax
                 )
             );
@@ -1664,7 +1758,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->email === null ? "null" : $this->email
                 )
             );
@@ -1677,6 +1771,7 @@ class Header extends AAuditFile
      * &lt;xs:element ref="Email" minOccurs="0"/&gt;<br>
      *
      * @param string|null $email
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -1687,9 +1782,9 @@ class Header extends AAuditFile
         } else {
             if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
                 \strlen($email) > 254) {
-                $msg    = $email." is not a valid email";
+                $msg = $email . " is not a valid email";
                 \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 $this->getErrorRegistor()->addOnSetValue("Email_Header_not_valid");
                 $return = false;
             } else {
@@ -1700,7 +1795,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->email === null ? "null" : $this->email
                 )
             );
@@ -1720,7 +1815,7 @@ class Header extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->website === null ? "null" : $this->website
                 )
             );
@@ -1733,6 +1828,7 @@ class Header extends AAuditFile
      * &lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      *
      * @param string|null $website
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -1740,19 +1836,19 @@ class Header extends AAuditFile
     {
         try {
             $this->website = $website === null ? null :
-                $this->valTextMandMaxCar($website, 60, __METHOD__, false);
+                $this->valTextMandatoryMaxCar($website, 60, __METHOD__, false);
             $return        = true;
         } catch (AuditFileException $e) {
             $this->website = $website;
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Website_Header_not_valid");
-            $return        = false;
+            $return = false;
         }
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->website === null ? "null" : $this->website
                 )
             );
@@ -1761,41 +1857,42 @@ class Header extends AAuditFile
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== AuditFile::N_AUDITFILE) {
+        if ($node->getName() !== AuditFile::N_AUDIT_FILE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                AuditFile::N_AUDITFILE, $node->getName()
+                AuditFile::N_AUDIT_FILE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $dateYmd    = RDate::SQL_DATE;
+        $dateYmd    = Pattern::SQL_DATE;
         $headerNode = $node->addChild(static::N_HEADER);
         $headerNode->addChild(
-            static::N_AUDITFILEVERSION, $this->getAuditFileVersion()
+            static::N_AUDIT_FILE_VERSION, $this->getAuditFileVersion()
         );
 
         if (isset($this->companyID)) {
-            $headerNode->addChild(static::N_COMPANYID, $this->getCompanyID());
+            $headerNode->addChild(static::N_COMPANY_ID, $this->getCompanyID());
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("company_id_not_valid");
         }
 
         if (isset($this->taxRegistrationNumber)) {
             $headerNode->addChild(
-                static::N_TAXREGISTRATIONNUMBER,
+                static::N_TAX_REGISTRATION_NUMBER,
                 \strval($this->getTaxRegistrationNumber())
             );
         } else {
@@ -1804,35 +1901,35 @@ class Header extends AAuditFile
 
         if (isset($this->taxAccountingBasis)) {
             $headerNode->addChild(
-                static::N_TAXACCOUNTINGBASIS,
-                $this->getTaxAccountingBasis()->get()
+                static::N_TAX_ACCOUNTING_BASIS,
+                $this->getTaxAccountingBasis()->value
             );
         } else {
-            $this->getErrorRegistor()->addOnCreateXmlNode("TaxAccountingBasis_is_not_setted");
+            $this->getErrorRegistor()->addOnCreateXmlNode("TaxAccountingBasis_is_not_set");
         }
 
         if (isset($this->companyName)) {
-            $headerNode->addChild(static::N_COMPANYNAME, $this->getCompanyName());
+            $headerNode->addChild(static::N_COMPANY_NAME, $this->getCompanyName());
         } else {
-            $this->getErrorRegistor()->addOnCreateXmlNode("invalid_header_companyname");
+            $this->getErrorRegistor()->addOnCreateXmlNode("invalid_header_company_name");
         }
 
         if ($this->getBusinessName() !== null) {
             $headerNode->addChild(
-                static::N_BUSINESSNAME, $this->getBusinessName()
+                static::N_BUSINESS_NAME, $this->getBusinessName()
             );
         }
 
         if (isset($this->companyAddress)) {
-            $compAddr = $headerNode->addChild(static::N_COMPANYADDRESS);
+            $compAddr = $headerNode->addChild(static::N_COMPANY_ADDRESS);
             $this->getCompanyAddress()->createXmlNode($compAddr);
         } else {
-            $this->getErrorRegistor()->addOnCreateXmlNode("CompanyAddress_is_not_setted");
+            $this->getErrorRegistor()->addOnCreateXmlNode("CompanyAddress_is_not_set");
         }
 
         if (isset($this->fiscalYear)) {
             $headerNode->addChild(
-                static::N_FISCALYEAR, \strval($this->getFiscalYear())
+                static::N_FISCAL_YEAR, \strval($this->getFiscalYear())
             );
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("FiscalYear_not_valid");
@@ -1840,7 +1937,7 @@ class Header extends AAuditFile
 
         if (isset($this->startDate)) {
             $headerNode->addChild(
-                static::N_STARTDATE, $this->getStartDate()->format($dateYmd)
+                static::N_START_DATE, $this->getStartDate()->format($dateYmd)
             );
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("StartDate_not_valid");
@@ -1848,31 +1945,32 @@ class Header extends AAuditFile
 
         if (isset($this->endDate)) {
             $headerNode->addChild(
-                static::N_ENDDATE, $this->getEndDate()->format($dateYmd)
+                static::N_END_DATE, $this->getEndDate()->format($dateYmd)
             );
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("EndDate_not_valid");
         }
 
-        $headerNode->addChild(static::N_CURRENCYCODE, $this->getCurrencyCode());
+        $headerNode->addChild(static::N_CURRENCY_CODE, $this->getCurrencyCode());
 
+        /** @phpstan-ignore-next-line */
         if (isset($this->dateCreated)) {
             $headerNode->addChild(
-                static::N_DATECREATED, $this->getDateCreated()->format($dateYmd)
+                static::N_DATE_CREATED, $this->getDateCreated()->format($dateYmd)
             );
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("DateCreated_not_valid");
         }
 
         if (isset($this->taxEntity)) {
-            $headerNode->addChild(static::N_TAXENTITY, $this->getTaxEntity());
+            $headerNode->addChild(static::N_TAX_ENTITY, $this->getTaxEntity());
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxEntity_not_valid");
         }
 
         if (isset($this->productCompanyTaxID)) {
             $headerNode->addChild(
-                static::N_PRODUCTCOMPANYTAXID, $this->getProductCompanyTaxID()
+                static::N_PRODUCT_COMPANY_TAX_ID, $this->getProductCompanyTaxID()
             );
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductCompanyTaxID_not_valid");
@@ -1880,7 +1978,7 @@ class Header extends AAuditFile
 
         if (isset($this->softwareCertificateNumber)) {
             $headerNode->addChild(
-                static::N_SOFTWARECERTIFICATENUMBER,
+                static::N_SOFTWARE_CERTIFICATE_NUMBER,
                 \strval($this->getSoftwareCertificateNumber())
             );
         } else {
@@ -1888,14 +1986,14 @@ class Header extends AAuditFile
         }
 
         if (isset($this->productID)) {
-            $headerNode->addChild(static::N_PRODUCTID, $this->getProductID());
+            $headerNode->addChild(static::N_PRODUCT_ID, $this->getProductID());
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductID_not_valid");
         }
 
         if (isset($this->productVersion)) {
             $headerNode->addChild(
-                static::N_PRODUCTVERSION, $this->getProductVersion()
+                static::N_PRODUCT_VERSION, $this->getProductVersion()
             );
         } else {
             $this->getErrorRegistor()->addOnCreateXmlNode("ProductVersion_not_valid");
@@ -1903,7 +2001,7 @@ class Header extends AAuditFile
 
         if ($this->getHeaderComment() !== null) {
             $headerNode->addChild(
-                static::N_HEADERCOMMENT, $this->getHeaderComment()
+                static::N_HEADER_COMMENT, $this->getHeaderComment()
             );
         }
 
@@ -1927,95 +2025,95 @@ class Header extends AAuditFile
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws AuditFileException
-     * @throws \Rebelo\Enum\EnumException
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        $dateYmd = RDate::SQL_DATE;
-        if ($this->getAuditFileVersion() !== (string) $node->{static::N_AUDITFILEVERSION}) {
+        $dateYmd = Pattern::SQL_DATE;
+        if ($this->getAuditFileVersion() !== (string)$node->{static::N_AUDIT_FILE_VERSION}) {
             $msg = sprintf(
                 "Wrong audit file version, your file is '%s' and should be '%s'",
-                $node->{static::N_AUDITFILEVERSION},
+                $node->{static::N_AUDIT_FILE_VERSION},
                 $this->getAuditFileVersion()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $this->setCompanyID((string) $node->{static::N_COMPANYID});
-        $this->setTaxRegistrationNumber((int) $node->{static::N_TAXREGISTRATIONNUMBER});
-        $this->setTaxAccountingBasis(new TaxAccountingBasis((string) $node->{static::N_TAXACCOUNTINGBASIS}));
-        $this->setCompanyName((string) $node->{static::N_COMPANYNAME});
-        if ($node->{static::N_BUSINESSNAME}->count() > 0) {
-            $this->setBusinessName((string) $node->{static::N_BUSINESSNAME});
+        $this->setCompanyID((string)$node->{static::N_COMPANY_ID});
+        $this->setTaxRegistrationNumber((int)$node->{static::N_TAX_REGISTRATION_NUMBER});
+        $this->setTaxAccountingBasis(TaxAccountingBasis::from((string)$node->{static::N_TAX_ACCOUNTING_BASIS}));
+        $this->setCompanyName((string)$node->{static::N_COMPANY_NAME});
+        if ($node->{static::N_BUSINESS_NAME}->count() > 0) {
+            $this->setBusinessName((string)$node->{static::N_BUSINESS_NAME});
         } else {
             $this->setBusinessName(null);
         }
         $addr = $this->getCompanyAddress();
-        $addr->parseXmlNode($node->{static::N_COMPANYADDRESS});
+        $addr->parseXmlNode($node->{static::N_COMPANY_ADDRESS});
 
-        $this->setFiscalYear((int) $node->{static::N_FISCALYEAR});
+        $this->setFiscalYear((int)$node->{static::N_FISCAL_YEAR});
 
         $this->setStartDate(
-            RDate::parse($dateYmd, (string) $node->{static::N_STARTDATE})
+            RDate::parse($dateYmd, (string)$node->{static::N_START_DATE})
         );
 
         $this->setEndDate(
-            RDate::parse($dateYmd, (string) $node->{static::N_ENDDATE})
+            RDate::parse($dateYmd, (string)$node->{static::N_END_DATE})
         );
 
-        if ($this->getCurrencyCode() !== (string) $node->{static::N_CURRENCYCODE}) {
+        if ($this->getCurrencyCode() !== (string)$node->{static::N_CURRENCY_CODE}) {
             $msg = sprintf(
                 "Wrong currency code, your currency is '%s' and should be '%s'",
-                $node->{static::N_CURRENCYCODE}, $this->getCurrencyCode()
+                $node->{static::N_CURRENCY_CODE}, $this->getCurrencyCode()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setDateCreated(
-            RDate::parse($dateYmd, (string) $node->{static::N_DATECREATED})
+            RDate::parse($dateYmd, (string)$node->{static::N_DATE_CREATED})
         );
 
-        $this->setTaxEntity((string) $node->{static::N_TAXENTITY});
-        $this->setProductCompanyTaxID((string) $node->{static::N_PRODUCTCOMPANYTAXID});
-        $this->setSoftwareCertificateNumber((int) $node->{static::N_SOFTWARECERTIFICATENUMBER});
-        $this->setProductID((string) $node->{static::N_PRODUCTID});
-        $this->setProductVersion((string) $node->{static::N_PRODUCTVERSION});
+        $this->setTaxEntity((string)$node->{static::N_TAX_ENTITY});
+        $this->setProductCompanyTaxID((string)$node->{static::N_PRODUCT_COMPANY_TAX_ID});
+        $this->setSoftwareCertificateNumber((int)$node->{static::N_SOFTWARE_CERTIFICATE_NUMBER});
+        $this->setProductID((string)$node->{static::N_PRODUCT_ID});
+        $this->setProductVersion((string)$node->{static::N_PRODUCT_VERSION});
 
-        if ($node->{static::N_HEADERCOMMENT}->count() > 0) {
-            $this->setHeaderComment((string) $node->{static::N_HEADERCOMMENT});
+        if ($node->{static::N_HEADER_COMMENT}->count() > 0) {
+            $this->setHeaderComment((string)$node->{static::N_HEADER_COMMENT});
         } else {
             $this->setHeaderComment(null);
         }
 
         if ($node->{static::N_TELEPHONE}->count() > 0) {
-            $this->setTelephone((string) $node->{static::N_TELEPHONE});
+            $this->setTelephone((string)$node->{static::N_TELEPHONE});
         } else {
             $this->setTelephone(null);
         }
 
         if ($node->{static::N_FAX}->count() > 0) {
-            $this->setFax((string) $node->{static::N_FAX});
+            $this->setFax((string)$node->{static::N_FAX});
         } else {
             $this->setFax(null);
         }
 
         if ($node->{static::N_EMAIL}->count() > 0) {
-            $this->setEmail((string) $node->{static::N_EMAIL});
+            $this->setEmail((string)$node->{static::N_EMAIL});
         } else {
             $this->setEmail(null);
         }
 
         if ($node->{static::N_WEBSITE}->count() > 0) {
-            $this->setWebsite((string) $node->{static::N_WEBSITE});
+            $this->setWebsite((string)$node->{static::N_WEBSITE});
         } else {
             $this->setWebsite(null);
         }

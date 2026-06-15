@@ -24,9 +24,10 @@
  * THE SOFTWARE.
  */
 
+require __DIR__.'/vendor/autoload.php';
 use Symfony\Component\Console\Application;
 
-if (version_compare('7.4.0', PHP_VERSION, '>')) {
+if (version_compare('8.3.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
         sprintf(
@@ -62,7 +63,7 @@ if (!defined('PHP4SAFT_COMPOSER_INSTALL')) {
     die(1);
 }
 
-$jsonStr = \file_get_contents(__DIR__.DIRECTORY_SEPARATOR."composer.json");
+$jsonStr = file_get_contents(__DIR__.DIRECTORY_SEPARATOR."composer.json");
 
 if ($jsonStr === false) {
     fwrite(
@@ -73,10 +74,10 @@ if ($jsonStr === false) {
 
 try {
     $application = new Application("saft4php", "");
-    \Rebelo\SaftPt\Bin\Validate::$start = \time();
-    $application->add(new \Rebelo\SaftPt\Bin\Validate());
+    \Rebelo\SaftPt\Bin\Validate::$start = time();
+    $application->addCommand(new \Rebelo\SaftPt\Bin\Validate(\Rebelo\SaftPt\Bin\Validate::COMMAND_NAME));
     $application->run();
-} catch (\Exception | \Error $e) {
+} catch (Throwable $e) {
     echo $e->getMessage();
     exit(1);
 }

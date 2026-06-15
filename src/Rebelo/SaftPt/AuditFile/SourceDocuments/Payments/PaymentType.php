@@ -26,65 +26,29 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * PaymentType<br>
  * To fill in with:<br>
  * “RC” – Receipt issued according to the Cash VAT regime
  * (including advance payments in this regime);<br>
  * “RG” – Other issued receipts.<br>
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RC()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\PaymentType RG()
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class PaymentType extends AEnum
+enum PaymentType : string
 {
     /**
      * RC para Recibo emitido no ambito do regime de IVA de Caixa
      * (incluindo os relativos a adiantamentos desse regime)
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const RC = "RC";
+    case RC = "RC";
 
     /**
      * RG para Outros recibos
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const RG = "RG";
+    case RG = "RG";
 
-    /**
-     * PaymentType<br>
-     * To fill in with:<br>
-     * “RC” – Receipt issued according to the Cash VAT regime
-     * (including advance payments in this regime);<br>
-     * “RG” – Other issued receipts.<br>
-     * <pre>
-     * &lt;xs:simpleType name="SAFTPTPaymentType"&gt;
-     *   &lt;xs:restriction base="xs:string"&gt;
-     *       &lt;xs:enumeration value="RC"/&gt;
-     *       &lt;xs:enumeration value="RG"/&gt;
-     *   &lt;/xs:restriction&gt;
-     * &lt;/xs:simpleType&gt;
-     * </pre>
-     * @param string $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get enum value
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

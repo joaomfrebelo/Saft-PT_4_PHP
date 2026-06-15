@@ -51,10 +51,12 @@ class XmlStructure extends AValidate
 
     /**
      * Validate the xml with the xsd schema file using libxml
+     *
      * @param string $xml
+     *
      * @return bool
-     * @since 1.0.0
-     */
+     * @since        1.0.0
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection*/
     public function validate(string &$xml): bool
     {
         try {
@@ -66,9 +68,9 @@ class XmlStructure extends AValidate
             $dom = new \DOMDocument("1.0", "UTF-8");
             $dom->loadXML($xml, LIBXML_PARSEHUGE | LIBXML_BIGLINES);
 
-            $valide = $dom->schemaValidate(Schema::GLOBAL_XSD);
+            $isValid = $dom->schemaValidate(Schema::GLOBAL_XSD);
 
-            if ($valide === false) {
+            if ($isValid === false) {
                 $errorStack = \libxml_get_errors();
                 foreach ($errorStack as $error) {
                     $msg = \sprintf(
@@ -82,7 +84,7 @@ class XmlStructure extends AValidate
                         );
                 }
             }
-            return $valide;
+            return $isValid;
         } catch (\Exception | \Error $e) {
             $this->auditFile->getErrorRegistor()
                 ->addExceptionErrors($e->getMessage());

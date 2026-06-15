@@ -42,13 +42,13 @@ class ProductSerialNumber extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_PRODUCTSERIALNUMBER = "ProductSerialNumber";
+    const string N_PRODUCT_SERIAL_NUMBER = "ProductSerialNumber";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SERIALNUMBER = "SerialNumber";
+    const string N_SERIAL_NUMBER = "SerialNumber";
 
     /**
      * <pre>
@@ -119,7 +119,7 @@ class ProductSerialNumber extends AAuditFile
     public function addSerialNumber(string $serialNumber): bool
     {
         try {
-            $val    = $this->valTextMandMaxCar($serialNumber, 100, __METHOD__);
+            $val    = $this->valTextMandatoryMaxCar($serialNumber, 100, __METHOD__);
             $return = true;
         } catch (AuditFileException $e) {
             $val    = $serialNumber;
@@ -154,9 +154,9 @@ class ProductSerialNumber extends AAuditFile
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $psnNode = $node->addChild(static::N_PRODUCTSERIALNUMBER);
+        $psnNode = $node->addChild(static::N_PRODUCT_SERIAL_NUMBER);
         foreach ($this->getSerialNumber() as $serial) {
-            $psnNode->addChild(static::N_SERIALNUMBER, $serial);
+            $psnNode->addChild(static::N_SERIAL_NUMBER, $serial);
         }
         return $psnNode;
     }
@@ -172,18 +172,18 @@ class ProductSerialNumber extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_PRODUCTSERIALNUMBER) {
+        if ($node->getName() !== static::N_PRODUCT_SERIAL_NUMBER) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_PRODUCTSERIALNUMBER, $node->getName()
+                static::N_PRODUCT_SERIAL_NUMBER, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        for ($n = 0; $n < $node->{static::N_SERIALNUMBER}->count(); $n++) {
-            $this->addSerialNumber((string) $node->{static::N_SERIALNUMBER}[$n]);
+        for ($n = 0; $n < $node->{static::N_SERIAL_NUMBER}->count(); $n++) {
+            $this->addSerialNumber((string)$node->{static::N_SERIAL_NUMBER}[$n]);
         }
     }
 }

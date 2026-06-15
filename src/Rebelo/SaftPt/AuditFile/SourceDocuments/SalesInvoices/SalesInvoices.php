@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\{AAuditFile,
     AuditFileException,
     ErrorRegister,
@@ -42,36 +43,41 @@ use Rebelo\SaftPt\AuditFile\{AAuditFile,
  * Type of documents to be exported: all documents mentioned in field 4.1.4.8. – InvoiceType
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class SalesInvoices extends ASourceDocuments
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_SALESINVOICES = "SalesInvoices";
+    const string N_SALES_INVOICES = "SalesInvoices";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_NUMBEROFENTRIES = "NumberOfEntries";
+    const string N_NUMBER_OF_ENTRIES = "NumberOfEntries";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TOTALDEBIT = "TotalDebit";
+    const string N_TOTAL_DEBIT = "TotalDebit";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TOTALCREDIT = "TotalCredit";
+    const string N_TOTAL_CREDIT = "TotalCredit";
 
     /**
      * &lt;xs:element ref="NumberOfEntries"/&gt;
+     *
      * @var int
      * @since 1.0.0
      */
@@ -79,17 +85,19 @@ class SalesInvoices extends ASourceDocuments
 
     /**
      * &lt;xs:element ref="TotalDebit"/&gt;
-     * @var float
+     *
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    protected float $totalDebit;
+    protected Decimal $totalDebit;
 
     /**
      * &lt;xs:element ref="TotalCredit"/&gt;
-     * @var float
+     *
+     * @var Decimal
      * @since 1.0.0
      */
-    protected float $totalCredit;
+    protected Decimal $totalCredit;
 
     /**
      *
@@ -99,11 +107,12 @@ class SalesInvoices extends ASourceDocuments
     protected array $invoice = array();
 
     /**
-     * $array[type][serie][number] = $invoice
+     * $array[type][serial][number] = $invoice
      * \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice[]
-     * @var array
+     *
+     * @var mixed[]
      */
-    protected array $order = array();
+    protected array $order = [];
 
     /**
      * <br>
@@ -113,7 +122,9 @@ class SalesInvoices extends ASourceDocuments
      * numbering sequence within each documental series,
      * which should have an annual numbering at least.<br>
      * Type of documents to be exported: all documents mentioned in field 4.1.4.8. – InvoiceType
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -126,6 +137,7 @@ class SalesInvoices extends ASourceDocuments
      * The field shall contain the total number of documents,
      * including the documents which content in field 4.1.4.3.1. -
      * InvoiceStatus is “A” or “F”.
+     *
      * @return int
      * @throws \Error
      * @since 1.0.0
@@ -133,12 +145,13 @@ class SalesInvoices extends ASourceDocuments
     public function getNumberOfEntries(): int
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->numberOfEntries));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->numberOfEntries));
         return $this->numberOfEntries;
     }
 
     /**
      * Get if is set NumberOfEntries
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -152,16 +165,18 @@ class SalesInvoices extends ASourceDocuments
      * The field shall contain the total number of documents,
      * including the documents which content in field 4.1.4.3.1. -
      * InvoiceStatus is “A” or “F”.
+     *
      * @param int $numberOfEntries
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setNumberOfEntries(int $numberOfEntries): bool
     {
         if ($numberOfEntries < 0) {
-            $msg    = "NumberOdEntries can not be less than zero";
+            $msg = "NumberOdEntries can not be less than zero";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("NumberOdEntries_not_valid");
         } else {
@@ -171,7 +186,7 @@ class SalesInvoices extends ASourceDocuments
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->numberOfEntries
                 )
             );
@@ -183,19 +198,21 @@ class SalesInvoices extends ASourceDocuments
      * The field shall contain the control sum of field 4.1.4.19.13. -
      * DebitAmount, excluding the documents which content in field 4.1.4.3.1. -
      * InvoiceStatus is “A” or “F”.
-     * @return float
+     *
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalDebit(): float
+    public function getTotalDebit(): Decimal
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->totalDebit));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->totalDebit));
         return $this->totalDebit;
     }
 
     /**
      * Get if is set TotalDebit
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -209,16 +226,18 @@ class SalesInvoices extends ASourceDocuments
      * The field shall contain the control sum of field 4.1.4.19.13. -
      * DebitAmount, excluding the documents which content in field 4.1.4.3.1. -
      * InvoiceStatus is “A” or “F”.
-     * @param float $totalDebit
+     *
+     * @param Decimal $totalDebit
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalDebit(float $totalDebit): bool
+    public function setTotalDebit(Decimal $totalDebit): bool
     {
-        if ($totalDebit < 0) {
-            $msg    = "TotalDebit can not be less than zero";
+        if ($totalDebit->compareTo("0.0") < 0) {
+            $msg = "TotalDebit can not be less than zero";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalDebit_not_valid");
         } else {
@@ -226,7 +245,7 @@ class SalesInvoices extends ASourceDocuments
         }
         $this->totalDebit = $totalDebit;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->totalDebit));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->totalDebit));
         return $return;
     }
 
@@ -235,19 +254,21 @@ class SalesInvoices extends ASourceDocuments
      * The field shall contain the control sum of field
      * 4.1.4.19.14. – CreditAmount, excluding the documents which
      * content in field 4.1.4.3.1. - InvoiceStatus is “A” or “F”.
-     * @return float
+     *
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTotalCredit(): float
+    public function getTotalCredit(): Decimal
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->totalCredit));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->totalCredit));
         return $this->totalCredit;
     }
 
     /**
      * Get if is set TotalCredit
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -261,16 +282,18 @@ class SalesInvoices extends ASourceDocuments
      * The field shall contain the control sum of field
      * 4.1.4.19.14. – CreditAmount, excluding the documents which
      * content in field 4.1.4.3.1. - InvoiceStatus is “A” or “F”.
-     * @param float $totalCredit
+     *
+     * @param Decimal $totalCredit
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTotalCredit(float $totalCredit): bool
+    public function setTotalCredit(Decimal $totalCredit): bool
     {
-        if ($totalCredit < 0) {
-            $msg    = "TotalCredit can not be less than zero";
+        if ($totalCredit->compareTo("0.0") < 0) {
+            $msg = "TotalCredit can not be less than zero";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalCredit_not_valid");
         } else {
@@ -278,7 +301,7 @@ class SalesInvoices extends ASourceDocuments
         }
         $this->totalCredit = $totalCredit;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->totalCredit));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->totalCredit));
         return $return;
     }
 
@@ -292,7 +315,7 @@ class SalesInvoices extends ASourceDocuments
     public function getInvoice(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get '%s'");
+               ->info(__METHOD__ . " get '%s'");
         return $this->invoice;
     }
 
@@ -301,26 +324,28 @@ class SalesInvoices extends ASourceDocuments
      * When this method is invoked a new Invoice instance is created, add to the
      * stack and returned to be populated<br>
      * &lt;xs:element name="Invoice" minOccurs="0" maxOccurs="unbounded">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice
      * @since 1.0.0
      */
     public function addInvoice(): Invoice
     {
         // Every time that an invoice is added the order is reset and is
-        // contructed when called
+        // constructed when called
         $this->order     = array();
         $invoice         = new Invoice($this->getErrorRegistor());
         $this->invoice[] = $invoice;
         \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__."Invoice add to index "
+            __METHOD__ . "Invoice add to index "
         );
         return $invoice;
     }
 
     /**
-     * Get invoices order by type/serie/number<br>
-     * Ex: $stack[type][serie][InvoiceNo] = Invoice<br>
-     * If a error exist, th error is added to ValidationErrors stack
+     * Get invoices order by type/serial/number<br>
+     * Ex: $stack[type][serial][InvoiceNo] = Invoice<br>
+     * If an error exist, th error is added to ValidationErrors stack
+     *
      * @return array<string, array<string , array<int, \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice>>>
      * @since 1.0.0
      */
@@ -336,21 +361,21 @@ class SalesInvoices extends ASourceDocuments
                     AAuditFile::getI18n()->get("invoice_at_index_no_number"), $k
                 );
                 $this->getErrorRegistor()->addValidationErrors($msg);
-                $invoice->addError($msg, Invoice::N_INVOICENO);
+                $invoice->addError($msg, Invoice::N_INVOICE_NO);
                 \Logger::getLogger(\get_class($this))->error($msg);
                 continue;
             }
 
-            list($type, $serie, $no) = \explode(
+            list($type, $serial, $no) = \explode(
                 " ",
                 \str_replace("/", " ", $invoice->getInvoiceNo())
             );
 
             if (\array_key_exists($type, $this->order)) {
-                if (\array_key_exists($serie, $this->order[$type])) {
+                if (\array_key_exists($serial, $this->order[$type])) {
                     if (\array_key_exists(
                         \intval($no),
-                        $this->order[$type][$serie]
+                        $this->order[$type][$serial]
                     )
                     ) {
                         $msg = \sprintf(
@@ -363,14 +388,14 @@ class SalesInvoices extends ASourceDocuments
                     }
                 }
             }
-            $this->order[$type][$serie][\intval($no)] = $invoice;
+            $this->order[$type][$serial][\intval($no)] = $invoice;
         }
 
         $cloneOrder = $this->order;
 
         foreach (\array_keys($cloneOrder) as $type) {
-            foreach (\array_keys($cloneOrder[$type]) as $serie) {
-                ksort($this->order[$type][$serie], SORT_NUMERIC);
+            foreach (\array_keys($cloneOrder[$type]) as $serial) {
+                ksort($this->order[$type][$serial], SORT_NUMERIC);
             }
             ksort($this->order[$type], SORT_STRING);
         }
@@ -381,51 +406,52 @@ class SalesInvoices extends ASourceDocuments
 
     /**
      * Create Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        if ($node->getName() !== SourceDocuments::N_SOURCEDOCUMENTS) {
+        if ($node->getName() !== SourceDocuments::N_SOURCE_DOCUMENTS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                SourceDocuments::N_SOURCEDOCUMENTS, $node->getName()
+                SourceDocuments::N_SOURCE_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $salesNode = $node->addChild(static::N_SALESINVOICES);
+        $salesNode = $node->addChild(static::N_SALES_INVOICES);
 
         if (isset($this->numberOfEntries)) {
             $salesNode->addChild(
-                static::N_NUMBEROFENTRIES, \strval($this->getNumberOfEntries())
+                static::N_NUMBER_OF_ENTRIES, \strval($this->getNumberOfEntries())
             );
         } else {
-            $salesNode->addChild(static::N_NUMBEROFENTRIES);
+            $salesNode->addChild(static::N_NUMBER_OF_ENTRIES);
             $this->getErrorRegistor()->addOnCreateXmlNode("NumberOfEntries_not_valid");
         }
 
         if (isset($this->totalDebit)) {
             $salesNode->addChild(
-                static::N_TOTALDEBIT, $this->floatFormat($this->getTotalDebit())
+                static::N_TOTAL_DEBIT, $this->floatFormat($this->getTotalDebit())
             );
         } else {
-            $salesNode->addChild(static::N_TOTALDEBIT);
+            $salesNode->addChild(static::N_TOTAL_DEBIT);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalDebit_not_valid");
         }
 
         if (isset($this->totalCredit)) {
             $salesNode->addChild(
-                static::N_TOTALCREDIT,
+                static::N_TOTAL_CREDIT,
                 $this->floatFormat($this->getTotalCredit())
             );
         } else {
-            $salesNode->addChild(static::N_TOTALCREDIT);
+            $salesNode->addChild(static::N_TOTAL_CREDIT);
             $this->getErrorRegistor()->addOnCreateXmlNode("TotalCredit_not_valid");
         }
 
@@ -438,9 +464,11 @@ class SalesInvoices extends ASourceDocuments
 
     /**
      * Parse Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -449,19 +477,19 @@ class SalesInvoices extends ASourceDocuments
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_SALESINVOICES) {
+        if ($node->getName() !== static::N_SALES_INVOICES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_SALESINVOICES, $node->getName()
+                static::N_SALES_INVOICES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setNumberOfEntries((int) $node->{static::N_NUMBEROFENTRIES});
-        $this->setTotalDebit((float) $node->{static::N_TOTALDEBIT});
-        $this->setTotalCredit((float) $node->{static::N_TOTALCREDIT});
+        $this->setNumberOfEntries((int)$node->{static::N_NUMBER_OF_ENTRIES});
+        $this->setTotalDebit(new Decimal((string)$node->{static::N_TOTAL_DEBIT}));
+        $this->setTotalCredit(new Decimal((string)$node->{static::N_TOTAL_CREDIT}));
 
         $nMax = $node->{Invoice::N_INVOICE}->count();
         for ($n = 0; $n < $nMax; $n++) {

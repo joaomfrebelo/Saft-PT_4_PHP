@@ -26,14 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\DocTableTotalCalc;
 
@@ -48,20 +47,19 @@ class PaymentsTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Payments::class);
-        $this->assertTrue(true);
+        (new Commune(Payments::class))->testReflection(Payments::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $payments = new Payments(new ErrorRegister());
@@ -76,8 +74,8 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNumberOfEntries(): void
     {
         $payments = new Payments(new ErrorRegister());
@@ -96,19 +94,19 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalDebit(): void
     {
         $payments   = new Payments(new ErrorRegister());
-        $debitStack = [0.0, 9.99];
+        $debitStack = [new Decimal("0.0"), new Decimal("9.99")];
         foreach ($debitStack as $debit) {
             $this->assertTrue($payments->setTotalDebit($debit));
             $this->assertSame($debit, $payments->getTotalDebit());
             $this->assertTrue($payments->issetTotalDebit());
         }
 
-        $wrong = -19.9;
+        $wrong = new Decimal("-19.9");
         $this->assertFalse($payments->setTotalDebit($wrong));
         $this->assertSame($wrong, $payments->getTotalDebit());
         $this->assertNotEmpty($payments->getErrorRegistor()->getOnSetValue());
@@ -116,19 +114,19 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalCredit(): void
     {
         $payments    = new Payments(new ErrorRegister());
-        $creditStack = [0.0, 9.99];
+        $creditStack = [new Decimal("0.0"), new Decimal("9.99")];
         foreach ($creditStack as $credit) {
             $this->assertTrue($payments->setTotalCredit($credit));
             $this->assertSame($credit, $payments->getTotalCredit());
             $this->assertTrue($payments->issetTotalCredit());
         }
 
-        $wrong = -19.9;
+        $wrong = new Decimal("-19.9");
         $this->assertFalse($payments->setTotalCredit($wrong));
         $this->assertSame($wrong, $payments->getTotalCredit());
         $this->assertNotEmpty($payments->getErrorRegistor()->getOnSetValue());
@@ -136,8 +134,8 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testPayment(): void
     {
         $payments = new Payments(new ErrorRegister());
@@ -152,26 +150,27 @@ class PaymentsTest extends TestCase
     }
 
     /**
-     * Reads all Payments  from the Demo SAFT in Test\Ressources
+     * Reads all Payments  from the Demo SAFT in Test\Resources
      * and parse then to Payment class, after that generate a xml from the
      * Payment class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         /* @var $paymentsXml \SimpleXMLElement */
         $paymentsXml = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
             ->{Payments::N_PAYMENTS};
 
         if ($paymentsXml->count() === 0) {
@@ -182,7 +181,7 @@ class PaymentsTest extends TestCase
         $payments->parseXmlNode($paymentsXml);
 
         $xmlRootNode   = (new AuditFile())->createRootElement();
-        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
+        $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
 
         $xml = $payments->createXmlNode($sourceDocNode);
 
@@ -192,7 +191,7 @@ class PaymentsTest extends TestCase
             $this->assertTrue(
                 $assertXml, \sprintf("Fail on Payments '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(
                 \sprintf("Fail on Payment '%s'", $e->getMessage())
             );
@@ -206,12 +205,12 @@ class PaymentsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $paymentsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $payments     = new Payments(new ErrorRegister());
         $xml          = $payments->createXmlNode($paymentsNode)->asXML();
@@ -231,17 +230,17 @@ class PaymentsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $paymentsNode = new \SimpleXMLElement(
-            "<".SourceDocuments::N_SOURCEDOCUMENTS."></".SourceDocuments::N_SOURCEDOCUMENTS.">"
+            "<" . SourceDocuments::N_SOURCE_DOCUMENTS . "></" . SourceDocuments::N_SOURCE_DOCUMENTS . ">"
         );
         $payments     = new Payments(new ErrorRegister());
         $payments->setNumberOfEntries(-1);
-        $payments->setTotalCredit(-0.99);
-        $payments->setTotalDebit(-0.95);
+        $payments->setTotalCredit(new Decimal("-0.99"));
+        $payments->setTotalDebit(new Decimal("-0.95"));
 
         $xml = $payments->createXmlNode($paymentsNode)->asXML();
         if ($xml === false) {
@@ -259,8 +258,8 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocTableTotalCalc(): void
     {
         $payments = new Payments(new ErrorRegister());
@@ -271,14 +270,14 @@ class PaymentsTest extends TestCase
         );
     }
 
-     /**
+    /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGetOrder(): void
     {
         $payments = new Payments(new ErrorRegister());
-        $payNo      = array(
+        $payNo    = array(
             "RC RC/1",
             "PA PA/4",
             "RC RC/5",
@@ -308,11 +307,11 @@ class PaymentsTest extends TestCase
         $this->assertSame(array(1, 2, 3), \array_keys($order["RC"]["B"]));
         $this->assertSame(array(1, 2, 3, 4), \array_keys($order["PA"]["PA"]));
 
-        foreach ($order as $type => $serieStack) {
-            foreach ($serieStack as $serie => $noSatck) {
-                foreach ($noSatck as $no => $invoice) {
+        foreach ($order as $type => $serialStack) {
+            foreach ($serialStack as $serial => $noStack) {
+                foreach ($noStack as $no => $invoice) {
                     $this->assertSame(
-                        \sprintf("%s %s/%s", $type, $serie, $no),
+                        \sprintf("%s %s/%s", $type, $serial, $no),
                         $invoice->getPaymentRefNo()
                     );
                 }
@@ -322,12 +321,12 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDuplicateNumber(): void
     {
         $payments = new Payments(new ErrorRegister());
-        $payNo      = array(
+        $payNo    = array(
             "RC RC/1",
             "PA PA/4",
             "RC RC/1",
@@ -353,12 +352,12 @@ class PaymentsTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNoNumber(): void
     {
         $payments = new Payments(new ErrorRegister());
-        $payNo      = array(
+        $payNo    = array(
             "RC RC/1",
             "RC B/2"
         );

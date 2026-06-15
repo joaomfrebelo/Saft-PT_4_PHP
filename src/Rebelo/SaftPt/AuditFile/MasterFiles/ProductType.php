@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * Description of ProductType<br>
  * The field shall be filled in with:<br>
@@ -59,87 +56,42 @@ use Rebelo\Enum\EnumException;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType P()
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType S()
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType O()
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType E()
- * @method static \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType I()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class ProductType extends AEnum
+enum ProductType : string
 {
     /**
      * “P” - Products
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const P = "P";
+    case P = "P";
 
     /**
      * “S” - Services
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const S = "S";
+    case S = "S";
 
     /**
      * “O” - Others <br>
      * (e.g. charged freights, advance payments received or sale of assets)
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const O = "O";
+    case O = "O";
 
     /**
      *  “E” - Excise duties - (e.g. IABA, ISP, IT)
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const E = "E";
+    case E = "E";
 
     /**
      * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
      * which shall appear in table 2.5. – TaxTable and Excise Duties which
      * shall be filled in with the "E" code.
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const I = "I";
+    case I = "I";
 
-    /**
-     * ProductType<br>
-     * <br>
-     * The field shall be filled in with:<br>
-     * “P” - Products;<br>
-     * “S” - Services;<br>
-     * “O” - Others (e.g. charged freights, advance payments received or sale of assets);<br>
-     * “E” - Excise duties - (e.g. IABA, ISP, IT);<br>
-     * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
-     * which shall appear in table 2.5. – TaxTable and Excise Duties which
-     * shall be filled in with the "E" code.
-     * <pre>
-     *     &lt;xs:element name="ProductType">
-     *      &lt;xs:simpleType>
-     *          &lt;xs:restriction base="xs:string">
-     *              &lt;xs:enumeration value="P"/&gt;
-     *              &lt;xs:enumeration value="S"/&gt;
-     *              &lt;xs:enumeration value="O"/&gt;
-     *              &lt;xs:enumeration value="E"/&gt;
-     *              &lt;xs:enumeration value="I"/&gt;
-     *          &lt;/xs:restriction&gt;
-     *      &lt;/xs:simpleType&gt;
-     *  &lt;/xs:element&gt;
-     * </pre>
-     * @param Mixed $value
-     * @throws EnumException
-     */
-    public function __construct($value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get the value as string
-     * @return string
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

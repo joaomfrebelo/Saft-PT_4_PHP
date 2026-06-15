@@ -26,16 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
 
@@ -43,7 +40,7 @@ use Rebelo\SaftPt\Validate\DocTotalCalc;
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class WorkDocumentTest extends TestCase
 {
@@ -51,21 +48,19 @@ class WorkDocumentTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(WorkDocument::class);
-        $this->assertTrue(true);
+        (new Commune(WorkDocument::class))->testReflection(WorkDocument::class);
     }
 
     /**
-     * @throws AuditFileException
-*@author João Rebelo
-     * @test
+     * @author João Rebelo
      */
+    #[Test]
     public function testInstance(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -73,7 +68,7 @@ class WorkDocumentTest extends TestCase
         $this->assertNull($workDocument->getPeriod());
         $this->assertNull($workDocument->getEacCode());
         $this->assertNull($workDocument->getTransactionID(false));
-        $this->assertNull($workDocument->getDocTotalcal());
+        $this->assertNull($workDocument->getDocTotalCalc());
         $this->assertSame(0, \count($workDocument->getLine()));
 
         $this->assertFalse($workDocument->issetAtcud());
@@ -91,8 +86,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentNumber(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -109,8 +104,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentStatus(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -122,8 +117,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testAtcud(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -140,8 +135,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHash(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -158,8 +153,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHashControl(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -176,8 +171,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testPeriod(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -203,10 +198,9 @@ class WorkDocumentTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWorkDate(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -217,23 +211,22 @@ class WorkDocumentTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWorkType(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
         $type         = WorkType::CC;
-        $workDocument->setWorkType(new WorkType($type));
-        $this->assertSame($type, $workDocument->getWorkType()->get());
+        $workDocument->setWorkType($type);
+        $this->assertSame($type, $workDocument->getWorkType());
         $this->assertTrue($workDocument->issetWorkType());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSourceID(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -251,14 +244,14 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testEACCode(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
-        $eaccode      = "49499";
-        $this->assertTrue($workDocument->setEacCode($eaccode));
-        $this->assertSame($eaccode, $workDocument->getEacCode());
+        $eacCode      = "49499";
+        $this->assertTrue($workDocument->setEacCode($eacCode));
+        $this->assertSame($eacCode, $workDocument->getEacCode());
         $workDocument->setEacCode(null);
         $this->assertNull($workDocument->getEacCode());
 
@@ -275,10 +268,9 @@ class WorkDocumentTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSystemEntryDate(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -289,18 +281,16 @@ class WorkDocumentTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTransactionId(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
         $transaction  = $workDocument->getTransactionID();
-        $transaction->setDate(new RDate());
-        $transaction->setDocArchivalNumber("A");
-        $transaction->setJournalID("9");
+        $transaction?->setDate(new RDate());
+        $transaction?->setDocArchivalNumber("A");
+        $transaction?->setJournalID("9");
         $this->assertSame($transaction, $workDocument->getTransactionID());
         $workDocument->setTransactionIDAsNull();
         $this->assertNull($workDocument->getTransactionID(false));
@@ -308,8 +298,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCustomerId(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -326,8 +316,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testLine(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -342,8 +332,8 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentTotals(): void
     {
         $workDocument = new WorkDocument(new ErrorRegister());
@@ -354,77 +344,79 @@ class WorkDocumentTest extends TestCase
     }
 
     /**
-     * Reads all WorkDocument from the Demo SAFT in Test\Ressources
+     * Reads all WorkDocument from the Demo SAFT in Test\Resources
      * and parse then to WorkDocument class, after that generate a xml from the
      * Line class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
-        $workdocStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{WorkingDocuments::N_WORKINGDOCUMENTS}
-            ->{WorkDocument::N_WORKDOCUMENT};
+        $workDocumentsStack = $saftDemoXml
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{WorkingDocuments::N_WORKING_DOCUMENTS}
+            ->{WorkDocument::N_WORK_DOCUMENT};
 
-        if ($workdocStack->count() === 0) {
-            $this->fail("No workdocuments in XML");
+        if ($workDocumentsStack->count() === 0) {
+            $this->fail("No work documents in XML");
         }
 
-        for ($n = 0; $n < $workdocStack->count(); $n++) {
-            /* @var $workdocXml \SimpleXMLElement */
-            $workdocXml = $workdocStack[$n];
-            $workdoc    = new WorkDocument(new ErrorRegister());
-            $workdoc->parseXmlNode($workdocXml);
+        for ($n = 0; $n < $workDocumentsStack->count(); $n++) {
+            /* @var $workDocumentsXml \SimpleXMLElement */
+            $workDocumentsXml = $workDocumentsStack[$n];
+            $workDocument     = new WorkDocument(new ErrorRegister());
+            $workDocument->parseXmlNode($workDocumentsXml);
 
-            $xmlRootNode     = (new AuditFile())->createRootElement();
-            $sourceDocNode   = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-            $workingdocsNode = $sourceDocNode->addChild(WorkingDocuments::N_WORKINGDOCUMENTS);
+            $xmlRootNode          = (new AuditFile())->createRootElement();
+            $sourceDocNode        = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+            $workingDocumentsNode = $sourceDocNode->addChild(WorkingDocuments::N_WORKING_DOCUMENTS);
 
-            $xml = $workdoc->createXmlNode($workingdocsNode);
+            $xml = $workDocument->createXmlNode($workingDocumentsNode);
 
             try {
-                $assertXml = $this->xmlIsEqual($workdocXml, $xml);
+                $assertXml = $this->xmlIsEqual($workDocumentsXml, $xml);
                 $this->assertTrue(
                     $assertXml,
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $workdocXml->{WorkDocument::N_DOCUMENTNUMBER},
+                        $workDocumentsXml->{WorkDocument::N_DOCUMENT_NUMBER},
                         $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $workdocXml->{WorkDocument::N_DOCUMENTNUMBER},
+                        $workDocumentsXml->{WorkDocument::N_DOCUMENT_NUMBER},
                         $e->getMessage()
                     )
                 );
             }
 
-            $this->assertEmpty($workdoc->getErrorRegistor()->getOnCreateXmlNode());
-            $this->assertEmpty($workdoc->getErrorRegistor()->getOnSetValue());
-            $this->assertEmpty($workdoc->getErrorRegistor()->getLibXmlError());
+            $this->assertEmpty($workDocument->getErrorRegistor()->getOnCreateXmlNode());
+            $this->assertEmpty($workDocument->getErrorRegistor()->getOnSetValue());
+            $this->assertEmpty($workDocument->getErrorRegistor()->getLibXmlError());
         }
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $workDocNode = new \SimpleXMLElement(
-            "<".WorkingDocuments::N_WORKINGDOCUMENTS."></".WorkingDocuments::N_WORKINGDOCUMENTS.">"
+            "<" . WorkingDocuments::N_WORKING_DOCUMENTS . "></" . WorkingDocuments::N_WORKING_DOCUMENTS . ">"
         );
         $workDoc     = new WorkDocument(new ErrorRegister());
         $xml         = $workDoc->createXmlNode($workDocNode)->asXML();
@@ -444,12 +436,12 @@ class WorkDocumentTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $workDocNode = new \SimpleXMLElement(
-            "<".WorkingDocuments::N_WORKINGDOCUMENTS."></".WorkingDocuments::N_WORKINGDOCUMENTS.">"
+            "<" . WorkingDocuments::N_WORKING_DOCUMENTS . "></" . WorkingDocuments::N_WORKING_DOCUMENTS . ">"
         );
         $workDoc     = new WorkDocument(new ErrorRegister());
         $workDoc->setAtcud("");
@@ -477,15 +469,15 @@ class WorkDocumentTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
-    public function testDocTotalcal(): void
+    #[Test]
+    public function testDocTotalCalculation(): void
     {
         $workDoc = new WorkDocument(new ErrorRegister());
-        $workDoc->setDocTotalcal(new DocTotalCalc());
+        $workDoc->setDocTotalCalc(new DocTotalCalc());
         $this->assertInstanceOf(
             DocTotalCalc::class,
-            $workDoc->getDocTotalcal()
+            $workDoc->getDocTotalCalc()
         );
     }
 }

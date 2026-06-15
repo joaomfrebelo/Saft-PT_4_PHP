@@ -27,6 +27,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Bin;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\i18n\en_GB;
 use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
 use Symfony\Component\Console\Command\Command;
@@ -51,88 +52,88 @@ class Validate extends Command
      * The command name
      * @since 1.0.0
      */
-    public const COMMAND_NAME = "validate";
+    public const string COMMAND_NAME = "validate";
 
     /**
-     * The default laguage pack to be used
+     * The default language pack to be used
      * @since 1.0.0
      */
-    public const DEFAULT_LANG = "en_GB";
+    public const string DEFAULT_LANG = "en_GB";
 
     /**
      * Argument name of the saft file path
      * @since 1.0.0
      */
-    public const ARG_SAFT_FILE_PATH = "SAFT_PATH";
+    public const string ARG_SAFT_FILE_PATH = "SAFT_PATH";
 
     /**
      * Option name of the public key file path
      * @since 1.0.0
      */
-    public const OPT_PUB_KEY_PATH = "pubkey";
+    public const string OPT_PUB_KEY_PATH = "pubkey";
 
     /**
      * Option name of the public key file path
      * @since 1.0.0
      */
-    public const OPT_PUB_KEY_PATH_SHORT = "p";
+    public const string OPT_PUB_KEY_PATH_SHORT = "p";
 
     /**
      * Option name of the log configuration file path
      * @since 1.0.0
      */
-    public const OPT_LOG4PHP_CONG = "log";
+    public const string OPT_LOG4PHP_CONG = "log";
 
     /**
      * Option name of the log configuration file path
      * @since 1.0.0
      */
-    public const OPT_LOG4PHP_CONG_SHORT = "l";
+    public const string OPT_LOG4PHP_CONG_SHORT = "l";
 
     /**
      * Option name of show warnings
      * @since 1.0.0
      */
-    public const OPT_SHOW_WARNINGS = "warnings";
+    public const string OPT_SHOW_WARNINGS = "warnings";
 
     /**
      * Option name of show warnings
      * @since 1.0.0
      */
-    public const OPT_SHOW_WARNINGS_SHORT = "w";
+    public const string OPT_SHOW_WARNINGS_SHORT = "w";
 
     /**
-     * Argument name of the idiome
+     * Argument name of the idiom
      * @since 1.0.0
      */
-    public const OPT_LANG = "lang";
+    public const string OPT_LANG = "lang";
 
     /**
-     * Argument name of the idiome
+     * Argument name of the idiom
      * @since 1.0.0
      */
-    public const OPT_LANG_SHORT = "g";
+    public const string OPT_LANG_SHORT = "g";
 
     /**
      * Argument name of the configuration option if
      * accepts Debit and Credit lines in the same document
      * @since 1.0.0
      */
-    public const OPT_DEBIT_CREDIT = "debcre";
+    public const string OPT_DEBIT_CREDIT = "debcre";
 
     /**
      * Argument name of the configuration option
      * of the delta in currency calculation to be considered valid
      * @since 1.0.0
      */
-    public const OPT_DELTA_CURRENCY = "dc";
+    public const string OPT_DELTA_CURRENCY = "dc";
 
     /**
      * Argument name of the configuration option
      * of the delta in lines calculation to be considered valid
      * @since 1.0.0
      */
-    public const OPT_DELTA_LINES = "dl";
+    public const string OPT_DELTA_LINES = "dl";
 
     /**
      * Argument name of the configuration option
@@ -140,7 +141,7 @@ class Validate extends Command
      * calculation to be considered valid
      * @since 1.0.0
      */
-    public const OPT_DELTA_TABLE = "dt";
+    public const string OPT_DELTA_TABLE = "dt";
 
     /**
      * Argument name of the configuration option
@@ -148,7 +149,7 @@ class Validate extends Command
      * calculation to be considered valid
      * @since 1.0.0
      */
-    public const OPT_DELTA_TOTAL_DOC = "ddt";
+    public const string OPT_DELTA_TOTAL_DOC = "ddt";
 
     /**
      * Argument name of the configuration option
@@ -156,7 +157,7 @@ class Validate extends Command
      * calculation to be considered valid
      * @since 1.0.0
      */
-    public const OPT_CONTINUES_LINES = "cl";
+    public const string OPT_CONTINUES_LINES = "cl";
 
     /**
      *
@@ -180,13 +181,6 @@ class Validate extends Command
     {
         parent::__construct($name);
     }
-
-    /**
-     * The name of the command
-     * @var string|null
-     * @since 1.0.0
-     */
-    protected static $defaultName = self::COMMAND_NAME;
 
     /**
      * The command configuration
@@ -232,14 +226,14 @@ class Validate extends Command
         $this->addOption(
             static::OPT_SHOW_WARNINGS, static::OPT_SHOW_WARNINGS_SHORT,
             InputOption::VALUE_OPTIONAL,
-            "Define if show warnings list, the number of warning is always show, defualt true",
+            "Define if show warnings list, the number of warning is always show, default true",
             null
         );
 
         $this->addOption(
             static::OPT_CONTINUES_LINES, null,
             InputOption::VALUE_OPTIONAL,
-            "Define if validates the continues line numbering, defualt true",
+            "Define if validates the continues line numbering, default true",
             null
         );
 
@@ -281,8 +275,8 @@ class Validate extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-        $io = new Style($input, $output);/* @phpstan-ignore-line */
+        /** @var \Symfony\Component\Console\Output\ConsoleOutput $output */
+        $io = new Style($input, $output);
         $io->title("SAFT-PT 4 PHP by João M F Rebelo");
         try {
 
@@ -347,7 +341,7 @@ class Validate extends Command
             if ($nStructur > 0) {
                 $io->error(
                     \sprintf(
-                        AuditFile::getI18n()->get("has_n_xml_structure_erros"),
+                        AuditFile::getI18n()->get("has_n_xml_structure_errors"),
                         $nStructur
                     )
                 );
@@ -536,34 +530,34 @@ class Validate extends Command
     {
         $config = new ValidationConfig();
 
-        $debcred = $input->getOption(self::OPT_DEBIT_CREDIT);
+        $debitCredit = $input->getOption(self::OPT_DEBIT_CREDIT);
         $config->setAllowDebitAndCredit(
-            $debcred === null || $this->parseBool(
-                $debcred, self::OPT_DEBIT_CREDIT
+            $debitCredit === null || $this->parseBool(
+                $debitCredit, self::OPT_DEBIT_CREDIT
             )
         );
 
         $config->setDeltaCurrency(
-            $this->parseFloat(
+            $this->parseDecimal(
                 $input->getOption(self::OPT_DELTA_CURRENCY),
                 self::OPT_DELTA_CURRENCY
             )
         );
 
         $config->setDeltaLine(
-            $this->parseFloat(
+            $this->parseDecimal(
                 $input->getOption(self::OPT_DELTA_LINES), self::OPT_DELTA_LINES
             )
         );
 
         $config->setDeltaTable(
-            $this->parseFloat(
+            $this->parseDecimal(
                 $input->getOption(self::OPT_DELTA_TABLE), self::OPT_DELTA_TABLE
             )
         );
 
         $config->setDeltaTotalDoc(
-            $this->parseFloat(
+            $this->parseDecimal(
                 $input->getOption(self::OPT_DELTA_TOTAL_DOC),
                 self::OPT_DELTA_TOTAL_DOC
             )
@@ -594,7 +588,7 @@ class Validate extends Command
         }
 
         if (\in_array($value, [0, 1, "0", "1"], true)) {
-            return $value === 1 || $value === "1";
+            return $value == "1" || $value === 1;
         }
 
         if (\is_string($value)) {
@@ -623,11 +617,11 @@ class Validate extends Command
      *
      * @param mixed $value
      * @param string $name
-     * @return float
+     * @return \Decimal\Decimal
      * @throws \Exception
      * @since 1.0.0
      */
-    public function parseFloat(mixed $value, string $name): float
+    public function parseDecimal(mixed $value, string $name): Decimal
     {
         if (\is_string($value)) {
             $valueClean = \preg_replace("/^=/", "", $value);
@@ -636,7 +630,7 @@ class Validate extends Command
         }
 
         if (\is_numeric($valueClean)) {
-            return (float) $valueClean;
+            return new Decimal((string) $valueClean);
         }
 
         throw new \Exception(
@@ -654,9 +648,9 @@ class Validate extends Command
      */
     protected function printStatistic(Style $io, string $saft): void
     {
-        $exectime = \time() - self::$start;
+        $execTime = \time() - self::$start;
         $exec = \sprintf(
-            "%sm %ss", \floor($exectime / 60), $exectime % 60
+            "%sm %ss", \floor($execTime / 60), $execTime % 60
         );
         $mem = \number_format(\memory_get_peak_usage(true), 0, "", " ");
         $size = \number_format((float) \filesize($saft), 0, "", " ");

@@ -41,55 +41,55 @@ abstract class ACustomerSupplier extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_ACCOUNTID = "AccountID";
+    const string N_ACCOUNT_ID = "AccountID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_COMPANYNAME = "CompanyName";
+    const string N_COMPANY_NAME = "CompanyName";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CONTACT = "Contact";
+    const string N_CONTACT = "Contact";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_BILLINGADDRESS = "BillingAddress";
+    const string N_BILLING_ADDRESS = "BillingAddress";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TELEPHONE = "Telephone";
+    const string N_TELEPHONE = "Telephone";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_FAX = "Fax";
+    const string N_FAX = "Fax";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_EMAIL = "Email";
+    const string N_EMAIL = "Email";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_WEBSITE = "Website";
+    const string N_WEBSITE = "Website";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SELFBILLINGINDICATOR = "SelfBillingIndicator";
+    const string N_SELF_BILLING_INDICATOR = "SelfBillingIndicator";
 
     /**
      * &lt;xs:element ref="AccountID"/&gt;
@@ -290,7 +290,7 @@ abstract class ACustomerSupplier extends AAuditFile
     public function setCompanyName(string $companyName): bool
     {
         try {
-            $this->companyName = static::valTextMandMaxCar(
+            $this->companyName = static::valTextMandatoryMaxCar(
                 $companyName, 100,
                 __METHOD__
             );
@@ -343,7 +343,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
         try {
             $this->contact = $contact === null ?
-                null : static::valTextMandMaxCar($contact, 50, __METHOD__);
+                null : static::valTextMandatoryMaxCar($contact, 50, __METHOD__);
             $return        = true;
         } catch (AuditFileException $e) {
             $this->contact = $contact;
@@ -394,7 +394,7 @@ abstract class ACustomerSupplier extends AAuditFile
     {
         try {
             $this->telephone = $telephone === null ?
-                null : static::valTextMandMaxCar($telephone, 20, __METHOD__);
+                null : static::valTextMandatoryMaxCar($telephone, 20, __METHOD__);
             $return          = true;
         } catch (AuditFileException $e) {
             $this->telephone = $telephone;
@@ -444,7 +444,7 @@ abstract class ACustomerSupplier extends AAuditFile
     {
         try {
             $this->fax = $fax === null ?
-                null : static::valTextMandMaxCar($fax, 20, __METHOD__);
+                null : static::valTextMandatoryMaxCar($fax, 20, __METHOD__);
             $return    = true;
         } catch (AuditFileException $e) {
             $this->fax = $fax;
@@ -552,7 +552,7 @@ abstract class ACustomerSupplier extends AAuditFile
     {
         try {
             $this->website = $website === null ? null :
-                $this->valTextMandMaxCar($website, 60, __METHOD__, false);
+                $this->valTextMandatoryMaxCar($website, 60, __METHOD__, false);
             $return        = true;
         } catch (AuditFileException $e) {
             $this->website = $website;

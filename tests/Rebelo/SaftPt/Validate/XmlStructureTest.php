@@ -26,9 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class XmlStructureTest
@@ -39,39 +40,41 @@ class XmlStructureTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(AuditFile::class);
-        $this->assertTrue(true);
+        (new Commune(AuditFile::class))->testReflection(AuditFile::class);
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlGlobalWithoutErrors(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_DEMO_PATH);
+        $xml            = \file_get_contents(SAFT_DEMO_PATH)
+                ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertTrue($test);
         $this->assertFalse($auditFile->getErrorRegistor()->hasErrors());
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlGlobalWithErrors(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_ERROR_PATH);
+        $xml            = \file_get_contents(SAFT_ERROR_PATH) ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -80,14 +83,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingSupplier(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_MISSING_SUPPLIER_PATH);
+        $xml            = \file_get_contents(SAFT_MISSING_SUPPLIER_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -96,14 +101,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingProductInWorkingDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_MISSING_PRODUCT_WORK_DOC_PATH);
+        $xml            = \file_get_contents(SAFT_MISSING_PRODUCT_WORK_DOC_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -112,14 +119,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingProductInStockMovementDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_MISSING_PRODUCT_MOV_STK_PATH);
+        $xml            = \file_get_contents(SAFT_MISSING_PRODUCT_MOV_STK_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -128,14 +137,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingProductInInvoiceDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_MISSING_PRODUCT_INVOICE_PATH);
+        $xml            = \file_get_contents(SAFT_MISSING_PRODUCT_INVOICE_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -144,14 +155,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingCustomerInStockMovementDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_MISSING_CUSTOMER_STK_MV_PATH);
+        $xml            = \file_get_contents(SAFT_MISSING_CUSTOMER_STK_MV_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -160,14 +173,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingCustomerInInvoiceDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_MISSING_CUSTOMER_INVOICE_PATH);
+        $xml            = \file_get_contents(SAFT_MISSING_CUSTOMER_INVOICE_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -176,14 +191,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingCustomerInWorkingDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_CUSTOMER_MISSING_WORK_DOC_PATH);
+        $xml            = \file_get_contents(SAFT_CUSTOMER_MISSING_WORK_DOC_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());
@@ -192,14 +209,16 @@ class XmlStructureTest extends TestCase
     }
 
     /**
+     * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testXmlMissingCustomerInPaymentDocument(): void
     {
         $auditFile      = new AuditFile();
         $validateXmlStr = new XmlStructure($auditFile);
-        $xml            = \file_get_contents(SAFT_CUSTOMER_MISSING_PAYMENT_PATH);
+        $xml            = \file_get_contents(SAFT_CUSTOMER_MISSING_PAYMENT_PATH)
+            ?: throw new \Exception("Cannot read xml file");
         $test           = $validateXmlStr->validate($xml);
         $this->assertFalse($test);
         $this->assertEmpty($auditFile->getErrorRegistor()->getExceptionErrors());

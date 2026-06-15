@@ -35,15 +35,14 @@ namespace Rebelo\SaftPt\AuditFile;
 class CalcPeriodException extends \Exception
 {
 
-	/**
-	 *
-	 * @param string $message
-	 * @param int $code
-	 * @param \Throwable|null $previous
-	 * @since 1.0.0
-	 */
-    public function __construct(string $message = "", int $code = 0,
-                                \Throwable $previous = null)
+    /**
+     *
+     * @param string $message
+     * @param int $code
+     * @param \Throwable|null $previous
+     * @since 1.0.0
+     */
+    public function __construct(string $message = "", int $code = 0, \Throwable|null $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

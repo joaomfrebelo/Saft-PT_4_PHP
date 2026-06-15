@@ -42,13 +42,13 @@ class Warehouse extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_WAREHOUSEID = "WarehouseID";
+    const string N_WAREHOUSE_ID = "WarehouseID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_LOCATIONID = "LocationID";
+    const string N_LOCATION_ID = "LocationID";
 
     /**
      *
@@ -116,7 +116,7 @@ class Warehouse extends AAuditFile
     {
         try {
             $this->warehouseID = $warehouseID === null ? null :
-                $this->valTextMandMaxCar($warehouseID, 50, __METHOD__);
+                $this->valTextMandatoryMaxCar($warehouseID, 50, __METHOD__);
             $return            = true;
         } catch (AuditFileException $e) {
             $this->warehouseID = $warehouseID;
@@ -168,7 +168,7 @@ class Warehouse extends AAuditFile
     {
         try {
             $this->locationID = $locationID === null ?
-                null : $this->valTextMandMaxCar($locationID, 30, __METHOD__);
+                null : $this->valTextMandatoryMaxCar($locationID, 30, __METHOD__);
             $return           = true;
         } catch (AuditFileException $e) {
             $this->locationID = $locationID;
@@ -198,10 +198,10 @@ class Warehouse extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== ShipFrom::N_SHIPFROM && $node->getName() !== ShipTo::N_SHIPTO) {
+        if ($node->getName() !== ShipFrom::N_SHIP_FROM && $node->getName() !== ShipTo::N_SHIP_TO) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
-                ShipFrom::N_SHIPFROM, ShipTo::N_SHIPTO, $node->getName()
+                ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -209,11 +209,11 @@ class Warehouse extends AAuditFile
         }
 
         if ($this->getWarehouseID() !== null) {
-            $node->addChild(static::N_WAREHOUSEID, $this->getWarehouseID());
+            $node->addChild(static::N_WAREHOUSE_ID, $this->getWarehouseID());
         }
 
         if ($this->getLocationID() !== null) {
-            $node->addChild(static::N_LOCATIONID, $this->getLocationID());
+            $node->addChild(static::N_LOCATION_ID, $this->getLocationID());
         }
 
         return $node;
@@ -229,22 +229,22 @@ class Warehouse extends AAuditFile
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        if ($node->getName() !== ShipFrom::N_SHIPFROM && $node->getName() !== ShipTo::N_SHIPTO) {
+        if ($node->getName() !== ShipFrom::N_SHIP_FROM && $node->getName() !== ShipTo::N_SHIP_TO) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
-                ShipFrom::N_SHIPFROM, ShipTo::N_SHIPTO, $node->getName()
+                ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($node->{static::N_WAREHOUSEID}->count() > 0) {
-            $this->setWarehouseID((string) $node->{static::N_WAREHOUSEID});
+        if ($node->{static::N_WAREHOUSE_ID}->count() > 0) {
+            $this->setWarehouseID((string) $node->{static::N_WAREHOUSE_ID});
         }
 
-        if ($node->{static::N_LOCATIONID}->count() > 0) {
-            $this->setLocationID((string) $node->{static::N_LOCATIONID});
+        if ($node->{static::N_LOCATION_ID}->count() > 0) {
+            $this->setLocationID((string) $node->{static::N_LOCATION_ID});
         }
     }
 }

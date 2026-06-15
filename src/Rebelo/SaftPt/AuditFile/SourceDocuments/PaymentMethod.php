@@ -26,7 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payment;
@@ -57,28 +59,28 @@ class PaymentMethod extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTMETHOD = "PaymentMethod";
+    const string N_PAYMENT_METHOD = "PaymentMethod";
 
     /**
      * &lt;xs:element ref="PaymentMechanism" minOccurs="0"/&gt;<br>
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTMECHANISM = "PaymentMechanism";
+    const string N_PAYMENT_MECHANISM = "PaymentMechanism";
 
     /**
      * &lt;xs:element name="PaymentAmount" type="SAFmonetaryType"/&gt;<br>
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENTAMOUNT = "PaymentAmount";
+    const string N_PAYMENT_AMOUNT = "PaymentAmount";
 
     /**
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;<br>
      * Node Name
      * @since 1.0.0
      */
-    const N_PAYMENTDATE = "PaymentDate";
+    const string N_PAYMENT_DATE = "PaymentDate";
 
     /**
      * &lt;xs:element ref="PaymentMechanism" minOccurs="0"/&gt;<br>
@@ -89,10 +91,10 @@ class PaymentMethod extends AAuditFile
 
     /**
      * &lt;xs:element name="PaymentAmount" type="SAFmonetaryType"/&gt;<br>
-     * @var float $paymentAmount
+     * @var \Decimal\Decimal $paymentAmount
      * @since 1.0.0
      */
-    private float $paymentAmount;
+    private Decimal $paymentAmount;
 
     /**
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;<br>
@@ -143,7 +145,7 @@ class PaymentMethod extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->paymentMechanism === null ? "null" : $this->paymentMechanism->get()
+                    $this->paymentMechanism === null ? "null" : $this->paymentMechanism->value
                 )
             );
         return $this->paymentMechanism;
@@ -181,7 +183,7 @@ class PaymentMethod extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->paymentMechanism === null ? "null" : $this->paymentMechanism->get()
+                    $this->paymentMechanism === null ? "null" : $this->paymentMechanism->value
                 )
             );
     }
@@ -190,11 +192,11 @@ class PaymentMethod extends AAuditFile
      * Gets PaymentAmount<br>
      * Amount for each mean of payment.<br>
      * &lt;xs:element name="PaymentAmount" type="SAFmonetaryType"/&gt;
-     * @return float
+     * @return \Decimal\Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getPaymentAmount(): float
+    public function getPaymentAmount(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -210,13 +212,13 @@ class PaymentMethod extends AAuditFile
      * Sets a new paymentAmount<br>
      * Amount for each mean of payment.<br>
      * &lt;xs:element name="PaymentAmount" type="SAFmonetaryType"/&gt;
-     * @param float $paymentAmount
+     * @param Decimal $paymentAmount
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setPaymentAmount(float $paymentAmount): bool
+    public function setPaymentAmount(Decimal $paymentAmount): bool
     {
-        if ($paymentAmount < 0.0) {
+        if ($paymentAmount->compareTo("0.0") < 0) {
             $msg    = "PaymentAmount can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -249,8 +251,8 @@ class PaymentMethod extends AAuditFile
     /**
      * Gets PaymentDate<br>
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getPaymentDate(): RDate
@@ -259,7 +261,7 @@ class PaymentMethod extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->paymentDate->format(RDate::SQL_DATE)
+                    $this->paymentDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->paymentDate;
@@ -268,9 +270,10 @@ class PaymentMethod extends AAuditFile
     /**
      * Sets PaymentDate<br>
      * &lt;xs:element name="PaymentDate" type="SAFdateType"/&gt;
+     *
      * @param \Rebelo\Date\Date $paymentDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setPaymentDate(RDate $paymentDate): void
@@ -280,7 +283,7 @@ class PaymentMethod extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->paymentDate->format(RDate::SQL_DATE)
+                    $this->paymentDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -297,9 +300,10 @@ class PaymentMethod extends AAuditFile
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -308,10 +312,10 @@ class PaymentMethod extends AAuditFile
 
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENTTOTALS) {
+        if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== ADocumentTotals::N_DOCUMENT_TOTALS) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
-                Payment::N_PAYMENT, ADocumentTotals::N_DOCUMENTTOTALS,
+                Payment::N_PAYMENT, ADocumentTotals::N_DOCUMENT_TOTALS,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -320,33 +324,33 @@ class PaymentMethod extends AAuditFile
         }
 
         $nodePayMethod = $node->getName() === Payment::N_PAYMENT ?
-            $node->addChild(static::N_PAYMENTMETHOD) :
+            $node->addChild(static::N_PAYMENT_METHOD) :
             $node->addChild(SalesInvoices\DocumentTotals::N_PAYMENT);
 
 
         if ($this->getPaymentMechanism() !== null) {
             $nodePayMethod->addChild(
-                static::N_PAYMENTMECHANISM, $this->getPaymentMechanism()->get()
+                static::N_PAYMENT_MECHANISM, $this->getPaymentMechanism()->value
             );
         }
 
         if (isset($this->paymentAmount)) {
             $nodePayMethod->addChild(
-                static::N_PAYMENTAMOUNT,
+                static::N_PAYMENT_AMOUNT,
                 $this->floatFormat($this->getPaymentAmount())
             );
         } else {
-            $node->addChild(static::N_PAYMENTAMOUNT);
+            $node->addChild(static::N_PAYMENT_AMOUNT);
             $this->getErrorRegistor()->addOnCreateXmlNode("PaymentAmount_not_valid");
         }
 
         if (isset($this->paymentDate)) {
             $nodePayMethod->addChild(
-                static::N_PAYMENTDATE,
-                $this->getPaymentDate()->format(RDate::SQL_DATE)
+                static::N_PAYMENT_DATE,
+                $this->getPaymentDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $node->addChild(static::N_PAYMENTDATE);
+            $node->addChild(static::N_PAYMENT_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("PaymentDate_not_valid");
         }
 
@@ -355,11 +359,12 @@ class PaymentMethod extends AAuditFile
 
     /**
      * Parse the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
-     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -369,14 +374,14 @@ class PaymentMethod extends AAuditFile
 
         if (false === \in_array(
             $node->getName(),
-            [static::N_PAYMENTMETHOD,
-                    ADocumentTotals::N_DOCUMENTTOTALS,
-            DocumentTotals::N_PAYMENT]
+            [static::N_PAYMENT_METHOD,
+             ADocumentTotals::N_DOCUMENT_TOTALS,
+             DocumentTotals::N_PAYMENT]
         )
         ) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s'",
-                Payment::N_PAYMENTMETHOD, ADocumentTotals::N_DOCUMENTTOTALS,
+                Payment::N_PAYMENT_METHOD, ADocumentTotals::N_DOCUMENT_TOTALS,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -384,21 +389,19 @@ class PaymentMethod extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        if ($node->{static::N_PAYMENTMECHANISM}->count() > 0) {
+        if ($node->{static::N_PAYMENT_MECHANISM}->count() > 0) {
             $this->setPaymentMechanism(
-                new PaymentMechanism((string) $node->{static::N_PAYMENTMECHANISM})
+                PaymentMechanism::from((string) $node->{static::N_PAYMENT_MECHANISM})
             );
         } else {
             $this->setPaymentMechanism(null);
         }
 
-        $this->setPaymentAmount(
-            (float) $node->{static::N_PAYMENTAMOUNT}
-        );
+        $this->setPaymentAmount(new Decimal((string) $node->{static::N_PAYMENT_AMOUNT}));
 
         $this->setPaymentDate(
             RDate::parse(
-                RDate::SQL_DATE, (string) $node->{static::N_PAYMENTDATE}
+                Pattern::SQL_DATE, (string) $node->{static::N_PAYMENT_DATE}
             )
         );
     }

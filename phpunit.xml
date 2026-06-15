@@ -1,12 +1,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
          backupGlobals="true"
-         backupStaticAttributes="false"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         forceCoversAnnotation="false"
          processIsolation="false"
          stopOnError="false"
          stopOnFailure="false"
@@ -16,7 +11,13 @@
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         verbose="true"
+		 displayDetailsOnAllIssues="true"
+		 displayDetailsOnPhpunitDeprecations="true"
+		 displayDetailsOnPhpunitNotices="true"
+		 displayDetailsOnTestsThatTriggerDeprecations="true"
+		 displayDetailsOnTestsThatTriggerErrors="true"
+		 displayDetailsOnTestsThatTriggerNotices="true"
+		 displayDetailsOnTestsThatTriggerWarnings="true"
          bootstrap="./tests/bootstrap.php">
     <php>
         <ini name="display_errors" value="On" />

@@ -26,13 +26,15 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class SettlementTest
@@ -43,134 +45,130 @@ class SettlementTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Settlement::class);
-        $this->assertTrue(true);
+        (new Commune(Settlement::class))->testReflection(Settlement::class);
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $this->assertNull($settl->getSettlementDiscount());
-        $this->assertNull($settl->getSettlementAmount());
-        $this->assertNull($settl->getSettlementDate());
-        $this->assertNull($settl->getPaymentTerms());
+        $settlement = new Settlement(new ErrorRegister());
+        $this->assertNull($settlement->getSettlementDiscount());
+        $this->assertNull($settlement->getSettlementAmount());
+        $this->assertNull($settlement->getSettlementDate());
+        $this->assertNull($settlement->getPaymentTerms());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSettlementDiscount(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $disc  = "Discount";
-        $this->assertTrue($settl->setSettlementDiscount($disc));
-        $this->assertSame($disc, $settl->getSettlementDiscount());
-        $this->assertTrue($settl->setSettlementDiscount(null));
-        $this->assertNull($settl->getSettlementDiscount());
-        $this->assertTrue($settl->setSettlementDiscount(str_pad("A", 39, "B")));
-        $this->assertSame(30, \strlen($settl->getSettlementDiscount()));
+        $settlement = new Settlement(new ErrorRegister());
+        $disc       = "Discount";
+        $this->assertTrue($settlement->setSettlementDiscount($disc));
+        $this->assertSame($disc, $settlement->getSettlementDiscount());
+        $this->assertTrue($settlement->setSettlementDiscount(null));
+        $this->assertNull($settlement->getSettlementDiscount());
+        $this->assertTrue($settlement->setSettlementDiscount(str_pad("A", 39, "B")));
+        $this->assertSame(30, \strlen($settlement->getSettlementDiscount()));
 
-        $this->assertFalse($settl->setSettlementDiscount(""));
-        $this->assertSame("", $settl->getSettlementDiscount());
-        $this->assertNotEmpty($settl->getErrorRegistor()->getOnSetValue());
+        $this->assertFalse($settlement->setSettlementDiscount(""));
+        $this->assertSame("", $settlement->getSettlementDiscount());
+        $this->assertNotEmpty($settlement->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSettlementAmount(): void
     {
-        $settl  = new Settlement(new ErrorRegister());
-        $amount = 4.99;
-        $this->assertTrue($settl->setSettlementAmount($amount));
-        $this->assertSame($amount, $settl->getSettlementAmount());
-        $this->assertTrue($settl->setSettlementAmount(null));
-        $this->assertNull($settl->getSettlementAmount());
+        $settlement = new Settlement(new ErrorRegister());
+        $amount     = new Decimal("4.99");
+        $this->assertTrue($settlement->setSettlementAmount($amount));
+        $this->assertSame($amount, $settlement->getSettlementAmount());
+        $this->assertTrue($settlement->setSettlementAmount(null));
+        $this->assertNull($settlement->getSettlementAmount());
 
-        $wrong = -1.0;
-        $this->assertFalse($settl->setSettlementAmount($wrong));
-        $this->assertSame($wrong, $settl->getSettlementAmount());
-        $this->assertNotEmpty($settl->getErrorRegistor()->getOnSetValue());
+        $wrong = new Decimal("-1.0");
+        $this->assertFalse($settlement->setSettlementAmount($wrong));
+        $this->assertSame($wrong, $settlement->getSettlementAmount());
+        $this->assertNotEmpty($settlement->getErrorRegistor()->getOnSetValue());
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetSettlementDate(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $date  = new RDate();
-        $settl->setSettlementDate($date);
-        $this->assertSame($date, $settl->getSettlementDate());
-        $settl->setSettlementDate(null);
-        $this->assertNull($settl->getSettlementDate());
+        $settlement = new Settlement(new ErrorRegister());
+        $date       = new RDate();
+        $settlement->setSettlementDate($date);
+        $this->assertSame($date, $settlement->getSettlementDate());
+        $settlement->setSettlementDate(null);
+        $this->assertNull($settlement->getSettlementDate());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetPaymentTerms(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $terms = "Discount";
-        $this->assertTrue($settl->setPaymentTerms($terms));
-        $this->assertSame($terms, $settl->getPaymentTerms());
-        $this->assertTrue($settl->setPaymentTerms(null));
-        $this->assertNull($settl->getPaymentTerms());
-        $this->assertTrue($settl->setPaymentTerms(str_pad("A", 110, "B")));
-        $this->assertSame(100, \strlen($settl->getPaymentTerms()));
+        $settlement = new Settlement(new ErrorRegister());
+        $terms      = "Discount";
+        $this->assertTrue($settlement->setPaymentTerms($terms));
+        $this->assertSame($terms, $settlement->getPaymentTerms());
+        $this->assertTrue($settlement->setPaymentTerms(null));
+        $this->assertNull($settlement->getPaymentTerms());
+        $this->assertTrue($settlement->setPaymentTerms(str_pad("A", 110, "B")));
+        $this->assertSame(100, \strlen($settlement->getPaymentTerms()));
 
-        $this->assertFalse($settl->setSettlementDiscount(""));
-        $this->assertSame("", $settl->getSettlementDiscount());
-        $this->assertNotEmpty($settl->getErrorRegistor()->getOnSetValue());
+        $this->assertFalse($settlement->setSettlementDiscount(""));
+        $this->assertSame("", $settlement->getSettlementDiscount());
+        $this->assertNotEmpty($settlement->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      *
      * @return Settlement
-     * @throws DateFormatException
      */
     public function createSettlement(): Settlement
     {
-        $settl = new Settlement(new ErrorRegister());
-        $settl->setSettlementDiscount("Some type of Discount");
-        $settl->setSettlementAmount(409.79);
-        $settl->setSettlementDate(new RDate());
-        $settl->setPaymentTerms("The terms");
-        return $settl;
+        $settlement = new Settlement(new ErrorRegister());
+        $settlement->setSettlementDiscount("Some type of Discount");
+        $settlement->setSettlementAmount(new Decimal("409.79"));
+        $settlement->setSettlementDate(new RDate());
+        $settlement->setPaymentTerms("The terms");
+        return $settlement;
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $node  = new \SimpleXMLElement("<root></root>");
+        $settlement = new Settlement(new ErrorRegister());
+        $node       = new \SimpleXMLElement("<root></root>");
         try {
-            $settl->createXmlNode($node);
+            $settlement->createXmlNode($node);
             $this->fail(
                 "Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -179,19 +177,19 @@ class SettlementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $node  = new \SimpleXMLElement("<root></root>");
+        $settlement = new Settlement(new ErrorRegister());
+        $node       = new \SimpleXMLElement("<root></root>");
         try {
-            $settl->parseXmlNode($node);
+            $settlement->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -199,111 +197,107 @@ class SettlementTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
-        $settl = $this->createSettlement();
-        $node  = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        $settlement = $this->createSettlement();
+        $node       = new \SimpleXMLElement(
+            "<" . ADocumentTotals::N_DOCUMENT_TOTALS . "></" . ADocumentTotals::N_DOCUMENT_TOTALS . ">"
         );
 
-        $settlNode = $settl->createXmlNode($node);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $settlNode);
+        $settlementNode = $settlement->createXmlNode($node);
+        $this->assertInstanceOf(\SimpleXMLElement::class, $settlementNode);
 
         $this->assertSame(
-            Settlement::N_SETTLEMENT, $settlNode->getName()
-        );
-
-        $this->assertSame(
-            $settl->getSettlementDiscount(),
-            (string) $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_SETTLEMENTDISCOUNT}
+            Settlement::N_SETTLEMENT, $settlementNode->getName()
         );
 
         $this->assertSame(
-            $settl->getSettlementAmount(),
-            (float) $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_SETTLEMENTAMOUNT}
+            $settlement->getSettlementDiscount(),
+            (string)$node->{Settlement::N_SETTLEMENT}
+                ->{Settlement::N_SETTLEMENT_DISCOUNT}
         );
 
         $this->assertSame(
-            $settl->getSettlementDate()->format(RDate::SQL_DATE),
-            (string) $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_SETTLEMENTDATE}
+            $settlement->getSettlementAmount()?->toFloat(),
+            (float)$node->{Settlement::N_SETTLEMENT}->{Settlement::N_SETTLEMENT_AMOUNT}
         );
 
         $this->assertSame(
-            $settl->getPaymentTerms(),
-            (string) $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_PAYMENTTERMS}
+            $settlement->getSettlementDate()?->format(Pattern::SQL_DATE),
+            (string)$node->{Settlement::N_SETTLEMENT}->{Settlement::N_SETTLEMENT_DATE}
         );
 
-        $this->assertEmpty($settl->getErrorRegistor()->getOnCreateXmlNode());
-        $this->assertEmpty($settl->getErrorRegistor()->getOnSetValue());
-        $this->assertEmpty($settl->getErrorRegistor()->getLibXmlError());
+        $this->assertSame(
+            $settlement->getPaymentTerms(),
+            (string)$node->{Settlement::N_SETTLEMENT}->{Settlement::N_PAYMENT_TERMS}
+        );
+
+        $this->assertEmpty($settlement->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($settlement->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($settlement->getErrorRegistor()->getLibXmlError());
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeNull(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $node  = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        $settlement = new Settlement(new ErrorRegister());
+        $node       = new \SimpleXMLElement(
+            "<" . ADocumentTotals::N_DOCUMENT_TOTALS . "></" . ADocumentTotals::N_DOCUMENT_TOTALS . ">"
         );
 
-        $settlNode = $settl->createXmlNode($node);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $settlNode);
+        $settlementNode = $settlement->createXmlNode($node);
+        $this->assertInstanceOf(\SimpleXMLElement::class, $settlementNode);
 
         $this->assertSame(
-            Settlement::N_SETTLEMENT, $settlNode->getName()
+            Settlement::N_SETTLEMENT, $settlementNode->getName()
         );
 
         $this->assertTrue(
             $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_SETTLEMENTDISCOUNT}->count() === 0
+                ->{Settlement::N_SETTLEMENT_DISCOUNT}->count() === 0
         );
 
         $this->assertTrue(
             $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_SETTLEMENTAMOUNT}->count() === 0
+                ->{Settlement::N_SETTLEMENT_AMOUNT}->count() === 0
         );
 
         $this->assertTrue(
             $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_SETTLEMENTDATE}->count() === 0
+                ->{Settlement::N_SETTLEMENT_DATE}->count() === 0
         );
 
         $this->assertTrue(
             $node->{Settlement::N_SETTLEMENT}
-            ->{Settlement::N_PAYMENTTERMS}->count() === 0
+                ->{Settlement::N_PAYMENT_TERMS}->count() === 0
         );
 
-        $this->assertEmpty($settl->getErrorRegistor()->getOnCreateXmlNode());
-        $this->assertEmpty($settl->getErrorRegistor()->getOnSetValue());
-        $this->assertEmpty($settl->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($settlement->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($settlement->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($settlement->getErrorRegistor()->getLibXmlError());
     }
 
     /**
-     * @throws DateFormatException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXml(): void
     {
-        $settl = $this->createSettlement();
-        $node  = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        $settlement = $this->createSettlement();
+        $node       = new \SimpleXMLElement(
+            "<" . ADocumentTotals::N_DOCUMENT_TOTALS . "></" . ADocumentTotals::N_DOCUMENT_TOTALS . ">"
         );
-        $xml   = $settl->createXmlNode($node)->asXML();
+        $xml        = $settlement->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
         }
@@ -312,37 +306,38 @@ class SettlementTest extends TestCase
         $parsed->parseXmlNode(new \SimpleXMLElement($xml));
 
         $this->assertSame(
-            $settl->getSettlementDiscount(), $parsed->getSettlementDiscount()
+            $settlement->getSettlementDiscount(), $parsed->getSettlementDiscount()
         );
 
         $this->assertSame(
-            $settl->getSettlementAmount(), $parsed->getSettlementAmount()
+            $settlement->getSettlementAmount()?->toFloat(),
+            $parsed->getSettlementAmount()?->toFloat()
         );
 
         $this->assertSame(
-            $settl->getSettlementDate()->format(RDate::SQL_DATE),
-            $parsed->getSettlementDate()->format(RDate::SQL_DATE)
+            $settlement->getSettlementDate()?->format(Pattern::SQL_DATE),
+            $parsed->getSettlementDate()?->format(Pattern::SQL_DATE)
         );
 
-        $this->assertSame($settl->getPaymentTerms(), $parsed->getPaymentTerms());
+        $this->assertSame($settlement->getPaymentTerms(), $parsed->getPaymentTerms());
 
-        $this->assertEmpty($settl->getErrorRegistor()->getOnCreateXmlNode());
-        $this->assertEmpty($settl->getErrorRegistor()->getOnSetValue());
-        $this->assertEmpty($settl->getErrorRegistor()->getLibXmlError());
+        $this->assertEmpty($settlement->getErrorRegistor()->getOnCreateXmlNode());
+        $this->assertEmpty($settlement->getErrorRegistor()->getOnSetValue());
+        $this->assertEmpty($settlement->getErrorRegistor()->getLibXmlError());
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNull(): void
     {
-        $settl = new Settlement(new ErrorRegister());
-        $node  = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+        $settlement = new Settlement(new ErrorRegister());
+        $node       = new \SimpleXMLElement(
+            "<" . ADocumentTotals::N_DOCUMENT_TOTALS . "></" . ADocumentTotals::N_DOCUMENT_TOTALS . ">"
         );
-        $xml   = $settl->createXmlNode($node)->asXML();
+        $xml        = $settlement->createXmlNode($node)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
         }
@@ -363,12 +358,12 @@ class SettlementTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $settlementNode = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+            "<" . ADocumentTotals::N_DOCUMENT_TOTALS . "></" . ADocumentTotals::N_DOCUMENT_TOTALS . ">"
         );
         $settlement     = new Settlement(new ErrorRegister());
         $xml            = $settlement->createXmlNode($settlementNode)->asXML();
@@ -388,16 +383,16 @@ class SettlementTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $settlementNode = new \SimpleXMLElement(
-            "<".ADocumentTotals::N_DOCUMENTTOTALS."></".ADocumentTotals::N_DOCUMENTTOTALS.">"
+            "<" . ADocumentTotals::N_DOCUMENT_TOTALS . "></" . ADocumentTotals::N_DOCUMENT_TOTALS . ">"
         );
         $settlement     = new Settlement(new ErrorRegister());
         $settlement->setPaymentTerms("");
-        $settlement->setSettlementAmount(-1.0);
+        $settlement->setSettlementAmount(new Decimal("-1.0"));
         $settlement->setSettlementDiscount("");
 
         $xml = $settlement->createXmlNode($settlementNode)->asXML();

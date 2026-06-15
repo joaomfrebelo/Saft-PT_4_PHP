@@ -42,19 +42,19 @@ class CustomsInformation extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMSINFORMATION = "CustomsInformation";
+    const string N_CUSTOMS_INFORMATION = "CustomsInformation";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ARCNO = "ARCNo";
+    const string N_ARC_NO = "ARCNo";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_IECAMOUNT = "IECAmount";
+    const string N_IEC_AMOUNT = "IECAmount";
 
     /**
      * &lt;xs:element ref="ARCNo" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
@@ -127,7 +127,7 @@ class CustomsInformation extends AAuditFile
     public function addARCNo(string $arcNo): bool
     {
         try {
-            $val    = $this->valTextMandMaxCar($arcNo, 21, __METHOD__);
+            $val    = $this->valTextMandatoryMaxCar($arcNo, 21, __METHOD__);
             $return = true;
         } catch (AuditFileException $e) {
             $val    = $arcNo;
@@ -217,14 +217,14 @@ class CustomsInformation extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $ciNode = $node->addChild(static::N_CUSTOMSINFORMATION);
+        $ciNode = $node->addChild(static::N_CUSTOMS_INFORMATION);
         foreach ($this->getArcNo() as $arcNo) {
-            $ciNode->addChild(static::N_ARCNO, $arcNo);
+            $ciNode->addChild(static::N_ARC_NO, $arcNo);
         }
 
         if ($this->getIecAmount() !== null) {
             $ciNode->addChild(
-                static::N_IECAMOUNT, \strval($this->getIecAmount())
+                static::N_IEC_AMOUNT, \strval($this->getIecAmount())
             );
         }
 
@@ -242,22 +242,22 @@ class CustomsInformation extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_CUSTOMSINFORMATION) {
+        if ($node->getName() !== static::N_CUSTOMS_INFORMATION) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_CUSTOMSINFORMATION, $node->getName()
+                static::N_CUSTOMS_INFORMATION, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        for ($n = 0; $n < $node->{static::N_ARCNO}->count(); $n++) {
-            $this->addARCNo((string) $node->{static::N_ARCNO}[$n]);
+        for ($n = 0; $n < $node->{static::N_ARC_NO}->count(); $n++) {
+            $this->addARCNo((string)$node->{static::N_ARC_NO}[$n]);
         }
 
-        if ($node->{static::N_IECAMOUNT}->count() > 0) {
-            $this->setIecAmount((float) $node->{static::N_IECAMOUNT});
+        if ($node->{static::N_IEC_AMOUNT}->count() > 0) {
+            $this->setIecAmount((float) $node->{static::N_IEC_AMOUNT});
         }
     }
 }

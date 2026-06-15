@@ -3107,7 +3107,7 @@
     <token name="T_WHITESPACE">                             </token>
     <token name="T_PHPDOX_EQUAL">=</token>
     <token name="T_WHITESPACE"> </token>
-    <token name="T_CONSTANT_ENCAPSED_STRING">"A data do estado do documento no documento '%s' &#xE9; anteriro ao 'SystemEntryDate'"</token>
+    <token name="T_CONSTANT_ENCAPSED_STRING">"A data do estado do documento no documento '%s' &#xE9; anterior ao 'SystemEntryDate'"</token>
     <token name="T_PHPDOX_SEMICOLON">;</token>
   </line>
   <line no="256">

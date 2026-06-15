@@ -26,73 +26,31 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * WorkStatus
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus N()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus A()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus F()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class WorkStatus extends AEnum
+enum WorkStatus : string
 {
     /**
      * “N” - Normal
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const N = "N";
+    case N = "N";
 
     /**
      * “A” - Cancelled document
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const A = "A";
+    case A = "A";
 
     /**
      * “F” - Billed document, even if partially,
      * when for the same document there is also on table 4.1. – SalesInvoices,
      * the corresponding invoice or simplified invoice.
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const F = "F";
+    case F = "F";
 
-    /**
-     * WorkStatus<br>
-     * The field must be filled in with:<br>
-     * “N” - Normal;<br>
-     * “A” - Cancelled document;<br>
-     * “F” - Billed document, even if partially,
-     * when for the same document there is also on table 4.1. – SalesInvoices,
-     * the corresponding invoice or simplified invoice.
-     * <pre>
-     * &lt;xs:element name="WorkStatus"&gt;
-     *  &lt;xs:simpleType&gt;
-     *      &lt;xs:restriction base="xs:string"&gt;
-     *          &lt;xs:enumeration value="N"/&gt;
-     *          &lt;xs:enumeration value="A"/&gt;
-     *          &lt;xs:enumeration value="F"/&gt;
-     *      &lt;/xs:restriction&gt;
-     *  &lt;/xs:simpleType&gt;
-     * </pre>
-     * @param string $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get enum value
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

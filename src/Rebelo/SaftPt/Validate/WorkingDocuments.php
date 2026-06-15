@@ -26,37 +26,35 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
-use Rebelo\Date\DateFormatException;
+use Decimal\Decimal;
+use Rebelo\Date\Date as RDate;
 use Rebelo\Date\DateParseException;
-use Rebelo\Decimal\DecimalException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
-use Rebelo\SaftPt\Sign\Sign;
-use Rebelo\Decimal\UDecimal;
-use Rebelo\Decimal\Decimal;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
+use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Currency;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments as SaftWorkingDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments as SaftWorkingDocuments;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\References;
-use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\Sign\Sign;
 
 /**
  * Validate WorkingDocuments table.<br>
  * This class will validate the values of WorkingDocuments, the
- * signtuare hash and dates
+ * signature hash and dates
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class WorkingDocuments extends ADocuments
 {
@@ -64,10 +62,11 @@ class WorkingDocuments extends ADocuments
     /**
      * Validate WorkingDocuments table.<br>
      * This class will validate the values of WorkingDocuments, the
-     * signtuare hash and dates
+     * signature hash and dates
+     *
      * @param AuditFile $auditFile The AuditFile to be validated
-     * @param Sign $sign The sign class to be used to validate the hash, must have the public key defined
-     * @throws DecimalException
+     * @param Sign      $sign      The sign class to be used to validate the hash, must have the public key defined
+     *
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
@@ -85,20 +84,21 @@ class WorkingDocuments extends ADocuments
     }
 
     /**
-     * Validate the workingdocuments
+     * Validate the working documents
+     *
      * @return bool
      * @since 1.0.0
      */
     public function validate(): bool
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $progreBar = null;
+        $progressBar = null;
         try {
             $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false);
 
             if ($workingDocuments === null) {
                 \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." no work documents to be vaidated");
+                       ->debug(__METHOD__ . " no work documents to be validated");
                 return $this->isValid;
             }
 
@@ -108,28 +108,28 @@ class WorkingDocuments extends ADocuments
 
             if (\count($workingDocuments->getWorkDocument()) === 0) {
 
-                if ($workingDocuments->getTotalCredit() !== 0.0) {
-                    $msg           = \sprintf(
+                if (!$workingDocuments->getTotalCredit()->equals("0.0")) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "workingdocuments_total_credit_should_be_zero"
+                            "working_documents_total_credit_should_be_zero"
                         ), $workingDocuments->getTotalCredit()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $workingDocuments->addError(
-                        $msg, SaftWorkingDocuments::N_TOTALCREDIT
+                        $msg, SaftWorkingDocuments::N_TOTAL_CREDIT
                     );
                     $this->isValid = false;
                 }
 
-                if ($workingDocuments->getTotalDebit() !== 0.0) {
-                    $msg           = \sprintf(
+                if (!$workingDocuments->getTotalDebit()->equals(0.0)) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "workingdocuments_total_debit_should_be_zero"
+                            "working_documents_total_debit_should_be_zero"
                         ), $workingDocuments->getTotalDebit()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $workingDocuments->addError(
-                        $msg, SaftWorkingDocuments::N_TOTALDEBIT
+                        $msg, SaftWorkingDocuments::N_TOTAL_DEBIT
                     );
                     $this->isValid = false;
                 }
@@ -140,32 +140,32 @@ class WorkingDocuments extends ADocuments
             $order = $workingDocuments->getOrder();
 
             if ($this->getStyle() !== null) {
-                $nDoc      = \count($workingDocuments->getWorkDocument());
-                $section   = null;
-                $progreBar = $this->getStyle()->addProgressBar($section);
-                $section->writeln("");
-                $section->writeln(
+                $nDoc        = \count($workingDocuments->getWorkDocument());
+                $section     = null;
+                $progressBar = $this->getStyle()->addProgressBar($section);
+                $section?->writeln("");
+                $section?->writeln(
                     \sprintf(
                         AuditFile::getI18n()->get("validating_n_doc_of"), $nDoc,
                         "WorkDocument"
                     )
                 );
-                $progreBar?->start($nDoc);
+                $progressBar?->start($nDoc);
             }
 
             foreach (\array_keys($order) as $type) {
-                foreach (\array_keys($order[$type]) as $serie) {
-                    foreach (\array_keys($order[$type][$serie]) as $no) {
+                foreach (\array_keys($order[$type]) as $serial) {
+                    foreach (\array_keys($order[$type][$serial]) as $no) {
 
-                        $progreBar?->advance();
+                        $progressBar?->advance();
 
-                        $workDocument = $order[$type][$serie][$no];
+                        $workDocument = $order[$type][$serial][$no];
                         list(, $no) = \explode(
                             "/",
                             $workDocument->getDocumentNumber()
                         );
-                        if ((string) $type !== $this->lastType || (string) $serie
-                            !== $this->lastSerie) {
+                        if ((string)$type !== $this->lastType || (string)$serial
+                            !== $this->lastSerial) {
                             $this->lastHash            = "";
                             $this->lastDocDate         = null;
                             $this->lastSystemEntryDate = null;
@@ -173,9 +173,9 @@ class WorkingDocuments extends ADocuments
                             $noExpected = $this->lastDocNumber + 1;
                             if (\intval($no) !== $noExpected) {
                                 do {
-                                    $msg                 = \sprintf(
+                                    $msg = \sprintf(
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
-                                        $type, $serie, $noExpected
+                                        $type, $serial, $noExpected
                                     );
                                     \Logger::getLogger(\get_class($this))->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -185,32 +185,32 @@ class WorkingDocuments extends ADocuments
                                 } while ($no !== \strval($noExpected));
                             }
                         }
-                        $this->lastDocNumber = (int) $no;
+                        $this->lastDocNumber = (int)$no;
 
-                        $workDocument->setDocTotalcal(new DocTotalCalc());
+                        $workDocument->setDocTotalCalc(new DocTotalCalc());
                         $this->workDocument($workDocument);
-                        $this->lastType  = (string) $type;
-                        $this->lastSerie = (string) $serie;
+                        $this->lastType   = (string)$type;
+                        $this->lastSerial = (string)$serial;
                     }
                 }
             }
 
-            $progreBar?->finish();
+            $progressBar?->finish();
 
             $this->totalCredit();
             $this->totalDebit();
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->isValid = false;
 
-            $progreBar?->finish();
+            $progressBar?->finish();
 
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
 
             \Logger::getLogger(\get_class($this))
                 ->debug(
                     \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
+                        __METHOD__ . " validate error '%s'", $e->getMessage()
                     )
                 );
         }
@@ -219,7 +219,9 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate WorkDocument
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
      * @since 1.0.0
      */
@@ -227,14 +229,14 @@ class WorkingDocuments extends ADocuments
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         try {
-            $this->docCredit  = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->docDebit   = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->netTotal   = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->taxPayable = new UDecimal(0.0, static::CALC_PRECISION);
-            $this->grossTotal = new UDecimal(0.0, static::CALC_PRECISION);
+            $this->docCredit  = new Decimal("0.0");
+            $this->docDebit   = new Decimal("0.0");
+            $this->netTotal   = new Decimal("0.0");
+            $this->taxPayable = new Decimal("0.0");
+            $this->grossTotal = new Decimal("0.0");
 
             if ($workDocument->issetDocumentNumber() === false) {
-                $msg           = AAuditFile::getI18n()->get("workdoc_number_not_defined");
+                $msg = AAuditFile::getI18n()->get("work_document_number_not_defined");
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $workDocument->addError($msg);
                 $this->isValid = false;
@@ -242,39 +244,39 @@ class WorkingDocuments extends ADocuments
             }
 
             if ($workDocument->issetWorkType() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "workdoctype_not_defined"
+                        "work_document_type_not_defined"
                     ), $workDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $workDocument->addError($msg, WorkDocument::N_WORKTYPE);
+                $workDocument->addError($msg, WorkDocument::N_WORK_TYPE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
 
             if ($workDocument->issetWorkDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_date_not_defined"
                     ), $workDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $workDocument->addError($msg, WorkDocument::N_WORKDATE);
+                $workDocument->addError($msg, WorkDocument::N_WORK_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
 
             if ($workDocument->issetSystemEntryDate() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "document_systementrydate_not_defined"
+                        "document_system_entry_date_not_defined"
                     ), $workDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $workDocument->addError($msg, WorkDocument::N_SYSTEMENTRYDATE);
+                $workDocument->addError($msg, WorkDocument::N_SYSTEM_ENTRY_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
@@ -287,13 +289,13 @@ class WorkingDocuments extends ADocuments
             $this->lines($workDocument);
             $this->totals($workDocument);
             $this->outOfDateInvoiceTypes($workDocument);
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
+                            ->addExceptionErrors($e->getMessage());
             \Logger::getLogger(\get_class($this))
                 ->debug(
                     \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
+                        __METHOD__ . " validate error '%s'", $e->getMessage()
                     )
                 );
             $workDocument->addError($e->getMessage());
@@ -303,6 +305,7 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate if the NumberOfEntries is equal to the number of WorkDocuments
+     *
      * @return void
      * @since 1.0.0
      */
@@ -318,18 +321,19 @@ class WorkingDocuments extends ADocuments
         $numberOfEntries        = $workingDocuments->getNumberOfEntries();
         $test                   = $numberOfEntries === $calculatedNumOfEntries;
 
-        $this->auditFile->getSourceDocuments()?->getWorkingDocuments()
-            ?->getDocTableTotalCalc()?->setNumberOfEntries($calculatedNumOfEntries);
+        $this->auditFile->getSourceDocuments()->getWorkingDocuments()
+                        ?->getDocTableTotalCalc()
+                        ?->setNumberOfEntries($calculatedNumOfEntries);
 
         if ($test === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "wrong_number_of_workdocuments"
+                    "wrong_number_of_work_documents"
                 ), $numberOfEntries, $calculatedNumOfEntries
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workingDocuments->addError(
-                $msg, SaftWorkingDocuments::N_NUMBEROFENTRIES
+                $msg, SaftWorkingDocuments::N_NUMBER_OF_ENTRIES
             );
             \Logger::getLogger(\get_class($this))->info($msg);
         }
@@ -340,9 +344,8 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate WorkingDocuments TotalDebit
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalDebit(): void
@@ -353,22 +356,18 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        $workingDocuments->getDocTableTotalCalc()?->setTotalDebit($this->debit->valueOf());
+        $workingDocuments->getDocTableTotalCalc()?->setTotalDebit($this->debit);
 
-        $diff = $this->debit->signedSubtract(
-            new Decimal(
-                $workingDocuments->getTotalDebit(), static::CALC_PRECISION
-            )
-        )->abs()->valueOf();
+        $diff = $this->debit->sub($workingDocuments->getTotalDebit())->abs();
 
         if ($diff > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "wrong_total_debit_of_workingdocuments"
-                ), $workingDocuments->getTotalDebit(), $this->debit->valueOf()
+                    "wrong_total_debit_of_working_documents"
+                ), $workingDocuments->getTotalDebit(), $this->debit->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $workingDocuments->addError($msg, SaftWorkingDocuments::N_TOTALDEBIT);
+            $workingDocuments->addError($msg, SaftWorkingDocuments::N_TOTAL_DEBIT);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -376,9 +375,8 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate WorkingDocuments TotalCredit
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totalCredit(): void
@@ -388,23 +386,18 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        $workingDocuments->getDocTableTotalCalc()?->setTotalDebit($this->credit->valueOf());
-
-        $diff = $this->credit->signedSubtract(
-            new Decimal(
-                $workingDocuments->getTotalCredit(), static::CALC_PRECISION
-            )
-        )->abs()->valueOf();
+        $workingDocuments->getDocTableTotalCalc()?->setTotalDebit($this->credit);
+        $diff = $this->credit->sub($workingDocuments->getTotalCredit())->abs();
 
         if ($diff > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "wrong_total_credit_of_workingdocuments"
-                ), $workingDocuments->getTotalCredit(), $this->credit->valueOf()
+                    "wrong_total_credit_of_working_documents"
+                ), $workingDocuments->getTotalCredit(), $this->credit->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workingDocuments->addError(
-                $msg, SaftWorkingDocuments::N_TOTALCREDIT
+                $msg, SaftWorkingDocuments::N_TOTAL_CREDIT
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -413,21 +406,22 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate the Document Status
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function documentStatus(WorkDocument $workDocument): void
     {
         if ($workDocument->issetDocumentStatus() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_not_defined"
                 ), $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $workDocument->addError($msg, DocumentStatus::N_DOCUMENTSTATUS);
+            $workDocument->addError($msg, DocumentStatus::N_DOCUMENT_STATUS);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
@@ -436,22 +430,21 @@ class WorkingDocuments extends ADocuments
         $status = $workDocument->getDocumentStatus();
 
         if ($status->getWorkStatusDate()->isEarlier($workDocument->getWorkDate())) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_date_earlier"
                 ), $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $workDocument->addError($msg, DocumentStatus::N_WORKSTATUSDATE);
+            $workDocument->addError($msg, DocumentStatus::N_WORK_STATUS_DATE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($status->getWorkStatus()->isEqual(WorkStatus::A) &&
-            $status->getReason() === null) {
+        if ($status->getWorkStatus() === WorkStatus::A && $status->getReason() === null) {
 
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_status_cancel_no_reason"
                 ), $workDocument->getDocumentNumber()
@@ -466,7 +459,9 @@ class WorkingDocuments extends ADocuments
     /**
      * validate if the customerID of the WorkDocument if is set and if exits in
      * the customer table
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
      * @since 1.0.0
      */
@@ -481,22 +476,22 @@ class WorkingDocuments extends ADocuments
                     AAuditFile::getI18n()->get(
                         "customerID_not_exits"
                     ), $workDocument->
-                        getCustomerID(), $workDocument->getDocumentNumber()
+                    getCustomerID(), $workDocument->getDocumentNumber()
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $workDocument->addError($msg, WorkDocument::N_CUSTOMERID);
+                $workDocument->addError($msg, WorkDocument::N_CUSTOMER_ID);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         } else {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "customerID_not_defined_in_document"
                 ), $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $workDocument->addError($msg, WorkDocument::N_CUSTOMERID);
+            $workDocument->addError($msg, WorkDocument::N_CUSTOMER_ID);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -504,84 +499,83 @@ class WorkingDocuments extends ADocuments
 
     /**
      * validate each line of the WorkDocument
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function lines(WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if (\count($workDocument->getLine()) === 0) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
                 $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $workDocument->addError($msg, WorkDocument::N_DOCUMENTNUMBER);
+            $workDocument->addError($msg, WorkDocument::N_DOCUMENT_NUMBER);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        $n           = 0;
+        $n = 0;
         /* @var $lineNoStack int[] */
         $lineNoStack = array();
         $lineNoError = false;
         //$hasDebit and $hasCredit is to check if the document as both debit and credit lines
-        $hasDebit    = false;
-        $hasCredit   = false;
+        $hasDebit  = false;
+        $hasCredit = false;
 
-        // For the case that line anulation are use,
-        // validate if the anulation is bigger or not
+        // For the case that line annulation are use,
+        // validate if the annulation is bigger or not
 
-        /* @var $anulaDebitValue \Rebelo\Decimal\UDecimal[] */
-        $anulaDebitValue  = array();
-        /* @var $anulaCreditValue \Rebelo\Decimal\UDecimal[] */
-        $anulaCreditValue = array();
-        /* @var $anulaDebitQt \Rebelo\Decimal\UDecimal[] */
-        $anulaDebitQt     = array();
-        /* @var $anulaCreditQt \Rebelo\Decimal\UDecimal[] */
-        $anulaCreditQt    = array();
+        /* @var $canceledDebitValue \Decimal\Decimal[] */
+        $canceledDebitValue = array();
+        /* @var $canceledCreditValue \Decimal\Decimal[] */
+        $canceledCreditValue = array();
+        /* @var $canceledDebitQt \Decimal\Decimal[] */
+        $canceledDebitQt = array();
+        /* @var $canceledCreditQt \Decimal\Decimal[] */
+        $canceledCreditQt = array();
 
         foreach ($workDocument->getLine() as $line) {
             /* @var $line \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line */
             if ($lineNoError === false) {
                 if ($line->issetLineNumber()) {
                     if ($this->getContinuesLines() && $line->getLineNumber() !== ++$n) {
-                        $msg           = \sprintf(
+                        $msg = \sprintf(
                             AAuditFile::getI18n()->get(
                                 "document_line_no_continues"
                             ), $workDocument->getDocumentNumber()
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                        $line->addError($msg, Line::N_LINENUMBER);
+                        $line->addError($msg, Line::N_LINE_NUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
-                        $msg           = \sprintf(
+                        $msg = \sprintf(
                             AAuditFile::getI18n()->get(
                                 "document_line_duplicated"
                             ), $workDocument->getDocumentNumber()
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                        $line->addError($msg, Line::N_LINENUMBER);
+                        $line->addError($msg, Line::N_LINE_NUMBER);
                         \Logger::getLogger(\get_class($this))->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     }
                     $lineNoStack[] = $line->getLineNumber();
                 } else {
-                    $msg           = \sprintf(
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
                             "document_line_no_number"
                         ), $workDocument->getDocumentNumber()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $line->addError($msg, Line::N_LINENUMBER);
+                    $line->addError($msg, Line::N_LINE_NUMBER);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
                     $lineNoError   = true;
@@ -590,7 +584,7 @@ class WorkingDocuments extends ADocuments
             }
 
             if ($line->issetQuantity() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_no_quantity"
                     ), $workDocument->getDocumentNumber()
@@ -603,25 +597,24 @@ class WorkingDocuments extends ADocuments
             }
 
             if ($line->issetUnitPrice() === false) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_no_unit_price"
                     ), $workDocument->getDocumentNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_UNITPRICE);
+                $line->addError($msg, Line::N_UNIT_PRICE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 continue;
             }
 
-            $lineValue  = new Decimal(0.0, static::CALC_PRECISION);
-            $lineTaxCal = new UDecimal(0.0, static::CALC_PRECISION);
+            $lineValue  = new Decimal("0.0");
+            $lineTaxCal = new Decimal("0.0");
 
-            if ($line->getCreditAmount() === null &&
-                $line->getDebitAmount() === null) {
+            if ($line->getCreditAmount() === null && $line->getDebitAmount() === null) {
 
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_no_debit_or_credit"
                     ), $workDocument->getDocumentNumber(),
@@ -634,71 +627,61 @@ class WorkingDocuments extends ADocuments
                 continue;
             }
 
-            $lineAmount = $line->getCreditAmount() === null ?
-                $line->getDebitAmount() * -1.0 :
-                $line->getCreditAmount();
+            /** @var Decimal $lineAmount */
+            $lineAmount = $line->getCreditAmount() === null
+                ? $line->getDebitAmount()?->mul("-1.0")
+                : $line->getCreditAmount();
 
             // Get value for total validation
-            $lineValue->plusThis($lineAmount);
+            $lineValue = $lineValue->add($lineAmount);
 
             if ($line->issetTax()) {
+
                 $lineTax = $line->getTax();
+
                 if ($lineTax->getTaxAmount() !== null) {
-                    $lineTaxCal = new UDecimal(
-                        $lineTax->getTaxAmount(), static::CALC_PRECISION
-                    );
+                    $lineTaxCal = new Decimal($lineTax->getTaxAmount());
                 }
 
-                if ($lineTax->getTaxPercentage() !== null &&
-                    $lineTax->getTaxPercentage() !== 0.0) {
+                if ($lineTax->getTaxPercentage() !== null && $lineTax->getTaxPercentage()->compareTo("0.0") !== 0) {
 
-                    $lineFactor = $lineTax->getTaxPercentage() / 100;
+                    $lineFactor = $lineTax->getTaxPercentage()->div("100.0");
 
                     if ($line->getTaxBase() !== null) {
-                        $lineTaxCal = new UDecimal(
-                            $lineFactor * $line->getTaxBase(),
-                            static::CALC_PRECISION
-                        );
+                        $lineTaxCal = $lineFactor->mul($line->getTaxBase());
                     } else {
-                        $lineTaxCal = new UDecimal(
-                            $lineFactor * \abs($lineAmount),
-                            static::CALC_PRECISION
-                        );
+                        $lineTaxCal = $lineFactor->mul($lineAmount->abs());
                     }
                 }
             }
 
-            // validate unit price and quantuty
-            $unitPrice = new UDecimal(
-                $line->getUnitPrice(), static::CALC_PRECISION
-            );
+            // validate unit price and quantity
+            $unitPrice = new Decimal($line->getUnitPrice());
 
-            $uniQt = $unitPrice->multiply(
-                new UDecimal($line->getQuantity(), static::CALC_PRECISION)
-            );
+            $uniQt = $unitPrice->mul($line->getQuantity());
 
-            $workDocument->getDocTotalcal()?->addLineTotal(
-                $line->getLineNumber(), $uniQt->valueOf()
+            $workDocument->getDocTotalCalc()?->addLineTotal(
+                $line->getLineNumber(), $uniQt
             );
 
             if ($line->getTaxBase() !== null &&
-                ($unitPrice->valueOf() > 0.0 || $lineValue->valueOf() !== 0.0)
+                ($unitPrice->compareTo("0.0") > 0 || $lineValue->compareTo("0.0") !== 0)
             ) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_have_tax_base_with_unit_price_credit_debit"
                     ), $workDocument->getDocumentNumber(),
                     $line->getLineNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXBASE);
+                $line->addError($msg, Line::N_TAX_BASE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
                 return;
             }
 
-            if ($uniQt->signedSubtract($lineValue->abs())->abs()->valueOf() > $this->getDeltaLine()) {
-                $msg           = \sprintf(
+            if ($uniQt->sub($lineValue->abs())->abs()->compareTo($this->getDeltaLine()) > 0) {
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
                         "document_line_value_not_quantity_price"
                     ), $workDocument->getDocumentNumber(),
@@ -708,7 +691,7 @@ class WorkingDocuments extends ADocuments
                 $workDocument->addError(
                     $msg,
                     $line->getCreditAmount() === null ?
-                        Line::N_DEBITAMOUNT : Line::N_CREDITAMOUNT
+                        Line::N_DEBIT_AMOUNT : Line::N_CREDIT_AMOUNT
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
@@ -718,68 +701,64 @@ class WorkingDocuments extends ADocuments
                 WorkStatus::A
             );
 
-            $docStat = $workDocument->getDocumentStatus()->getWorkStatus()->get();
+            $docStat = $workDocument->getDocumentStatus()->getWorkStatus();
 
             if ($line->getCreditAmount() !== null) {
-                $credit = new UDecimal(
-                    $line->getCreditAmount(), static::CALC_PRECISION
-                );
-                $this->docCredit->plusThis($credit);
+                $credit          = new Decimal($line->getCreditAmount());
+                $this->docCredit = $this->docCredit->add($credit);
 
                 if (\in_array($docStat, $notForTotal) === false) {
-                    $this->credit->plusThis($credit);
+                    $this->credit = $this->credit->add($credit);
                 }
 
                 $hasCredit = true;
 
-                if (\array_key_exists($line->getProductCode(), $anulaCreditQt)) {
-                    $anulaCreditQt[$line->getProductCode()]->plusThis(
-                        new UDecimal(
-                            $line->getQuantity(), static::CALC_PRECISION
-                        )
-                    );
-                    $anulaCreditValue[$line->getProductCode()]->plusThis($uniQt);
+                if (\array_key_exists($line->getProductCode(), $canceledCreditQt)) {
+
+                    $canceledCreditQt[$line->getProductCode()] = $canceledCreditQt[$line->getProductCode()]
+                        ->add($line->getQuantity());
+
+                    $canceledCreditValue[$line->getProductCode()] = $canceledCreditValue[$line->getProductCode()]->add($uniQt);
+
                 } else {
-                    $anulaCreditQt[$line->getProductCode()]    = new UDecimal(
-                        $line->getQuantity(), static::CALC_PRECISION
+
+                    $canceledCreditQt[$line->getProductCode()]    = $canceledCreditQt[$line->getProductCode()] = new Decimal(
+                        $line->getQuantity()
                     );
-                    $anulaCreditValue[$line->getProductCode()] = clone $uniQt;
+
+                    $canceledCreditValue[$line->getProductCode()] = new Decimal($uniQt);
                 }
             }
 
             if ($line->getDebitAmount() !== null) {
-                $debit = new UDecimal(
-                    $line->getDebitAmount(), static::CALC_PRECISION
-                );
-                $this->docDebit->plusThis($debit);
+                $debit = new Decimal($line->getDebitAmount());
+                $this->docDebit = $this->docDebit->add($debit);
 
                 if (\in_array($docStat, $notForTotal) === false) {
-                    $this->debit->plusThis($debit);
+                    $this->debit = $this->debit->add($debit);
                 }
 
                 $hasDebit = true;
 
-                if (\array_key_exists($line->getProductCode(), $anulaDebitQt)) {
-                    $anulaDebitQt[$line->getProductCode()]->plusThis(
-                        new UDecimal(
-                            $line->getQuantity(), static::CALC_PRECISION
-                        )
+                if (\array_key_exists($line->getProductCode(), $canceledDebitQt)) {
+                    $canceledDebitQt[$line->getProductCode()] = $canceledDebitQt[$line->getProductCode()]->add(
+                        $line->getQuantity()
                     );
-                    $anulaDebitValue[$line->getProductCode()]->plusThis($uniQt);
+                    $canceledDebitValue[$line->getProductCode()] = $canceledDebitValue[$line->getProductCode()]->add($uniQt);
                 } else {
-                    $anulaDebitQt[$line->getProductCode()]    = new UDecimal(
-                        $line->getQuantity(), static::CALC_PRECISION
+                    $canceledDebitQt[$line->getProductCode()]    = new Decimal(
+                        $line->getQuantity()
                     );
-                    $anulaDebitValue[$line->getProductCode()] = clone $uniQt;
+                    $canceledDebitValue[$line->getProductCode()] = new Decimal($uniQt);
                 }
             }
 
-            $this->producCode($line, $workDocument);
+            $this->productCode($line, $workDocument);
 
             if ($line->issetTax()) {
                 $this->tax($line, $workDocument);
             } elseif ($line->getTaxBase() === null) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get("tax_must_be_defined"),
                     $workDocument->getDocumentNumber(), $line->getLineNumber()
                 );
@@ -789,26 +768,25 @@ class WorkingDocuments extends ADocuments
                 $this->isValid = false;
                 return;
             }
-            $this->netTotal->plusThis($lineValue->abs());
-
-            $this->taxPayable->plusThis($lineTaxCal);
+            $this->netTotal = $this->netTotal->add($lineValue->abs());
+            $this->taxPayable = $this->taxPayable->add($lineTaxCal);
 
             if (\count($line->getReferences()) > 0) {
-                $this->refernces($line, $workDocument);
+                $this->references($line, $workDocument);
             }
             if (\count($line->getOrderReferences()) > 0) {
                 $this->orderReferences($line, $workDocument);
             }
         }
 
-        $this->grossTotal = $this->netTotal->plus($this->taxPayable);
+        $this->grossTotal = $this->netTotal->add($this->taxPayable);
 
-        $workDocument->getDocTotalcal()?->setGrossTotal($this->grossTotal->valueOf());
-        $workDocument->getDocTotalcal()?->setNetTotal($this->netTotal->valueOf());
-        $workDocument->getDocTotalcal()?->setTaxPayable($this->taxPayable->valueOf());
+        $workDocument->getDocTotalCalc()?->setGrossTotal($this->grossTotal);
+        $workDocument->getDocTotalCalc()?->setNetTotal($this->netTotal);
+        $workDocument->getDocTotalCalc()?->setTaxPayable($this->taxPayable);
 
         if ($hasCredit && $hasDebit && $this->allowDebitAndCredit === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_has_credit_and_debit_lines"
                 ), $workDocument->getDocumentNumber()
@@ -821,19 +799,21 @@ class WorkingDocuments extends ADocuments
     }
 
     /**
-     * Validate refernces of NC (Credit note)
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line $line
+     * Validate references of NC (Credit note)
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line         $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
      * @since 1.0.0
      */
-    public function refernces(Line $line, WorkDocument $workDocument): void
+    public function references(Line $line, WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if (\count($line->getReferences()) === 0) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "document_correcting_line_without_refernces"
+                    "document_correcting_line_without_references"
                 ), $workDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -867,9 +847,9 @@ class WorkingDocuments extends ADocuments
         }
 
         if ($hasRef === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
-                    "document_correcting_line_without_refernces"
+                    "document_correcting_line_without_references"
                 ), $workDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
@@ -880,7 +860,7 @@ class WorkingDocuments extends ADocuments
         }
 
         if ($hasReason === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get(
                     "document_correcting_line_without_reason"
                 ), $workDocument->getDocumentNumber(), $line->getLineNumber()
@@ -894,10 +874,11 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate the Order References
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line         $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function orderReferences(Line $line, WorkDocument $workDocument): void
@@ -905,14 +886,14 @@ class WorkingDocuments extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         foreach ($line->getOrderReferences() as $orderRef) {
             if ($orderRef->getOriginatingON() === null) {
-                $msg           = \sprintf(
+                $msg = \sprintf(
                     AAuditFile::getI18n()->get(
-                        "order_reference_document_not_incicated"
+                        "order_reference_document_not_indicated"
                     ), $workDocument->getDocumentNumber(),
                     $line->getLineNumber()
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $orderRef->addError($msg, OrderReferences::N_ORIGINATINGON);
+                $orderRef->addError($msg, OrderReferences::N_ORIGINATING_ON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             } else {
@@ -932,15 +913,15 @@ class WorkingDocuments extends ADocuments
 
             if ($orderRef->getOrderDate() === null) {
                 $docStatus = $workDocument->getDocumentStatus()->getWorkStatus();
-                if ($docStatus->isNotEqual(WorkStatus::A)) {
-                    $msg           = \sprintf(
+                if ($docStatus !== WorkStatus::A) {
+                    $msg = \sprintf(
                         AAuditFile::getI18n()->get(
-                            "order_reference_date_not_incicated"
+                            "order_reference_date_not_indicated"
                         ), $workDocument->getDocumentNumber(),
                         $line->getLineNumber()
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                    $orderRef->addError($msg, OrderReferences::N_ORDERDATE);
+                    $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
                     \Logger::getLogger(\get_class($this))->info($msg);
                     $this->isValid = false;
                 }
@@ -952,7 +933,7 @@ class WorkingDocuments extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $orderRef->addError($msg, OrderReferences::N_ORDERDATE);
+                $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
@@ -961,12 +942,14 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate if Product CodeExist
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line         $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
      * @since 1.0.0
      */
-    protected function producCode(Line $line, WorkDocument $workDocument): void
+    protected function productCode(Line $line, WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($line->issetProductCode()) {
@@ -983,7 +966,7 @@ class WorkingDocuments extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_PRODUCTCODE);
+                $line->addError($msg, Line::N_PRODUCT_CODE);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
@@ -995,7 +978,7 @@ class WorkingDocuments extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_PRODUCTCODE);
+            $line->addError($msg, Line::N_PRODUCT_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1003,10 +986,11 @@ class WorkingDocuments extends ADocuments
 
     /**
      * Validate the line Tax
-     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line $line
+     *
+     * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line         $line
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function tax(Line $line, WorkDocument $workDocument): void
@@ -1014,7 +998,7 @@ class WorkingDocuments extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
 
         if ($line->issetTax() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_be_defined"),
                 $workDocument->getDocumentNumber(), $line->getLineNumber()
             );
@@ -1028,44 +1012,43 @@ class WorkingDocuments extends ADocuments
         $lineTax = $line->getTax();
 
         if ($lineTax->issetTaxType() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_type"),
                 $workDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXTYPE);
+            $lineTax->addError($msg, Tax::N_TAX_TYPE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($lineTax->issetTaxCode() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_code"),
                 $workDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXCODE);
+            $lineTax->addError($msg, Tax::N_TAX_CODE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($lineTax->issetTaxCountryRegion() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_must_have_region"),
                 $workDocument->getDocumentNumber(), $line->getLineNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXCOUNTRYREGION);
+            $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
 
-        if ($lineTax->getTaxType()->isEqual(TaxType::IVA) &&
-            $lineTax->getTaxPercentage() === null) {
+        if ($lineTax->getTaxType() === TaxType::IVA && $lineTax->getTaxPercentage() === null) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("tax_iva_must_have_percentage"),
@@ -1073,13 +1056,13 @@ class WorkingDocuments extends ADocuments
             );
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $lineTax->addError($msg, Tax::N_TAXPERCENTAGE);
+            $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
             return;
         }
 
-        if ($lineTax->getTaxAmount() === 0.0 || $lineTax->getTaxPercentage() === 0.0) {
+        if ($lineTax->getTaxAmount()?->equals("0.0") || $lineTax->getTaxPercentage()?->equals("0.0")) {
             if ($line->getTaxExemptionCode() === null ||
                 $line->getTaxExemptionReason() === null) {
 
@@ -1089,14 +1072,14 @@ class WorkingDocuments extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-                $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         }
 
-        if ($lineTax->getTaxCode()->isEqual(TaxCode::ISE)) {
+        if ($lineTax->getTaxCode() === TaxCode::ISE) {
             if ($line->getTaxExemptionCode() === null ||
                 $line->getTaxExemptionReason() === null) {
 
@@ -1106,32 +1089,32 @@ class WorkingDocuments extends ADocuments
                 );
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-                $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-                $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+                $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
                 \Logger::getLogger(\get_class($this))->info($msg);
                 $this->isValid = false;
             }
         }
 
 
-        if ($lineTax->getTaxCode()->get() !== TaxCode::ISE &&
-            $lineTax->getTaxPercentage() !== 0.0 &&
-            ($line->getTaxExemptionCode() !== null ||
-            $line->getTaxExemptionReason() !== null)
+        if (
+            $lineTax->getTaxCode() !== TaxCode::ISE &&
+            !$lineTax->getTaxPercentage()?->equals("0.0") &&
+            ($line->getTaxExemptionCode() !== null || $line->getTaxExemptionReason() !== null)
         ) {
 
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_isent"),
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("tax_iva_exception_code_or_reason_only_for_tax_zero"),
                 $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $line->addError($msg, Line::N_TAXEXEMPTIONCODE);
-            $line->addError($msg, Line::N_TAXEXEMPTIONREASON);
+            $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
+            $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        // valiedate if exists in tax table
+        // validate if exists in tax table
         foreach ($this->auditFile->getMasterFiles()->getTaxTableEntry() as $taxEntry) {
             /* @var $taxEntry \Rebelo\SaftPt\AuditFile\MasterFiles\TaxTableEntry */
             if ($taxEntry->issetTaxType() === false ||
@@ -1141,10 +1124,10 @@ class WorkingDocuments extends ADocuments
                 continue;
             }
 
-            if ($taxEntry->getTaxType()->isNotEqual($lineTax->getTaxType()) ||
+            if ($taxEntry->getTaxType() !== $lineTax->getTaxType() ||
                 ($taxEntry->getTaxAmount() !== $lineTax->getTaxAmount() &&
-                $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage()) ||
-                $taxEntry->getTaxCountryRegion()->isNotEqual($lineTax->getTaxCountryRegion())) {
+                    $taxEntry->getTaxPercentage() !== $lineTax->getTaxPercentage()) ||
+                $taxEntry->getTaxCountryRegion() !== $lineTax->getTaxCountryRegion()) {
                 continue;
             }
 
@@ -1170,17 +1153,17 @@ class WorkingDocuments extends ADocuments
     /**
      * Validate the document total, only can be invoked after
      * validate lines (Because total controls are get from that validation)
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Decimal\DecimalException
-     * @throws \Rebelo\Enum\EnumException
      * @since 1.0.0
      */
     protected function totals(WorkDocument $workDocument): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         if ($workDocument->issetDocumentTotals() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
                 $workDocument->getDocumentNumber()
             );
@@ -1193,11 +1176,11 @@ class WorkingDocuments extends ADocuments
         }
 
         $totals = $workDocument->getDocumentTotals();
-        $gross  = new UDecimal($totals->getGrossTotal(), 2);
-        $net    = new UDecimal($totals->getNetTotal(), static::CALC_PRECISION);
-        $tax    = new UDecimal($totals->getTaxPayable(), static::CALC_PRECISION);
+        $gross  = new Decimal($totals->getGrossTotal());
+        $net    = new Decimal($totals->getNetTotal());
+        $tax    = new Decimal($totals->getTaxPayable());
 
-        if ($gross->equals($net->plus($tax)) === false) {
+        if ($gross->equals($net->add($tax)) === false) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_tax_plus_net"),
@@ -1210,38 +1193,40 @@ class WorkingDocuments extends ADocuments
             $this->isValid = false;
         }
 
-        if ($gross->signedSubtract($this->grossTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
+        if ($gross->sub($this->grossTotal)->abs()->compareTo($this->deltaTotalDoc) > 0) {
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_gross_not_equal_calc_gross"),
-                $this->grossTotal, $workDocument->getDocumentNumber(),
-                $gross->valueOf()
+                $this->grossTotal,
+                $workDocument->getDocumentNumber(),
+                $gross->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_GROSSTOTAL);
+            $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($net->signedSubtract($this->netTotal)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get("document_nettotal_not_equal_calc_nettotal"),
-                $this->netTotal, $workDocument->getDocumentNumber(),
-                $net->valueOf()
+        if ($net->sub($this->netTotal)->abs()->compareTo($this->deltaTotalDoc) > 0) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("document_net_total_not_equal_calc_net_total"),
+                $this->netTotal,
+                $workDocument->getDocumentNumber(),
+                $net->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_NETTOTAL);
+            $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
 
-        if ($tax->signedSubtract($this->taxPayable)->abs()->valueOf() > $this->deltaTotalDoc) {
-            $msg           = \sprintf(
-                AAuditFile::getI18n()->get("document_taxpayable_not_equal_calc_taxpayable"),
+        if ($tax->sub($this->taxPayable)->abs()->compareTo($this->deltaTotalDoc) > 0) {
+            $msg = \sprintf(
+                AAuditFile::getI18n()->get("document_tax_payable_not_equal_calc_tax_payable"),
                 $this->taxPayable, $workDocument->getDocumentNumber(),
-                $tax->valueOf()
+                $tax->toFloat()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            $totals->addError($msg, DocumentTotals::N_TAXPAYABLE);
+            $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
         }
@@ -1256,17 +1241,13 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        $currAmou      = new UDecimal(
-            $currency->getCurrencyAmount(), static::CALC_PRECISION
-        );
-        $rate          = new UDecimal(
-            $currency->getExchangeRate(), static::CALC_PRECISION
-        );
-        $grossExchange = $currAmou->multiply($rate);
-        $workDocument->getDocTotalcal()?->setGrossTotalFromCurrency($grossExchange->valueOf());
-        $calcCambio    = $gross->signedSubtract($grossExchange, 2)->abs()->valueOf();
+        $currAmount      = new Decimal($currency->getCurrencyAmount());
+        $rate          = new Decimal($currency->getExchangeRate());
+        $grossExchange = $currAmount->mul($rate);
+        $workDocument->getDocTotalCalc()?->setGrossTotalFromCurrency($grossExchange);
+        $calcExchange = $gross->sub($grossExchange)->abs();
 
-        if ($calcCambio > $this->deltaCurrency) {
+        if ($calcExchange > $this->deltaCurrency) {
 
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_currency_rate"),
@@ -1276,7 +1257,7 @@ class WorkingDocuments extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError(
                 $msg,
-                Currency::N_EXCHANGERATE
+                Currency::N_EXCHANGE_RATE
             );
             \Logger::getLogger(\get_class($this))->info($msg);
             $this->isValid = false;
@@ -1284,10 +1265,11 @@ class WorkingDocuments extends ADocuments
     }
 
     /**
-     * Test if the signature is valide or not
+     * Test if the signature is valid or not
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\Sign\SignException
      * @since 1.0.0
      */
@@ -1296,7 +1278,7 @@ class WorkingDocuments extends ADocuments
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
 
         if ($workDocument->issetHash() === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_hash"),
                 $workDocument->getDocumentNumber()
             );
@@ -1312,7 +1294,7 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        if ($workDocument->getDocumentStatus()->getSourceBilling()->isEqual(SourceBilling::I)) {
+        if ($workDocument->getDocumentStatus()->getSourceBilling() === SourceBilling::I) {
             $validate = true;
         } else {
             $validate = $this->sign->verifySignature(
@@ -1326,13 +1308,13 @@ class WorkingDocuments extends ADocuments
 
         if ($validate === false && $this->lastHash === "") {
 
-            list(,, $no) = \explode(
+            list(, , $no) = \explode(
                 " ", \str_replace("/", " ", $workDocument->getDocumentNumber())
             );
 
             if ($no !== "1") {
-                $msg      = \sprintf(
-                    AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serie"),
+                $msg = \sprintf(
+                    AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serial"),
                     $workDocument->getDocumentNumber()
                 );
                 \Logger::getLogger(\get_class($this))->info($msg);
@@ -1343,7 +1325,7 @@ class WorkingDocuments extends ADocuments
         }
 
         if ($validate === false) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AAuditFile::getI18n()->get("signature_not_valid"),
                 $workDocument->getDocumentNumber()
             );
@@ -1360,10 +1342,11 @@ class WorkingDocuments extends ADocuments
     }
 
     /**
-     * Validate the WorkDocument date nad SystemEntrydate
+     * Validate the WorkDocument date nad SystemEntryDate
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     protected function workDocumentDateAndSystemEntryDate(WorkDocument $workDocument): void
@@ -1379,12 +1362,12 @@ class WorkingDocuments extends ADocuments
                     $header->getEndDate()->isEarlier($docDate)) {
                     $msg        = \sprintf(
                         AAuditFile::getI18n()
-                            ->get("doc_date_out_of_range_start_end_header_date"),
+                                  ->get("doc_date_out_of_range_start_end_header_date"),
                         $workDocument->getDocumentNumber()
                     );
                     $msgStack[] = $msg;
                     $workDocument->addError(
-                        $msg, WorkDocument::N_SYSTEMENTRYDATE
+                        $msg, WorkDocument::N_SYSTEM_ENTRY_DATE
                     );
                 }
                 $headerDateChecked = true;
@@ -1394,33 +1377,33 @@ class WorkingDocuments extends ADocuments
         if ($headerDateChecked === false) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("doc_date_not_cheked_start_end_header_date"),
+                          ->get("doc_date_not_checked_start_end_header_date"),
                 $workDocument->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $workDocument->addError($msg, WorkDocument::N_WORKDATE);
+            $workDocument->addError($msg, WorkDocument::N_WORK_DATE);
         }
 
         if ($this->lastDocDate !== null &&
             $this->lastDocDate->isLater($docDate)) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("doc_date_eaarlier_previous_doc"),
+                          ->get("doc_date_earlier_previous_doc"),
                 $workDocument->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $workDocument->addError($msg, WorkDocument::N_WORKDATE);
+            $workDocument->addError($msg, WorkDocument::N_WORK_DATE);
         }
 
         if ($this->lastSystemEntryDate !== null &&
             $this->lastSystemEntryDate->isLater($systemDate)) {
             $msg        = \sprintf(
                 AAuditFile::getI18n()
-                    ->get("doc_systementrydate_earlier_previous_doc"),
+                          ->get("doc_system_entry_date_earlier_previous_doc"),
                 $workDocument->getDocumentNumber()
             );
             $msgStack[] = $msg;
-            $workDocument->addError($msg, WorkDocument::N_SYSTEMENTRYDATE);
+            $workDocument->addError($msg, WorkDocument::N_SYSTEM_ENTRY_DATE);
         }
 
         foreach ($msgStack as $msg) {
@@ -1431,11 +1414,13 @@ class WorkingDocuments extends ADocuments
     }
 
     /**
-     * Validate if exists workdoc types out of date
+     * Validate if exists work document types out of date
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkDocument $workDocument
+     *
      * @return void
-     * @throws DateFormatException
      * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
      * @since 1.0.0
      */
     protected function outOfDateInvoiceTypes(WorkDocument $workDocument): void
@@ -1445,8 +1430,8 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        $type         = $workDocument->getWorkType()->get();
-        $lastDay      = RDate::parse(RDate::SQL_DATE, "2017-06-30");
+        $type         = $workDocument->getWorkType();
+        $lastDay      = RDate::parse(Pattern::SQL_DATE, "2017-06-30");
         $outDateTypes = [
             WorkType::DC
         ];
@@ -1456,9 +1441,9 @@ class WorkingDocuments extends ADocuments
         }
 
         if ($workDocument->getWorkDate()->isLater($lastDay)) {
-            $msg           = \sprintf(
+            $msg = \sprintf(
                 AuditFile::getI18n()->get("document_type_last_date_later"),
-                $type, "2017-06-30", $workDocument->getDocumentNumber()
+                $type->value, "2017-06-30", $workDocument->getDocumentNumber()
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg);

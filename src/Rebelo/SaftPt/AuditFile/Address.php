@@ -92,7 +92,7 @@ class Address extends AAddress
     public function setPostalCode(string $postalCode): bool
     {
         try {
-            $this->postalCode = static::valTextMandMaxCar(
+            $this->postalCode = static::valTextMandatoryMaxCar(
                 $postalCode, 20, __METHOD__
             );
             $return           = true;
@@ -119,7 +119,7 @@ class Address extends AAddress
     {
         $this->country = $country;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->country->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->country->value));
     }
 
     /**
@@ -132,7 +132,7 @@ class Address extends AAddress
     public function getCountry(): Country
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->country->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->country->value));
         return $this->country;
     }
 
@@ -150,18 +150,18 @@ class Address extends AAddress
      * Create the child nodes to the address<br>
      * In the case of this nodeXml, address only will create the address
      * child node, the address root node will be created by the invoker
-     * because cane be CompanyAddress or SupplierAddres or CustomerAddress, etc
+     * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
      * @return \SimpleXMLElement
-	 * @since 1.0.0
+     * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::createXmlNode($node);
         if (isset($this->country)) {
-            $node->addChild(static::N_COUNTRY, $this->getCountry()->get());
+            $node->addChild(static::N_COUNTRY, $this->getCountry()->value);
         } else {
             $node->addChild(static::N_COUNTRY);
             $this->getErrorRegistor()->addOnCreateXmlNode("AddressDetail_not_valid");
@@ -179,7 +179,7 @@ class Address extends AAddress
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
         parent::parseXmlNode($node);
-        $this->setPostalCode((string) $node->{static::N_POSTALCODE});
-        $this->setCountry(new Country((string) $node->{static::N_COUNTRY}));
+        $this->setPostalCode((string) $node->{static::N_POSTAL_CODE});
+        $this->setCountry(Country::from((string) $node->{static::N_COUNTRY}));
     }
 }

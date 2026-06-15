@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * InvoiceStatus
  * <pre>
@@ -50,88 +47,45 @@ use Rebelo\Enum\EnumException;
  *      &lt;/xs:simpleType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus N()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus S()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus A()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus R()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus F()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class InvoiceStatus extends AEnum
+enum InvoiceStatus : string
 {
     /**
      * “N” - Normal<br>
      *  &lt;xs:enumeration value="N"/&gt;
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const N = "N";
+    case N = "N";
 
     /**
      * S para Autofaturacao<br>
      * &lt;xs:enumeration value="S"/&gt;
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const S = "S";
+    case S = "S";
 
     /**
      * “A” - Cancelled document<br>
      * &lt;xs:enumeration value="A"/&gt;
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const A = "A";
+    case A = "A";
 
     /**
      * “R” - Summary document for other documents created in other applications
      * and generated in this application<br>
      * &lt;xs:enumeration value="R"/&gt;
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const R = "R";
+    case R = "R";
 
     /**
      * “F” - Invoiced document<br>
      * &lt;xs:enumeration value="F"/&gt;
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const F = "F";
+    case F = "F";
 
-    /**
-     * InvoiceStatus<br>
-     * The field must be filled in with:<br>
-     * “N” - Normal;<br>
-     * “A” - Cancelled document;<br>
-     * “R” - Summary document for other documents created in other applications
-     * and generated in this application;
-     * “F” - Invoiced document.<br>
-     * <pre>
-     *  &lt;xs:element name="InvoiceStatus"&gt;
-     *      &lt;xs:simpleType&gt;
-     *          &lt;xs:restriction base="xs:string"&gt;
-     *              &lt;xs:enumeration value="N"/&gt;
-     *              &lt;xs:enumeration value="S"/&gt;
-     *              &lt;xs:enumeration value="A"/&gt;
-     *              &lt;xs:enumeration value="R"/&gt;
-     *              &lt;xs:enumeration value="F"/&gt;
-     *          &lt;/xs:restriction&gt;
-     *      &lt;/xs:simpleType&gt;
-     *  &lt;/xs:element&gt;
-     * </pre>
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get enum value
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

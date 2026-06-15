@@ -34,8 +34,7 @@ namespace Rebelo\SaftPt\AuditFile;
 class NotImplemented extends \Exception
 {
 
-    function __construct(string $message = "", int $code = 0,
-                         \Throwable $previous = NULL)
+    function __construct(string $message = "", int $code = 0, \Throwable|null $previous = NULL)
     {
         parent::__construct($message, $code, $previous);
     }

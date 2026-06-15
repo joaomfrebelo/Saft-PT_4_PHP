@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -44,37 +45,37 @@ class DocumentStatus extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_DOCUMENTSTATUS = "DocumentStatus";
+    const string N_DOCUMENT_STATUS = "DocumentStatus";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_WORKSTATUS = "WorkStatus";
+    const string N_WORK_STATUS = "WorkStatus";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_WORKSTATUSDATE = "WorkStatusDate";
+    const string N_WORK_STATUS_DATE = "WorkStatusDate";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_REASON = "Reason";
+    const string N_REASON = "Reason";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEID = "SourceID";
+    const string N_SOURCE_ID = "SourceID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEBILLING = "SourceBilling";
+    const string N_SOURCE_BILLING = "SourceBilling";
 
     /**
      * &lt;xs:element ref="WorkStatus"/&gt;
@@ -137,7 +138,7 @@ class DocumentStatus extends AAuditFile
     }
 
     /**
-     * Get workstatus<br>
+     * Get work status<br>
      * &lt;xs:element ref="WorkStatus"/&gt;
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus
      * @throws \Error
@@ -146,7 +147,7 @@ class DocumentStatus extends AAuditFile
     public function getWorkStatus(): WorkStatus
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->workStatus->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->workStatus->value));
         return $this->workStatus;
     }
 
@@ -161,7 +162,7 @@ class DocumentStatus extends AAuditFile
     }
 
     /**
-     * Set the workstatus<br>
+     * Set the work status<br>
      * &lt;xs:element ref="WorkStatus"/&gt;
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkStatus $workStatus
      * @return void
@@ -174,7 +175,7 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->workStatus->get()
+                    $this->workStatus->value
                 )
             );
     }
@@ -184,9 +185,8 @@ class DocumentStatus extends AAuditFile
      * Date of the last storage of the document status to the second.<br>
      * &lt;xs:element ref="WorkStatusDate"/&gt;<br>
      * &lt;xs:element name="WorkStatusDate" type="SAFdateTimeType"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getWorkStatusDate(): RDate
@@ -195,7 +195,7 @@ class DocumentStatus extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->workStatusDate->format(RDate::DATE_T_TIME)
+                    $this->workStatusDate->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->workStatusDate;
@@ -217,9 +217,10 @@ class DocumentStatus extends AAuditFile
      * Date and time type: “YYYY-MM-DDThh:mm:ss”.
      * &lt;xs:element ref="WorkStatusDate"/&gt;<br>
      * &lt;xs:element name="WorkStatusDate" type="SAFdateTimeType"/&gt;
+     *
      * @param \Rebelo\Date\Date $workStatusDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setWorkStatusDate(RDate $workStatusDate): void
@@ -229,7 +230,7 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->workStatusDate->format(RDate::DATE_T_TIME)
+                    $this->workStatusDate->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -267,7 +268,7 @@ class DocumentStatus extends AAuditFile
     {
         try {
             $this->reason = $reason === null ? null :
-                $this->valTextMandMaxCar($reason, 50, __METHOD__);
+                $this->valTextMandatoryMaxCar($reason, 50, __METHOD__);
             $return       = true;
         } catch (AuditFileException $e) {
             $this->reason = $reason;
@@ -326,7 +327,7 @@ class DocumentStatus extends AAuditFile
     public function setSourceID(string $sourceID): bool
     {
         try {
-            $this->sourceID = $this->valTextMandMaxCar($sourceID, 30, __METHOD__);
+            $this->sourceID = $this->valTextMandatoryMaxCar($sourceID, 30, __METHOD__);
             $return         = true;
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
@@ -359,7 +360,7 @@ class DocumentStatus extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))
             ->info(
-                \sprintf(__METHOD__." get '%s'", $this->sourceBilling->get())
+                \sprintf(__METHOD__." get '%s'", $this->sourceBilling->value)
             );
         return $this->sourceBilling;
     }
@@ -392,51 +393,52 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->sourceBilling->get()
+                    $this->sourceBilling->value
                 )
             );
     }
 
     /**
      * Create Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== WorkDocument::N_WORKDOCUMENT) {
+        if ($node->getName() !== WorkDocument::N_WORK_DOCUMENT) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                WorkDocument::N_WORKDOCUMENT, $node->getName()
+                WorkDocument::N_WORK_DOCUMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $statusNode = $node->addChild(static::N_DOCUMENTSTATUS);
+        $statusNode = $node->addChild(static::N_DOCUMENT_STATUS);
 
         if (isset($this->workStatus)) {
             $statusNode->addChild(
-                static::N_WORKSTATUS, $this->getWorkStatus()->get()
+                static::N_WORK_STATUS, $this->getWorkStatus()->value
             );
         } else {
-            $statusNode->addChild(static::N_WORKSTATUS);
+            $statusNode->addChild(static::N_WORK_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("WorkStatus_not_valid");
         }
 
         if (isset($this->workStatusDate)) {
             $statusNode->addChild(
-                static::N_WORKSTATUSDATE,
-                $this->getWorkStatusDate()->format(RDate::DATE_T_TIME)
+                static::N_WORK_STATUS_DATE,
+                $this->getWorkStatusDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $statusNode->addChild(static::N_WORKSTATUSDATE);
+            $statusNode->addChild(static::N_WORK_STATUS_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("WorkStatusDate_not_valid");
         }
 
@@ -445,18 +447,18 @@ class DocumentStatus extends AAuditFile
         }
 
         if (isset($this->sourceID)) {
-            $statusNode->addChild(static::N_SOURCEID, $this->getSourceID());
+            $statusNode->addChild(static::N_SOURCE_ID, $this->getSourceID());
         } else {
-            $statusNode->addChild(static::N_SOURCEID);
+            $statusNode->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
         }
 
         if (isset($this->sourceBilling)) {
             $statusNode->addChild(
-                static::N_SOURCEBILLING, $this->getSourceBilling()->get()
+                static::N_SOURCE_BILLING, $this->getSourceBilling()->value
             );
         } else {
-            $statusNode->addChild(static::N_SOURCEBILLING);
+            $statusNode->addChild(static::N_SOURCE_BILLING);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceBilling_not_valid");
         }
 
@@ -466,20 +468,21 @@ class DocumentStatus extends AAuditFile
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTSTATUS) {
+        if ($node->getName() !== static::N_DOCUMENT_STATUS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                static:: N_DOCUMENTSTATUS, $node->getName()
+                static:: N_DOCUMENT_STATUS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -487,12 +490,12 @@ class DocumentStatus extends AAuditFile
         }
 
         $this->setWorkStatus(
-            new WorkStatus((string) $node->{static::N_WORKSTATUS})
+            WorkStatus::from((string) $node->{static::N_WORK_STATUS})
         );
 
         $this->setWorkStatusDate(
             RDate::parse(
-                RDate:: DATE_T_TIME, (string) $node->{static::N_WORKSTATUSDATE}
+                Pattern:: DATE_T_TIME, (string) $node->{static::N_WORK_STATUS_DATE}
             )
         );
 
@@ -502,10 +505,10 @@ class DocumentStatus extends AAuditFile
                 }
             );
         }
-        $this->setSourceID((string) $node->{static::N_SOURCEID});
+        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
 
         $this->setSourceBilling(
-            new SourceBilling((string) $node->{static::N_SOURCEBILLING})
+            SourceBilling::from((string) $node->{static::N_SOURCE_BILLING})
         );
     }
 }

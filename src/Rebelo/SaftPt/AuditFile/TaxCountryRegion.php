@@ -26,297 +26,276 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
-use Rebelo\Enum\EnumException;
 
 /**
  * TaxCountryRegion
  *
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AQ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AX()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_AZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BB()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BJ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BQ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BV()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_BZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CV()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CX()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_CZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DJ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_DZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_EH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ER()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ES()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ET()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FJ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_FR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GB()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GP()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GQ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_GY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_HU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ID()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IQ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_IT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_JP()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KP()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_KZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LB()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LV()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_LY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ME()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ML()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MP()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MQ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MV()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MX()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_MZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NP()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_NZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_OM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_PY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_QA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_RW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SB()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SJ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ST()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SV()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SX()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_SZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TD()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TH()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TJ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TL()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TO()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TR()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TV()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TW()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_TZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_US()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UY()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_UZ()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VC()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VG()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VI()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VN()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_VU()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_WF()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_WS()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_XK()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_YE()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_YT()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ZA()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ZM()
- * @method static \Rebelo\SaftPt\AuditFile\TaxCountryRegion ISO_ZW()
  * @author João Rebelo
  */
-class TaxCountryRegion extends Country
+enum TaxCountryRegion : string
 {
-    /**
-     *
-     * @since 1.0.0
-     */
-    const PT_AC = "PT-AC";
+    case  ISO_AD = "AD";
+    case  ISO_AE = "AE";
+    case  ISO_AF = "AF";
+    case  ISO_AG = "AG";
+    case  ISO_AI = "AI";
+    case  ISO_AL = "AL";
+    case  ISO_AM = "AM";
+    case  ISO_AO = "AO";
+    case  ISO_AQ = "AQ";
+    case  ISO_AR = "AR";
+    case  ISO_AS = "AS";
+    case  ISO_AT = "AT";
+    case  ISO_AU = "AU";
+    case  ISO_AW = "AW";
+    case  ISO_AX = "AX";
+    case  ISO_AZ = "AZ";
+    case  ISO_BA = "BA";
+    case  ISO_BB = "BB";
+    case  ISO_BD = "BD";
+    case  ISO_BE = "BE";
+    case  ISO_BF = "BF";
+    case  ISO_BG = "BG";
+    case  ISO_BH = "BH";
+    case  ISO_BI = "BI";
+    case  ISO_BJ = "BJ";
+    case  ISO_BL = "BL";
+    case  ISO_BM = "BM";
+    case  ISO_BN = "BN";
+    case  ISO_BO = "BO";
+    case  ISO_BQ = "BQ";
+    case  ISO_BR = "BR";
+    case  ISO_BS = "BS";
+    case  ISO_BT = "BT";
+    case  ISO_BV = "BV";
+    case  ISO_BW = "BW";
+    case  ISO_BY = "BY";
+    case  ISO_BZ = "BZ";
+    case  ISO_CA = "CA";
+    case  ISO_CC = "CC";
+    case  ISO_CD = "CD";
+    case  ISO_CF = "CF";
+    case  ISO_CG = "CG";
+    case  ISO_CH = "CH";
+    case  ISO_CI = "CI";
+    case  ISO_CK = "CK";
+    case  ISO_CL = "CL";
+    case  ISO_CM = "CM";
+    case  ISO_CN = "CN";
+    case  ISO_CO = "CO";
+    case  ISO_CR = "CR";
+    case  ISO_CU = "CU";
+    case  ISO_CV = "CV";
+    case  ISO_CW = "CW";
+    case  ISO_CX = "CX";
+    case  ISO_CY = "CY";
+    case  ISO_CZ = "CZ";
+    case  ISO_DE = "DE";
+    case  ISO_DJ = "DJ";
+    case  ISO_DK = "DK";
+    case  ISO_DM = "DM";
+    case  ISO_DO = "DO";
+    case  ISO_DZ = "DZ";
+    case  ISO_EC = "EC";
+    case  ISO_EE = "EE";
+    case  ISO_EG = "EG";
+    case  ISO_EH = "EH";
+    case  ISO_ER = "ER";
+    case  ISO_ES = "ES";
+    case  ISO_ET = "ET";
+    case  ISO_FI = "FI";
+    case  ISO_FJ = "FJ";
+    case  ISO_FK = "FK";
+    case  ISO_FM = "FM";
+    case  ISO_FO = "FO";
+    case  ISO_FR = "FR";
+    case  ISO_GA = "GA";
+    case  ISO_GB = "GB";
+    case  ISO_GD = "GD";
+    case  ISO_GE = "GE";
+    case  ISO_GF = "GF";
+    case  ISO_GG = "GG";
+    case  ISO_GH = "GH";
+    case  ISO_GI = "GI";
+    case  ISO_GL = "GL";
+    case  ISO_GM = "GM";
+    case  ISO_GN = "GN";
+    case  ISO_GP = "GP";
+    case  ISO_GQ = "GQ";
+    case  ISO_GR = "GR";
+    case  ISO_GS = "GS";
+    case  ISO_GT = "GT";
+    case  ISO_GU = "GU";
+    case  ISO_GW = "GW";
+    case  ISO_GY = "GY";
+    case  ISO_HK = "HK";
+    case  ISO_HM = "HM";
+    case  ISO_HN = "HN";
+    case  ISO_HR = "HR";
+    case  ISO_HT = "HT";
+    case  ISO_HU = "HU";
+    case  ISO_ID = "ID";
+    case  ISO_IE = "IE";
+    case  ISO_IL = "IL";
+    case  ISO_IM = "IM";
+    case  ISO_IN = "IN";
+    case  ISO_IO = "IO";
+    case  ISO_IQ = "IQ";
+    case  ISO_IR = "IR";
+    case  ISO_IS = "IS";
+    case  ISO_IT = "IT";
+    case  ISO_JE = "JE";
+    case  ISO_JM = "JM";
+    case  ISO_JO = "JO";
+    case  ISO_JP = "JP";
+    case  ISO_KE = "KE";
+    case  ISO_KG = "KG";
+    case  ISO_KH = "KH";
+    case  ISO_KI = "KI";
+    case  ISO_KM = "KM";
+    case  ISO_KN = "KN";
+    case  ISO_KP = "KP";
+    case  ISO_KR = "KR";
+    case  ISO_KW = "KW";
+    case  ISO_KY = "KY";
+    case  ISO_KZ = "KZ";
+    case  ISO_LA = "LA";
+    case  ISO_LB = "LB";
+    case  ISO_LC = "LC";
+    case  ISO_LI = "LI";
+    case  ISO_LK = "LK";
+    case  ISO_LR = "LR";
+    case  ISO_LS = "LS";
+    case  ISO_LT = "LT";
+    case  ISO_LU = "LU";
+    case  ISO_LV = "LV";
+    case  ISO_LY = "LY";
+    case  ISO_MA = "MA";
+    case  ISO_MC = "MC";
+    case  ISO_MD = "MD";
+    case  ISO_ME = "ME";
+    case  ISO_MF = "MF";
+    case  ISO_MG = "MG";
+    case  ISO_MH = "MH";
+    case  ISO_MK = "MK";
+    case  ISO_ML = "ML";
+    case  ISO_MM = "MM";
+    case  ISO_MN = "MN";
+    case  ISO_MO = "MO";
+    case  ISO_MP = "MP";
+    case  ISO_MQ = "MQ";
+    case  ISO_MR = "MR";
+    case  ISO_MS = "MS";
+    case  ISO_MT = "MT";
+    case  ISO_MU = "MU";
+    case  ISO_MV = "MV";
+    case  ISO_MW = "MW";
+    case  ISO_MX = "MX";
+    case  ISO_MY = "MY";
+    case  ISO_MZ = "MZ";
+    case  ISO_NA = "NA";
+    case  ISO_NC = "NC";
+    case  ISO_NE = "NE";
+    case  ISO_NF = "NF";
+    case  ISO_NG = "NG";
+    case  ISO_NI = "NI";
+    case  ISO_NL = "NL";
+    case  ISO_NO = "NO";
+    case  ISO_NP = "NP";
+    case  ISO_NR = "NR";
+    case  ISO_NU = "NU";
+    case  ISO_NZ = "NZ";
+    case  ISO_OM = "OM";
+    case  ISO_PA = "PA";
+    case  ISO_PE = "PE";
+    case  ISO_PF = "PF";
+    case  ISO_PG = "PG";
+    case  ISO_PH = "PH";
+    case  ISO_PK = "PK";
+    case  ISO_PL = "PL";
+    case  ISO_PM = "PM";
+    case  ISO_PN = "PN";
+    case  ISO_PR = "PR";
+    case  ISO_PS = "PS";
+    case  ISO_PT = "PT";
+    case  ISO_PW = "PW";
+    case  ISO_PY = "PY";
+    case  ISO_QA = "QA";
+    case  ISO_RE = "RE";
+    case  ISO_RO = "RO";
+    case  ISO_RS = "RS";
+    case  ISO_RU = "RU";
+    case  ISO_RW = "RW";
+    case  ISO_SA = "SA";
+    case  ISO_SB = "SB";
+    case  ISO_SC = "SC";
+    case  ISO_SD = "SD";
+    case  ISO_SE = "SE";
+    case  ISO_SG = "SG";
+    case  ISO_SH = "SH";
+    case  ISO_SI = "SI";
+    case  ISO_SJ = "SJ";
+    case  ISO_SK = "SK";
+    case  ISO_SL = "SL";
+    case  ISO_SM = "SM";
+    case  ISO_SN = "SN";
+    case  ISO_SO = "SO";
+    case  ISO_SR = "SR";
+    case  ISO_SS = "SS";
+    case  ISO_ST = "ST";
+    case  ISO_SV = "SV";
+    case  ISO_SX = "SX";
+    case  ISO_SY = "SY";
+    case  ISO_SZ = "SZ";
+    case  ISO_TC = "TC";
+    case  ISO_TD = "TD";
+    case  ISO_TF = "TF";
+    case  ISO_TG = "TG";
+    case  ISO_TH = "TH";
+    case  ISO_TJ = "TJ";
+    case  ISO_TK = "TK";
+    case  ISO_TL = "TL";
+    case  ISO_TM = "TM";
+    case  ISO_TN = "TN";
+    case  ISO_TO = "TO";
+    case  ISO_TR = "TR";
+    case  ISO_TT = "TT";
+    case  ISO_TV = "TV";
+    case  ISO_TW = "TW";
+    case  ISO_TZ = "TZ";
+    case  ISO_UA = "UA";
+    case  ISO_UG = "UG";
+    case  ISO_UM = "UM";
+    case  ISO_US = "US";
+    case  ISO_UY = "UY";
+    case  ISO_UZ = "UZ";
+    case  ISO_VA = "VA";
+    case  ISO_VC = "VC";
+    case  ISO_VE = "VE";
+    case  ISO_VG = "VG";
+    case  ISO_VI = "VI";
+    case  ISO_VN = "VN";
+    case  ISO_VU = "VU";
+    case  ISO_WF = "WF";
+    case  ISO_WS = "WS";
+    case  ISO_XK = "XK";
+    case  ISO_YE = "YE";
+    case  ISO_YT = "YT";
+    case  ISO_ZA = "ZA";
+    case  ISO_ZM = "ZM";
+    case  ISO_ZW = "ZW";
+    case DESCONHECIDO = "Desconhecido";
 
     /**
-     * Alias of PT_AC
-     * @since 1.0.0
-     */
-    const PT_MA     = "PT-MA";
-
-    /**
      *
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const ISO_PT_AC = "PT-AC";
+    case ISO_PT_AC = "PT-AC";
 
     /**
      * Alias of PT_MA
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const ISO_PT_MA = "PT-MA";
+    case ISO_PT_MA = "PT-MA";
 
-    /**
-     *
-     * @param string $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
 }

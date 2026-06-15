@@ -26,12 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateException;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Enum\EnumException;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class HeaderTest
@@ -42,19 +41,19 @@ class HeaderTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())->testReflection(Header::class);
-        $this->assertTrue(true);
+        (new Commune(Header::class))->testReflection(Header::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $header = new Header(new ErrorRegister());
@@ -79,19 +78,18 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetAuditFileVersion(): void
     {
         $header = new Header(new ErrorRegister());
-
         $this->assertEquals("1.04_01", $header->getAuditFileVersion());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCompanyID(): void
     {
         $header = new Header(new ErrorRegister());
@@ -121,8 +119,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxRegistrationNumber(): void
     {
         $header = new Header(new ErrorRegister());
@@ -150,10 +148,9 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTaxAccountingBasis(): void
     {
         $header = new Header(new ErrorRegister());
@@ -165,15 +162,15 @@ class HeaderTest extends TestCase
             $this->assertInstanceOf(\Error::class, $e);
         }
         $basis = TaxAccountingBasis::FACTURACAO;
-        $header->setTaxAccountingBasis(new TaxAccountingBasis($basis));
-        $this->assertEquals($basis, $header->getTaxAccountingBasis()->get());
+        $header->setTaxAccountingBasis($basis);
+        $this->assertEquals($basis, $header->getTaxAccountingBasis());
         $this->assertTrue($header->issetTaxAccountingBasis());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCompanyName(): void
     {
         $header = new Header(new ErrorRegister());
@@ -199,8 +196,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testBusinessName(): void
     {
         $header = new Header(new ErrorRegister());
@@ -224,8 +221,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCompanyAddress(): void
     {
         $header = new Header(new ErrorRegister());
@@ -235,8 +232,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testFiscalYear(): void
     {
         $header = new Header(new ErrorRegister());
@@ -267,11 +264,11 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * @throws DateException
-     * @throws DateFormatException
-     * @author João Rebelo
-     * @test
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      */
+    #[Test]
     public function testStartDate(): void
     {
         $header = new Header(new ErrorRegister());
@@ -294,7 +291,7 @@ class HeaderTest extends TestCase
         $header->getErrorRegistor()->clearAllErrors();
         $date->setDate(1999, 10, 05);
         $this->assertFalse($header->setStartDate($date));
-        $this->assertSame("1999-10-05", $date->format(RDate::SQL_DATE));
+        $this->assertSame("1999-10-05", $date->format(Pattern::SQL_DATE));
         $this->assertNotEmpty($header->getErrorRegistor()->getOnSetValue());
 
         $header->getErrorRegistor()->clearAllErrors();
@@ -305,11 +302,11 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * @throws DateException
-     * @throws DateFormatException
-     * @author João Rebelo
-     * @test
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      */
+    #[Test]
     public function testEndDate(): void
     {
         $header = new Header(new ErrorRegister());
@@ -343,11 +340,11 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * @throws DateException
-     * @throws DateFormatException
-     * @author João Rebelo
-     * @test
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      */
+    #[Test]
     public function testDateCreated(): void
     {
         $header = new Header(new ErrorRegister());
@@ -368,8 +365,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTaxEntity(): void
     {
         $header = new Header(new ErrorRegister());
@@ -397,8 +394,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductCompanyTaxID(): void
     {
         $header = new Header(new ErrorRegister());
@@ -426,8 +423,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSoftwareCertificateNumber(): void
     {
         $header = new Header(new ErrorRegister());
@@ -453,8 +450,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductID(): void
     {
         $header = new Header(new ErrorRegister());
@@ -479,8 +476,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testProductVersion(): void
     {
         $header = new Header(new ErrorRegister());
@@ -508,8 +505,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHeaderComment(): void
     {
         $header = new Header(new ErrorRegister());
@@ -534,8 +531,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTelephone(): void
     {
         $header = new Header(new ErrorRegister());
@@ -560,8 +557,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testFax(): void
     {
         $header = new Header(new ErrorRegister());
@@ -586,8 +583,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testEmail(): void
     {
         $header = new Header(new ErrorRegister());
@@ -621,8 +618,8 @@ class HeaderTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWebsite(): void
     {
         $header = new Header(new ErrorRegister());
@@ -650,8 +647,10 @@ class HeaderTest extends TestCase
 
     /**
      * Create and populate an instance of Header to be used in tests
+     *
      * @return Header
-     * @throws DateFormatException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      */
     public function createHeader(): Header
     {
@@ -682,7 +681,7 @@ class HeaderTest extends TestCase
         $header->setProductVersion("1.0.0");
         $header->setSoftwareCertificateNumber(0);
         $header->setStartDate($start);
-        $header->setTaxAccountingBasis(new TaxAccountingBasis(TaxAccountingBasis::FACTURACAO));
+        $header->setTaxAccountingBasis(TaxAccountingBasis::FACTURACAO);
         $header->setTaxEntity("999999990");
         $header->setTaxRegistrationNumber(999999990);
         $header->setWebsite("https://saft.pt");
@@ -704,11 +703,12 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
-     * @throws AuditFileException
-     * @author João Rebelo
-     * @test
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $auditFile = new AuditFile();
@@ -724,92 +724,92 @@ class HeaderTest extends TestCase
 
         $this->assertEquals(
             $header->getAuditFileVersion(),
-            (string) $headerNode->{Header::N_AUDITFILEVERSION}
+            (string) $headerNode->{Header::N_AUDIT_FILE_VERSION}
         );
 
         $this->assertEquals(
             $header->getCompanyID(),
-            (string) $headerNode->{Header::N_COMPANYID}
+            (string) $headerNode->{Header::N_COMPANY_ID}
         );
 
         $this->assertEquals(
             $header->getTaxRegistrationNumber(),
-            (int) $headerNode->{Header::N_TAXREGISTRATIONNUMBER}
+            (int) $headerNode->{Header::N_TAX_REGISTRATION_NUMBER}
         );
 
         $this->assertEquals(
-            $header->getTaxAccountingBasis()->get(),
-            (string) $headerNode->{Header::N_TAXACCOUNTINGBASIS}
+            $header->getTaxAccountingBasis()->value,
+            (string) $headerNode->{Header::N_TAX_ACCOUNTING_BASIS}
         );
 
         $this->assertEquals(
             $header->getCompanyName(),
-            (string) $headerNode->{Header::N_COMPANYNAME}
+            (string) $headerNode->{Header::N_COMPANY_NAME}
         );
 
         $this->assertEquals(
             $header->getBusinessName(),
-            (string) $headerNode->{Header::N_BUSINESSNAME}
+            (string) $headerNode->{Header::N_BUSINESS_NAME}
         );
 
         $this->assertEquals(
             $header->getCompanyAddress()->getAddressDetail(),
-            (string) $headerNode->{Header::N_COMPANYADDRESS}->{AddressPT::N_ADDRESSDETAIL}
+            (string) $headerNode->{Header::N_COMPANY_ADDRESS}->{AddressPT::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals(
-            $header->getFiscalYear(), (int) $headerNode->{Header::N_FISCALYEAR}
+            $header->getFiscalYear(), (int) $headerNode->{Header::N_FISCAL_YEAR}
         );
 
         $this->assertEquals(
-            $header->getStartDate()->format(RDate::SQL_DATE),
-            (string) $headerNode->{Header::N_STARTDATE}
+            $header->getStartDate()->format(Pattern::SQL_DATE),
+            (string) $headerNode->{Header::N_START_DATE}
         );
 
         $this->assertEquals(
             $header->getEndDate()
-                ->format(RDate::SQL_DATE),
-            (string) $headerNode->{Header::N_ENDDATE}
+                ->format(Pattern::SQL_DATE),
+            (string) $headerNode->{Header::N_END_DATE}
         );
 
         $this->assertEquals(
             $header->getDateCreated()
-                ->format(RDate::SQL_DATE),
-            (string) $headerNode->{Header::N_DATECREATED}
+                ->format(Pattern::SQL_DATE),
+            (string) $headerNode->{Header::N_DATE_CREATED}
         );
 
         $this->assertEquals(
             $header->getCurrencyCode(),
-            (string) $headerNode->{Header::N_CURRENCYCODE}
+            (string) $headerNode->{Header::N_CURRENCY_CODE}
         );
 
         $this->assertEquals(
             $header->getTaxEntity(),
-            (string) $headerNode->{Header::N_TAXENTITY}
+            (string) $headerNode->{Header::N_TAX_ENTITY}
         );
 
         $this->assertEquals(
             $header->getProductCompanyTaxID(),
-            (string) $headerNode->{Header::N_PRODUCTCOMPANYTAXID}
+            (string) $headerNode->{Header::N_PRODUCT_COMPANY_TAX_ID}
         );
 
         $this->assertEquals(
             $header->getSoftwareCertificateNumber(),
-            (int) $headerNode->{Header::N_SOFTWARECERTIFICATENUMBER}
+            (int) $headerNode->{Header::N_SOFTWARE_CERTIFICATE_NUMBER}
         );
 
         $this->assertEquals(
             $header->getProductID(),
-            (string) $headerNode->{Header::N_PRODUCTID}
+            (string) $headerNode->{Header::N_PRODUCT_ID}
         );
 
         $this->assertEquals(
             $header->getProductVersion(),
-            (string) $headerNode->{Header::N_PRODUCTVERSION}
+            (string) $headerNode->{Header::N_PRODUCT_VERSION}
         );
         $this->assertEquals(
             $header->getHeaderComment(),
-            (string) $headerNode->{Header::N_HEADERCOMMENT}
+            (string) $headerNode->{Header::N_HEADER_COMMENT}
         );
 
         $this->assertEquals(
@@ -844,10 +844,10 @@ class HeaderTest extends TestCase
         $header->createXmlNode($nodeNull);
         $headerNodeNull = $nodeNull->{Header::N_HEADER};
         $this->assertEquals(
-            0, $headerNodeNull->{Header::N_BUSINESSNAME}->count()
+            0, $headerNodeNull->{Header::N_BUSINESS_NAME}->count()
         );
         $this->assertEquals(
-            0, $headerNodeNull->{Header::N_HEADERCOMMENT}->count()
+            0, $headerNodeNull->{Header::N_HEADER_COMMENT}->count()
         );
         $this->assertEquals(0, $headerNodeNull->{Header::N_TELEPHONE}->count());
         $this->assertEquals(0, $headerNodeNull->{Header::N_FAX}->count());
@@ -862,8 +862,8 @@ class HeaderTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $auditFile = new AuditFile();
@@ -889,8 +889,8 @@ class HeaderTest extends TestCase
         );
 
         $this->assertEquals(
-            $header->getTaxAccountingBasis()->get(),
-            $parsed->getTaxAccountingBasis()->get()
+            $header->getTaxAccountingBasis(),
+            $parsed->getTaxAccountingBasis()
         );
 
         $this->assertEquals($header->getCompanyName(), $parsed->getCompanyName());
@@ -906,18 +906,18 @@ class HeaderTest extends TestCase
         $this->assertEquals($header->getFiscalYear(), $parsed->getFiscalYear());
 
         $this->assertEquals(
-            $header->getStartDate()->format(RDate::SQL_DATE),
-            $parsed->getStartDate()->format(RDate::SQL_DATE)
+            $header->getStartDate()->format(Pattern::SQL_DATE),
+            $parsed->getStartDate()->format(Pattern::SQL_DATE)
         );
 
         $this->assertEquals(
-            $header->getEndDate()->format(RDate::SQL_DATE),
-            $parsed->getEndDate()->format(RDate::SQL_DATE)
+            $header->getEndDate()->format(Pattern::SQL_DATE),
+            $parsed->getEndDate()->format(Pattern::SQL_DATE)
         );
 
         $this->assertEquals(
-            $header->getDateCreated()->format(RDate::SQL_DATE),
-            $parsed->getDateCreated()->format(RDate::SQL_DATE)
+            $header->getDateCreated()->format(Pattern::SQL_DATE),
+            $parsed->getDateCreated()->format(Pattern::SQL_DATE)
         );
 
         $this->assertEquals(
@@ -969,10 +969,11 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
-     * @author João Rebelo
-     * @test
+     * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      */
+    #[Test]
     public function testClone(): void
     {
         $header = $this->createHeader();
@@ -982,7 +983,7 @@ class HeaderTest extends TestCase
             $clone->getCompanyAddress()->getAddressDetail(),
             $header->getCompanyAddress()->getAddressDetail()
         );
-        $clone->getStartDate()->setYaer(1999);
+        $clone->getStartDate()->setYear(1999);
         $this->assertNotEquals(
             $clone->getStartDate()->getTimestamp(),
             $header->getStartDate()->getTimestamp()
@@ -992,8 +993,8 @@ class HeaderTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $auditFile = new AuditFile();
@@ -1017,8 +1018,8 @@ class HeaderTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $auditFile = new AuditFile();

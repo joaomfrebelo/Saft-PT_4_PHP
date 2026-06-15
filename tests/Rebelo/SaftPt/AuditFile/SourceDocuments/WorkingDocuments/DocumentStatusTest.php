@@ -26,21 +26,20 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class DocumentStatusTest extends TestCase
 {
@@ -48,20 +47,19 @@ class DocumentStatusTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(DocumentStatus::class);
-        $this->assertTrue(true);
+        (new Commune(DocumentStatus::class))->testReflection(DocumentStatus::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -75,24 +73,22 @@ class DocumentStatusTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWorkStatus(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
         $status    = WorkStatus::N;
-        $docStatus->setWorkStatus(new WorkStatus($status));
-        $this->assertSame($status, $docStatus->getWorkStatus()->get());
+        $docStatus->setWorkStatus($status);
+        $this->assertSame($status, $docStatus->getWorkStatus());
         $this->assertTrue($docStatus->issetWorkStatus());
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWorkStatusDate(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -104,8 +100,8 @@ class DocumentStatusTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReason(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -120,8 +116,8 @@ class DocumentStatusTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSourceID(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
@@ -138,49 +134,48 @@ class DocumentStatusTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSourceBilling(): void
     {
         $docStatus = new DocumentStatus(new ErrorRegister());
         $srcBill   = SourceBilling::M;
-        $docStatus->setSourceBilling(new SourceBilling($srcBill));
-        $this->assertSame($srcBill, $docStatus->getSourceBilling()->get());
+        $docStatus->setSourceBilling($srcBill);
+        $this->assertSame($srcBill, $docStatus->getSourceBilling());
         $this->assertTrue($docStatus->issetSourceBilling());
     }
 
     /**
-     * Reads all workstaus from the Demo SAFT in Test\Ressources
-     * and parse then to workstatus class, after that generate a xml from the
-     * workstatus class and test if the xml strings are equal
+     * Reads all work status from the Demo SAFT in Test\Resources
+     * and parse then to work status class, after that generate a xml from the
+     * work status class and test if the xml strings are equal
      *
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
-        $docStatus = null;
+        $docStatus   = null;
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
-        $workdocStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{WorkingDocuments::N_WORKINGDOCUMENTS}
-            ->{WorkDocument::N_WORKDOCUMENT};
+        $workDocumentStack = $saftDemoXml
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{WorkingDocuments::N_WORKING_DOCUMENTS}
+            ->{WorkDocument::N_WORK_DOCUMENT};
 
-        if ($workdocStack->count() === 0) {
+        if ($workDocumentStack->count() === 0) {
             $this->fail("No invoices in XML");
         }
 
-        for ($i = 0; $i < $workdocStack->count(); $i++) {
-            $workdocStackXml = $workdocStack[$i];
-            $statusStack     = $workdocStackXml->{DocumentStatus::N_DOCUMENTSTATUS};
+        for ($i = 0; $i < $workDocumentStack->count(); $i++) {
+            $workDocumentStackXml = $workDocumentStack[$i];
+            $statusStack          = $workDocumentStackXml->{DocumentStatus::N_DOCUMENT_STATUS};
 
             if ($statusStack->count() === 0) {
                 $this->fail("No document status in Work document");
@@ -192,14 +187,17 @@ class DocumentStatusTest extends TestCase
                 $docStatus = new DocumentStatus(new ErrorRegister());
                 $docStatus->parseXmlNode($statusXml);
 
+                /** @noinspection HtmlUnknownAttribute */
                 $xmlRootNode      = new \SimpleXMLElement(
-                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/master/src/Rebelo/SaftPt/Validate/Schema/SAFTPT_1_04_01.xsd" '.
+                    '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
+                    'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 ' .
+                    'https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/' .
+                    'master/src/Rebelo/SaftPt/Validate/Schema/SAFTPT_1_04_01.xsd" ' .
                     'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>'
                 );
-                $sourceDocNode    = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-                $workingDocsNode  = $sourceDocNode->addChild(WorkingDocuments::N_WORKINGDOCUMENTS);
-                $workDocStackNode = $workingDocsNode->addChild(WorkDocument::N_WORKDOCUMENT);
+                $sourceDocNode    = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+                $workingDocsNode  = $sourceDocNode->addChild(WorkingDocuments::N_WORKING_DOCUMENTS);
+                $workDocStackNode = $workingDocsNode->addChild(WorkDocument::N_WORK_DOCUMENT);
 
                 $xml = $docStatus->createXmlNode($workDocStackNode);
 
@@ -209,39 +207,36 @@ class DocumentStatusTest extends TestCase
                         $assertXml,
                         \sprintf(
                             "Fail on Document '%s' with error '%s'",
-                            $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
+                            $workDocumentStackXml->{WorkDocument::N_DOCUMENT_NUMBER},
                             $assertXml
                         )
                     );
-                } catch (\Exception | \Error $e) {
+                } catch (\Exception|\Error $e) {
                     $this->fail(
                         \sprintf(
                             "Fail on Document '%s' with error '%s'",
-                            $workdocStackXml->{WorkDocument::N_DOCUMENTNUMBER},
+                            $workDocumentStackXml->{WorkDocument::N_DOCUMENT_NUMBER},
                             $e->getMessage()
                         )
                     );
                 }
             }
-            $this->assertNotNull($docStatus);
-            /* @phpstan-ignore-next-line */
-            $this->assertEmpty($docStatus?->getErrorRegistor()->getLibXmlError());
-            /* @phpstan-ignore-next-line */
-            $this->assertEmpty($docStatus?->getErrorRegistor()->getOnCreateXmlNode());
-            /* @phpstan-ignore-next-line */
-            $this->assertEmpty($docStatus?->getErrorRegistor()->getOnSetValue());
+
+            $this->assertEmpty($docStatus->getErrorRegistor()->getLibXmlError());
+            $this->assertEmpty($docStatus->getErrorRegistor()->getOnCreateXmlNode());
+            $this->assertEmpty($docStatus->getErrorRegistor()->getOnSetValue());
         }
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $docStatusNode = new \SimpleXMLElement(
-            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+            "<" . WorkDocument::N_WORK_DOCUMENT . "></" . WorkDocument::N_WORK_DOCUMENT . ">"
         );
         $docStatus     = new DocumentStatus(new ErrorRegister());
         $xml           = $docStatus->createXmlNode($docStatusNode)->asXML();
@@ -261,12 +256,12 @@ class DocumentStatusTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $docStatusNode = new \SimpleXMLElement(
-            "<".WorkDocument::N_WORKDOCUMENT."></".WorkDocument::N_WORKDOCUMENT.">"
+            "<" . WorkDocument::N_WORK_DOCUMENT . "></" . WorkDocument::N_WORK_DOCUMENT . ">"
         );
         $docStatus     = new DocumentStatus(new ErrorRegister());
         $docStatus->setReason("");

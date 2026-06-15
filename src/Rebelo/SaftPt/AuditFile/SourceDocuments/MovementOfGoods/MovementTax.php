@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -43,31 +44,31 @@ class MovementTax extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_TAX = "Tax";
+    const string N_TAX = "Tax";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TAXTYPE = "TaxType";
+    const string N_TAX_TYPE = "TaxType";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TAXCOUNTRYREGION = "TaxCountryRegion";
+    const string N_TAX_COUNTRY_REGION = "TaxCountryRegion";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TAXCODE = "TaxCode";
+    const string N_TAX_CODE = "TaxCode";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TAXPERCENTAGE = "TaxPercentage";
+    const string N_TAX_PERCENTAGE = "TaxPercentage";
 
     /**
      * &lt;xs:element name="TaxType" type="SAFTPTMovementTaxType"/&gt;
@@ -93,10 +94,10 @@ class MovementTax extends AAuditFile
 
     /**
      * &lt;xs:element ref="TaxPercentage"/&gt;
-     * @var float
+     * @var \Decimal\Decimal
      * @since 1.0.0
      */
-    private float $taxPercentage;
+    private Decimal $taxPercentage;
 
     /**
      * MovementTax
@@ -130,7 +131,7 @@ class MovementTax extends AAuditFile
     public function getTaxType(): MovementTaxType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->value));
         return $this->taxType;
     }
 
@@ -158,7 +159,7 @@ class MovementTax extends AAuditFile
     {
         $this->taxType = $taxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->value));
     }
 
     /**
@@ -178,7 +179,7 @@ class MovementTax extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->taxCountryRegion->get()
+                    $this->taxCountryRegion->value
                 )
             );
         return $this->taxCountryRegion;
@@ -212,7 +213,7 @@ class MovementTax extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->taxCountryRegion->get()
+                    $this->taxCountryRegion->value
                 )
             );
     }
@@ -234,7 +235,7 @@ class MovementTax extends AAuditFile
     public function getTaxCode(): MovementTaxCode
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->get()));
+            ->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->value));
         return $this->taxCode;
     }
 
@@ -267,7 +268,7 @@ class MovementTax extends AAuditFile
     {
         $this->taxCode = $taxCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->get()));
+            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->value));
     }
 
     /**
@@ -275,11 +276,11 @@ class MovementTax extends AAuditFile
      * Percentage of the tax rate corresponding to the tax applicable to the field 4.2.3.21.10. – DebitAmount or to field 4.2.3.21.11. - CreditAmount.
      * In case of exemption or not subject to tax, fill in with “0” (zero).<br>
      * &lt;xs:element ref="TaxPercentage"/&gt;
-     * @return float
+     * @return \Decimal\Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTaxPercentage(): float
+    public function getTaxPercentage(): Decimal
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -306,13 +307,13 @@ class MovementTax extends AAuditFile
      * Percentage of the tax rate corresponding to the tax applicable to the field 4.2.3.21.10. – DebitAmount or to field 4.2.3.21.11. - CreditAmount.
      * In case of exemption or not subject to tax, fill in with “0” (zero).<br>
      * &lt;xs:element ref="TaxPercentage"/&gt;
-     * @param float $taxPercentage
+     * @param Decimal $taxPercentage
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxPercentage(float $taxPercentage): bool
+    public function setTaxPercentage(Decimal $taxPercentage): bool
     {
-        if ($taxPercentage < 0.0) {
+        if ($taxPercentage->compareTo("0.0") < 0) {
             $msg    = "TaxPercentage can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -357,38 +358,38 @@ class MovementTax extends AAuditFile
 
         if (isset($this->taxType)) {
             $movTaxNode->addChild(
-                static::N_TAXTYPE, $this->getTaxType()->get()
+                static::N_TAX_TYPE, $this->getTaxType()->value
             );
         } else {
-            $movTaxNode->addChild(static::N_TAXTYPE);
+            $movTaxNode->addChild(static::N_TAX_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxType_not_valid");
         }
 
         if (isset($this->taxCountryRegion)) {
             $movTaxNode->addChild(
-                static::N_TAXCOUNTRYREGION, $this->getTaxCountryRegion()->get()
+                static::N_TAX_COUNTRY_REGION, $this->getTaxCountryRegion()->value
             );
         } else {
-            $movTaxNode->addChild(static::N_TAXCOUNTRYREGION);
+            $movTaxNode->addChild(static::N_TAX_COUNTRY_REGION);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxCountryRegion_not_valid");
         }
 
         if (isset($this->taxCode)) {
             $movTaxNode->addChild(
-                static::N_TAXCODE, $this->getTaxCode()->get()
+                static::N_TAX_CODE, $this->getTaxCode()->value
             );
         } else {
-            $movTaxNode->addChild(static::N_TAXCODE);
+            $movTaxNode->addChild(static::N_TAX_CODE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxCode_not_valid");
         }
 
         if (isset($this->taxPercentage)) {
             $movTaxNode->addChild(
-                static::N_TAXPERCENTAGE,
+                static::N_TAX_PERCENTAGE,
                 $this->floatFormat($this->getTaxPercentage())
             );
         } else {
-            $movTaxNode->addChild(static::N_TAXPERCENTAGE);
+            $movTaxNode->addChild(static::N_TAX_PERCENTAGE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxPercentage_not_valid");
         }
 
@@ -416,16 +417,16 @@ class MovementTax extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $type = new MovementTaxType((string) $node->{static::N_TAXTYPE});
+        $type = MovementTaxType::from((string) $node->{static::N_TAX_TYPE});
 
         $this->setTaxType($type);
 
-        $country = new TaxCountryRegion((string) $node->{static::N_TAXCOUNTRYREGION});
+        $country = TaxCountryRegion::from((string) $node->{static::N_TAX_COUNTRY_REGION});
         $this->setTaxCountryRegion($country);
 
-        $code = new MovementTaxCode((string) $node->{static::N_TAXCODE});
+        $code = MovementTaxCode::from((string) $node->{static::N_TAX_CODE});
         $this->setTaxCode($code);
 
-        $this->setTaxPercentage((float) $node->{static::N_TAXPERCENTAGE});
+        $this->setTaxPercentage(new Decimal((string) $node->{static::N_TAX_PERCENTAGE}));
     }
 }

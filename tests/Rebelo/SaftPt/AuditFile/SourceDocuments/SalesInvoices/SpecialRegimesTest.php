@@ -26,10 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class SpecialRegimesTest
@@ -40,20 +41,19 @@ class SpecialRegimesTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(SpecialRegimes::class);
-        $this->assertTrue(true);
+        (new Commune(SpecialRegimes::class))->testReflection(SpecialRegimes::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceAndSetGet(): void
     {
         $speReg = new SpecialRegimes(new ErrorRegister());
@@ -76,8 +76,8 @@ class SpecialRegimesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $sepReg = new SpecialRegimes(new ErrorRegister());
@@ -88,7 +88,7 @@ class SpecialRegimesTest extends TestCase
                 "Create a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -97,8 +97,8 @@ class SpecialRegimesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $speReg = new SpecialRegimes(new ErrorRegister());
@@ -109,7 +109,7 @@ class SpecialRegimesTest extends TestCase
                 "Parse a xml node on a wrong node should throw "
                 ."\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -118,6 +118,7 @@ class SpecialRegimesTest extends TestCase
 
     /**
      * @author João Rebelo
+     * @return array<int, bool[]>
      */
     public function getTruesTable(): array
     {
@@ -160,8 +161,8 @@ class SpecialRegimesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $specReg = null;
@@ -177,19 +178,19 @@ class SpecialRegimesTest extends TestCase
             $speRegNode = $specReg->createXmlNode($node);
             $this->assertInstanceOf(\SimpleXMLElement::class, $speRegNode);
             $this->assertSame(
-                SpecialRegimes::N_SPECIALREGIMES, $speRegNode->getName()
+                SpecialRegimes::N_SPECIAL_REGIMES, $speRegNode->getName()
             );
             $this->assertSame(
                 $specReg->getCashVATSchemeIndicator() ? "1" : "0",
-                (string) $node->{SpecialRegimes::N_SPECIALREGIMES}->{SpecialRegimes::N_CASHVATSCHEMEINDICATOR}
+                (string) $node->{SpecialRegimes::N_SPECIAL_REGIMES}->{SpecialRegimes::N_CASH_VAT_SCHEME_INDICATOR}
             );
             $this->assertSame(
                 $specReg->getSelfBillingIndicator() ? "1" : "0",
-                (string) $node->{SpecialRegimes::N_SPECIALREGIMES}->{SpecialRegimes::N_SELFBILLINGINDICATOR}
+                (string) $node->{SpecialRegimes::N_SPECIAL_REGIMES}->{SpecialRegimes::N_SELF_BILLING_INDICATOR}
             );
             $this->assertSame(
                 $specReg->getThirdPartiesBillingIndicator() ? "1" : "0",
-                (string) $node->{SpecialRegimes::N_SPECIALREGIMES}->{SpecialRegimes::N_THIRDPARTIESBILLINGINDICATOR}
+                (string) $node->{SpecialRegimes::N_SPECIAL_REGIMES}->{SpecialRegimes::N_THIRD_PARTIES_BILLING_INDICATOR}
             );
         }
         $this->assertNotNull($specReg);
@@ -204,9 +205,9 @@ class SpecialRegimesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
-    public function testeParseXml(): void
+    #[Test]
+    public function testParseXml(): void
     {
         $parsed = null;
         foreach ($this->getTruesTable() as $bool) {
@@ -234,11 +235,8 @@ class SpecialRegimesTest extends TestCase
             );
         }
         $this->assertNotNull($parsed);
-        /* @phpstan-ignore-next-line */
         $this->assertEmpty($parsed->getErrorRegistor()->getLibXmlError());
-        /* @phpstan-ignore-next-line */
         $this->assertEmpty($parsed->getErrorRegistor()->getOnCreateXmlNode());
-        /* @phpstan-ignore-next-line */
         $this->assertEmpty($parsed->getErrorRegistor()->getOnSetValue());
     }
 }

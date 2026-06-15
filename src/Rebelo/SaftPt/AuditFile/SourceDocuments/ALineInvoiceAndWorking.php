@@ -25,55 +25,63 @@
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class ALineInvoiceAndWorking extends A2Line
 {
     /**
      * &lt;xs:element ref="TaxBase" minOccurs="0"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXBASE = "TaxBase";
+    const string N_TAX_BASE = "TaxBase";
 
     /**
      * &lt;xs:element ref="TaxPointDate"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXPOINTDATE = "TaxPointDate";
+    const string N_TAX_POINT_DATE = "TaxPointDate";
 
     /**
      * &lt;xs:element name="References" type="References" minOccurs="0" maxOccurs="unbounded"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_REFERENCES = "References";
+    const string N_REFERENCES = "References";
 
     /**
      * &lt;xs:element name="Tax" type="Tax"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAX = "Tax";
+    const string N_TAX = "Tax";
 
     /**
      * &lt;xs:element ref="TaxBase" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="TaxBase" type="SAFmonetaryType"/&gt;
-     * @var float|null
+     *
+     * @var \Decimal\Decimal|null
      * @since 1.0.0
      */
-    protected ?float $taxBase = null;
+    protected Decimal|null $taxBase = null;
 
     /**
      * &lt;xs:element ref="TaxPointDate"/&gt;<br>
      * &lt;xs:element name="TaxPointDate" type="SAFdateType"/&gt;
+     *
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -90,6 +98,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\References[]
      * @since 1.0.0
      */
@@ -97,6 +106,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
 
     /**
      * &lt;xs:element name="Tax" type="Tax"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax
      * @since 1.0.0
      */
@@ -105,6 +115,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
     /**
      *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -119,17 +130,18 @@ abstract class ALineInvoiceAndWorking extends A2Line
      * The sign (debit or credit) with which the tax, thus,
      * calculated contributes for the TaxPayable field results from the
      * existence within the line of the DebitAmount or CreditAmount fields.
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTaxBase(): ?float
+    public function getTaxBase(): Decimal|null
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->taxBase === null ? "null" :
-                    \strval($this->taxBase)
+                           \strval($this->taxBase)
                 )
             );
         return $this->taxBase;
@@ -142,16 +154,18 @@ abstract class ALineInvoiceAndWorking extends A2Line
      * The sign (debit or credit) with which the tax, thus,
      * calculated contributes for the TaxPayable field results from the
      * existence within the line of the DebitAmount or CreditAmount fields.
-     * @param float|null $taxBase
+     *
+     * @param Decimal|null $taxBase
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxBase(?float $taxBase): bool
+    public function setTaxBase(Decimal|null $taxBase): bool
     {
-        if ($taxBase !== null && $taxBase < 0.0) {
-            $msg    = "Tax Base can not be less than 0.0";
+        if ($taxBase !== null && $taxBase->compareTo("0.0") < 0) {
+            $msg = "Tax Base can not be less than 0.0";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxBase_not_valid");
         } else {
@@ -161,9 +175,9 @@ abstract class ALineInvoiceAndWorking extends A2Line
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->taxBase === null ? "null" :
-                    \strval($this->taxBase)
+                           \strval($this->taxBase)
                 )
             );
         return $return;
@@ -172,8 +186,8 @@ abstract class ALineInvoiceAndWorking extends A2Line
     /**
      * Get TaxPointDate<br>
      * Date of the dispatch of the goods or of the delivery of the service.
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getTaxPointDate(): RDate
@@ -181,8 +195,8 @@ abstract class ALineInvoiceAndWorking extends A2Line
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxPointDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " get '%s'",
+                    $this->taxPointDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->taxPointDate;
@@ -191,9 +205,10 @@ abstract class ALineInvoiceAndWorking extends A2Line
     /**
      * Set TaxPointDate <br>
      * Date of the dispatch of the goods or of the delivery of the service.
+     *
      * @param \Rebelo\Date\Date $taxPointDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setTaxPointDate(RDate $taxPointDate): void
@@ -202,14 +217,15 @@ abstract class ALineInvoiceAndWorking extends A2Line
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->taxPointDate->format(RDate::SQL_DATE)
+                    __METHOD__ . " set to '%s'",
+                    $this->taxPointDate->format(Pattern::SQL_DATE)
                 )
             );
     }
 
     /**
      * Get is set TaxPointDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -223,12 +239,13 @@ abstract class ALineInvoiceAndWorking extends A2Line
      * References to invoices on the correspondent correcting documents.
      * If there is a need to make more than one reference, this structure can be
      * generated as many times as necessary.<br>
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\References[]
      * @since 1.0.0
      */
     public function getReferences(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " get");
         return $this->references;
     }
 
@@ -237,6 +254,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
      * References to invoices on the correspondent correcting documents.
      * If there is a need to make more than one reference, this structure can be
      * generated as many times as necessary.<br>
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\References
      * @since 1.0.0
      */
@@ -244,7 +262,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
     {
         $references         = new References($this->getErrorRegistor());
         $this->references[] = $references;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." set");
+        \Logger::getLogger(\get_class($this))->debug(__METHOD__ . " set");
         return $references;
     }
 
@@ -253,6 +271,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
      * If the instance is not created, a Tax instance will be created and
      * returned to be populated<br>
      * This structure shall only be created for documents with a value in the database.
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax
      * @since 1.0.0
      */
@@ -261,12 +280,13 @@ abstract class ALineInvoiceAndWorking extends A2Line
         if (isset($this->tax) === false) {
             $this->tax = new Tax($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " get");
         return $this->tax;
     }
 
     /**
      * Get if Tax is set
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -277,10 +297,11 @@ abstract class ALineInvoiceAndWorking extends A2Line
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -292,17 +313,17 @@ abstract class ALineInvoiceAndWorking extends A2Line
 
         if ($this->getTaxBase() !== null) {
             $lineNode->addChild(
-                static::N_TAXBASE, $this->floatFormat($this->getTaxBase())
+                static::N_TAX_BASE, $this->floatFormat($this->getTaxBase())
             );
         }
 
         if (isset($this->taxPointDate)) {
             $lineNode->addChild(
-                static::N_TAXPOINTDATE,
-                $this->getTaxPointDate()->format(RDate::SQL_DATE)
+                static::N_TAX_POINT_DATE,
+                $this->getTaxPointDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $lineNode->addChild(static::N_TAXPOINTDATE);
+            $lineNode->addChild(static::N_TAX_POINT_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxPointDate_not_valid");
         }
 
@@ -316,7 +337,6 @@ abstract class ALineInvoiceAndWorking extends A2Line
             $lineNode->addChild(static::N_DESCRIPTION);
             $this->getErrorRegistor()->addOnCreateXmlNode("Description_not_valid");
         }
-
 
         if ($this->getProductSerialNumber(false) !== null) {
             $this->getProductSerialNumber()?->createXmlNode($lineNode);
@@ -337,9 +357,11 @@ abstract class ALineInvoiceAndWorking extends A2Line
 
     /**
      * Parse the xml represented in this trait
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -351,14 +373,14 @@ abstract class ALineInvoiceAndWorking extends A2Line
         // Test node name and parse LineNumber, credit and debit
         parent::parseXmlNode($node);
 
-        if ($node->{static::N_TAXBASE}->count() > 0) {
-            $this->setTaxBase((float) $node->{static::N_TAXBASE});
+        if ($node->{static::N_TAX_BASE}->count() > 0) {
+            $this->setTaxBase(new Decimal((string)$node->{static::N_TAX_BASE}));
         }
 
         $this->setTaxPointDate(
             RDate::parse(
-                RDate::SQL_DATE,
-                (string) $node->{static::N_TAXPOINTDATE}
+                Pattern::SQL_DATE,
+                (string)$node->{static::N_TAX_POINT_DATE}
             )
         );
 

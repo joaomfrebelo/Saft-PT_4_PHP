@@ -85,17 +85,19 @@ class Line extends ALineInvoiceAndWorking
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        if ($node->getName() !== WorkDocument::N_WORKDOCUMENT) {
+        if ($node->getName() !== WorkDocument::N_WORK_DOCUMENT) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                WorkDocument::N_WORKDOCUMENT, $node->getName()
+                WorkDocument::N_WORK_DOCUMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));

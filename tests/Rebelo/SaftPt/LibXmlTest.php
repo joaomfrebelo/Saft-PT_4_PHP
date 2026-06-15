@@ -2,6 +2,7 @@
 
 namespace Rebelo\SaftPt;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\Validate\Schema\Schema;
 
@@ -20,10 +21,10 @@ class LibXmlTest extends TestCase
     {
         $msg        = "";
         $errorStack = \libxml_get_errors();
-        foreach ($errorStack as $erro) {
+        foreach ($errorStack as $error) {
             $msg .= \sprintf(
-                "'%s' on Line '%s' column '%s'\r\n", $erro->message,
-                $erro->line, $erro->column
+                "'%s' on Line '%s' column '%s'\r\n", $error->message,
+                $error->line, $error->column
             );
         }
         return $msg;
@@ -47,33 +48,28 @@ class LibXmlTest extends TestCase
      * ' on Line '767' column '0'
      * 'Element '{http://www.w3.org/2001/XMLSchema}complexType': The content is not valid. Expected is (annotation?, (simpleContent | complexContent | ((group | all | choice | sequence)?, ((attribute | attributeGroup)*, anyAttribute?)))).
      * ' on Line '817' column '0'
-     * @test
      */
+    #[Test]
     public function testValidateOnXsdVersion1Dot1(): void
     {
+        $xsd = Schema::ORIGINAL_AT_XSD;
 
-        try {
-            $xsd = Schema::ORIGINAL_AT_XSD;
-
-            if (\is_file($xsd) === false) {
-                $this->fail("File not found: ".$xsd);
-            }
-
-            \libxml_use_internal_errors(true);
-            \libxml_clear_errors();
-            //\libxml_disable_entity_loader(false);
-            $dom      = new \DOMDocument("1.1", "ISO-8859-1");
-            $dom->load(SAFT_DEMO_PATH);
-            $validate = $dom->schemaValidate($xsd);
-
-            if ($validate === false) {
-                $this->fail($this->createLibXmlErrorMsg());
-            }
-            $this->assertTrue($validate);
-            $this->fail("XML validation already uses xml 1.1, change your code");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Exception::class, $e);
+        if (\is_file($xsd) === false) {
+            $this->fail("File not found: " . $xsd);
         }
+
+        \libxml_use_internal_errors(true);
+        \libxml_clear_errors();
+        //\libxml_disable_entity_loader(false);
+        $dom = new \DOMDocument("1.1", "ISO-8859-1");
+        $dom->load(SAFT_DEMO_PATH);
+        $validate = $dom->schemaValidate($xsd);
+
+        $this->assertFalse(
+            $validate,
+            "XML validation already uses xml 1.1, change your code\r\n"
+        );
+
     }
 
     /**
@@ -154,109 +150,91 @@ class LibXmlTest extends TestCase
      * 'Element '{urn:OECD:StandardAuditFile-Tax:PT_1.04_01}CreditLine': This element is not expected.
      * ' on Line '2940' column '0'
      *
-     * @test
-     * @
      */
+    #[Test]
     public function testValidateOnXsdVersion1Dot0(): void
     {
-        try {
-            $xsd = Schema::XSD_V_1_0;
+        $xsd = Schema::XSD_V_1_0;
 
-            if (\is_file($xsd) === false) {
-                $this->fail("File not found: ".$xsd);
-            }
-
-            \libxml_use_internal_errors(true);
-            \libxml_clear_errors();
-            //\libxml_disable_entity_loader(false);
-            $dom      = new \DOMDocument("1.0", "ISO-8859-1");
-            $dom->load(SAFT_DEMO_PATH);
-            $validate = $dom->schemaValidate($xsd);
-
-            if ($validate === false) {
-                $errorStack = \libxml_get_errors();
-                $msg        = "";
-                foreach ($errorStack as $erro) {
-                    $msg .= sprintf(
-                        "'%s' on Line '%s' column '%s'\r\n", $erro->message,
-                        $erro->line, $erro->column
-                    );
-                }
-                $this->fail($msg);
-            }
-
-            $this->assertTrue($validate);
-            $this->fail("XML validation already uses xml 1.1, change your code");
-        } catch (\Exception | \Error $e) {
-            $this->assertInstanceOf(\Exception::class, $e);
+        if (\is_file($xsd) === false) {
+            $this->fail("File not found: " . $xsd);
         }
+
+        \libxml_use_internal_errors(true);
+        \libxml_clear_errors();
+        //\libxml_disable_entity_loader(false);
+        $dom = new \DOMDocument("1.0", "ISO-8859-1");
+        $dom->load(SAFT_DEMO_PATH);
+        $validate = $dom->schemaValidate($xsd);
+
+        $this->assertFalse(
+            $validate, "XML validation already uses xml 1.1, change your code\r\n"
+        );
     }
 
     /**
-     * Changed xsd to xml v 1.0 baecause of libxml only works with xml 1.0
+     * Changed xsd to xml v 1.0 because of libxml only works with xml 1.0
      * and correct the error of tag all
-     * @test
      */
+    #[Test]
     public function testValidateOnXsdVersion1Dot0MyXsd(): void
     {
         $xsd = Schema::GLOBAL_XSD;
 
         if (\is_file($xsd) === false) {
-            $this->fail("File not found: ".$xsd);
+            $this->fail("File not found: " . $xsd);
         }
 
         \libxml_use_internal_errors(true);
         \libxml_clear_errors();
-        $dom      = new \DOMDocument("1.0", "ISO-8859-1");
+        $dom = new \DOMDocument("1.0", "ISO-8859-1");
         $dom->load(SAFT_DEMO_PATH);
         $validate = $dom->schemaValidate($xsd);
 
         if ($validate === false) {
             $errorStack = \libxml_get_errors();
             $msg        = "";
-            foreach ($errorStack as $erro) {
+            foreach ($errorStack as $error) {
                 $msg .= sprintf(
-                    "'%s' on Line '%s' column '%s'\r\n", $erro->message,
-                    $erro->line, $erro->column
+                    "'%s' on Line '%s' column '%s'\r\n", $error->message,
+                    $error->line, $error->column
                 );
             }
-            $this->fail($msg);
         }
 
-        $this->assertTrue($validate);
+        $this->assertTrue($validate, $msg ?? "");
     }
 
     /**
      * Validate permissive xsd
      *
-     * @test
      */
+    #[Test]
     public function testValidatePermissive(): void
     {
         $xsd = Schema::PERMISSIVE_XSD;
 
         if (\is_file($xsd) === false) {
-            $this->fail("File not found: ".$xsd);
+            $this->fail("File not found: " . $xsd);
         }
 
         \libxml_use_internal_errors(true);
         \libxml_clear_errors();
-        $dom      = new \DOMDocument("1.0", "ISO-8859-1");
+        $dom = new \DOMDocument("1.0", "ISO-8859-1");
         $dom->load(SAFT_DEMO_PATH);
         $validate = $dom->schemaValidate($xsd);
 
         if ($validate === false) {
             $errorStack = \libxml_get_errors();
             $msg        = "";
-            foreach ($errorStack as $erro) {
+            foreach ($errorStack as $error) {
                 $msg .= sprintf(
-                    "'%s' on Line '%s' column '%s'\r\n", $erro->message,
-                    $erro->line, $erro->column
+                    "'%s' on Line '%s' column '%s'\r\n", $error->message,
+                    $error->line, $error->column
                 );
             }
-            $this->fail($msg);
         }
 
-        $this->assertTrue($validate);
+        $this->assertTrue($validate, $msg ?? "");
     }
 }

@@ -26,8 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * MovOfGoodsTableTotalCalcTest
@@ -38,20 +40,19 @@ class MovOfGoodsTableTotalCalcTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(MovOfGoodsTableTotalCalc::class);
-        $this->assertTrue(true);
+        (new Commune(MovOfGoodsTableTotalCalc::class))->testReflection(MovOfGoodsTableTotalCalc::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $docCalc = new MovOfGoodsTableTotalCalc();
@@ -65,8 +66,8 @@ class MovOfGoodsTableTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNumberOfMovementLines(): void
     {
         $docCalc = new MovOfGoodsTableTotalCalc();
@@ -81,13 +82,13 @@ class MovOfGoodsTableTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTotalQuantityIssued(): void
     {
         $docCalc = new MovOfGoodsTableTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setTotalQuantityIssued($value);
         $this->assertSame($value, $docCalc->getTotalQuantityIssued());
 

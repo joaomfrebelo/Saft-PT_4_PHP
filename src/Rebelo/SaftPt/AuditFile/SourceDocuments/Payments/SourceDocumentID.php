@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -47,25 +48,25 @@ class SourceDocumentID extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEDOCUMENTID = "SourceDocumentID";
+    const string N_SOURCE_DOCUMENT_ID = "SourceDocumentID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ORIGINATINGON = "OriginatingON";
+    const string N_ORIGINATING_ON = "OriginatingON";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_INVOICEDATE = "InvoiceDate";
+    const string N_INVOICE_DATE = "InvoiceDate";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_DESCRIPTION = "Description";
+    const string N_DESCRIPTION = "Description";
 
     /**
      * <pre>
@@ -165,7 +166,7 @@ class SourceDocumentID extends AAuditFile
     public function setOriginatingON(string $originatingON): bool
     {
         try {
-            $this->originatingON = $this->valTextMandMaxCar(
+            $this->originatingON = $this->valTextMandatoryMaxCar(
                 $originatingON, 60,
                 __METHOD__
             );
@@ -186,9 +187,8 @@ class SourceDocumentID extends AAuditFile
      * Get Invoice Date<br>
      * Mention the date on the invoice or any amendment document for payment.
      * &lt;xs:element ref="InvoiceDate"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getInvoiceDate(): RDate
@@ -197,7 +197,7 @@ class SourceDocumentID extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->invoiceDate->format(RDate::SQL_DATE)
+                    $this->invoiceDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->invoiceDate;
@@ -217,9 +217,10 @@ class SourceDocumentID extends AAuditFile
      * Set Invoice Date<br>
      * Mention the date on the invoice or any amendment document for payment.
      * &lt;xs:element ref="InvoiceDate"/&gt;
+     *
      * @param \Rebelo\Date\Date $invoiceDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setInvoiceDate(RDate $invoiceDate): void
@@ -229,7 +230,7 @@ class SourceDocumentID extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->invoiceDate->format(RDate::SQL_DATE)
+                    $this->invoiceDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -271,7 +272,7 @@ class SourceDocumentID extends AAuditFile
     {
         try {
             $this->description = $description === null ? null :
-                $this->valTextMandMaxCar($description, 200, __METHOD__);
+                $this->valTextMandatoryMaxCar($description, 200, __METHOD__);
             $return            = true;
         } catch (AuditFileException $e) {
             $this->description = $description;
@@ -292,10 +293,11 @@ class SourceDocumentID extends AAuditFile
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -312,24 +314,24 @@ class SourceDocumentID extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $sourceIdNode = $node->addChild(static::N_SOURCEDOCUMENTID);
+        $sourceIdNode = $node->addChild(static::N_SOURCE_DOCUMENT_ID);
 
         if (isset($this->originatingON)) {
             $sourceIdNode->addChild(
-                static::N_ORIGINATINGON, $this->getOriginatingON()
+                static::N_ORIGINATING_ON, $this->getOriginatingON()
             );
         } else {
-            $sourceIdNode->addChild(static::N_ORIGINATINGON);
+            $sourceIdNode->addChild(static::N_ORIGINATING_ON);
             $this->getErrorRegistor()->addOnCreateXmlNode("OriginatingON_not_valid");
         }
 
         if (isset($this->invoiceDate)) {
             $sourceIdNode->addChild(
-                static::N_INVOICEDATE,
-                $this->getInvoiceDate()->format(RDate::SQL_DATE)
+                static::N_INVOICE_DATE,
+                $this->getInvoiceDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $sourceIdNode->addChild(static::N_INVOICEDATE);
+            $sourceIdNode->addChild(static::N_INVOICE_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("InvoiceDate_not_valid");
         }
 
@@ -344,9 +346,11 @@ class SourceDocumentID extends AAuditFile
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -355,10 +359,10 @@ class SourceDocumentID extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_SOURCEDOCUMENTID) {
+        if ($node->getName() !== static::N_SOURCE_DOCUMENT_ID) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_SOURCEDOCUMENTID, $node->getName()
+                static::N_SOURCE_DOCUMENT_ID, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -366,12 +370,12 @@ class SourceDocumentID extends AAuditFile
         }
 
         $this->setOriginatingON(
-            (string) $node->{static::N_ORIGINATINGON}
+            (string) $node->{static::N_ORIGINATING_ON}
         );
 
         $this->setInvoiceDate(
             RDate::parse(
-                RDate::SQL_DATE, (string) $node->{static::N_INVOICEDATE}
+                Pattern::SQL_DATE, (string) $node->{static::N_INVOICE_DATE}
             )
         );
 

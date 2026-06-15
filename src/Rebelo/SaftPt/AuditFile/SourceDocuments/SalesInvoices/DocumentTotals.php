@@ -43,13 +43,13 @@ class DocumentTotals extends ADocumentTotals
      * Node name
      * @since 1.0.0
      */
-    const N_SETTLEMENT = "Settlement";
+    const string N_SETTLEMENT = "Settlement";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PAYMENT = "Payment";
+    const string N_PAYMENT = "Payment";
 
     /**
      * &lt;xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/&gt;
@@ -103,7 +103,7 @@ class DocumentTotals extends ADocumentTotals
     public function getSettlement(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->settlement;
     }
 
@@ -126,7 +126,7 @@ class DocumentTotals extends ADocumentTotals
     }
 
     /**
-     * Get Pyment stack<br>
+     * Get Payment stack<br>
      * Payment method used. In case of mixed payments,
      * the amounts shall be indicated by type of mean of payment and date of payment.
      * If there is a need to make more than one reference, this structure can
@@ -139,7 +139,7 @@ class DocumentTotals extends ADocumentTotals
     public function getPayment(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->payment;
     }
 
@@ -168,6 +168,7 @@ class DocumentTotals extends ADocumentTotals
      * Create the XML node
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -202,7 +203,10 @@ class DocumentTotals extends ADocumentTotals
      * Parse the XML node
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -210,10 +214,10 @@ class DocumentTotals extends ADocumentTotals
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTTOTALS) {
+        if ($node->getName() !== static::N_DOCUMENT_TOTALS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_DOCUMENTTOTALS, $node->getName()
+                static::N_DOCUMENT_TOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));

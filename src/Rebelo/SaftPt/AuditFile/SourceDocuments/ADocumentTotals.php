@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -40,57 +41,66 @@ abstract class ADocumentTotals extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_DOCUMENTTOTALS = "DocumentTotals";
+    const string N_DOCUMENT_TOTALS = "DocumentTotals";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXPAYABLE = "TaxPayable";
+    const string N_TAX_PAYABLE = "TaxPayable";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_NETTOTAL = "NetTotal";
+    const string N_NET_TOTAL = "NetTotal";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_GROSSTOTAL = "GrossTotal";
+    const string N_GROSS_TOTAL = "GrossTotal";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_CURRENCY = "Currency";
+    const string N_CURRENCY = "Currency";
 
     /**
      * &lt;xs:element ref="TaxPayable"/&gt;<br>
-     * @var float $taxPayable
+     *
+     * @var \Decimal\Decimal $taxPayable
      * @since 1.0.0
      */
-    private float $taxPayable;
+    private Decimal $taxPayable;
 
     /**
      * &lt;xs:element ref="NetTotal"/&gt;<br>
-     * @var float $netTotal
+     *
+     * @var \Decimal\Decimal $netTotal
      * @since 1.0.0
      */
-    private float $netTotal;
+    private Decimal $netTotal;
 
     /**
      * &lt;xs:element ref="GrossTotal"/&gt;<br>
-     * @var float $grossTotal
+     *
+     * @var Decimal $grossTotal
      * @since 1.0.0
      */
-    private float $grossTotal;
+    private Decimal $grossTotal;
 
     /**
      * &lt;xs:element name="Currency" type="Currency" minOccurs="0"/&gt;<br>
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null $currency
      * @since 1.0.0
      */
@@ -98,6 +108,7 @@ abstract class ADocumentTotals extends AAuditFile
 
     /**
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -109,19 +120,21 @@ abstract class ADocumentTotals extends AAuditFile
      * Gets as taxPayable<br>
      * When not valued in the database, shall be filled in with "0.00".<br>
      * &lt;xs:element ref="TaxPayable"/&gt;
-     * @return float
+     *
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTaxPayable(): float
+    public function getTaxPayable(): Decimal
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxPayable));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->taxPayable));
         return $this->taxPayable;
     }
 
     /**
      * Get if is set TaxPayable
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -134,16 +147,18 @@ abstract class ADocumentTotals extends AAuditFile
      * Sets a new taxPayable<br>
      * When not valued in the database, shall be filled in with "0.00".<br>
      * &lt;xs:element ref="TaxPayable"/&gt;
-     * @param float $taxPayable
+     *
+     * @param Decimal $taxPayable
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxPayable(float $taxPayable): bool
+    public function setTaxPayable(Decimal $taxPayable): bool
     {
-        if ($taxPayable < 0.0) {
-            $msg    = "Tax Payable can not be negative";
+        if ($taxPayable->compareTo("0.0") < 0) {
+            $msg = "Tax Payable can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxPayable_not_valid");
         } else {
@@ -151,7 +166,7 @@ abstract class ADocumentTotals extends AAuditFile
         }
         $this->taxPayable = $taxPayable;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxPayable));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxPayable));
         return $return;
     }
 
@@ -162,19 +177,21 @@ abstract class ADocumentTotals extends AAuditFile
      * in table 2.5. - TaxTable.
      * When not valued in the database, shall be filled in with "0.00".
      * &lt;xs:element ref="NetTotal"/&gt;
-     * @return float
+     *
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getNetTotal(): float
+    public function getNetTotal(): Decimal
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->netTotal));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->netTotal));
         return $this->netTotal;
     }
 
     /**
      * Get if is set NetTotal<br>
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -186,16 +203,18 @@ abstract class ADocumentTotals extends AAuditFile
     /**
      * Sets a new netTotal<br>
      * &lt;xs:element ref="NetTotal"/&gt;
-     * @param float $netTotal
+     *
+     * @param Decimal $netTotal
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setNetTotal(float $netTotal): bool
+    public function setNetTotal(Decimal $netTotal): bool
     {
-        if ($netTotal < 0.0) {
-            $msg    = "Net Total can not be negative";
+        if ($netTotal->compareTo("0.0") < 0) {
+            $msg = "Net Total can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("NetTotal_not_valid");
         } else {
@@ -203,7 +222,7 @@ abstract class ADocumentTotals extends AAuditFile
         }
         $this->netTotal = $netTotal;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->netTotal));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->netTotal));
         return $return;
     }
 
@@ -212,19 +231,21 @@ abstract class ADocumentTotals extends AAuditFile
      * [Total of the Documents with taxes]<br>
      * When not valued in the database, shall be filled in with "0.00".<br>
      * &lt;xs:element ref="GrossTotal"/&gt;
-     * @return float
+     *
+     * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
-    public function getGrossTotal(): float
+    public function getGrossTotal(): Decimal
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->grossTotal));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->grossTotal));
         return $this->grossTotal;
     }
 
     /**
      * Get if is set GrossTotal<br>
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -238,16 +259,18 @@ abstract class ADocumentTotals extends AAuditFile
      * [Total of the Documents with taxes]<br>
      * When not valued in the database, shall be filled in with "0.00".<br>
      * &lt;xs:element ref="GrossTotal"/&gt;
-     * @param float $grossTotal
+     *
+     * @param Decimal $grossTotal
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setGrossTotal(float $grossTotal): bool
+    public function setGrossTotal(Decimal $grossTotal): bool
     {
-        if ($grossTotal < 0.0) {
-            $msg    = "Gross Total can not be negative";
+        if ($grossTotal->compareTo("0.0") < 0) {
+            $msg = "Gross Total can not be negative";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("GrossTotal_not_valid");
         } else {
@@ -255,7 +278,7 @@ abstract class ADocumentTotals extends AAuditFile
         }
         $this->grossTotal = $grossTotal;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->grossTotal));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->grossTotal));
         return $return;
     }
 
@@ -265,7 +288,9 @@ abstract class ADocumentTotals extends AAuditFile
      * If $create is true and an instance wasn't created a new instance
      * will be created when you get this method.
      * &lt;xs:element name="Currency" type="Currency" minOccurs="0"/&gt;
+     *
      * @param bool $create If true an instance of Currency will be created if wasn't previous
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Currency|null
      * @since 1.0.0
      */
@@ -274,24 +299,27 @@ abstract class ADocumentTotals extends AAuditFile
         if ($create && $this->currency === null) {
             $this->currency = new Currency($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " get");
         return $this->currency;
     }
 
     /**
      * Set Currency as null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setCurrencyAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as null");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " set as null");
         $this->currency = null;
     }
 
     /**
      * Create the common XML nodes
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -300,23 +328,23 @@ abstract class ADocumentTotals extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        $docTotalNode = $node->addChild(static::N_DOCUMENTTOTALS);
+        $docTotalNode = $node->addChild(static::N_DOCUMENT_TOTALS);
 
         if (isset($this->taxPayable)) {
             $docTotalNode->addChild(
-                static::N_TAXPAYABLE, $this->floatFormat($this->getTaxPayable())
+                static::N_TAX_PAYABLE, $this->floatFormat($this->getTaxPayable())
             );
         } else {
-            $docTotalNode->addChild(static::N_TAXPAYABLE);
+            $docTotalNode->addChild(static::N_TAX_PAYABLE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxPayable_not_valid");
         }
 
         if (isset($this->netTotal)) {
             $docTotalNode->addChild(
-                static::N_NETTOTAL, $this->floatFormat($this->getNetTotal())
+                static::N_NET_TOTAL, $this->floatFormat($this->getNetTotal())
             );
         } else {
-            $docTotalNode->addChild(static::N_NETTOTAL);
+            $docTotalNode->addChild(static::N_NET_TOTAL);
             $this->getErrorRegistor()->addOnCreateXmlNode("NetTotal_not_valid");
         }
 
@@ -325,11 +353,11 @@ abstract class ADocumentTotals extends AAuditFile
             // GrossTotal is always with 2 decimals, and the GrossTotal value to the
             // digital signature hash must be with 2 decimals too
             $docTotalNode->addChild(
-                static::N_GROSSTOTAL,
+                static::N_GROSS_TOTAL,
                 $this->floatFormat($this->getGrossTotal(), 2)
             );
         } else {
-            $docTotalNode->addChild(static::N_GROSSTOTAL);
+            $docTotalNode->addChild(static::N_GROSS_TOTAL);
             $this->getErrorRegistor()->addOnCreateXmlNode("GrossTotal_not_valid");
         }
 
@@ -343,7 +371,9 @@ abstract class ADocumentTotals extends AAuditFile
 
     /**
      * Create the Currency XMl node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws AuditFileException
      * @since 1.0.0
@@ -352,13 +382,13 @@ abstract class ADocumentTotals extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTTOTALS) {
+        if ($node->getName() !== static::N_DOCUMENT_TOTALS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_DOCUMENTTOTALS, $node->getName()
+                static::N_DOCUMENT_TOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -369,6 +399,7 @@ abstract class ADocumentTotals extends AAuditFile
      * Parse the XML node
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -377,30 +408,34 @@ abstract class ADocumentTotals extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTTOTALS) {
+        if ($node->getName() !== static::N_DOCUMENT_TOTALS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_DOCUMENTTOTALS, $node->getName()
+                static::N_DOCUMENT_TOTALS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setTaxPayable((float) $node->{static::N_TAXPAYABLE});
-        $this->setNetTotal((float) $node->{static::N_NETTOTAL});
-        $this->setGrossTotal((float) $node->{static::N_GROSSTOTAL});
+        $this->setTaxPayable(new Decimal((string)$node->{static::N_TAX_PAYABLE}));
+        $this->setNetTotal(new Decimal((string)$node->{static::N_NET_TOTAL}));
+        $this->setGrossTotal(new Decimal((string)$node->{static::N_GROSS_TOTAL}));
         if ($node->{static::N_CURRENCY}->count() > 0) {
+
             $currency = $this->getCurrency();
+
             $currency?->setCurrencyAmount(
-                (float) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYAMOUNT}
+                new Decimal((string)$node->{static::N_CURRENCY}->{Currency::N_CURRENCY_AMOUNT})
             );
+
             $currency?->setExchangeRate(
-                (float) $node->{static::N_CURRENCY}->{Currency::N_EXCHANGERATE}
+                new Decimal((string)$node->{static::N_CURRENCY}->{Currency::N_EXCHANGE_RATE})
             );
+
             $currency?->setCurrencyCode(
-                new CurrencyCode(
-                    (string) $node->{static::N_CURRENCY}->{Currency::N_CURRENCYCODE}
+                CurrencyCode::from(
+                    (string)$node->{static::N_CURRENCY}->{Currency::N_CURRENCY_CODE}
                 )
             );
         }

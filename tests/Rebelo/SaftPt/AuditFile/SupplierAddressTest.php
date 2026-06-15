@@ -26,9 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\Enum\EnumException;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class SupplierAddress
@@ -39,20 +39,19 @@ class SupplierAddressTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(SupplierAddress::class);
-        $this->assertTrue(true);
+        (new Commune(SupplierAddress::class))->testReflection(SupplierAddress::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $address = new SupplierAddress(new ErrorRegister());
@@ -64,8 +63,8 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetBuildingNumber(): void
     {
         $address  = new SupplierAddress(new ErrorRegister());
@@ -76,7 +75,7 @@ class SupplierAddressTest extends TestCase
         $this->assertTrue($address->setBuildingNumber(null));
         $this->assertNull($address->getBuildingNumber());
         $this->assertTrue($address->setBuildingNumber(\str_pad("_", 11, "_")));
-        $this->assertEquals(10, \strlen($address->getBuildingNumber()));
+        $this->assertEquals(10, \strlen($address->getBuildingNumber() ?? "")); /** @phpstan-ignore-line */
 
         $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setBuildingNumber(""));
@@ -86,8 +85,8 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetStreetName(): void
     {
         $address = new SupplierAddress(new ErrorRegister());
@@ -98,7 +97,7 @@ class SupplierAddressTest extends TestCase
         $this->assertTrue($address->setStreetName(null));
         $this->assertNull($address->getStreetName());
         $this->assertTrue($address->setStreetName(\str_pad("_", 209, "_")));
-        $this->assertEquals(200, \strlen($address->getStreetName()));
+        $this->assertEquals(200, \strlen($address->getStreetName() ?? "")); /** @phpstan-ignore-line */
 
         $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setStreetName(""));
@@ -108,8 +107,8 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetAddressDetail(): void
     {
         $address    = new SupplierAddress(new ErrorRegister());
@@ -120,7 +119,7 @@ class SupplierAddressTest extends TestCase
         $this->assertTrue($address->setAddressDetail(null));
         $this->assertNull($address->getAddressDetail());
         $this->assertTrue($address->setAddressDetail(\str_pad("_", 212, "_")));
-        $this->assertEquals(210, \strlen($address->getAddressDetail()));
+        $this->assertEquals(210, \strlen($address->getAddressDetail() ?? "")); /** @phpstan-ignore-line */
 
         $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setAddressDetail(""));
@@ -130,8 +129,8 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCity(): void
     {
         $address = new SupplierAddress(new ErrorRegister());
@@ -157,8 +156,8 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetRegion(): void
     {
         $address = new SupplierAddress(new ErrorRegister());
@@ -169,7 +168,7 @@ class SupplierAddressTest extends TestCase
         $this->assertTrue($address->setRegion(null));
         $this->assertNull($address->getRegion());
         $this->assertTrue($address->setRegion(\str_pad("_", 212, "_")));
-        $this->assertEquals(50, \strlen($address->getRegion()));
+        $this->assertEquals(50, \strlen($address->getRegion() ?? "")); /** @phpstan-ignore-line */
 
         $address->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($address->setRegion(""));
@@ -178,10 +177,9 @@ class SupplierAddressTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCountry(): void
     {
         $address = new SupplierAddress(new ErrorRegister());
@@ -193,15 +191,15 @@ class SupplierAddressTest extends TestCase
         }
 
         $coIso = SupplierCountry::ISO_BR;
-        $address->setCountry(new SupplierCountry($coIso));
-        $this->assertEquals($coIso, $address->getCountry()->get());
+        $address->setCountry($coIso);
+        $this->assertEquals($coIso, $address->getCountry());
         $this->assertTrue($address->issetCountry());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetPostalCode(): void
     {
         $address = new SupplierAddress(new ErrorRegister());
@@ -227,8 +225,8 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $addrNode = new \SimpleXMLElement("<Address></Address>");
@@ -236,7 +234,7 @@ class SupplierAddressTest extends TestCase
         $address->setBuildingNumber("999");
         $address->setStreetName("Street test");
         $address->setCity("Sintra");
-        $address->setCountry(new SupplierCountry(SupplierCountry::ISO_BR));
+        $address->setCountry(SupplierCountry::ISO_BR);
         $address->setPostalCode("9542979");
         $address->setRegion("Lisbon");
 
@@ -247,17 +245,17 @@ class SupplierAddressTest extends TestCase
 
         $this->assertEquals(
             $address->getBuildingNumber(),
-            $addrNode->{SupplierAddress::N_BUILDINGNUMBER}
+            $addrNode->{SupplierAddress::N_BUILDING_NUMBER}
         );
 
         $this->assertEquals(
             $address->getStreetName(),
-            $addrNode->{SupplierAddress::N_STREETNAME}
+            $addrNode->{SupplierAddress::N_STREET_NAME}
         );
 
         $this->assertEquals(
             $address->getStreetName()." ".$address->getBuildingNumber(),
-            $addrNode->{SupplierAddress::N_ADDRESSDETAIL}
+            $addrNode->{SupplierAddress::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals(
@@ -265,13 +263,13 @@ class SupplierAddressTest extends TestCase
         );
 
         $this->assertEquals(
-            $address->getCountry()->get(),
+            $address->getCountry()->value,
             $addrNode->{SupplierAddress::N_COUNTRY}
         );
 
         $this->assertEquals(
             $address->getPostalCode(),
-            $addrNode->{SupplierAddress::N_POSTALCODE}
+            $addrNode->{SupplierAddress::N_POSTAL_CODE}
         );
 
         $this->assertEquals(
@@ -290,16 +288,16 @@ class SupplierAddressTest extends TestCase
         );
 
         $this->assertEquals(
-            0, $node->{SupplierAddress::N_BUILDINGNUMBER}->count()
+            0, $node->{SupplierAddress::N_BUILDING_NUMBER}->count()
         );
 
-        $this->assertEquals(0, $node->{SupplierAddress::N_STREETNAME}->count());
+        $this->assertEquals(0, $node->{SupplierAddress::N_STREET_NAME}->count());
 
         $this->assertEquals(0, $node->{SupplierAddress::N_REGION}->count());
 
         $this->assertEquals(
             $address->getAddressDetail(),
-            $node->{SupplierAddress::N_ADDRESSDETAIL}
+            $node->{SupplierAddress::N_ADDRESS_DETAIL}
         );
 
         $this->assertEquals(
@@ -307,19 +305,19 @@ class SupplierAddressTest extends TestCase
         );
 
         $this->assertEquals(
-            $address->getCountry()->get(), $node->{SupplierAddress::N_COUNTRY}
+            $address->getCountry()->value, $node->{SupplierAddress::N_COUNTRY}
         );
 
         $this->assertEquals(
-            $address->getPostalCode(), $node->{SupplierAddress::N_POSTALCODE}
+            $address->getPostalCode(), $node->{SupplierAddress::N_POSTAL_CODE}
         );
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $addrNode = new \SimpleXMLElement("<Address></Address>");
@@ -327,7 +325,7 @@ class SupplierAddressTest extends TestCase
         $address->setBuildingNumber("999");
         $address->setStreetName("Street test");
         $address->setCity("Sintra");
-        $address->setCountry(new SupplierCountry(SupplierCountry::ISO_BR));
+        $address->setCountry(SupplierCountry::ISO_BR);
         $address->setPostalCode("9542979");
         $address->setRegion("Lisbon");
 
@@ -347,7 +345,7 @@ class SupplierAddressTest extends TestCase
         $this->assertEquals($address->getCity(), $parsed->getCity());
 
         $this->assertEquals(
-            $address->getCountry()->get(), $parsed->getCountry()->get()
+            $address->getCountry(), $parsed->getCountry()
         );
 
         $this->assertEquals($address->getPostalCode(), $parsed->getPostalCode());
@@ -361,23 +359,23 @@ class SupplierAddressTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testClone(): void
     {
         $addr  = new SupplierAddress(new ErrorRegister());
-        $addr->setCountry(new SupplierCountry(SupplierCountry::ISO_PT));
+        $addr->setCountry(SupplierCountry::ISO_PT);
         $clone = clone $addr;
-        $clone->setCountry(new SupplierCountry(SupplierCountry::ISO_BR));
-        $this->assertEquals(SupplierCountry::ISO_PT, $addr->getCountry()->get());
-        $this->assertEquals(SupplierCountry::ISO_BR, $clone->getCountry()->get());
+        $clone->setCountry(SupplierCountry::ISO_BR);
+        $this->assertEquals(SupplierCountry::ISO_PT, $addr->getCountry());
+        $this->assertEquals(SupplierCountry::ISO_BR, $clone->getCountry());
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $addrNode = new \SimpleXMLElement("<Address></Address>");
@@ -399,8 +397,8 @@ class SupplierAddressTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $addrNode = new \SimpleXMLElement("<Address></Address>");

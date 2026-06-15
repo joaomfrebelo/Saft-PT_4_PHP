@@ -69,25 +69,25 @@ class Customer extends ACustomerSupplier
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMER = "Customer";
+    const string N_CUSTOMER = "Customer";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMERID = "CustomerID";
+    const string N_CUSTOMER_ID = "CustomerID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMERTAXID = "CustomerTaxID";
+    const string N_CUSTOMER_TAX_ID = "CustomerTaxID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SHIPTOADDRESS = "ShipToAddress";
+    const string N_SHIP_TO_ADDRESS = "ShipToAddress";
 
     /**
      * &lt;xs:element ref="CustomerID"/&gt;
@@ -202,7 +202,7 @@ class Customer extends ACustomerSupplier
     public function setCustomerID(string $customerID): bool
     {
         try {
-            $this->customerID = static::valTextMandMaxCar(
+            $this->customerID = static::valTextMandatoryMaxCar(
                 $customerID, 30,
                 __METHOD__
             );
@@ -316,7 +316,7 @@ class Customer extends ACustomerSupplier
     /**
      * Adds as shipToAddress<br>
      * This method every time that is invoked will return a new Instance
-     * of 'Address' that shal must be populated with the correct values.<br>
+     * of 'Address' that shall, must be populated with the correct values.<br>
      * If there is a need to make more than one reference,
      * this structure can be generated as many times as necessary.<br>
      * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
@@ -358,10 +358,10 @@ class Customer extends ACustomerSupplier
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== MasterFiles::N_MASTERFILES) {
+        if ($node->getName() !== MasterFiles::N_MASTER_FILES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                MasterFiles::N_MASTERFILES, $node->getName()
+                MasterFiles::N_MASTER_FILES, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -371,34 +371,34 @@ class Customer extends ACustomerSupplier
         $customerNode = $node->addChild(static::N_CUSTOMER);
 
         if (isset($this->customerID)) {
-            $customerNode->addChild(static::N_CUSTOMERID, $this->getCustomerID());
+            $customerNode->addChild(static::N_CUSTOMER_ID, $this->getCustomerID());
         } else {
-            $customerNode->addChild(static::N_CUSTOMERID);
+            $customerNode->addChild(static::N_CUSTOMER_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_not_valid");
         }
 
         if (isset($this->accountID)) {
-            $customerNode->addChild(static::N_ACCOUNTID, $this->getAccountID());
+            $customerNode->addChild(static::N_ACCOUNT_ID, $this->getAccountID());
         } else {
-            $customerNode->addChild(static::N_ACCOUNTID);
+            $customerNode->addChild(static::N_ACCOUNT_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("AccountID_not_valid");
         }
 
         if (isset($this->customerTaxID)) {
             $customerNode->addChild(
-                static::N_CUSTOMERTAXID, $this->getCustomerTaxID()
+                static::N_CUSTOMER_TAX_ID, $this->getCustomerTaxID()
             );
         } else {
-            $customerNode->addChild(static::N_CUSTOMERTAXID);
+            $customerNode->addChild(static::N_CUSTOMER_TAX_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerTaxID_not_valid");
         }
 
         if (isset($this->companyName)) {
             $customerNode->addChild(
-                static::N_COMPANYNAME, $this->getCompanyName()
+                static::N_COMPANY_NAME, $this->getCompanyName()
             );
         } else {
-            $customerNode->addChild(static::N_COMPANYNAME);
+            $customerNode->addChild(static::N_COMPANY_NAME);
             $this->getErrorRegistor()->addOnCreateXmlNode("CompanyName_not_valid");
         }
 
@@ -406,7 +406,7 @@ class Customer extends ACustomerSupplier
             $customerNode->addChild(static::N_CONTACT, $this->getContact());
         }
 
-        $billAddr = $customerNode->addChild(static::N_BILLINGADDRESS);
+        $billAddr = $customerNode->addChild(static::N_BILLING_ADDRESS);
         if (isset($this->billingAddress)) {
             $this->getBillingAddress()->createXmlNode($billAddr);
         } else {
@@ -414,7 +414,7 @@ class Customer extends ACustomerSupplier
         }
 
         foreach ($this->getShipToAddress() as $shipAddr) {
-            $shipAddr->createXmlNode($customerNode->addChild(static::N_SHIPTOADDRESS));
+            $shipAddr->createXmlNode($customerNode->addChild(static::N_SHIP_TO_ADDRESS));
         }
 
         if ($this->getTelephone() !== null) {
@@ -435,11 +435,11 @@ class Customer extends ACustomerSupplier
 
         if (isset($this->selfBillingIndicator)) {
             $customerNode->addChild(
-                static::N_SELFBILLINGINDICATOR,
+                static::N_SELF_BILLING_INDICATOR,
                 $this->getSelfBillingIndicator() ? "1" : "0"
             );
         } else {
-            $customerNode->addChild(static::N_SELFBILLINGINDICATOR);
+            $customerNode->addChild(static::N_SELF_BILLING_INDICATOR);
             $this->getErrorRegistor()->addOnCreateXmlNode("SelfBillingIndicator_not_valid");
         }
 
@@ -447,7 +447,7 @@ class Customer extends ACustomerSupplier
     }
 
     /**
-     * Pasrse the xml node
+     * Parse the xml node
      * @param \SimpleXMLElement $node
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
@@ -465,27 +465,27 @@ class Customer extends ACustomerSupplier
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $this->setCustomerID((string) $node->{static::N_CUSTOMERID});
-        $this->setAccountID((string) $node->{static::N_ACCOUNTID});
-        $this->setCustomerTaxID((string) $node->{static::N_CUSTOMERTAXID});
-        $this->setCompanyName((string) $node->{static::N_COMPANYNAME});
+        $this->setCustomerID((string) $node->{static::N_CUSTOMER_ID});
+        $this->setAccountID((string) $node->{static::N_ACCOUNT_ID});
+        $this->setCustomerTaxID((string) $node->{static::N_CUSTOMER_TAX_ID});
+        $this->setCompanyName((string) $node->{static::N_COMPANY_NAME});
         if ($node->{static::N_CONTACT}->count() > 0) {
             $this->setContact((string) $node->{static::N_CONTACT});
         } else {
             $this->setContact(null);
         }
 
-        $this->getBillingAddress()->parseXmlNode($node->{static::N_BILLINGADDRESS});
+        $this->getBillingAddress()->parseXmlNode($node->{static::N_BILLING_ADDRESS});
 
-        $count = $node->{static::N_SHIPTOADDRESS}->count();
+        $count = $node->{static::N_SHIP_TO_ADDRESS}->count();
         for ($i = 0; $i <= $count - 1; $i++) {
             $this->addShipToAddress()->parseXmlNode(
-                $node->{static::N_SHIPTOADDRESS}[$i]
+                $node->{static::N_SHIP_TO_ADDRESS}[$i]
             );
         }
 
         $this->setSelfBillingIndicator(
-            ((int) $node->{static::N_SELFBILLINGINDICATOR}) === 1
+            ((int) $node->{static::N_SELF_BILLING_INDICATOR}) === 1
         );
         if ($node->{static::N_TELEPHONE}->count() > 0) {
             $this->setTelephone((string) $node->{static::N_TELEPHONE});

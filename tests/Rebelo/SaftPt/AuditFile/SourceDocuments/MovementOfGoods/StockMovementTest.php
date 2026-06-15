@@ -26,23 +26,20 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
-use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\{ShipFrom, ShipTo, SourceDocuments};
+use Rebelo\SaftPt\Commune;
+use Rebelo\SaftPt\TXmlTest;
 
 /**
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class StockMovementTest extends TestCase
 {
@@ -50,21 +47,19 @@ class StockMovementTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(StockMovement::class);
-        $this->assertTrue(true);
+        (new Commune(StockMovement::class))->testReflection(StockMovement::class);
     }
 
     /**
-     * @throws AuditFileException|DateFormatException
-     *@author João Rebelo
-     * @test
+     * @author João Rebelo
      */
+    #[Test]
     public function testInstance(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -96,8 +91,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentNumber(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -114,8 +109,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentStatus(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -127,8 +122,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testAtcud(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -145,8 +140,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHash(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -163,8 +158,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHashControl(): void
     {
         $stkMov  = new StockMovement(new ErrorRegister());
@@ -181,8 +176,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testPeriod(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -208,10 +203,9 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementDate(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -222,23 +216,22 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementType(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
         $type   = MovementType::GT;
-        $stkMov->setMovementType(new MovementType($type));
-        $this->assertSame($type, $stkMov->getMovementType()->get());
+        $stkMov->setMovementType($type);
+        $this->assertSame($type, $stkMov->getMovementType());
         $this->assertTrue($stkMov->issetMovementType());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSourceID(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -256,14 +249,14 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testEACCode(): void
     {
         $stkMov  = new StockMovement(new ErrorRegister());
-        $eaccode = "49499";
-        $this->assertTrue($stkMov->setEacCode($eaccode));
-        $this->assertSame($eaccode, $stkMov->getEacCode());
+        $eacCode = "49499";
+        $this->assertTrue($stkMov->setEacCode($eacCode));
+        $this->assertSame($eacCode, $stkMov->getEacCode());
         $stkMov->setEacCode(null);
         $this->assertNull($stkMov->getEacCode());
 
@@ -280,10 +273,9 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSystemEntryDate(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -294,17 +286,16 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException|DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTransactionId(): void
     {
         $stkMov      = new StockMovement(new ErrorRegister());
         $transaction = $stkMov->getTransactionID();
-        $transaction->setDate(new RDate());
-        $transaction->setDocArchivalNumber("A");
-        $transaction->setJournalID("9");
+        $transaction?->setDate(new RDate());
+        $transaction?->setDocArchivalNumber("A");
+        $transaction?->setJournalID("9");
         $this->assertSame($transaction, $stkMov->getTransactionID());
         $stkMov->setTransactionIDAsNull();
         $this->assertNull($stkMov->getTransactionID(false));
@@ -312,8 +303,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCustomerId(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -335,8 +326,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSupplierId(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -358,8 +349,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementComments(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -377,8 +368,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testShipTo(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -390,8 +381,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testShipFrom(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -402,10 +393,9 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementEndTime(): void
     {
         $stkMov  = new StockMovement(new ErrorRegister());
@@ -417,10 +407,9 @@ class StockMovementTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementStartTime(): void
     {
         $stkMov    = new StockMovement(new ErrorRegister());
@@ -432,8 +421,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testATDocCodeID(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -457,8 +446,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testLine(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -475,8 +464,8 @@ class StockMovementTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentTotals(): void
     {
         $stkMov = new StockMovement(new ErrorRegister());
@@ -488,25 +477,25 @@ class StockMovementTest extends TestCase
      * Reads all StockMovement from the Demo SAFT in Test\Resources
      * and parse then to StockMovement class, after that generate a xml from the
      * Line class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws EnumException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $stkMovStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{MovementOfGoods::N_MOVEMENTOFGOODS}
-            ->{StockMovement::N_STOCKMOVEMENT};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{MovementOfGoods::N_MOVEMENT_OF_GOODS}
+            ->{StockMovement::N_STOCK_MOVEMENT};
 
         if ($stkMovStack->count() === 0) {
             $this->fail("No StockMovements in XML");
@@ -519,8 +508,8 @@ class StockMovementTest extends TestCase
             $stkMov->parseXmlNode($stkMovXml);
 
             $xmlRootNode         = (new AuditFile())->createRootElement();
-            $sourceDocNode       = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-            $movementOfGoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
+            $sourceDocNode       = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+            $movementOfGoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENT_OF_GOODS);
 
             $xml = $stkMov->createXmlNode($movementOfGoodsNode);
 
@@ -530,15 +519,15 @@ class StockMovementTest extends TestCase
                     $assertXml,
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $stkMovXml->{StockMovement::N_DOCUMENTNUMBER},
+                        $stkMovXml->{StockMovement::N_DOCUMENT_NUMBER},
                         $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $stkMovXml->{StockMovement::N_DOCUMENTNUMBER},
+                        $stkMovXml->{StockMovement::N_DOCUMENT_NUMBER},
                         $e->getMessage()
                     )
                 );
@@ -549,12 +538,12 @@ class StockMovementTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $stkMovNode = new \SimpleXMLElement(
-            "<".MovementOfGoods::N_MOVEMENTOFGOODS."></".MovementOfGoods::N_MOVEMENTOFGOODS.">"
+            "<" . MovementOfGoods::N_MOVEMENT_OF_GOODS . "></" . MovementOfGoods::N_MOVEMENT_OF_GOODS . ">"
         );
         $stkMov     = new StockMovement(new ErrorRegister());
         $xml        = $stkMov->createXmlNode($stkMovNode)->asXML();
@@ -574,12 +563,12 @@ class StockMovementTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $stkMovNode = new \SimpleXMLElement(
-            "<".MovementOfGoods::N_MOVEMENTOFGOODS."></".MovementOfGoods::N_MOVEMENTOFGOODS.">"
+            "<" . MovementOfGoods::N_MOVEMENT_OF_GOODS . "></" . MovementOfGoods::N_MOVEMENT_OF_GOODS . ">"
         );
         $stkMov     = new StockMovement(new ErrorRegister());
         $stkMov->setAtDocCodeID("");

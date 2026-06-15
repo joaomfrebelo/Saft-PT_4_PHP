@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,13 +26,14 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\{MasterFiles\MasterFiles, SourceDocuments\SourceDocuments};
 use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\SaftPt\CommuneTest;
-use Rebelo\SaftPt\Sign\SignException;
+use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\AuditFile\{MasterFiles\MasterFiles, SourceDocuments\SourceDocuments};
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\ValidationConfig;
 
@@ -47,20 +48,19 @@ class AuditFileTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(AuditFile::class);
-        $this->assertTrue(true);
+        (new Commune(AuditFile::class))->testReflection(AuditFile::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $auditFile = new AuditFile();
@@ -80,7 +80,7 @@ class AuditFileTest extends TestCase
             SourceDocuments::class, $auditFile->getSourceDocuments()
         );
 
-        $error      = new ErrorRegister();
+        $error = new ErrorRegister();
         $error->addOnCreateXmlNode("Some error");
         $auditError = new AuditFile($error);
         $this->assertSame(
@@ -89,15 +89,17 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * Reads all saft Demo SAFT in Test\Ressources
+     * Reads all saft Demo SAFT in Test\Resources
      * and parse then to AuditFile class, after that generate a xml from the
      * AuditFile class and test if the xml strings are equal
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
@@ -116,7 +118,7 @@ class AuditFileTest extends TestCase
             $this->assertTrue(
                 $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
     }
@@ -126,8 +128,8 @@ class AuditFileTest extends TestCase
      * @throws DateFormatException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $auditFile = new AuditFile();
@@ -148,13 +150,13 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
      */
+    #[Test]
     public function testToXmlString(): void
     {
 
@@ -174,7 +176,7 @@ class AuditFileTest extends TestCase
             $this->assertTrue(
                 $assertXml, \sprintf("Fail with error '%s'", $assertXml)
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         }
 
@@ -191,8 +193,8 @@ class AuditFileTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testToXmlStringWithError(): void
     {
 
@@ -202,11 +204,11 @@ class AuditFileTest extends TestCase
 
             $xml  = $auditFile->toXmlString();
             $node = new \SimpleXMLElement($xml);
-            $this->assertSame(AuditFile::N_AUDITFILE, $node->getName());
-        } catch (\Exception | \Error $e) {
+            $this->assertSame(AuditFile::N_AUDIT_FILE, $node->getName());
+        } catch (\Exception|\Error $e) {
             $this->fail(
                 \sprintf(
-                    "Shoul not throw error. Fail with error '%s'",
+                    "Should not throw error. Fail with error '%s'",
                     $e->getMessage()
                 )
             );
@@ -219,20 +221,20 @@ class AuditFileTest extends TestCase
 
         $this->assertNotEmpty(
             $auditFile->getErrorRegistor()->getOnCreateXmlNode(),
-            "The AuditFile ErrorRegistor::OnCreateXmlNode should have errors"
+            "The AuditFile ErrorRegister::OnCreateXmlNode should have errors"
         );
 
         // Should not have errors because validator methods was not call
         $this->assertEmpty(
             $auditFile->getErrorRegistor()->getLibXmlError(),
-            "The AuditFile ErrorRegistor::getLibXmlError should have errors"
+            "The AuditFile ErrorRegister::getLibXmlError should have errors"
         );
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testToFile(): void
     {
         $auditXmlFile = tempnam(sys_get_temp_dir(), 'saft');
@@ -290,7 +292,7 @@ class AuditFileTest extends TestCase
                 $auditFile->getErrorRegistor()->getWarnings(),
                 "The AuditFile should not have warnings"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(\sprintf("Fail with error '%s'", $e->getMessage()));
         } finally {
             if (is_file($auditXmlFile)) {
@@ -301,8 +303,8 @@ class AuditFileTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testToFileWithError(): void
     {
         // Should not have errors because validator methods was nor call
@@ -314,7 +316,7 @@ class AuditFileTest extends TestCase
         try {
             $auditFile = new AuditFile();
             $auditFile->toFile($auditXmlFile);
-            $loadFile  = \file_get_contents($auditXmlFile);
+            $loadFile = \file_get_contents($auditXmlFile);
             if ($loadFile === false) {
                 $this->fail(
                     \sprintf("Fail loading temp file  '%s'", $auditXmlFile)
@@ -342,7 +344,7 @@ class AuditFileTest extends TestCase
                 );
             }
 
-            $this->assertSame(AuditFile::N_AUDITFILE, $node->getName());
+            $this->assertSame(AuditFile::N_AUDIT_FILE, $node->getName());
 
             $this->assertTrue(
                 $auditFile->getErrorRegistor()->hasErrors(),
@@ -351,14 +353,14 @@ class AuditFileTest extends TestCase
 
             $this->assertNotEmpty(
                 $auditFile->getErrorRegistor()->getOnCreateXmlNode(),
-                "The AuditFile ErrorRegistor::OnCreateXmlNode should have errors"
+                "The AuditFile ErrorRegister::OnCreateXmlNode should have errors"
             );
 
             $this->assertEmpty(
                 $auditFile->getErrorRegistor()->getLibXmlError(),
-                "The AuditFile ErrorRegistor::getLibXmlError should have errors"
+                "The AuditFile ErrorRegister::getLibXmlError should have errors"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->fail(
                 \sprintf(
                     "Should not throw error. Fail with error '%s'",
@@ -374,33 +376,33 @@ class AuditFileTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testIssetMagikMethod(): void
     {
         $auditFile = new AuditFile();
         $this->assertFalse($auditFile->issetHeader());
         // The property name
-        $header    = "header";
+        $header = "header";
         $this->assertSame(
-            isset($auditFile->{$header}), $auditFile->issetHeader()
+            isset($auditFile->{$header}), $auditFile->issetHeader()/** @phpstan-ignore-line */
         );
 
         $auditFile->getHeader();
         $this->assertTrue($auditFile->issetHeader());
         $this->assertSame(
-            isset($auditFile->{$header}), $auditFile->issetHeader()
+            isset($auditFile->{$header}), $auditFile->issetHeader()/** @phpstan-ignore-line */
         );
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @author João Rebelo
      */
+    #[Test]
     public function testLoadFile(): void
     {
         $audit = AuditFile::loadFile(SAFT_DEMO_PATH);
@@ -410,14 +412,14 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidate(): void
     {
         $audit = AuditFile::loadFile(SAFT_DEMO_PATH);
@@ -425,14 +427,14 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateWrongScheme(): void
     {
         $audit = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
@@ -441,51 +443,63 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateWrongSchemeWithConfigSetToNoSchemaValidation(): void
     {
         $config = new ValidationConfig();
         $config->setSchemaValidate(false);
-        $audit  = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
+        $audit = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
         $audit->getErrorRegistor()->clearAllErrors();
-        $this->assertTrue($audit->validate(PUBLIC_KEY_PATH, $config));
+        $this->assertTrue(
+            $audit->validate(PUBLIC_KEY_PATH, $config),
+            join(
+                ";\r\n\r\n", [
+                    join(",\r\n", $audit->getErrorRegistor()->getLibXmlError()),
+                    join(",\r\n", $audit->getErrorRegistor()->getOnCreateXmlNode()),
+                    join(",\r\n", $audit->getErrorRegistor()->getLibXmlError()),
+                    join(",\r\n", $audit->getErrorRegistor()->getExceptionErrors()),
+                    join(",\r\n", $audit->getErrorRegistor()->getOnSetValue()),
+                    join(",\r\n", $audit->getErrorRegistor()->getValidationErrors()),
+                ]
+            )
+        );
         $this->assertEmpty($audit->getErrorRegistor()->getLibXmlError());
     }
 
     /**     *
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateWrongSchemeWithConfigSetToSchemaValidation(): void
     {
         $config = new ValidationConfig();
         $config->setSchemaValidate(true);
-        $audit  = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
+        $audit = AuditFile::loadFile(SAFT_WRONG_SCHEME_PATH);
         $audit->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($audit->validate(PUBLIC_KEY_PATH, $config));
         $this->assertNotEmpty($audit->getErrorRegistor()->getLibXmlError());
     }
 
     /**
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws SignException
-     * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testValidateDataNoPubKeyPathConfigYes(): void
     {
         $this->expectException(AuditFileException::class);
@@ -496,13 +510,13 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testValidateInvoiceWrongSign(): void
     {
         $this->expectException(AuditFileException::class);
@@ -516,13 +530,13 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testValidateMovementOfGoodsWrongSign(): void
     {
         $this->expectException(AuditFileException::class);
@@ -536,13 +550,13 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testValidateWorkingDocumentsWrongSign(): void
     {
         $this->expectException(AuditFileException::class);
@@ -556,14 +570,14 @@ class AuditFileTest extends TestCase
     }
 
     /**
-     * @author João Rebelo
-     * @test
      * @return void
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
-     * @throws SignException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\SaftPt\Sign\SignException
+     * @author João Rebelo
      */
+    #[Test]
     public function testValidateRepeatedInternalCode(): void
     {
         $files = [
@@ -583,16 +597,16 @@ class AuditFileTest extends TestCase
 
     /**
      *
-     * @param int $period
-     * @param int $fiscalYearStartMonth
+     * @param int   $period
+     * @param int   $fiscalYearStartMonth
      * @param RDate $docDate
+     *
      * @return void
-     * @throws CalcPeriodException
-     * @throws DateFormatException
-     * @author João Rebelo
-     * @test
-     * @dataProvider calcPeriodProvider
+     * @throws \Rebelo\SaftPt\AuditFile\CalcPeriodException
+     * @author       João Rebelo
      */
+    #[Test]
+    #[DataProvider("calcPeriodProvider")]
     public function testCalcPeriod(int   $period, int $fiscalYearStartMonth,
                                    RDate $docDate): void
     {
@@ -603,46 +617,46 @@ class AuditFileTest extends TestCase
 
     /**
      *
-     * @return array
-     * @throws DateParseException
+     * @return mixed[]
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @author João Rebelo
      */
-    public function calcPeriodProvider(): array
+    public static function calcPeriodProvider(): array
     {
         return [
-            [1, 1, RDate::parse(RDate::SQL_DATE, "2020-01-01")],
-            [1, 1, RDate::parse(RDate::SQL_DATE, "2020-01-31")],
-            [12, 1, RDate::parse(RDate::SQL_DATE, "2020-12-01")],
-            [12, 1, RDate::parse(RDate::SQL_DATE, "2020-12-31")],
-            [9, 1, RDate::parse(RDate::SQL_DATE, "2020-09-01")],
-            [9, 1, RDate::parse(RDate::SQL_DATE, "2020-09-30")],
-            [1, 10, RDate::parse(RDate::SQL_DATE, "2020-10-01")],
-            [1, 10, RDate::parse(RDate::SQL_DATE, "2020-10-31")],
-            [3, 10, RDate::parse(RDate::SQL_DATE, "2020-12-01")],
-            [3, 10, RDate::parse(RDate::SQL_DATE, "2020-12-31")],
-            [4, 10, RDate::parse(RDate::SQL_DATE, "2020-01-01")],
-            [4, 10, RDate::parse(RDate::SQL_DATE, "2020-01-31")],
-            [2, 12, RDate::parse(RDate::SQL_DATE, "2020-01-01")],
-            [2, 12, RDate::parse(RDate::SQL_DATE, "2020-01-31")],
-            [1, 12, RDate::parse(RDate::SQL_DATE, "2020-12-01")],
-            [1, 12, RDate::parse(RDate::SQL_DATE, "2020-12-31")]
+            [1, 1, RDate::parse(Pattern::SQL_DATE, "2020-01-01")],
+            [1, 1, RDate::parse(Pattern::SQL_DATE, "2020-01-31")],
+            [12, 1, RDate::parse(Pattern::SQL_DATE, "2020-12-01")],
+            [12, 1, RDate::parse(Pattern::SQL_DATE, "2020-12-31")],
+            [9, 1, RDate::parse(Pattern::SQL_DATE, "2020-09-01")],
+            [9, 1, RDate::parse(Pattern::SQL_DATE, "2020-09-30")],
+            [1, 10, RDate::parse(Pattern::SQL_DATE, "2020-10-01")],
+            [1, 10, RDate::parse(Pattern::SQL_DATE, "2020-10-31")],
+            [3, 10, RDate::parse(Pattern::SQL_DATE, "2020-12-01")],
+            [3, 10, RDate::parse(Pattern::SQL_DATE, "2020-12-31")],
+            [4, 10, RDate::parse(Pattern::SQL_DATE, "2020-01-01")],
+            [4, 10, RDate::parse(Pattern::SQL_DATE, "2020-01-31")],
+            [2, 12, RDate::parse(Pattern::SQL_DATE, "2020-01-01")],
+            [2, 12, RDate::parse(Pattern::SQL_DATE, "2020-01-31")],
+            [1, 12, RDate::parse(Pattern::SQL_DATE, "2020-12-01")],
+            [1, 12, RDate::parse(Pattern::SQL_DATE, "2020-12-31")]
         ];
     }
 
     /**
      *
      * @return void
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCalcPeriodException(): void
     {
         try {
             AuditFile::calcPeriod(0, new RDate());
             $this->fail(
                 "Set fiscal year start month less then 1 should throw "
-                ." CalcPeriodException"
+                . " CalcPeriodException"
             );
         } catch (CalcPeriodException $e) {
             $this->assertInstanceOf(
@@ -654,7 +668,7 @@ class AuditFileTest extends TestCase
             AuditFile::calcPeriod(-1, new RDate());
             $this->fail(
                 "Set fiscal year start month less then 1 should throw "
-                ." CalcPeriodException"
+                . " CalcPeriodException"
             );
         } catch (CalcPeriodException $e) {
             $this->assertInstanceOf(
@@ -666,7 +680,7 @@ class AuditFileTest extends TestCase
             AuditFile::calcPeriod(13, new RDate());
             $this->fail(
                 "Set fiscal year start month greater then 12 should throw "
-                ." CalcPeriodException"
+                . " CalcPeriodException"
             );
         } catch (CalcPeriodException $e) {
             $this->assertInstanceOf(

@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
-use Rebelo\Enum\AEnum;
-use Rebelo\Enum\EnumException;
-
 /**
  * MovementType<br>
  * Shall be filled in with:<br>
@@ -37,84 +34,39 @@ use Rebelo\Enum\EnumException;
  * “GA” – Transport document for own fixed assets;<br>
  * “GC” - Consignment note;<br>
  * “GD” – Return note.<br>
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GR()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GT()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GA()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GC()
- * @method static \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementType GD()
  * @author João Rebelo
- * @since 1.0.0
+ * @since 3.0.0
  */
-class MovementType extends AEnum
+enum MovementType : string
 {
     /**
      * "GR" - Delivery note
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const GR = "GR";
+    case GR = "GR";
 
     /**
      * "GT" - Transport guide (include here the global transport documents)
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const GT = "GT";
+    case GT = "GT";
 
     /**
      * “GA” – Transport document for own fixed assets
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const GA = "GA";
+    case GA = "GA";
 
     /**
      * “GC” - Consignment note
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const GC = "GC";
+    case GC = "GC";
 
     /**
      * “GD” – Return note
-     * @since 1.0.0
+     * @since 3.0.0
      */
-    const GD = "GD";
+    case GD = "GD";
 
-    /**
-     * <br>
-     * Shall be filled in with:<br>
-     * "GR" - Delivery note;<br>
-     * "GT" - Transport guide (include here the global transport documents);<br>
-     * “GA” – Transport document for own fixed assets;<br>
-     * “GC” - Consignment note;<br>
-     * “GD” – Return note.<br>
-     * <pre>
-     * &lt;xs:element name="MovementType"&gt;
-     *   &lt;/xs:annotation&gt;
-     *   &lt;xs:simpleType&gt;
-     *       &lt;xs:restriction base="xs:string"&gt;
-     *           &lt;xs:enumeration value="GR"/&gt;
-     *           &lt;xs:enumeration value="GT"/&gt;
-     *           &lt;xs:enumeration value="GA"/&gt;
-     *           &lt;xs:enumeration value="GC"/&gt;
-     *           &lt;xs:enumeration value="GD"/&gt;
-     *       &lt;/xs:restriction&gt;
-     *   &lt;/xs:simpleType&gt;
-     * &lt;/xs:element&gt;
-     * </pre>
-     * @param string $value
-     * @throws EnumException
-     * @since 1.0.0
-     */
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
-
-    /**
-     * Get the value as string
-     * @return string
-     * @since 1.0.0
-     */
-    public function get(): string
-    {
-        return (string) parent::get();
-    }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
@@ -44,19 +45,19 @@ abstract class AShippingPoint extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_DELIVERYID = "DeliveryID";
+    const string N_DELIVERY_ID = "DeliveryID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_DELIVERYDATE = "DeliveryDate";
+    const string N_DELIVERY_DATE = "DeliveryDate";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ADDRESS = "Address";
+    const string N_ADDRESS = "Address";
 
     /**
      * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
@@ -143,7 +144,7 @@ abstract class AShippingPoint extends AAuditFile
     public function addDeliveryID(string $deliveryID): bool
     {
         try {
-            $val    = $this->valTextMandMaxCar(
+            $val    = $this->valTextMandatoryMaxCar(
                 $deliveryID, 255, __METHOD__
             );
             $return = true;
@@ -167,8 +168,8 @@ abstract class AShippingPoint extends AAuditFile
      * be filled in with the date of beginning of the risk coverage period.
      * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
+     *
      * @return \Rebelo\Date\Date|null
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getDeliveryDate(): ?RDate
@@ -179,7 +180,7 @@ abstract class AShippingPoint extends AAuditFile
                     __METHOD__." get '%s'",
                     $this->deliveryDate === null ?
                         "null" :
-                        $this->deliveryDate->format(RDate::SQL_DATE)
+                        $this->deliveryDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->deliveryDate;
@@ -191,9 +192,10 @@ abstract class AShippingPoint extends AAuditFile
      * be filled in with the date of beginning of the risk coverage period.
      * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
+     *
      * @param \Rebelo\Date\Date|null $deliveryDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setDeliveryDate(?RDate $deliveryDate): void
@@ -204,7 +206,7 @@ abstract class AShippingPoint extends AAuditFile
                 \sprintf(
                     __METHOD__." set to '%s'",
                     $this->deliveryDate === null ? "null" :
-                    $this->deliveryDate->format(RDate::SQL_DATE)
+                    $this->deliveryDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -273,21 +275,22 @@ abstract class AShippingPoint extends AAuditFile
     }
 
     /**
-     * Create the xml node, the ShipFrom an ShipTo node muste be created
+     * Create the xml node, the ShipFrom an ShipTo node must be created
      * in the child class
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        if ($node->getName() !== ShipFrom::N_SHIPFROM &&
-            $node->getName() !== ShipTo::N_SHIPTO) {
+        if ($node->getName() !== ShipFrom::N_SHIP_FROM &&
+            $node->getName() !== ShipTo::N_SHIP_TO) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s'",
-                ShipFrom::N_SHIPFROM, ShipTo::N_SHIPTO, $node->getName()
+                ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -295,14 +298,14 @@ abstract class AShippingPoint extends AAuditFile
         }
         if (\count($this->getDeliveryID()) > 0) {
             foreach ($this->getDeliveryID() as $deliveryID) {
-                $node->addChild(static::N_DELIVERYID, $deliveryID);
+                $node->addChild(static::N_DELIVERY_ID, $deliveryID);
             }
         }
 
         if ($this->getDeliveryDate() !== null) {
             $node->addChild(
-                static::N_DELIVERYDATE,
-                $this->getDeliveryDate()->format(RDate::SQL_DATE)
+                static::N_DELIVERY_DATE,
+                $this->getDeliveryDate()->format(Pattern::SQL_DATE)
             );
         }
 
@@ -329,11 +332,11 @@ abstract class AShippingPoint extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        if ($node->getName() !== ShipFrom::N_SHIPFROM &&
-            $node->getName() !== ShipTo::N_SHIPTO) {
+        if ($node->getName() !== ShipFrom::N_SHIP_FROM &&
+            $node->getName() !== ShipTo::N_SHIP_TO) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
-                ShipFrom::N_SHIPFROM, ShipTo::N_SHIPTO, $node->getName()
+                ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -354,32 +357,33 @@ abstract class AShippingPoint extends AAuditFile
         $lastWhNode  = null;
         $lastWhIndex = null;
         $n           = 0;
-        $stack       = array();
+        /** @var mixed[] $stack */
+        $stack       = [];
         foreach ($shipNode->childNodes as $domNode) {
             try {
                 /* @var $domNode \DOMNode */
                 switch ($domNode->nodeName) {
-                    case static::N_DELIVERYID:
+                    case static::N_DELIVERY_ID:
                         $this->addDeliveryID($domNode->nodeValue);
                         break;
-                    case static::N_DELIVERYDATE:
+                    case static::N_DELIVERY_DATE:
                         $this->setDeliveryDate(
-                            RDate::parse(RDate::SQL_DATE, $domNode->nodeValue)
+                            RDate::parse(Pattern::SQL_DATE, $domNode->nodeValue)
                         );
                         break;
                     case static::N_ADDRESS:
                         $this->getAddress()?->parseXmlNode($node->{static::N_ADDRESS});
                         break;
-                    case Warehouse::N_WAREHOUSEID:
+                    case Warehouse::N_WAREHOUSE_ID:
                         $warehouse   = $this->addWarehouse();
                         $warehouse->setWarehouseID($domNode->nodeValue);
                         $stack[$n]   = $warehouse;
-                        $lastWhNode  = Warehouse::N_WAREHOUSEID;
+                        $lastWhNode  = Warehouse::N_WAREHOUSE_ID;
                         $lastWhIndex = $n;
                         $n++;
                         break;
-                    case Warehouse::N_LOCATIONID:
-                        if ($lastWhNode === Warehouse::N_LOCATIONID ||
+                    case Warehouse::N_LOCATION_ID:
+                        if ($lastWhNode === Warehouse::N_LOCATION_ID ||
                             $lastWhNode === null) {
                             $warehouse   = $this->addWarehouse();
                             $warehouse->setLocationID($domNode->nodeValue);
@@ -387,11 +391,12 @@ abstract class AShippingPoint extends AAuditFile
                             $lastWhIndex = $n;
                             $n++;
                         } else {
+                            /** @phpstan-ignore-next-line */
                             $stack[$lastWhIndex]->setLocationID(
                                 $domNode->nodeValue
                             );
                         }
-                        $lastWhNode = Warehouse::N_LOCATIONID;
+                        $lastWhNode = Warehouse::N_LOCATION_ID;
                         break;
                     case "#text":
                         continue 2;

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 /*
  * The MIT License
  *
@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo;
@@ -47,67 +48,67 @@ class StockMovement extends ADocument
      *
      * @since 1.0.0
      */
-    const N_STOCKMOVEMENT = "StockMovement";
+    const string N_STOCK_MOVEMENT = "StockMovement";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_DOCUMENTNUMBER = "DocumentNumber";
+    const string N_DOCUMENT_NUMBER = "DocumentNumber";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_MOVEMENTDATE = "MovementDate";
+    const string N_MOVEMENT_DATE = "MovementDate";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_MOVEMENTTYPE = "MovementType";
+    const string N_MOVEMENT_TYPE = "MovementType";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SUPPLIERID = "SupplierID";
+    const string N_SUPPLIER_ID = "SupplierID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_MOVEMENTCOMMENTS = "MovementComments";
+    const string N_MOVEMENT_COMMENTS = "MovementComments";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SHIPTO = "ShipTo";
+    const string N_SHIP_TO = "ShipTo";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SHIPFROM = "ShipFrom";
+    const string N_SHIP_FROM = "ShipFrom";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_MOVEMENTENDTIME = "MovementEndTime";
+    const string N_MOVEMENT_END_TIME = "MovementEndTime";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_MOVEMENTSTARTTIME = "MovementStartTime";
+    const string N_MOVEMENT_START_TIME = "MovementStartTime";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_ATDOCCODEID = "ATDocCodeID";
+    const string N_AT_DOC_CODE_ID = "ATDocCodeID";
 
     /**
      * <pre>
@@ -386,8 +387,8 @@ class StockMovement extends ADocument
      * Date and time type: “YYYY-MM-DDThh:mm:ss”.
      * &lt;xs:element ref="MovementDate"/&gt;<br>
      * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementDate(): RDate
@@ -396,7 +397,7 @@ class StockMovement extends ADocument
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->movementDate->format(RDate::SQL_DATE)
+                    $this->movementDate->format(Pattern::SQL_DATE)
                 )
             );
         return $this->movementDate;
@@ -419,9 +420,10 @@ class StockMovement extends ADocument
      * &lt;xs:element ref="MovementDate"/&gt;<br>
      * &lt;xs:element ref="MovementDate"/&gt;<br>
      * &lt;xs:element name="MovementDate" type="SAFdateType"/&gt;
+     *
      * @param \Rebelo\Date\Date $movementDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementDate(RDate $movementDate): void
@@ -431,7 +433,7 @@ class StockMovement extends ADocument
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->movementDate->format(RDate::SQL_DATE)
+                    $this->movementDate->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -454,7 +456,7 @@ class StockMovement extends ADocument
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->movementType->get()
+                    $this->movementType->value
                 )
             );
         return $this->movementType;
@@ -490,7 +492,7 @@ class StockMovement extends ADocument
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->movementType->get()
+                    $this->movementType->value
                 )
             );
     }
@@ -595,7 +597,7 @@ class StockMovement extends ADocument
                 $this->getErrorRegistor()->addOnSetValue("CustomerID_and_SupplierID_at_same_time");
                 throw new AuditFileException($msg);
             }
-            $this->supplierID = $this->valTextMandMaxCar(
+            $this->supplierID = $this->valTextMandatoryMaxCar(
                 $supplierID, 30, __METHOD__, false
             );
             $return           = true;
@@ -646,7 +648,7 @@ class StockMovement extends ADocument
     {
         try {
             $this->movementComments = $movementComments === null ? null :
-                $this->valTextMandMaxCar(
+                $this->valTextMandatoryMaxCar(
                     $movementComments, 60, __METHOD__
                 );
             $return                 = true;
@@ -739,8 +741,8 @@ class StockMovement extends ADocument
      * if no specific information is available.<br>
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
+     *
      * @return \Rebelo\Date\Date|null
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementEndTime(): ?RDate
@@ -750,7 +752,7 @@ class StockMovement extends ADocument
                 \sprintf(
                     __METHOD__." get '%s'",
                     $this->movementEndTime === null ?
-                        "null" : $this->movementEndTime->format(RDate::DATE_T_TIME)
+                        "null" : $this->movementEndTime->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->movementEndTime;
@@ -762,9 +764,10 @@ class StockMovement extends ADocument
      * if no specific information is available.<br>
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementEndTime" type="SAFdateTimeType"/&gt;
+     *
      * @param \Rebelo\Date\Date|null $movementEndTime
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementEndTime(?RDate $movementEndTime): void
@@ -775,7 +778,7 @@ class StockMovement extends ADocument
                 \sprintf(
                     __METHOD__." set to '%s'",
                     $this->movementEndTime === null ?
-                        "null" : $this->movementEndTime->format(RDate::DATE_T_TIME)
+                        "null" : $this->movementEndTime->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -786,9 +789,8 @@ class StockMovement extends ADocument
      * if no specific information is available.<br>
      * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getMovementStartTime(): RDate
@@ -797,7 +799,7 @@ class StockMovement extends ADocument
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->movementStartTime->format(RDate::DATE_T_TIME)
+                    $this->movementStartTime->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->movementStartTime;
@@ -819,9 +821,9 @@ class StockMovement extends ADocument
      * if no specific information is available.<br>
      * &lt;xs:element ref="MovementStartTime" maxOccurs="1"/&gt;<br>
      * &lt;xs:element name="MovementStartTime" type="SAFdateTimeType"/&gt;
+     *
      * @param \Rebelo\Date\Date $movementStartTime
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setMovementStartTime(RDate $movementStartTime): void
@@ -831,7 +833,7 @@ class StockMovement extends ADocument
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->movementStartTime->format(RDate::DATE_T_TIME)
+                    $this->movementStartTime->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -871,7 +873,7 @@ class StockMovement extends ADocument
     {
         try {
             $this->atDocCodeID = $atDocCodeID === null ? null :
-                $this->valTextMandMaxCar($atDocCodeID, 200, __METHOD__, false);
+                $this->valTextMandatoryMaxCar($atDocCodeID, 200, __METHOD__, false);
             $return            = true;
         } catch (AuditFileException $e) {
             $this->atDocCodeID = $atDocCodeID;
@@ -938,7 +940,7 @@ class StockMovement extends ADocument
         if (isset($this->documentTotals) === false) {
             $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
         return $this->documentTotals;
     }
 
@@ -958,30 +960,29 @@ class StockMovement extends ADocument
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== MovementOfGoods::N_MOVEMENTOFGOODS) {
+        if ($node->getName() !== MovementOfGoods::N_MOVEMENT_OF_GOODS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                MovementOfGoods::N_MOVEMENTOFGOODS, $node->getName()
+                MovementOfGoods::N_MOVEMENT_OF_GOODS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $stkMov = $node->addChild(static::N_STOCKMOVEMENT);
+        $stkMov = $node->addChild(static::N_STOCK_MOVEMENT);
 
         if (isset($this->documentNumber)) {
             $stkMov->addChild(
-                static::N_DOCUMENTNUMBER, $this->getDocumentNumber()
+                static::N_DOCUMENT_NUMBER, $this->getDocumentNumber()
             );
         } else {
-            $stkMov->addChild(static::N_DOCUMENTNUMBER);
+            $stkMov->addChild(static::N_DOCUMENT_NUMBER);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentNumber_not_valid");
         }
 
@@ -995,7 +996,7 @@ class StockMovement extends ADocument
         if (isset($this->documentStatus)) {
             $this->getDocumentStatus()->createXmlNode($stkMov);
         } else {
-            $stkMov->addChild(DocumentStatus::N_DOCUMENTSTATUS);
+            $stkMov->addChild(DocumentStatus::N_DOCUMENT_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentStatus_not_valid");
         }
 
@@ -1007,9 +1008,9 @@ class StockMovement extends ADocument
         }
 
         if (isset($this->hashControl)) {
-            $stkMov->addChild(self::N_HASHCONTROL, $this->getHashControl());
+            $stkMov->addChild(self::N_HASH_CONTROL, $this->getHashControl());
         } else {
-            $stkMov->addChild(static::N_HASHCONTROL);
+            $stkMov->addChild(static::N_HASH_CONTROL);
             $this->getErrorRegistor()->addOnCreateXmlNode("HashControl_not_valid");
         }
 
@@ -1019,64 +1020,64 @@ class StockMovement extends ADocument
 
         if (isset($this->movementDate)) {
             $stkMov->addChild(
-                static::N_MOVEMENTDATE,
-                $this->getMovementDate()->format(RDate::SQL_DATE)
+                static::N_MOVEMENT_DATE,
+                $this->getMovementDate()->format(Pattern::SQL_DATE)
             );
         } else {
-            $stkMov->addChild(static::N_MOVEMENTDATE);
+            $stkMov->addChild(static::N_MOVEMENT_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("MovementDate_not_valid");
         }
 
         if (isset($this->movementType)) {
             $stkMov->addChild(
-                static::N_MOVEMENTTYPE, $this->getMovementType()->get()
+                static::N_MOVEMENT_TYPE, $this->getMovementType()->value
             );
         } else {
-            $stkMov->addChild(static::N_MOVEMENTTYPE);
+            $stkMov->addChild(static::N_MOVEMENT_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("MovementType_not_valid");
         }
 
         if (isset($this->systemEntryDate)) {
             $stkMov->addChild(
-                static::N_SYSTEMENTRYDATE,
-                $this->getSystemEntryDate()->format(RDate::DATE_T_TIME)
+                static::N_SYSTEM_ENTRY_DATE,
+                $this->getSystemEntryDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $stkMov->addChild(static::N_SYSTEMENTRYDATE);
+            $stkMov->addChild(static::N_SYSTEM_ENTRY_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("SystemEntryDate_not_valid");
         }
 
         $this->getTransactionID(false)?->createXmlNode($stkMov);
 
         if (isset($this->customerID) === false && isset($this->supplierID) === false) {
-            $msg = "CustomerID or SupplierID must be setted";
+            $msg = "CustomerID or SupplierID must be set";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
-            $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_and_SupplierID_not_setted");
+            $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_and_SupplierID_not_set");
         }
 
         if (isset($this->customerID)) {
-            $stkMov->addChild(static::N_CUSTOMERID, $this->getCustomerID());
+            $stkMov->addChild(static::N_CUSTOMER_ID, $this->getCustomerID());
         }
 
         if (isset($this->supplierID)) {
-            $stkMov->addChild(static::N_SUPPLIERID, $this->getSupplierID());
+            $stkMov->addChild(static::N_SUPPLIER_ID, $this->getSupplierID());
         }
 
         if (isset($this->sourceID)) {
-            $stkMov->addChild(static::N_SOURCEID, $this->getSourceID());
+            $stkMov->addChild(static::N_SOURCE_ID, $this->getSourceID());
         } else {
-            $stkMov->addChild(static::N_SOURCEID);
+            $stkMov->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
         }
 
         if ($this->getEacCode() !== null) {
-            $stkMov->addChild(static::N_EACCODE, $this->getEacCode());
+            $stkMov->addChild(static::N_EAC_CODE, $this->getEacCode());
         }
 
         if ($this->getMovementComments() !== null) {
             $stkMov->addChild(
-                static::N_MOVEMENTCOMMENTS, $this->getMovementComments()
+                static::N_MOVEMENT_COMMENTS, $this->getMovementComments()
             );
         }
 
@@ -1085,23 +1086,23 @@ class StockMovement extends ADocument
 
         if ($this->getMovementEndTime() !== null) {
             $stkMov->addChild(
-                static::N_MOVEMENTENDTIME,
-                $this->getMovementEndTime()->format(RDate::DATE_T_TIME)
+                static::N_MOVEMENT_END_TIME,
+                $this->getMovementEndTime()->format(Pattern::DATE_T_TIME)
             );
         }
 
         if (isset($this->movementStartTime)) {
             $stkMov->addChild(
-                static::N_MOVEMENTSTARTTIME,
-                $this->getMovementStartTime()->format(RDate::DATE_T_TIME)
+                static::N_MOVEMENT_START_TIME,
+                $this->getMovementStartTime()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $stkMov->addChild(static::N_MOVEMENTSTARTTIME);
+            $stkMov->addChild(static::N_MOVEMENT_START_TIME);
             $this->getErrorRegistor()->addOnCreateXmlNode("MovementStartTime_not_valid");
         }
 
         if ($this->getAtDocCodeID() !== null) {
-            $stkMov->addChild(static::N_ATDOCCODEID, $this->getAtDocCodeID());
+            $stkMov->addChild(static::N_AT_DOC_CODE_ID, $this->getAtDocCodeID());
         }
 
         if (\count($this->line) === 0) {
@@ -1118,7 +1119,7 @@ class StockMovement extends ADocument
         if (isset($this->documentTotals)) {
             $this->getDocumentTotals()->createXmlNode($stkMov);
         } else {
-            $stkMov->addChild(DocumentTotals::N_DOCUMENTTOTALS);
+            $stkMov->addChild(DocumentTotals::N_DOCUMENT_TOTALS);
             $this->getErrorRegistor()->addOnCreateXmlNode("DocumentTotals_not_valid");
         }
 
@@ -1127,11 +1128,12 @@ class StockMovement extends ADocument
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
-     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -1139,10 +1141,10 @@ class StockMovement extends ADocument
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_STOCKMOVEMENT) {
+        if ($node->getName() !== static::N_STOCK_MOVEMENT) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_STOCKMOVEMENT, $node->getName()
+                static::N_STOCK_MOVEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -1151,53 +1153,53 @@ class StockMovement extends ADocument
 
         parent::parseXmlNode($node);
 
-        $this->setDocumentNumber((string) $node->{static::N_DOCUMENTNUMBER});
+        $this->setDocumentNumber((string) $node->{static::N_DOCUMENT_NUMBER});
         $this->getDocumentStatus()->parseXmlNode(
-            $node->{DocumentStatus::N_DOCUMENTSTATUS}
+            $node->{DocumentStatus::N_DOCUMENT_STATUS}
         );
 
         $this->setMovementDate(
-            RDate::parse(RDate::SQL_DATE, (string) $node->{self::N_MOVEMENTDATE})
+            RDate::parse(Pattern::SQL_DATE, (string) $node->{self::N_MOVEMENT_DATE})
         );
 
         $this->setMovementType(
-            new MovementType((string) $node->{static::N_MOVEMENTTYPE})
+            MovementType::from((string) $node->{static::N_MOVEMENT_TYPE})
         );
 
-        if ($node->{static::N_SUPPLIERID}->count() > 0) {
-            $this->setSupplierID((string) $node->{static::N_SUPPLIERID});
+        if ($node->{static::N_SUPPLIER_ID}->count() > 0) {
+            $this->setSupplierID((string) $node->{static::N_SUPPLIER_ID});
         }
 
-        if ($node->{static::N_MOVEMENTCOMMENTS}->count() > 0) {
-            $this->setMovementComments((string) $node->{static::N_MOVEMENTCOMMENTS});
+        if ($node->{static::N_MOVEMENT_COMMENTS}->count() > 0) {
+            $this->setMovementComments((string) $node->{static::N_MOVEMENT_COMMENTS});
         }
 
-        if ($node->{static::N_SHIPTO}->count() > 0) {
-            $this->getShipTo()?->parseXmlNode($node->{static::N_SHIPTO});
+        if ($node->{static::N_SHIP_TO}->count() > 0) {
+            $this->getShipTo()?->parseXmlNode($node->{static::N_SHIP_TO});
         }
 
-        if ($node->{static::N_SHIPFROM}->count() > 0) {
-            $this->getShipFrom()?->parseXmlNode($node->{static::N_SHIPFROM});
+        if ($node->{static::N_SHIP_FROM}->count() > 0) {
+            $this->getShipFrom()?->parseXmlNode($node->{static::N_SHIP_FROM});
         }
 
-        if ($node->{static::N_MOVEMENTENDTIME}->count() > 0) {
+        if ($node->{static::N_MOVEMENT_END_TIME}->count() > 0) {
             $this->setMovementEndTime(
                 RDate::parse(
-                    RDate::DATE_T_TIME,
-                    (string) $node->{static::N_MOVEMENTENDTIME}
+                    Pattern::DATE_T_TIME,
+                    (string) $node->{static::N_MOVEMENT_END_TIME}
                 )
             );
         }
 
         $this->setMovementStartTime(
             RDate::parse(
-                RDate::DATE_T_TIME,
-                (string) $node->{static::N_MOVEMENTSTARTTIME}
+                Pattern::DATE_T_TIME,
+                (string) $node->{static::N_MOVEMENT_START_TIME}
             )
         );
 
-        if ($node->{static::N_ATDOCCODEID}->count() > 0) {
-            $this->setAtDocCodeID((string) $node->{static::N_ATDOCCODEID});
+        if ($node->{static::N_AT_DOC_CODE_ID}->count() > 0) {
+            $this->setAtDocCodeID((string) $node->{static::N_AT_DOC_CODE_ID});
         }
 
         $nLine = $node->{Line::N_LINE}->count();
@@ -1206,7 +1208,7 @@ class StockMovement extends ADocument
         }
 
         $this->getDocumentTotals()->parseXmlNode(
-            $node->{DocumentTotals::N_DOCUMENTTOTALS}
+            $node->{DocumentTotals::N_DOCUMENT_TOTALS}
         );
     }
 }

@@ -26,24 +26,22 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
-use Rebelo\Date\DateParseException;
-use Rebelo\Enum\EnumException;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\{ShipFrom, ShipTo, SourceDocuments};
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\{ShipFrom, ShipTo, SourceDocuments};
 
 /**
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class InvoiceTest extends TestCase
 {
@@ -51,21 +49,19 @@ class InvoiceTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Invoice::class);
-        $this->assertTrue(true);
+        (new Commune(Invoice::class))->testReflection(Invoice::class);
     }
 
     /**
-     * @throws AuditFileException|DateFormatException
-     *@author João Rebelo
-     * @test
+     * @author João Rebelo
      */
+    #[Test]
     public function testInstance(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -77,7 +73,7 @@ class InvoiceTest extends TestCase
         $this->assertNull($invoice->getShipFrom(false));
         $this->assertNull($invoice->getMovementEndTime());
         $this->assertNull($invoice->getMovementStartTime());
-        $this->assertNull($invoice->getDocTotalcal());
+        $this->assertNull($invoice->getDocTotalCalc());
         $this->assertSame(0, \count($invoice->getLine()));
         $this->assertSame(0, \count($invoice->getWithholdingTax()));
 
@@ -97,8 +93,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentNumber(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -120,8 +116,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentStatus(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -133,8 +129,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testAtcud(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -151,8 +147,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHash(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -169,8 +165,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testHashControl(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -187,8 +183,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testPeriod(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -212,10 +208,9 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInvoiceDate(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -226,23 +221,22 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws EnumException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInvoiceType(): void
     {
         $invoice = new Invoice(new ErrorRegister());
         $type    = InvoiceType::FT;
-        $invoice->setInvoiceType(new InvoiceType($type));
-        $this->assertSame($type, $invoice->getInvoiceType()->get());
+        $invoice->setInvoiceType($type);
+        $this->assertSame($type, $invoice->getInvoiceType());
         $this->assertTrue($invoice->issetInvoiceType());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSpecialRegimes(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -254,8 +248,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSourceID(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -273,8 +267,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testEACCode(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -297,10 +291,9 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSystemEntryDate(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -311,18 +304,16 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTransactionId(): void
     {
         $invoice     = new Invoice(new ErrorRegister());
         $transaction = $invoice->getTransactionID();
-        $transaction->setDate(new RDate());
-        $transaction->setDocArchivalNumber("A");
-        $transaction->setJournalID("9");
+        $transaction?->setDate(new RDate());
+        $transaction?->setDocArchivalNumber("A");
+        $transaction?->setJournalID("9");
         $this->assertSame($transaction, $invoice->getTransactionID());
         $invoice->setTransactionIDAsNull();
         $this->assertNull($invoice->getTransactionID(false));
@@ -330,8 +321,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCustomerId(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -348,8 +339,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testShipTo(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -360,8 +351,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testShipFrom(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -371,10 +362,9 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementEndTime(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -386,10 +376,9 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testMovementStartTime(): void
     {
         $invoice   = new Invoice(new ErrorRegister());
@@ -402,8 +391,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testLine(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -420,8 +409,8 @@ class InvoiceTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testDocumentTotals(): void
     {
         $invoice = new Invoice(new ErrorRegister());
@@ -431,20 +420,19 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @throws AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testWithholdingTax(): void
     {
         $invoice = new Invoice(new ErrorRegister());
         $nMax    = 9;
         for ($n = 0; $n < $nMax; $n++) {
             $tax = $invoice->addWithholdingTax();
-            $tax->setWithholdingTaxAmount($n + 0.99);
+            $tax->setWithholdingTaxAmount((new Decimal((string)$n))->add("0.99"));
             $this->assertSame(
                 $n + 0.99,
-                $invoice->getWithholdingTax()[$n]->getWithholdingTaxAmount()
+                $invoice->getWithholdingTax()[$n]->getWithholdingTaxAmount()->toFloat()
             );
         }
 
@@ -456,23 +444,23 @@ class InvoiceTest extends TestCase
      * and parse then to Invoice class, after that generate a xml from the
      * Line class and test if the xml strings are equal
      *
-     * @throws AuditFileException
-     * @throws DateFormatException
-     * @throws DateParseException
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
 
-        if($saftDemoXml === false){
+        if ($saftDemoXml === false) {
             $this->fail(\sprintf("Error opening file '%s'", SAFT_DEMO_PATH));
         }
 
         $invoiceStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{SalesInvoices::N_SALESINVOICES}
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{SalesInvoices::N_SALES_INVOICES}
             ->{Invoice::N_INVOICE};
 
         if ($invoiceStack->count() === 0) {
@@ -486,8 +474,8 @@ class InvoiceTest extends TestCase
             $invoice->parseXmlNode($invoiceXml);
 
             $xmlRootNode   = (new AuditFile())->createRootElement();
-            $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-            $invoiceNode   = $sourceDocNode->addChild(SalesInvoices::N_SALESINVOICES);
+            $sourceDocNode = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+            $invoiceNode   = $sourceDocNode->addChild(SalesInvoices::N_SALES_INVOICES);
 
             $xml = $invoice->createXmlNode($invoiceNode);
 
@@ -497,14 +485,14 @@ class InvoiceTest extends TestCase
                     $assertXml,
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $invoiceXml->{Invoice::N_INVOICENO}, $assertXml
+                        $invoiceXml->{Invoice::N_INVOICE_NO}, $assertXml
                     )
                 );
-            } catch (\Exception | \Error $e) {
+            } catch (\Exception|\Error $e) {
                 $this->fail(
                     \sprintf(
                         "Fail on Document '%s' with error '%s'",
-                        $invoiceXml->{Invoice::N_INVOICENO}, $e->getMessage()
+                        $invoiceXml->{Invoice::N_INVOICE_NO}, $e->getMessage()
                     )
                 );
             }
@@ -518,12 +506,12 @@ class InvoiceTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $invoiceNode = new \SimpleXMLElement(
-            "<".SalesInvoices::N_SALESINVOICES."></".SalesInvoices::N_SALESINVOICES.">"
+            "<" . SalesInvoices::N_SALES_INVOICES . "></" . SalesInvoices::N_SALES_INVOICES . ">"
         );
         $invoice     = new Invoice(new ErrorRegister());
         $xml         = $invoice->createXmlNode($invoiceNode)->asXML();
@@ -543,12 +531,12 @@ class InvoiceTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $invoiceNode = new \SimpleXMLElement(
-            "<".SalesInvoices::N_SALESINVOICES."></".SalesInvoices::N_SALESINVOICES.">"
+            "<" . SalesInvoices::N_SALES_INVOICES . "></" . SalesInvoices::N_SALES_INVOICES . ">"
         );
         $invoice     = new Invoice(new ErrorRegister());
         $invoice->setAtcud("");
@@ -574,17 +562,17 @@ class InvoiceTest extends TestCase
         $this->assertEmpty($invoice->getErrorRegistor()->getLibXmlError());
     }
 
-   /**
+    /**
      * @author João Rebelo
-     * @test
      */
-    public function testDocTotalcal(): void
+    #[Test]
+    public function testDocTotalCalculation(): void
     {
         $invoice = new Invoice(new ErrorRegister());
-        $invoice->setDocTotalcal(new DocTotalCalc());
+        $invoice->setDocTotalCalc(new DocTotalCalc());
         $this->assertInstanceOf(
             DocTotalCalc::class,
-            $invoice->getDocTotalcal()
+            $invoice->getDocTotalCalc()
         );
     }
 }

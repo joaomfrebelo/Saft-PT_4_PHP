@@ -49,19 +49,19 @@ class CustomsDetails extends AAuditFile
      * &lt;xs:complexType name="CustomsDetails">
      * @since 1.0.0
      */
-    const N_CUSTOMSDETAILS = "CustomsDetails";
+    const string N_CUSTOMS_DETAILS = "CustomsDetails";
 
     /**
      * &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
      * @since 1.0.0
      */
-    const N_CNCODE = "CNCode";
+    const string N_CN_CODE = "CNCode";
 
     /**
      * &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded">
      * @since 1.0.0
      */
-    const N_UNNUMBER = "UNNumber";
+    const string N_UN_NUMBER = "UNNumber";
 
     /**
      * <pre>
@@ -250,13 +250,13 @@ class CustomsDetails extends AAuditFile
             return $node;
         }
 
-        $cusDetail = $node->addChild(static::N_CUSTOMSDETAILS);
+        $cusDetail = $node->addChild(static::N_CUSTOMS_DETAILS);
 
         foreach ($this->cNCode as $cNode) {
-            $cusDetail->addChild(static::N_CNCODE, $cNode);
+            $cusDetail->addChild(static::N_CN_CODE, $cNode);
         }
         foreach ($this->uNNumber as $number) {
-            $cusDetail->addChild(static::N_UNNUMBER, $number);
+            $cusDetail->addChild(static::N_UN_NUMBER, $number);
         }
         return $cusDetail;
     }
@@ -272,24 +272,24 @@ class CustomsDetails extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_CUSTOMSDETAILS) {
+        if ($node->getName() !== static::N_CUSTOMS_DETAILS) {
             $msg = sprintf(
                 "Node name should be '%s' and not '%s'",
-                static::N_CUSTOMSDETAILS, $node->getName()
+                static::N_CUSTOMS_DETAILS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $countCnCode = $node->{static::N_CNCODE}->count();
+        $countCnCode = $node->{static::N_CN_CODE}->count();
         for ($y = 0; $y < $countCnCode; $y++) {
-            $cnNode = $node->{static::N_CNCODE}[$y];
+            $cnNode = $node->{static::N_CN_CODE}[$y];
             $this->addCNCode((string) $cnNode);
         }
-        $countUNNumber = $node->{static::N_UNNUMBER}->count();
+        $countUNNumber = $node->{static::N_UN_NUMBER}->count();
         for ($z = 0; $z < $countUNNumber; $z++) {
-            $unNum = $node->{static::N_UNNUMBER}[$z];
+            $unNum = $node->{static::N_UN_NUMBER}[$z];
             $this->addUNNumber((string) $unNum);
         }
     }

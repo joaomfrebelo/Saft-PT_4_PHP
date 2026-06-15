@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUnused */
+/** @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection */
 /*
  * The MIT License
  *
@@ -61,26 +62,26 @@ class MasterFiles extends AAuditFile
      * &lt;xs:element name="MasterFiles">
      * @since 1.0.0
      */
-    const N_MASTERFILES = "MasterFiles";
+    const string N_MASTER_FILES = "MasterFiles";
 
     /**
      * &lt;xs:element ref="GeneralLedgerAccounts" minOccurs="0"/&gt;
      * @since 1.0.0
      */
-    const N_GENERALLEDGERACCOUNTS = "GeneralLedgerAccounts";
+    const string N_GENERAL_LEDGER_ACCOUNTS = "GeneralLedgerAccounts";
 
     /**
      * &lt;xs:element ref="TaxTable" minOccurs="0"/&gt;
      * @since 1.0.0
      */
-    const N_TAXTABLE = "TaxTable";
+    const string N_TAX_TABLE = "TaxTable";
 
     /**
      * &lt;xs:element ref="GeneralLedgerAccounts" minOccurs="0"/&gt;
-     * @var array NotImplemented
+     * @var mixed[] NotImplemented
      * @since 1.0.0
      */
-    protected array $generalLedgerAccounts = array();
+    protected array $generalLedgerAccounts = [];
 
     /**
      * &lt;xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/&gt;
@@ -199,13 +200,13 @@ class MasterFiles extends AAuditFile
      */
     public function getCustomer(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
         return $this->customer;
     }
 
     /**
      * Create a new instance of Customer and add to Customer to stack<br>
-     * Every time tha you invoke thos method a new Customer instance will be created
+     * Every time tha you invoke this method a new Customer instance will be created
      * and returned to be populated with the values.<br>
      * 2.2. - Customer<br>
      * This table shall contain all the existing records operated during
@@ -257,7 +258,7 @@ class MasterFiles extends AAuditFile
      */
     public function getSupplier(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." getted");
+        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
         return $this->supplier;
     }
 
@@ -319,7 +320,7 @@ class MasterFiles extends AAuditFile
     public function getProduct(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->product;
     }
 
@@ -391,7 +392,7 @@ class MasterFiles extends AAuditFile
     public function getTaxTableEntry(): array
     {
         \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." getted");
+            ->info(__METHOD__." get");
         return $this->taxTableEntry;
     }
 
@@ -426,7 +427,9 @@ class MasterFiles extends AAuditFile
 
     /**
      * Create the MasterFile xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -435,9 +438,9 @@ class MasterFiles extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== AuditFile::N_AUDITFILE) {
+        if ($node->getName() !== AuditFile::N_AUDIT_FILE) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s", AuditFile::N_AUDITFILE,
+                "Node name should be '%s' but is '%s", AuditFile::N_AUDIT_FILE,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -445,7 +448,7 @@ class MasterFiles extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $masterNode = $node->addChild(static::N_MASTERFILES);
+        $masterNode = $node->addChild(static::N_MASTER_FILES);
 
         // GeneralLedgerAccounts is not implemented
         //&lt;xs:element ref="Customer" minOccurs="0" maxOccurs="unbounded"/&gt;
@@ -481,7 +484,7 @@ class MasterFiles extends AAuditFile
 
         //&lt;xs:element ref="TaxTable" minOccurs="0"/&gt;
         if (\count($this->getTaxTableEntry()) > 0) {
-            $taxTableNode = $masterNode->addChild(static::N_TAXTABLE);
+            $taxTableNode = $masterNode->addChild(static::N_TAX_TABLE);
             array_map(
                 function($taxTableEntry) use ($taxTableNode)
                 {
@@ -496,7 +499,10 @@ class MasterFiles extends AAuditFile
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -504,9 +510,9 @@ class MasterFiles extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_MASTERFILES) {
+        if ($node->getName() !== static::N_MASTER_FILES) {
             $msg = sprintf(
-                "Node name should be '%s' but is '%s", static::N_MASTERFILES,
+                "Node name should be '%s' but is '%s", static::N_MASTER_FILES,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
@@ -540,13 +546,13 @@ class MasterFiles extends AAuditFile
         }
 
         //&lt;xs:element ref="TaxTable" minOccurs="0"/&gt;
-        if ($node->{static::N_TAXTABLE}->count() > 0) {
-            $countTaxTableEntry = $node->{static::N_TAXTABLE}
-                ->{TaxTableEntry::N_TAXTABLEENTRY}->count();
+        if ($node->{static::N_TAX_TABLE}->count() > 0) {
+            $countTaxTableEntry = $node->{static::N_TAX_TABLE}
+                ->{TaxTableEntry::N_TAX_TABLE_ENTRY}->count();
             if ($countTaxTableEntry > 0) {
                 for ($n = 0; $n < $countTaxTableEntry; $n++) {
                     $this->addTaxTableEntry()->parseXmlNode(
-                        $node->{static::N_TAXTABLE}->{TaxTableEntry::N_TAXTABLEENTRY}[$n]
+                        $node->{static::N_TAX_TABLE}->{TaxTableEntry::N_TAX_TABLE_ENTRY}[$n]
                     );
                 }
             }
@@ -578,7 +584,7 @@ class MasterFiles extends AAuditFile
         $addr->setAddressDetail(AuditFile::DESCONHECIDO);
         $addr->setCity(AuditFile::DESCONHECIDO);
         $addr->setPostalCode(AuditFile::DESCONHECIDO);
-        $addr->setCountry(Country::DESCONHECIDO());
+        $addr->setCountry(Country::DESCONHECIDO);
 
         $this->isFinalConsumerAdd = true;
     }

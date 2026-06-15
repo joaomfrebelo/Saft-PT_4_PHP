@@ -46,7 +46,7 @@ abstract class AValidate
 
     /**
      *
-     * @var \Rebelo\SaftPt\AuditFile\AuditFile;
+     *
      * @since 1.0.0
      */
     protected AuditFile $auditFile;
@@ -59,23 +59,23 @@ abstract class AValidate
     protected ?string $lastType = null;
 
     /**
-     * The last serie of document that has been the signature validated
+     * The last serial of document that has been the signature validated
      * @var string|null
      * @since 1.0.0
      */
-    protected ?string $lastSerie = null;
+    protected ?string $lastSerial = null;
 
     /**
      * The last hash of document that has been the signature validated
-     * in the same document serie
+     * in the same document serial
      * @var string
      * @since 1.0.0
      */
     protected string $lastHash = "";
 
     /**
-     * The SystemEntryDate of the last document of the same serie,
-     * if is the first of the serie will be null
+     * The SystemEntryDate of the last document of the same serial,
+     * if is the first of the serial will be null
      *
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
@@ -83,8 +83,8 @@ abstract class AValidate
     protected ?RDate $lastDocDate = null;
 
     /**
-     * The SystemEntryDate of the last document of the same serie,
-     * if is the first of the serie will be null
+     * The SystemEntryDate of the last document of the same serial,
+     * if is the first of the serial will be null
      *
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
@@ -92,7 +92,7 @@ abstract class AValidate
     protected ?RDate $lastSystemEntryDate = null;
 
     /**
-     * The last number of the document of the same serie, to check if the numeration is continues
+     * The last number of the document of the same serial, to check if the numeration is continuing
      * @var int|null
      */
     protected ?int $lastDocNumber = null;

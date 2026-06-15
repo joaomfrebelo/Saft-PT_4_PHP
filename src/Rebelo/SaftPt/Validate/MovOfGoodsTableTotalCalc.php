@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+
 /**
  * Recalculated Doc table values for Movement of goods
  *
@@ -41,10 +43,10 @@ class MovOfGoodsTableTotalCalc
     protected ?int $numberOfMovementLines = null;
 
     /**
-     * @var float|null $totalQuantityIssued
+     * @var \Decimal\Decimal|null $totalQuantityIssued
      * @since 1.0.0
      */
-    protected ?float $totalQuantityIssued = null;
+    protected ?Decimal $totalQuantityIssued = null;
 
     /**
      * The Calculate values
@@ -67,10 +69,10 @@ class MovOfGoodsTableTotalCalc
 
     /**
      * Get the Calculated TotalQuantityIssued
-     * @return float|null
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTotalQuantityIssued(): ?float
+    public function getTotalQuantityIssued(): ?Decimal
     {
         return $this->totalQuantityIssued;
     }
@@ -88,11 +90,11 @@ class MovOfGoodsTableTotalCalc
 
     /**
      * Set the calculated TotalQuantityIssued
-     * @param float|null $totalQuantityIssued
+     * @param Decimal|null $totalQuantityIssued
      * @return void
      * @since 1.0.0
      */
-    public function setTotalQuantityIssued(?float $totalQuantityIssued): void
+    public function setTotalQuantityIssued(?Decimal $totalQuantityIssued): void
     {
         $this->totalQuantityIssued = $totalQuantityIssued;
     }

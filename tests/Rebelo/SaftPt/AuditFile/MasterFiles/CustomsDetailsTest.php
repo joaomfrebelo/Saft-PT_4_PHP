@@ -26,10 +26,11 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class CustomsDetailsTest
@@ -40,89 +41,88 @@ class CustomsDetailsTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(
-                CustomsDetails::class
-            );
-        $this->assertTrue(true);
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        $this->doesNotPerformAssertions();
+        (new Commune(CustomsDetails::class))->testReflection(CustomsDetails::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
-        $custDetail = new CustomsDetails(new ErrorRegister());
-        $this->assertInstanceOf(CustomsDetails::class, $custDetail);
-        $this->assertEquals(array(), $custDetail->getCNCode());
-        $this->assertEquals(array(), $custDetail->getUNNumber());
+        $customs = new CustomsDetails(new ErrorRegister());
+        $this->assertInstanceOf(CustomsDetails::class, $customs);
+        $this->assertEquals(array(), $customs->getCNCode());
+        $this->assertEquals(array(), $customs->getUNNumber());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCnCode(): void
     {
-        $custDetail = new CustomsDetails(new ErrorRegister());
-        $this->assertEquals(array(), $custDetail->getCNCode());
+        $customs = new CustomsDetails(new ErrorRegister());
+        $this->assertEquals(array(), $customs->getCNCode());
 
         $cnNum = "12345678";
-        $this->assertTrue($custDetail->addCNCode($cnNum));
-        $this->assertEquals($cnNum, $custDetail->getCNCode()[0]);
+        $this->assertTrue($customs->addCNCode($cnNum));
+        $this->assertEquals($cnNum, $customs->getCNCode()[0]);
 
         $cnNum2 = "98765432";
-        $this->assertTrue($custDetail->addCNCode($cnNum2));
-        $this->assertEquals($cnNum2, $custDetail->getCNCode()[1]);
+        $this->assertTrue($customs->addCNCode($cnNum2));
+        $this->assertEquals($cnNum2, $customs->getCNCode()[1]);
 
         $wrong = "999";
-        $custDetail->getErrorRegistor()->clearAllErrors();
-        $this->assertFalse($custDetail->addCNCode($wrong));
-        $this->assertSame($wrong, $custDetail->getCNCode()[2]);
-        $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
+        $customs->getErrorRegistor()->clearAllErrors();
+        $this->assertFalse($customs->addCNCode($wrong));
+        $this->assertSame($wrong, $customs->getCNCode()[2]);
+        $this->assertNotEmpty($customs->getErrorRegistor()->getOnSetValue());
 
         //Add CNCode that does not respect regexp
         $wrong2 = "9999999999";
-        $custDetail->getErrorRegistor()->clearAllErrors();
-        $this->assertFalse($custDetail->addCNCode($wrong2));
-        $this->assertSame($wrong2, $custDetail->getCNCode()[3]);
-        $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
+        $customs->getErrorRegistor()->clearAllErrors();
+        $this->assertFalse($customs->addCNCode($wrong2));
+        $this->assertSame($wrong2, $customs->getCNCode()[3]);
+        $this->assertNotEmpty($customs->getErrorRegistor()->getOnSetValue());
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testUNNumber(): void
     {
-        $custDetail = new CustomsDetails(new ErrorRegister());
-        $this->assertEquals(array(), $custDetail->getUNNumber());
+        $customs = new CustomsDetails(new ErrorRegister());
+        $this->assertEquals(array(), $customs->getUNNumber());
 
         $cnNum = "1234";
-        $this->assertTrue($custDetail->addUNNumber($cnNum));
-        $this->assertEquals($cnNum, $custDetail->getUNNumber()[0]);
+        $this->assertTrue($customs->addUNNumber($cnNum));
+        $this->assertEquals($cnNum, $customs->getUNNumber()[0]);
 
         $cnNum2 = "9876";
-        $this->assertTrue($custDetail->addUNNumber($cnNum2));
-        $this->assertEquals($cnNum2, $custDetail->getUNNumber()[1]);
+        $this->assertTrue($customs->addUNNumber($cnNum2));
+        $this->assertEquals($cnNum2, $customs->getUNNumber()[1]);
 
         $wrong = "999";
-        $custDetail->getErrorRegistor()->clearAllErrors();
-        $this->assertFalse($custDetail->addUNNumber($wrong));
-        $this->assertSame($wrong, $custDetail->getUNNumber()[2]);
-        $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
+        $customs->getErrorRegistor()->clearAllErrors();
+        $this->assertFalse($customs->addUNNumber($wrong));
+        $this->assertSame($wrong, $customs->getUNNumber()[2]);
+        $this->assertNotEmpty($customs->getErrorRegistor()->getOnSetValue());
 
         $wrong2 = "9999999999";
-        $custDetail->getErrorRegistor()->clearAllErrors();
-        $this->assertFalse($custDetail->addUNNumber($wrong2));
-        $this->assertSame($wrong2, $custDetail->getUNNumber()[3]);
-        $this->assertNotEmpty($custDetail->getErrorRegistor()->getOnSetValue());
+        $customs->getErrorRegistor()->clearAllErrors();
+        $this->assertFalse($customs->addUNNumber($wrong2));
+        $this->assertSame($wrong2, $customs->getUNNumber()[3]);
+        $this->assertNotEmpty($customs->getErrorRegistor()->getOnSetValue());
     }
 
     /**
@@ -130,18 +130,18 @@ class CustomsDetailsTest extends TestCase
      */
     public function createCustomsDetail(): CustomsDetails
     {
-        $custDetail = new CustomsDetails(new ErrorRegister());
-        $custDetail->addCNCode("12345678");
-        $custDetail->addCNCode("87654321");
-        $custDetail->addUNNumber("2345");
-        $custDetail->addUNNumber("5432");
-        return $custDetail;
+        $customs = new CustomsDetails(new ErrorRegister());
+        $customs->addCNCode("12345678");
+        $customs->addCNCode("87654321");
+        $customs->addUNNumber("2345");
+        $customs->addUNNumber("5432");
+        return $customs;
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $node = new \SimpleXMLElement("<root></root>");
@@ -151,21 +151,21 @@ class CustomsDetailsTest extends TestCase
         $customsNode = $customsDetail->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $customsNode);
         $this->assertEquals(
-            CustomsDetails::N_CUSTOMSDETAILS,
+            CustomsDetails::N_CUSTOMS_DETAILS,
             $customsNode->getName()
         );
 
-        $cNcodeNode = $customsNode->{CustomsDetails::N_CNCODE};
-        for ($n = 0; $n < $cNcodeNode->count(); $n++) {
+        $cNCodeNode = $customsNode->{CustomsDetails::N_CN_CODE};
+        for ($n = 0; $n < $cNCodeNode->count(); $n++) {
             $this->assertEquals(
-                $customsDetail->getCNCode()[$n], (string) $cNcodeNode[$n]
+                $customsDetail->getCNCode()[$n], (string)$cNCodeNode[$n]
             );
         }
 
-        $uNNumberNode = $customsNode->{CustomsDetails::N_UNNUMBER};
+        $uNNumberNode = $customsNode->{CustomsDetails::N_UN_NUMBER};
         for ($n = 0; $n < $uNNumberNode->count(); $n++) {
             $this->assertEquals(
-                $customsDetail->getUNNumber()[$n], (string) $uNNumberNode[$n]
+                $customsDetail->getUNNumber()[$n], (string)$uNNumberNode[$n]
             );
         }
 
@@ -178,8 +178,8 @@ class CustomsDetailsTest extends TestCase
      * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNode(): void
     {
         $node = new \SimpleXMLElement("<root></root>");
@@ -222,8 +222,8 @@ class CustomsDetailsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $customerNode = new \SimpleXMLElement(
@@ -247,11 +247,11 @@ class CustomsDetailsTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
-        $custNode = new \SimpleXMLElement(
+        $customsNode = new \SimpleXMLElement(
             "<root></root>"
         );
 
@@ -261,7 +261,7 @@ class CustomsDetailsTest extends TestCase
         $details->addUNNumber("-------b");
         $details->addUNNumber("");
 
-        $xml = $details->createXmlNode($custNode)->asXML();
+        $xml = $details->createXmlNode($customsNode)->asXML();
         if ($xml === false) {
             $this->fail("Fail to generate xml string");
         }

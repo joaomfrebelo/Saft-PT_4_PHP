@@ -1,13 +1,14 @@
 <?php
+/** @noinspection PhpUnused */
 declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile;
-
-require_once 'RSimpleXmlElement.php'; // In console app does't load from composer autoloader
+/** @phpstan-ignore-next-line */
+require_once 'RSimpleXmlElement.php'; // In console app doesn't load from composer autoloader
 
 use ComposerRevisions\Revisions;
-use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries;
+use Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\Sign\Sign;
 use Rebelo\SaftPt\Validate\MovementOfGoods;
@@ -21,18 +22,21 @@ use Rebelo\SaftPt\Validate\XmlStructure;
 /**
  * Class representing AuditFile
  * &lt;xs:element name="AuditFile">
+ *
  * @since 1.0.0
  */
 class AuditFile extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_AUDITFILE = "AuditFile";
+    const string N_AUDIT_FILE = "AuditFile";
 
     /**
      * &lt;xs:element ref="Header" minOccurs="1"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\Header $header
      * @since 1.0.0
      */
@@ -40,6 +44,7 @@ class AuditFile extends AAuditFile
 
     /**
      *  &lt;xs:element name="MasterFiles">
+     *
      * @var \Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles $masterFiles
      * @since 1.0.0
      */
@@ -47,6 +52,7 @@ class AuditFile extends AAuditFile
 
     /**
      * &lt;xs:element ref="GeneralLedgerEntries" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries|null $generalLedgerEntries
      * @since 1.0.0
      */
@@ -54,6 +60,7 @@ class AuditFile extends AAuditFile
 
     /**
      * &lt;xs:element ref="SourceDocuments" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments|null $sourceDocuments
      * @since 1.0.0
      */
@@ -61,13 +68,16 @@ class AuditFile extends AAuditFile
 
     /**
      * The Log file configuration file
+     *
      * @var string|null
      */
     public static ?string $log4phpConfigFilePath = null;
 
     /**
      * &lt;xs:element name="AuditFile">
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister|null $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(?ErrorRegister $errorRegister = null)
@@ -88,6 +98,7 @@ class AuditFile extends AAuditFile
      * whom the SAF-T (PT) refers to.<br>
      * This get will create the Header instance<br>
      * &lt;xs:element ref="Header" minOccurs="1"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\Header
      * @since 1.0.0
      */
@@ -102,6 +113,7 @@ class AuditFile extends AAuditFile
 
     /**
      * Get if is set Header
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -114,6 +126,7 @@ class AuditFile extends AAuditFile
      * Gets as masterFiles <br>
      * This get will create the MasterFiles instance<br>
      * &lt;xs:element name="MasterFiles">
+     *
      * @return \Rebelo\SaftPt\AuditFile\MasterFiles\MasterFiles
      * @since 1.0.0
      */
@@ -128,6 +141,7 @@ class AuditFile extends AAuditFile
 
     /**
      * Get if is set MasterFiles
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -139,6 +153,7 @@ class AuditFile extends AAuditFile
     /**
      * Gets as generalLedgerEntries <br>
      * &lt;xs:element ref="GeneralLedgerEntries" minOccurs="0"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\GeneralLedgerEntries\GeneralLedgerEntries
      * @throws \Rebelo\SaftPt\AuditFile\NotImplemented
      * @since 1.0.0
@@ -146,7 +161,7 @@ class AuditFile extends AAuditFile
     public function getGeneralLedgerEntries(): GeneralLedgerEntries
     {
         \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__ . " '%s'", "Not implemented"));
+               ->error(\sprintf(__METHOD__ . " '%s'", "Not implemented"));
         throw new NotImplemented("Not implemented");
     }
 
@@ -159,7 +174,9 @@ class AuditFile extends AAuditFile
      * different document types, regardless of the table in which it is to be exported.<br>
      * &lt;xs:element ref="SourceDocuments" minOccurs="0"/&gt;<br>
      * This get will create the SourceDocuments instance if $generate is true
+     *
      * @param bool $generate if true and SourceDocuments is null a new Instance will be created
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments|null
      * @since 1.0.0
      */
@@ -174,7 +191,9 @@ class AuditFile extends AAuditFile
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Rebelo\Date\DateFormatException
@@ -182,13 +201,13 @@ class AuditFile extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        if ($node->getName() !== static::N_AUDITFILE) {
+        if ($node->getName() !== static::N_AUDIT_FILE) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s", static::N_AUDITFILE,
+                "Node name should be '%s' but is '%s", static::N_AUDIT_FILE,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -207,16 +226,16 @@ class AuditFile extends AAuditFile
         } else {
             $this->errorRegister->addOnCreateXmlNode("no_header_table");
             \Logger::getLogger(\get_class($this))
-                ->error("No 'Header' on create xml node");
+                   ->error("No 'Header' on create xml node");
         }
 
         if (isset($this->masterFiles)) {
             $this->getMasterFiles()->createXmlNode($node);
         } else {
-            $node->addChild(MasterFiles::N_MASTERFILES);
+            $node->addChild(MasterFiles::N_MASTER_FILES);
             $this->errorRegister->addOnCreateXmlNode("no_master_files_table");
             \Logger::getLogger(\get_class($this))
-                ->error("No 'MasterFiles' on create xml node");
+                   ->error("No 'MasterFiles' on create xml node");
         }
 
         $this->getSourceDocuments(false)?->createXmlNode($node);
@@ -226,48 +245,52 @@ class AuditFile extends AAuditFile
 
     /**
      * Parse the complete XML saft file
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        if ($node->getName() !== static::N_AUDITFILE) {
+        if ($node->getName() !== static::N_AUDIT_FILE) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s", static::N_AUDITFILE,
+                "Node name should be '%s' but is '%s", static::N_AUDIT_FILE,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $header = $this->getHeader();
         $header->parseXmlNode($node->{Header::N_HEADER});
 
-        $this->getMasterFiles()->parseXmlNode($node->{MasterFiles::N_MASTERFILES});
+        $this->getMasterFiles()->parseXmlNode($node->{MasterFiles::N_MASTER_FILES});
 
-        if ($node->{SourceDocuments::N_SOURCEDOCUMENTS}->count() > 0) {
-            $this->getSourceDocuments(true)?->parseXmlNode($node->{SourceDocuments::N_SOURCEDOCUMENTS});
+        if ($node->{SourceDocuments::N_SOURCE_DOCUMENTS}->count() > 0) {
+            $this->getSourceDocuments(true)?->parseXmlNode($node->{SourceDocuments::N_SOURCE_DOCUMENTS});
         }
     }
 
     /**
      * Create the AuditFile Xml Root element
+     *
      * @return \SimpleXMLElement
      * @throws AuditFileException
      * @since 1.0.0
      */
     public function createRootElement(): \SimpleXMLElement
     {
-        $xsd = "https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/" .
+        $xsd     = "https://raw.githubusercontent.com/joaomfrebelo/Saft-PT_4_PHP/" .
             "master/src/Rebelo/SaftPt/Validate/Schema/SAFTPT_1_04_01.xsd";
+        $xsi     = 'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01';
+        $xmlns   = 'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"';
+        $xmlnsW3 = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
         return RSimpleXmlElement::getInstance(
-            '<AuditFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
-            'xsi:schemaLocation="urn:OECD:StandardAuditFile-Tax:PT_1.04_01 '. $xsd .'" ' .
-            'xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01"></AuditFile>',
+            '<AuditFile ' . $xmlnsW3 . ' ' . $xsi . ' ' . $xsd . '" ' . $xmlns . '></AuditFile>',
             LIBXML_PARSEHUGE | LIBXML_BIGLINES
         );
     }
@@ -276,7 +299,7 @@ class AuditFile extends AAuditFile
      * Get the saft as a xml string.<br>
      * By the Portuguese Tax law, the ERP must generate the saft even if it
      * has errors, because of that rule when there are errors instead of
-     * throws an exception the error is registed in the ErrorRegister
+     * throws an exception the error is register in the ErrorRegister
      * instance of the AuditFile instance, only in severe condition where is not
      * possible to catch the exception or error that a \Exception or \Error will
      * be thrown. To know if there are errors access to the ErrorRegister instance
@@ -298,12 +321,14 @@ class AuditFile extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         $xml = $this->createXmlNode($this->createRootElement())->asXML();
+        if (!$xml) throw new AuditFileException("Error creating xml node");
         $this->replaceHexUtf($xml);
         return $xml;
     }
 
     /**
      * Return the toXmlString method but the xml string converted to "Windows-1252"
+     *
      * @return string
      * @throws AuditFileException
      * @throws \Rebelo\Date\DateFormatException
@@ -325,7 +350,7 @@ class AuditFile extends AAuditFile
      * Write the XML to a file<br>
      * By the Portuguese Tax law, the ERP must generate the saft even if it
      * has errors, because of that rule when there are errors instead of
-     * throws an exception the error is registed in the ErrorRegister
+     * throws an exception the error is register in the ErrorRegister
      * instance of the AuditFile instance, only in severe condition where is not
      * possible to catch the exception or error that a \Exception or \Error will
      * be thrown. To know if there are errors access to the ErrorRegister instance
@@ -333,10 +358,12 @@ class AuditFile extends AAuditFile
      * on the setter methods, when write the AuditFile a file, other validation
      * is done, the xml string structure is validated, but other validations
      * can be done using the validation classes, however that validations
-     * in very big AuditFiles could have a time consume very hight, is
+     * in very big AuditFiles could have a time consume very height, is
      * recommended to use in test environment, in production environment
      * should be evaluated if is necessary.
+     *
      * @param string $path File path to write, if exists will be  overwritten
+     *
      * @return int The number of bytes that were written to the file
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Rebelo\Date\DateFormatException
@@ -357,13 +384,15 @@ class AuditFile extends AAuditFile
     }
 
     /**
-     * Load and parse a SAFT-PT file, afeter load and before parsing they will
+     * Load and parse a SAFT-PT file, after load and before parsing they will
      * be done a validation against the XSD, you can check if it has any error
      * in the ErrorRegister of the AuditFile instance, and you can make
      * the data validation using the validateData method
+     *
      * @param string $path
+     *
      * @return \Rebelo\SaftPt\AuditFile\AuditFile
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -382,18 +411,24 @@ class AuditFile extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $detOrder  = \array_merge(
+        $detOrder = \array_merge(
             ["UTF-8", "Windows-1252"], \mb_list_encodings()
         );
-        $encode = \mb_detect_encoding($xmlStr, $detOrder);
-        $xmlEnc    = ($encode === false || $encode === "UTF-8") ?
-            $xmlStr : \mb_convert_encoding($xmlStr, "UTF-8", $encode);
+        $encode   = \mb_detect_encoding($xmlStr, $detOrder);
+        /** @var string $xmlEnc */
+        $xmlEnc = ($encode === false || $encode === "UTF-8")
+            ? $xmlStr
+            : \mb_convert_encoding($xmlStr, "UTF-8", $encode);
+
         unset($xmlStr);
 
+        /** @var string $xmlEncClean */
         $xmlEncClean = \preg_replace(
             '/<\?xml.+version.+encoding.+\?>/i',
-            '<?xml version="1.0"?>', $xmlEnc
+            '<?xml version="1.0"?>',
+            $xmlEnc
         );
+
         unset($xmlEnc);
 
         $valXmlXsd = new XmlStructure($audit);
@@ -414,8 +449,10 @@ class AuditFile extends AAuditFile
 
     /**
      * Validate the SAFT-PT audit file.
-     * @param string|null $pubKeyPath
+     *
+     * @param string|null                                   $pubKeyPath
      * @param \Rebelo\SaftPt\Validate\ValidationConfig|null $config
+     *
      * @return bool True if no errors (can have warnings)
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Rebelo\SaftPt\Sign\SignException

@@ -49,7 +49,7 @@ class SourceDocuments extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEDOCUMENTS = "SourceDocuments";
+    const string N_SOURCE_DOCUMENTS = "SourceDocuments";
 
     /**
      *  &lt;xs:element name="SalesInvoices" minOccurs="0"&gt;
@@ -223,17 +223,17 @@ class SourceDocuments extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== AuditFile::N_AUDITFILE) {
+        if ($node->getName() !== AuditFile::N_AUDIT_FILE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                AuditFile::N_AUDITFILE, $node->getName()
+                AuditFile::N_AUDIT_FILE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $souDocNode = $node->addChild(static::N_SOURCEDOCUMENTS);
+        $souDocNode = $node->addChild(static::N_SOURCE_DOCUMENTS);
 
         $this->getSalesInvoices(false)?->createXmlNode($souDocNode);
         $this->getMovementOfGoods(false)?->createXmlNode($souDocNode);
@@ -245,9 +245,11 @@ class SourceDocuments extends AAuditFile
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -256,31 +258,31 @@ class SourceDocuments extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_SOURCEDOCUMENTS) {
+        if ($node->getName() !== static::N_SOURCE_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_SOURCEDOCUMENTS, $node->getName()
+                static::N_SOURCE_DOCUMENTS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        if ($node->{SalesInvoices::N_SALESINVOICES}->count() > 0) {
+        if ($node->{SalesInvoices::N_SALES_INVOICES}->count() > 0) {
             $this->getSalesInvoices()?->parseXmlNode(
-                $node->{SalesInvoices::N_SALESINVOICES}
+                $node->{SalesInvoices::N_SALES_INVOICES}
             );
         }
 
-        if ($node->{MovementOfGoods::N_MOVEMENTOFGOODS}->count() > 0) {
+        if ($node->{MovementOfGoods::N_MOVEMENT_OF_GOODS}->count() > 0) {
             $this->getMovementOfGoods()?->parseXmlNode(
-                $node->{MovementOfGoods::N_MOVEMENTOFGOODS}
+                $node->{MovementOfGoods::N_MOVEMENT_OF_GOODS}
             );
         }
 
-        if ($node->{WorkingDocuments::N_WORKINGDOCUMENTS}->count() > 0) {
+        if ($node->{WorkingDocuments::N_WORKING_DOCUMENTS}->count() > 0) {
             $this->getWorkingDocuments()?->parseXmlNode(
-                $node->{WorkingDocuments::N_WORKINGDOCUMENTS}
+                $node->{WorkingDocuments::N_WORKING_DOCUMENTS}
             );
         }
 

@@ -26,8 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * DocTotalCalcTest
@@ -38,20 +40,19 @@ class DocTotalCalcTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(DocTotalCalc::class);
-        $this->assertTrue(true);
+        (new Commune(DocTotalCalc::class))->testReflection(DocTotalCalc::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $docCalc = new DocTotalCalc();
@@ -68,18 +69,18 @@ class DocTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGrossTotal(): void
     {
         $docCalc = new DocTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setGrossTotal($value);
         $this->assertSame($value, $docCalc->getGrossTotal());
 
-        $docCalc->setGrossTotal(-1 * $value);
-        $this->assertSame(-1 * $value, $docCalc->getGrossTotal());
+        $docCalc->setGrossTotal($value->mul("-1"));
+        $this->assertSame($value->mul("-1")->toFloat(), $docCalc->getGrossTotal()?->toFloat());
 
         $docCalc->setGrossTotal(null);
         $this->assertNull($docCalc->getGrossTotal());
@@ -87,18 +88,18 @@ class DocTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testGrossTotalFromCurrency(): void
     {
         $docCalc = new DocTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setGrossTotalFromCurrency($value);
         $this->assertSame($value, $docCalc->getGrossTotalFromCurrency());
 
-        $docCalc->setGrossTotalFromCurrency(-1 * $value);
-        $this->assertSame(-1 * $value, $docCalc->getGrossTotalFromCurrency());
+        $docCalc->setGrossTotalFromCurrency($value->mul("-1"));
+        $this->assertSame($value->mul("-1")->toFloat(), $docCalc->getGrossTotalFromCurrency()?->toFloat());
 
         $docCalc->setGrossTotalFromCurrency(null);
         $this->assertNull($docCalc->getGrossTotalFromCurrency());
@@ -106,18 +107,18 @@ class DocTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testNetTotal(): void
     {
         $docCalc = new DocTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setNetTotal($value);
         $this->assertSame($value, $docCalc->getNetTotal());
 
-        $docCalc->setNetTotal(-1 * $value);
-        $this->assertSame(-1 * $value, $docCalc->getNetTotal());
+        $docCalc->setNetTotal($value->mul("-1"));
+        $this->assertSame($value->mul("-1")->toFloat(), $docCalc->getNetTotal()?->toFloat());
 
         $docCalc->setNetTotal(null);
         $this->assertNull($docCalc->getNetTotal());
@@ -125,18 +126,18 @@ class DocTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testTaxPayable(): void
     {
         $docCalc = new DocTotalCalc();
 
-        $value = 999.99;
+        $value = new Decimal("999.99");
         $docCalc->setTaxPayable($value);
         $this->assertSame($value, $docCalc->getTaxPayable());
 
-        $docCalc->setTaxPayable(-1 * $value);
-        $this->assertSame(-1 * $value, $docCalc->getTaxPayable());
+        $docCalc->setTaxPayable($value->mul("-1"));
+        $this->assertSame($value->mul("-1")->toFloat(), $docCalc->getTaxPayable()?->toFloat());
 
         $docCalc->setTaxPayable(null);
         $this->assertNull($docCalc->getTaxPayable());
@@ -144,15 +145,15 @@ class DocTotalCalcTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testLineTotal(): void
     {
         $docCalc = new DocTotalCalc();
 
         $nMax = 9;
         for ($n = 1; $n <= $nMax; $n++) {
-            $value = 9999.99 * $n;
+            $value = (new Decimal("9999.99"))->mul((string)$n);
             $docCalc->addLineTotal($n, $value);
             $this->assertSame(
                 $value, $docCalc->getLineTotal()[$n]

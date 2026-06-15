@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\Date\Date as RDate;
@@ -45,62 +46,62 @@ abstract class ADocument extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_ATCUD = "ATCUD";
+    const string N_ATCUD = "ATCUD";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_HASH = "Hash";
+    const string N_HASH = "Hash";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_HASHCONTROL = "HashControl";
+    const string N_HASH_CONTROL = "HashControl";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_PERIOD = "Period";
+    const string N_PERIOD = "Period";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SOURCEID = "SourceID";
+    const string N_SOURCE_ID = "SourceID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_EACCODE = "EACCode";
+    const string N_EAC_CODE = "EACCode";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SYSTEMENTRYDATE = "SystemEntryDate";
+    const string N_SYSTEM_ENTRY_DATE = "SystemEntryDate";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_TRANSACTIONID = "TransactionID";
+    const string N_TRANSACTION_ID = "TransactionID";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_CUSTOMERID = "CustomerID";
+    const string N_CUSTOMER_ID = "CustomerID";
 
     /**
-     * The calulated values made by the validation classes
+     * The calculated values made by the validation classes
      * @var \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
-    protected ?DocTotalCalc $docTotalcal = null;
+    protected ?DocTotalCalc $docTotalCalc = null;
 
     /**
      *
@@ -260,7 +261,7 @@ abstract class ADocument extends AAuditFile
     public function setAtcud(string $atcud): bool
     {
         try {
-            $this->atcud = $this->valTextMandMaxCar(
+            $this->atcud = $this->valTextMandatoryMaxCar(
                 $atcud, 100, __METHOD__, false
             );
             $return      = true;
@@ -320,7 +321,7 @@ abstract class ADocument extends AAuditFile
     public function setHash(string $hash): bool
     {
         try {
-            $this->hash = $this->valTextMandMaxCar($hash, 172, __METHOD__, false);
+            $this->hash = $this->valTextMandatoryMaxCar($hash, 172, __METHOD__, false);
             $return     = true;
         } catch (AuditFileException $e) {
             $this->hash = $hash;
@@ -478,7 +479,7 @@ abstract class ADocument extends AAuditFile
     }
 
     /**
-     * Get sourceiID<br>
+     * Get sourceID<br>
      * User who created the document
      * <pre>
      * &lt;xs:element ref = "SourceID"/&gt;
@@ -506,7 +507,7 @@ abstract class ADocument extends AAuditFile
     }
 
     /**
-     * Set sourceiID<br>
+     * Set sourceID<br>
      * User who created the document
      * <pre>
      * &lt;xs:element ref = "SourceID"/&gt;
@@ -519,7 +520,7 @@ abstract class ADocument extends AAuditFile
     public function setSourceID(string $sourceID): bool
     {
         try {
-            $this->sourceID = $this->valTextMandMaxCar($sourceID, 30, __METHOD__);
+            $this->sourceID = $this->valTextMandatoryMaxCar($sourceID, 30, __METHOD__);
             $return         = true;
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
@@ -610,8 +611,8 @@ abstract class ADocument extends AAuditFile
      * Date of the last time the record was saved at the time of signing.
      * Shall include hour, minute and second. Date and time type: “YYYY–MM–DDThh:mm:ss”.<br>
      * &lt;xs:element ref = "SystemEntryDate"/&gt;
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getSystemEntryDate(): RDate
@@ -620,7 +621,7 @@ abstract class ADocument extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->systemEntryDate->format(RDate::DATE_T_TIME)
+                    $this->systemEntryDate->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->systemEntryDate;
@@ -641,9 +642,10 @@ abstract class ADocument extends AAuditFile
      * Date of the last time the record was saved at the time of signing.
      * Shall include hour, minute and second. Date and time type: “YYYY–MM–DDThh:mm:ss”.<br>
      * &lt;xs:element ref = "SystemEntryDate"/&gt;
+     *
      * @param \Rebelo\Date\Date $systemEntryDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setSystemEntryDate(RDate $systemEntryDate): void
@@ -653,7 +655,7 @@ abstract class ADocument extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->systemEntryDate->format(RDate::DATE_T_TIME)
+                    $this->systemEntryDate->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -666,10 +668,11 @@ abstract class ADocument extends AAuditFile
      * contain tables relating accounting.<br>
      * If $create is true and an instance wasn't created previous a new instance will be created
      * &lt;xs:element ref = "TransactionID" minOccurs = "0"/&gt;
+     *
      * @param bool $create If is true and an instance wasn't created previous a new instance will be created
+     *
      * @return \Rebelo\SaftPt\AuditFile\TransactionID|null
      * @since 1.0.0
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      */
     public function getTransactionID(bool $create = true): ?TransactionID
     {
@@ -736,7 +739,7 @@ abstract class ADocument extends AAuditFile
     public function setCustomerID(string $customerID): bool
     {
         try {
-            $this->customerID = $this->valTextMandMaxCar(
+            $this->customerID = $this->valTextMandatoryMaxCar(
                 $customerID, 30, __METHOD__, false
             );
             $return           = true;
@@ -758,9 +761,11 @@ abstract class ADocument extends AAuditFile
 
     /**
      * Parse the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -772,55 +777,57 @@ abstract class ADocument extends AAuditFile
 
         $this->setHash((string) $node->{static::N_HASH});
 
-        $this->setHashControl((string) $node->{static::N_HASHCONTROL});
+        $this->setHashControl((string) $node->{static::N_HASH_CONTROL});
 
         if ($node->{static::N_PERIOD}->count() > 0) {
             $this->setPeriod((int) $node->{static::N_PERIOD});
         }
 
-        $this->setSourceID((string) $node->{static::N_SOURCEID});
+        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
 
-        if ($node->{static::N_EACCODE}->count() > 0) {
-            $this->setEacCode((string) $node->{static::N_EACCODE});
+        if ($node->{static::N_EAC_CODE}->count() > 0) {
+            $this->setEacCode((string) $node->{static::N_EAC_CODE});
         }
 
         $this->setSystemEntryDate(
             RDate::parse(
-                RDate::DATE_T_TIME, (string) $node->{static::N_SYSTEMENTRYDATE}
+                Pattern::DATE_T_TIME, (string) $node->{static::N_SYSTEM_ENTRY_DATE}
             )
         );
 
-        if ($node->{static::N_TRANSACTIONID}->count() > 0) {
+        if ($node->{static::N_TRANSACTION_ID}->count() > 0) {
             $this->getTransactionID()?->parseXmlNode(
-                $node->{static::N_TRANSACTIONID}
+                $node->{static::N_TRANSACTION_ID}
             );
         }
 
-        if ($node->{static::N_CUSTOMERID}->count() > 0) {
-            $this->setCustomerID((string) $node->{static::N_CUSTOMERID});
+        if ($node->{static::N_CUSTOMER_ID}->count() > 0) {
+            $this->setCustomerID((string) $node->{static::N_CUSTOMER_ID});
         }
     }
 
     /**
-     * Get the caluleted values of the validation classes
+     * Get the calculated values of the validation classes
      * @return \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
-    public function getDocTotalcal(): ?DocTotalCalc
+    public function getDocTotalCalc(): ?DocTotalCalc
     {
         \Logger::getLogger(\get_class($this))->info(__METHOD__);
-        return $this->docTotalcal;
+        return $this->docTotalCalc;
     }
 
     /**
-     * Set the caluleted values of the validation classes
-     * @param \Rebelo\SaftPt\Validate\DocTotalCalc|null $docTotalcal
+     * Set the calculated values of the validation classes
+     *
+     * @param \Rebelo\SaftPt\Validate\DocTotalCalc|null $docTotalCalc
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setDocTotalcal(?DocTotalCalc $docTotalcal): void
+    public function setDocTotalCalc(?DocTotalCalc $docTotalCalc): void
     {
         \Logger::getLogger(\get_class($this))->debug(__METHOD__);
-        $this->docTotalcal = $docTotalcal;
+        $this->docTotalCalc = $docTotalCalc;
     }
 }

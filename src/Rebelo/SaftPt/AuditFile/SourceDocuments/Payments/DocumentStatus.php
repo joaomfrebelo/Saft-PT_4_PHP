@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
@@ -55,37 +56,37 @@ class DocumentStatus extends AAuditFile
      * Node Name
      * @since 1.0.0
      */
-    const N_DOCUMENTSTATUS = "DocumentStatus";
+    const string N_DOCUMENT_STATUS = "DocumentStatus";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_PAYMENTSTATUS = "PaymentStatus";
+    const string N_PAYMENT_STATUS = "PaymentStatus";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_PAYMENTSTATUSDATE = "PaymentStatusDate";
+    const string N_PAYMENT_STATUS_DATE = "PaymentStatusDate";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_REASON = "Reason";
+    const string N_REASON = "Reason";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SOURCEID = "SourceID";
+    const string N_SOURCE_ID = "SourceID";
 
     /**
      * Node Name
      * @since 1.0.0
      */
-    const N_SOURCEPAYMENT = "SourcePayment";
+    const string N_SOURCE_PAYMENT = "SourcePayment";
 
     /**
      * &lt;xs:element ref="PaymentStatus"/&gt;
@@ -182,7 +183,7 @@ class DocumentStatus extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->paymentStatus->get()
+                    $this->paymentStatus->value
                 )
             );
         return $this->paymentStatus;
@@ -215,7 +216,7 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->paymentStatus->get()
+                    $this->paymentStatus->value
                 )
             );
     }
@@ -230,9 +231,8 @@ class DocumentStatus extends AAuditFile
      *   &lt;xs:restriction base="xs:dateTime"/&gt;
      *  &lt;/xs:simpleType/&gt;
      * </pre>
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Error
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getPaymentStatusDate(): RDate
@@ -241,7 +241,7 @@ class DocumentStatus extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->paymentStatusDate->format(RDate::DATE_T_TIME)
+                    $this->paymentStatusDate->format(Pattern::DATE_T_TIME)
                 )
             );
         return $this->paymentStatusDate;
@@ -267,9 +267,10 @@ class DocumentStatus extends AAuditFile
      *   &lt;xs:restriction base="xs:dateTime"/&gt;
      *  &lt;/xs:simpleType/&gt;
      * </pre>
+     *
      * @param \Rebelo\Date\Date $paymentStatusDate
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setPaymentStatusDate(RDate $paymentStatusDate): void
@@ -279,7 +280,7 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->paymentStatusDate->format(RDate::DATE_T_TIME)
+                    $this->paymentStatusDate->format(Pattern::DATE_T_TIME)
                 )
             );
     }
@@ -317,7 +318,7 @@ class DocumentStatus extends AAuditFile
     {
         try {
             $this->reason = $reason === null ? null :
-                $this->valTextMandMaxCar($reason, 50, __METHOD__);
+                $this->valTextMandatoryMaxCar($reason, 50, __METHOD__);
             $return       = true;
         } catch (AUditFileException $e) {
             $this->reason = $reason;
@@ -372,7 +373,7 @@ class DocumentStatus extends AAuditFile
     public function setSourceID(string $sourceID): bool
     {
         try {
-            $this->sourceID = $this->valTextMandMaxCar($sourceID, 30, __METHOD__);
+            $this->sourceID = $this->valTextMandatoryMaxCar($sourceID, 30, __METHOD__);
             $return         = true;
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
@@ -411,7 +412,7 @@ class DocumentStatus extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->sourcePayment->get()
+                    $this->sourcePayment->value
                 )
             );
         return $this->sourcePayment;
@@ -453,17 +454,18 @@ class DocumentStatus extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->sourcePayment->get()
+                    $this->sourcePayment->value
                 )
             );
     }
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -480,24 +482,24 @@ class DocumentStatus extends AAuditFile
             throw new AuditFileException($msg);
         }
 
-        $docStatusNode = $node->addChild(static::N_DOCUMENTSTATUS);
+        $docStatusNode = $node->addChild(static::N_DOCUMENT_STATUS);
 
         if (isset($this->paymentStatus)) {
             $docStatusNode->addChild(
-                static::N_PAYMENTSTATUS, $this->getPaymentStatus()->get()
+                static::N_PAYMENT_STATUS, $this->getPaymentStatus()->value
             );
         } else {
-            $docStatusNode->addChild(static::N_PAYMENTSTATUS);
+            $docStatusNode->addChild(static::N_PAYMENT_STATUS);
             $this->getErrorRegistor()->addOnCreateXmlNode("PaymentStatus_not_valid");
         }
 
         if (isset($this->paymentStatusDate)) {
             $docStatusNode->addChild(
-                static::N_PAYMENTSTATUSDATE,
-                $this->getPaymentStatusDate()->format(RDate::DATE_T_TIME)
+                static::N_PAYMENT_STATUS_DATE,
+                $this->getPaymentStatusDate()->format(Pattern::DATE_T_TIME)
             );
         } else {
-            $docStatusNode->addChild(static::N_PAYMENTSTATUSDATE);
+            $docStatusNode->addChild(static::N_PAYMENT_STATUS_DATE);
             $this->getErrorRegistor()->addOnCreateXmlNode("PaymentStatusDate_not_valid");
         }
 
@@ -509,19 +511,19 @@ class DocumentStatus extends AAuditFile
 
         if (isset($this->sourceID)) {
             $docStatusNode->addChild(
-                static::N_SOURCEID, $this->getSourceID()
+                static::N_SOURCE_ID, $this->getSourceID()
             );
         } else {
-            $docStatusNode->addChild(static::N_SOURCEID);
+            $docStatusNode->addChild(static::N_SOURCE_ID);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourceID_not_valid");
         }
 
         if (isset($this->sourcePayment)) {
             $docStatusNode->addChild(
-                static::N_SOURCEPAYMENT, $this->getSourcePayment()->get()
+                static::N_SOURCE_PAYMENT, $this->getSourcePayment()->value
             );
         } else {
-            $docStatusNode->addChild(static::N_SOURCEPAYMENT);
+            $docStatusNode->addChild(static::N_SOURCE_PAYMENT);
             $this->getErrorRegistor()->addOnCreateXmlNode("SourcePayment_not_valid");
         }
 
@@ -530,11 +532,12 @@ class DocumentStatus extends AAuditFile
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
-     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
@@ -542,24 +545,24 @@ class DocumentStatus extends AAuditFile
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_DOCUMENTSTATUS) {
+        if ($node->getName() !== static::N_DOCUMENT_STATUS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_DOCUMENTSTATUS, $node->getName()
+                static::N_DOCUMENT_STATUS, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $payStatus = new PaymentStatus((string) $node->{static::N_PAYMENTSTATUS});
+        $payStatus = PaymentStatus::from((string) $node->{static::N_PAYMENT_STATUS});
 
         $this->setPaymentStatus($payStatus);
 
         $this->setPaymentStatusDate(
             RDate::parse(
-                RDate::DATE_T_TIME,
-                (string) $node->{static::N_PAYMENTSTATUSDATE}
+                Pattern::DATE_T_TIME,
+                (string) $node->{static::N_PAYMENT_STATUS_DATE}
             )
         );
 
@@ -567,10 +570,8 @@ class DocumentStatus extends AAuditFile
             $this->setReason((string) $node->{static::N_REASON});
         }
 
-        $this->setSourceID((string) $node->{static::N_SOURCEID});
+        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
 
-        $this->setSourcePayment(
-            new SourcePayment((string) $node->{static::N_SOURCEPAYMENT})
-        );
+        $this->setSourcePayment(SourcePayment::from((string) $node->{static::N_SOURCE_PAYMENT}));
     }
 }

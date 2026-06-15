@@ -26,12 +26,13 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\Date\Date as RDate;
-use Rebelo\Date\DateFormatException;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 
 /**
  * Class OrderReferencesTest
@@ -42,21 +43,19 @@ class OrderReferencesTest extends TestCase
 {
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(OrderReferences::class);
-        $this->assertTrue(true);
+        (new Commune(OrderReferences::class))->testReflection(OrderReferences::class);
     }
 
     /**
-     * @throws DateFormatException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstanceAndSetGet(): void
     {
         $orderRef = new OrderReferences(new ErrorRegister());
@@ -78,7 +77,6 @@ class OrderReferencesTest extends TestCase
     /**
      *
      * @return OrderReferences
-     * @throws DateFormatException
      */
     public function createOrderReferences(): OrderReferences
     {
@@ -90,8 +88,8 @@ class OrderReferencesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWrongName(): void
     {
         $orderRef = new OrderReferences(new ErrorRegister());
@@ -100,9 +98,9 @@ class OrderReferencesTest extends TestCase
             $orderRef->createXmlNode($node);
             $this->fail(
                 "Create a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -111,8 +109,8 @@ class OrderReferencesTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNodeWrongName(): void
     {
         $orderRef = new OrderReferences(new ErrorRegister());
@@ -121,9 +119,9 @@ class OrderReferencesTest extends TestCase
             $orderRef->parseXmlNode($node);
             $this->fail(
                 "Parse a xml node on a wrong node should throw "
-                ."\Rebelo\SaftPt\AuditFile\AuditFileException"
+                . "\Rebelo\SaftPt\AuditFile\AuditFileException"
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             $this->assertInstanceOf(
                 AuditFileException::class, $e
             );
@@ -131,82 +129,79 @@ class OrderReferencesTest extends TestCase
     }
 
     /**
-     * @throws DateFormatException|AuditFileException
+     * @throws AuditFileException
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNode(): void
     {
         $orderRef = $this->createOrderReferences();
         $node     = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
 
         $orderRefNode = $orderRef->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $orderRefNode);
 
         $this->assertSame(
-            OrderReferences::N_ORDERREFERENCES, $orderRefNode->getName()
+            OrderReferences::N_ORDER_REFERENCES, $orderRefNode->getName()
         );
 
         $this->assertSame(
             $orderRef->getOriginatingON(),
-            (string) $node->{OrderReferences::N_ORDERREFERENCES}
-            ->{OrderReferences::N_ORIGINATINGON}
+            (string)$node->{OrderReferences::N_ORDER_REFERENCES}
+                ->{OrderReferences::N_ORIGINATING_ON}
         );
 
         $this->assertSame(
-            $orderRef->getOrderDate()->format(
-                RDate::SQL_DATE
-            ),
-            (string) $node->{OrderReferences::N_ORDERREFERENCES}
-            ->{OrderReferences::N_ORDERDATE}
+            $orderRef->getOrderDate()?->format(Pattern::SQL_DATE),
+            (string)$node->{OrderReferences::N_ORDER_REFERENCES}->{OrderReferences::N_ORDER_DATE}
         );
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeNull(): void
     {
         $orderRef = new OrderReferences(new ErrorRegister());
         $node     = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
 
         $orderRefNode = $orderRef->createXmlNode($node);
         $this->assertInstanceOf(\SimpleXMLElement::class, $orderRefNode);
 
         $this->assertSame(
-            OrderReferences::N_ORDERREFERENCES, $orderRefNode->getName()
+            OrderReferences::N_ORDER_REFERENCES, $orderRefNode->getName()
         );
 
         $this->assertSame(
             0,
-            $node->{OrderReferences::N_ORDERREFERENCES}
-            ->{OrderReferences::N_ORIGINATINGON}->count()
+            $node->{OrderReferences::N_ORDER_REFERENCES}
+                ->{OrderReferences::N_ORIGINATING_ON}->count()
         );
 
         $this->assertSame(
             0,
-            $node->{OrderReferences::N_ORDERREFERENCES}
-            ->{OrderReferences::N_ORDERDATE}->count()
+            $node->{OrderReferences::N_ORDER_REFERENCES}
+                ->{OrderReferences::N_ORDER_DATE}->count()
         );
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXml(): void
     {
         $orderRefTax = $this->createOrderReferences();
         $node        = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -220,21 +215,21 @@ class OrderReferencesTest extends TestCase
             $orderRefTax->getOriginatingON(), $parsed->getOriginatingON()
         );
         $this->assertSame(
-            $orderRefTax->getOrderDate()->format(RDate::SQL_DATE),
-            $parsed->getOrderDate()->format(RDate::SQL_DATE)
+            $orderRefTax->getOrderDate()?->format(Pattern::SQL_DATE),
+            $parsed->getOrderDate()?->format(Pattern::SQL_DATE)
         );
     }
 
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testParseXmlNull(): void
     {
         $orderRefTax = new OrderReferences(new ErrorRegister());
         $node        = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $xml         = $orderRefTax->createXmlNode($node)->asXML();
         if ($xml === false) {
@@ -251,12 +246,12 @@ class OrderReferencesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $orderNode = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $order     = new OrderReferences(new ErrorRegister());
         $xml       = $order->createXmlNode($orderNode)->asXML();
@@ -276,12 +271,12 @@ class OrderReferencesTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $orderNode = new \SimpleXMLElement(
-            "<".A2Line::N_LINE."></".A2Line::N_LINE.">"
+            "<" . A2Line::N_LINE . "></" . A2Line::N_LINE . ">"
         );
         $order     = new OrderReferences(new ErrorRegister());
         $order->setOriginatingON("");

@@ -26,11 +26,12 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode;
+use Rebelo\SaftPt\AuditFile\MasterFiles\TaxType;
 use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
 
 /**
@@ -46,49 +47,57 @@ use Rebelo\SaftPt\AuditFile\TaxCountryRegion;
  *         &lt;/xs:choice&gt;
  *     &lt;/xs:sequence&gt;
  * &lt;/xs:complexType&gt;
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Tax extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAX = "Tax";
+    const string N_TAX = "Tax";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXTYPE = "TaxType";
+    const string N_TAX_TYPE = "TaxType";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXCOUNTRYREGION = "TaxCountryRegion";
+    const string N_TAX_COUNTRY_REGION = "TaxCountryRegion";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXCODE = "TaxCode";
+    const string N_TAX_CODE = "TaxCode";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXPERCENTAGE = "TaxPercentage";
+    const string N_TAX_PERCENTAGE = "TaxPercentage";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
-    const N_TAXAMOUNT = "TaxAmount";
+    const string N_TAX_AMOUNT = "TaxAmount";
 
     /**
      * &lt;xs:element ref="TaxType"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType
      * @since 1.0.0
      */
@@ -96,6 +105,7 @@ class Tax extends AAuditFile
 
     /**
      * &lt;xs:element ref="TaxCountryRegion"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\TaxCountryRegion
      * @since 1.0.0
      */
@@ -103,24 +113,27 @@ class Tax extends AAuditFile
 
     /**
      * &lt;xs:element ref="TaxCode"/&gt;
-     * @var \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode
+     *
+     * @var \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode|string
      * @since 1.0.0
      */
-    private TaxCode $taxCode;
+    private TaxCode|string $taxCode;
 
     /**
      * &lt;xs:element ref="TaxPercentage"/&gt;
-     * @var float|null
+     *
+     * @var Decimal|null
      * @since 1.0.0
      */
-    private ?float $taxPercentage = null;
+    private Decimal|null $taxPercentage = null;
 
     /**
      * &lt;xs:element ref="TaxAmount"/&gt;
-     * @var float|null
+     *
+     * @var Decimal|null
      * @since 1.0.0
      */
-    private ?float $taxAmount = null;
+    private Decimal|null $taxAmount = null;
 
     /**
      * Tax
@@ -137,7 +150,9 @@ class Tax extends AAuditFile
      *     &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -151,6 +166,7 @@ class Tax extends AAuditFile
      * “IVA” - Value Added Tax;<br>
      * “IS” - Stamp Duty;<br>
      * “NS” - Not subject IVA or IS.<br>
+     *
      * @return \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType
      * @throws \Error
      * @since 1.0.0
@@ -158,12 +174,13 @@ class Tax extends AAuditFile
     public function getTaxType(): TaxType
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->get()));
+               ->info(\sprintf(__METHOD__ . " get '%s'", $this->taxType->value));
         return $this->taxType;
     }
 
     /**
      * Get if is set TaxType
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -178,7 +195,9 @@ class Tax extends AAuditFile
      * “IVA” - Value Added Tax;<br>
      * “IS” - Stamp Duty;<br>
      * “NS” - Not subject IVA or IS.<br>
+     *
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\TaxType $taxType
+     *
      * @return void
      * @since 1.0.0
      */
@@ -186,7 +205,7 @@ class Tax extends AAuditFile
     {
         $this->taxType = $taxType;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->get()));
+               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxType->value));
     }
 
     /**
@@ -196,6 +215,7 @@ class Tax extends AAuditFile
      * it must be filled in with:<br>
      * “PT-AC” - Fiscal area of the Autonomous Region of the Azores;<br>
      * “PT-MA” - Fiscal area of the Autonomous Region of the Madeira Island.<br>
+     *
      * @return \Rebelo\SaftPt\AuditFile\TaxCountryRegion
      * @throws \Error
      * @since 1.0.0
@@ -205,8 +225,8 @@ class Tax extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxCountryRegion->get()
+                    __METHOD__ . " get '%s'",
+                    $this->taxCountryRegion->value
                 )
             );
         return $this->taxCountryRegion;
@@ -214,6 +234,7 @@ class Tax extends AAuditFile
 
     /**
      * Get if is set TaxCountryRegion
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -229,7 +250,9 @@ class Tax extends AAuditFile
      * it must be filled in with:<br>
      * “PT-AC” - Fiscal area of the Autonomous Region of the Azores;<br>
      * “PT-MA” - Fiscal area of the Autonomous Region of the Madeira Island.<br>
+     *
      * @param \Rebelo\SaftPt\AuditFile\TaxCountryRegion $taxCountryRegion
+     *
      * @return void
      * @since 1.0.0
      */
@@ -239,8 +262,8 @@ class Tax extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->taxCountryRegion->get()
+                    __METHOD__ . " set to '%s'",
+                    $this->taxCountryRegion->value
                 )
             );
     }
@@ -258,19 +281,26 @@ class Tax extends AAuditFile
      * The correspondent code of the Stamp Duty’s table;<br>
      * “ISE” - Exempted.<br>
      * In case it is not subject to tax, fill in with “NS”.
-     * @return \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode
+     *
+     * @return \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode|string
      * @throws \Error
      * @since 1.0.0
      */
-    public function getTaxCode(): TaxCode
+    public function getTaxCode(): TaxCode|string
     {
         \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->get()));
+            ->info(
+                \sprintf(
+                    __METHOD__ . " get '%s'",
+                    is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value
+                )
+            );
         return $this->taxCode;
     }
 
     /**
      * Get if is set TaxCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -292,15 +322,22 @@ class Tax extends AAuditFile
      * The correspondent code of the Stamp Duty’s table;<br>
      * “ISE” - Exempted.<br>
      * In case it is not subject to tax, fill in with “NS”.
-     * @param \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode $taxCode
+     *
+     * @param \Rebelo\SaftPt\AuditFile\MasterFiles\TaxCode|string $taxCode
+     *
      * @return void
      * @since 1.0.0
      */
-    public function setTaxCode(TaxCode $taxCode): void
+    public function setTaxCode(TaxCode|string $taxCode): void
     {
         $this->taxCode = $taxCode;
         \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->get()));
+            ->debug(
+                \sprintf(
+                    __METHOD__ . " set to '%s'",
+                    is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value
+                )
+            );
     }
 
     /**
@@ -309,17 +346,18 @@ class Tax extends AAuditFile
      * Percentage of the tax rate corresponding to the tax applicable to
      * field 4.4.4.19.13. - DebitAmount or to field 4.1.4.19.14. - CreditAmount.
      * In case of exemption or not subject to tax, fill in with “0” (zero).
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTaxPercentage(): ?float
+    public function getTaxPercentage(): Decimal|null
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->taxPercentage === null ?
-                    "null" : \strval($this->taxPercentage)
+                           "null" : \strval($this->taxPercentage)
                 )
             );
         return $this->taxPercentage;
@@ -331,19 +369,21 @@ class Tax extends AAuditFile
      * Percentage of the tax rate corresponding to the tax applicable to
      * field 4.4.4.19.13. - DebitAmount or to field 4.1.4.19.14. - CreditAmount.
      * In case of exemption or not subject to tax, fill in with “0” (zero).
-     * @param float|null $taxPercentage
+     *
+     * @param Decimal|null $taxPercentage
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxPercentage(?float $taxPercentage): bool
+    public function setTaxPercentage(Decimal|null $taxPercentage): bool
     {
         if ($this->getTaxAmount() !== null && $taxPercentage !== null) {
-            $msg    = "Tax Percentage and Tax Amount can not be set at the same time";
+            $msg = "Tax Percentage and Tax Amount can not be set at the same time";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
-            $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_setted");
-        } elseif ($taxPercentage < 0.0 || $taxPercentage > 100.00) {
+            $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_set");
+        } elseif (($taxPercentage?->compareTo("0.0") ?? 0) < 0 || ($taxPercentage?->compareTo("100.0") ?? 0) > 0) {
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxPercentage_not_valid");
         } else {
@@ -353,9 +393,9 @@ class Tax extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->taxPercentage === null ?
-                    "null" : \strval($this->taxPercentage)
+                           "null" : \strval($this->taxPercentage)
                 )
             );
         return $return;
@@ -365,39 +405,42 @@ class Tax extends AAuditFile
      * Get Tax Amount<br>
      * The filling is required, in the case of a fixed unitary fee of stamp duty.
      * This value, multiplied by the Quantity contributes for the TaxPayable field.
-     * @return float|null
+     *
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getTaxAmount(): ?float
+    public function getTaxAmount(): Decimal|null
     {
         \Logger::getLogger(\get_class($this))
             ->info(
                 \sprintf(
-                    __METHOD__." get '%s'",
+                    __METHOD__ . " get '%s'",
                     $this->taxAmount === null ?
-                    "null" : \strval($this->taxAmount)
+                           "null" : \strval($this->taxAmount)
                 )
             );
         return $this->taxAmount;
     }
 
     /**
-     * Set Tax Amout<br>
+     * Set Tax Amount<br>
      * The filling is required, in the case of a fixed unitary fee of stamp duty.
      * This value, multiplied by the Quantity contributes for the TaxPayable field.
-     * @param float|null $taxAmount
+     *
+     * @param Decimal|null $taxAmount
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setTaxAmount(?float $taxAmount): bool
+    public function setTaxAmount(Decimal|null $taxAmount): bool
     {
         if ($this->getTaxPercentage() !== null && $taxAmount !== null) {
-            $msg    = "Tax Percentage and Tax Amount can not be set at the same time";
+            $msg = "Tax Percentage and Tax Amount can not be set at the same time";
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
-            $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_setted");
-        } elseif ($taxAmount < 0.0) {
+            $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_set");
+        } elseif (($taxAmount?->compareTo("0.0") ?? 0) < 0) {
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxAmount_not_valid");
         } else {
@@ -407,9 +450,9 @@ class Tax extends AAuditFile
         \Logger::getLogger(\get_class($this))
             ->debug(
                 \sprintf(
-                    __METHOD__." set to '%s'",
+                    __METHOD__ . " set to '%s'",
                     $this->taxAmount === null ?
-                    "null" : \strval($this->taxAmount)
+                           "null" : \strval($this->taxAmount)
                 )
             );
         return $return;
@@ -417,7 +460,9 @@ class Tax extends AAuditFile
 
     /**
      * Create xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -432,45 +477,48 @@ class Tax extends AAuditFile
                 A2Line::N_LINE, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $taxNode = $node->addChild(static::N_TAX);
 
         if (isset($this->taxType)) {
-            $taxNode->addChild(static::N_TAXTYPE, $this->getTaxType()->get());
+            $taxNode->addChild(static::N_TAX_TYPE, $this->getTaxType()->value);
         } else {
-            $taxNode->addChild(static::N_TAXTYPE);
+            $taxNode->addChild(static::N_TAX_TYPE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxType_not_valid");
         }
 
         if (isset($this->taxCountryRegion)) {
             $taxNode->addChild(
-                static::N_TAXCOUNTRYREGION, $this->getTaxCountryRegion()->get()
+                static::N_TAX_COUNTRY_REGION, $this->getTaxCountryRegion()->value
             );
         } else {
-            $taxNode->addChild(static::N_TAXCOUNTRYREGION);
+            $taxNode->addChild(static::N_TAX_COUNTRY_REGION);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxCountryRegion_not_valid");
         }
 
         if (isset($this->taxCode)) {
-            $taxNode->addChild(static::N_TAXCODE, $this->getTaxCode()->get());
+            $taxNode->addChild(
+                static::N_TAX_CODE,
+                is_string($this->getTaxCode()) ? $this->getTaxCode() : $this->getTaxCode()->value
+            );
         } else {
-            $taxNode->addChild(static::N_TAXCODE);
+            $taxNode->addChild(static::N_TAX_CODE);
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxCode_not_valid");
         }
 
         if ($this->getTaxPercentage() !== null) {
             $taxNode->addChild(
-                static::N_TAXPERCENTAGE,
+                static::N_TAX_PERCENTAGE,
                 $this->floatFormat($this->getTaxPercentage())
             );
         }
 
         if ($this->getTaxAmount() !== null) {
             $taxNode->addChild(
-                static::N_TAXAMOUNT, $this->floatFormat($this->getTaxAmount())
+                static::N_TAX_AMOUNT, $this->floatFormat($this->getTaxAmount())
             );
         }
 
@@ -479,9 +527,10 @@ class Tax extends AAuditFile
 
     /**
      * Parse xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws \Rebelo\Enum\EnumException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Exception
      * @since 1.0.0
@@ -496,23 +545,26 @@ class Tax extends AAuditFile
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setTaxCode(new TaxCode((string) $node->{static::N_TAXCODE}));
-        $this->setTaxType(new TaxType((string) $node->{static::N_TAXTYPE}));
-
-        $this->setTaxCountryRegion(
-            new TaxCountryRegion((string) $node->{static::N_TAXCOUNTRYREGION})
+        $this->setTaxCode(
+            TaxCode::tryFrom(((string)$node->{static::N_TAX_CODE})) ?? (string)$node->{static::N_TAX_CODE}
         );
 
-        if ($node->{static::N_TAXPERCENTAGE}->count() > 0) {
-            $this->setTaxPercentage((float) $node->{static::N_TAXPERCENTAGE});
+        $this->setTaxType(TaxType::from((string)$node->{static::N_TAX_TYPE}));
+
+        $this->setTaxCountryRegion(
+            TaxCountryRegion::from((string)$node->{static::N_TAX_COUNTRY_REGION})
+        );
+
+        if ($node->{static::N_TAX_PERCENTAGE}->count() > 0) {
+            $this->setTaxPercentage(new Decimal((string)$node->{static::N_TAX_PERCENTAGE}));
         }
 
-        if ($node->{static::N_TAXAMOUNT}->count() > 0) {
-            $this->setTaxAmount((float) $node->{static::N_TAXAMOUNT});
+        if ($node->{static::N_TAX_AMOUNT}->count() > 0) {
+            $this->setTaxAmount(new Decimal((string)$node->{static::N_TAX_AMOUNT}));
         }
     }
 }

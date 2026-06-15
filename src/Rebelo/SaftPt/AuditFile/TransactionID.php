@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 
 /**
  *
@@ -59,7 +60,7 @@ class TransactionID extends AAuditFile
      * Node name
      * @since 1.0.0
      */
-    const N_TRANSACTIONID = "TransactionID";
+    const string N_TRANSACTION_ID = "TransactionID";
 
     /**
      * Transaction date
@@ -110,8 +111,8 @@ class TransactionID extends AAuditFile
 
     /**
      * Get transaction date
+     *
      * @return \Rebelo\Date\Date
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function getDate(): RDate
@@ -120,7 +121,7 @@ class TransactionID extends AAuditFile
             ->info(
                 \sprintf(
                     __METHOD__." get '%s'",
-                    $this->date->format(RDate::SQL_DATE)
+                    $this->date->format(Pattern::SQL_DATE)
                 )
             );
         return $this->date;
@@ -128,9 +129,10 @@ class TransactionID extends AAuditFile
 
     /**
      * Set transaction date
+     *
      * @param \Rebelo\Date\Date $date
+     *
      * @return void
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function setDate(RDate $date): void
@@ -140,7 +142,7 @@ class TransactionID extends AAuditFile
             ->debug(
                 \sprintf(
                     __METHOD__." set to '%s'",
-                    $this->date->format(RDate::SQL_DATE)
+                    $this->date->format(Pattern::SQL_DATE)
                 )
             );
     }
@@ -227,9 +229,10 @@ class TransactionID extends AAuditFile
 
     /**
      * Create the XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws \Rebelo\Date\DateFormatException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
@@ -238,34 +241,34 @@ class TransactionID extends AAuditFile
 
         if (isset($this->date) && isset($this->docArchivalNumber) && isset($this->journalID)) {
             $tran = \sprintf(
-                "%s %s %s", $this->getDate()->format(RDate::SQL_DATE),
+                "%s %s %s", $this->getDate()->format(Pattern::SQL_DATE),
                 $this->getJournalID(), $this->getDocArchivalNumber()
             );
-            return $node->addChild(static::N_TRANSACTIONID, $tran);
+            return $node->addChild(static::N_TRANSACTION_ID, $tran);
         }
 
         $this->getErrorRegistor()->addOnCreateXmlNode("TransactionID_not_valid");
-        return $node->addChild(static::N_TRANSACTIONID);
+        return $node->addChild(static::N_TRANSACTION_ID);
     }
 
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
-     * @throws AuditFileException
-     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
+     * @throws \Rebelo\Date\DateException
      * @throws \Rebelo\Date\DateParseException
-     * @throws \Rebelo\Date\DateFormatException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         \Logger::getLogger(\get_class($this))->trace(__METHOD__);
 
-        if ($node->getName() !== static::N_TRANSACTIONID) {
+        if ($node->getName() !== static::N_TRANSACTION_ID) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
-                static::N_TRANSACTIONID, $node->getName()
+                static::N_TRANSACTION_ID, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -273,7 +276,7 @@ class TransactionID extends AAuditFile
         }
 
         $tran = \explode(" ", (string) $node);
-        $this->setDate(RDate::parse(RDate::SQL_DATE, $tran[0]));
+        $this->setDate(RDate::parse(Pattern::SQL_DATE, $tran[0]));
         $this->setJournalID($tran[1]);
         $this->setDocArchivalNumber($tran[2]);
     }

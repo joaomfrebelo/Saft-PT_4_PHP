@@ -43,7 +43,7 @@ class ShipFrom extends AShippingPoint
      *
      * @since 1.0.0
      */
-    const N_SHIPFROM = "ShipFrom";
+    const string N_SHIP_FROM = "ShipFrom";
 
     /**
      * ShipFrom<br>
@@ -73,24 +73,24 @@ class ShipFrom extends AShippingPoint
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
-     * @throws \Rebelo\Date\DateFormatException
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
         if ($node->getName() !== Invoice::N_INVOICE &&
-            $node->getName() !== StockMovement::N_STOCKMOVEMENT) {
+            $node->getName() !== StockMovement::N_STOCK_MOVEMENT) {
             $msg = \sprintf(
                 "Node name should be '%s' or but is '%s",
-                StockMovement::N_STOCKMOVEMENT, $node->getName()
+                StockMovement::N_STOCK_MOVEMENT, $node->getName()
             );
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $shipNode = $node->addChild(static::N_SHIPFROM);
+        $shipNode = $node->addChild(static::N_SHIP_FROM);
         return parent::createXmlNode($shipNode);
     }
 
@@ -103,9 +103,9 @@ class ShipFrom extends AShippingPoint
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        if ($node->getName() !== static::N_SHIPFROM) {
+        if ($node->getName() !== static::N_SHIP_FROM) {
             $msg = \sprintf(
-                "Node name should be '%s' but is '%s", static::N_SHIPFROM,
+                "Node name should be '%s' but is '%s", static::N_SHIP_FROM,
                 $node->getName()
             );
             \Logger::getLogger(\get_class($this))

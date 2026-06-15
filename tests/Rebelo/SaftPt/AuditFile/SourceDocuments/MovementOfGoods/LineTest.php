@@ -26,15 +26,16 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use Decimal\Decimal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebelo\SaftPt\AuditFile\AuditFile;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceDocuments;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
-use Rebelo\SaftPt\CommuneTest;
+use Rebelo\SaftPt\Commune;
 use Rebelo\SaftPt\TXmlTest;
 
 /**
@@ -49,20 +50,19 @@ class LineTest extends TestCase
     use TXmlTest;
 
     /**
+     * @throws \ReflectionException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testReflection(): void
     {
-        (new CommuneTest())
-            ->testReflection(Line::class);
-        $this->assertTrue(true);
+        (new Commune(Line::class))->testReflection(Line::class);
     }
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testInstance(): void
     {
         $line = new Line(new ErrorRegister());
@@ -87,8 +87,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetLineNumber(): void
     {
         $line = new Line(new ErrorRegister());
@@ -100,8 +100,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetOrderReferences(): void
     {
         $line = new Line(new ErrorRegister());
@@ -117,8 +117,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetProductCode(): void
     {
         $line    = new Line(new ErrorRegister());
@@ -140,8 +140,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetProductDescription(): void
     {
         $line           = new Line(new ErrorRegister());
@@ -166,17 +166,17 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetQuantity(): void
     {
         $line = new Line(new ErrorRegister());
-        $qt   = 1.99;
+        $qt   = new Decimal("1.99");
         $this->assertTrue($line->setQuantity($qt));
         $this->assertSame($qt, $line->getQuantity());
         $this->assertTrue($line->issetQuantity());
 
-        $wrong = -0.0001;
+        $wrong = new Decimal("-0.0001");
         $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setQuantity($wrong));
         $this->assertSame($wrong, $line->getQuantity());
@@ -185,8 +185,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetUnitOfMeasure(): void
     {
         $line = new Line(new ErrorRegister());
@@ -204,17 +204,17 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetUnitPrice(): void
     {
         $line  = new Line(new ErrorRegister());
-        $price = 1.99;
+        $price = new Decimal("1.99");
         $this->assertTrue($line->setUnitPrice($price));
         $this->assertSame($price, $line->getUnitPrice());
         $this->assertTrue($line->issetUnitPrice());
 
-        $wrong = -0.0001;
+        $wrong = new Decimal("-0.0001");
         $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setUnitPrice($wrong));
         $this->assertSame($wrong, $line->getUnitPrice());
@@ -223,8 +223,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetDescription(): void
     {
         $line = new Line(new ErrorRegister());
@@ -242,8 +242,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetProductSerialNumber(): void
     {
         $line = new Line(new ErrorRegister());
@@ -256,13 +256,13 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetDebitCredit(): void
     {
         $line = new Line(new ErrorRegister());
-        $deb  = 9.09;
-        $cre  = 19.49;
+        $deb  = new Decimal("9.09");
+        $cre  = new Decimal("19.49");
 
         $this->assertTrue($line->setDebitAmount($deb));
         $this->assertSame($deb, $line->getDebitAmount());
@@ -296,8 +296,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTax(): void
     {
         $line = new Line(new ErrorRegister());
@@ -306,8 +306,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxExemptionReason(): void
     {
         $line   = new Line(new ErrorRegister());
@@ -329,12 +329,12 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetTaxExemptionCode(): void
     {
         $line = new Line(new ErrorRegister());
-        $line->setTaxExemptionCode(new TaxExemptionCode(TaxExemptionCode::M01));
+        $line->setTaxExemptionCode(TaxExemptionCode::M01);
         $this->assertInstanceOf(
             TaxExemptionCode::class, $line->getTaxExemptionCode()
         );
@@ -344,18 +344,18 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSettlementAmount(): void
     {
         $line = new Line(new ErrorRegister());
-        $sett = 9.09;
+        $sett = new Decimal("9.09");
         $this->assertTrue($line->setSettlementAmount($sett));
         $this->assertSame($sett, $line->getSettlementAmount());
         $this->assertTrue($line->setSettlementAmount(null));
         $this->assertNull($line->getSettlementAmount());
 
-        $wrong = -0.0001;
+        $wrong = new Decimal("-0.0001");
         $line->getErrorRegistor()->clearAllErrors();
         $this->assertFalse($line->setSettlementAmount($wrong));
         $this->assertSame($wrong, $line->getSettlementAmount());
@@ -364,8 +364,8 @@ class LineTest extends TestCase
 
     /**
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testSetGetCustomsInformation(): void
     {
         $line = new Line(new ErrorRegister());
@@ -380,10 +380,13 @@ class LineTest extends TestCase
      * Reads all invoice's lines from the Demo SAFT in Test\Resources
      * and parse then to Line class, after that generate a xml from the
      * Line class and test if the xml strings are equal
-     * @throws AuditFileException
+     *
+     * @throws \Rebelo\Date\DateException
+     * @throws \Rebelo\Date\DateParseException
+     * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateParseXml(): void
     {
         $saftDemoXml = \simplexml_load_file(SAFT_DEMO_PATH);
@@ -393,9 +396,9 @@ class LineTest extends TestCase
         }
 
         $movStockStack = $saftDemoXml
-            ->{SourceDocuments::N_SOURCEDOCUMENTS}
-            ->{MovementOfGoods::N_MOVEMENTOFGOODS}
-            ->{StockMovement::N_STOCKMOVEMENT};
+            ->{SourceDocuments::N_SOURCE_DOCUMENTS}
+            ->{MovementOfGoods::N_MOVEMENT_OF_GOODS}
+            ->{StockMovement::N_STOCK_MOVEMENT};
 
         if ($movStockStack->count() === 0) {
             $this->fail("No invoices in XML");
@@ -417,9 +420,9 @@ class LineTest extends TestCase
 
 
                 $xmlRootNode         = (new AuditFile())->createRootElement();
-                $sourceDocNode       = $xmlRootNode->addChild(SourceDocuments::N_SOURCEDOCUMENTS);
-                $movementOfGoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENTOFGOODS);
-                $movStockNode        = $movementOfGoodsNode->addChild(StockMovement::N_STOCKMOVEMENT);
+                $sourceDocNode       = $xmlRootNode->addChild(SourceDocuments::N_SOURCE_DOCUMENTS);
+                $movementOfGoodsNode = $sourceDocNode->addChild(MovementOfGoods::N_MOVEMENT_OF_GOODS);
+                $movStockNode        = $movementOfGoodsNode->addChild(StockMovement::N_STOCK_MOVEMENT);
 
                 $xml = $line->createXmlNode($movStockNode);
 
@@ -429,16 +432,16 @@ class LineTest extends TestCase
                         $assertXml,
                         \sprintf(
                             "Fail on Document '%s' Line '%s' with error '%s'",
-                            $movStockXml->{StockMovement::N_DOCUMENTNUMBER},
-                            $lineXml->{Line::N_LINENUMBER}, $assertXml
+                            $movStockXml->{StockMovement::N_DOCUMENT_NUMBER},
+                            $lineXml->{Line::N_LINE_NUMBER}, $assertXml
                         )
                     );
                 } catch (\Exception | \Error $e) {
                     $this->fail(
                         \sprintf(
                             "Fail on Document '%s' Line '%s' with error '%s'",
-                            $movStockXml->{StockMovement::N_DOCUMENTNUMBER},
-                            $lineXml->{Line::N_LINENUMBER}, $e->getMessage()
+                            $movStockXml->{StockMovement::N_DOCUMENT_NUMBER},
+                            $lineXml->{Line::N_LINE_NUMBER}, $e->getMessage()
                         )
                     );
                 }
@@ -453,12 +456,12 @@ class LineTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlNodeWithoutSet(): void
     {
         $lineNode = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<".StockMovement::N_STOCK_MOVEMENT."></".StockMovement::N_STOCK_MOVEMENT.">"
         );
         $line     = new Line(new ErrorRegister());
         $xml      = $line->createXmlNode($lineNode)->asXML();
@@ -478,25 +481,25 @@ class LineTest extends TestCase
     /**
      * @throws \Exception
      * @author João Rebelo
-     * @test
      */
+    #[Test]
     public function testCreateXmlWithWrongValues(): void
     {
         $lineNode = new \SimpleXMLElement(
-            "<".StockMovement::N_STOCKMOVEMENT."></".StockMovement::N_STOCKMOVEMENT.">"
+            "<".StockMovement::N_STOCK_MOVEMENT."></".StockMovement::N_STOCK_MOVEMENT.">"
         );
         $line     = new Line(new ErrorRegister());
-        $line->setCreditAmount(-9.09);
-        $line->setDebitAmount(-4.49);
+        $line->setCreditAmount(new Decimal("-9.09"));
+        $line->setDebitAmount(new Decimal("-4.49"));
         $line->setDescription("");
         $line->setLineNumber(-1);
         $line->setProductCode("");
         $line->setProductDescription("");
-        $line->setQuantity(-4.59);
-        $line->setSettlementAmount(-7.99);
+        $line->setQuantity(new Decimal("-4.59"));
+        $line->setSettlementAmount(new Decimal("-7.99"));
         $line->setTaxExemptionReason("");
         $line->setUnitOfMeasure("");
-        $line->setUnitPrice(-2.99);
+        $line->setUnitPrice(new Decimal("-2.99"));
 
         $xml = $line->createXmlNode($lineNode)->asXML();
         if ($xml === false) {

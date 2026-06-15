@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
+use Decimal\Decimal;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
@@ -42,20 +43,20 @@ class DocumentTotals extends ADocumentTotals
      * Node name
      * @since 1.0.0
      */
-    const N_SETTLEMENT = "Settlement";
+    const string N_SETTLEMENT = "Settlement";
 
     /**
      * Node name
      * @since 1.0.0
      */
-    const N_SETTLEMENTAMOUNT = "SettlementAmount";
+    const string N_SETTLEMENT_AMOUNT = "SettlementAmount";
 
     /**
      * Settlement Amount
-     * @var float|null
+     * @var \Decimal\Decimal|null
      * @since 1.0.0
      */
-    private ?float $settlementAmount = null;
+    private Decimal|null $settlementAmount = null;
 
     /**
      * DocumentTotals
@@ -100,10 +101,10 @@ class DocumentTotals extends ADocumentTotals
      *      &lt;/xs:complexType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
-     * @return float|null
+     * @return Decimal|null
      * @since 1.0.0
      */
-    public function getSettlementAmount(): ?float
+    public function getSettlementAmount(): Decimal|null
     {
         \Logger::getLogger(\get_class($this))
             ->info(
@@ -128,13 +129,13 @@ class DocumentTotals extends ADocumentTotals
      *      &lt;/xs:complexType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
-     * @param float|null $settlementAmount
+     * @param Decimal|null $settlementAmount
      * @return bool true if the value is valid
      * @since 1.0.0
      */
-    public function setSettlementAmount(?float $settlementAmount): bool
+    public function setSettlementAmount(Decimal|null $settlementAmount): bool
     {
-        if ($settlementAmount !== null && $settlementAmount < 0) {
+        if ($settlementAmount !== null && $settlementAmount->compareTo("0.0") < 0) {
             $msg    = "Settlement Amount can not be negative";
             \Logger::getLogger(\get_class($this))
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
@@ -175,19 +176,19 @@ class DocumentTotals extends ADocumentTotals
                 ->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $docTotallsNode = parent::createXmlNode($node);
+        $docTotalsNode = parent::createXmlNode($node);
 
         if ($this->getSettlementAmount() !== null) {
-            $docTotallsNode->addChild(static::N_SETTLEMENT)
+            $docTotalsNode->addChild(static::N_SETTLEMENT)
                 ->addChild(
-                    static::N_SETTLEMENTAMOUNT,
+                    static::N_SETTLEMENT_AMOUNT,
                     $this->floatFormat($this->getSettlementAmount())
                 );
         }
 
-        $this->createCurrencyNode($docTotallsNode);
+        $this->createCurrencyNode($docTotalsNode);
 
-        return $docTotallsNode;
+        return $docTotalsNode;
     }
 
     /**
@@ -205,9 +206,8 @@ class DocumentTotals extends ADocumentTotals
         parent::parseXmlNode($node);
 
         if ($node->{static::N_SETTLEMENT}->count() > 0) {
-            $settl = (float) $node->{static::N_SETTLEMENT}
-                ->{static::N_SETTLEMENTAMOUNT};
-            $this->setSettlementAmount($settl);
+            $settlement = (string) $node->{static::N_SETTLEMENT}->{static::N_SETTLEMENT_AMOUNT};
+            $this->setSettlementAmount(new Decimal($settlement));
         }
     }
 }
