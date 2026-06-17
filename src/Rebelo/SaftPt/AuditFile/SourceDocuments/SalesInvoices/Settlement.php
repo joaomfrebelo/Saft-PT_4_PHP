@@ -159,13 +159,12 @@ class Settlement extends AAuditFile
      */
     public function getSettlementDiscount(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->settlementDiscount === null ? "null" : $this->settlementDiscount
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->settlementDiscount === null ? "null" : $this->settlementDiscount
+            )
+        );
         return $this->settlementDiscount;
     }
 
@@ -188,18 +187,16 @@ class Settlement extends AAuditFile
             $return                   = true;
         } catch (AuditFileException $e) {
             $this->settlementDiscount = $settlementDiscount;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("SettlementDiscount_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->settlementDiscount === null ? "null" : $this->settlementDiscount
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->settlementDiscount === null ? "null" : $this->settlementDiscount
+            )
+        );
         return $return;
     }
 
@@ -214,13 +211,12 @@ class Settlement extends AAuditFile
      */
     public function getSettlementAmount(): ?Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
+            )
+        );
 
         return $this->settlementAmount;
     }
@@ -240,21 +236,19 @@ class Settlement extends AAuditFile
     {
         if (($settlementAmount?->compareTo("0.0") ?? 0) < 0) {
             $msg = "SettlementAmount can not be negative";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("SettlementAmount_not_valid");
         } else {
             $return = true;
         }
         $this->settlementAmount = $settlementAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->settlementAmount === null ? "null" : \strval($this->settlementAmount)
+            )
+        );
         return $return;
     }
 
@@ -268,13 +262,12 @@ class Settlement extends AAuditFile
      */
     public function getSettlementDate(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->settlementDate === null ? "null" : $this->settlementDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->settlementDate === null ? "null" : $this->settlementDate->format(Pattern::SQL_DATE)
+            )
+        );
 
         return $this->settlementDate;
     }
@@ -292,13 +285,12 @@ class Settlement extends AAuditFile
     public function setSettlementDate(?RDate $settlementDate): void
     {
         $this->settlementDate = $settlementDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->settlementDate === null ? "null" : $this->settlementDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->settlementDate === null ? "null" : $this->settlementDate->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
@@ -311,13 +303,12 @@ class Settlement extends AAuditFile
      */
     public function getPaymentTerms(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->paymentTerms === null ? "null" : $this->paymentTerms
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->paymentTerms === null ? "null" : $this->paymentTerms
+            )
+        );
 
         return $this->paymentTerms;
     }
@@ -341,18 +332,16 @@ class Settlement extends AAuditFile
             $return             = true;
         } catch (AuditFileException $e) {
             $this->paymentTerms = $paymentTerms;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("PaymentTerms_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->paymentTerms === null ? "null" : $this->paymentTerms
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->paymentTerms === null ? "null" : $this->paymentTerms
+            )
+        );
         return $return;
     }
 
@@ -367,15 +356,14 @@ class Settlement extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== ADocumentTotals::N_DOCUMENT_TOTALS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 ADocumentTotals::N_DOCUMENT_TOTALS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -425,15 +413,14 @@ class Settlement extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_SETTLEMENT) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_SETTLEMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

@@ -283,8 +283,7 @@ class StockMovement extends ADocument
      */
     public function getDocumentNumber(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->documentNumber));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->documentNumber));
         return $this->documentNumber;
     }
 
@@ -314,16 +313,14 @@ class StockMovement extends ADocument
     {
         if (AAuditFile::validateDocNumber($documentNumber) === false) {
             $msg    = "DocumentNumber length must be between 1 and 60 and must respect regexp";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("DocumentNumber_not_valid");
         } else {
             $return = true;
         }
         $this->documentNumber = $documentNumber;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->documentNumber));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", $this->documentNumber));
         return $return;
     }
 
@@ -352,8 +349,7 @@ class StockMovement extends ADocument
         if (isset($this->documentStatus) === false) {
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", "DocumentSatus"));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", "DocumentSatus"));
         return $this->documentStatus;
     }
 
@@ -377,8 +373,7 @@ class StockMovement extends ADocument
     public function setDocumentStatus(DocumentStatus $documentStatus): void
     {
         $this->documentStatus = $documentStatus;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", "DocumentStatus"));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", "DocumentStatus"));
     }
 
     /**
@@ -393,13 +388,12 @@ class StockMovement extends ADocument
      */
     public function getMovementDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->movementDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->movementDate;
     }
 
@@ -429,13 +423,12 @@ class StockMovement extends ADocument
     public function setMovementDate(RDate $movementDate): void
     {
         $this->movementDate = $movementDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->movementDate->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
@@ -452,13 +445,12 @@ class StockMovement extends ADocument
      */
     public function getMovementType(): MovementType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementType->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->movementType->value
+            )
+        );
         return $this->movementType;
     }
 
@@ -488,13 +480,12 @@ class StockMovement extends ADocument
     public function setMovementType(MovementType $movementType): void
     {
         $this->movementType = $movementType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementType->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->movementType->value
+            )
+        );
     }
 
     /**
@@ -519,8 +510,7 @@ class StockMovement extends ADocument
     {
         if (isset($this->supplierID)) {
             $msg              = "Can not set CustomerID if SupplierID is setted";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("CustomerID_and_SupplierID_at_same_time");
             $this->customerID = $customerID;
             return false;
@@ -549,12 +539,11 @@ class StockMovement extends ADocument
      */
     public function getSupplierID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", $this->supplierID
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'", $this->supplierID
+            )
+        );
         return $this->supplierID;
     }
 
@@ -592,8 +581,7 @@ class StockMovement extends ADocument
         try {
             if (isset($this->customerID)) {
                 $msg = "Can not set SupplierID if CustomerID is setted";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
                 $this->getErrorRegistor()->addOnSetValue("CustomerID_and_SupplierID_at_same_time");
                 throw new AuditFileException($msg);
             }
@@ -605,15 +593,13 @@ class StockMovement extends ADocument
             $this->supplierID = $supplierID;
             $return           = false;
             $this->getErrorRegistor()->addOnSetValue("SupplierID_not_valid");
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $e->getMessage()));
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", $this->supplierID
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'", $this->supplierID
+            )
+        );
         return $return;
     }
 
@@ -626,13 +612,12 @@ class StockMovement extends ADocument
      */
     public function getMovementComments(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementComments === null ? "null" : $this->movementComments
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->movementComments === null ? "null" : $this->movementComments
+            )
+        );
         return $this->movementComments;
     }
 
@@ -654,19 +639,17 @@ class StockMovement extends ADocument
             $return                 = true;
         } catch (AuditFileException $e) {
             $this->movementComments = $movementComments;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductNumberCode_not_valid");
             $return                 = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementComments === null ? "null" : $this->
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->movementComments === null ? "null" : $this->
                         movementComments
-                )
-            );
+            )
+        );
         return $return;
     }
 
@@ -685,10 +668,9 @@ class StockMovement extends ADocument
         if ($create && $this->shipTo === null) {
             $this->shipTo = new ShipTo($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(__METHOD__." get '%s'", "ShipTo")
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(__METHOD__." get '%s'", "ShipTo")
+        );
         return $this->shipTo;
     }
 
@@ -716,12 +698,11 @@ class StockMovement extends ADocument
         if ($create && $this->shipFrom === null) {
             $this->shipFrom = new ShipFrom($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", "ShipFrom"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'", "ShipFrom"
+            )
+        );
         return $this->shipFrom;
     }
 
@@ -747,14 +728,13 @@ class StockMovement extends ADocument
      */
     public function getMovementEndTime(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementEndTime === null ?
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->movementEndTime === null ?
                         "null" : $this->movementEndTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+            )
+        );
         return $this->movementEndTime;
     }
 
@@ -773,14 +753,13 @@ class StockMovement extends ADocument
     public function setMovementEndTime(?RDate $movementEndTime): void
     {
         $this->movementEndTime = $movementEndTime;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementEndTime === null ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->movementEndTime === null ?
                         "null" : $this->movementEndTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+            )
+        );
     }
 
     /**
@@ -795,13 +774,12 @@ class StockMovement extends ADocument
      */
     public function getMovementStartTime(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementStartTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->movementStartTime->format(Pattern::DATE_T_TIME)
+            )
+        );
         return $this->movementStartTime;
     }
 
@@ -829,13 +807,12 @@ class StockMovement extends ADocument
     public function setMovementStartTime(RDate $movementStartTime): void
     {
         $this->movementStartTime = $movementStartTime;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementStartTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->movementStartTime->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
@@ -849,13 +826,12 @@ class StockMovement extends ADocument
      */
     public function getAtDocCodeID(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->atDocCodeID === null ? "null" : $this->atDocCodeID
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->atDocCodeID === null ? "null" : $this->atDocCodeID
+            )
+        );
         return $this->atDocCodeID;
     }
 
@@ -877,20 +853,18 @@ class StockMovement extends ADocument
             $return            = true;
         } catch (AuditFileException $e) {
             $this->atDocCodeID = $atDocCodeID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("AtDocCodeID_not_valid");
             $return            = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->atDocCodeID === "null" ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->atDocCodeID === "null" ?
                         "" : $this->
                         atDocCodeID
-                )
-            );
+            )
+        );
         return $return;
     }
 
@@ -902,13 +876,12 @@ class StockMovement extends ADocument
      */
     public function getLine(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get stack with '%s' elements",
-                    \count($this->line)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get stack with '%s' elements",
+                \count($this->line)
+            )
+        );
         return $this->line;
     }
 
@@ -923,9 +896,7 @@ class StockMovement extends ADocument
         $line         = new Line($this->getErrorRegistor());
         $this->line[] = $line;
         $line->setLineNumber(\count($this->line));
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." Line add to stack"
-        );
+        AAuditFile::$logger?->debug(__METHOD__." Line add to stack");
         return $line;
     }
 
@@ -940,7 +911,7 @@ class StockMovement extends ADocument
         if (isset($this->documentTotals) === false) {
             $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__." get");
         return $this->documentTotals;
     }
 
@@ -964,15 +935,14 @@ class StockMovement extends ADocument
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== MovementOfGoods::N_MOVEMENT_OF_GOODS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 MovementOfGoods::N_MOVEMENT_OF_GOODS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $stkMov = $node->addChild(static::N_STOCK_MOVEMENT);
@@ -1051,8 +1021,7 @@ class StockMovement extends ADocument
 
         if (isset($this->customerID) === false && isset($this->supplierID) === false) {
             $msg = "CustomerID or SupplierID must be set";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("CustomerID_and_SupplierID_not_set");
         }
 
@@ -1107,8 +1076,7 @@ class StockMovement extends ADocument
 
         if (\count($this->line) === 0) {
             $msg = "StockMovement without lines";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("StockMovement_without_lines");
         }
 
@@ -1139,15 +1107,14 @@ class StockMovement extends ADocument
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_STOCK_MOVEMENT) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_STOCK_MOVEMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

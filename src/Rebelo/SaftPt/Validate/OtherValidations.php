@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -47,7 +48,7 @@ class OtherValidations extends ADocuments
      */
     public function __construct(AuditFile $auditFile)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         parent::__construct($auditFile);
     }
 
@@ -59,7 +60,7 @@ class OtherValidations extends ADocuments
      */
     public function validate(): bool
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $progressBar = null;
         try {
 
@@ -110,12 +111,11 @@ class OtherValidations extends ADocuments
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
 
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
         }
         return $this->isValid;
     }
@@ -153,7 +153,7 @@ class OtherValidations extends ADocuments
                     $this->auditFile->getErrorRegistor()
                                     ->addValidationErrors($msg);
 
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             } else {
                 $type[$code] = $inv->getInvoiceType()->value;
@@ -193,7 +193,7 @@ class OtherValidations extends ADocuments
                     $this->auditFile->getErrorRegistor()
                                     ->addValidationErrors($msg);
 
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             } else {
                 $type[$code] = $stockMov->getMovementType()->value;
@@ -235,7 +235,7 @@ class OtherValidations extends ADocuments
                     $this->auditFile->getErrorRegistor()
                                     ->addValidationErrors($msg);
 
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             } else {
                 $type[$code] = $work->getWorkType()->value;
@@ -276,7 +276,7 @@ class OtherValidations extends ADocuments
                     $this->auditFile->getErrorRegistor()
                                     ->addValidationErrors($msg);
 
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             } else {
                 $type[$code] = $pay->getPaymentType()->value;

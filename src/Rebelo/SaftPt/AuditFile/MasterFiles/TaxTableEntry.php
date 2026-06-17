@@ -210,8 +210,7 @@ class TaxTableEntry extends AAuditFile
      */
     public function getTaxType(): TaxType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->taxType->value));
         return $this->taxType;
     }
 
@@ -241,8 +240,7 @@ class TaxTableEntry extends AAuditFile
     public function setTaxType(TaxType $taxType): void
     {
         $this->taxType = $taxType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->value));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->value));
     }
 
     /**
@@ -261,13 +259,12 @@ class TaxTableEntry extends AAuditFile
      */
     public function getTaxCountryRegion(): TaxCountryRegion
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxCountryRegion->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxCountryRegion->value
+            )
+        );
         return $this->taxCountryRegion;
     }
 
@@ -298,13 +295,12 @@ class TaxTableEntry extends AAuditFile
     public function setTaxCountryRegion(TaxCountryRegion $taxCountryRegion): void
     {
         $this->taxCountryRegion = $taxCountryRegion;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->taxCountryRegion->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->taxCountryRegion->value
+            )
+        );
     }
 
     /**
@@ -329,13 +325,12 @@ class TaxTableEntry extends AAuditFile
      */
     public function getTaxCode(): TaxCode|string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    (is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                (is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value)
+            )
+        );
         return $this->taxCode;
     }
 
@@ -372,15 +367,14 @@ class TaxTableEntry extends AAuditFile
     public function setTaxCode(TaxCode|string $taxCode): void
     {
         $this->taxCode = $taxCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    is_string($this->taxCode)
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                is_string($this->taxCode)
                         ? $this->taxCode
                         : $this->taxCode->value
-                )
-            );
+            )
+        );
     }
 
     /**
@@ -396,8 +390,7 @@ class TaxTableEntry extends AAuditFile
      */
     public function getDescription(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->description));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->description));
         return $this->description;
     }
 
@@ -431,13 +424,11 @@ class TaxTableEntry extends AAuditFile
             $return            = true;
         } catch (AuditFileException $e) {
             $this->description = $description;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("TaxEntry_Description_not_valid");
             $return            = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." get '%s'", $this->description));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." get '%s'", $this->description));
         return $return;
     }
 
@@ -513,14 +504,13 @@ class TaxTableEntry extends AAuditFile
      */
     public function getTaxExpirationDate(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxExpirationDate === null ?
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxExpirationDate === null ?
                     "null" : $this->taxExpirationDate->format(Pattern::SQL_DATE)
-                )
-            );
+            )
+        );
         return $this->taxExpirationDate;
     }
 
@@ -540,14 +530,13 @@ class TaxTableEntry extends AAuditFile
     public function setTaxExpirationDate(?RDate $taxExpirationDate): void
     {
         $this->taxExpirationDate = $taxExpirationDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxExpirationDate === null ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxExpirationDate === null ?
                     "null" : $this->taxExpirationDate->format(Pattern::SQL_DATE)
-                )
-            );
+            )
+        );
     }
 
     /**
@@ -566,14 +555,13 @@ class TaxTableEntry extends AAuditFile
      */
     public function getTaxPercentage(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxPercentage === null ? "null" :
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxPercentage === null ? "null" :
                     \strval($this->taxPercentage)
-                )
-            );
+            )
+        );
         return $this->taxPercentage;
     }
 
@@ -597,32 +585,28 @@ class TaxTableEntry extends AAuditFile
             if ($this->getTaxAmount() !== null) {
                 $msg = "TaxAmount is already set, is only "
                     ."possible to set one of TaxAmount or TaxPercentage";
-                \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." ".$msg);
+                AAuditFile::$logger?->debug(__METHOD__." ".$msg);
                 throw new AuditFileException($msg);
             }
             if ($taxPercentage !== null && $taxPercentage->compareTo("0.0") < 0) {
                 $msg = "TaxPercentage must be equal or greater than zero";
-                \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." ".$msg);
+                AAuditFile::$logger?->debug(__METHOD__." ".$msg);
                 throw new AuditFileException($msg);
             }
             $return = true;
         } catch (AuditFileException $e) {
             $return = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("TaxEntry_TaxPercentage_not_valid");
         }
         $this->taxPercentage = $taxPercentage;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxPercentage === null ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxPercentage === null ?
                     "null" : \strval($this->taxPercentage)
-                )
-            );
+            )
+        );
         return $return;
     }
 
@@ -639,14 +623,13 @@ class TaxTableEntry extends AAuditFile
      */
     public function getTaxAmount(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxAmount === null ?
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxAmount === null ?
                     "null" : \strval($this->taxAmount)
-                )
-            );
+            )
+        );
         return $this->taxAmount;
     }
 
@@ -668,33 +651,29 @@ class TaxTableEntry extends AAuditFile
             if ($this->getTaxPercentage() !== null) {
                 $msg = "TaxPercentage is already set, is only "
                     ."possible to set one of TaxAmount or TaxPercentage";
-                \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." ".$msg);
+                AAuditFile::$logger?->debug(__METHOD__." ".$msg);
                 throw new AuditFileException($msg);
             }
 
             if ($taxAmount !== null && $taxAmount->compareTo("0.0") < 0) {
                 $msg = "TaxAmount must be equal or greater than zero";
-                \Logger::getLogger(\get_class($this))
-                    ->debug(__METHOD__." ".$msg);
+                AAuditFile::$logger?->debug(__METHOD__." ".$msg);
                 throw new AuditFileException($msg);
             }
             $return = true;
         } catch (AuditFileException $e) {
             $return = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("TaxEntry_TaxAmount_not_valid");
         }
         $this->taxAmount = $taxAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxAmount === null ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxAmount === null ?
                     "null" : \strval($this->taxAmount)
-                )
-            );
+            )
+        );
         return $return;
     }
 
@@ -709,15 +688,14 @@ class TaxTableEntry extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if ($node->getName() !== MasterFiles::N_TAX_TABLE) {
             $msg = sprintf(
                 "The node name where '%s' is created must be '%s', but '%s' node was passed as argument",
                 static::N_TAX_TABLE_ENTRY, MasterFiles::N_TAX_TABLE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -773,8 +751,7 @@ class TaxTableEntry extends AAuditFile
                 "Only one of both must be set '%s' or '%s'",
                 static::N_TAX_AMOUNT, static::N_TAX_PERCENTAGE
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("TaxEntry_TaxAmount_and_Percentage_set");
         }
 
@@ -808,14 +785,13 @@ class TaxTableEntry extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if ($node->getName() !== static::N_TAX_TABLE_ENTRY) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_TAX_TABLE_ENTRY, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -840,8 +816,7 @@ class TaxTableEntry extends AAuditFile
                 "Only one of both must be set '%s' or '%s'",
                 static::N_TAX_AMOUNT, static::N_TAX_PERCENTAGE
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -854,8 +829,7 @@ class TaxTableEntry extends AAuditFile
                 "One of both must be set '%s' or '%s'",
                 static::N_TAX_AMOUNT, static::N_TAX_PERCENTAGE
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
     }

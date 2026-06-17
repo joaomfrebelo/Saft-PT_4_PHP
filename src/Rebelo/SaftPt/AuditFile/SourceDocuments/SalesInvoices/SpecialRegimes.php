@@ -41,36 +41,41 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  *  &lt;/xs:complexType&gt;
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class SpecialRegimes extends AAuditFile
 {
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SPECIAL_REGIMES = "SpecialRegimes";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SELF_BILLING_INDICATOR = "SelfBillingIndicator";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_CASH_VAT_SCHEME_INDICATOR = "CashVATSchemeIndicator";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_THIRD_PARTIES_BILLING_INDICATOR = "ThirdPartiesBillingIndicator";
 
     /**
      * &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -78,6 +83,7 @@ class SpecialRegimes extends AAuditFile
 
     /**
      *  &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -85,6 +91,7 @@ class SpecialRegimes extends AAuditFile
 
     /**
      * &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
+     *
      * @var bool
      * @since 1.0.0
      */
@@ -99,7 +106,9 @@ class SpecialRegimes extends AAuditFile
      *          &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
      *      &lt;/xs:sequence&gt;
      *  &lt;/xs:complexType&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -112,18 +121,18 @@ class SpecialRegimes extends AAuditFile
      * The field shall be filled in with “1” if it concerns
      * self-billing and otherwise with “0” (Zero).<br>
      * &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     *
      * @return bool
      * @since 1.0.0
      */
     public function getSelfBillingIndicator(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->selfBillingIndicator ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->selfBillingIndicator ? "true" : "false"
+            )
+        );
         return $this->selfBillingIndicator;
     }
 
@@ -133,18 +142,18 @@ class SpecialRegimes extends AAuditFile
      * Should be filled in with “1” in case the method has
      * been accessed and with “0” (zero) if not.<br>
      *  &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
+     *
      * @return bool
      * @since 1.0.0
      */
     public function getCashVATSchemeIndicator(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->cashVATSchemeIndicator ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->cashVATSchemeIndicator ? "true" : "false"
+            )
+        );
         return $this->cashVATSchemeIndicator;
     }
 
@@ -153,18 +162,18 @@ class SpecialRegimes extends AAuditFile
      * Should be filled in with “1” for invoices issued on behalf of
      * third persons and with “0” (zero) if not.<br>
      * &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
+     *
      * @return bool
      * @since 1.0.0
      */
     public function getThirdPartiesBillingIndicator(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->thirdPartiesBillingIndicator ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->thirdPartiesBillingIndicator ? "true" : "false"
+            )
+        );
         return $this->thirdPartiesBillingIndicator;
     }
 
@@ -173,20 +182,21 @@ class SpecialRegimes extends AAuditFile
      * The field shall be filled in with “1” if it concerns
      * self-billing and otherwise with “0” (Zero).<br>
      * &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     *
      * @param bool $selfBillingIndicator
+     *
      * @return void
      * @since 1.0.0
      */
     public function setSelfBillingIndicator(bool $selfBillingIndicator): void
     {
         $this->selfBillingIndicator = $selfBillingIndicator;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->selfBillingIndicator ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->selfBillingIndicator ? "true" : "false"
+            )
+        );
     }
 
     /**
@@ -195,20 +205,21 @@ class SpecialRegimes extends AAuditFile
      * Should be filled in with “1” in case the method has
      * been accessed and with “0” (zero) if not.<br>
      * &lt;xs:element ref="CashVATSchemeIndicator"/&gt;
+     *
      * @param bool $cashVATSchemeIndicator
+     *
      * @return void
      * @since 1.0.0
      */
     public function setCashVATSchemeIndicator(bool $cashVATSchemeIndicator): void
     {
         $this->cashVATSchemeIndicator = $cashVATSchemeIndicator;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->cashVATSchemeIndicator ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->cashVATSchemeIndicator ? "true" : "false"
+            )
+        );
     }
 
     /**
@@ -216,40 +227,41 @@ class SpecialRegimes extends AAuditFile
      * Should be filled in with “1” for invoices issued on behalf of
      * third persons and with “0” (zero) if not.<br>
      * &lt;xs:element ref="ThirdPartiesBillingIndicator"/&gt;
+     *
      * @param bool $thirdPartiesBillingIndicator
+     *
      * @return void
      * @since 1.0.0
      */
     public function setThirdPartiesBillingIndicator(bool $thirdPartiesBillingIndicator): void
     {
         $this->thirdPartiesBillingIndicator = $thirdPartiesBillingIndicator;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->thirdPartiesBillingIndicator ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->thirdPartiesBillingIndicator ? "true" : "false"
+            )
+        );
     }
 
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 Invoice::N_INVOICE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -273,34 +285,34 @@ class SpecialRegimes extends AAuditFile
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_SPECIAL_REGIMES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_SPECIAL_REGIMES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setSelfBillingIndicator(
-            (string) $node->{static::N_SELF_BILLING_INDICATOR} === "1"
+            (string)$node->{static::N_SELF_BILLING_INDICATOR} === "1"
         );
 
         $this->setCashVATSchemeIndicator(
-            (string) $node->{static::N_CASH_VAT_SCHEME_INDICATOR} === "1"
+            (string)$node->{static::N_CASH_VAT_SCHEME_INDICATOR} === "1"
         );
 
         $this->setThirdPartiesBillingIndicator(
-            (string) $node->{static::N_THIRD_PARTIES_BILLING_INDICATOR} === "1"
+            (string)$node->{static::N_THIRD_PARTIES_BILLING_INDICATOR} === "1"
         );
     }
 }

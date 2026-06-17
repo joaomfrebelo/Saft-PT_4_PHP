@@ -30,29 +30,29 @@ use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\{
+use Rebelo\SaftPt\AuditFile\SourceDocuments\{MovementOfGoods\MovementOfGoods,
+    Payments\Payments,
     SalesInvoices\SalesInvoices,
-    MovementOfGoods\MovementOfGoods,
-    WorkingDocuments\WorkingDocuments,
-    Payments\Payments
-};
+    WorkingDocuments\WorkingDocuments};
 
 /**
  * Description of SourceDocuments
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class SourceDocuments extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SOURCE_DOCUMENTS = "SourceDocuments";
 
     /**
      *  &lt;xs:element name="SalesInvoices" minOccurs="0"&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices|null
      * @since 1.0.0
      */
@@ -60,6 +60,7 @@ class SourceDocuments extends AAuditFile
 
     /**
      * &lt;xs:element name="MovementOfGoods" minOccurs="0"&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods|null
      * @since 1.0.0
      */
@@ -67,6 +68,7 @@ class SourceDocuments extends AAuditFile
 
     /**
      * &lt;xs:element name="WorkingDocuments" minOccurs="0"&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments|null
      * @since 1.0.0
      */
@@ -74,6 +76,7 @@ class SourceDocuments extends AAuditFile
 
     /**
      * &lt;xs:element name="Payments" minOccurs="0"&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments|null
      * @since 1.0.0
      */
@@ -82,6 +85,7 @@ class SourceDocuments extends AAuditFile
     /**
      *
      * @param ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -94,8 +98,10 @@ class SourceDocuments extends AAuditFile
      * If $create is true a new instance is created if wasn't before, add to the stack
      * than returned to be populated<br>
      * &lt;xs:element name="SalesInvoices" minOccurs="0"&gt;
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices|null
+     *
      * @param bool $create if true a new Instance will be created if wasn't before
+     *
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SalesInvoices|null
      * @since 1.0.0
      */
     public function getSalesInvoices(bool $create = true): ?SalesInvoices
@@ -103,19 +109,19 @@ class SourceDocuments extends AAuditFile
         if ($create && $this->salesInvoices === null) {
             $this->salesInvoices = new SalesInvoices($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->salesInvoices;
     }
 
     /**
      * Set SalesInvoices As Null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setSalesInvoicesAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
+        AAuditFile::$logger?->info(__METHOD__ . " set as mull");
         $this->salesInvoices = null;
     }
 
@@ -124,8 +130,10 @@ class SourceDocuments extends AAuditFile
      * If $create is true a new instance is created if wasn't before, add to the stack
      * than returned to be populated<br>
      * &lt;xs:element name="MovementOfGoods" minOccurs="0"&gt;
-     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods|null
+     *
      * @param bool $create if true a new Instance will be created if wasn't before
+     *
+     * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\MovementOfGoods|null
      * @since 1.0.0
      */
     public function getMovementOfGoods(bool $create = true): ?MovementOfGoods
@@ -133,19 +141,19 @@ class SourceDocuments extends AAuditFile
         if ($create && $this->movementOfGoods === null) {
             $this->movementOfGoods = new MovementOfGoods($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->movementOfGoods;
     }
 
     /**
      * Set MovementOfGoods As Null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setMovementOfGoodsAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
+        AAuditFile::$logger?->info(__METHOD__ . " set as mull");
         $this->movementOfGoods = null;
     }
 
@@ -154,7 +162,9 @@ class SourceDocuments extends AAuditFile
      * If $create is true a new instance is created if wasn't before, add to the stack
      * than returned to be populated<br>
      * &lt;xs:element name="WorkingDocuments" minOccurs="0"&gt;
+     *
      * @param bool $create if true a new Instance will be created if wasn't before
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkingDocuments|null
      * @since 1.0.0
      */
@@ -163,19 +173,19 @@ class SourceDocuments extends AAuditFile
         if ($create && $this->workingDocuments === null) {
             $this->workingDocuments = new WorkingDocuments($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->workingDocuments;
     }
 
     /**
      * Set WorkingDocuments As Null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setWorkingDocumentsAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
+        AAuditFile::$logger?->info(__METHOD__ . " set as mull");
         $this->workingDocuments = null;
     }
 
@@ -184,7 +194,9 @@ class SourceDocuments extends AAuditFile
      * If $create is true a new instance is created if wasn't before, add to the stack
      * than returned to be populated<br>
      * &lt;xs:element name="Payments" minOccurs="0"&gt;
+     *
      * @param bool $create if true a new Instance will be created if wasn't before
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\Payments|null
      * @throws \Error
      * @since 1.0.0
@@ -194,25 +206,27 @@ class SourceDocuments extends AAuditFile
         if ($create && $this->payments === null) {
             $this->payments = new Payments($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->payments;
     }
 
     /**
      * Set Payments As Null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setPaymentsAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." set as mull");
+        AAuditFile::$logger?->info(__METHOD__ . " set as mull");
         $this->payments = null;
     }
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
@@ -221,15 +235,14 @@ class SourceDocuments extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== AuditFile::N_AUDIT_FILE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 AuditFile::N_AUDIT_FILE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -256,15 +269,14 @@ class SourceDocuments extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_SOURCE_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_SOURCE_DOCUMENTS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

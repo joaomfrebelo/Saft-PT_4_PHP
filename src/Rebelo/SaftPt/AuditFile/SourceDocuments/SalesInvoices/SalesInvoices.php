@@ -144,8 +144,7 @@ class SalesInvoices extends ASourceDocuments
      */
     public function getNumberOfEntries(): int
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->numberOfEntries));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->numberOfEntries));
         return $this->numberOfEntries;
     }
 
@@ -175,21 +174,19 @@ class SalesInvoices extends ASourceDocuments
     {
         if ($numberOfEntries < 0) {
             $msg = "NumberOdEntries can not be less than zero";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("NumberOdEntries_not_valid");
         } else {
             $return = true;
         }
         $this->numberOfEntries = $numberOfEntries;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->numberOfEntries
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->numberOfEntries
+            )
+        );
         return $return;
     }
 
@@ -205,8 +202,7 @@ class SalesInvoices extends ASourceDocuments
      */
     public function getTotalDebit(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->totalDebit));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->totalDebit));
         return $this->totalDebit;
     }
 
@@ -236,16 +232,14 @@ class SalesInvoices extends ASourceDocuments
     {
         if ($totalDebit->compareTo("0.0") < 0) {
             $msg = "TotalDebit can not be less than zero";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalDebit_not_valid");
         } else {
             $return = true;
         }
         $this->totalDebit = $totalDebit;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->totalDebit));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->totalDebit));
         return $return;
     }
 
@@ -261,8 +255,7 @@ class SalesInvoices extends ASourceDocuments
      */
     public function getTotalCredit(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->totalCredit));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->totalCredit));
         return $this->totalCredit;
     }
 
@@ -292,16 +285,14 @@ class SalesInvoices extends ASourceDocuments
     {
         if ($totalCredit->compareTo("0.0") < 0) {
             $msg = "TotalCredit can not be less than zero";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalCredit_not_valid");
         } else {
             $return = true;
         }
         $this->totalCredit = $totalCredit;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->totalCredit));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->totalCredit));
         return $return;
     }
 
@@ -314,8 +305,7 @@ class SalesInvoices extends ASourceDocuments
      */
     public function getInvoice(): array
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(__METHOD__ . " get '%s'");
+        AAuditFile::$logger?->info(__METHOD__ . " get '%s'");
         return $this->invoice;
     }
 
@@ -335,9 +325,7 @@ class SalesInvoices extends ASourceDocuments
         $this->order     = array();
         $invoice         = new Invoice($this->getErrorRegistor());
         $this->invoice[] = $invoice;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__ . "Invoice add to index "
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . "Invoice add to index");
         return $invoice;
     }
 
@@ -362,7 +350,7 @@ class SalesInvoices extends ASourceDocuments
                 );
                 $this->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg, Invoice::N_INVOICE_NO);
-                \Logger::getLogger(\get_class($this))->error($msg);
+                AAuditFile::$logger?->error($msg);
                 continue;
             }
 
@@ -384,7 +372,7 @@ class SalesInvoices extends ASourceDocuments
                         );
                         $this->getErrorRegistor()->addValidationErrors($msg);
                         $invoice->addError($msg, Invoice::N_INVOICE);
-                        \Logger::getLogger(\get_class($this))->error($msg);
+                        AAuditFile::$logger?->error($msg);
                     }
                 }
             }
@@ -420,8 +408,7 @@ class SalesInvoices extends ASourceDocuments
                 "Node name should be '%s' but is '%s",
                 SourceDocuments::N_SOURCE_DOCUMENTS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -475,15 +462,14 @@ class SalesInvoices extends ASourceDocuments
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_SALES_INVOICES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_SALES_INVOICES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

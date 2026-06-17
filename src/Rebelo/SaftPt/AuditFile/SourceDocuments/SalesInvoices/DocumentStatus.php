@@ -2,12 +2,12 @@
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
+use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
-use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling;
 
 /**
  * DocumentStatus
@@ -25,49 +25,57 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  *     &lt;/xs:complexType&gt;
  * &lt;/xs:element&gt;
  * </pre>
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class DocumentStatus extends AAuditFile
 {
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_DOCUMENT_STATUS = "DocumentStatus";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_INVOICE_STATUS = "InvoiceStatus";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_INVOICE_STATUS_DATE = "InvoiceStatusDate";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_REASON = "Reason";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SOURCE_ID = "SourceID";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SOURCE_BILLING = "SourceBilling";
 
     /**
      * &lt;xs:element ref="InvoiceStatus"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus $invoiceStatus
      * @since 1.0.0
      */
@@ -75,6 +83,7 @@ class DocumentStatus extends AAuditFile
 
     /**
      * &lt;xs:element ref="InvoiceStatusDate"/&gt;
+     *
      * @var \Rebelo\Date\Date DateTime $invoiceStatusDate
      * @since 1.0.0
      */
@@ -83,6 +92,7 @@ class DocumentStatus extends AAuditFile
     /**
      * &lt;xs:element ref="Reason" minOccurs="0"/&gt;
      * Max length 50
+     *
      * @var string|null $reason
      * @since 1.0.0
      */
@@ -91,6 +101,7 @@ class DocumentStatus extends AAuditFile
     /**
      * &lt;xs:element ref="SourceID"/&gt;
      * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @var string $sourceID
      * @since 1.0.0
      */
@@ -118,7 +129,9 @@ class DocumentStatus extends AAuditFile
      *     &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -142,18 +155,18 @@ class DocumentStatus extends AAuditFile
      */
     public function getInvoiceStatus(): InvoiceStatus
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->invoiceStatus->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->invoiceStatus->value
+            )
+        );
         return $this->invoiceStatus;
     }
 
     /**
      * Get if is set InvoiceStatus
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -173,19 +186,19 @@ class DocumentStatus extends AAuditFile
      * &lt;xs:element ref="InvoiceStatus"/&gt;
      *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceStatus $invoiceStatus
+     *
      * @return void
      * @since 1.0.0
      */
     public function setInvoiceStatus(InvoiceStatus $invoiceStatus): void
     {
         $this->invoiceStatus = $invoiceStatus;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->invoiceStatus->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->invoiceStatus->value
+            )
+        );
     }
 
     /**
@@ -197,20 +210,20 @@ class DocumentStatus extends AAuditFile
      */
     public function getInvoiceStatusDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->invoiceStatusDate->format(
-                        Pattern::DATE_T_TIME
-                    )
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->invoiceStatusDate->format(
+                    Pattern::DATE_T_TIME
                 )
-            );
+            )
+        );
         return $this->invoiceStatusDate;
     }
 
     /**
      * Get if is set InvoiceStatusDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -231,31 +244,30 @@ class DocumentStatus extends AAuditFile
     public function setInvoiceStatusDate(RDate $invoiceStatusDate): void
     {
         $this->invoiceStatusDate = $invoiceStatusDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->invoiceStatusDate->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->invoiceStatusDate->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
      * Gets Reason
      * &lt;xs:element ref="Reason" minOccurs="0"/&gt;<br>
      * Max length 50
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getReason(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->reason === null ? "null" : $this->reason
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->reason === null ? "null" : $this->reason
+            )
+        );
         return $this->reason;
     }
 
@@ -263,7 +275,9 @@ class DocumentStatus extends AAuditFile
      * Sets Reason
      * &lt;xs:element ref="Reason" minOccurs="0"/&gt;<br>
      * Max length 50
+     *
      * @param string|null $reason
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -275,18 +289,16 @@ class DocumentStatus extends AAuditFile
             $return       = true;
         } catch (AuditFileException $e) {
             $this->reason = $reason;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Reason_not_valid");
-            $return       = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->reason === null ? "null" : $this->reason
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->reason === null ? "null" : $this->reason
+            )
+        );
         return $return;
     }
 
@@ -294,19 +306,20 @@ class DocumentStatus extends AAuditFile
      * Gets SourceID
      * &lt;xs:element ref="SourceID"/&gt;<br>
      * Max length 30
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getSourceID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
     /**
      * Get if is set SourceID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -319,7 +332,9 @@ class DocumentStatus extends AAuditFile
      * Sets SourceID
      * &lt;xs:element ref="SourceID"/&gt;<br>
      * Max length 30
+     *
      * @param string $sourceID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -333,37 +348,36 @@ class DocumentStatus extends AAuditFile
             $return         = true;
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("SourceID_not_valid");
-            $return         = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->sourceID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->sourceID));
         return $return;
     }
 
     /**
      * Gets SourceBilling<br>
      * &lt;xs:element name="SourceBilling" type="SAFTPTSourceBilling"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling
      * @throws \Error
      * @since 1.0.0
      */
     public function getSourceBilling(): SourceBilling
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->sourceBilling->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->sourceBilling->value
+            )
+        );
         return $this->sourceBilling;
     }
 
     /**
      * Get if is set SourceBilling
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -375,20 +389,21 @@ class DocumentStatus extends AAuditFile
     /**
      * Sets SourceBilling<br>
      * &lt;xs:element name="SourceBilling" type="SAFTPTSourceBilling"/&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SourceBilling $sourceBilling
+     *
      * @return void
      * @since 1.0.0
      */
     public function setSourceBilling(SourceBilling $sourceBilling): void
     {
         $this->sourceBilling = $sourceBilling;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->sourceBilling->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->sourceBilling->value
+            )
+        );
     }
 
     /**
@@ -402,15 +417,14 @@ class DocumentStatus extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 Invoice::N_INVOICE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -475,40 +489,39 @@ class DocumentStatus extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENT_STATUS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_DOCUMENT_STATUS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $this->setInvoiceStatus(
             InvoiceStatus::from(
-                (string) $node->{static::N_INVOICE_STATUS}
+                (string)$node->{static::N_INVOICE_STATUS}
             )
         );
         $this->setInvoiceStatusDate(
             RDate::parse(
                 Pattern::DATE_T_TIME,
-                (string) $node->{static::N_INVOICE_STATUS_DATE}
+                (string)$node->{static::N_INVOICE_STATUS_DATE}
             )
         );
 
         $this->setSourceBilling(
             SourceBilling::from(
-                (string) $node->{static::N_SOURCE_BILLING}
+                (string)$node->{static::N_SOURCE_BILLING}
             )
         );
 
-        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
+        $this->setSourceID((string)$node->{static::N_SOURCE_ID});
 
         if ($node->{static::N_REASON}->count() > 0) {
-            $this->setReason((string) $node->{static::N_REASON});
+            $this->setReason((string)$node->{static::N_REASON});
         }
     }
 }

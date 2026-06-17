@@ -130,8 +130,7 @@ class MovementTax extends AAuditFile
      */
     public function getTaxType(): MovementTaxType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxType->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->taxType->value));
         return $this->taxType;
     }
 
@@ -158,8 +157,7 @@ class MovementTax extends AAuditFile
     public function setTaxType(MovementTaxType $taxType): void
     {
         $this->taxType = $taxType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->value));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", $this->taxType->value));
     }
 
     /**
@@ -175,13 +173,12 @@ class MovementTax extends AAuditFile
      */
     public function getTaxCountryRegion(): TaxCountryRegion
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->taxCountryRegion->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->taxCountryRegion->value
+            )
+        );
         return $this->taxCountryRegion;
     }
 
@@ -209,13 +206,12 @@ class MovementTax extends AAuditFile
     public function setTaxCountryRegion(TaxCountryRegion $taxCountryRegion): void
     {
         $this->taxCountryRegion = $taxCountryRegion;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->taxCountryRegion->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->taxCountryRegion->value
+            )
+        );
     }
 
     /**
@@ -234,8 +230,7 @@ class MovementTax extends AAuditFile
      */
     public function getTaxCode(): MovementTaxCode
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->taxCode->value));
         return $this->taxCode;
     }
 
@@ -267,8 +262,7 @@ class MovementTax extends AAuditFile
     public function setTaxCode(MovementTaxCode $taxCode): void
     {
         $this->taxCode = $taxCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->value));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", $this->taxCode->value));
     }
 
     /**
@@ -282,13 +276,12 @@ class MovementTax extends AAuditFile
      */
     public function getTaxPercentage(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    \strval($this->taxPercentage)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                \strval($this->taxPercentage)
+            )
+        );
         return $this->taxPercentage;
     }
 
@@ -315,21 +308,19 @@ class MovementTax extends AAuditFile
     {
         if ($taxPercentage->compareTo("0.0") < 0) {
             $msg    = "TaxPercentage can not be negative";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxPercentage_not_valid");
         } else {
             $return = true;
         }
         $this->taxPercentage = $taxPercentage;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    \strval($this->taxPercentage)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                \strval($this->taxPercentage)
+            )
+        );
         return $return;
     }
 
@@ -342,15 +333,14 @@ class MovementTax extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Line::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s", Line::N_LINE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -405,15 +395,14 @@ class MovementTax extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_TAX) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s'",
                 static::N_TAX, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

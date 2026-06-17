@@ -29,8 +29,8 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * OrderReferences<br>
@@ -38,24 +38,27 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * this structure can be generated as many times as necessary.
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class OrderReferences extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ORDER_REFERENCES = "OrderReferences";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ORIGINATING_ON = "OriginatingON";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ORDER_DATE = "OrderDate";
@@ -72,6 +75,7 @@ class OrderReferences extends AAuditFile
     /**
      * &lt;xs:element ref="OrderDate" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="OrderDate" type="SAFdateType"/&gt;
+     *
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
@@ -89,7 +93,9 @@ class OrderReferences extends AAuditFile
      *  &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -103,19 +109,19 @@ class OrderReferences extends AAuditFile
      * the number structure of the field of origin should be used.<br>
      * &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getOriginatingON(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->originatingON === null ?
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->originatingON === null ?
                     "null" : $this->originatingON
-                )
-            );
+            )
+        );
 
         return $this->originatingON;
     }
@@ -126,7 +132,9 @@ class OrderReferences extends AAuditFile
      * the number structure of the field of origin should be used.<br>
      * &lt;xs:element ref="OriginatingON" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="OriginatingON" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
+     *
      * @param string|null $originatingON
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -139,19 +147,17 @@ class OrderReferences extends AAuditFile
             $return              = true;
         } catch (AuditFileException $e) {
             $this->originatingON = $originatingON;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("OriginatingON_not_valid");
-            $return              = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->originatingON === null ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->originatingON === null ?
                     "null" : $this->originatingON
-                )
-            );
+            )
+        );
         return $return;
     }
 
@@ -164,14 +170,13 @@ class OrderReferences extends AAuditFile
      */
     public function getOrderDate(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->orderDate === null ?
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->orderDate === null ?
                     "null" : $this->orderDate->format(Pattern::SQL_DATE)
-                )
-            );
+            )
+        );
 
         return $this->orderDate;
     }
@@ -188,14 +193,13 @@ class OrderReferences extends AAuditFile
     public function setOrderDate(?RDate $orderDate): void
     {
         $this->orderDate = $orderDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->orderDate === null ?
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->orderDate === null ?
                     "null" : $this->orderDate->format(Pattern::SQL_DATE)
-                )
-            );
+            )
+        );
     }
 
     /**
@@ -209,15 +213,14 @@ class OrderReferences extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 A2Line::N_LINE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -250,21 +253,20 @@ class OrderReferences extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_ORDER_REFERENCES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_ORDER_REFERENCES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         if ($node->{static::N_ORIGINATING_ON}->count() > 0) {
             $this->setOriginatingON(
-                (string) $node->{static::N_ORIGINATING_ON}
+                (string)$node->{static::N_ORIGINATING_ON}
             );
         } else {
             $this->setOriginatingON(null);
@@ -273,7 +275,7 @@ class OrderReferences extends AAuditFile
         if ($node->{static::N_ORDER_DATE}->count() > 0) {
             $this->setOrderDate(
                 RDate::parse(
-                    Pattern::SQL_DATE, (string) $node->{static::N_ORDER_DATE}
+                    Pattern::SQL_DATE, (string)$node->{static::N_ORDER_DATE}
                 )
             );
         } else {

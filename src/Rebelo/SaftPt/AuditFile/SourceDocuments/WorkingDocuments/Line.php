@@ -26,15 +26,16 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ALineInvoiceAndWorking;
 
 /**
  * WorkDocument Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Line extends ALineInvoiceAndWorking
 {
@@ -75,7 +76,9 @@ class Line extends ALineInvoiceAndWorking
      *  &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -99,8 +102,7 @@ class Line extends ALineInvoiceAndWorking
                 "Node name should be '%s' but is '%s",
                 WorkDocument::N_WORK_DOCUMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         return parent::createXmlNode($node);

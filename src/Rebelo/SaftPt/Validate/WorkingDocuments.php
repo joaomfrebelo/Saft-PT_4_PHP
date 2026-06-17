@@ -71,7 +71,7 @@ class WorkingDocuments extends ADocuments
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         parent::__construct($auditFile, $sign);
 
         $sourceDoc = $auditFile->getSourceDocuments(false);
@@ -91,14 +91,13 @@ class WorkingDocuments extends ADocuments
      */
     public function validate(): bool
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $progressBar = null;
         try {
             $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false);
 
             if ($workingDocuments === null) {
-                \Logger::getLogger(\get_class($this))
-                       ->debug(__METHOD__ . " no work documents to be validated");
+                AAuditFile::$logger?->debug(__METHOD__ . " no work documents to be validated");
                 return $this->isValid;
             }
 
@@ -177,7 +176,7 @@ class WorkingDocuments extends ADocuments
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
                                         $type, $serial, $noExpected
                                     );
-                                    \Logger::getLogger(\get_class($this))->debug($msg);
+                                    AAuditFile::$logger?->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                     $this->isValid       = false;
                                     $this->lastDocNumber = $noExpected;
@@ -207,12 +206,11 @@ class WorkingDocuments extends ADocuments
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
 
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
         }
         return $this->isValid;
     }
@@ -227,7 +225,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function workDocument(WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         try {
             $this->docCredit  = new Decimal("0.0");
             $this->docDebit   = new Decimal("0.0");
@@ -251,7 +249,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $workDocument->addError($msg, WorkDocument::N_WORK_TYPE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -264,7 +262,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $workDocument->addError($msg, WorkDocument::N_WORK_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -277,7 +275,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $workDocument->addError($msg, WorkDocument::N_SYSTEM_ENTRY_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -292,12 +290,11 @@ class WorkingDocuments extends ADocuments
         } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
             $workDocument->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -311,7 +308,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function numberOfEntries(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false)) {
             return;
@@ -335,7 +332,7 @@ class WorkingDocuments extends ADocuments
             $workingDocuments->addError(
                 $msg, SaftWorkingDocuments::N_NUMBER_OF_ENTRIES
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
         }
         if ($test === false) {
             $this->isValid = false;
@@ -350,7 +347,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function totalDebit(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false)) {
             return;
@@ -368,7 +365,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workingDocuments->addError($msg, SaftWorkingDocuments::N_TOTAL_DEBIT);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -381,7 +378,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function totalCredit(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (null === $workingDocuments = $this->auditFile->getSourceDocuments()?->getWorkingDocuments(false)) {
             return;
         }
@@ -399,7 +396,7 @@ class WorkingDocuments extends ADocuments
             $workingDocuments->addError(
                 $msg, SaftWorkingDocuments::N_TOTAL_CREDIT
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -422,7 +419,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, DocumentStatus::N_DOCUMENT_STATUS);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -437,7 +434,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, DocumentStatus::N_WORK_STATUS_DATE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -451,7 +448,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, DocumentStatus::N_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -467,7 +464,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function customerId(WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if ($workDocument->issetCustomerID()) {
             $allCustomer = $this->auditFile->getMasterFiles()->getAllCustomerID();
             if (\in_array($workDocument->getCustomerID(), $allCustomer) === false) {
@@ -481,7 +478,7 @@ class WorkingDocuments extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $workDocument->addError($msg, WorkDocument::N_CUSTOMER_ID);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         } else {
@@ -492,7 +489,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, WorkDocument::N_CUSTOMER_ID);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -507,7 +504,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function lines(WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (\count($workDocument->getLine()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
@@ -515,7 +512,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, WorkDocument::N_DOCUMENT_NUMBER);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -552,7 +549,7 @@ class WorkingDocuments extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
@@ -563,7 +560,7 @@ class WorkingDocuments extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     }
@@ -576,7 +573,7 @@ class WorkingDocuments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $line->addError($msg, Line::N_LINE_NUMBER);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     $lineNoError   = true;
                     continue;
@@ -591,7 +588,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_QUANTITY);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -604,7 +601,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_UNIT_PRICE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -622,7 +619,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -675,7 +672,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_BASE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -693,7 +690,7 @@ class WorkingDocuments extends ADocuments
                     $line->getCreditAmount() === null ?
                         Line::N_DEBIT_AMOUNT : Line::N_CREDIT_AMOUNT
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
 
@@ -722,7 +719,7 @@ class WorkingDocuments extends ADocuments
 
                 } else {
 
-                    $canceledCreditQt[$line->getProductCode()]    = $canceledCreditQt[$line->getProductCode()] = new Decimal(
+                    $canceledCreditQt[$line->getProductCode()] = $canceledCreditQt[$line->getProductCode()] = new Decimal(
                         $line->getQuantity()
                     );
 
@@ -731,7 +728,7 @@ class WorkingDocuments extends ADocuments
             }
 
             if ($line->getDebitAmount() !== null) {
-                $debit = new Decimal($line->getDebitAmount());
+                $debit          = new Decimal($line->getDebitAmount());
                 $this->docDebit = $this->docDebit->add($debit);
 
                 if (\in_array($docStat, $notForTotal) === false) {
@@ -741,7 +738,7 @@ class WorkingDocuments extends ADocuments
                 $hasDebit = true;
 
                 if (\array_key_exists($line->getProductCode(), $canceledDebitQt)) {
-                    $canceledDebitQt[$line->getProductCode()] = $canceledDebitQt[$line->getProductCode()]->add(
+                    $canceledDebitQt[$line->getProductCode()]    = $canceledDebitQt[$line->getProductCode()]->add(
                         $line->getQuantity()
                     );
                     $canceledDebitValue[$line->getProductCode()] = $canceledDebitValue[$line->getProductCode()]->add($uniQt);
@@ -764,11 +761,11 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
-            $this->netTotal = $this->netTotal->add($lineValue->abs());
+            $this->netTotal   = $this->netTotal->add($lineValue->abs());
             $this->taxPayable = $this->taxPayable->add($lineTaxCal);
 
             if (\count($line->getReferences()) > 0) {
@@ -793,7 +790,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -809,7 +806,8 @@ class WorkingDocuments extends ADocuments
      */
     public function references(Line $line, WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         if (\count($line->getReferences()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get(
@@ -818,7 +816,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -834,7 +832,7 @@ class WorkingDocuments extends ADocuments
                         $line->getLineNumber(), $reference->getReference()
                     );
                     $reference->addWarning($warning);
-                    \Logger::getLogger(\get_class($this))->info($warning);
+                    AAuditFile::$logger?->info($warning);
                     $this->auditFile->getErrorRegistor()->addWarning($warning);
                 }
             }
@@ -854,7 +852,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -867,7 +865,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, References::N_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -883,7 +881,8 @@ class WorkingDocuments extends ADocuments
      */
     public function orderReferences(Line $line, WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         foreach ($line->getOrderReferences() as $orderRef) {
             if ($orderRef->getOriginatingON() === null) {
                 $msg = \sprintf(
@@ -894,7 +893,7 @@ class WorkingDocuments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $orderRef->addError($msg, OrderReferences::N_ORIGINATING_ON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             } else {
                 $val = AAuditFile::validateDocNumber($orderRef->getOriginatingON());
@@ -907,7 +906,7 @@ class WorkingDocuments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $orderRef->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             }
 
@@ -922,7 +921,7 @@ class WorkingDocuments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                 }
             } elseif ($orderRef->getOrderDate()->isLater($workDocument->getWorkDate())) {
@@ -934,7 +933,7 @@ class WorkingDocuments extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -951,7 +950,8 @@ class WorkingDocuments extends ADocuments
      */
     protected function productCode(Line $line, WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         if ($line->issetProductCode()) {
             if (\in_array(
                 $line->getProductCode(),
@@ -967,7 +967,7 @@ class WorkingDocuments extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_PRODUCT_CODE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         } else {
@@ -979,7 +979,7 @@ class WorkingDocuments extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_PRODUCT_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -995,7 +995,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function tax(Line $line, WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($line->issetTax() === false) {
             $msg = \sprintf(
@@ -1004,7 +1004,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1018,7 +1018,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_TYPE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1030,7 +1030,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1042,7 +1042,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1057,7 +1057,7 @@ class WorkingDocuments extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1074,7 +1074,7 @@ class WorkingDocuments extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1091,7 +1091,7 @@ class WorkingDocuments extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1110,7 +1110,7 @@ class WorkingDocuments extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
             $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1145,7 +1145,7 @@ class WorkingDocuments extends ADocuments
             $line->getLineNumber(), $workDocument->getDocumentNumber()
         );
         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-        \Logger::getLogger(\get_class($this))->info($msg);
+        AAuditFile::$logger?->info($msg);
         $line->addError($msg);
         $this->isValid = false;
     }
@@ -1161,7 +1161,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function totals(WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if ($workDocument->issetDocumentTotals() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
@@ -1169,7 +1169,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
 
             return;
@@ -1189,7 +1189,7 @@ class WorkingDocuments extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1202,7 +1202,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1215,7 +1215,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1227,12 +1227,12 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
         if (null === $currency = $workDocument->getDocumentTotals()->getCurrency(false)) {
-            \Logger::getLogger(\get_class($this))->info(
+            AAuditFile::$logger?->info(
                 \sprintf(
                     "WorkDocument '%s' without currency node",
                     $workDocument->getDocumentNumber()
@@ -1241,7 +1241,7 @@ class WorkingDocuments extends ADocuments
             return;
         }
 
-        $currAmount      = new Decimal($currency->getCurrencyAmount());
+        $currAmount    = new Decimal($currency->getCurrencyAmount());
         $rate          = new Decimal($currency->getExchangeRate());
         $grossExchange = $currAmount->mul($rate);
         $workDocument->getDocTotalCalc()?->setGrossTotalFromCurrency($grossExchange);
@@ -1259,7 +1259,7 @@ class WorkingDocuments extends ADocuments
                 $msg,
                 Currency::N_EXCHANGE_RATE
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1275,7 +1275,7 @@ class WorkingDocuments extends ADocuments
      */
     protected function sign(WorkDocument $workDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($workDocument->issetHash() === false) {
             $msg = \sprintf(
@@ -1284,13 +1284,13 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, WorkDocument::N_HASH);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($this->getSignValidation() === false) {
-            \Logger::getLogger(\get_class($this))->debug("Skip sing test as ValidationConfig");
+            AAuditFile::$logger?->debug("Skip sing test as ValidationConfig");
             return;
         }
 
@@ -1317,7 +1317,7 @@ class WorkingDocuments extends ADocuments
                     AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serial"),
                     $workDocument->getDocumentNumber()
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->auditFile->getErrorRegistor()->addWarning($msg);
                 $workDocument->addWarning($msg);
                 $validate = true;
@@ -1331,7 +1331,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg, WorkDocument::N_HASH);
-            \Logger::getLogger(\get_class($this))->debug($msg);
+            AAuditFile::$logger?->debug($msg);
             $this->isValid = false;
         }
 
@@ -1408,7 +1408,7 @@ class WorkingDocuments extends ADocuments
 
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1447,7 +1447,7 @@ class WorkingDocuments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $workDocument->addError($msg);
-            \Logger::getLogger(\get_class($this))->error($msg);
+            AAuditFile::$logger?->error($msg);
             $this->isValid = false;
         }
     }

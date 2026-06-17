@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 use Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 
 /**
  * Recalculated document values
@@ -75,7 +76,7 @@ class DocTotalCalc
      */
     public function __construct()
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
     }
 
     /**

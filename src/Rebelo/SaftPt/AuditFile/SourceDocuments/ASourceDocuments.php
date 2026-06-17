@@ -27,14 +27,14 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\Validate\DocTableTotalCalc;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\Validate\DocTableTotalCalc;
 
 /**
  * ASourceDocuments
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class ASourceDocuments extends AAuditFile
 {
@@ -48,6 +48,7 @@ abstract class ASourceDocuments extends AAuditFile
     /**
      *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -57,24 +58,27 @@ abstract class ASourceDocuments extends AAuditFile
 
     /**
      * Get the Doc Table resume calculation from validation classes
+     *
      * @return \Rebelo\SaftPt\Validate\DocTableTotalCalc|null
      * @since 1.0.0
      */
     public function getDocTableTotalCalc(): ?DocTableTotalCalc
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->docTableTotalCalc;
     }
 
     /**
      * Get the Doc Table resume calculation from validation classes
+     *
      * @param \Rebelo\SaftPt\Validate\DocTableTotalCalc|null $docTableTotalCalc
+     *
      * @return void
      * @since 1.0.0
      */
     public function setDocTableTotalCalc(?DocTableTotalCalc $docTableTotalCalc): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->docTableTotalCalc = $docTableTotalCalc;
     }
 }

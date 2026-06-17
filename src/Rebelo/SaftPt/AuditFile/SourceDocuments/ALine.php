@@ -165,13 +165,12 @@ abstract class ALine extends AAuditFile
      */
     public function getLineNumber(): int
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    \strval($this->lineNumber)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                \strval($this->lineNumber)
+            )
+        );
         return $this->lineNumber;
     }
 
@@ -200,16 +199,14 @@ abstract class ALine extends AAuditFile
     {
         if ($lineNumber < 1) {
             $msg = "Line Number can not be less than 1";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("LineNumber_not_valid");
         } else {
             $return = true;
         }
         $this->lineNumber = $lineNumber;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->lineNumber));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->lineNumber));
         return $return;
     }
 
@@ -225,13 +222,12 @@ abstract class ALine extends AAuditFile
      */
     public function getDebitAmount(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->debitAmount === null ? "null" : \strval($this->debitAmount)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->debitAmount === null ? "null" : \strval($this->debitAmount)
+            )
+        );
         return $this->debitAmount;
     }
 
@@ -252,31 +248,27 @@ abstract class ALine extends AAuditFile
         try {
             if (($debitAmount?->compareTo(0.0) ?? 0) < 0) {
                 $msg = "Debit Amount can not be less than 0.0";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             if ($this->getCreditAmount() !== null && $debitAmount !== null) {
                 $msg = "Debit Amount only can be set if Credit Amount is null";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $return = true;
         } catch (AuditFileException $e) {
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("DebitAmount_not_valid");
             $return = false;
         }
         $this->debitAmount = $debitAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->debitAmount === null ? "null" : \strval($this->debitAmount)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->debitAmount === null ? "null" : \strval($this->debitAmount)
+            )
+        );
         return $return;
     }
 
@@ -292,13 +284,12 @@ abstract class ALine extends AAuditFile
      */
     public function getCreditAmount(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->creditAmount === null ? "null" : \strval($this->creditAmount)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->creditAmount === null ? "null" : \strval($this->creditAmount)
+            )
+        );
         return $this->creditAmount;
     }
 
@@ -319,31 +310,27 @@ abstract class ALine extends AAuditFile
         try {
             if (($creditAmount?->compareTo(0.0) ?? 0) < 0) {
                 $msg = "Credit Amount can not be less than 0.0";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             if ($this->getDebitAmount() !== null && $creditAmount !== null) {
                 $msg = "Credit Amount only can be set if Debit Amount is null";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $return = true;
         } catch (AuditFileException $e) {
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("CreditAmount_not_valid");
             $return = false;
         }
         $this->creditAmount = $creditAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->creditAmount === null ? "null" : \strval($this->creditAmount)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->creditAmount === null ? "null" : \strval($this->creditAmount)
+            )
+        );
         return $return;
     }
 
@@ -370,14 +357,13 @@ abstract class ALine extends AAuditFile
      */
     public function getTaxExemptionReason(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxExemptionReason === null ? "null" :
-                           $this->taxExemptionReason
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxExemptionReason === null ? "null" :
+                    $this->taxExemptionReason
+            )
+        );
         return $this->taxExemptionReason;
     }
 
@@ -409,8 +395,7 @@ abstract class ALine extends AAuditFile
         try {
             if ($taxExemptionReason !== null && \strlen($taxExemptionReason) < 6) {
                 $msg = "Tax Exemption Reason can not have less than 6 characters";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $this->taxExemptionReason = $taxExemptionReason === null ? null :
@@ -419,8 +404,7 @@ abstract class ALine extends AAuditFile
             $return = true;
         } catch (AuditFileException $e) {
             $this->taxExemptionReason = $taxExemptionReason;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("TaxExemptionReason_not_valid");
             $return = false;
         }
@@ -444,14 +428,13 @@ abstract class ALine extends AAuditFile
      */
     public function getTaxExemptionCode(): ?TaxExemptionCode
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxExemptionCode === null ? "null" :
-                           $this->taxExemptionCode->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxExemptionCode === null ? "null" :
+                    $this->taxExemptionCode->value
+            )
+        );
         return $this->taxExemptionCode;
     }
 
@@ -475,14 +458,13 @@ abstract class ALine extends AAuditFile
     public function setTaxExemptionCode(?TaxExemptionCode $taxExemptionCode): void
     {
         $this->taxExemptionCode = $taxExemptionCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxExemptionCode === null ? "null" :
-                           $this->taxExemptionCode->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxExemptionCode === null ? "null" :
+                    $this->taxExemptionCode->value
+            )
+        );
     }
 
     /**
@@ -497,14 +479,13 @@ abstract class ALine extends AAuditFile
      */
     public function getSettlementAmount(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->settlementAmount === null ? "null" :
-                           \strval($this->settlementAmount)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->settlementAmount === null ? "null" :
+                    \strval($this->settlementAmount)
+            )
+        );
         return $this->settlementAmount;
     }
 
@@ -524,22 +505,20 @@ abstract class ALine extends AAuditFile
     {
         if (($settlementAmount?->compareTo(0.0) ?? 0) < 0) {
             $msg = "Settlement Amount can not be less than 0.0";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("SettlementAmount_not_valid");
         } else {
             $return = true;
         }
         $this->settlementAmount = $settlementAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->settlementAmount === null ? "null" :
-                           \strval($this->settlementAmount)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->settlementAmount === null ? "null" :
+                    \strval($this->settlementAmount)
+            )
+        );
         return $return;
     }
 
@@ -582,22 +561,19 @@ abstract class ALine extends AAuditFile
                 "Node name should be '%s' but is '%s",
                 ALine::N_LINE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("LineNumber_not_valid");
         }
 
         if ($this->getDebitAmount() !== null && $this->getCreditAmount() !== null) {
             $msg = "Debit and Credit amount can not be set at same time";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("Debit_and_Credit_set_at_same_time");
         }
 
         if ($this->getDebitAmount() === null && $this->getCreditAmount() === null) {
             $msg = "No Debit or Credit amount set";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("No_Debit_or_Credit_set");
         }
 
@@ -627,15 +603,14 @@ abstract class ALine extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== ALine::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 ALine::N_LINE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

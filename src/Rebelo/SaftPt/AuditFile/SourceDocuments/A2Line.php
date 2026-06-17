@@ -26,6 +26,7 @@
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
@@ -33,14 +34,16 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * Function and properties
  * common to Invoice, Movement of Goods
  * and Working Documents
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class A2Line extends ALine
 {
     /**
      * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ORDER_REFERENCES = "OrderReferences";
@@ -48,6 +51,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="ProductCode"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_CODE = "ProductCode";
@@ -55,6 +59,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="ProductDescription"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_DESCRIPTION = "ProductDescription";
@@ -62,6 +67,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="Quantity"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_QUANTITY = "Quantity";
@@ -69,6 +75,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="UnitOfMeasure"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_UNIT_OF_MEASURE = "UnitOfMeasure";
@@ -76,6 +83,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="UnitPrice"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_UNIT_PRICE = "UnitPrice";
@@ -83,6 +91,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="Description"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_DESCRIPTION = "Description";
@@ -90,6 +99,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_SERIAL_NUMBER = "ProductSerialNumber";
@@ -97,6 +107,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="DebitAmount"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_DEBIT_AMOUNT = "DebitAmount";
@@ -104,6 +115,7 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element ref="CreditAmount"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CREDIT_AMOUNT = "CreditAmount";
@@ -111,12 +123,14 @@ abstract class A2Line extends ALine
     /**
      * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMS_INFORMATION = "CustomsInformation";
 
     /**
      * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences[]
      * @since 1.0.0
      */
@@ -124,6 +138,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element ref="ProductCode"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -131,6 +146,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element ref="ProductDescription"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -138,6 +154,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element ref="Quantity"/&gt;
+     *
      * @var \Decimal\Decimal
      * @since 1.0.0
      */
@@ -145,6 +162,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element ref="UnitOfMeasure"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -152,6 +170,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element ref="UnitPrice"/&gt;
+     *
      * @var Decimal
      * @since 1.0.0
      */
@@ -159,6 +178,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element ref="Description"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -166,6 +186,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null
      * @since 1.0.0
      */
@@ -173,6 +194,7 @@ abstract class A2Line extends ALine
 
     /**
      * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation|null
      * @since 1.0.0
      */
@@ -180,6 +202,7 @@ abstract class A2Line extends ALine
 
     /**
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -193,13 +216,13 @@ abstract class A2Line extends ALine
      * If there is a need to make more than one reference, this structure
      * can be generated as many times as necessary.<br>     *
      * &lt;xs:element name="OrderReferences" type="OrderReferences" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\OrderReferences[]
      * @since 1.0.0
      */
     public function getOrderReferences(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get '%s'");
+        AAuditFile::$logger?->info(__METHOD__ . " get '%s'");
         return $this->orderReferences;
     }
 
@@ -218,9 +241,7 @@ abstract class A2Line extends ALine
     {
         $orderReferences         = new OrderReferences($this->getErrorRegistor());
         $this->orderReferences[] = $orderReferences;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__."OrderReferences add to index "
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . "OrderReferences add to index");
         return $orderReferences;
     }
 
@@ -229,19 +250,20 @@ abstract class A2Line extends ALine
      * Record Key related to table 2.4. – Product in field 2.4.2. - ProductCode.<br>
      * &lt;xs:element ref="ProductCode"/&gt;<br>
      * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getProductCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productCode));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productCode));
         return $this->productCode;
     }
 
     /**
      * Get if is set ProductCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -255,7 +277,9 @@ abstract class A2Line extends ALine
      * Record Key related to table 2.4. – Product in field 2.4.2. - ProductCode.<br>
      * &lt;xs:element ref="ProductCode"/&gt;<br>
      * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
+     *
      * @param string $productCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -268,13 +292,11 @@ abstract class A2Line extends ALine
             $return            = true;
         } catch (AuditFileException $e) {
             $this->productCode = $productCode;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
-            $return            = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productCode));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productCode));
         return $return;
     }
 
@@ -293,18 +315,19 @@ abstract class A2Line extends ALine
      *  &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @return string
      * @since 1.0.0
      */
     public function getProductDescription(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productDescription));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productDescription));
         return $this->productDescription;
     }
 
     /**
      * Get if is set ProductDescription
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -328,7 +351,9 @@ abstract class A2Line extends ALine
      *  &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @param string $productDescription
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -337,8 +362,7 @@ abstract class A2Line extends ALine
         try {
             if (\strlen($productDescription) < 2) {
                 $msg = "Product description can not have less than 2 characters";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $this->productDescription = $this->valTextMandatoryMaxCar(
@@ -348,37 +372,36 @@ abstract class A2Line extends ALine
             $return                   = true;
         } catch (AuditFileException $e) {
             $this->productDescription = $productDescription;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
-            $return                   = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->productDescription
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->productDescription
+            )
+        );
         return $return;
     }
 
     /**
      * Get Quantity<br>
      * &lt;xs:element ref="Quantity"/&gt;
+     *
      * @return Decimal
      * @throws \Error
      * @since 1.0.0
      */
     public function getQuantity(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", \strval($this->quantity)));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", \strval($this->quantity)));
         return $this->quantity;
     }
 
     /**
      * Get if is set Quantity
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -390,24 +413,24 @@ abstract class A2Line extends ALine
     /**
      * Set Quantity<br>
      * &lt;xs:element ref="Quantity"/&gt;
+     *
      * @param Decimal $quantity
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setQuantity(Decimal $quantity): bool
     {
         if ($quantity->compareTo(0.0) < 0) {
-            $msg    = "Quantity can not be less than 0.0";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "Quantity can not be less than 0.0";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("Quantity_not_valid");
         } else {
             $return = true;
         }
         $this->quantity = $quantity;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->quantity));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->quantity));
         return $return;
     }
 
@@ -415,18 +438,19 @@ abstract class A2Line extends ALine
      * Get UnitOfMeasure<br>
      * &lt;xs:element ref="UnitOfMeasure"/&gt;<br>
      * &lt;xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @return string
      * @since 1.0.0
      */
     public function getUnitOfMeasure(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->unitOfMeasure));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->unitOfMeasure));
         return $this->unitOfMeasure;
     }
 
     /**
      * Get if is set UnitOfMeasure
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -439,7 +463,9 @@ abstract class A2Line extends ALine
      * Set UnitOfMeasure<br>
      * &lt;xs:element ref="UnitOfMeasure"/&gt;<br>
      * &lt;xs:element name="UnitOfMeasure" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @param string $unitOfMeasure
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -452,13 +478,11 @@ abstract class A2Line extends ALine
             $return              = true;
         } catch (AuditFileException $e) {
             $this->unitOfMeasure = $unitOfMeasure;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("UnitOfMeasure_not_valid");
-            $return              = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->unitOfMeasure));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->unitOfMeasure));
         return $return;
     }
 
@@ -468,19 +492,20 @@ abstract class A2Line extends ALine
      * It shall be filled in with "0.00" if there is any requirement to
      * fill in the field 4.1.4.19.8. - TaxBase.<br>
      * &lt;xs:element ref="UnitPrice"/&gt;
+     *
      * @return Decimal
      * @throws \error
      * @since 1.0.0
      */
     public function getUnitPrice(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", \strval($this->unitPrice)));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", \strval($this->unitPrice)));
         return $this->unitPrice;
     }
 
     /**
      * Get if is set UnitPrice
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -495,24 +520,24 @@ abstract class A2Line extends ALine
      * It shall be filled in with "0.00" if there is any requirement to
      * fill in the field 4.1.4.19.8. - TaxBase.<br>
      * &lt;xs:element ref="UnitPrice"/&gt;
+     *
      * @param Decimal $unitPrice
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setUnitPrice(Decimal $unitPrice): bool
     {
         if ($unitPrice->compareTo("0.0") < 0) {
-            $msg    = "Quantity can not be less than 0.0";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "Quantity can not be less than 0.0";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("UnitPrice_not_valid");
         } else {
             $return = true;
         }
         $this->unitPrice = $unitPrice;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->unitPrice));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->unitPrice));
         return $return;
     }
 
@@ -522,19 +547,20 @@ abstract class A2Line extends ALine
      * Line description of the document<br>
      * &lt;xs:element ref="Description"/&gt;<br>
      * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getDescription(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->description));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->description));
         return $this->description;
     }
 
     /**
      * Get if is set Description
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -548,7 +574,9 @@ abstract class A2Line extends ALine
      * Description of the document line.<br>
      * &lt;xs:element ref="Description"/&gt;<br>
      * &lt;xs:element name="Description" type="SAFPTtextTypeMandatoryMax200Car"/&gt;
+     *
      * @param string $description
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -561,13 +589,11 @@ abstract class A2Line extends ALine
             $return            = true;
         } catch (AuditFileException $e) {
             $this->description = $description;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
-            $return            = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->description));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->description));
         return $return;
     }
 
@@ -577,7 +603,9 @@ abstract class A2Line extends ALine
      * of ProductSerialNumber will be created, if not previous, add to the stack and
      * returned to be populated<br>
      * &lt;xs:element name="ProductSerialNumber" type="ProductSerialNumber" minOccurs="0"/&gt;
+     *
      * @param bool $create If true a new instance will be created if wasn't previous
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ProductSerialNumber|null
      * @since 1.0.0
      */
@@ -588,26 +616,25 @@ abstract class A2Line extends ALine
                 $this->getErrorRegistor()
             );
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->productSerialNumber === null ? "null" : "ProductSerialNumber get"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->productSerialNumber === null ? "null" : "ProductSerialNumber get"
+            )
+        );
         return $this->productSerialNumber;
     }
 
     /**
      * Set ProductSerialNumberAsNull
+     *
      * @return void
      * @since 1.0.0
      */
     public function setProductSerialNumberAsNull(): void
     {
         $this->productSerialNumber = null;
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." ProductSerialNumberAsNull set to null");
+        AAuditFile::$logger?->info(__METHOD__ . " ProductSerialNumberAsNull set to null");
     }
 
     /**
@@ -616,7 +643,9 @@ abstract class A2Line extends ALine
      * of CustomsInformation will be created, if not previous, add to the stack and
      * returned to be populated<br>
      * &lt;xs:element name="CustomsInformation" type="CustomsInformation" minOccurs="0"/&gt;
+     *
      * @param bool $create If true a new instance will be created if wasn't previous
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\CustomsInformation|null
      * @since 1.0.0
      */
@@ -627,26 +656,26 @@ abstract class A2Line extends ALine
                 $this->getErrorRegistor()
             );
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->customsInformation === null ? "null" :
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->customsInformation === null ? "null" :
                     "CustomsInformation"
-                )
-            );
+            )
+        );
         return $this->customsInformation;
     }
 
     /**
      * Set CustomsInformation As Null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setCustomsInformationAsNull(): void
     {
         $this->customsInformation = null;
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." set to null");
+        AAuditFile::$logger?->info(__METHOD__ . " set to null");
     }
 
     /**
@@ -730,7 +759,9 @@ abstract class A2Line extends ALine
     /**
      * Create the TaxExemptionReason,  TaxExemptionCode,
      * SettlementAmount, CustomsInformation nodes
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -776,15 +807,15 @@ abstract class A2Line extends ALine
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         parent::parseXmlNode($node);
-        for ($n = 0; $n < $node->{static::N_ORDER_REFERENCES }->count(); $n++) {
+        for ($n = 0; $n < $node->{static::N_ORDER_REFERENCES}->count(); $n++) {
             $this->addOrderReferences()->parseXmlNode($node->{static::N_ORDER_REFERENCES}[$n]);
         }
 
-        $this->setProductCode((string) $node->{static::N_PRODUCT_CODE});
-        $this->setProductDescription((string) $node->{static::N_PRODUCT_DESCRIPTION});
-        $this->setQuantity(new Decimal((string) $node->{static::N_QUANTITY}));
-        $this->setUnitOfMeasure((string) $node->{static::N_UNIT_OF_MEASURE});
-        $this->setUnitPrice(new Decimal((string) $node->{static::N_UNIT_PRICE}));
+        $this->setProductCode((string)$node->{static::N_PRODUCT_CODE});
+        $this->setProductDescription((string)$node->{static::N_PRODUCT_DESCRIPTION});
+        $this->setQuantity(new Decimal((string)$node->{static::N_QUANTITY}));
+        $this->setUnitOfMeasure((string)$node->{static::N_UNIT_OF_MEASURE});
+        $this->setUnitPrice(new Decimal((string)$node->{static::N_UNIT_PRICE}));
 
         if ($node->{static::N_PRODUCT_SERIAL_NUMBER}->count() > 0) {
             $this->getProductSerialNumber()?->parseXmlNode(
@@ -792,23 +823,23 @@ abstract class A2Line extends ALine
             );
         }
 
-        $this->setDescription((string) $node->{static::N_DESCRIPTION});
+        $this->setDescription((string)$node->{static::N_DESCRIPTION});
 
         if ($node->{static::N_TAX_EXEMPTION_REASON}->count() > 0) {
             $this->setTaxExemptionReason(
-                (string) $node->{static::N_TAX_EXEMPTION_REASON}
+                (string)$node->{static::N_TAX_EXEMPTION_REASON}
             );
         }
 
         if ($node->{static::N_TAX_EXEMPTION_CODE}->count() > 0) {
             $this->setTaxExemptionCode(
-                TaxExemptionCode::from((string) $node->{static::N_TAX_EXEMPTION_CODE})
+                TaxExemptionCode::from((string)$node->{static::N_TAX_EXEMPTION_CODE})
             );
         }
 
         if ($node->{static::N_SETTLEMENT_AMOUNT}->count() > 0) {
             $this->setSettlementAmount(
-                new Decimal((string) $node->{static::N_SETTLEMENT_AMOUNT})
+                new Decimal((string)$node->{static::N_SETTLEMENT_AMOUNT})
             );
         }
 

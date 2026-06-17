@@ -106,7 +106,7 @@ class Commune extends TestCase
             $this->assertTrue(
                 $prop->hasType(),
                 sprintf(
-                    "propertie '%s' doesn't have a type defined",
+                    "property '%s' doesn't have a type defined",
                     $prop->getName()
                 )
             );
@@ -169,6 +169,8 @@ class Commune extends TestCase
      * @param \ReflectionClass $refClas
      *
      * @return void
+     * @throws \Exception
+     *
      * @throws \Exception
      */
     public function testStrict(\ReflectionClass $refClas): void

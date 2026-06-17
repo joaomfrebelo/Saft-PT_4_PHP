@@ -82,7 +82,7 @@ class MovementOfGoods extends ADocuments
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         parent::__construct($auditFile, $sign);
         $this->totalQuantityIssued = new Decimal("0.00");
         $sourceDoc                 = $auditFile->getSourceDocuments(false);
@@ -102,12 +102,11 @@ class MovementOfGoods extends ADocuments
      */
     public function validate(): bool
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $progressBar = null;
         try {
             if (null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods(false)) {
-                \Logger::getLogger(\get_class($this))
-                       ->debug(__METHOD__ . " no movement of goods documents to be validated");
+                AAuditFile::$logger?->debug(__METHOD__ . " no movement of goods documents to be validated");
                 return $this->isValid;
             }
 
@@ -152,7 +151,7 @@ class MovementOfGoods extends ADocuments
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
                                         $type, $serial, $noExpected
                                     );
-                                    \Logger::getLogger(\get_class($this))->debug($msg);
+                                    AAuditFile::$logger?->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                     $this->isValid = false;
                                     $noExpected++;
@@ -208,12 +207,11 @@ class MovementOfGoods extends ADocuments
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
 
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
         }
         return $this->isValid;
     }
@@ -228,7 +226,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function stockMovement(StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         try {
             $this->docCredit  = new Decimal("0.0");
             $this->docDebit   = new Decimal("0.0");
@@ -252,7 +250,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError($msg, StockMovement::N_MOVEMENT_TYPE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -265,7 +263,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError($msg, StockMovement::N_MOVEMENT_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -280,7 +278,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->addError(
                     $msg, StockMovement::N_SYSTEM_ENTRY_DATE
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -296,12 +294,11 @@ class MovementOfGoods extends ADocuments
         } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
             $stockMovDocument->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -315,7 +312,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function numberOfLinesAndTotalQuantity(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $movementOfGoods = $this->auditFile->getSourceDocuments()?->getMovementOfGoods()) {
             return;
@@ -347,7 +344,7 @@ class MovementOfGoods extends ADocuments
             $movementOfGoods->addError(
                 $msg, SaftMovementOfGoods::N_NUMBER_OF_MOVEMENT_LINES
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -362,7 +359,7 @@ class MovementOfGoods extends ADocuments
             $movementOfGoods->addError(
                 $msg, SaftMovementOfGoods::N_TOTAL_QUANTITY_ISSUED
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -385,7 +382,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg, DocumentStatus::N_DOCUMENT_STATUS);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -402,7 +399,7 @@ class MovementOfGoods extends ADocuments
             $stockMovDocument->addError(
                 $msg, DocumentStatus::N_MOVEMENT_STATUS_DATE
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -415,7 +412,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg, DocumentStatus::N_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -431,14 +428,14 @@ class MovementOfGoods extends ADocuments
      */
     protected function customerIdOrSupplierId(StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($stockMovDocument->issetCustomerID() && $stockMovDocument->issetSupplierID()) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("customerID_and_supplierID_defined_in_document"),
                 $stockMovDocument->getDocumentNumber()
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg, StockMovement::N_CUSTOMER_ID);
             $this->isValid = false;
@@ -453,7 +450,7 @@ class MovementOfGoods extends ADocuments
                         AAuditFile::getI18n()->get("customerID_not_defined_in_document"),
                         $stockMovDocument->getDocumentNumber()
                     );
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $stockMovDocument->addError(
                         $msg, StockMovement::N_CUSTOMER_ID
@@ -468,7 +465,7 @@ class MovementOfGoods extends ADocuments
                         AAuditFile::getI18n()->get("supplierID_not_defined_in_document"),
                         $stockMovDocument->getDocumentNumber()
                     );
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $stockMovDocument->addError(
                         $msg, StockMovement::N_SUPPLIER_ID
@@ -484,7 +481,7 @@ class MovementOfGoods extends ADocuments
                         AAuditFile::getI18n()->get("customerID_SupplierID_not_defined_in_document"),
                         $stockMovDocument->getDocumentNumber()
                     );
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $stockMovDocument->addError(
                         $msg, StockMovement::N_CUSTOMER_ID
                     );
@@ -508,7 +505,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->addError(
                     $msg, StockMovement::N_CUSTOMER_ID
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         } else {
@@ -525,7 +522,7 @@ class MovementOfGoods extends ADocuments
                 $stockMovDocument->addError(
                     $msg, StockMovement::N_CUSTOMER_ID
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -541,7 +538,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function lines(StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (\count($stockMovDocument->getLine()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
@@ -549,7 +546,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg, StockMovement::N_DOCUMENT_NUMBER);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -573,7 +570,7 @@ class MovementOfGoods extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
@@ -583,7 +580,7 @@ class MovementOfGoods extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     }
@@ -595,7 +592,7 @@ class MovementOfGoods extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $line->addError($msg, Line::N_LINE_NUMBER);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     $lineNoError   = true;
                     continue;
@@ -609,7 +606,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_QUANTITY);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -621,7 +618,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_UNIT_PRICE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -639,7 +636,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -667,7 +664,7 @@ class MovementOfGoods extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $line->addError($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     continue;
                 }
@@ -694,7 +691,7 @@ class MovementOfGoods extends ADocuments
                     $line->getCreditAmount() === null ?
                         Line::N_DEBIT_AMOUNT : Line::N_CREDIT_AMOUNT
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
 
@@ -724,7 +721,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $stockMovDocument->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -743,7 +740,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -770,7 +767,8 @@ class MovementOfGoods extends ADocuments
      */
     public function orderReferences(Line $line, StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         foreach ($line->getOrderReferences() as $orderRef) {
             if ($orderRef->getOriginatingON() === null) {
                 $msg = \sprintf(
@@ -781,7 +779,7 @@ class MovementOfGoods extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $orderRef->addError($msg, OrderReferences::N_ORIGINATING_ON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             } else {
                 $val = AAuditFile::validateDocNumber($orderRef->getOriginatingON());
@@ -794,7 +792,7 @@ class MovementOfGoods extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $orderRef->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             }
 
@@ -809,7 +807,7 @@ class MovementOfGoods extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                 }
             } elseif ($orderRef->getOrderDate()->isLater($stockMovDocument->getMovementDate())) {
@@ -822,7 +820,7 @@ class MovementOfGoods extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -839,7 +837,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function productCode(Line $line, StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         $master = $this->auditFile->getMasterFiles();
 
@@ -851,7 +849,7 @@ class MovementOfGoods extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_PRODUCT_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -866,7 +864,7 @@ class MovementOfGoods extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_PRODUCT_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -881,7 +879,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -902,7 +900,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addWarning($msg);
             $line->addWarning($msg);
-            \Logger::getLogger(\get_class($this))->warn($msg);
+            AAuditFile::$logger?->warning($msg);
         }
     }
 
@@ -917,7 +915,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function tax(Line $line, StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         $lineTax = $line->getTax(false);
 
@@ -928,7 +926,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -940,7 +938,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_TYPE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -952,7 +950,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -964,7 +962,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -979,7 +977,7 @@ class MovementOfGoods extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -996,7 +994,7 @@ class MovementOfGoods extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1013,7 +1011,7 @@ class MovementOfGoods extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1032,7 +1030,7 @@ class MovementOfGoods extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
             $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1046,7 +1044,7 @@ class MovementOfGoods extends ADocuments
                 continue;
             }
 
-            if($taxEntry->getTaxPercentage() === null ) continue;
+            if ($taxEntry->getTaxPercentage() === null) continue;
 
             if ($taxEntry->getTaxType()->value !== $lineTax->getTaxType()->value ||
                 $taxEntry->getTaxPercentage()->compareTo($lineTax->getTaxPercentage()) !== 0 ||
@@ -1068,7 +1066,7 @@ class MovementOfGoods extends ADocuments
             $line->getLineNumber(), $stockMovDocument->getDocumentNumber()
         );
         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-        \Logger::getLogger(\get_class($this))->info($msg);
+        AAuditFile::$logger?->info($msg);
         $line->addError($msg);
         $this->isValid = false;
     }
@@ -1084,7 +1082,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function totals(StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if ($stockMovDocument->issetDocumentTotals() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
@@ -1092,7 +1090,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
 
             return;
@@ -1112,7 +1110,7 @@ class MovementOfGoods extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1123,7 +1121,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1134,7 +1132,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1145,12 +1143,12 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
         if ($stockMovDocument->getDocumentTotals()->getCurrency(false) === null) {
-            \Logger::getLogger(\get_class($this))->info(
+            AAuditFile::$logger?->info(
                 \sprintf(
                     "StockMovement '%s' without currency node",
                     $stockMovDocument->getDocumentNumber()
@@ -1163,7 +1161,7 @@ class MovementOfGoods extends ADocuments
             return;
         }
 
-        $currAmount      = new Decimal($currency->getCurrencyAmount());
+        $currAmount    = new Decimal($currency->getCurrencyAmount());
         $rate          = new Decimal($currency->getExchangeRate());
         $grossExchange = $currAmount->mul($rate);
         $stockMovDocument->getDocTotalCalc()?->setGrossTotalFromCurrency($grossExchange);
@@ -1181,7 +1179,7 @@ class MovementOfGoods extends ADocuments
                 $msg,
                 Currency::N_EXCHANGE_RATE
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1197,7 +1195,7 @@ class MovementOfGoods extends ADocuments
      */
     protected function sign(StockMovement $stockMovDocument): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($stockMovDocument->issetHash() === false) {
             $msg = \sprintf(
@@ -1206,13 +1204,13 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg, StockMovement::N_HASH);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($this->getSignValidation() === false) {
-            \Logger::getLogger(\get_class($this))->debug("Skipping test sign as ValidationConfig");
+            AAuditFile::$logger?->debug("Skipping test sign as ValidationConfig");
             return;
         }
 
@@ -1241,7 +1239,7 @@ class MovementOfGoods extends ADocuments
                     AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serial"),
                     $stockMovDocument->getDocumentNumber()
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->auditFile->getErrorRegistor()->addWarning($msg);
                 $stockMovDocument->addWarning($msg);
                 $validate = true;
@@ -1255,7 +1253,7 @@ class MovementOfGoods extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $stockMovDocument->addError($msg, StockMovement::N_HASH);
-            \Logger::getLogger(\get_class($this))->debug($msg);
+            AAuditFile::$logger?->debug($msg);
             $this->isValid = false;
         }
 
@@ -1393,7 +1391,7 @@ class MovementOfGoods extends ADocuments
 
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1425,7 +1423,7 @@ class MovementOfGoods extends ADocuments
                 $stockMov->getDocumentNumber()
             );
 
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $this->isValid = false;
@@ -1438,7 +1436,7 @@ class MovementOfGoods extends ADocuments
                 $stockMov->getDocumentNumber(),
                 $stockMov->getMovementType()->value
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $stockMov->addError($msg, StockMovement::N_SHIP_FROM);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $this->isValid = false;
@@ -1466,7 +1464,7 @@ class MovementOfGoods extends ADocuments
                           ->get("document_to_be_stockMovement_must_have_start_time"),
                 $stockMov->getDocumentNumber()
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $stockMov->addError($msg, StockMovement::N_MOVEMENT_START_TIME);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $this->isValid = false;
@@ -1618,7 +1616,7 @@ class MovementOfGoods extends ADocuments
 
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }

@@ -34,20 +34,20 @@ namespace Rebelo\SaftPt\Validate\Schema;
 class Schema
 {
     /**
-     * The original AT schema fil that not work with libXml becauss:<br>
-     * 1º Has tags of the xml 1.1 and libxml only works with xml 1.0, this tagd are &lt;xs:assert&gt;<br>
-     * 2º The AT's original schema file have a error using the tag &lt;all&gt;,
+     * The original AT schema fil that not work with libXml because:<br>
+     * 1º Has tags of the xml 1.1 and libxml only works with xml 1.0, these tags are &lt;xs:assert&gt;<br>
+     * 2º The AT's original schema file have an error using the tag &lt;all&gt;,
      * that error is not detected in Java (used by AT) but is detected in libxml
      */
-    const ORIGINAL_AT_XSD = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01.xsd";
+    const string ORIGINAL_AT_XSD = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01.xsd";
 
     /**
-     * Xsd without assert but with tagl all, xml v 1.0
+     * Xsd without assert but with tag all, xml v 1.0
      */
     const string XSD_V_1_0 = __DIR__.DIRECTORY_SEPARATOR."SAFTPT_1_04_01_NO_ASSERT.xsd";
 
     /**
-     * The complete xsd validation, because of the libxml do not validade assert
+     * The complete xsd validation, because of the libxml do not validate assert
      * of xml 1.1 and because a xsd error with tag all, we have to use this
      * modified xsd file
      */

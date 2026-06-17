@@ -34,18 +34,20 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * Warehouse sequence of ShipTo and ShipFrom class
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Warehouse extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_WAREHOUSE_ID = "WarehouseID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_LOCATION_ID = "LocationID";
@@ -54,6 +56,7 @@ class Warehouse extends AAuditFile
      *
      * &lt;xs:element ref="WarehouseID" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="WarehouseID" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
+     *
      * @var string|null
      * @since 1.0.0
      */
@@ -62,6 +65,7 @@ class Warehouse extends AAuditFile
     /**
      * &lt;xs:element ref="LocationID" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="LocationID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @var string|null
      * @since 1.0.0
      */
@@ -75,7 +79,9 @@ class Warehouse extends AAuditFile
      *    &lt;xs:element ref="LocationID" minOccurs="0"/&gt;
      * &lt;/xs:sequence&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -88,18 +94,18 @@ class Warehouse extends AAuditFile
      * WarehouseID [Identification of the destination warehouse]<br>
      * &lt;xs:element ref="WarehouseID" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="WarehouseID" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getWarehouseID(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->warehouseID === null ? "null" : $this->warehouseID
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->warehouseID === null ? "null" : $this->warehouseID
+            )
+        );
         return $this->warehouseID;
     }
 
@@ -108,7 +114,9 @@ class Warehouse extends AAuditFile
      * WarehouseID [Identification of the destination warehouse]<br>
      * &lt;xs:element ref="WarehouseID" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="WarehouseID" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
+     *
      * @param string|null $warehouseID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -120,18 +128,16 @@ class Warehouse extends AAuditFile
             $return            = true;
         } catch (AuditFileException $e) {
             $this->warehouseID = $warehouseID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("WarehouseID_not_valid");
-            $return            = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->warehouseID === null ? "null" : $this->warehouseID
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->warehouseID === null ? "null" : $this->warehouseID
+            )
+        );
         return $return;
     }
 
@@ -140,18 +146,18 @@ class Warehouse extends AAuditFile
      * LocationID [Location of goods in the warehouse]<br>
      * &lt;xs:element ref="LocationID" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="LocationID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getLocationID(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->locationID === null ? "null" : $this->locationID
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->locationID === null ? "null" : $this->locationID
+            )
+        );
         return $this->locationID;
     }
 
@@ -160,7 +166,9 @@ class Warehouse extends AAuditFile
      * LocationID [Location of goods in the warehouse]<br>
      * &lt;xs:element ref="LocationID" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="LocationID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @param string|null $locationID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -172,39 +180,38 @@ class Warehouse extends AAuditFile
             $return           = true;
         } catch (AuditFileException $e) {
             $this->locationID = $locationID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("WarehouseID_not_valid");
-            $return           = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->locationID === null ? "null" : $this->locationID
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->locationID === null ? "null" : $this->locationID
+            )
+        );
         return $return;
     }
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== ShipFrom::N_SHIP_FROM && $node->getName() !== ShipTo::N_SHIP_TO) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
                 ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -221,30 +228,31 @@ class Warehouse extends AAuditFile
 
     /**
      * Parse xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if ($node->getName() !== ShipFrom::N_SHIP_FROM && $node->getName() !== ShipTo::N_SHIP_TO) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
                 ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         if ($node->{static::N_WAREHOUSE_ID}->count() > 0) {
-            $this->setWarehouseID((string) $node->{static::N_WAREHOUSE_ID});
+            $this->setWarehouseID((string)$node->{static::N_WAREHOUSE_ID});
         }
 
         if ($node->{static::N_LOCATION_ID}->count() > 0) {
-            $this->setLocationID((string) $node->{static::N_LOCATION_ID});
+            $this->setLocationID((string)$node->{static::N_LOCATION_ID});
         }
     }
 }

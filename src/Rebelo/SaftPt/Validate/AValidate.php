@@ -26,20 +26,22 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
-use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
+use Rebelo\SaftPt\AuditFile\AuditFile;
 
 /**
  * Description of AValidate
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class AValidate
 {
     /**
      * To be return at the end of validation, within the validation will
      * be set to false when not passed
+     *
      * @var bool
      */
     protected bool $isValid = true;
@@ -53,6 +55,7 @@ abstract class AValidate
 
     /**
      * The last type of document that has been the signature validated
+     *
      * @var string|null
      * @since 1.0.0
      */
@@ -60,6 +63,7 @@ abstract class AValidate
 
     /**
      * The last serial of document that has been the signature validated
+     *
      * @var string|null
      * @since 1.0.0
      */
@@ -68,6 +72,7 @@ abstract class AValidate
     /**
      * The last hash of document that has been the signature validated
      * in the same document serial
+     *
      * @var string
      * @since 1.0.0
      */
@@ -93,6 +98,7 @@ abstract class AValidate
 
     /**
      * The last number of the document of the same serial, to check if the numeration is continuing
+     *
      * @var int|null
      */
     protected ?int $lastDocNumber = null;
@@ -100,11 +106,12 @@ abstract class AValidate
     /**
      *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile
+     *
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->auditFile = $auditFile;
     }
 }

@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 use Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 
 /**
  * Recalculated Doc table values for Movement of goods
@@ -54,7 +55,7 @@ class MovOfGoodsTableTotalCalc
      */
     public function __construct()
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
     }
 
     /**

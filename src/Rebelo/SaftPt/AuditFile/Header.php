@@ -525,8 +525,7 @@ class Header extends AAuditFile
      */
     public function getCompanyID(): string
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->companyID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->companyID));
         return $this->companyID;
     }
 
@@ -571,8 +570,7 @@ class Header extends AAuditFile
 
             if (\preg_match("/([0-9]{9})+|([^^]+ [0-9\/]+)/", $companyID) !== 1) {
                 $msg = "Value Not valid";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 $this->getErrorRegistor()->addOnSetValue("company_id_not_valid");
                 throw new AuditFileException($msg);
             }
@@ -585,12 +583,10 @@ class Header extends AAuditFile
         } catch (AuditFileException $e) {
             $this->companyID = $companyID;
             $this->getErrorRegistor()->addOnSetValue("company_id_not_valid");
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->companyID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->companyID));
         return $return;
     }
 
@@ -606,13 +602,12 @@ class Header extends AAuditFile
      */
     public function getTaxRegistrationNumber(): int
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    \strval($this->taxRegistrationNumber)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                \strval($this->taxRegistrationNumber)
+            )
+        );
         return $this->taxRegistrationNumber;
     }
 
@@ -642,15 +637,14 @@ class Header extends AAuditFile
     {
         if (!static::valPortugueseVatNumber($taxRegistrationNumber)) {
             $msg = $taxRegistrationNumber . " is not a valid PT nif";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("TaxRegistrationNumber_not_valid_header");
             $return = false;
         } else {
             $return = true;
         }
         $this->taxRegistrationNumber = $taxRegistrationNumber;
-        \Logger::getLogger(\get_class($this))->debug(
+        AAuditFile::$logger?->debug(
             \sprintf(
                 __METHOD__ . " set to '%s'",
                 \strval($this->taxRegistrationNumber)
@@ -681,13 +675,12 @@ class Header extends AAuditFile
      */
     public function getTaxAccountingBasis(): TaxAccountingBasis
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxAccountingBasis->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxAccountingBasis->value
+            )
+        );
         return $this->taxAccountingBasis;
     }
 
@@ -726,13 +719,12 @@ class Header extends AAuditFile
     public function setTaxAccountingBasis(TaxAccountingBasis $taxAccountingBasis): void
     {
         $this->taxAccountingBasis = $taxAccountingBasis;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxAccountingBasis->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxAccountingBasis->value
+            )
+        );
     }
 
     /**
@@ -747,8 +739,7 @@ class Header extends AAuditFile
      */
     public function getCompanyName(): string
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->companyName));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->companyName));
         return $this->companyName;
     }
 
@@ -785,15 +776,13 @@ class Header extends AAuditFile
             $return = true;
         } catch (AuditFileException $e) {
             $this->companyName = $companyName;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("invalid_header_company_name");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(__METHOD__ . " set to '%s'", $this->companyName)
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(__METHOD__ . " set to '%s'", $this->companyName)
+        );
         return $return;
     }
 
@@ -808,13 +797,12 @@ class Header extends AAuditFile
      */
     public function getBusinessName(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->businessName === null ? "null" : $this->businessName
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->businessName === null ? "null" : $this->businessName
+            )
+        );
         return $this->businessName;
     }
 
@@ -838,18 +826,16 @@ class Header extends AAuditFile
             $return = true;
         } catch (AuditFileException $e) {
             $this->businessName = $businessName;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("invalid_BusinessName");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->businessName === null ? "null" : $this->businessName
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->businessName === null ? "null" : $this->businessName
+            )
+        );
         return $return;
     }
 
@@ -863,7 +849,7 @@ class Header extends AAuditFile
      */
     public function getCompanyAddress(): AddressPT
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if (isset($this->companyAddress) === false) {
             $this->companyAddress = new AddressPT($this->getErrorRegistor());
         }
@@ -907,13 +893,12 @@ class Header extends AAuditFile
      */
     public function getFiscalYear(): int
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    \strval($this->fiscalYear)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                \strval($this->fiscalYear)
+            )
+        );
         return $this->fiscalYear;
     }
 
@@ -958,21 +943,19 @@ class Header extends AAuditFile
         $ano = \intval(\Date("Y"));
         if ($fiscalYear < 2000 || $fiscalYear > $ano) {
             $msg = $fiscalYear . " is not a valid year";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("FiscalYear_not_valid");
             $return = false;
         } else {
             $return = true;
         }
         $this->fiscalYear = $fiscalYear;
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    \strval($this->fiscalYear)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                \strval($this->fiscalYear)
+            )
+        );
         return $return;
     }
 
@@ -997,13 +980,12 @@ class Header extends AAuditFile
      */
     public function getStartDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    \strval($this->startDate->getTimestamp())
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                \strval($this->startDate->getTimestamp())
+            )
+        );
         return $this->startDate;
     }
 
@@ -1048,21 +1030,19 @@ class Header extends AAuditFile
                 "Date must be between '%s' and '%s'", $year,
                 $yearNow
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("StartDate_not_valid");
             $return = false;
         } else {
             $return = true;
         }
         $this->startDate = $startDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->startDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->startDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $return;
     }
 
@@ -1086,13 +1066,12 @@ class Header extends AAuditFile
      */
     public function getEndDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->endDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->endDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->endDate;
     }
 
@@ -1135,21 +1114,19 @@ class Header extends AAuditFile
                 "Date must be between '%s' and '%s'", $year,
                 $yearNow
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("EndDate_not_valid");
             $return = false;
         } else {
             $return = true;
         }
         $this->endDate = $endDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->endDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->endDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $return;
     }
 
@@ -1164,8 +1141,7 @@ class Header extends AAuditFile
      */
     public function getCurrencyCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->currencyCode));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->currencyCode));
         return $this->currencyCode;
     }
 
@@ -1191,13 +1167,12 @@ class Header extends AAuditFile
      */
     public function getDateCreated(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->dateCreated->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->dateCreated->format(Pattern::DATE_T_TIME)
+            )
+        );
         return $this->dateCreated;
     }
 
@@ -1228,13 +1203,12 @@ class Header extends AAuditFile
     public function setDateCreated(RDate $dateCreated): void
     {
         $this->dateCreated = $dateCreated;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->dateCreated->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->dateCreated->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
@@ -1253,8 +1227,7 @@ class Header extends AAuditFile
      */
     public function getTaxEntity(): string
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->taxEntity));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->taxEntity));
         return $this->taxEntity;
     }
 
@@ -1293,13 +1266,11 @@ class Header extends AAuditFile
             $return          = true;
         } catch (AuditFileException $e) {
             $this->taxEntity = $taxEntity;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("TaxEntity_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxEntity));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxEntity));
         return $return;
     }
 
@@ -1316,13 +1287,12 @@ class Header extends AAuditFile
      */
     public function getProductCompanyTaxID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->productCompanyTaxID
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->productCompanyTaxID
+            )
+        );
         return $this->productCompanyTaxID;
     }
 
@@ -1358,18 +1328,16 @@ class Header extends AAuditFile
             $return                    = true;
         } catch (AuditFileException $e) {
             $this->productCompanyTaxID = $productCompanyTaxID;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductCompanyTaxID_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->productCompanyTaxID
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->productCompanyTaxID
+            )
+        );
         return $return;
     }
 
@@ -1387,13 +1355,12 @@ class Header extends AAuditFile
      */
     public function getSoftwareCertificateNumber(): int
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->softwareCertificateNumber
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->softwareCertificateNumber
+            )
+        );
         return $this->softwareCertificateNumber;
     }
 
@@ -1425,21 +1392,19 @@ class Header extends AAuditFile
     {
         if ($softwareCertificateNumber < 0) {
             $msg = "certification number must be non negative integer";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("SoftwareCertificateNumber_not_valid");
             $return = false;
         } else {
             $return = true;
         }
         $this->softwareCertificateNumber = $softwareCertificateNumber;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->softwareCertificateNumber
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->softwareCertificateNumber
+            )
+        );
         return $return;
     }
 
@@ -1465,8 +1430,7 @@ class Header extends AAuditFile
      */
     public function getProductID(): string
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->productID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productID));
         return $this->productID;
     }
 
@@ -1512,16 +1476,14 @@ class Header extends AAuditFile
             $msg = "string length must be between 3 and 255";
         }
         if ($msg !== null) {
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnSetValue("ProductID_not_valid");
             $return = false;
         } else {
             $return = true;
         }
         $this->productID = $productID;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productID));
         return $return;
     }
 
@@ -1537,8 +1499,7 @@ class Header extends AAuditFile
      */
     public function getProductVersion(): string
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->productVersion));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productVersion));
         return $this->productVersion;
     }
 
@@ -1574,13 +1535,11 @@ class Header extends AAuditFile
             $return               = true;
         } catch (AuditFileException $e) {
             $this->productVersion = $productVersion;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductVersion_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productVersion));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productVersion));
         return $return;
     }
 
@@ -1594,13 +1553,12 @@ class Header extends AAuditFile
      */
     public function getHeaderComment(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->headerComment === null ? "null" : $this->headerComment
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->headerComment === null ? "null" : $this->headerComment
+            )
+        );
         return $this->headerComment;
     }
 
@@ -1624,18 +1582,16 @@ class Header extends AAuditFile
             $return              = true;
         } catch (AuditFileException $e) {
             $this->headerComment = $headerComment;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("HeaderComment_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->headerComment === null ? "null" : $this->headerComment
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->headerComment === null ? "null" : $this->headerComment
+            )
+        );
         return $return;
     }
 
@@ -1649,13 +1605,12 @@ class Header extends AAuditFile
      */
     public function getTelephone(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->telephone === null ? "null" : $this->telephone
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->telephone === null ? "null" : $this->telephone
+            )
+        );
         return $this->telephone;
     }
 
@@ -1677,18 +1632,16 @@ class Header extends AAuditFile
             $return          = true;
         } catch (AuditFileException $e) {
             $this->telephone = $telephone;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Telephone_Header_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->telephone === null ? "null" : $this->telephone
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->telephone === null ? "null" : $this->telephone
+            )
+        );
         return $return;
     }
 
@@ -1702,13 +1655,12 @@ class Header extends AAuditFile
      */
     public function getFax(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->fax === null ? "null" : $this->fax
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->fax === null ? "null" : $this->fax
+            )
+        );
         return $this->fax;
     }
 
@@ -1730,18 +1682,16 @@ class Header extends AAuditFile
             $return    = true;
         } catch (AuditFileException $e) {
             $this->fax = $fax;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Fax_Header_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->fax === null ? "null" : $this->fax
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->fax === null ? "null" : $this->fax
+            )
+        );
         return $return;
     }
 
@@ -1755,13 +1705,12 @@ class Header extends AAuditFile
      */
     public function getEmail(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->email === null ? "null" : $this->email
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->email === null ? "null" : $this->email
+            )
+        );
         return $this->email;
     }
 
@@ -1783,8 +1732,7 @@ class Header extends AAuditFile
             if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
                 \strlen($email) > 254) {
                 $msg = $email . " is not a valid email";
-                \Logger::getLogger(\get_class($this))
-                       ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 $this->getErrorRegistor()->addOnSetValue("Email_Header_not_valid");
                 $return = false;
             } else {
@@ -1792,13 +1740,12 @@ class Header extends AAuditFile
             }
         }
         $this->email = $email;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->email === null ? "null" : $this->email
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->email === null ? "null" : $this->email
+            )
+        );
         return $return;
     }
 
@@ -1812,13 +1759,12 @@ class Header extends AAuditFile
      */
     public function getWebsite(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->website === null ? "null" : $this->website
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->website === null ? "null" : $this->website
+            )
+        );
         return $this->website;
     }
 
@@ -1840,18 +1786,16 @@ class Header extends AAuditFile
             $return        = true;
         } catch (AuditFileException $e) {
             $this->website = $website;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Website_Header_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->website === null ? "null" : $this->website
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->website === null ? "null" : $this->website
+            )
+        );
         return $return;
     }
 
@@ -1866,15 +1810,14 @@ class Header extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== AuditFile::N_AUDIT_FILE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 AuditFile::N_AUDIT_FILE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -2034,7 +1977,7 @@ class Header extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         $dateYmd = Pattern::SQL_DATE;
         if ($this->getAuditFileVersion() !== (string)$node->{static::N_AUDIT_FILE_VERSION}) {
             $msg = sprintf(
@@ -2042,8 +1985,7 @@ class Header extends AAuditFile
                 $node->{static::N_AUDIT_FILE_VERSION},
                 $this->getAuditFileVersion()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $this->setCompanyID((string)$node->{static::N_COMPANY_ID});
@@ -2073,8 +2015,7 @@ class Header extends AAuditFile
                 "Wrong currency code, your currency is '%s' and should be '%s'",
                 $node->{static::N_CURRENCY_CODE}, $this->getCurrencyCode()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

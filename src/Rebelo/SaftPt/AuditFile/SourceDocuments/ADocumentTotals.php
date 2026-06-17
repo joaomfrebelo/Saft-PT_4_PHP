@@ -127,8 +127,7 @@ abstract class ADocumentTotals extends AAuditFile
      */
     public function getTaxPayable(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->taxPayable));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->taxPayable));
         return $this->taxPayable;
     }
 
@@ -157,16 +156,14 @@ abstract class ADocumentTotals extends AAuditFile
     {
         if ($taxPayable->compareTo("0.0") < 0) {
             $msg = "Tax Payable can not be negative";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxPayable_not_valid");
         } else {
             $return = true;
         }
         $this->taxPayable = $taxPayable;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxPayable));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxPayable));
         return $return;
     }
 
@@ -184,8 +181,7 @@ abstract class ADocumentTotals extends AAuditFile
      */
     public function getNetTotal(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->netTotal));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->netTotal));
         return $this->netTotal;
     }
 
@@ -213,16 +209,14 @@ abstract class ADocumentTotals extends AAuditFile
     {
         if ($netTotal->compareTo("0.0") < 0) {
             $msg = "Net Total can not be negative";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("NetTotal_not_valid");
         } else {
             $return = true;
         }
         $this->netTotal = $netTotal;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->netTotal));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->netTotal));
         return $return;
     }
 
@@ -238,8 +232,7 @@ abstract class ADocumentTotals extends AAuditFile
      */
     public function getGrossTotal(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->grossTotal));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->grossTotal));
         return $this->grossTotal;
     }
 
@@ -269,16 +262,14 @@ abstract class ADocumentTotals extends AAuditFile
     {
         if ($grossTotal->compareTo("0.0") < 0) {
             $msg = "Gross Total can not be negative";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("GrossTotal_not_valid");
         } else {
             $return = true;
         }
         $this->grossTotal = $grossTotal;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->grossTotal));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->grossTotal));
         return $return;
     }
 
@@ -299,7 +290,7 @@ abstract class ADocumentTotals extends AAuditFile
         if ($create && $this->currency === null) {
             $this->currency = new Currency($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->currency;
     }
 
@@ -311,7 +302,7 @@ abstract class ADocumentTotals extends AAuditFile
      */
     public function setCurrencyAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " set as null");
+        AAuditFile::$logger?->info(__METHOD__ . " set as null");
         $this->currency = null;
     }
 
@@ -326,7 +317,7 @@ abstract class ADocumentTotals extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         $docTotalNode = $node->addChild(static::N_DOCUMENT_TOTALS);
 
@@ -380,15 +371,14 @@ abstract class ADocumentTotals extends AAuditFile
      */
     protected function createCurrencyNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENT_TOTALS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_DOCUMENT_TOTALS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -406,15 +396,14 @@ abstract class ADocumentTotals extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENT_TOTALS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_DOCUMENT_TOTALS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

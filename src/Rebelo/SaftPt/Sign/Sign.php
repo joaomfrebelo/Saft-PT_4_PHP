@@ -29,6 +29,7 @@ namespace Rebelo\SaftPt\Sign;
 use Decimal\Decimal;
 use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 
 /**
  * Create/verify the hash of signature
@@ -84,7 +85,7 @@ class Sign
      */
     public function setPrivateKey(string $privateKey): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->private = $privateKey;
     }
 
@@ -98,7 +99,7 @@ class Sign
      */
     public function setPublicKey(string $publicKey): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->public = $publicKey;
     }
 
@@ -113,14 +114,13 @@ class Sign
      */
     public function setPrivateKeyFilePath(string $path): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $key = \file_get_contents($path);
         if ($key === false) {
             $msg = \sprintf("Private key file path error: '%s'", $path);
-            \Logger::getLogger(\get_class($this))
-                ->error(
-                    \sprintf(__METHOD__ . " '%s'", $msg)
-                );
+            AAuditFile::$logger?->error(
+                \sprintf(__METHOD__ . " '%s'", $msg)
+            );
             throw new SignException($msg);
         }
         $this->private = $key;
@@ -137,14 +137,13 @@ class Sign
      */
     public function setPublicKeyFilePath(string $path): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $key = \file_get_contents($path);
         if ($key === false) {
             $msg = \sprintf("Public key file path error: '%s'", $path);
-            \Logger::getLogger(\get_class($this))
-                ->error(
-                    \sprintf(__METHOD__ . " '%s'", $msg)
-                );
+            AAuditFile::$logger?->error(
+                \sprintf(__METHOD__ . " '%s'", $msg)
+            );
             throw new SignException($msg);
         }
         $this->public = $key;
@@ -201,10 +200,9 @@ class Sign
 
         if (isset($this->private) === false) {
             $msg = "Private key not set";
-            \Logger::getLogger(\get_class($this))
-                ->error(
-                    \sprintf(__METHOD__ . " '%s'", $msg)
-                );
+            AAuditFile::$logger?->error(
+                \sprintf(__METHOD__ . " '%s'", $msg)
+            );
             throw new SignException($msg);
         }
 
@@ -212,10 +210,9 @@ class Sign
             $docDate, $systemEntryDate, $doc, $grossTotal, $lastHash
         );
 
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(__METHOD__ . " create sign hash for '%s'", $str2sign)
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(__METHOD__ . " create sign hash for '%s'", $str2sign)
+        );
 
         $signature = "";
         $resPriKey = \openssl_get_privatekey($this->private);
@@ -256,10 +253,9 @@ class Sign
 
         if (isset($this->public) === false) {
             $msg = "Public key not set";
-            \Logger::getLogger(\get_class($this))
-                ->error(
-                    \sprintf(__METHOD__ . " '%s'", $msg)
-                );
+            AAuditFile::$logger?->error(
+                \sprintf(__METHOD__ . " '%s'", $msg)
+            );
             throw new SignException($msg);
         }
 
@@ -267,10 +263,9 @@ class Sign
             $docDate, $systemEntryDate, $doc, $grossTotal, $lastHash
         );
 
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(__METHOD__ . " verify sign hash for '%s'", $str2sign)
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(__METHOD__ . " verify sign hash for '%s'", $str2sign)
+        );
 
         $resPubKey = \openssl_get_publickey($this->public);
 

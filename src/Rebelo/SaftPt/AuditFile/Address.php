@@ -31,14 +31,16 @@ namespace Rebelo\SaftPt\AuditFile;
  * AddressPT<br>
  * Estrutura de Moradas para Portugal<br>
  * &lt;xs:complexType name="AddressStructure">
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Address extends AAddress
 {
     /**
      * &lt;xs:element ref="PostalCode"/&gt;
      * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -47,7 +49,9 @@ class Address extends AAddress
     /**
      * Address<br>
      * &lt;xs:complexType name="AddressStructure">
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     function __construct(ErrorRegister $errorRegister)
@@ -59,19 +63,20 @@ class Address extends AAddress
      * Get PostalCode<br>
      * &lt;xs:element ref="PostalCode"/&gt;<br>
      * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getPostalCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->postalCode));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->postalCode));
         return $this->postalCode;
     }
 
     /**
      * Get if is set PostalCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -86,6 +91,7 @@ class Address extends AAddress
      * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;<br>
      *
      * @param string $postalCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -98,46 +104,46 @@ class Address extends AAddress
             $return           = true;
         } catch (AuditFileException $e) {
             $this->postalCode = $postalCode;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("PostalCode_not_valid");
-            $return           = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->postalCode));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->postalCode));
         return $return;
     }
 
     /**
      * Set Country<br>
      * &lt;xs:element ref="Country"/&gt;<br>
+     *
      * @param \Rebelo\SaftPt\AuditFile\Country $country
+     *
      * @return void
      * @since 1.0.0
      */
     public function setCountry(Country $country): void
     {
         $this->country = $country;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->country->value));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->country->value));
     }
 
     /**
      * Get Country
      * &lt;xs:element ref="Country"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\Country
      * @throws \Error
      * @since 1.0.0
      */
     public function getCountry(): Country
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->country->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->country->value));
         return $this->country;
     }
 
     /**
      * Get if is set Country
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -153,13 +159,16 @@ class Address extends AAddress
      * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
+
         parent::createXmlNode($node);
+
         if (isset($this->country)) {
             $node->addChild(static::N_COUNTRY, $this->getCountry()->value);
         } else {
@@ -172,14 +181,17 @@ class Address extends AAddress
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
+
         parent::parseXmlNode($node);
-        $this->setPostalCode((string) $node->{static::N_POSTAL_CODE});
-        $this->setCountry(Country::from((string) $node->{static::N_COUNTRY}));
+
+        $this->setPostalCode((string)$node->{static::N_POSTAL_CODE});
+        $this->setCountry(Country::from((string)$node->{static::N_COUNTRY}));
     }
 }

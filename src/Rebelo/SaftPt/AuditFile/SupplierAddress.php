@@ -30,13 +30,15 @@ namespace Rebelo\SaftPt\AuditFile;
  * AddressPT<br>
  * Estrutura de Moradas para Portugal<br>
  * &lt;xs:complexType name="SupplierAddressStructure">
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class SupplierAddress extends AAddress
 {
     /**
      * &lt;xs:element ref="Country"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SupplierCountry
      * @since 1.0.0
      */
@@ -45,6 +47,7 @@ class SupplierAddress extends AAddress
     /**
      * &lt;xs:element ref="PostalCode"/&gt;
      * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -52,7 +55,9 @@ class SupplierAddress extends AAddress
 
     /**
      * &lt;xs:complexType name="SupplierAddressStructure">
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     function __construct(ErrorRegister $errorRegister)
@@ -64,18 +69,19 @@ class SupplierAddress extends AAddress
      * Get PostalCode<br>
      * &lt;xs:element ref="PostalCode"/&gt;
      * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @return string
      * @since 1.0.0
      */
     public function getPostalCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->postalCode));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->postalCode));
         return $this->postalCode;
     }
 
     /**
      * Get if is set PostalCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -89,6 +95,7 @@ class SupplierAddress extends AAddress
      * &lt;xs:element name="PostalCode" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
      *
      * @param string $postalCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -101,56 +108,56 @@ class SupplierAddress extends AAddress
             $return           = true;
         } catch (AuditFileException $e) {
             $this->postalCode = $postalCode;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("PostalCode_not_valid");
-            $return           = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->postalCode));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->postalCode));
         return $return;
     }
 
     /**
      * Set Country<br>
      * &lt;xs:element ref="Country"/&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\SupplierCountry $country
+     *
      * @return void
      * @since 1.0.0
      */
     public function setCountry(SupplierCountry $country): void
     {
         $this->supplierCountry = $country;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->supplierCountry->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->supplierCountry->value
+            )
+        );
     }
 
     /**
      * Get Country
      * &lt;xs:element ref="Country"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SupplierCountry
      * @throws \Error
      * @since 1.0.0
      */
     public function getCountry(): SupplierCountry
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->supplierCountry->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->supplierCountry->value
+            )
+        );
         return $this->supplierCountry;
     }
 
     /**
      * Get if is set Country
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -166,12 +173,13 @@ class SupplierAddress extends AAddress
      * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         parent::createXmlNode($node);
 
         if (isset($this->supplierCountry)) {
@@ -185,15 +193,17 @@ class SupplierAddress extends AAddress
 
     /**
      * Parse Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         parent::parseXmlNode($node);
-        $this->setPostalCode((string) $node->{static::N_POSTAL_CODE});
-        $this->setCountry(SupplierCountry::from((string) $node->{static::N_COUNTRY}));
+        $this->setPostalCode((string)$node->{static::N_POSTAL_CODE});
+        $this->setCountry(SupplierCountry::from((string)$node->{static::N_COUNTRY}));
     }
 }

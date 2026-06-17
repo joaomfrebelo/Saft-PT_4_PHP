@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods\StockMovement;
@@ -37,7 +38,7 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Invoice;
  * sold to the client, or anyone assigned by him in the case of triangular transactions.
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class ShipTo extends AShippingPoint
 {
@@ -68,7 +69,9 @@ class ShipTo extends AShippingPoint
      * ShipTo<br>
      * Information about the place and delivery date of the products that are
      * sold to the client, or anyone assigned by him in the case of triangular transactions.
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -93,8 +96,7 @@ class ShipTo extends AShippingPoint
                 "Node name should be '%s' or but is '%s",
                 StockMovement::N_STOCK_MOVEMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $shipNode = $node->addChild(static::N_SHIP_TO);
@@ -103,7 +105,9 @@ class ShipTo extends AShippingPoint
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -115,8 +119,7 @@ class ShipTo extends AShippingPoint
                 "Node name should be '%s' but is '%s", static::N_SHIP_TO,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         parent::parseXmlNode($node);

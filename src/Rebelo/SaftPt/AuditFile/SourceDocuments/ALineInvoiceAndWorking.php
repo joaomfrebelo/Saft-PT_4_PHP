@@ -28,6 +28,7 @@ namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 use Decimal\Decimal;
 use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
@@ -136,14 +137,13 @@ abstract class ALineInvoiceAndWorking extends A2Line
      */
     public function getTaxBase(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxBase === null ? "null" :
-                           \strval($this->taxBase)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxBase === null ? "null" :
+                    \strval($this->taxBase)
+            )
+        );
         return $this->taxBase;
     }
 
@@ -164,22 +164,20 @@ abstract class ALineInvoiceAndWorking extends A2Line
     {
         if ($taxBase !== null && $taxBase->compareTo("0.0") < 0) {
             $msg = "Tax Base can not be less than 0.0";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxBase_not_valid");
         } else {
             $return = true;
         }
         $this->taxBase = $taxBase;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxBase === null ? "null" :
-                           \strval($this->taxBase)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxBase === null ? "null" :
+                    \strval($this->taxBase)
+            )
+        );
         return $return;
     }
 
@@ -192,13 +190,12 @@ abstract class ALineInvoiceAndWorking extends A2Line
      */
     public function getTaxPointDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxPointDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxPointDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->taxPointDate;
     }
 
@@ -214,13 +211,12 @@ abstract class ALineInvoiceAndWorking extends A2Line
     public function setTaxPointDate(RDate $taxPointDate): void
     {
         $this->taxPointDate = $taxPointDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxPointDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxPointDate->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
@@ -245,7 +241,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
      */
     public function getReferences(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->references;
     }
 
@@ -262,7 +258,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
     {
         $references         = new References($this->getErrorRegistor());
         $this->references[] = $references;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__ . " set");
+        AAuditFile::$logger?->debug(__METHOD__ . " set");
         return $references;
     }
 
@@ -280,7 +276,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
         if (isset($this->tax) === false) {
             $this->tax = new Tax($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__ . " get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->tax;
     }
 
@@ -307,7 +303,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
 
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         $lineNode = parent::createXmlNode($node);
 
@@ -368,7 +364,7 @@ abstract class ALineInvoiceAndWorking extends A2Line
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         // Test node name and parse LineNumber, credit and debit
         parent::parseXmlNode($node);

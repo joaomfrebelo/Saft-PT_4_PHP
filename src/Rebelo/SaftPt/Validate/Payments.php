@@ -64,7 +64,6 @@ class Payments extends ADocuments
      */
     public function __construct(AuditFile $auditFile)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
         parent::__construct($auditFile);
 
         $sourceDoc = $auditFile->getSourceDocuments(false);
@@ -84,12 +83,11 @@ class Payments extends ADocuments
      */
     public function validate(): bool
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $progressBar = null;
         try {
             if (null === $payments = $this->auditFile->getSourceDocuments()?->getPayments(false)) {
-                \Logger::getLogger(\get_class($this))
-                       ->debug(__METHOD__ . " no sales payments to be validated");
+                AAuditFile::$logger?->debug(__METHOD__ . " no sales payments to be validated");
                 return $this->isValid;
             }
 
@@ -165,7 +163,7 @@ class Payments extends ADocuments
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
                                         $type, $serial, $noExpected
                                     );
-                                    \Logger::getLogger(\get_class($this))->debug($msg);
+                                    AAuditFile::$logger?->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                     $this->isValid       = false;
                                     $this->lastDocNumber = $noExpected;
@@ -194,12 +192,11 @@ class Payments extends ADocuments
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
 
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
         }
         return $this->isValid;
     }
@@ -214,7 +211,7 @@ class Payments extends ADocuments
      */
     protected function payment(Payment $payment): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         try {
             $this->docCredit  = new Decimal("0.0");
             $this->docDebit   = new Decimal("0.0");
@@ -238,7 +235,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg, Payment::N_PAYMENT_TYPE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -251,7 +248,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg, Payment::N_TRANSACTION_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -264,7 +261,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg, Payment::N_SYSTEM_ENTRY_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -279,12 +276,11 @@ class Payments extends ADocuments
         } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
             $payment->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -298,7 +294,7 @@ class Payments extends ADocuments
      */
     protected function numberOfEntries(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()) {
             return;
@@ -320,7 +316,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payments->addError($msg, SaftPayments::N_NUMBER_OF_ENTRIES);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -333,7 +329,7 @@ class Payments extends ADocuments
      */
     protected function totalDebit(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()) {
             return;
         }
@@ -350,7 +346,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payments->addError($msg, SaftPayments::N_TOTAL_DEBIT);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -363,7 +359,7 @@ class Payments extends ADocuments
      */
     protected function totalCredit(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $payments = $this->auditFile->getSourceDocuments()?->getPayments()) {
             return;
@@ -383,7 +379,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payments->addError($msg, SaftPayments::N_TOTAL_CREDIT);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -406,7 +402,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg, DocumentStatus::N_PAYMENT_STATUS);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -421,7 +417,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg, DocumentStatus::N_PAYMENT_STATUS_DATE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -436,7 +432,7 @@ class Payments extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg, DocumentStatus::N_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -452,7 +448,7 @@ class Payments extends ADocuments
      */
     protected function customerId(Payment $payment): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if ($payment->issetCustomerID()) {
             $allCustomer = $this->auditFile->getMasterFiles()->getAllCustomerID();
             if (\in_array($payment->getCustomerID(), $allCustomer) === false) {
@@ -464,7 +460,7 @@ class Payments extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg, Payment::N_CUSTOMER_ID);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         } else {
@@ -474,7 +470,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg, Payment::N_CUSTOMER_ID);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -489,7 +485,7 @@ class Payments extends ADocuments
      */
     protected function lines(Payment $payment): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (\count($payment->getLine()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
@@ -497,7 +493,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg, Payment::N_PAYMENT_REF_NO);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -528,7 +524,7 @@ class Payments extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
@@ -539,7 +535,7 @@ class Payments extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     }
@@ -552,7 +548,7 @@ class Payments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $line->addError($msg, Line::N_LINE_NUMBER);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     $lineNoError   = true;
                     continue;
@@ -571,7 +567,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -654,7 +650,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -682,7 +678,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -707,7 +703,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_SOURCE_DOCUMENT_ID);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -722,7 +718,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $source->addError($msg, OrderReferences::N_ORIGINATING_ON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             } else {
                 $val = AAuditFile::validateDocNumber($source->getOriginatingON());
@@ -734,7 +730,7 @@ class Payments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $source->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
                 if (\in_array($source->getOriginatingON(), $originStack)) {
                     $msg = \sprintf(
@@ -744,7 +740,7 @@ class Payments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $source->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 } else {
                     $originStack[] = $source->getOriginatingON();
                 }
@@ -758,7 +754,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $source->addError($msg, OrderReferences::N_ORDER_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             } elseif ($source->getInvoiceDate()->isLater($payment->getTransactionDate())) {
                 $msg = \sprintf(
@@ -767,7 +763,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $source->addError($msg, OrderReferences::N_ORDER_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -784,7 +780,7 @@ class Payments extends ADocuments
      */
     protected function tax(Line $line, Payment $payment): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         $lineTax = $line->getTax(false);
 
@@ -795,7 +791,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Tax::N_TAX_TYPE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -811,7 +807,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_TYPE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -823,7 +819,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -835,7 +831,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -850,7 +846,7 @@ class Payments extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -869,7 +865,7 @@ class Payments extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -886,7 +882,7 @@ class Payments extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -905,7 +901,7 @@ class Payments extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
             $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -942,7 +938,7 @@ class Payments extends ADocuments
             $line->getLineNumber(), $payment->getPaymentRefNo()
         );
         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-        \Logger::getLogger(\get_class($this))->info($msg);
+        AAuditFile::$logger?->info($msg);
         $line->addError($msg);
         $this->isValid = false;
     }
@@ -958,7 +954,8 @@ class Payments extends ADocuments
      */
     protected function totals(Payment $payment): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         if ($payment->issetDocumentTotals() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
@@ -966,7 +963,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $payment->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -984,7 +981,7 @@ class Payments extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -995,7 +992,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1006,7 +1003,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1017,12 +1014,12 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
         if ($payment->getDocumentTotals()->getCurrency(false) === null) {
-            \Logger::getLogger(\get_class($this))->info(
+            AAuditFile::$logger?->info(
                 \sprintf(
                     "Invoice '%s' without currency node",
                     $payment->getPaymentRefNo()
@@ -1052,7 +1049,7 @@ class Payments extends ADocuments
                 $msg,
                 Currency::N_EXCHANGE_RATE
             );
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1122,7 +1119,7 @@ class Payments extends ADocuments
 
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1147,7 +1144,7 @@ class Payments extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addWarning($msg);
             $payment->addWarning($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             return;
         }
 
@@ -1164,7 +1161,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payMet->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -1177,7 +1174,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payMet->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -1202,7 +1199,7 @@ class Payments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $payMet->addError($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                 }
             }
@@ -1229,7 +1226,7 @@ class Payments extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg, WithholdingTax::N_WITHHOLDING_TAX);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -1251,7 +1248,7 @@ class Payments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $payment->addError($msg, WithholdingTax::N_WITHHOLDING_TAX);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     return;
                 }
@@ -1263,7 +1260,7 @@ class Payments extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $payment->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             }
         }

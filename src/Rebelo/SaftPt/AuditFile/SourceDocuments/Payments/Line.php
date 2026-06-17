@@ -27,28 +27,31 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\Payments;
 
 use Decimal\Decimal;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
-use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\ALine;
+use Rebelo\SaftPt\AuditFile\SourceDocuments\Tax;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\TaxExemptionCode;
 
 /**
  * Line
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Line extends ALine
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SOURCE_DOCUMENT_ID = "SourceDocumentID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_TAX = "Tax";
@@ -56,6 +59,7 @@ class Line extends ALine
     /**
      * SourceDocumentID, must have at least one element
      * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded">
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID[]
      * @since 1.0.0
      */
@@ -63,6 +67,7 @@ class Line extends ALine
 
     /**
      * &lt;xs:element name="Tax" type="PaymentTax" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax|null
      * @since 1.0.0
      */
@@ -95,7 +100,9 @@ class Line extends ALine
      *           &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      *  </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -109,12 +116,13 @@ class Line extends ALine
      * be generated as many times as necessary. In case of integrated accounting and invoicing program,
      * the numbering structure of the source field shall be used.<br>
      * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded"&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID[]
      * @since 1.0.0
      */
     public function getSourceDocumentID(): array
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->sourceDocumentID;
     }
 
@@ -126,6 +134,7 @@ class Line extends ALine
      * When this method is invoked a new instance of SourceDocumentID is
      * created, add to the stack then returned to be populated
      * &lt;xs:element name="SourceDocumentID" maxOccurs="unbounded"&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Payments\SourceDocumentID
      * @since 1.0.0
      */
@@ -133,9 +142,7 @@ class Line extends ALine
     {
         $sourceDocumentID         = new SourceDocumentID($this->getErrorRegistor());
         $this->sourceDocumentID[] = $sourceDocumentID;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." SourceDocumentID add to index "
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . " SourceDocumentID add to index ");
         return $sourceDocumentID;
     }
 
@@ -146,7 +153,9 @@ class Line extends ALine
      * This complex type element shall also be generated for any other type
      * of receipts containing taxes described in field 4.4.4.14.6.1. - TaxType<br>
      * &lt;xs:element name="Tax" type="PaymentTax" minOccurs="0"/&gt;     *
+     *
      * @param bool $create If true a new instance will be created if wasn't previous
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Tax|null
      * @since 1.0.0
      */
@@ -155,7 +164,7 @@ class Line extends ALine
         if ($create && $this->tax === null) {
             $this->tax = new Tax($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->tax;
     }
 
@@ -171,15 +180,14 @@ class Line extends ALine
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 Payment::N_PAYMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -234,7 +242,7 @@ class Line extends ALine
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         parent::parseXmlNode($node);
 
@@ -250,7 +258,7 @@ class Line extends ALine
         }
 
         if ($node->{static::N_SETTLEMENT_AMOUNT}->count() > 0) {
-            $this->setSettlementAmount(new Decimal((string) $node->{static::N_SETTLEMENT_AMOUNT}));
+            $this->setSettlementAmount(new Decimal((string)$node->{static::N_SETTLEMENT_AMOUNT}));
         }
 
         if ($node->{static::N_TAX}->count() > 0) {
@@ -258,11 +266,11 @@ class Line extends ALine
         }
 
         if ($node->{static::N_TAX_EXEMPTION_REASON}->count() > 0) {
-            $this->setTaxExemptionReason((string) $node->{static::N_TAX_EXEMPTION_REASON});
+            $this->setTaxExemptionReason((string)$node->{static::N_TAX_EXEMPTION_REASON});
         }
 
         if ($node->{static::N_TAX_EXEMPTION_CODE}->count() > 0) {
-            $taxCode = TaxExemptionCode::from((string) $node->{static::N_TAX_EXEMPTION_CODE});
+            $taxCode = TaxExemptionCode::from((string)$node->{static::N_TAX_EXEMPTION_CODE});
             $this->setTaxExemptionCode($taxCode);
         }
     }

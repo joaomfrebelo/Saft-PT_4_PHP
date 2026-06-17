@@ -27,8 +27,8 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * Description of ACustomerSupplier
@@ -39,60 +39,70 @@ abstract class ACustomerSupplier extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ACCOUNT_ID = "AccountID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_COMPANY_NAME = "CompanyName";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CONTACT = "Contact";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_BILLING_ADDRESS = "BillingAddress";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_TELEPHONE = "Telephone";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_FAX = "Fax";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_EMAIL = "Email";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_WEBSITE = "Website";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SELF_BILLING_INDICATOR = "SelfBillingIndicator";
 
     /**
      * &lt;xs:element ref="AccountID"/&gt;
+     *
      * @var string $accountID
      * @since 1.0.0
      */
@@ -100,6 +110,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="CompanyName"/&gt;
+     *
      * @var string $companyName
      * @since 1.0.0
      */
@@ -107,6 +118,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="Contact" minOccurs="0"/&gt;
+     *
      * @var string|null $contact
      * @since 1.0.0
      */
@@ -114,6 +126,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;
+     *
      * @var string|null $telephone
      * @since 1.0.0
      */
@@ -121,6 +134,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="Fax" minOccurs="0"/&gt;
+     *
      * @var string|null $fax
      * @since 1.0.0
      */
@@ -128,6 +142,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="Email" minOccurs="0"/&gt;
+     *
      * @var string|null $email
      * @since 1.0.0
      */
@@ -135,6 +150,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="Website" minOccurs="0"/&gt;
+     *
      * @var string|null $website
      * @since 1.0.0
      */
@@ -142,6 +158,7 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * &lt;xs:element ref="SelfBillingIndicator"/&gt;
+     *
      * @var bool $selfBillingIndicator
      * @since 1.0.0
      */
@@ -149,7 +166,9 @@ abstract class ACustomerSupplier extends AAuditFile
 
     /**
      * Base class for Customer and supplier
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -182,13 +201,13 @@ abstract class ACustomerSupplier extends AAuditFile
      */
     public function getAccountID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->accountID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->accountID));
         return $this->accountID;
     }
 
     /**
      * Get if is set AccountID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -216,6 +235,7 @@ abstract class ACustomerSupplier extends AAuditFile
      * </pre>
      *
      * @param string $accountID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -235,16 +255,14 @@ abstract class ACustomerSupplier extends AAuditFile
             $msg = sprintf("AccountID does not respect the regexp '%s'", $regexp);
         }
         if ($msg !== null) {
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("AccountID_not_valid");
         } else {
             $return = true;
         }
         $this->accountID = $accountID;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->accountID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->accountID));
         return $return;
     }
 
@@ -261,13 +279,13 @@ abstract class ACustomerSupplier extends AAuditFile
      */
     public function getCompanyName(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->companyName));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->companyName));
         return $this->companyName;
     }
 
     /**
      * Get if is set CompanyName
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -284,6 +302,7 @@ abstract class ACustomerSupplier extends AAuditFile
      * &lt;xs:element name="CompanyName" type="SAFPTtextTypeMandatoryMax100Car"/&gt;
      *
      * @param string $companyName
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -298,12 +317,10 @@ abstract class ACustomerSupplier extends AAuditFile
         } catch (AuditFileException $e) {
             $this->companyName = $companyName;
             $return            = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("CompanyName_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->companyName));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->companyName));
         return $return;
     }
 
@@ -318,13 +335,12 @@ abstract class ACustomerSupplier extends AAuditFile
      */
     public function getContact(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->contact === null ? "null" : $this->contact
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->contact === null ? "null" : $this->contact
+            )
+        );
         return $this->contact;
     }
 
@@ -335,6 +351,7 @@ abstract class ACustomerSupplier extends AAuditFile
      * &lt;xs:element name="Contact" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      *
      * @param string|null $contact
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -348,17 +365,15 @@ abstract class ACustomerSupplier extends AAuditFile
         } catch (AuditFileException $e) {
             $this->contact = $contact;
             $return        = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("CompanyName_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->contact === null ? "null" : $this->contact
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->contact === null ? "null" : $this->contact
+            )
+        );
         return $return;
     }
 
@@ -372,13 +387,12 @@ abstract class ACustomerSupplier extends AAuditFile
      */
     public function getTelephone(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->telephone === null ? "null" : $this->telephone
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->telephone === null ? "null" : $this->telephone
+            )
+        );
         return $this->telephone;
     }
 
@@ -386,7 +400,9 @@ abstract class ACustomerSupplier extends AAuditFile
      * Sets a new telephone<br>
      * &lt;xs:element ref="Telephone" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Telephone" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @param string|null $telephone
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -399,17 +415,15 @@ abstract class ACustomerSupplier extends AAuditFile
         } catch (AuditFileException $e) {
             $this->telephone = $telephone;
             $return          = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Telephone_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->telephone === null ? "null" : $this->telephone
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->telephone === null ? "null" : $this->telephone
+            )
+        );
         return $return;
     }
 
@@ -417,18 +431,18 @@ abstract class ACustomerSupplier extends AAuditFile
      * Gets fax<br>
      * &lt;xs:element ref="Fax" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getFax(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->fax === null ? "null" : $this->fax
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->fax === null ? "null" : $this->fax
+            )
+        );
         return $this->fax;
     }
 
@@ -436,7 +450,9 @@ abstract class ACustomerSupplier extends AAuditFile
      * Sets fax<br>
      * &lt;xs:element ref="Fax" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="Fax" type="SAFPTtextTypeMandatoryMax20Car"/&gt;
+     *
      * @param string|null $fax
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -449,17 +465,15 @@ abstract class ACustomerSupplier extends AAuditFile
         } catch (AuditFileException $e) {
             $this->fax = $fax;
             $return    = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Fax_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->fax === null ? "null" : $this->fax
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->fax === null ? "null" : $this->fax
+            )
+        );
         return $return;
     }
 
@@ -473,13 +487,12 @@ abstract class ACustomerSupplier extends AAuditFile
      */
     public function getEmail(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->email === null ? "null" : $this->email
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->email === null ? "null" : $this->email
+            )
+        );
         return $this->email;
     }
 
@@ -489,6 +502,7 @@ abstract class ACustomerSupplier extends AAuditFile
      * &lt;xs:element name="Email" type="SAFPTtextTypeMandatoryMax254Car"/&gt;
      *
      * @param string|null $email
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -499,9 +513,8 @@ abstract class ACustomerSupplier extends AAuditFile
         } else {
             if (\filter_var($email, FILTER_VALIDATE_EMAIL) === false ||
                 \strlen($email) > 254) {
-                $msg    = $email." is not a valid email";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                $msg = $email . " is not a valid email";
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 $return = false;
                 $this->getErrorRegistor()->addOnSetValue("Email_not_valid");
             } else {
@@ -509,13 +522,12 @@ abstract class ACustomerSupplier extends AAuditFile
             }
         }
         $this->email = $email;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->email === null ? "null" : $this->email
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->email === null ? "null" : $this->email
+            )
+        );
         return $return;
     }
 
@@ -529,13 +541,12 @@ abstract class ACustomerSupplier extends AAuditFile
      */
     public function getWebsite(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->website === null ? "null" : $this->website
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->website === null ? "null" : $this->website
+            )
+        );
         return $this->website;
     }
 
@@ -545,6 +556,7 @@ abstract class ACustomerSupplier extends AAuditFile
      * &lt;xs:element name="Website" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      *
      * @param string|null $website
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -557,17 +569,15 @@ abstract class ACustomerSupplier extends AAuditFile
         } catch (AuditFileException $e) {
             $this->website = $website;
             $return        = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Website_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->website === null ? "null" : $this->website
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->website === null ? "null" : $this->website
+            )
+        );
         return $return;
     }
 
@@ -589,19 +599,19 @@ abstract class ACustomerSupplier extends AAuditFile
      *       &lt;/xs:simpleType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     *
      * @return bool
      * @throws \Error
      * @since 1.0.0
      */
     public function getSelfBillingIndicator(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->website ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->website ? "true" : "false"
+            )
+        );
         return $this->selfBillingIndicator;
     }
 
@@ -625,18 +635,18 @@ abstract class ACustomerSupplier extends AAuditFile
      * </pre>
      *
      * @param bool $selfBillingIndicator
+     *
      * @return void
      * @since 1.0.0
      */
     public function setSelfBillingIndicator(bool $selfBillingIndicator): void
     {
         $this->selfBillingIndicator = $selfBillingIndicator;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->website ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->website ? "true" : "false"
+            )
+        );
     }
 }

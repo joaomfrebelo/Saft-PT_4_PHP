@@ -27,31 +27,34 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * CustomsInformation
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class CustomsInformation extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMS_INFORMATION = "CustomsInformation";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ARC_NO = "ARCNo";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_IEC_AMOUNT = "IECAmount";
@@ -59,6 +62,7 @@ class CustomsInformation extends AAuditFile
     /**
      * &lt;xs:element ref="ARCNo" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
      * &lt;xs:element name="ARCNo" type="SAFPTtextTypeMandatoryMax21Car"/&gt;
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -69,6 +73,7 @@ class CustomsInformation extends AAuditFile
      * &lt;xs:element ref="IECAmount" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="IECAmount" type="SAFmonetaryType"/&gt;
      * </code>
+     *
      * @var float|null
      * @since 1.0.0
      */
@@ -82,7 +87,9 @@ class CustomsInformation extends AAuditFile
      *      &lt;xs:element ref="IECAmount" minOccurs="0"/&gt;
      *  &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
+     *
      * @param ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -100,13 +107,13 @@ class CustomsInformation extends AAuditFile
      * &lt;xs:element ref="ARCNo" minOccurs="0" maxOccurs="unbounded"/&gt;
      * &lt;xs:element name="ARCNo" type="SAFPTtextTypeMandatoryMax21Car"/&gt;
      * </pre>
+     *
      * @return string[]
      * @since 1.0.0
      */
     public function getArcNo(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->arcNo;
     }
 
@@ -120,7 +127,9 @@ class CustomsInformation extends AAuditFile
      * &lt;xs:element ref="ARCNo" minOccurs="0" maxOccurs="unbounded"/&gt;
      * &lt;xs:element name="ARCNo" type="SAFPTtextTypeMandatoryMax21Car"/&gt;
      * </pre>
+     *
      * @param string $arcNo
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -130,15 +139,13 @@ class CustomsInformation extends AAuditFile
             $val    = $this->valTextMandatoryMaxCar($arcNo, 21, __METHOD__);
             $return = true;
         } catch (AuditFileException $e) {
-            $val    = $arcNo;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $val = $arcNo;
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ARCNo_not_valid");
             $return = false;
         }
         $this->arcNo[] = $val;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__ . " add to stack");
         return $return;
     }
 
@@ -147,20 +154,20 @@ class CustomsInformation extends AAuditFile
      * Amount of excise duty contained in the taxable base of the
      * document line if it is not shown separately
      * in the document with the "ProductType" = E.
+     *
      * @return float|null
      * @throws \Error
      * @since 1.0.0
      */
     public function getIecAmount(): ?float
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->iecAmount === null ? "null" :
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->iecAmount === null ? "null" :
                     \strval($this->iecAmount)
-                )
-            );
+            )
+        );
         return $this->iecAmount;
     }
 
@@ -169,51 +176,52 @@ class CustomsInformation extends AAuditFile
      * Amount of excise duty contained in the taxable base of the
      * document line if it is not shown separately
      * in the document with the "ProductType" = E.
+     *
      * @param float|null $iecAmount
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setIecAmount(?float $iecAmount): bool
     {
         if ($iecAmount !== null && $iecAmount < 0.0) {
-            $msg    = "IECAmount can not be negative";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "IECAmount can not be negative";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("IecAmount_not_valid");
         } else {
             $return = true;
         }
         $this->iecAmount = $iecAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->iecAmount === null ? "null" :
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->iecAmount === null ? "null" :
                     \strval($this->iecAmount)
-                )
-            );
+            )
+        );
         return $return;
     }
 
     /**
      * Create xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' or but is '%s",
                 A2Line::N_LINE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -233,22 +241,23 @@ class CustomsInformation extends AAuditFile
 
     /**
      * Parse xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_CUSTOMS_INFORMATION) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_CUSTOMS_INFORMATION, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -257,7 +266,7 @@ class CustomsInformation extends AAuditFile
         }
 
         if ($node->{static::N_IEC_AMOUNT}->count() > 0) {
-            $this->setIecAmount((float) $node->{static::N_IEC_AMOUNT});
+            $this->setIecAmount((float)$node->{static::N_IEC_AMOUNT});
         }
     }
 }

@@ -139,12 +139,11 @@ class Payments extends ASourceDocuments
      */
     public function getNumberOfEntries(): int
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", \strval($this->numberOfEntries)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'", \strval($this->numberOfEntries)
+            )
+        );
         return $this->numberOfEntries;
     }
 
@@ -171,21 +170,19 @@ class Payments extends ASourceDocuments
     {
         if ($numberOfEntries < 0) {
             $msg    = "Number of entries can not be less than zero";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("NumberOfEntries_not_valid");
         } else {
             $return = true;
         }
         $this->numberOfEntries = $numberOfEntries;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    \strval($this->numberOfEntries)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                \strval($this->numberOfEntries)
+            )
+        );
         return $return;
     }
 
@@ -199,12 +196,11 @@ class Payments extends ASourceDocuments
      */
     public function getTotalDebit(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", \strval($this->totalDebit)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'", \strval($this->totalDebit)
+            )
+        );
         return $this->totalDebit;
     }
 
@@ -230,20 +226,18 @@ class Payments extends ASourceDocuments
     {
         if ($totalDebit->compareTo("0.0") < 0) {
             $msg    = "Total debit can not be less than zero";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalDebit_not_valid");
         } else {
             $return = true;
         }
         $this->totalDebit = $totalDebit;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", \strval($this->totalDebit->toFloat())
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'", \strval($this->totalDebit->toFloat())
+            )
+        );
         return $return;
     }
 
@@ -257,12 +251,11 @@ class Payments extends ASourceDocuments
      */
     public function getTotalCredit(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", \strval($this->totalCredit)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'", \strval($this->totalCredit)
+            )
+        );
         return $this->totalCredit;
     }
 
@@ -286,20 +279,18 @@ class Payments extends ASourceDocuments
     {
         if ($totalCredit->compareTo("0.0") < 0.0) {
             $msg    = "Total credit can not be less than zero";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TotalDebit_not_valid");
         } else {
             $return = true;
         }
         $this->totalCredit = $totalCredit;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", \strval($this->totalCredit->toFloat())
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'", \strval($this->totalCredit->toFloat())
+            )
+        );
         return $return;
     }
 
@@ -316,7 +307,7 @@ class Payments extends ASourceDocuments
         $this->order     = array();
         $payment         = new Payment($this->getErrorRegistor());
         $this->payment[] = $payment;
-        \Logger::getLogger(\get_class($this))->debug(
+        AAuditFile::$logger?->debug(
             __METHOD__." Payment add to index "
         );
         return $payment;
@@ -330,8 +321,7 @@ class Payments extends ASourceDocuments
      */
     public function getPayment(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", "Payment"));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", "Payment"));
         return $this->payment;
     }
 
@@ -355,7 +345,7 @@ class Payments extends ASourceDocuments
                 );
                 $this->getErrorRegistor()->addValidationErrors($msg);
                 $payment->addError($msg, Payment::N_PAYMENT_REF_NO);
-                \Logger::getLogger(\get_class($this))->error($msg);
+                AAuditFile::$logger?->error($msg);
                 continue;
             }
 
@@ -373,7 +363,7 @@ class Payments extends ASourceDocuments
                         );
                         $this->getErrorRegistor()->addValidationErrors($msg);
                         $payment->addError($msg, Payment::N_PAYMENT);
-                        \Logger::getLogger(\get_class($this))->error($msg);
+                        AAuditFile::$logger?->error($msg);
                     }
                 }
             }
@@ -402,15 +392,14 @@ class Payments extends ASourceDocuments
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== SourceDocuments::N_SOURCE_DOCUMENTS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 SourceDocuments::N_SOURCE_DOCUMENTS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -462,15 +451,14 @@ class Payments extends ASourceDocuments
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_PAYMENTS) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s", static::N_PAYMENTS,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

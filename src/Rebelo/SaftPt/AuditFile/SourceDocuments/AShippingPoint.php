@@ -26,35 +26,38 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\Address;
-use Rebelo\Date\Date as RDate;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * AShippingPoint base class for ShipFrom and ShipTo
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class AShippingPoint extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_DELIVERY_ID = "DeliveryID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_DELIVERY_DATE = "DeliveryDate";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ADDRESS = "Address";
@@ -62,6 +65,7 @@ abstract class AShippingPoint extends AAuditFile
     /**
      * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
      * &lt;xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/&gt;
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -70,6 +74,7 @@ abstract class AShippingPoint extends AAuditFile
     /**
      * &lt;xs:element ref="DeliveryDate" minOccurs="0"/&gt;<br>
      * &lt;xs:element name="DeliveryDate" type="SAFdateType"/&gt;
+     *
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
@@ -77,6 +82,7 @@ abstract class AShippingPoint extends AAuditFile
 
     /**
      * Array of Class warehouse
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse[]
      * @since 1.0.0
      */
@@ -84,6 +90,7 @@ abstract class AShippingPoint extends AAuditFile
 
     /**
      * &lt;xs:element ref="Address" minOccurs="0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\Address|null
      * @since 1.0.0
      */
@@ -103,7 +110,9 @@ abstract class AShippingPoint extends AAuditFile
      *   &lt;/xs:sequence&gt;
      *  &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -116,18 +125,18 @@ abstract class AShippingPoint extends AAuditFile
      * The license plate number of the carrier vehicle or the means
      * of shipping used shall be indicated, e.g. express mail, etc.
      * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @return string[]
      * @since 1.0.0
      */
     public function getDeliveryID(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get with '%s' elements in stack",
-                    \count($this->deliveryID)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get with '%s' elements in stack",
+                \count($this->deliveryID)
+            )
+        );
         return $this->deliveryID;
     }
 
@@ -137,7 +146,9 @@ abstract class AShippingPoint extends AAuditFile
      * of shipping used shall be indicated, e.g. express mail, etc.
      * &lt;xs:element ref="DeliveryID" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
      * &lt;xs:element name="DeliveryID" type="SAFPTtextTypeMandatoryMax255Car"/&gt;
+     *
      * @param string $deliveryID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -149,16 +160,13 @@ abstract class AShippingPoint extends AAuditFile
             );
             $return = true;
         } catch (AuditFileException $e) {
-            $val    = $deliveryID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $val = $deliveryID;
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("DeliveryID_not_valid");
             $return = false;
         }
         $this->deliveryID[] = $val;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." DeliveryID add to index "
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . " DeliveryID add to index");
         return $return;
     }
 
@@ -174,15 +182,14 @@ abstract class AShippingPoint extends AAuditFile
      */
     public function getDeliveryDate(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->deliveryDate === null ?
-                        "null" :
-                        $this->deliveryDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->deliveryDate === null ?
+                    "null" :
+                    $this->deliveryDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->deliveryDate;
     }
 
@@ -201,30 +208,29 @@ abstract class AShippingPoint extends AAuditFile
     public function setDeliveryDate(?RDate $deliveryDate): void
     {
         $this->deliveryDate = $deliveryDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->deliveryDate === null ? "null" :
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->deliveryDate === null ? "null" :
                     $this->deliveryDate->format(Pattern::SQL_DATE)
-                )
-            );
+            )
+        );
     }
 
     /**
      * Add Warehouse to stack
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse[]
      * @since 1.0.0
      */
     public function getWarehouse(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get with '%s' elements in stack",
-                    \count($this->warehouse)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get with '%s' elements in stack",
+                \count($this->warehouse)
+            )
+        );
         return $this->warehouse;
     }
 
@@ -232,6 +238,7 @@ abstract class AShippingPoint extends AAuditFile
      * Create a new instance of Warehouse and add to stack than will be
      * returned to be populated<br>
      * Every time that you invoke this method a new instance will be created
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\Warehouse
      * @since 1.0.0
      */
@@ -239,9 +246,7 @@ abstract class AShippingPoint extends AAuditFile
     {
         $warehouse         = new Warehouse($this->getErrorRegistor());
         $this->warehouse[] = $warehouse;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." Warehouse add to index "
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . " Warehouse add to index");
         return $warehouse;
     }
 
@@ -249,7 +254,9 @@ abstract class AShippingPoint extends AAuditFile
      * Get Address<br>
      * If the Address instance is not created and $create is true a new instance will be created
      * &lt;xs:element ref="Address" minOccurs="0"/&gt;
+     *
      * @param bool $create If true a new instance will be created if wasn't before
+     *
      * @return \Rebelo\SaftPt\AuditFile\Address|null
      * @since 1.0.0
      */
@@ -258,20 +265,20 @@ abstract class AShippingPoint extends AAuditFile
         if (isset($this->address) === false && $create) {
             $this->address = new Address($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->address;
     }
 
     /**
      * Set Address to null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setAddressToNull(): void
     {
         $this->address = null;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." set to null");
+        AAuditFile::$logger?->debug(__METHOD__ . " set to null");
     }
 
     /**
@@ -292,8 +299,7 @@ abstract class AShippingPoint extends AAuditFile
                 "Node name should be '%s' or '%s' but is '%s'",
                 ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         if (\count($this->getDeliveryID()) > 0) {
@@ -325,7 +331,9 @@ abstract class AShippingPoint extends AAuditFile
 
     /**
      * Parse the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
@@ -338,16 +346,14 @@ abstract class AShippingPoint extends AAuditFile
                 "Node name should be '%s' or '%s' but is '%s",
                 ShipFrom::N_SHIP_FROM, ShipTo::N_SHIP_TO, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         $nodeXml = $node->asXML();
         if ($nodeXml === false) {
             $msg = "Error generating xml of node";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -358,7 +364,7 @@ abstract class AShippingPoint extends AAuditFile
         $lastWhIndex = null;
         $n           = 0;
         /** @var mixed[] $stack */
-        $stack       = [];
+        $stack = [];
         foreach ($shipNode->childNodes as $domNode) {
             try {
                 /* @var $domNode \DOMNode */
@@ -375,7 +381,7 @@ abstract class AShippingPoint extends AAuditFile
                         $this->getAddress()?->parseXmlNode($node->{static::N_ADDRESS});
                         break;
                     case Warehouse::N_WAREHOUSE_ID:
-                        $warehouse   = $this->addWarehouse();
+                        $warehouse = $this->addWarehouse();
                         $warehouse->setWarehouseID($domNode->nodeValue);
                         $stack[$n]   = $warehouse;
                         $lastWhNode  = Warehouse::N_WAREHOUSE_ID;
@@ -385,7 +391,7 @@ abstract class AShippingPoint extends AAuditFile
                     case Warehouse::N_LOCATION_ID:
                         if ($lastWhNode === Warehouse::N_LOCATION_ID ||
                             $lastWhNode === null) {
-                            $warehouse   = $this->addWarehouse();
+                            $warehouse = $this->addWarehouse();
                             $warehouse->setLocationID($domNode->nodeValue);
                             $stack[$n]   = $warehouse;
                             $lastWhIndex = $n;
@@ -401,11 +407,10 @@ abstract class AShippingPoint extends AAuditFile
                     case "#text":
                         continue 2;
                     default :
-                        $msg        = \sprintf(
+                        $msg = \sprintf(
                             "Unknown node name '%s'", $domNode->nodeName
                         );
-                        \Logger::getLogger(\get_class($this))
-                            ->error(\sprintf(__METHOD__." '%s'", $msg));
+                        AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                         throw new AuditFileException($msg);
                 }
             } catch (\Exception) {

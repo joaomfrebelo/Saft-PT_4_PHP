@@ -113,7 +113,7 @@ trait TXmlTest
         foreach ($search1 as $childName => $children) {
             if (!isset($search2[$childName]))
                     return "xml2 does not have child $childName";  // xml2 has none of this child
-            if (count($search1[$childName]) != count($search2[$childName]))
+            if (count($children) != count($search2[$childName]))
                     return "mismatched $childName children count";  // xml2 has less or more children
             foreach ($children as $child) {
                 // do any of search2 children match?
@@ -157,7 +157,7 @@ trait TXmlTest
             foreach ($search1 as $childName => $children) {
                 if (!isset($search2[$childName]))
                         return "xml2 does not have ns:$ns child $childName";  // xml2 has none of this child
-                if (count($search1[$childName]) != count($search2[$childName]))
+                if (count($children) != count($search2[$childName]))
                         return "mismatched ns:$ns $childName children count";  // xml2 has less or more children
                 foreach ($children as $child) {
                     // do any of search2 children match?

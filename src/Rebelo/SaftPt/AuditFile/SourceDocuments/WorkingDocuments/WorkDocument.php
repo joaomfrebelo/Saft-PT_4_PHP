@@ -26,47 +26,52 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments;
 
+use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
-use Rebelo\Date\Date as RDate;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocument;
-use Rebelo\SaftPt\AuditFile\AAuditFile;
 
 /**
  * WorkDocument
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class WorkDocument extends ADocument
 {
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_WORK_DOCUMENT = "WorkDocument";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_DOCUMENT_NUMBER = "DocumentNumber";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_WORK_DATE = "WorkDate";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_WORK_TYPE = "WorkType";
 
     /**
      * &lt;xs:element ref="DocumentNumber"/&gt;
+     *
      * @var String
      * @since 1.0.0
      */
@@ -74,6 +79,7 @@ class WorkDocument extends ADocument
 
     /**
      * &lt;xs:element name="DocumentStatus">
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus
      * @since 1.0.0
      */
@@ -81,6 +87,7 @@ class WorkDocument extends ADocument
 
     /**
      * &lt;xs:element ref="WorkType"/&gt;
+     *
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -95,6 +102,7 @@ class WorkDocument extends ADocument
 
     /**
      * &lt;xs:element name="Line" maxOccurs="unbounded">
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line[]
      * @since 1.0.0
      */
@@ -102,6 +110,7 @@ class WorkDocument extends ADocument
 
     /**
      * &lt;xs:element name="DocumentTotals">
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals
      * @since 1.0.0
      */
@@ -109,7 +118,9 @@ class WorkDocument extends ADocument
 
     /**
      * WorkDocument
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -126,19 +137,20 @@ class WorkDocument extends ADocument
      * Records with the same identification are not allowed in this field.
      * The same document type internal code cannot be used for different types of documents.<br>
      * &lt;xs:element ref="DocumentNumber"/&gt;
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getDocumentNumber(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->documentNumber));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->documentNumber));
         return $this->documentNumber;
     }
 
     /**
      * Get if is set DocumentNumber
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -156,24 +168,24 @@ class WorkDocument extends ADocument
      * Records with the same identification are not allowed in this field.
      * The same document type internal code cannot be used for different types of documents.<br>
      * &lt;xs:element ref="DocumentNumber"/&gt;
+     *
      * @param string $documentNumber
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setDocumentNumber(string $documentNumber): bool
     {
         if (AAuditFile::validateDocNumber($documentNumber) === false) {
-            $msg    = "DocumentNumber length must be between 1 and 60 and must respect regexp";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "DocumentNumber length must be between 1 and 60 and must respect regexp";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("DocumentNumber_not_valid");
         } else {
             $return = true;
         }
         $this->documentNumber = $documentNumber;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->documentNumber));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->documentNumber));
         return $return;
     }
 
@@ -182,12 +194,13 @@ class WorkDocument extends ADocument
      * When this method is invoked will create a new instance of DocumentStatus
      * if not created previous is returned to be populated<br>
      * The field must be filled in with:<br>
-      “N” - Normal;<br>
-      “A” - Cancelled document;<br>
-      “F” - Billed document, even if partially, when for the same document
+     * “N” - Normal;<br>
+     * “A” - Cancelled document;<br>
+     * “F” - Billed document, even if partially, when for the same document
      * there is also on table 4.1. – SalesInvoices, the corresponding
      * invoice or simplified invoice.<br>
      * &lt;xs:element name="DocumentStatus">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentStatus
      * @since 1.0.0
      */
@@ -196,13 +209,13 @@ class WorkDocument extends ADocument
         if (isset($this->documentStatus) === false) {
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", "DocumentStatus"));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", "DocumentStatus"));
         return $this->documentStatus;
     }
 
     /**
      * Get if is set DocumentStatus
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -222,18 +235,18 @@ class WorkDocument extends ADocument
      */
     public function getWorkDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->workDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->workDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->workDate;
     }
 
     /**
      * Get if is set WorkDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -256,13 +269,12 @@ class WorkDocument extends ADocument
     public function setWorkDate(RDate $workDate): void
     {
         $this->workDate = $workDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->workDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->workDate->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
@@ -284,23 +296,24 @@ class WorkDocument extends ADocument
      * “LD” - Imputation to a leader co-insurance company;<br>
      * “RA” - Accepted reinsurance.<br>
      * &lt;xs:element ref="WorkType"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType
      * @throws \Error
      * @since 1.0.0
      */
     public function getWorkType(): WorkType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", $this->workType->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'", $this->workType->value
+            )
+        );
         return $this->workType;
     }
 
     /**
      * Get if is set WorkType
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -328,19 +341,20 @@ class WorkDocument extends ADocument
      * “LD” - Imputation to a leader co-insurance company;<br>
      * “RA” - Accepted reinsurance.<br>
      * &lt;xs:element ref="WorkType"/&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\WorkType $workType
+     *
      * @return void
      * @since 1.0.0
      */
     public function setWorkType(WorkType $workType): void
     {
         $this->workType = $workType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", $this->workType->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'", $this->workType->value
+            )
+        );
     }
 
     /**
@@ -348,6 +362,7 @@ class WorkDocument extends ADocument
      * This method when is invoked will create a new Line instance and add to stack
      * then will be returned to be populated. The line number is set automatically,
      * but you can set other.
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line
      * @since 1.0.0
      */
@@ -356,20 +371,19 @@ class WorkDocument extends ADocument
         $line         = new Line($this->getErrorRegistor());
         $this->line[] = $line;
         $line->setLineNumber(\count($this->line));
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__."Line add to stack"
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . "Line add to stack");
         return $line;
     }
 
     /**
      * Get Line Stack
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\Line[]
      * @since 1.0.0
      */
     public function getLine(): array
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->line;
     }
 
@@ -378,6 +392,7 @@ class WorkDocument extends ADocument
      * When this method is invoked will create a new instance of DocumentTotals
      * if nor created previous is returned to be populated<br>
      * &lt;xs:element name="DocumentTotals">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WorkingDocuments\DocumentTotals
      * @throws \Error
      * @since 1.0.0
@@ -387,17 +402,17 @@ class WorkDocument extends ADocument
         if (isset($this->documentTotals) === false) {
             $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", "DocumentTotals"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'", "DocumentTotals"
+            )
+        );
         return $this->documentTotals;
     }
 
     /**
      * Get if is set DocumentTotals
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -408,7 +423,9 @@ class WorkDocument extends ADocument
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Rebelo\Date\DateFormatException
@@ -416,15 +433,14 @@ class WorkDocument extends ADocument
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== WorkingDocuments::N_WORKING_DOCUMENTS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 WorkingDocuments::N_WORKING_DOCUMENTS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -520,8 +536,7 @@ class WorkDocument extends ADocument
 
         if (\count($this->getLine()) === 0) {
             $msg = "Line stack in WorkDocument can not be empty";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("WorkDocument_without_lines");
         }
 
@@ -552,30 +567,29 @@ class WorkDocument extends ADocument
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_WORK_DOCUMENT) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_WORK_DOCUMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         parent::parseXmlNode($node);
 
-        $this->setDocumentNumber((string) $node->{static::N_DOCUMENT_NUMBER});
+        $this->setDocumentNumber((string)$node->{static::N_DOCUMENT_NUMBER});
 
         $this->getDocumentStatus()->parseXmlNode(
             $node->{DocumentStatus::N_DOCUMENT_STATUS}
         );
 
         $this->setWorkDate(
-            RDate::parse(Pattern::SQL_DATE, (string) $node->{static::N_WORK_DATE})
+            RDate::parse(Pattern::SQL_DATE, (string)$node->{static::N_WORK_DATE})
         );
 
-        $this->setWorkType(WorkType::from((string) $node->{static::N_WORK_TYPE}));
+        $this->setWorkType(WorkType::from((string)$node->{static::N_WORK_TYPE}));
 
         for ($n = 0; $n < $node->{Line::N_LINE}->count(); $n++) {
             $this->addLine()->parseXmlNode($node->{Line::N_LINE}[$n]);

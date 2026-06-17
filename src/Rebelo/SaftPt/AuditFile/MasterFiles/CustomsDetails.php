@@ -41,24 +41,28 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  *   &lt;/xs:complexType&gt;
  * </pre>
  * XSD Type: CustomsDetails
+ *
  * @since 1.0.0
  */
 class CustomsDetails extends AAuditFile
 {
     /**
      * &lt;xs:complexType name="CustomsDetails">
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMS_DETAILS = "CustomsDetails";
 
     /**
      * &lt;xs:element ref="CNCode" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @since 1.0.0
      */
     const string N_CN_CODE = "CNCode";
 
     /**
      * &lt;xs:element ref="UNNumber" minOccurs="0" maxOccurs="unbounded">
+     *
      * @since 1.0.0
      */
     const string N_UN_NUMBER = "UNNumber";
@@ -74,6 +78,7 @@ class CustomsDetails extends AAuditFile
      * &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var string[] $cNCode
      * @since 1.0.0
      */
@@ -91,6 +96,7 @@ class CustomsDetails extends AAuditFile
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var string[] $uNNumber
      * @since 1.0.0
      */
@@ -98,7 +104,9 @@ class CustomsDetails extends AAuditFile
 
     /**
      * CustomsDetails
-     * @param ErrorRegister $errorRegister     *
+     *
+     * @param ErrorRegister $errorRegister *
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -122,7 +130,9 @@ class CustomsDetails extends AAuditFile
      * &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType>
      * </pre>
+     *
      * @param string $cNCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -130,9 +140,8 @@ class CustomsDetails extends AAuditFile
     {
         $regexp = "/^([0-9]{8})$/";
         if (\preg_match($regexp, $cNCode) !== 1) {
-            $msg    = sprintf("CNcode doesn't match regexp '%s'", $regexp);
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = sprintf("CNcode doesn't match regexp '%s'", $regexp);
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("CNCode_not_valid");
         } else {
@@ -140,9 +149,7 @@ class CustomsDetails extends AAuditFile
         }
 
         $this->cNCode[] = $cNCode;
-        \Logger::getLogger(\get_class($this))->debug(
-            sprintf(__METHOD__." CNcode '%s' add", $cNCode)
-        );
+        AAuditFile::$logger?->debug(sprintf(__METHOD__ . " CNcode '%s' add", $cNCode));
 
         return $return;
     }
@@ -163,6 +170,7 @@ class CustomsDetails extends AAuditFile
      * &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -186,7 +194,9 @@ class CustomsDetails extends AAuditFile
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @param string $uNNumber
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -194,9 +204,8 @@ class CustomsDetails extends AAuditFile
     {
         $regexp = "/^([0-9]{4})$/";
         if (\preg_match($regexp, $uNNumber) !== 1) {
-            $msg    = sprintf("UN Number doesn't match regexp '%s'", $regexp);
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = sprintf("UN Number doesn't match regexp '%s'", $regexp);
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("UNNumber_not_valid");
         } else {
@@ -204,9 +213,7 @@ class CustomsDetails extends AAuditFile
         }
 
         $this->uNNumber[] = $uNNumber;
-        \Logger::getLogger(\get_class($this))->debug(
-            \sprintf(__METHOD__." UN number add '%s'", $uNNumber)
-        );
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " UN number add '%s'", $uNNumber));
 
         return $return;
     }
@@ -226,6 +233,7 @@ class CustomsDetails extends AAuditFile
      *       &lt;/xs:restriction&gt;
      *   &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -236,17 +244,18 @@ class CustomsDetails extends AAuditFile
 
     /**
      * Create the xml node for CustomDetails
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
+
         if (\count($this->cNCode) === 0 && \count($this->uNNumber) === 0) {
-            \Logger::getLogger(\get_class($this))->debug(
-                __METHOD__." No details to create node"
-            );
+            AAuditFile::$logger?->debug(__METHOD__ . " No details to create node");
             return $node;
         }
 
@@ -263,34 +272,37 @@ class CustomsDetails extends AAuditFile
 
     /**
      * Pasrse the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_CUSTOMS_DETAILS) {
             $msg = sprintf(
                 "Node name should be '%s' and not '%s'",
                 static::N_CUSTOMS_DETAILS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
+
             throw new AuditFileException($msg);
         }
 
         $countCnCode = $node->{static::N_CN_CODE}->count();
         for ($y = 0; $y < $countCnCode; $y++) {
             $cnNode = $node->{static::N_CN_CODE}[$y];
-            $this->addCNCode((string) $cnNode);
+            $this->addCNCode((string)$cnNode);
         }
         $countUNNumber = $node->{static::N_UN_NUMBER}->count();
         for ($z = 0; $z < $countUNNumber; $z++) {
             $unNum = $node->{static::N_UN_NUMBER}[$z];
-            $this->addUNNumber((string) $unNum);
+            $this->addUNNumber((string)$unNum);
         }
     }
 }

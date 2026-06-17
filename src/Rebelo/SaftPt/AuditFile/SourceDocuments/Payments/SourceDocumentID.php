@@ -135,8 +135,7 @@ class SourceDocumentID extends AAuditFile
      */
     public function getOriginatingON(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->originatingON));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->originatingON));
         return $this->originatingON;
     }
 
@@ -173,13 +172,11 @@ class SourceDocumentID extends AAuditFile
             $return              = true;
         } catch (AuditFileException $e) {
             $this->originatingON = $originatingON;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("OriginatingON_not_valid");
             $return              = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->originatingON));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", $this->originatingON));
         return $return;
     }
 
@@ -193,13 +190,12 @@ class SourceDocumentID extends AAuditFile
      */
     public function getInvoiceDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->invoiceDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->invoiceDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->invoiceDate;
     }
 
@@ -226,13 +222,12 @@ class SourceDocumentID extends AAuditFile
     public function setInvoiceDate(RDate $invoiceDate): void
     {
         $this->invoiceDate = $invoiceDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->invoiceDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->invoiceDate->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
@@ -247,13 +242,12 @@ class SourceDocumentID extends AAuditFile
      */
     public function getDescription(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->description === null ? "null" : $this->description
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->description === null ? "null" : $this->description
+            )
+        );
         return $this->description;
     }
 
@@ -276,18 +270,16 @@ class SourceDocumentID extends AAuditFile
             $return            = true;
         } catch (AuditFileException $e) {
             $this->description = $description;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Description_not_valid");
             $return            = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->description === null ? "null" : $this->description
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->description === null ? "null" : $this->description
+            )
+        );
         return $return;
     }
 
@@ -302,15 +294,14 @@ class SourceDocumentID extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Line::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s", Line::N_LINE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -357,15 +348,14 @@ class SourceDocumentID extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_SOURCE_DOCUMENT_ID) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_SOURCE_DOCUMENT_ID, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

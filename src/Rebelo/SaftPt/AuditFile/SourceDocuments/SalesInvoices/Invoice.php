@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
 use Rebelo\Date\Date as RDate;
+use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\{AAuditFile,
     AuditFileException,
     ErrorRegister,
@@ -34,84 +35,95 @@ use Rebelo\SaftPt\AuditFile\{AAuditFile,
     SourceDocuments\ShipFrom,
     SourceDocuments\ShipTo,
     SourceDocuments\WithholdingTax};
-use Rebelo\Date\Pattern;
 
 /**
  * Invoice
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Invoice extends ADocument
 {
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_INVOICE = "Invoice";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_INVOICE_NO = "InvoiceNo";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_DOCUMENT_STATUS = "DocumentStatus";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_INVOICE_DATE = "InvoiceDate";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_INVOICE_TYPE = "InvoiceType";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SPECIAL_REGIMES = "SpecialRegimes";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SHIP_TO = "ShipTo";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_SHIP_FROM = "ShipFrom";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_MOVEMENT_END_TIME = "MovementEndTime";
 
     /**
      * Node Name
+     *
      * @since 1.0.0
      */
     const string N_MOVEMENT_START_TIME = "MovementStartTime";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_DOCUMENT_TOTALS = "DocumentTotals";
 
     /**
      * &lt;xs:element ref="InvoiceNo"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -119,6 +131,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element name="DocumentStatus">
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus
      * @since 1.0.0
      */
@@ -126,6 +139,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element ref="InvoiceDate"/&gt;
+     *
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -133,6 +147,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element ref="InvoiceType"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType
      * @since 1.0.0
      */
@@ -140,6 +155,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element name="SpecialRegimes" type="SpecialRegimes"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes
      * @since 1.0.0
      */
@@ -147,6 +163,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null
      * @since 1.0.0
      */
@@ -154,6 +171,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null
      * @since 1.0.0
      */
@@ -161,6 +179,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element ref="MovementEndTime" minOccurs="0" maxOccurs="1"/&gt;
+     *
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
@@ -168,6 +187,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element ref="MovementStartTime" minOccurs="0" maxOccurs="1"/&gt;
+     *
      * @var \Rebelo\Date\Date|null
      * @since 1.0.0
      */
@@ -175,6 +195,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element name="Line" maxOccurs="unbounded">
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line[]
      * @since 1.0.0
      */
@@ -182,6 +203,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element name="DocumentTotals"><br>
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals
      * @since 1.0.0
      */
@@ -189,6 +211,7 @@ class Invoice extends ADocument
 
     /**
      * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax[]
      * @since 1.0.0
      */
@@ -196,7 +219,9 @@ class Invoice extends ADocument
 
     /**
      * Invoice<br>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -212,23 +237,24 @@ class Invoice extends ADocument
      * In this field cannot exist records with the same identification.
      * The same document type internal code cannot be used for different types of documents.<br>
      * &lt;xs:element ref="InvoiceNo"/&gt;
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getInvoiceNo(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", $this->invoiceNo
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'", $this->invoiceNo
+            )
+        );
         return $this->invoiceNo;
     }
 
     /**
      * Get if is set InvoiceNo
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -245,28 +271,28 @@ class Invoice extends ADocument
      * In this field cannot exist records with the same identification.
      * The same document type internal code cannot be used for different types of documents.<br>
      * &lt;xs:element ref="InvoiceNo"/&gt;
+     *
      * @param string $invoiceNo
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setInvoiceNo(string $invoiceNo): bool
     {
         if (AAuditFile::validateDocNumber($invoiceNo) === false) {
-            $msg    = "DocumentNumber length must be between 1 and 60 and must respect regexp";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "DocumentNumber length must be between 1 and 60 and must respect regexp";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue($msg);
         } else {
             $return = true;
         }
         $this->invoiceNo = $invoiceNo;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", $this->invoiceNo
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'", $this->invoiceNo
+            )
+        );
         return $return;
     }
 
@@ -275,6 +301,7 @@ class Invoice extends ADocument
      * When this method is invoked a new instance of DocumentStatus is created if
      * wasn't before and returned to be populated<br>
      * &lt;xs:element name="DocumentStatus">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentStatus
      * @since 1.0.0
      */
@@ -283,13 +310,13 @@ class Invoice extends ADocument
         if (isset($this->documentStatus) === false) {
             $this->documentStatus = new DocumentStatus($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->documentStatus;
     }
 
     /**
      * Get if is set DocumentStatus
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -308,18 +335,18 @@ class Invoice extends ADocument
      */
     public function getInvoiceDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->invoiceDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->invoiceDate->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->invoiceDate;
     }
 
     /**
      * Get if is set InvoiceDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -341,13 +368,12 @@ class Invoice extends ADocument
     public function setInvoiceDate(RDate $invoiceDate): void
     {
         $this->invoiceDate = $invoiceDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->invoiceDate->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->invoiceDate->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
@@ -370,23 +396,24 @@ class Invoice extends ADocument
      * “LD” - Imputation to a leader co-insurance company;
      * “RA” - Accepted reinsurance. (a) For data up to 2012-12-31.
      * &lt;xs:element ref="InvoiceType"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType
      * @throws \Error
      * @since 1.0.0
      */
     public function getInvoiceType(): InvoiceType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", $this->invoiceType->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'", $this->invoiceType->value
+            )
+        );
         return $this->invoiceType;
     }
 
     /**
      * Get if is set InvoiceType
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -415,19 +442,20 @@ class Invoice extends ADocument
      * “LD” - Imputation to a leader co-insurance company;
      * “RA” - Accepted reinsurance. (a) For data up to 2012-12-31.
      * &lt;xs:element ref="InvoiceType"/&gt;
+     *
      * @param \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\InvoiceType $invoiceType
-     * @since 1.0.0
+     *
      * @return void
+     * @since 1.0.0
      */
     public function setInvoiceType(InvoiceType $invoiceType): void
     {
         $this->invoiceType = $invoiceType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", $this->invoiceType->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'", $this->invoiceType->value
+            )
+        );
     }
 
     /**
@@ -435,6 +463,7 @@ class Invoice extends ADocument
      * When this method is invoked a new instance of SpecialRegimes is created if
      * wasn't previous and returned to be populated<br>
      * &lt;xs:element name="SpecialRegimes" type="SpecialRegimes"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\SpecialRegimes
      * @since 1.0.0
      */
@@ -443,13 +472,13 @@ class Invoice extends ADocument
         if (isset($this->specialRegimes) === false) {
             $this->specialRegimes = new SpecialRegimes($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->specialRegimes;
     }
 
     /**
      * Get if is set SpecialRegimes
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -467,7 +496,9 @@ class Invoice extends ADocument
      * previous a new instance of ShipTo is created and then returned
      * to be populated<br>
      * &lt;xs:element ref="ShipTo" minOccurs="0" maxOccurs="1"/&gt;     *
+     *
      * @param bool $create if true and wasn't previous a new instance will be created
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipTo|null
      * @since 1.0.0
      */
@@ -476,17 +507,17 @@ class Invoice extends ADocument
         if ($create && $this->shipTo === null) {
             $this->shipTo = new ShipTo($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", "ShipTo"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'", "ShipTo"
+            )
+        );
         return $this->shipTo;
     }
 
     /**
      * Set ShipTo As Null
+     *
      * @return void
      * @since 1.0.0
      */
@@ -503,7 +534,9 @@ class Invoice extends ADocument
      * previous a new instance of ShipFrom is created and then returned
      * to be populated<br>
      * &lt;xs:element ref="ShipFrom" minOccurs="0" maxOccurs="1"/&gt;  *
+     *
      * @param bool $create if true and wasn't previous a new instance will be created
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\ShipFrom|null
      * @since 1.0.0
      */
@@ -512,17 +545,17 @@ class Invoice extends ADocument
         if ($create && $this->shipFrom === null) {
             $this->shipFrom = new ShipFrom($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'", "ShipFrom"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'", "ShipFrom"
+            )
+        );
         return $this->shipFrom;
     }
 
     /**
      * Set ShipFrom As Null
+     *
      * @return void
      * @since 1.0.0
      */
@@ -544,15 +577,14 @@ class Invoice extends ADocument
      */
     public function getMovementEndTime(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementEndTime === null ?
-                        "null" :
-                        $this->movementEndTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->movementEndTime === null ?
+                    "null" :
+                    $this->movementEndTime->format(Pattern::DATE_T_TIME)
+            )
+        );
         return $this->movementEndTime;
     }
 
@@ -572,15 +604,14 @@ class Invoice extends ADocument
     public function setMovementEndTime(?RDate $movementEndTime): void
     {
         $this->movementEndTime = $movementEndTime;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementEndTime === null ?
-                        "null" :
-                        $this->movementEndTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->movementEndTime === null ?
+                    "null" :
+                    $this->movementEndTime->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
@@ -600,14 +631,13 @@ class Invoice extends ADocument
      */
     public function getMovementStartTime(): ?RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->movementStartTime === null ? "null" :
-                        $this->movementStartTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->movementStartTime === null ? "null" :
+                    $this->movementStartTime->format(Pattern::DATE_T_TIME)
+            )
+        );
         return $this->movementStartTime;
     }
 
@@ -630,37 +660,37 @@ class Invoice extends ADocument
     public function setMovementStartTime(?RDate $movementStartTime): void
     {
         $this->movementStartTime = $movementStartTime;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->movementStartTime === null ? "null" :
-                        $this->movementStartTime->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->movementStartTime === null ? "null" :
+                    $this->movementStartTime->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
      * Get Line Stack<br>
      * &lt;xs:element name="Line" maxOccurs="unbounded">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line[]
      * @since 1.0.0
      */
     public function getLine(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get stack with '%s' elements",
-                    \count($this->line)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get stack with '%s' elements",
+                \count($this->line)
+            )
+        );
         return $this->line;
     }
 
     /**
      * Add Line to stack<br>
      * &lt;xs:element name="Line" maxOccurs="unbounded">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Line
      * @since 1.0.0
      */
@@ -669,8 +699,8 @@ class Invoice extends ADocument
         $line         = new Line($this->getErrorRegistor());
         $this->line[] = $line;
         $line->setLineNumber(\count($this->line));
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." Line add to index "
+        AAuditFile::$logger?->debug(
+            __METHOD__ . " Line add to index "
         );
         return $line;
     }
@@ -680,6 +710,7 @@ class Invoice extends ADocument
      * When this method is invoked a new instance of DocumentTotals is created
      * if wasn't previous and then returned to be populated<br>
      * &lt;xs:element name="DocumentTotals">
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\DocumentTotals
      * @since 1.0.0
      */
@@ -688,13 +719,13 @@ class Invoice extends ADocument
         if (isset($this->documentTotals) === false) {
             $this->documentTotals = new DocumentTotals($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->documentTotals;
     }
 
     /**
      * Get if is set DocumentTotals
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -716,28 +747,28 @@ class Invoice extends ADocument
     {
         $withholdingTax         = new WithholdingTax($this->getErrorRegistor());
         $this->withholdingTax[] = $withholdingTax;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." WithholdingTax add to index"
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . " WithholdingTax add to index");
         return $withholdingTax;
     }
 
     /**
      * Gets as withholdingTax<br>
      * &lt;xs:element name="WithholdingTax" type="WithholdingTax" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\WithholdingTax[]
      * @since 1.0.0
      */
     public function getWithholdingTax(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", "WithholdingTax"));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", "WithholdingTax"));
         return $this->withholdingTax;
     }
 
     /**
      * Create XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @throws \Error
@@ -745,15 +776,14 @@ class Invoice extends ADocument
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== SalesInvoices::N_SALES_INVOICES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 SalesInvoices::N_SALES_INVOICES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -873,8 +903,7 @@ class Invoice extends ADocument
 
         if (\count($this->line) === 0) {
             $msg = "Invoice without lines";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $this->getErrorRegistor()->addOnCreateXmlNode("Invoice_without_lines");
         }
 
@@ -908,27 +937,26 @@ class Invoice extends ADocument
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_INVOICE) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s", static:: N_INVOICE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         parent::parseXmlNode($node);
 
-        $this->setInvoiceNo((string) $node->{static::N_INVOICE_NO});
-        $this->setInvoiceType(InvoiceType::from((string) $node->{static::N_INVOICE_TYPE}));
+        $this->setInvoiceNo((string)$node->{static::N_INVOICE_NO});
+        $this->setInvoiceType(InvoiceType::from((string)$node->{static::N_INVOICE_TYPE}));
         $this->getDocumentStatus()->parseXmlNode($node->{DocumentStatus::N_DOCUMENT_STATUS});
 
         $this->setInvoiceDate(
             RDate::parse(
-                Pattern::SQL_DATE, (string) $node->{static::N_INVOICE_DATE}
+                Pattern::SQL_DATE, (string)$node->{static::N_INVOICE_DATE}
             )
         );
 
@@ -948,7 +976,7 @@ class Invoice extends ADocument
             $this->setMovementEndTime(
                 RDate::parse(
                     Pattern::DATE_T_TIME,
-                    (string) $node->{static::N_MOVEMENT_END_TIME}
+                    (string)$node->{static::N_MOVEMENT_END_TIME}
                 )
             );
         }
@@ -957,7 +985,7 @@ class Invoice extends ADocument
             $this->setMovementStartTime(
                 RDate::parse(
                     Pattern::DATE_T_TIME,
-                    (string) $node->{static::N_MOVEMENT_START_TIME}
+                    (string)$node->{static::N_MOVEMENT_START_TIME}
                 )
             );
         }

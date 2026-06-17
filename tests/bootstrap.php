@@ -15,6 +15,19 @@ require_once __DIR__
     .DIRECTORY_SEPARATOR."vendor"
     .DIRECTORY_SEPARATOR."autoload.php";
 
+$logger = new \Monolog\Logger("test");
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Info));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Alert));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Debug));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Notice));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Error));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Emergency));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Critical));
+$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Level::Warning));
+$logger->pushHandler(new \Monolog\Handler\FirePHPHandler());
+
+Rebelo\SaftPt\AuditFile\AAuditFile::$logger = $logger;
+
 require join(DIRECTORY_SEPARATOR, [__DIR__, 'Rebelo', 'SaftPt', 'Commune.php']);
 require join(DIRECTORY_SEPARATOR, [__DIR__, 'Rebelo', 'SaftPt', 'TXmlTest.php']);
 

@@ -51,19 +51,22 @@ use Rebelo\Date\Pattern;
  * documento, identificador do diário e número de arquivo do documento
  * (TransactionDate, JournalID e DocArchivalNumber).
  * </p>
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class TransactionID extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_TRANSACTION_ID = "TransactionID";
 
     /**
      * Transaction date
+     *
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -71,6 +74,7 @@ class TransactionID extends AAuditFile
 
     /**
      * Regexp [^ ]{1,30}
+     *
      * @var string
      * @since 1.0.0
      */
@@ -78,6 +82,7 @@ class TransactionID extends AAuditFile
 
     /**
      * [^ ]{1,20}
+     *
      * @var String
      * @since 1.0.0
      */
@@ -102,6 +107,7 @@ class TransactionID extends AAuditFile
      *   &lt;/xs:restriction&gt;
      *  &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -117,13 +123,12 @@ class TransactionID extends AAuditFile
      */
     public function getDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->date->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->date->format(Pattern::SQL_DATE)
+            )
+        );
         return $this->date;
     }
 
@@ -138,92 +143,91 @@ class TransactionID extends AAuditFile
     public function setDate(RDate $date): void
     {
         $this->date = $date;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->date->format(Pattern::SQL_DATE)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->date->format(Pattern::SQL_DATE)
+            )
+        );
     }
 
     /**
      * Set Journal ID
      * Regexp [^ ]{1,30}
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getJournalID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->journalID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->journalID));
         return $this->journalID;
     }
 
     /**
      * Set Journal ID
      * Regexp [^ ]{1,30}
+     *
      * @param string $journalID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setJournalID(string $journalID): bool
     {
         if (\preg_match("/^[^ ]{1,30}$/", $journalID) !== 1) {
-            $msg    = "JournalID must respect regexp '^[^ ]{1,30}$'";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "JournalID must respect regexp '^[^ ]{1,30}$'";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("JournalID_not_valid");
         } else {
             $return = true;
         }
         $this->journalID = $journalID;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->journalID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->journalID));
         return $return;
     }
 
     /**
      * Get DocArchivalNumber<br>
      * [^ ]{1,20}
+     *
      * @return string
      * @since 1.0.0
      */
     public function getDocArchivalNumber(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->docArchivalNumber));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->docArchivalNumber));
         return $this->docArchivalNumber;
     }
 
     /**
      * Set DocArchivalNumber<br>
      * [^ ]{1,20}
+     *
      * @param string $docArchivalNumber
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setDocArchivalNumber(string $docArchivalNumber): bool
     {
         if (\preg_match("/^[^ ]{1,20}$/", $docArchivalNumber) !== 1) {
-            $msg    = "DocArchivalNumber must respect regexp '^[^ ]{1,20}$'";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "DocArchivalNumber must respect regexp '^[^ ]{1,20}$'";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("DocArchivalNumber_not_valid");
         } else {
             $return = true;
         }
         $this->docArchivalNumber = $docArchivalNumber;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->docArchivalNumber
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->docArchivalNumber
+            )
+        );
         return $return;
     }
 
@@ -237,7 +241,7 @@ class TransactionID extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if (isset($this->date) && isset($this->docArchivalNumber) && isset($this->journalID)) {
             $tran = \sprintf(
@@ -263,19 +267,18 @@ class TransactionID extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_TRANSACTION_ID) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_TRANSACTION_ID, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $tran = \explode(" ", (string) $node);
+        $tran = \explode(" ", (string)$node);
         $this->setDate(RDate::parse(Pattern::SQL_DATE, $tran[0]));
         $this->setJournalID($tran[1]);
         $this->setDocArchivalNumber($tran[2]);

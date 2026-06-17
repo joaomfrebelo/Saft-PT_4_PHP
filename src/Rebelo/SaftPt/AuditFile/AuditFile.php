@@ -82,10 +82,6 @@ class AuditFile extends AAuditFile
      */
     public function __construct(?ErrorRegister $errorRegister = null)
     {
-        if (static::$log4phpConfigFilePath !== null) {
-            \Logger::configure(static::$log4phpConfigFilePath);
-        }
-
         if ($errorRegister === null) {
             $errorRegister = new ErrorRegister();
         }
@@ -104,7 +100,7 @@ class AuditFile extends AAuditFile
      */
     public function getHeader(): Header
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if (isset($this->header) === false) {
             $this->header = new Header($this->errorRegister);
         }
@@ -132,7 +128,7 @@ class AuditFile extends AAuditFile
      */
     public function getMasterFiles(): MasterFiles
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if (isset($this->masterFiles) === false) {
             $this->masterFiles = new MasterFiles($this->getErrorRegistor());
         }
@@ -160,8 +156,7 @@ class AuditFile extends AAuditFile
      */
     public function getGeneralLedgerEntries(): GeneralLedgerEntries
     {
-        \Logger::getLogger(\get_class($this))
-               ->error(\sprintf(__METHOD__ . " '%s'", "Not implemented"));
+        AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", "Not implemented"));
         throw new NotImplemented("Not implemented");
     }
 
@@ -182,7 +177,7 @@ class AuditFile extends AAuditFile
      */
     public function getSourceDocuments(bool $generate = true): ?SourceDocuments
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if ($generate === true && $this->sourceDocuments === null) {
             $this->sourceDocuments = new SourceDocuments($this->errorRegister);
         }
@@ -206,8 +201,7 @@ class AuditFile extends AAuditFile
                 "Node name should be '%s' but is '%s", static::N_AUDIT_FILE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -225,8 +219,7 @@ class AuditFile extends AAuditFile
             $this->getHeader()->createXmlNode($node);
         } else {
             $this->errorRegister->addOnCreateXmlNode("no_header_table");
-            \Logger::getLogger(\get_class($this))
-                   ->error("No 'Header' on create xml node");
+            AAuditFile::$logger?->error("No 'Header' on create xml node");
         }
 
         if (isset($this->masterFiles)) {
@@ -234,8 +227,7 @@ class AuditFile extends AAuditFile
         } else {
             $node->addChild(MasterFiles::N_MASTER_FILES);
             $this->errorRegister->addOnCreateXmlNode("no_master_files_table");
-            \Logger::getLogger(\get_class($this))
-                   ->error("No 'MasterFiles' on create xml node");
+            AAuditFile::$logger?->error("No 'MasterFiles' on create xml node");
         }
 
         $this->getSourceDocuments(false)?->createXmlNode($node);
@@ -261,8 +253,7 @@ class AuditFile extends AAuditFile
                 "Node name should be '%s' but is '%s", static::N_AUDIT_FILE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $header = $this->getHeader();
@@ -319,7 +310,7 @@ class AuditFile extends AAuditFile
      */
     public function toXmlString(): string
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $xml = $this->createXmlNode($this->createRootElement())->asXML();
         if (!$xml) throw new AuditFileException("Error creating xml node");
         $this->replaceHexUtf($xml);
@@ -336,7 +327,7 @@ class AuditFile extends AAuditFile
      */
     public function toXmlStringWindows1252(): string
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $xml = \mb_convert_encoding(
             $this->toXmlString(), "Windows-1252", "UTF-8"
         );
@@ -371,7 +362,7 @@ class AuditFile extends AAuditFile
      */
     public function toFile(string $path): int
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $bytes = \file_put_contents(
             $path, $this->toXmlStringWindows1252(), LOCK_EX
         );
@@ -399,15 +390,13 @@ class AuditFile extends AAuditFile
      */
     public static function loadFile(string $path): AuditFile
     {
-        if (static::$log4phpConfigFilePath !== null) {
-            \Logger::configure(static::$log4phpConfigFilePath);
-        }
-        \Logger::getLogger(AuditFile::class)->debug(__METHOD__);
+
+        AAuditFile::$logger?->debug(__METHOD__);
         $audit  = new AuditFile();
         $xmlStr = \file_get_contents($path);
         if ($xmlStr === false) {
             $msg = \sprintf("failing open file '%s'", $path);
-            \Logger::getLogger(AuditFile::class)->error($msg);
+            AAuditFile::$logger?->error($msg);
             throw new AuditFileException($msg);
         }
 
@@ -440,7 +429,7 @@ class AuditFile extends AAuditFile
                 "Simplexml_load_string failing read string loaded from file '%s'",
                 $path
             );
-            \Logger::getLogger(AuditFile::class)->error($msg);
+            AAuditFile::$logger?->error($msg);
             throw new AuditFileException($msg);
         }
         $audit->parseXmlNode($xml);
@@ -461,7 +450,7 @@ class AuditFile extends AAuditFile
     public function validate(?string           $pubKeyPath = null,
                              ?ValidationConfig $config = null): bool
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $sign = new Sign();
 
         if ($pubKeyPath !== null) {
@@ -475,82 +464,81 @@ class AuditFile extends AAuditFile
 
         if ($config->getSignValidation() && $pubKeyPath === null) {
             $msg = "To validate signatures must indicate public key file path";
-            \Logger::getLogger(\get_class($this))->error($msg);
+            AAuditFile::$logger?->error($msg);
             throw new AuditFileException($msg);
         }
 
-        $throw  = [];
-        $logger = \Logger::getLogger(\get_class($this));
+        $throw = [];
 
         if ($config->getSchemaValidate()) {
             try {
-                \Logger::getLogger(\get_class($this))->info("Start validating Scheme");
+                AAuditFile::$logger?->info("Start validating Scheme");
                 $validate = new XmlStructure($this);
                 $xml      = $this->toXmlString();
                 $validate->validate($xml);
             } catch (\Throwable $e) {
-                $logger->debug($e);
+                AAuditFile::$logger?->debug($e);
                 $throw[] = $e->getMessage();
             }
         }
 
         // Validate Invoices
         try {
-            \Logger::getLogger(\get_class($this))->info("Start validating SalesInvoices");
+            AAuditFile::$logger?->info("Start validating SalesInvoices");
             $siVal = new SalesInvoices($this, $sign);
             $siVal->setConfiguration($config);
             $siVal->validate();
         } catch (\Throwable $e) {
-            $logger->debug($e);
+            AAuditFile::$logger?->debug($e);
             $throw[] = $e->getMessage();
         }
 
 // Validate MovementOfGoods
         try {
-            \Logger::getLogger(\get_class($this))->info("Start validating MovementOfGoods");
+            AAuditFile::$logger?->info("Start validating MovementOfGoods");
             $mvVal = new MovementOfGoods($this, $sign);
             $mvVal->setConfiguration($config);
             $mvVal->validate();
         } catch
         (\Throwable $e) {
-            $logger->debug($e);
+            AAuditFile::$logger?->debug($e);
             $throw[] = $e->getMessage();
         }
 
 // Validate WorkingDocuments
         try {
-            \Logger::getLogger(\get_class($this))->info("Start validating WorkingDocument");
+            AAuditFile::$logger?->info("Start validating WorkingDocument");
             $worVal = new WorkingDocuments($this, $sign);
             $worVal->setConfiguration($config);
             $worVal->validate();
         } catch (\Throwable $e) {
-            $logger->debug($e);
+            AAuditFile::$logger?->debug($e);
             $throw[] = $e->getMessage();
         }
 
 // Validate Payments
         try {
-            \Logger::getLogger(\get_class($this))->info("Start validating Payments");
+            AAuditFile::$logger?->info("Start validating Payments");
             $payVal = new Payments($this);
             $payVal->setConfiguration($config);
             $payVal->validate();
         } catch (\Throwable $e) {
-            $logger->debug($e);
+            AAuditFile::$logger?->debug($e);
             $throw[] = $e->getMessage();
         }
 
 // Validate OtherValidations
         try {
-            \Logger::getLogger(\get_class($this))->info("Start other validations");
+            AAuditFile::$logger?->info("Start other validations");
             $other = new OtherValidations($this);
             $other->setConfiguration($config);
             $other->validate();
         } catch (\Throwable $e) {
-            $logger->debug($e);
+            AAuditFile::$logger?->debug($e);
             $throw[] = $e->getMessage();
         }
 
-        \Logger::getLogger(\get_class($this))->debug("End of data validation");
+        AAuditFile::$logger?->debug("End of data validation");
 
         if (\count($throw) > 0) {
             throw new AuditFileException(\join("; ", $throw));

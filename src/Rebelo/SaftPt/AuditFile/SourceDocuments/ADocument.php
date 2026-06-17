@@ -26,78 +26,88 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
+use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\Date\Date as RDate;
-use Rebelo\SaftPt\AuditFile\TransactionID;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\TransactionID;
 use Rebelo\SaftPt\Validate\DocTotalCalc;
 
 /**
  * ADocument
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 abstract class ADocument extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_ATCUD = "ATCUD";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_HASH = "Hash";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_HASH_CONTROL = "HashControl";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PERIOD = "Period";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SOURCE_ID = "SourceID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_EAC_CODE = "EACCode";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SYSTEM_ENTRY_DATE = "SystemEntryDate";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_TRANSACTION_ID = "TransactionID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMER_ID = "CustomerID";
 
     /**
      * The calculated values made by the validation classes
+     *
      * @var \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
@@ -109,6 +119,7 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "ATCUD"/&gt;
      * &lt;xs:element name="ATCUD" type="SAFPTtextTypeMandatoryMax100Car"/&gt;
      * </pre>
+     *
      * @since 1.0.0
      * @var string
      */
@@ -119,6 +130,7 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "Hash"/&gt;
      * &lt;xs:element name="Hash" type="SAFPTtextTypeMandatoryMax172Car"/&gt;
      * </pre>
+     *
      * @var string
      * @since 1.0.0
      */
@@ -136,6 +148,7 @@ abstract class ADocument extends AAuditFile
      *  &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var string
      * @since 1.0.0
      */
@@ -153,6 +166,7 @@ abstract class ADocument extends AAuditFile
      *    &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @var int|null
      * @since 1.0.0
      */
@@ -163,6 +177,7 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "SourceID"/&gt;
      * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * </pre>
+     *
      * @var string
      * @since 1.0.0
      */
@@ -179,6 +194,7 @@ abstract class ADocument extends AAuditFile
      *  &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @var string|null
      * @since 1.0.0
      */
@@ -186,6 +202,7 @@ abstract class ADocument extends AAuditFile
 
     /**
      * &lt;xs:element ref = "SystemEntryDate"/&gt;
+     *
      * @var \Rebelo\Date\Date
      * @since 1.0.0
      */
@@ -193,6 +210,7 @@ abstract class ADocument extends AAuditFile
 
     /**
      * &lt;xs:element ref = "TransactionID" minOccurs = "0"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\TransactionID|null
      * @since 1.0.0
      */
@@ -201,6 +219,7 @@ abstract class ADocument extends AAuditFile
     /**
      * &lt;xs:element ref = "CustomerID"/&gt;
      * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -209,7 +228,9 @@ abstract class ADocument extends AAuditFile
     /**
      * Abstract class for common method and properties of WorkDocument,
      * StockMovement and invoice
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -225,19 +246,20 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "ATCUD"/&gt;
      * &lt;xs:element name="ATCUD" type="SAFPTtextTypeMandatoryMax100Car"/&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getAtcud(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->atcud));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->atcud));
         return $this->atcud;
     }
 
     /**
      * Get if is set Atcud
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -254,7 +276,9 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "ATCUD"/&gt;
      * &lt;xs:element name="ATCUD" type="SAFPTtextTypeMandatoryMax100Car"/&gt;
      * </pre>
+     *
      * @param string $atcud
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -267,13 +291,11 @@ abstract class ADocument extends AAuditFile
             $return      = true;
         } catch (AuditFileException $e) {
             $this->atcud = $atcud;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Atcud_not_valid");
-            $return      = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->atcud));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->atcud));
         return $return;
     }
 
@@ -285,19 +307,20 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "Hash"/&gt;
      * &lt;xs:element name="Hash" type="SAFPTtextTypeMandatoryMax172Car"/&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getHash(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->hash));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->hash));
         return $this->hash;
     }
 
     /**
      * Get if is set Hash
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -314,7 +337,9 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "Hash"/&gt;
      * &lt;xs:element name="Hash" type="SAFPTtextTypeMandatoryMax172Car"/&gt;
      * </pre>
+     *
      * @param string $hash
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -325,20 +350,18 @@ abstract class ADocument extends AAuditFile
             $return     = true;
         } catch (AuditFileException $e) {
             $this->hash = $hash;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Hash_not_valid");
-            $return     = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->hash));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->hash));
         return $return;
     }
 
     /**
      * Get hash control<br>
      * Version of the protected key used in the creation of signature of field 4.2.3.4. – Hash.
-      The field shall be filled in with "0" (zero) if the document is generated by a non-certified program.
+     * The field shall be filled in with "0" (zero) if the document is generated by a non-certified program.
      * <pre>
      * &lt;xs:element ref = "HashControl"/&gt;
      * &lt;xs:element name="HashControl" type="SAFPTHashControl"/&gt;
@@ -350,19 +373,20 @@ abstract class ADocument extends AAuditFile
      *  &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getHashControl(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->hashControl));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->hashControl));
         return $this->hashControl;
     }
 
     /**
      * Get if is set HashControl
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -387,28 +411,28 @@ abstract class ADocument extends AAuditFile
      *  &lt;/xs:restriction&gt;
      * &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @param string $hashControl
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setHashControl(string $hashControl): bool
     {
         $pattern = "/[0-9]+|[0-9]+[.][0-9]+|[0-9]+-[A-Z]{2}(M )"
-            ."([^ ]+\/[0-9]+)|[0-9]+-[A-Z]{2}(D )([^ ]+ [^\/^ ]+\/[0-9]+)/";
+            . "([^ ]+\/[0-9]+)|[0-9]+-[A-Z]{2}(D )([^ ]+ [^\/^ ]+\/[0-9]+)/";
         if (\strlen($hashControl) < 1 ||
             \strlen($hashControl) > 70 ||
             \preg_match($pattern, $hashControl) !== 1) {
-            $msg    = "HashControl must respect the regexp and length must be between 1 and 70";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "HashControl must respect the regexp and length must be between 1 and 70";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("HashControl_not_valid");
         } else {
             $return = true;
         }
         $this->hashControl = $hashControl;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->hashControl));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->hashControl));
         return $return;
     }
 
@@ -427,13 +451,13 @@ abstract class ADocument extends AAuditFile
      *    &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @return int|null
      * @since 1.0.0
      */
     public function getPeriod(): ?int
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->period));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->period));
         return $this->period;
     }
 
@@ -452,29 +476,29 @@ abstract class ADocument extends AAuditFile
      *    &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @param int|null $period
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setPeriod(?int $period): bool
     {
         if ($period !== null && ($period < 1 || $period > 12)) {
-            $msg    = "Period must be null or between 1 and 12";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "Period must be null or between 1 and 12";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("Period_not_valid");
         } else {
             $return = true;
         }
         $this->period = $period;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->period === null ? "null" : \strval($this->period)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->period === null ? "null" : \strval($this->period)
+            )
+        );
         return $return;
     }
 
@@ -485,19 +509,20 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "SourceID"/&gt;
      * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getSourceID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
     /**
      * Get if is set SourceID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -513,7 +538,9 @@ abstract class ADocument extends AAuditFile
      * &lt;xs:element ref = "SourceID"/&gt;
      * &lt;xs:element name="SourceID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      * </pre>
+     *
      * @param string $sourceID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -524,17 +551,15 @@ abstract class ADocument extends AAuditFile
             $return         = true;
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("SourceID_not_valid");
-            $return         = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", $this->sourceID
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'", $this->sourceID
+            )
+        );
         return $return;
     }
 
@@ -551,18 +576,18 @@ abstract class ADocument extends AAuditFile
      *  &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getEacCode(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->eacCode === null ? "null" : $this->eacCode
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->eacCode === null ? "null" : $this->eacCode
+            )
+        );
         return $this->eacCode;
     }
 
@@ -579,7 +604,9 @@ abstract class ADocument extends AAuditFile
      *  &lt;/xs:simpleType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @param string|null $eacCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -587,22 +614,20 @@ abstract class ADocument extends AAuditFile
     {
         if ($eacCode !== null &&
             (\strlen($eacCode) !== 5 || \preg_match("/([0-9]*)/", $eacCode) !== 1)) {
-            $msg    = "EacCode must be null or have a length 5 and respect the regexp";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "EacCode must be null or have a length 5 and respect the regexp";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("EacCode_not_valid");
         } else {
             $return = true;
         }
         $this->eacCode = $eacCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->eacCode === null ? "null" : $this->eacCode
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->eacCode === null ? "null" : $this->eacCode
+            )
+        );
         return $return;
     }
 
@@ -617,18 +642,18 @@ abstract class ADocument extends AAuditFile
      */
     public function getSystemEntryDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->systemEntryDate->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->systemEntryDate->format(Pattern::DATE_T_TIME)
+            )
+        );
         return $this->systemEntryDate;
     }
 
     /**
      * Get if is set SystemEntryDate
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -651,13 +676,12 @@ abstract class ADocument extends AAuditFile
     public function setSystemEntryDate(RDate $systemEntryDate): void
     {
         $this->systemEntryDate = $systemEntryDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->systemEntryDate->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->systemEntryDate->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
@@ -679,25 +703,24 @@ abstract class ADocument extends AAuditFile
         if ($create && $this->transactionID === null) {
             $this->transactionID = new TransactionID($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->transactionID === null ? "null" : "TransactionID"
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->transactionID === null ? "null" : "TransactionID"
+            )
+        );
         return $this->transactionID;
     }
 
     /**
      * Set TransactionID as null
+     *
      * @return void
      * @since 1.0.0
      */
     public function setTransactionIDAsNull(): void
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." set as null");
+        AAuditFile::$logger?->info(__METHOD__ . " set as null");
         $this->transactionID = null;
     }
 
@@ -706,19 +729,20 @@ abstract class ADocument extends AAuditFile
      * The unique key of the table 2.2. - Customer respecting the rule defined for 2.2.1. - CustomerID.<br>
      * &lt;xs:element ref = "CustomerID"/&gt;<br>
      * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getCustomerID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->customerID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->customerID));
         return $this->customerID;
     }
 
     /**
      * Get if is set CustomerID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -732,7 +756,9 @@ abstract class ADocument extends AAuditFile
      * The unique key of the table 2.2. - Customer respecting the rule defined for 2.2.1. - CustomerID.<br>
      * &lt;xs:element ref = "CustomerID"/&gt;<br>
      * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
      * @param string $customerID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -745,17 +771,15 @@ abstract class ADocument extends AAuditFile
             $return           = true;
         } catch (AuditFileException $e) {
             $this->customerID = $customerID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("CustomerID_not_valid");
-            $return           = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'", $this->customerID
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'", $this->customerID
+            )
+        );
         return $return;
     }
 
@@ -773,25 +797,25 @@ abstract class ADocument extends AAuditFile
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
         //Validation of node name should be done in the child class
-        $this->setAtcud((string) $node->{static::N_ATCUD});
+        $this->setAtcud((string)$node->{static::N_ATCUD});
 
-        $this->setHash((string) $node->{static::N_HASH});
+        $this->setHash((string)$node->{static::N_HASH});
 
-        $this->setHashControl((string) $node->{static::N_HASH_CONTROL});
+        $this->setHashControl((string)$node->{static::N_HASH_CONTROL});
 
         if ($node->{static::N_PERIOD}->count() > 0) {
-            $this->setPeriod((int) $node->{static::N_PERIOD});
+            $this->setPeriod((int)$node->{static::N_PERIOD});
         }
 
-        $this->setSourceID((string) $node->{static::N_SOURCE_ID});
+        $this->setSourceID((string)$node->{static::N_SOURCE_ID});
 
         if ($node->{static::N_EAC_CODE}->count() > 0) {
-            $this->setEacCode((string) $node->{static::N_EAC_CODE});
+            $this->setEacCode((string)$node->{static::N_EAC_CODE});
         }
 
         $this->setSystemEntryDate(
             RDate::parse(
-                Pattern::DATE_T_TIME, (string) $node->{static::N_SYSTEM_ENTRY_DATE}
+                Pattern::DATE_T_TIME, (string)$node->{static::N_SYSTEM_ENTRY_DATE}
             )
         );
 
@@ -802,18 +826,19 @@ abstract class ADocument extends AAuditFile
         }
 
         if ($node->{static::N_CUSTOMER_ID}->count() > 0) {
-            $this->setCustomerID((string) $node->{static::N_CUSTOMER_ID});
+            $this->setCustomerID((string)$node->{static::N_CUSTOMER_ID});
         }
     }
 
     /**
      * Get the calculated values of the validation classes
+     *
      * @return \Rebelo\SaftPt\Validate\DocTotalCalc|null
      * @since 1.0.0
      */
     public function getDocTotalCalc(): ?DocTotalCalc
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->docTotalCalc;
     }
 
@@ -827,7 +852,7 @@ abstract class ADocument extends AAuditFile
      */
     public function setDocTotalCalc(?DocTotalCalc $docTotalCalc): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->docTotalCalc = $docTotalCalc;
     }
 }

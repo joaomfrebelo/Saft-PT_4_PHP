@@ -179,13 +179,12 @@ class DocumentStatus extends AAuditFile
      */
     public function getPaymentStatus(): PaymentStatus
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->paymentStatus->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->paymentStatus->value
+            )
+        );
         return $this->paymentStatus;
     }
 
@@ -212,13 +211,12 @@ class DocumentStatus extends AAuditFile
     public function setPaymentStatus(PaymentStatus $paymentStatus): void
     {
         $this->paymentStatus = $paymentStatus;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->paymentStatus->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->paymentStatus->value
+            )
+        );
     }
 
     /**
@@ -237,13 +235,12 @@ class DocumentStatus extends AAuditFile
      */
     public function getPaymentStatusDate(): RDate
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->paymentStatusDate->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->paymentStatusDate->format(Pattern::DATE_T_TIME)
+            )
+        );
         return $this->paymentStatusDate;
     }
 
@@ -276,13 +273,12 @@ class DocumentStatus extends AAuditFile
     public function setPaymentStatusDate(RDate $paymentStatusDate): void
     {
         $this->paymentStatusDate = $paymentStatusDate;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->paymentStatusDate->format(Pattern::DATE_T_TIME)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->paymentStatusDate->format(Pattern::DATE_T_TIME)
+            )
+        );
     }
 
     /**
@@ -295,13 +291,12 @@ class DocumentStatus extends AAuditFile
      */
     public function getReason(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->reason === null ? "null" : $this->reason
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->reason === null ? "null" : $this->reason
+            )
+        );
         return $this->reason;
     }
 
@@ -322,18 +317,16 @@ class DocumentStatus extends AAuditFile
             $return       = true;
         } catch (AUditFileException $e) {
             $this->reason = $reason;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $return       = false;
             $this->getErrorRegistor()->addOnSetValue("Reason_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->reason === null ? "null" : $this->reason
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->reason === null ? "null" : $this->reason
+            )
+        );
         return $return;
     }
 
@@ -347,8 +340,7 @@ class DocumentStatus extends AAuditFile
      */
     public function getSourceID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__." get '%s'", $this->sourceID));
         return $this->sourceID;
     }
 
@@ -378,12 +370,10 @@ class DocumentStatus extends AAuditFile
         } catch (AuditFileException $e) {
             $this->sourceID = $sourceID;
             $return         = false;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Reason_not_valid");
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->sourceID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__." set to '%s'", $this->sourceID));
         return $return;
     }
 
@@ -408,13 +398,12 @@ class DocumentStatus extends AAuditFile
      */
     public function getSourcePayment(): SourcePayment
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->sourcePayment->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__." get '%s'",
+                $this->sourcePayment->value
+            )
+        );
         return $this->sourcePayment;
     }
 
@@ -450,13 +439,12 @@ class DocumentStatus extends AAuditFile
     public function setSourcePayment(SourcePayment $sourcePayment): void
     {
         $this->sourcePayment = $sourcePayment;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->sourcePayment->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__." set to '%s'",
+                $this->sourcePayment->value
+            )
+        );
     }
 
     /**
@@ -470,15 +458,14 @@ class DocumentStatus extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 Payment::N_PAYMENT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -543,15 +530,14 @@ class DocumentStatus extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENT_STATUS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_DOCUMENT_STATUS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

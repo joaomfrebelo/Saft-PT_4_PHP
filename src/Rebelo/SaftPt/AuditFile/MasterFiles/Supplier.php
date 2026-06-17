@@ -26,9 +26,10 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
-use Rebelo\SaftPt\AuditFile\SupplierAddress;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\SupplierAddress;
 
 /**
  * 2.3. – Supplier<br>
@@ -57,36 +58,42 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * </pre>
  *
  * Class Supplier
+ *
  * @since 1.0.0
  */
 class Supplier extends ACustomerSupplier
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SUPPLIER = "Supplier";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SUPPLIER_ID = "SupplierID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SUPPLIER_TAX_ID = "SupplierTaxID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SHIP_TO_ADDRESS = "ShipFromAddress";
 
     /**
      * &lt;xs:element ref="SupplierID"/&gt;
+     *
      * @var string $supplierID
      * @since 1.0.0
      */
@@ -94,6 +101,7 @@ class Supplier extends ACustomerSupplier
 
     /**
      * &lt;xs:element ref="SupplierTaxID"/&gt;
+     *
      * @var string $supplierTaxID
      * @since 1.0.0
      */
@@ -101,6 +109,7 @@ class Supplier extends ACustomerSupplier
 
     /**
      * &lt;xs:element ref="BillingAddress"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SupplierAddress $billingAddress
      * @since 1.0.0
      */
@@ -108,6 +117,7 @@ class Supplier extends ACustomerSupplier
 
     /**
      * &lt;xs:element ref="ShipFromAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SupplierAddress[] $shipFromAddress
      * @since 1.0.0
      */
@@ -137,7 +147,9 @@ class Supplier extends ACustomerSupplier
      *       &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -158,13 +170,13 @@ class Supplier extends ACustomerSupplier
      */
     public function getSupplierID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->supplierID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->supplierID));
         return $this->supplierID;
     }
 
     /**
      * Get if is set SupplierID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -181,6 +193,7 @@ class Supplier extends ACustomerSupplier
      * &lt;xs:element name="SupplierID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      *
      * @param string $supplierID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -194,13 +207,12 @@ class Supplier extends ACustomerSupplier
             $return           = true;
         } catch (AuditFileException $e) {
             $this->supplierID = $supplierID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("SupplierID_not_valid");
-            $return           = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->supplierID));
+
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->supplierID));
 
         return $return;
     }
@@ -217,13 +229,13 @@ class Supplier extends ACustomerSupplier
      */
     public function getSupplierTaxID(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->supplierTaxID));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->supplierTaxID));
         return $this->supplierTaxID;
     }
 
     /**
      * Get if is set SupplierTaxID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -238,6 +250,7 @@ class Supplier extends ACustomerSupplier
      * &lt;xs:element name="SupplierTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
      *
      * @param string $supplierTaxID
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -245,20 +258,18 @@ class Supplier extends ACustomerSupplier
     {
         $length = \strlen($supplierTaxID);
         if ($length < 1 || $length > 30) {
-            $msg    = sprintf(
+            $msg = sprintf(
                 "SupplierTaxID length must be between 1 and 30 but have '%s'",
                 $length
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("SupplierTaxID_not_valid");
         } else {
             $return = true;
         }
         $this->supplierTaxID = $supplierTaxID;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->supplierTaxID));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->supplierTaxID));
         return $return;
     }
 
@@ -278,12 +289,13 @@ class Supplier extends ACustomerSupplier
         if (isset($this->billingAddress) === false) {
             $this->billingAddress = new SupplierAddress($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->billingAddress;
     }
 
     /**
      * Get if is set BillingAddress
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -308,9 +320,7 @@ class Supplier extends ACustomerSupplier
     {
         $shipFromAddress         = new SupplierAddress($this->getErrorRegistor());
         $this->shipFromAddress[] = $shipFromAddress;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__."ShipFromAddress add to stack "
-        );
+        AAuditFile::$logger?->debug(__METHOD__ . "ShipFromAddress add to stack ");
         return $shipFromAddress;
     }
 
@@ -322,28 +332,29 @@ class Supplier extends ACustomerSupplier
      */
     public function getShipFromAddress(): array
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->shipFromAddress;
     }
 
     /**
      * Create the xml node for Supplier
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== MasterFiles::N_MASTER_FILES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 MasterFiles::N_MASTER_FILES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -428,31 +439,32 @@ class Supplier extends ACustomerSupplier
 
     /**
      * Parse the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_SUPPLIER) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_SUPPLIER, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setSupplierID((string) $node->{static::N_SUPPLIER_ID});
-        $this->setAccountID((string) $node->{static::N_ACCOUNT_ID});
-        $this->setSupplierTaxID((string) $node->{static::N_SUPPLIER_TAX_ID});
-        $this->setCompanyName((string) $node->{static::N_COMPANY_NAME});
+        $this->setSupplierID((string)$node->{static::N_SUPPLIER_ID});
+        $this->setAccountID((string)$node->{static::N_ACCOUNT_ID});
+        $this->setSupplierTaxID((string)$node->{static::N_SUPPLIER_TAX_ID});
+        $this->setCompanyName((string)$node->{static::N_COMPANY_NAME});
         if ($node->{static::N_CONTACT}->count() > 0) {
-            $this->setContact((string) $node->{static::N_CONTACT});
+            $this->setContact((string)$node->{static::N_CONTACT});
         } else {
             $this->setContact(null);
         }
@@ -462,30 +474,30 @@ class Supplier extends ACustomerSupplier
         $count = $node->{static::N_SHIP_TO_ADDRESS}->count();
         for ($i = 0; $i <= $count - 1; $i++) {
             $this->addShipFromAddress()
-                ->parseXmlNode($node->{static::N_SHIP_TO_ADDRESS}[$i]);
+                 ->parseXmlNode($node->{static::N_SHIP_TO_ADDRESS}[$i]);
         }
 
         $this->setSelfBillingIndicator(
-            ((int) $node->{static::N_SELF_BILLING_INDICATOR}) === 1
+            ((int)$node->{static::N_SELF_BILLING_INDICATOR}) === 1
         );
 
         if ($node->{static::N_TELEPHONE}->count() > 0) {
-            $this->setTelephone((string) $node->{static::N_TELEPHONE});
+            $this->setTelephone((string)$node->{static::N_TELEPHONE});
         } else {
             $this->setTelephone(null);
         }
         if ($node->{static::N_FAX}->count() > 0) {
-            $this->setFax((string) $node->{static::N_FAX});
+            $this->setFax((string)$node->{static::N_FAX});
         } else {
             $this->setFax(null);
         }
         if ($node->{static::N_EMAIL}->count() > 0) {
-            $this->setEmail((string) $node->{static::N_EMAIL});
+            $this->setEmail((string)$node->{static::N_EMAIL});
         } else {
             $this->setEmail(null);
         }
         if ($node->{static::N_WEBSITE}->count() > 0) {
-            $this->setWebsite((string) $node->{static::N_WEBSITE});
+            $this->setWebsite((string)$node->{static::N_WEBSITE});
         } else {
             $this->setWebsite(null);
         }

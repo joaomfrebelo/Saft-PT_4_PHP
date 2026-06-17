@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile;
 
 use Decimal\Decimal;
+use Monolog\Logger;
 use Rebelo\Date\Date as RDate;
 use Rebelo\Date\Pattern;
 use Rebelo\SaftPt\AuditFile\i18n\AI18n;
@@ -40,6 +41,13 @@ use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
  */
 abstract class AAuditFile
 {
+    /**
+     * Configure and apply the Logger instance from your main app
+     * @var \Monolog\Logger|null
+     * @since 3.0.0
+     */
+    public static Logger|null $logger = null;
+
     /**
      * Unknown word
      *
@@ -120,7 +128,7 @@ abstract class AAuditFile
      */
     public function __construct(ErrorRegister $errorRegister)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->errorRegister = $errorRegister;
     }
 
@@ -162,12 +170,11 @@ abstract class AAuditFile
                     $prop->setValue($this, clone $value);
                 }
             } catch (\Error $e) {
-                \Logger::getLogger(\get_class($this))
-                    ->debug(
-                        \sprintf(
-                            __METHOD__ . " cloning error '%s'", $e->getMessage()
-                        )
-                    );
+                AAuditFile::$logger?->debug(
+                    \sprintf(
+                        __METHOD__ . " cloning error '%s'", $e->getMessage()
+                    )
+                );
             }
         }
     }
@@ -197,15 +204,13 @@ abstract class AAuditFile
                 "string length '%s' is bigger than '\$length' '%s' ",
                 \strlen($string), $length
             );
-            \Logger::getLogger(__CLASS__)
-                   ->error(\sprintf($method . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf($method . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $subString = \substr(\trim($string), 0, $length);
         if (strlen($subString) === 0) {
             $msg = "string can not be empty";
-            \Logger::getLogger(__CLASS__)
-                   ->error(\sprintf($method . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf($method . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         return $subString;
@@ -423,10 +428,9 @@ abstract class AAuditFile
     public static function setI18n(AI18n $i18n): void
     {
         static::$i18n = $i18n;
-        \Logger::getLogger(__CLASS__)
-            ->error(
-                \sprintf(" I18n set to '%s'", \get_class(static::$i18n))
-            );
+        AAuditFile::$logger?->error(
+            \sprintf(" I18n set to '%s'", \get_class(static::$i18n))
+        );
     }
 
     /**

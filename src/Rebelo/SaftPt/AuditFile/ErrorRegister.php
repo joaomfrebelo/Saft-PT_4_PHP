@@ -31,13 +31,15 @@ namespace Rebelo\SaftPt\AuditFile;
  * This is because by teh Portuguese tax law the SAFT-PT file must export even if as error.
  * So the best option is when the SAFT-PT file is exported if it has errors don't throw an
  * error but generate the file and show the errors to the user.
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class ErrorRegister
 {
     /**
      * Errors on create xml node
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -45,6 +47,7 @@ class ErrorRegister
 
     /**
      * Errors of teh test performed by libxml
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -52,6 +55,7 @@ class ErrorRegister
 
     /**
      * Errors when the value is set
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -59,6 +63,7 @@ class ErrorRegister
 
     /**
      * Exception errors
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -66,6 +71,7 @@ class ErrorRegister
 
     /**
      * Exception errors
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -84,11 +90,12 @@ class ErrorRegister
      */
     public function __construct()
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
     }
 
     /**
      * Get the onCreateXmlNode values error stack
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -99,7 +106,9 @@ class ErrorRegister
 
     /**
      * Add error to stack
+     *
      * @param string $setValError
+     *
      * @return void
      * @since 1.0.0
      */
@@ -113,6 +122,7 @@ class ErrorRegister
 
     /**
      * Get on set values errors stack
+     *
      * @return mixed[]
      * @since 1.0.0
      */
@@ -123,7 +133,9 @@ class ErrorRegister
 
     /**
      * Add error to track
+     *
      * @param string $onSetValue
+     *
      * @return void
      * @since 1.0.0
      */
@@ -137,6 +149,7 @@ class ErrorRegister
 
     /**
      * Clear all errors
+     *
      * @return void
      * @since 1.0.0
      */
@@ -152,6 +165,7 @@ class ErrorRegister
 
     /**
      * Get
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -162,14 +176,16 @@ class ErrorRegister
 
     /**
      * Add error to stack
+     *
      * @param string $error
+     *
      * @return void
      * @since 1.0.0
      */
     public function addLibXmlError(string $error): void
     {
         $clean = \str_replace(["\n", "\r"], "", $error);
-        if(\in_array($clean, $this->libXmlError)){
+        if (\in_array($clean, $this->libXmlError)) {
             return;
         }
         $this->libXmlError[] = $clean;
@@ -177,6 +193,7 @@ class ErrorRegister
 
     /**
      * Get
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -187,7 +204,9 @@ class ErrorRegister
 
     /**
      * Add error to stack
+     *
      * @param string $error
+     *
      * @return void
      * @since 1.0.0
      */
@@ -198,6 +217,7 @@ class ErrorRegister
 
     /**
      * Get
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -208,7 +228,9 @@ class ErrorRegister
 
     /**
      * Add error to stack
+     *
      * @param string $error
+     *
      * @return void
      * @since 1.0.0
      */
@@ -219,6 +241,7 @@ class ErrorRegister
 
     /**
      * Get
+     *
      * @return string[]
      * @since 1.0.0
      */
@@ -229,7 +252,9 @@ class ErrorRegister
 
     /**
      * Add warning
+     *
      * @param string $warning
+     *
      * @return void
      * @since 1.0.0
      */
@@ -240,6 +265,7 @@ class ErrorRegister
 
     /**
      * Check if it has errors
+     *
      * @return bool
      * @since 1.0.0
      */

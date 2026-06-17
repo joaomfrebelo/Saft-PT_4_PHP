@@ -34,18 +34,20 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * ProductSerialNumber
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class ProductSerialNumber extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_SERIAL_NUMBER = "ProductSerialNumber";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SERIAL_NUMBER = "SerialNumber";
@@ -57,6 +59,7 @@ class ProductSerialNumber extends AAuditFile
      *  &lt;/xs:sequence&gt;
      * &lt;xs:element name="SerialNumber" type="SAFPTtextTypeMandatoryMax100Car"/>
      * </pre>
+     *
      * @var string[]
      * @since 1.0.0
      */
@@ -71,7 +74,9 @@ class ProductSerialNumber extends AAuditFile
      *    &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -89,13 +94,13 @@ class ProductSerialNumber extends AAuditFile
      *    &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @return string[]
      * @since 1.0.0
      */
     public function getSerialNumber(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->serialNumber;
     }
 
@@ -112,7 +117,9 @@ class ProductSerialNumber extends AAuditFile
      *    &lt;/xs:sequence&gt;
      * &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param string $serialNumber
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -122,36 +129,35 @@ class ProductSerialNumber extends AAuditFile
             $val    = $this->valTextMandatoryMaxCar($serialNumber, 100, __METHOD__);
             $return = true;
         } catch (AuditFileException $e) {
-            $val    = $serialNumber;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            $val = $serialNumber;
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("SerialNumber_not_valid");
             $return = false;
         }
         $this->serialNumber[] = $val;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__ . " add to stack");
         return $return;
     }
 
     /**
      * Create the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s", A2Line::N_LINE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $psnNode = $node->addChild(static::N_PRODUCT_SERIAL_NUMBER);
@@ -163,22 +169,23 @@ class ProductSerialNumber extends AAuditFile
 
     /**
      * Parse the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_PRODUCT_SERIAL_NUMBER) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_PRODUCT_SERIAL_NUMBER, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

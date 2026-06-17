@@ -28,6 +28,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Bin;
 
 use Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\i18n\en_GB;
 use Rebelo\SaftPt\AuditFile\i18n\pt_PT;
 use Symfony\Component\Console\Command\Command;
@@ -158,13 +159,6 @@ class Validate extends Command
      * @since 1.0.0
      */
     public const string OPT_CONTINUES_LINES = "cl";
-
-    /**
-     *
-     * @var \Logger
-     * @since 1.0.0
-     */
-    protected \Logger $log;
 
     /**
      * App start time
@@ -398,7 +392,7 @@ class Validate extends Command
             return Command::SUCCESS;
         } catch (\Exception | \Error $ex) {
             $io->error($ex->getMessage());
-            $this->log->error($ex->getMessage());
+            AAuditFile::$logger?->error($ex->getMessage());
             return Command::FAILURE;
         }
     }
@@ -414,6 +408,7 @@ class Validate extends Command
     protected function setLang(SymfonyStyle $io, InputInterface $input): void
     {
         $lang = $input->getOption(self::OPT_LANG);
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
         if (\is_string($lang)) {
 
             if(null === $lang = \preg_replace("/^=/", "", $lang)){
@@ -457,6 +452,7 @@ class Validate extends Command
 
         $logFile = $input->getOption(self::OPT_LOG4PHP_CONG);
 
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
         if (\is_string($logFile)) {
 
             if(null === $logFile = \preg_replace("/^=/", "", $logFile)){
@@ -465,8 +461,6 @@ class Validate extends Command
 
             if (\file_exists($logFile)) {
                 AuditFile::$log4phpConfigFilePath = $logFile;
-                \Logger::configure($logFile);
-                $this->log = \Logger::getLogger(\get_class($this));
                 return;
             } else {
                 $io->writeln(
@@ -482,8 +476,6 @@ class Validate extends Command
         $default .= str_repeat(DIRECTORY_SEPARATOR . "..", 3 + 1);
         $logFileDef = $default . DIRECTORY_SEPARATOR . "log4php.xml";
         AuditFile::$log4phpConfigFilePath = $logFileDef;
-        \Logger::configure($logFileDef);
-        $this->log = \Logger::getLogger(\get_class($this));
     }
 
     /**
@@ -496,6 +488,7 @@ class Validate extends Command
     protected function getPubKeyPath(InputInterface $input): ?string
     {
         $pubKey = $input->getOption(self::OPT_PUB_KEY_PATH);
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
         if ($pubKey === null) {
             return null;
         }

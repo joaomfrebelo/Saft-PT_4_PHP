@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 use Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\Bin\Style;
 
 /**
@@ -116,7 +117,7 @@ class ValidationConfig
      */
     public function __construct()
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $this->deltaCurrency = new Decimal("0.01");
         $this->deltaLine     = new Decimal("0.01");
         $this->deltaTable    = new Decimal("0.01");
@@ -310,7 +311,6 @@ class ValidationConfig
      */
     public function setSignValidation(bool $signValidation): void
     {
-        \Logger::configure();
         $this->signValidation = $signValidation;
     }
 

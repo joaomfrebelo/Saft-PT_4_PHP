@@ -29,7 +29,7 @@
 	"prefer-stable": true,
 	"require": {
 		"php": "8.3.*",
-		"joaomfrebelo/log4php": "3.0.0-BETA2 || ^3.0.0",
+		"monolog/monolog": "^3.10.0",
 		"joaomfrebelo/date": "^3.0.0",
 		"symfony/console": "^v7.4.13",
 		"spatie/async": "^1.5",

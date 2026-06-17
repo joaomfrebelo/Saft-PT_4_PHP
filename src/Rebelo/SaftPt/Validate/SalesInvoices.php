@@ -71,7 +71,7 @@ class SalesInvoices extends ADocuments
      */
     public function __construct(AuditFile $auditFile, Sign $sign)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         parent::__construct($auditFile, $sign);
 
         $sourceDoc = $auditFile->getSourceDocuments(false);
@@ -91,12 +91,11 @@ class SalesInvoices extends ADocuments
      */
     public function validate(): bool
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         $progressBar = null;
         try {
             if (null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices(false)) {
-                \Logger::getLogger(\get_class($this))
-                       ->debug(__METHOD__ . " no sales invoices to be validated");
+                AAuditFile::$logger?->debug(__METHOD__ . " no sales invoices to be validated");
                 return $this->isValid;
             }
 
@@ -172,7 +171,7 @@ class SalesInvoices extends ADocuments
                                         AuditFile::getI18n()->get("the_document_n_is_missing"),
                                         $type, $serial, $noExpected
                                     );
-                                    \Logger::getLogger(\get_class($this))->debug($msg);
+                                    AAuditFile::$logger?->debug($msg);
                                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                     $this->isValid       = false;
                                     $this->lastDocNumber = $noExpected;
@@ -201,12 +200,11 @@ class SalesInvoices extends ADocuments
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
 
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
         }
         return $this->isValid;
     }
@@ -221,7 +219,7 @@ class SalesInvoices extends ADocuments
      */
     protected function invoice(Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         try {
             $this->docCredit  = new Decimal("0.0");
             $this->docDebit   = new Decimal("0.0");
@@ -245,7 +243,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg, Invoice::N_INVOICE_TYPE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -258,7 +256,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg, Invoice::N_INVOICE_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -271,7 +269,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg, Invoice::N_SYSTEM_ENTRY_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -289,12 +287,11 @@ class SalesInvoices extends ADocuments
         } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
                             ->addExceptionErrors($e->getMessage());
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__ . " validate error '%s'", $e->getMessage()
-                    )
-                );
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
             $invoice->addError($e->getMessage());
             $this->isValid = false;
         }
@@ -308,7 +305,7 @@ class SalesInvoices extends ADocuments
      */
     protected function numberOfEntries(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices()) {
             return;
@@ -331,7 +328,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $salesInvoices->addError($msg, SaftSalesInvoices::N_NUMBER_OF_ENTRIES);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
         }
         if ($test === false) {
             $this->isValid = false;
@@ -346,7 +343,7 @@ class SalesInvoices extends ADocuments
      */
     protected function totalDebit(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if (null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices()) {
             return;
@@ -364,7 +361,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $salesInvoices->addError($msg, SaftSalesInvoices::N_TOTAL_DEBIT);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -377,7 +374,8 @@ class SalesInvoices extends ADocuments
      */
     protected function totalCredit(): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         if (null === $salesInvoices = $this->auditFile->getSourceDocuments()?->getSalesInvoices()) {
             return;
         }
@@ -394,7 +392,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $salesInvoices->addError($msg, SaftSalesInvoices::N_TOTAL_CREDIT);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -417,7 +415,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, Invoice::N_DOCUMENT_STATUS);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -433,7 +431,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, DocumentStatus::N_INVOICE_STATUS_DATE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -447,7 +445,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, DocumentStatus::N_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -463,7 +461,7 @@ class SalesInvoices extends ADocuments
      */
     protected function customerId(Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if ($invoice->issetCustomerID()) {
             $allCustomer = $this->auditFile->getMasterFiles()->getAllCustomerID();
             if (\in_array($invoice->getCustomerID(), $allCustomer) === false) {
@@ -477,7 +475,7 @@ class SalesInvoices extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg, Invoice::N_CUSTOMER_ID);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         } else {
@@ -488,7 +486,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, Invoice::N_CUSTOMER_ID);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -503,7 +501,7 @@ class SalesInvoices extends ADocuments
      */
     protected function lines(Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (\count($invoice->getLine()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("document_without_lines"),
@@ -511,7 +509,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, Invoice::N_INVOICE_NO);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -548,7 +546,7 @@ class SalesInvoices extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     } elseif (\in_array($line->getLineNumber(), $lineNoStack)) {
@@ -559,7 +557,7 @@ class SalesInvoices extends ADocuments
                         );
                         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                         $line->addError($msg, Line::N_LINE_NUMBER);
-                        \Logger::getLogger(\get_class($this))->info($msg);
+                        AAuditFile::$logger?->info($msg);
                         $this->isValid = false;
                         $lineNoError   = true;
                     }
@@ -572,7 +570,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $line->addError($msg, Line::N_LINE_NUMBER);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     $lineNoError   = true;
                     continue;
@@ -587,7 +585,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_QUANTITY);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -600,7 +598,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_UNIT_PRICE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -617,7 +615,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 continue;
             }
@@ -667,7 +665,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_BASE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -684,7 +682,7 @@ class SalesInvoices extends ADocuments
                     $line->getCreditAmount() === null ?
                         Line::N_DEBIT_AMOUNT : Line::N_CREDIT_AMOUNT
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
 
@@ -753,7 +751,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -782,7 +780,7 @@ class SalesInvoices extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -796,7 +794,7 @@ class SalesInvoices extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -812,7 +810,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -830,7 +828,7 @@ class SalesInvoices extends ADocuments
                                 );
                                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                 $invoice->addError($msg);
-                                \Logger::getLogger(\get_class($this))->info($msg);
+                                AAuditFile::$logger?->info($msg);
                                 $this->isValid = false;
                                 return;
                             }
@@ -844,7 +842,7 @@ class SalesInvoices extends ADocuments
                                 );
                                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                 $invoice->addError($msg);
-                                \Logger::getLogger(\get_class($this))->info($msg);
+                                AAuditFile::$logger?->info($msg);
                                 $this->isValid = false;
 
                                 return;
@@ -857,7 +855,7 @@ class SalesInvoices extends ADocuments
                             );
                             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                             $invoice->addError($msg);
-                            \Logger::getLogger(\get_class($this))->info($msg);
+                            AAuditFile::$logger?->info($msg);
                             $this->isValid = false;
                             return;
                         }
@@ -873,7 +871,7 @@ class SalesInvoices extends ADocuments
                                 );
                                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                 $invoice->addError($msg);
-                                \Logger::getLogger(\get_class($this))->info($msg);
+                                AAuditFile::$logger?->info($msg);
                                 $this->isValid = false;
                                 return;
                             }
@@ -887,7 +885,7 @@ class SalesInvoices extends ADocuments
                                 );
                                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                                 $invoice->addError($msg);
-                                \Logger::getLogger(\get_class($this))->info($msg);
+                                AAuditFile::$logger?->info($msg);
                                 $this->isValid = false;
                                 return;
                             }
@@ -899,7 +897,7 @@ class SalesInvoices extends ADocuments
                             );
                             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                             $invoice->addError($msg);
-                            \Logger::getLogger(\get_class($this))->info($msg);
+                            AAuditFile::$logger?->info($msg);
                             $this->isValid = false;
                             return;
                         }
@@ -928,12 +926,12 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
 
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         if (\count($line->getReferences()) === 0) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get(
@@ -942,7 +940,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -958,7 +956,7 @@ class SalesInvoices extends ADocuments
                         $reference->getReference()
                     );
                     $reference->addWarning($warning);
-                    \Logger::getLogger(\get_class($this))->info($warning);
+                    AAuditFile::$logger?->info($warning);
                     $this->auditFile->getErrorRegistor()->addWarning($warning);
                 }
             }
@@ -978,7 +976,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -991,7 +989,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, References::N_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1016,7 +1014,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, OrderReferences::N_ORDER_REFERENCES);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1030,7 +1028,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $orderRef->addError($msg, OrderReferences::N_ORIGINATING_ON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             } else {
                 $val = AAuditFile::validateDocNumber($orderRef->getOriginatingON());
@@ -1042,7 +1040,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $orderRef->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             }
 
@@ -1056,7 +1054,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                 }
             } elseif ($orderRef->getOrderDate()->isLater($invoice->getInvoiceDate())) {
@@ -1068,7 +1066,7 @@ class SalesInvoices extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $orderRef->addError($msg, OrderReferences::N_ORDER_DATE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1085,7 +1083,8 @@ class SalesInvoices extends ADocuments
      */
     protected function productCode(Line $line, Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         if ($line->issetProductCode()) {
             if (\in_array(
                 $line->getProductCode(),
@@ -1101,7 +1100,7 @@ class SalesInvoices extends ADocuments
 
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_PRODUCT_CODE);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         } else {
@@ -1113,7 +1112,7 @@ class SalesInvoices extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_PRODUCT_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1129,7 +1128,7 @@ class SalesInvoices extends ADocuments
      */
     protected function tax(Line $line, Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($line->issetTax() === false) {
             $msg = \sprintf(
@@ -1138,7 +1137,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1152,7 +1151,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_TYPE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1164,7 +1163,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_CODE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1176,7 +1175,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_COUNTRY_REGION);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1191,7 +1190,7 @@ class SalesInvoices extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $lineTax->addError($msg, Tax::N_TAX_PERCENTAGE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1208,7 +1207,7 @@ class SalesInvoices extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1225,7 +1224,7 @@ class SalesInvoices extends ADocuments
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
                 $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
             }
         }
@@ -1244,7 +1243,7 @@ class SalesInvoices extends ADocuments
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $line->addError($msg, Line::N_TAX_EXEMPTION_CODE);
             $line->addError($msg, Line::N_TAX_EXEMPTION_REASON);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1279,7 +1278,7 @@ class SalesInvoices extends ADocuments
             $line->getLineNumber(), $invoice->getInvoiceNo()
         );
         $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-        \Logger::getLogger(\get_class($this))->info($msg);
+        AAuditFile::$logger?->info($msg);
         $line->addError($msg);
         $this->isValid = false;
     }
@@ -1295,7 +1294,8 @@ class SalesInvoices extends ADocuments
      */
     protected function totals(Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
+
         if ($invoice->issetDocumentTotals() === false) {
             $msg = \sprintf(
                 AAuditFile::getI18n()->get("does_not_have_document_totals"),
@@ -1303,7 +1303,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
 
             return;
@@ -1323,7 +1323,7 @@ class SalesInvoices extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1336,7 +1336,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_GROSS_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1347,7 +1347,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_NET_TOTAL);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
@@ -1358,12 +1358,12 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, DocumentTotals::N_TAX_PAYABLE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
 
         if (null === $currency = $invoice->getDocumentTotals()->getCurrency(false)) {
-            \Logger::getLogger(\get_class($this))->info(
+            AAuditFile::$logger?->info(
                 \sprintf(
                     "Invoice '%s' without currency node",
                     $invoice->getInvoiceNo()
@@ -1387,7 +1387,7 @@ class SalesInvoices extends ADocuments
 
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $totals->addError($msg, Currency::N_EXCHANGE_RATE);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1403,7 +1403,7 @@ class SalesInvoices extends ADocuments
      */
     protected function sign(Invoice $invoice): void
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($invoice->issetHash() === false) {
             $msg = \sprintf(
@@ -1412,13 +1412,13 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, Invoice::N_HASH);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
 
         if ($this->getSignValidation() === false) {
-            \Logger::getLogger(\get_class($this))->info("Skip sign test as ValidationConfig");
+            AAuditFile::$logger?->info("Skip sign test as ValidationConfig");
             return;
         }
 
@@ -1443,7 +1443,7 @@ class SalesInvoices extends ADocuments
                     AAuditFile::getI18n()->get("is_valid_only_if_is_not_first_of_serial"),
                     $invoice->getInvoiceNo()
                 );
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->auditFile->getErrorRegistor()->addWarning($msg);
                 $invoice->addWarning($msg);
                 $validate = true;
@@ -1457,7 +1457,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg, Invoice::N_HASH);
-            \Logger::getLogger(\get_class($this))->debug($msg);
+            AAuditFile::$logger?->debug($msg);
             $this->isValid = false;
         }
 
@@ -1501,7 +1501,7 @@ class SalesInvoices extends ADocuments
                     $msgStack[] = $msg;
                     $invoice->addError($msg, Invoice::N_SHIP_FROM);
                 } else {
-                    /** @phpstan-ignore-next-line  */
+                    /** @phpstan-ignore-next-line */
                     if ($movStartTime === null && $movEndTime === null &&
                         $shipFrom->getAddress(false) === null &&
                         $shipTo->getAddress(false) === null) {
@@ -1519,7 +1519,7 @@ class SalesInvoices extends ADocuments
             $invoice->addError($msg);
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
             return;
         }
@@ -1662,7 +1662,7 @@ class SalesInvoices extends ADocuments
 
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1728,7 +1728,7 @@ class SalesInvoices extends ADocuments
 
         foreach ($msgStack as $msg) {
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
-            \Logger::getLogger(\get_class($this))->info($msg);
+            AAuditFile::$logger?->info($msg);
             $this->isValid = false;
         }
     }
@@ -1751,7 +1751,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addWarning($msg);
                 $invoice->addWarning($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
             }
             return;
         }
@@ -1768,7 +1768,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payMet->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -1780,7 +1780,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $payMet->addError($msg);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -1807,7 +1807,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $invoice->addError($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     return;
                 }
@@ -1819,7 +1819,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $invoice->addError($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                 }
             }
@@ -1845,7 +1845,7 @@ class SalesInvoices extends ADocuments
                 );
                 $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                 $invoice->addError($msg, WithholdingTax::N_WITHHOLDING_TAX);
-                \Logger::getLogger(\get_class($this))->info($msg);
+                AAuditFile::$logger?->info($msg);
                 $this->isValid = false;
                 return;
             }
@@ -1866,7 +1866,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
                     $invoice->addError($msg, WithholdingTax::N_WITHHOLDING_TAX);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                     $this->isValid = false;
                     return;
                 }
@@ -1877,7 +1877,7 @@ class SalesInvoices extends ADocuments
                     );
                     $this->auditFile->getErrorRegistor()->addWarning($msg);
                     $invoice->addWarning($msg);
-                    \Logger::getLogger(\get_class($this))->info($msg);
+                    AAuditFile::$logger?->info($msg);
                 }
             }
         }
@@ -1895,7 +1895,7 @@ class SalesInvoices extends ADocuments
      */
     protected function outOfDateInvoiceTypes(Invoice $invoice): void
     {
-        if ($invoice->issetInvoiceType() === false || $invoice->issetInvoiceDate()=== false) {
+        if ($invoice->issetInvoiceType() === false || $invoice->issetInvoiceDate() === false) {
             return;
         }
 
@@ -1920,7 +1920,7 @@ class SalesInvoices extends ADocuments
             );
             $this->auditFile->getErrorRegistor()->addValidationErrors($msg);
             $invoice->addError($msg);
-            \Logger::getLogger(\get_class($this))->error($msg);
+            AAuditFile::$logger?->error($msg);
             $this->isValid = false;
         }
     }

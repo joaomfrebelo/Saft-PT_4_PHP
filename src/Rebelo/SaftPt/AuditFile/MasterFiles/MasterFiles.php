@@ -187,8 +187,7 @@ class MasterFiles extends AAuditFile
     public function getGeneralLedgerAccounts(): void
     {
         $msg = "GeneralLedgerAccounts not implemented";
-        \Logger::getLogger(\get_class($this))
-            ->error(\sprintf(__METHOD__." '%s'", $msg));
+        AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
         throw new NotImplemented($msg);
     }
 
@@ -200,7 +199,7 @@ class MasterFiles extends AAuditFile
      */
     public function getCustomer(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__." get");
         return $this->customer;
     }
 
@@ -225,7 +224,7 @@ class MasterFiles extends AAuditFile
         $this->customerID = [];
         $customer         = new Customer($this->getErrorRegistor());
         $this->customer[] = $customer;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__." add to stack");
         return $customer;
     }
 
@@ -236,7 +235,7 @@ class MasterFiles extends AAuditFile
      */
     public function getAllCustomerID(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if (\count($this->customerID) === 0) {
             foreach ($this->getCustomer() as $customer) {
                 if ($customer->issetCustomerID()) {
@@ -258,7 +257,7 @@ class MasterFiles extends AAuditFile
      */
     public function getSupplier(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__." get");
         return $this->supplier;
     }
 
@@ -269,7 +268,7 @@ class MasterFiles extends AAuditFile
      */
     public function getAllSupplierID(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if (\count($this->supplierID) === 0) {
             foreach ($this->getSupplier() as $supplier) {
                 if ($supplier->issetSupplierID()) {
@@ -294,7 +293,7 @@ class MasterFiles extends AAuditFile
         $this->supplierID = [];
         $supplier         = new Supplier($this->getErrorRegistor());
         $this->supplier[] = $supplier;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__." add to stack");
         return $supplier;
     }
 
@@ -319,8 +318,7 @@ class MasterFiles extends AAuditFile
      */
     public function getProduct(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__." get");
         return $this->product;
     }
 
@@ -331,7 +329,7 @@ class MasterFiles extends AAuditFile
      */
     public function getAllProductCode(): array
     {
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if (\count($this->productCode) === 0) {
             foreach ($this->getProduct() as $k => $product) {
                 if ($product->issetProductCode()) {
@@ -366,7 +364,7 @@ class MasterFiles extends AAuditFile
         $this->productCode = [];
         $product         = new Product($this->getErrorRegistor());
         $this->product[] = $product;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__." add to stack");
         return $product;
     }
 
@@ -391,8 +389,7 @@ class MasterFiles extends AAuditFile
      */
     public function getTaxTableEntry(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__." get");
         return $this->taxTableEntry;
     }
 
@@ -421,7 +418,7 @@ class MasterFiles extends AAuditFile
     {
         $taxTableEntry         = new TaxTableEntry($this->getErrorRegistor());
         $this->taxTableEntry[] = $taxTableEntry;
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__." add to stack");
         return $taxTableEntry;
     }
 
@@ -436,15 +433,14 @@ class MasterFiles extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== AuditFile::N_AUDIT_FILE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s", AuditFile::N_AUDIT_FILE,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -508,15 +504,14 @@ class MasterFiles extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_MASTER_FILES) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s", static::N_MASTER_FILES,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__." '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

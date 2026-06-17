@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\Validate;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\Validate\Schema\Schema;
 
@@ -33,19 +34,21 @@ use Rebelo\SaftPt\Validate\Schema\Schema;
  * XmlStructure
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class XmlStructure extends AValidate
 {
 
     /**
      * Validate the xml with the xsd schema file using libxml
+     *
      * @param \Rebelo\SaftPt\AuditFile\AuditFile $auditFile
+     *
      * @since 1.0.0
      */
     public function __construct(AuditFile $auditFile)
     {
-        \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
         parent::__construct($auditFile);
     }
 
@@ -56,12 +59,13 @@ class XmlStructure extends AValidate
      *
      * @return bool
      * @since        1.0.0
-     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection*/
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
+     */
     public function validate(string &$xml): bool
     {
         try {
 
-            \Logger::getLogger(\get_class($this))->debug(__METHOD__);
+            AAuditFile::$logger?->debug(__METHOD__);
             \libxml_use_internal_errors(true);
             \libxml_clear_errors();
 
@@ -78,22 +82,20 @@ class XmlStructure extends AValidate
                         $error->message, $error->line, $error->column
                     );
                     $this->auditFile->getErrorRegistor()->addLibXmlError($msg);
-                    \Logger::getLogger(\get_class($this))
-                        ->debug(
-                            \sprintf(__METHOD__." validate error '%s'", $msg)
-                        );
+                    AAuditFile::$logger?->debug(
+                        \sprintf(__METHOD__ . " validate error '%s'", $msg)
+                    );
                 }
             }
             return $isValid;
-        } catch (\Exception | \Error $e) {
+        } catch (\Exception|\Error $e) {
             $this->auditFile->getErrorRegistor()
-                ->addExceptionErrors($e->getMessage());
-            \Logger::getLogger(\get_class($this))
-                ->debug(
-                    \sprintf(
-                        __METHOD__." validate error '%s'", $e->getMessage()
-                    )
-                );
+                            ->addExceptionErrors($e->getMessage());
+            AAuditFile::$logger?->debug(
+                \sprintf(
+                    __METHOD__ . " validate error '%s'", $e->getMessage()
+                )
+            );
             return false;
         }
     }

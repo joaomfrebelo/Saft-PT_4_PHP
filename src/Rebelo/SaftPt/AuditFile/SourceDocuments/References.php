@@ -27,8 +27,8 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments;
 
 use Rebelo\SaftPt\AuditFile\AAuditFile;
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
  * References<br>
@@ -37,13 +37,14 @@ use Rebelo\SaftPt\AuditFile\AuditFileException;
  * this structure can be generated as many times as necessary
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class References extends AAuditFile
 {
     /**
      * &lt;xs:complexType name="References">
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_REFERENCES = "References";
@@ -51,6 +52,7 @@ class References extends AAuditFile
     /**
      * &lt;xs:element ref="Reference" minOccurs="0"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_REFERENCE = "Reference";
@@ -58,6 +60,7 @@ class References extends AAuditFile
     /**
      * &lt;xs:element ref="Reason" minOccurs="0"/&gt;
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_REASON = "Reason";
@@ -65,6 +68,7 @@ class References extends AAuditFile
     /**
      * &lt;xs:element ref = "Reference" minOccurs = "0"/&gt;<br>
      * &lt;xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/&gt;
+     *
      * @var string|null
      */
     private ?string $reference = null;
@@ -72,6 +76,7 @@ class References extends AAuditFile
     /**
      * &lt;xs:element ref = "Reason" minOccurs = "0"/&gt;<br>
      * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
+     *
      * @var string|null
      */
     private ?string $reason = null;
@@ -89,7 +94,9 @@ class References extends AAuditFile
      *       &lt;/xs:sequence&gt;
      *   &lt;/xs:complexType&gt;
      * </pre>
+     *
      * @param ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -104,18 +111,18 @@ class References extends AAuditFile
      * The numbering structure of the field of origin shall be used.<br>
      * &lt;xs:element ref = "Reference" minOccurs = "0"/&gt;<br>
      * &lt;xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/&gt;     *
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getReference(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->reference === null ? "null" : $this->reference
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->reference === null ? "null" : $this->reference
+            )
+        );
         return $this->reference;
     }
 
@@ -128,6 +135,7 @@ class References extends AAuditFile
      * &lt;xs:element name = "Reference" type = "SAFPTtextTypeMandatoryMax60Car"/&gt;
      *
      * @param string|null $reference
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -139,18 +147,16 @@ class References extends AAuditFile
             $return          = true;
         } catch (AuditFileException $e) {
             $this->reference = $reference;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Reference_not_valid");
-            $return          = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->reference === null ? "null" : $this->reference
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->reference === null ? "null" : $this->reference
+            )
+        );
         return $return;
     }
 
@@ -159,18 +165,18 @@ class References extends AAuditFile
      * Reason for issuing the document<br>
      * &lt;xs:element ref = "Reason" minOccurs = "0"/&gt;<br>
      * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
+     *
      * @return string|null
      * @since 1.0.0
      */
     public function getReason(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__." get '%s'",
-                    $this->reason === null ? "null" : $this->reason
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->reason === null ? "null" : $this->reason
+            )
+        );
         return $this->reason;
     }
 
@@ -179,7 +185,9 @@ class References extends AAuditFile
      * Reason for issuing the document<br>
      * &lt;xs:element ref = "Reason" minOccurs = "0"/&gt;<br>
      * &lt;xs:element name = "Reason" type = "SAFPTtextTypeMandatoryMax50Car"/&gt;
+     *
      * @param string|null $reason
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -191,39 +199,38 @@ class References extends AAuditFile
             $return       = true;
         } catch (AuditFileException $e) {
             $this->reason = $reason;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("Reference_not_valid");
-            $return       = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->reason === null ? "null" : $this->reason
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->reason === null ? "null" : $this->reason
+            )
+        );
         return $return;
     }
 
     /**
      * Create Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 A2Line::N_LINE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -243,30 +250,30 @@ class References extends AAuditFile
     /**
      *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_REFERENCES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_REFERENCES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
         if ($node->{static::N_REFERENCE}->count() > 0) {
-            $this->setReference((string) $node->{static::N_REFERENCE});
+            $this->setReference((string)$node->{static::N_REFERENCE});
         }
 
         if ($node->{static::N_REASON}->count() > 0) {
-            $this->setReason((string) $node->{static::N_REASON});
+            $this->setReason((string)$node->{static::N_REASON});
         }
     }
 }

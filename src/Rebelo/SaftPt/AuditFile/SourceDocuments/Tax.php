@@ -173,8 +173,7 @@ class Tax extends AAuditFile
      */
     public function getTaxType(): TaxType
     {
-        \Logger::getLogger(\get_class($this))
-               ->info(\sprintf(__METHOD__ . " get '%s'", $this->taxType->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->taxType->value));
         return $this->taxType;
     }
 
@@ -204,8 +203,7 @@ class Tax extends AAuditFile
     public function setTaxType(TaxType $taxType): void
     {
         $this->taxType = $taxType;
-        \Logger::getLogger(\get_class($this))
-               ->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxType->value));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->taxType->value));
     }
 
     /**
@@ -222,13 +220,12 @@ class Tax extends AAuditFile
      */
     public function getTaxCountryRegion(): TaxCountryRegion
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxCountryRegion->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxCountryRegion->value
+            )
+        );
         return $this->taxCountryRegion;
     }
 
@@ -259,13 +256,12 @@ class Tax extends AAuditFile
     public function setTaxCountryRegion(TaxCountryRegion $taxCountryRegion): void
     {
         $this->taxCountryRegion = $taxCountryRegion;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxCountryRegion->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxCountryRegion->value
+            )
+        );
     }
 
     /**
@@ -288,13 +284,12 @@ class Tax extends AAuditFile
      */
     public function getTaxCode(): TaxCode|string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value
+            )
+        );
         return $this->taxCode;
     }
 
@@ -331,13 +326,12 @@ class Tax extends AAuditFile
     public function setTaxCode(TaxCode|string $taxCode): void
     {
         $this->taxCode = $taxCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                is_string($this->taxCode) ? $this->taxCode : $this->taxCode->value
+            )
+        );
     }
 
     /**
@@ -352,14 +346,13 @@ class Tax extends AAuditFile
      */
     public function getTaxPercentage(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxPercentage === null ?
-                           "null" : \strval($this->taxPercentage)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxPercentage === null ?
+                    "null" : \strval($this->taxPercentage)
+            )
+        );
         return $this->taxPercentage;
     }
 
@@ -379,8 +372,7 @@ class Tax extends AAuditFile
     {
         if ($this->getTaxAmount() !== null && $taxPercentage !== null) {
             $msg = "Tax Percentage and Tax Amount can not be set at the same time";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_set");
         } elseif (($taxPercentage?->compareTo("0.0") ?? 0) < 0 || ($taxPercentage?->compareTo("100.0") ?? 0) > 0) {
@@ -390,14 +382,13 @@ class Tax extends AAuditFile
             $return = true;
         }
         $this->taxPercentage = $taxPercentage;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxPercentage === null ?
-                           "null" : \strval($this->taxPercentage)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxPercentage === null ?
+                    "null" : \strval($this->taxPercentage)
+            )
+        );
         return $return;
     }
 
@@ -411,14 +402,13 @@ class Tax extends AAuditFile
      */
     public function getTaxAmount(): Decimal|null
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->taxAmount === null ?
-                           "null" : \strval($this->taxAmount)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->taxAmount === null ?
+                    "null" : \strval($this->taxAmount)
+            )
+        );
         return $this->taxAmount;
     }
 
@@ -436,8 +426,7 @@ class Tax extends AAuditFile
     {
         if ($this->getTaxPercentage() !== null && $taxAmount !== null) {
             $msg = "Tax Percentage and Tax Amount can not be set at the same time";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("TaxAmount_and_Percentage_set");
         } elseif (($taxAmount?->compareTo("0.0") ?? 0) < 0) {
@@ -447,14 +436,13 @@ class Tax extends AAuditFile
             $return = true;
         }
         $this->taxAmount = $taxAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->taxAmount === null ?
-                           "null" : \strval($this->taxAmount)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->taxAmount === null ?
+                    "null" : \strval($this->taxAmount)
+            )
+        );
         return $return;
     }
 
@@ -469,15 +457,14 @@ class Tax extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== A2Line::N_LINE) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 A2Line::N_LINE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -537,15 +524,14 @@ class Tax extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_TAX) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s", static::N_TAX,
                 $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

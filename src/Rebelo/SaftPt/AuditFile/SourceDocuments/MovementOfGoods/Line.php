@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\MovementOfGoods;
 
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\A2Line;
 
@@ -102,7 +103,7 @@ class Line extends A2Line
         if ($create && $this->tax === null) {
             $this->tax = new MovementTax($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__." get");
         return $this->tax;
     }
 
@@ -150,11 +151,11 @@ class Line extends A2Line
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         parent::parseXmlNode($node);
 
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->{static::N_TAX}->count() > 0) {
             $this->getTax()?->parseXmlNode($node->{static::N_TAX});

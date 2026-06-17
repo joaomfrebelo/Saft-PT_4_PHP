@@ -125,14 +125,13 @@ class WithholdingTax extends AAuditFile
      */
     public function getWithholdingTaxType(): ?WithholdingTaxType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->withholdingTaxType === null ?
-                           "null" : $this->withholdingTaxType->value
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->withholdingTaxType === null ?
+                    "null" : $this->withholdingTaxType->value
+            )
+        );
 
         return $this->withholdingTaxType;
     }
@@ -153,14 +152,13 @@ class WithholdingTax extends AAuditFile
     public function setWithholdingTaxType(?WithholdingTaxType $withholdingTaxType): void
     {
         $this->withholdingTaxType = $withholdingTaxType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->withholdingTaxType === null ?
-                           "null" : $this->withholdingTaxType->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->withholdingTaxType === null ?
+                    "null" : $this->withholdingTaxType->value
+            )
+        );
     }
 
     /**
@@ -174,14 +172,13 @@ class WithholdingTax extends AAuditFile
      */
     public function getWithholdingTaxDescription(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    $this->withholdingTaxDescription === null ?
-                           "null" : $this->withholdingTaxDescription
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                $this->withholdingTaxDescription === null ?
+                    "null" : $this->withholdingTaxDescription
+            )
+        );
         return $this->withholdingTaxDescription;
     }
 
@@ -206,19 +203,17 @@ class WithholdingTax extends AAuditFile
             $return                          = true;
         } catch (AuditFileException $e) {
             $this->withholdingTaxDescription = $withholdingTaxDescription;
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("WithholdingTaxDescription_not_valid");
             $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    $this->withholdingTaxDescription === null ?
-                           "null" : $this->withholdingTaxDescription
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->withholdingTaxDescription === null ?
+                    "null" : $this->withholdingTaxDescription
+            )
+        );
         return $return;
     }
 
@@ -233,13 +228,12 @@ class WithholdingTax extends AAuditFile
      */
     public function getWithholdingTaxAmount(): Decimal
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                \sprintf(
-                    __METHOD__ . " get '%s'",
-                    \strval($this->withholdingTaxAmount)
-                )
-            );
+        AAuditFile::$logger?->info(
+            \sprintf(
+                __METHOD__ . " get '%s'",
+                \strval($this->withholdingTaxAmount)
+            )
+        );
         return $this->withholdingTaxAmount;
     }
 
@@ -268,21 +262,19 @@ class WithholdingTax extends AAuditFile
     {
         if ($withholdingTaxAmount->compareTo("0.0") < 0) {
             $msg = "Withholding tax amount can not be negative";
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
             $this->getErrorRegistor()->addOnSetValue("WithholdingTaxAmount_not_valid");
         } else {
             $return = true;
         }
         $this->withholdingTaxAmount = $withholdingTaxAmount;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__ . " set to '%s'",
-                    \strval($this->withholdingTaxAmount)
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                \strval($this->withholdingTaxAmount)
+            )
+        );
         return $return;
     }
 
@@ -297,15 +289,14 @@ class WithholdingTax extends AAuditFile
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Payment::N_PAYMENT && $node->getName() !== Invoice::N_INVOICE) {
             $msg = \sprintf(
                 "Node name should be '%s' or '%s' but is '%s",
                 Payment::N_PAYMENT, Invoice::N_INVOICE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -349,15 +340,14 @@ class WithholdingTax extends AAuditFile
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->debug(__METHOD__);
 
         if ($node->getName() !== static::N_WITHHOLDING_TAX) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_WITHHOLDING_TAX, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                   ->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

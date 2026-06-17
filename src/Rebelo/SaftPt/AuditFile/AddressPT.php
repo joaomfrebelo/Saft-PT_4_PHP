@@ -31,13 +31,15 @@ namespace Rebelo\SaftPt\AuditFile;
  * AddressPT<br>
  * Portuguese address structure<br>
  * &lt;xs:complexType name="AddressStructurePT">
+ *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class AddressPT extends AAddress
 {
     /**
      * &lt;xs:element name="PostalCode" type="PostalCodePT"/&gt;
+     *
      * @var string
      * @since 1.0.0
      */
@@ -45,7 +47,9 @@ class AddressPT extends AAddress
 
     /**
      * &lt;xs:complexType name="AddressStructurePT">
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     function __construct(ErrorRegister $errorRegister)
@@ -57,13 +61,13 @@ class AddressPT extends AAddress
     /**
      * Get Country<br>
      * &lt;xs:element ref="Country"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\Country
      * @since 1.0.0
      */
     public function getCountry(): Country
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->country->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->country->value));
         return $this->country;
     }
 
@@ -71,19 +75,20 @@ class AddressPT extends AAddress
      * Get PostalCode<br>
      * This get will create the PostalCodePT instance
      * &lt;xs:element name="PostalCode" type="PostalCodePT"/&gt;     *
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getPostalCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->postalCodePT));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->postalCodePT));
         return $this->postalCodePT;
     }
 
     /**
      * Get if is set PostalCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -96,23 +101,23 @@ class AddressPT extends AAddress
      * Set PostalCode
      * &lt;xs:simpleType name="PostalCodePT"><br>
      * &lt;xs:pattern value="([0-9]{4}-[0-9]{3})"/&gt;<br>     *
+     *
      * @param string $postalCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
     public function setPostalCode(string $postalCode): bool
     {
         if (\preg_match("/^([0-9]{4}-[0-9]{3})$/", $postalCode) !== 1) {
-            $msg    = "PostalCodePT must respect /^([0-9]{4}-[0-9]{3})$/";
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            $msg = "PostalCodePT must respect /^([0-9]{4}-[0-9]{3})$/";
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             $return = false;
         } else {
             $return = true;
         }
         $this->postalCodePT = $postalCode;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->postalCodePT));
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->postalCodePT));
         return $return;
     }
 
@@ -123,12 +128,13 @@ class AddressPT extends AAddress
      * because cane be CompanyAddress or SupplierAddress or CustomerAddress, etc
      *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         parent::createXmlNode($node);
         $node->addChild(static::N_COUNTRY, $this->getCountry()->value);
         return $node;
@@ -136,16 +142,18 @@ class AddressPT extends AAddress
 
     /**
      * Parse XML node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         parent::parseXmlNode($node);
         $this->setPostalCode(
-            (string) $node->{static::N_POSTAL_CODE}
+            (string)$node->{static::N_POSTAL_CODE}
         );
     }
 }

@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Rebelo\SaftPt\Validate;
 
 use Decimal\Decimal;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFile;
 use Rebelo\SaftPt\Bin\Style;
 use Rebelo\SaftPt\Sign\Sign;
@@ -222,7 +223,7 @@ class ADocuments extends AValidate
      */
     public function getDeltaTotalDoc(): Decimal
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->deltaTotalDoc;
     }
 
@@ -234,7 +235,7 @@ class ADocuments extends AValidate
      */
     public function getDeltaCurrency(): Decimal
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->deltaCurrency;
     }
 
@@ -246,7 +247,7 @@ class ADocuments extends AValidate
      */
     public function getDeltaTable(): Decimal
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->deltaTable;
     }
 
@@ -258,7 +259,7 @@ class ADocuments extends AValidate
      */
     public function getDeltaLine(): Decimal
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->deltaLine;
     }
 
@@ -273,11 +274,10 @@ class ADocuments extends AValidate
     public function setDeltaTotalDoc(Decimal $deltaTotalDoc): void
     {
         $this->deltaTotalDoc = $deltaTotalDoc;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                   \sprintf("DeltaTotalDoc set to '%s'", $this->deltaTotalDoc)
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf("DeltaTotalDoc set to '%s'", $this->deltaTotalDoc)
+        );
     }
 
     /**
@@ -291,11 +291,10 @@ class ADocuments extends AValidate
     public function setDeltaCurrency(Decimal $deltaCurrency): void
     {
         $this->deltaCurrency = $deltaCurrency;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                   \sprintf("DeltaCurrency set to '%s'", $this->deltaCurrency)
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf("DeltaCurrency set to '%s'", $this->deltaCurrency)
+        );
     }
 
     /**
@@ -309,11 +308,10 @@ class ADocuments extends AValidate
     public function setDeltaTable(Decimal $deltaTable): void
     {
         $this->deltaTable = $deltaTable;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                   \sprintf("DeltaTable set to '%s'", $this->deltaTable)
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf("DeltaTable set to '%s'", $this->deltaTable)
+        );
     }
 
     /**
@@ -327,11 +325,10 @@ class ADocuments extends AValidate
     public function setDeltaLine(Decimal $deltaLine): void
     {
         $this->deltaLine = $deltaLine;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                   \sprintf("DeltaLine set to '%s'", $this->deltaLine)
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf("DeltaLine set to '%s'", $this->deltaLine)
+        );
     }
 
     /**
@@ -343,14 +340,13 @@ class ADocuments extends AValidate
      */
     public function getContinuesLines(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                __METHOD__ .
-                \sprintf(
-                    "ContinuesLine get as '%s'",
-                    $this->continuesLines ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            __METHOD__ .
+            \sprintf(
+                "ContinuesLine get as '%s'",
+                $this->continuesLines ? "true" : "false"
+            )
+        );
         return $this->continuesLines;
     }
 
@@ -366,14 +362,13 @@ class ADocuments extends AValidate
     public function setContinuesLines(bool $continuesLines): void
     {
         $this->continuesLines = $continuesLines;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                \sprintf(
-                    "ContinuesLine set as '%s'",
-                    $this->continuesLines ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf(
+                "ContinuesLine set as '%s'",
+                $this->continuesLines ? "true" : "false"
+            )
+        );
     }
 
     /**
@@ -388,14 +383,13 @@ class ADocuments extends AValidate
      */
     public function getAllowDebitAndCredit(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                __METHOD__ .
-                \sprintf(
-                    "AllowDebitAndCredit get as '%s'",
-                    $this->allowDebitAndCredit ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            __METHOD__ .
+            \sprintf(
+                "AllowDebitAndCredit get as '%s'",
+                $this->allowDebitAndCredit ? "true" : "false"
+            )
+        );
         return $this->allowDebitAndCredit;
     }
 
@@ -414,14 +408,13 @@ class ADocuments extends AValidate
     public function setAllowDebitAndCredit(bool $allowDebitAndCredit): void
     {
         $this->allowDebitAndCredit = $allowDebitAndCredit;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                \sprintf(
-                    "AllowDebitAndCredit set as '%s'",
-                    $this->allowDebitAndCredit ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf(
+                "AllowDebitAndCredit set as '%s'",
+                $this->allowDebitAndCredit ? "true" : "false"
+            )
+        );
     }
 
     /**
@@ -435,14 +428,13 @@ class ADocuments extends AValidate
     public function setSignValidation(bool $signValidation): void
     {
         $this->signValidation = $signValidation;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                __METHOD__ .
-                \sprintf(
-                    "SignValidation set as '%s'",
-                    $this->signValidation ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->debug(
+            __METHOD__ .
+            \sprintf(
+                "SignValidation set as '%s'",
+                $this->signValidation ? "true" : "false"
+            )
+        );
     }
 
     /**
@@ -453,14 +445,13 @@ class ADocuments extends AValidate
      */
     public function getSignValidation(): bool
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(
-                __METHOD__ .
-                \sprintf(
-                    "SignValidation get as '%s'",
-                    $this->signValidation ? "true" : "false"
-                )
-            );
+        AAuditFile::$logger?->info(
+            __METHOD__ .
+            \sprintf(
+                "SignValidation get as '%s'",
+                $this->signValidation ? "true" : "false"
+            )
+        );
         return $this->signValidation;
     }
 

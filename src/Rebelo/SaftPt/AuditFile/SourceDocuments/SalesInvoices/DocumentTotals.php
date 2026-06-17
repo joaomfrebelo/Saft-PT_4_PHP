@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices;
 
-use Rebelo\SaftPt\AuditFile\ErrorRegister;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\ErrorRegister;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\ADocumentTotals;
 use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
 
@@ -35,24 +36,27 @@ use Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod;
  * Invoice DocumentTotals
  *
  * @author João Rebelo
- * @since 1.0.0
+ * @since  1.0.0
  */
 class DocumentTotals extends ADocumentTotals
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SETTLEMENT = "Settlement";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PAYMENT = "Payment";
 
     /**
      * &lt;xs:element name="Settlement" type="Settlement" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\SalesInvoices\Settlement[]
      * @since 1.0.0
      */
@@ -60,6 +64,7 @@ class DocumentTotals extends ADocumentTotals
 
     /**
      * &lt;xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod[]
      * @since 1.0.0
      */
@@ -82,7 +87,9 @@ class DocumentTotals extends ADocumentTotals
      *    &lt;/xs:complexType&gt;
      * &lt;/xs:element&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -102,8 +109,7 @@ class DocumentTotals extends ADocumentTotals
      */
     public function getSettlement(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->settlement;
     }
 
@@ -120,8 +126,7 @@ class DocumentTotals extends ADocumentTotals
     {
         $settlement         = new Settlement($this->getErrorRegistor());
         $this->settlement[] = $settlement;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__ . " add to stack");
         return $settlement;
     }
 
@@ -138,8 +143,7 @@ class DocumentTotals extends ADocumentTotals
      */
     public function getPayment(): array
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(__METHOD__." get");
+        AAuditFile::$logger?->info(__METHOD__ . " get");
         return $this->payment;
     }
 
@@ -152,6 +156,7 @@ class DocumentTotals extends ADocumentTotals
      * If there is a need to make more than one reference, this structure can
      * be generated as many times as necessary.<br>
      * &lt;xs:element name="Payment" type="PaymentMethod" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @return \Rebelo\SaftPt\AuditFile\SourceDocuments\PaymentMethod
      * @since 1.0.0
      */
@@ -159,8 +164,7 @@ class DocumentTotals extends ADocumentTotals
     {
         $paymentMethod   = new PaymentMethod($this->getErrorRegistor());
         $this->payment[] = $paymentMethod;
-        \Logger::getLogger(\get_class($this))
-            ->debug(__METHOD__." add to stack");
+        AAuditFile::$logger?->debug(__METHOD__ . " add to stack");
         return $paymentMethod;
     }
 
@@ -175,15 +179,14 @@ class DocumentTotals extends ADocumentTotals
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== Invoice::N_INVOICE) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 Invoice::N_INVOICE, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
         $docTotNode = parent::createXmlNode($node);
@@ -212,15 +215,14 @@ class DocumentTotals extends ADocumentTotals
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_DOCUMENT_TOTALS) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_DOCUMENT_TOTALS, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 

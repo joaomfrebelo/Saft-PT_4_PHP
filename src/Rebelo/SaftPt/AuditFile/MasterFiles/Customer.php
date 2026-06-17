@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 /*
  * The MIT License
  *
@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace Rebelo\SaftPt\AuditFile\MasterFiles;
 
-use Rebelo\SaftPt\AuditFile\AuditFileException;
+use Rebelo\SaftPt\AuditFile\AAuditFile;
 use Rebelo\SaftPt\AuditFile\Address;
+use Rebelo\SaftPt\AuditFile\AuditFileException;
 use Rebelo\SaftPt\AuditFile\ErrorRegister;
 
 /**
@@ -61,36 +62,42 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  * </pre>
  *
  * Class Customer
+ *
  * @since 1.0.0
  */
 class Customer extends ACustomerSupplier
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMER = "Customer";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMER_ID = "CustomerID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMER_TAX_ID = "CustomerTaxID";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_SHIP_TO_ADDRESS = "ShipToAddress";
 
     /**
      * &lt;xs:element ref="CustomerID"/&gt;
+     *
      * @var string $customerID
      * @since 1.0.0
      */
@@ -98,6 +105,7 @@ class Customer extends ACustomerSupplier
 
     /**
      * &lt;xs:element ref="CustomerTaxID"/&gt;
+     *
      * @var string $customerTaxID
      * @since 1.0.0
      */
@@ -105,6 +113,7 @@ class Customer extends ACustomerSupplier
 
     /**
      * &lt;xs:element ref="BillingAddress"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\Address $billingAddress
      * @since 1.0.0
      */
@@ -112,6 +121,7 @@ class Customer extends ACustomerSupplier
 
     /**
      * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;
+     *
      * @var \Rebelo\SaftPt\AuditFile\Address[] $shipToAddress
      * @since 1.0.0
      */
@@ -146,7 +156,9 @@ class Customer extends ACustomerSupplier
      *       &lt;/xs:complexType&gt;
      *   &lt;/xs:element&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -155,28 +167,8 @@ class Customer extends ACustomerSupplier
     }
 
     /**
-     * Gets as customerID<br>
-     * In the list of clients cannot exist more than one registration
-     * with the same CustomerID. In the case of final consumers,
-     * a generic client with the designation of “Consumidor final”
-     * (Final Consumer) shall be created.
-     * <pre>
-     * &lt;xs:element ref="CustomerID"/&gt;
-     * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
-     * </pre>
-     * @return string
-     * @throws \Error
-     * @since 1.0.0
-     */
-    public function getCustomerID(): string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->customerID));
-        return $this->customerID;
-    }
-
-    /**
      * Get if is set CustomerID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -186,61 +178,8 @@ class Customer extends ACustomerSupplier
     }
 
     /**
-     * Sets a new customerID<br>
-     * In the list of clients cannot exist more than one registration
-     * with the same CustomerID. In the case of final consumers,
-     * a generic client with the designation of “Consumidor final”
-     * (Final Consumer) shall be created.
-     * <pre>
-     * &lt;xs:element ref="CustomerID"/&gt;
-     * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
-     * </pre>
-     * @param string $customerID
-     * @return bool true if the value is valid
-     * @since 1.0.0
-     */
-    public function setCustomerID(string $customerID): bool
-    {
-        try {
-            $this->customerID = static::valTextMandatoryMaxCar(
-                $customerID, 30,
-                __METHOD__
-            );
-            $return           = true;
-        } catch (AuditFileException $e) {
-            $this->customerID = $customerID;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
-            $this->getErrorRegistor()->addOnSetValue("CustomerID_not_valid");
-            $return           = false;
-        }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->customerID));
-        return $return;
-    }
-
-    /**
-     * Gets as customerTaxID<br>
-     * It must be indicated without the country’s prefix.
-     * The generic client, corresponding to the
-     * aforementioned “Consumidor final” (Final consumer)
-     * shall be identified with the Tax Identification Number “999999990”.<br>
-     * &lt;xs:element ref="CustomerTaxID"/&gt;<br>
-     * &lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
-     *
-     * @return string
-     * @throws \Error
-     * @since 1.0.0
-     */
-    public function getCustomerTaxID(): string
-    {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->customerTaxID));
-        return $this->customerTaxID;
-    }
-
-    /**
      * Get if is set CustomerTaxID
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -250,61 +189,8 @@ class Customer extends ACustomerSupplier
     }
 
     /**
-     * Sets a new customerTaxID<br>
-     * It must be indicated without the country’s prefix.
-     * The generic client, corresponding to the
-     * aforementioned “Consumidor final” (Final consumer)
-     * shall be identified with the Tax Identification Number “999999990”.<br>
-     * &lt;xs:element ref="CustomerTaxID"/&gt;<br>
-     * &lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
-     *
-     * @param string $customerTaxID
-     * @return bool true if the value is valid
-     * @since 1.0.0
-     */
-    public function setCustomerTaxID(string $customerTaxID): bool
-    {
-        $length = \strlen($customerTaxID);
-        if ($length < 1 || $length > 30) {
-            $msg    = sprintf(
-                "CustomerTaxID length must be between 1 and 30 but have '%s'",
-                $length
-            );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
-            $return = false;
-            $this->getErrorRegistor()->addOnSetValue("CustomerTaxID_not_valid");
-        } else {
-            $return = true;
-        }
-        $this->customerTaxID = $customerTaxID;
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->customerTaxID));
-        return $return;
-    }
-
-    /**
-     * Gets as billingAddress<br>
-     * Head office address or the fixed /permanent establishment address,
-     * located on Portuguese territory.<br>
-     * The Address instance will be created once you get this method<br>
-     * &lt;xs:element ref="BillingAddress"/&gt;<br>
-     * &lt;xs:element name="BillingAddress" type="AddressStructure"/&gt;
-     *
-     * @return \Rebelo\SaftPt\AuditFile\Address
-     * @since 1.0.0
-     */
-    public function getBillingAddress(): Address
-    {
-        if (isset($this->billingAddress) === false) {
-            $this->billingAddress = new Address($this->getErrorRegistor());
-        }
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return $this->billingAddress;
-    }
-
-    /**
      * Get if is set BillingAddress
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -314,57 +200,24 @@ class Customer extends ACustomerSupplier
     }
 
     /**
-     * Adds as shipToAddress<br>
-     * This method every time that is invoked will return a new Instance
-     * of 'Address' that shall, must be populated with the correct values.<br>
-     * If there is a need to make more than one reference,
-     * this structure can be generated as many times as necessary.<br>
-     * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
-     * &lt;xs:element name="ShipToAddress" type="AddressStructure"/&gt;
-     *
-     * @return \Rebelo\SaftPt\AuditFile\Address The new Address instance that was added and must be populated
-     * @since 1.0.0
-     */
-    public function addShipToAddress(): Address
-    {
-        $shipToAddress         = new Address($this->getErrorRegistor());
-        $this->shipToAddress[] = $shipToAddress;
-        \Logger::getLogger(\get_class($this))->debug(
-            __METHOD__." ShipToAddress add to stack "
-        );
-        return $shipToAddress;
-    }
-
-    /**
-     * Gets as shipToAddress
-     *
-     * @return \Rebelo\SaftPt\AuditFile\Address[]
-     * @since 1.0.0
-     */
-    public function getShipToAddress(): array
-    {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
-        return $this->shipToAddress;
-    }
-
-    /**
      * Create the xml node for Customer
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== MasterFiles::N_MASTER_FILES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 MasterFiles::N_MASTER_FILES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -447,30 +300,170 @@ class Customer extends ACustomerSupplier
     }
 
     /**
+     * Gets as customerID<br>
+     * In the list of clients cannot exist more than one registration
+     * with the same CustomerID. In the case of final consumers,
+     * a generic client with the designation of “Consumidor final”
+     * (Final Consumer) shall be created.
+     * <pre>
+     * &lt;xs:element ref="CustomerID"/&gt;
+     * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     * </pre>
+     *
+     * @return string
+     * @throws \Error
+     * @since 1.0.0
+     */
+    public function getCustomerID(): string
+    {
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->customerID));
+        return $this->customerID;
+    }
+
+    /**
+     * Sets a new customerID<br>
+     * In the list of clients cannot exist more than one registration
+     * with the same CustomerID. In the case of final consumers,
+     * a generic client with the designation of “Consumidor final”
+     * (Final Consumer) shall be created.
+     * <pre>
+     * &lt;xs:element ref="CustomerID"/&gt;
+     * &lt;xs:element name="CustomerID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     * </pre>
+     *
+     * @param string $customerID
+     *
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setCustomerID(string $customerID): bool
+    {
+        try {
+            $this->customerID = static::valTextMandatoryMaxCar(
+                $customerID, 30,
+                __METHOD__
+            );
+            $return           = true;
+        } catch (AuditFileException $e) {
+            $this->customerID = $customerID;
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+            $this->getErrorRegistor()->addOnSetValue("CustomerID_not_valid");
+            $return = false;
+        }
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->customerID));
+        return $return;
+    }
+
+    /**
+     * Gets as customerTaxID<br>
+     * It must be indicated without the country’s prefix.
+     * The generic client, corresponding to the
+     * aforementioned “Consumidor final” (Final consumer)
+     * shall be identified with the Tax Identification Number “999999990”.<br>
+     * &lt;xs:element ref="CustomerTaxID"/&gt;<br>
+     * &lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
+     * @return string
+     * @throws \Error
+     * @since 1.0.0
+     */
+    public function getCustomerTaxID(): string
+    {
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->customerTaxID));
+        return $this->customerTaxID;
+    }
+
+    /**
+     * Sets a new customerTaxID<br>
+     * It must be indicated without the country’s prefix.
+     * The generic client, corresponding to the
+     * aforementioned “Consumidor final” (Final consumer)
+     * shall be identified with the Tax Identification Number “999999990”.<br>
+     * &lt;xs:element ref="CustomerTaxID"/&gt;<br>
+     * &lt;xs:element name="CustomerTaxID" type="SAFPTtextTypeMandatoryMax30Car"/&gt;
+     *
+     * @param string $customerTaxID
+     *
+     * @return bool true if the value is valid
+     * @since 1.0.0
+     */
+    public function setCustomerTaxID(string $customerTaxID): bool
+    {
+        $length = \strlen($customerTaxID);
+        if ($length < 1 || $length > 30) {
+            $msg = sprintf(
+                "CustomerTaxID length must be between 1 and 30 but have '%s'",
+                $length
+            );
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
+            $return = false;
+            $this->getErrorRegistor()->addOnSetValue("CustomerTaxID_not_valid");
+        } else {
+            $return = true;
+        }
+        $this->customerTaxID = $customerTaxID;
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->customerTaxID));
+        return $return;
+    }
+
+    /**
+     * Gets as billingAddress<br>
+     * Head office address or the fixed /permanent establishment address,
+     * located on Portuguese territory.<br>
+     * The Address instance will be created once you get this method<br>
+     * &lt;xs:element ref="BillingAddress"/&gt;<br>
+     * &lt;xs:element name="BillingAddress" type="AddressStructure"/&gt;
+     *
+     * @return \Rebelo\SaftPt\AuditFile\Address
+     * @since 1.0.0
+     */
+    public function getBillingAddress(): Address
+    {
+        if (isset($this->billingAddress) === false) {
+            $this->billingAddress = new Address($this->getErrorRegistor());
+        }
+        AAuditFile::$logger?->info(__METHOD__);
+        return $this->billingAddress;
+    }
+
+    /**
+     * Gets as shipToAddress
+     *
+     * @return \Rebelo\SaftPt\AuditFile\Address[]
+     * @since 1.0.0
+     */
+    public function getShipToAddress(): array
+    {
+        AAuditFile::$logger?->info(__METHOD__);
+        return $this->shipToAddress;
+    }
+
+    /**
      * Parse the xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         if ($node->getName() !== static::N_CUSTOMER) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_CUSTOMER, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
-        $this->setCustomerID((string) $node->{static::N_CUSTOMER_ID});
-        $this->setAccountID((string) $node->{static::N_ACCOUNT_ID});
-        $this->setCustomerTaxID((string) $node->{static::N_CUSTOMER_TAX_ID});
-        $this->setCompanyName((string) $node->{static::N_COMPANY_NAME});
+        $this->setCustomerID((string)$node->{static::N_CUSTOMER_ID});
+        $this->setAccountID((string)$node->{static::N_ACCOUNT_ID});
+        $this->setCustomerTaxID((string)$node->{static::N_CUSTOMER_TAX_ID});
+        $this->setCompanyName((string)$node->{static::N_COMPANY_NAME});
         if ($node->{static::N_CONTACT}->count() > 0) {
-            $this->setContact((string) $node->{static::N_CONTACT});
+            $this->setContact((string)$node->{static::N_CONTACT});
         } else {
             $this->setContact(null);
         }
@@ -485,27 +478,47 @@ class Customer extends ACustomerSupplier
         }
 
         $this->setSelfBillingIndicator(
-            ((int) $node->{static::N_SELF_BILLING_INDICATOR}) === 1
+            ((int)$node->{static::N_SELF_BILLING_INDICATOR}) === 1
         );
         if ($node->{static::N_TELEPHONE}->count() > 0) {
-            $this->setTelephone((string) $node->{static::N_TELEPHONE});
+            $this->setTelephone((string)$node->{static::N_TELEPHONE});
         } else {
             $this->setTelephone(null);
         }
         if ($node->{static::N_FAX}->count() > 0) {
-            $this->setFax((string) $node->{static::N_FAX});
+            $this->setFax((string)$node->{static::N_FAX});
         } else {
             $this->setFax(null);
         }
         if ($node->{static::N_EMAIL}->count() > 0) {
-            $this->setEmail((string) $node->{static::N_EMAIL});
+            $this->setEmail((string)$node->{static::N_EMAIL});
         } else {
             $this->setEmail(null);
         }
         if ($node->{static::N_WEBSITE}->count() > 0) {
-            $this->setWebsite((string) $node->{static::N_WEBSITE});
+            $this->setWebsite((string)$node->{static::N_WEBSITE});
         } else {
             $this->setWebsite(null);
         }
+    }
+
+    /**
+     * Adds as shipToAddress<br>
+     * This method every time that is invoked will return a new Instance
+     * of 'Address' that shall, must be populated with the correct values.<br>
+     * If there is a need to make more than one reference,
+     * this structure can be generated as many times as necessary.<br>
+     * &lt;xs:element ref="ShipToAddress" minOccurs="0" maxOccurs="unbounded"/&gt;<br>
+     * &lt;xs:element name="ShipToAddress" type="AddressStructure"/&gt;
+     *
+     * @return \Rebelo\SaftPt\AuditFile\Address The new Address instance that was added and must be populated
+     * @since 1.0.0
+     */
+    public function addShipToAddress(): Address
+    {
+        $shipToAddress         = new Address($this->getErrorRegistor());
+        $this->shipToAddress[] = $shipToAddress;
+        AAuditFile::$logger?->debug(__METHOD__ . " ShipToAddress add to stack ");
+        return $shipToAddress;
     }
 }

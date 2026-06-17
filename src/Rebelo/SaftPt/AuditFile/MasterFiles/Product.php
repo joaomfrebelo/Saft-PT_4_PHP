@@ -57,48 +57,56 @@ use Rebelo\SaftPt\AuditFile\ErrorRegister;
  *      &lt;/xs:complexType&gt;
  *  &lt;/xs:element&gt;
  * </pre>
+ *
  * @since 1.0.0
  */
 class Product extends AAuditFile
 {
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT = "Product";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_TYPE = "ProductType";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_CODE = "ProductCode";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_GROUP = "ProductGroup";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_DESCRIPTION = "ProductDescription";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_PRODUCT_NUMBER_CODE = "ProductNumberCode";
 
     /**
      * Node name
+     *
      * @since 1.0.0
      */
     const string N_CUSTOMS_DETAILS = "CustomsDetails";
@@ -126,6 +134,7 @@ class Product extends AAuditFile
      * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
      * which shall appear in table 2.5. – TaxTable and Excise Duties which
      * shall be filled in with the "E" code.
+     *
      * @var \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType $productType
      * @since 1.0.0
      */
@@ -136,6 +145,7 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductCode"/&gt;
      * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
+     *
      * @var string $productCode
      * @since 1.0.0
      */
@@ -146,6 +156,7 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
      * &lt;xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * </pre>
+     *
      * @var string|null $productGroup
      * @since 1.0.0
      */
@@ -163,6 +174,7 @@ class Product extends AAuditFile
      *      &lt;/xs:restriction&gt;
      *  &lt;/xs:simpleType&gt;
      * </pre>
+     *
      * @var string $productDescription
      * @since 1.0.0
      */
@@ -173,6 +185,7 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductNumberCode"/&gt;
      * &lt;xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
+     *
      * @var string $productNumberCode
      * @since 1.0.0
      */
@@ -215,7 +228,9 @@ class Product extends AAuditFile
      *      &lt;/xs:complexType&gt;
      *  &lt;/xs:element&gt;
      * </pre>
+     *
      * @param \Rebelo\SaftPt\AuditFile\ErrorRegister $errorRegister
+     *
      * @since 1.0.0
      */
     public function __construct(ErrorRegister $errorRegister)
@@ -234,19 +249,20 @@ class Product extends AAuditFile
      * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
      * which shall appear in table 2.5. – TaxTable and Excise Duties which
      * shall be filled in with the "E" code.
+     *
      * @return \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType
      * @throws \Error
      * @since 1.0.0
      */
     public function getProductType(): ProductType
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productType->value));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productType->value));
         return $this->productType;
     }
 
     /**
      * Get if is set ProductType
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -266,20 +282,21 @@ class Product extends AAuditFile
      * “I” - Taxes, tax rates and parafiscal charges except VAT and Stamp Duty
      * which shall appear in table 2.5. – TaxTable and Excise Duties which
      * shall be filled in with the "E" code.
+     *
      * @param \Rebelo\SaftPt\AuditFile\MasterFiles\ProductType $productType
+     *
      * @return void
      * @since 1.0.0
      */
     public function setProductType(ProductType $productType): void
     {
         $this->productType = $productType;
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->productType->value
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->productType->value
+            )
+        );
     }
 
     /**
@@ -289,19 +306,20 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductCode"/&gt;
      * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getProductCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productCode));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productCode));
         return $this->productCode;
     }
 
     /**
      * Get if is set ProductCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -317,7 +335,9 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductCode"/&gt;
      * &lt;xs:element name="ProductCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
+     *
      * @param string $productCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -330,13 +350,14 @@ class Product extends AAuditFile
             $return            = true;
         } catch (AuditFileException $e) {
             $this->productCode = $productCode;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
+
             $this->getErrorRegistor()->addOnSetValue("ProductCode_not_valid");
-            $return            = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(\sprintf(__METHOD__." set to '%s'", $this->productCode));
+
+        AAuditFile::$logger?->debug(\sprintf(__METHOD__ . " set to '%s'", $this->productCode));
         return $return;
     }
 
@@ -346,14 +367,14 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
      * &lt;xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * </pre>
+     *
      * @return string|null
      * @throws \Error
      * @since 1.0.0
      */
     public function getProductGroup(): ?string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productGroup));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productGroup));
         return $this->productGroup;
     }
 
@@ -363,7 +384,9 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductGroup" minOccurs="0"/&gt;
      * &lt;xs:element name="ProductGroup" type="SAFPTtextTypeMandatoryMax50Car"/&gt;
      * </pre>
+     *
      * @param string|null $productGroup
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -375,18 +398,16 @@ class Product extends AAuditFile
             $return             = true;
         } catch (AuditFileException $e) {
             $this->productGroup = $productGroup;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductGroup_not_valid");
-            $return             = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->productGroup === null ? "null" : $this->productGroup
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->productGroup === null ? "null" : $this->productGroup
+            )
+        );
         return $return;
     }
 
@@ -398,19 +419,20 @@ class Product extends AAuditFile
      * &lt;xs:minLength value="2"/&gt;
      * &lt;xs:maxLength value="200"/&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getProductDescription(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productDescription));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productDescription));
         return $this->productDescription;
     }
 
     /**
      * Get if is set ProductDescription
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -427,7 +449,9 @@ class Product extends AAuditFile
      * &lt;xs:minLength value="2"/&gt;
      * &lt;xs:maxLength value="200"/&gt;
      * </pre>
+     *
      * @param string $productDescription
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -436,8 +460,7 @@ class Product extends AAuditFile
         try {
             if (\strlen($productDescription) < 2) {
                 $msg = "Product description must have at leats 2 chars";
-                \Logger::getLogger(\get_class($this))
-                    ->error(\sprintf(__METHOD__." '%s'", $msg));
+                AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
                 throw new AuditFileException($msg);
             }
             $this->productDescription = static::valTextMandatoryMaxCar(
@@ -446,18 +469,16 @@ class Product extends AAuditFile
             $return                   = true;
         } catch (AuditFileException $e) {
             $this->productDescription = $productDescription;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductDescription_not_valid");
-            $return                   = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))
-            ->debug(
-                \sprintf(
-                    __METHOD__." set to '%s'",
-                    $this->productDescription
-                )
-            );
+        AAuditFile::$logger?->debug(
+            \sprintf(
+                __METHOD__ . " set to '%s'",
+                $this->productDescription
+            )
+        );
         return $return;
     }
 
@@ -469,19 +490,20 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductNumberCode"/&gt;
      * &lt;xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
+     *
      * @return string
      * @throws \Error
      * @since 1.0.0
      */
     public function getProductNumberCode(): string
     {
-        \Logger::getLogger(\get_class($this))
-            ->info(\sprintf(__METHOD__." get '%s'", $this->productNumberCode));
+        AAuditFile::$logger?->info(\sprintf(__METHOD__ . " get '%s'", $this->productNumberCode));
         return $this->productNumberCode;
     }
 
     /**
      * Get if is set ProductNumberCode
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -498,7 +520,9 @@ class Product extends AAuditFile
      * &lt;xs:element ref="ProductNumberCode"/&gt;
      * &lt;xs:element name="ProductNumberCode" type="SAFPTtextTypeMandatoryMax60Car"/&gt;
      * </pre>
+     *
      * @param string $productNumberCode
+     *
      * @return bool true if the value is valid
      * @since 1.0.0
      */
@@ -511,13 +535,12 @@ class Product extends AAuditFile
             $return                  = true;
         } catch (AuditFileException $e) {
             $this->productNumberCode = $productNumberCode;
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__."  '%s'", $e->getMessage()));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . "  '%s'", $e->getMessage()));
             $this->getErrorRegistor()->addOnSetValue("ProductNumberCode_not_valid");
-            $return                  = false;
+            $return = false;
         }
-        \Logger::getLogger(\get_class($this))->debug(
-            \sprintf(__METHOD__." set to '%s'", $this->productNumberCode)
+        AAuditFile::$logger?->debug(
+            \sprintf(__METHOD__ . " set to '%s'", $this->productNumberCode)
         );
         return $return;
     }
@@ -528,6 +551,7 @@ class Product extends AAuditFile
      * <pre>
      * &lt;xs:element name="CustomsDetails" type="CustomsDetails" minOccurs="0"/&gt;
      * </pre>
+     *
      * @return \Rebelo\SaftPt\AuditFile\MasterFiles\CustomsDetails
      * @since 1.0.0
      */
@@ -536,12 +560,13 @@ class Product extends AAuditFile
         if (isset($this->customsDetails) === false) {
             $this->customsDetails = new CustomsDetails($this->getErrorRegistor());
         }
-        \Logger::getLogger(\get_class($this))->info(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
         return $this->customsDetails;
     }
 
     /**
      * Get if is set CustomsDetails
+     *
      * @return bool
      * @since 1.0.0
      */
@@ -552,22 +577,23 @@ class Product extends AAuditFile
 
     /**
      * Create Xml node
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return \SimpleXMLElement
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function createXmlNode(\SimpleXMLElement $node): \SimpleXMLElement
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== MasterFiles::N_MASTER_FILES) {
             $msg = \sprintf(
                 "Node name should be '%s' but is '%s",
                 MasterFiles::N_MASTER_FILES, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
@@ -620,37 +646,38 @@ class Product extends AAuditFile
 
     /**
      * Parse the xml node to the instance
+     *
      * @param \SimpleXMLElement $node
+     *
      * @return void
      * @throws \Rebelo\SaftPt\AuditFile\AuditFileException
      * @since 1.0.0
      */
     public function parseXmlNode(\SimpleXMLElement $node): void
     {
-        \Logger::getLogger(\get_class($this))->trace(__METHOD__);
+        AAuditFile::$logger?->info(__METHOD__);
 
         if ($node->getName() !== static::N_PRODUCT) {
             $msg = sprintf(
                 "Node name should be '%s' but is '%s",
                 static::N_PRODUCT, $node->getName()
             );
-            \Logger::getLogger(\get_class($this))
-                ->error(\sprintf(__METHOD__." '%s'", $msg));
+            AAuditFile::$logger?->error(\sprintf(__METHOD__ . " '%s'", $msg));
             throw new AuditFileException($msg);
         }
 
-        $this->setProductType(ProductType::from((string) $node->{static::N_PRODUCT_TYPE}));
-        $this->setProductCode((string) $node->{static::N_PRODUCT_CODE});
+        $this->setProductType(ProductType::from((string)$node->{static::N_PRODUCT_TYPE}));
+        $this->setProductCode((string)$node->{static::N_PRODUCT_CODE});
 
         if ($node->{static::N_PRODUCT_GROUP}->count() > 0) {
-            $this->setProductGroup((string) $node->{static::N_PRODUCT_GROUP});
+            $this->setProductGroup((string)$node->{static::N_PRODUCT_GROUP});
         } else {
             $this->setProductGroup(null);
         }
 
-        $this->setProductDescription((string) $node->{static::N_PRODUCT_DESCRIPTION});
+        $this->setProductDescription((string)$node->{static::N_PRODUCT_DESCRIPTION});
 
-        $this->setProductNumberCode((string) $node->{static::N_PRODUCT_NUMBER_CODE});
+        $this->setProductNumberCode((string)$node->{static::N_PRODUCT_NUMBER_CODE});
 
         if ($node->{static::N_CUSTOMS_DETAILS}->count() > 0) {
             $this->getCustomsDetails()->parseXmlNode($node->{static::N_CUSTOMS_DETAILS});
